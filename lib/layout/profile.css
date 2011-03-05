@@ -1,0 +1,155 @@
+#profile {
+	position: relative;
+	left: 20px;
+	top: 20px;
+	text-align: left;
+	font-size: 12px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	border-spacing: 0px 0px;
+	width: 980px;
+	overflow-y: auto;
+    float: left;
+}
+
+#profile h1 {
+	margin-left: 0px;
+	margin-bottom: 10px;
+	margin-right: 0px;
+	margin-top: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-top-width: 0px;
+	border-bottom-color: #989898;
+	border-bottom-style: dotted;
+	height: 20px;
+	font-weight: bold;
+	font-size: 16px;
+	vertical-align: center;
+	color: #7d7d7d;
+	padding: 0px;
+}
+
+
+#charlist {
+	display: inline-block;
+	vertical-align: top;
+	width: 910px;
+	height: 160px;
+}
+
+#profile .charslot {
+	vertical-align: top;
+	background: url(images/charslot.png);
+	background-repeat: no-repeat;
+	display: inline-block;
+	width: 123px;
+	height: 148px;
+	margin-right: 5px;
+	margin-bottom: 10px;
+}
+
+#profile .newchar {
+	background: url(images/charslot_new.png);
+}
+
+#profile .charslot_add {
+	vertical-align: top;
+	background: url(images/charslot_add.png);
+	background-repeat: no-repeat;
+	display: inline-block;
+	width: 123px;
+	height: 148px;
+	margin-right: 5px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+}
+
+#profile .charslot .clearchar {
+	background: url(images/clear_off.png);
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 24px;
+	display: block;
+	position: relative;
+	float: right;
+	top: 5px;
+	left: -3px;
+	cursor: pointer;
+}
+
+#profile .charslot .clearchar:hover {
+	background: url(images/clear.png);
+	background-repeat: no-repeat;
+}
+
+#profile .charslot .class {
+	width: 64px;
+	height: 64px;
+	display: block;
+	position: relative;
+	top: 15px;
+	left: 29px;
+	z-index: 10;
+}
+
+#profile .charslot .class .badge {
+	width: 38px;
+	height: 48px;
+	display: block;
+	position: relative;
+	top: -18px;
+	left: -28px;
+	z-index: 20;
+}
+
+#profile .charslot .class .mainchar {
+	background: url(images/mainchar.png);
+	background-repeat: no-repeat;
+}
+
+#profile .charslot .class .twink {
+	background: url(images/twink.png);
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+#profile .charslot .class .twink:hover {
+	background: url(images/mainchar.png);
+	background-repeat: no-repeat;
+}
+
+#profile .charslot .name {	
+	text-align: center;	
+	width: 121px;
+	height: 32px;
+	display: block;
+	position: relative;
+	text-align: center;
+	top: 20px;
+}
+
+#profile .charslot .newname {	
+	text-align: center;	
+	width: 110px;
+	height: 10px;
+	display: block;
+	position: relative;
+	text-align: center;
+	top: 20px;
+	left: 4px;
+	margin-bottom:16px;
+}
+
+#profile .charslot .role {
+	width: 32px;
+	height: 32px;
+	display: inline-block;
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-top: 8px;
+}
+
+#profile .button_profile {
+    clear: left;
+}

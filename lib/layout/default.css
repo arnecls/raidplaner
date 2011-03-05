@@ -1,0 +1,278 @@
+body {
+	padding: 0px;
+	margin: 0px;
+	background-repeat: repeat;
+	background-image: url(images/bg_index3.png);
+	background-color: black;
+	font-size: 12px;
+}
+
+.preload {
+	visibility: hidden;
+	position: fixed;
+	float: left;
+}
+
+#appwindow {
+	margin-top: -384px;
+	margin-left: -512px;
+	left: 50%;
+	top: 50%;
+	display: block;
+	position: fixed;
+	height: 768px;
+	width: 1024px;
+}
+
+#logo {
+	display: block;
+	background-repeat: no-repeat;
+	background-image: url(images/logo.jpg);
+	height: 140px;
+	width: 1024px;
+}
+
+#menu {
+	display: block;
+	height: 50px;
+	background-repeat: repeat-x;
+	background-image: url(images/button_background.png);
+	width: 1024px;
+}
+
+#lockMessage {
+	float: left;
+	position: relative;
+	left: 50%;
+	top: 50%;
+	width: 300px;
+	height: 100px;
+	margin-left: -150px;
+	margin-top: -50px;
+	text-align: center;
+	font-size: 14px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+}
+
+.menu_button {
+	display: inline-block;
+	height: 35px;
+	width: 134px;
+	background-repeat: no-repeat;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	font-size: 14px;
+	text-align: center;
+	color: white;
+	padding-left: 30px;
+	padding-top: 15px;
+	cursor: pointer;
+}
+
+#button_login {
+	background-image: url(images/button_login.png);
+}
+
+#button_login:hover {
+	background-image: url(images/button_login_over.png);
+}
+
+#button_login.on {
+	background-image: url(images/button_login_on.png);
+}
+
+#button_register {
+	background-image: url(images/button_register.png);
+}
+
+#button_register:hover {
+	background-image: url(images/button_register_over.png);
+}
+
+#button_register.on {
+	background-image: url(images/button_register_on.png);
+}
+
+#button_calendar {
+	background-image: url(images/button_calendar.png);
+}
+
+#button_calendar:hover {
+	background-image: url(images/button_calendar_over.png);
+}
+
+#button_calendar.on {
+	background-image: url(images/button_calendar_on.png);
+}
+
+#button_raid {
+	background-image: url(images/button_raid.png);
+}
+
+#button_raid:hover {
+	background-image: url(images/button_raid_over.png);
+}
+
+#button_raid.on {
+	background-image: url(images/button_raid_on.png);
+}
+
+#button_profile {
+	background-image: url(images/button_profile.png);
+}
+
+#button_profile:hover {
+	background-image: url(images/button_profile_over.png);
+}
+
+#button_profile.on {
+	background-image: url(images/button_profile_on.png);
+}
+
+#button_settings {
+	background-image: url(images/button_settings.png);
+}
+
+#button_settings:hover {
+	background-image: url(images/button_settings_over.png);
+}
+
+#button_settings.on {
+	background-image: url(images/button_settings_on.png);
+}
+
+#body {
+	text-align: center;
+	display: block;
+	height: 576px;
+	width: 1024px;
+	background-image: url(images/background.png);
+	background-repeat: repeat-x;
+}
+
+.button {
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+}
+
+.logout {
+	position: relative;
+	display: inline-block;
+	padding: 0px;
+	margin-right: 10px;
+	margin-top: 10px;
+	height: 40px;
+	float: right;
+}
+
+.logout form {
+	margin: 0px;
+}
+
+.logout .button_logout {
+	height: 24px;
+}
+
+.login {
+	width: 200px;
+	height: 200px;
+	left: 50%;
+	top: 50%;
+	position: relative;
+	margin-left: -100px;
+	margin-top: -50px;
+	float: left;
+}
+
+.login input.text {
+	margin-left: 0px;
+	margin-bottom: 2px;
+	margin-right: 0px;
+	margin-top: 0px;
+	color: #c7c7c7;
+	background-color: #ececec;
+	display: block;
+	font-size: 16px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	width: 196px;
+	height: 16px;
+	padding-top: 4px;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.login input.textactive {
+	margin-left: 0px;
+	margin-bottom: 2px;
+	margin-right: 0px;
+	margin-top: 0px;
+	color: black;
+	background-color: #ececec;
+	display: block;
+	font-size: 16px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	width: 196px;
+	height: 16px;
+	padding-top: 4px;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.login .button_login {
+	margin-top: 10px;
+	width: 100px;
+}
+
+#eventblocker {
+	background-color: black;
+	z-index: 15;
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	visibility: hidden;
+	display: block;
+	height: 100%;
+	width: 100%;
+	opacity: 0.4;
+	filter: Alpha(opacity=40);
+}
+
+#ajaxblocker {
+	background-color: black;
+	z-index: 1000;
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	display: block;
+	height: 100%;
+	width: 100%;
+	opacity: 0.75;
+	filter: Alpha(opacity=75);
+	text-align: center;
+	padding: 20px;
+}
+
+#ajaxblocker .background {
+	font-size: 16px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	color: black;
+	position: fixed; 
+	left: 50%; 
+	top: 50%; 
+	width: 200px; 
+	margin-left: -100px;
+	margin-top: -50px; 
+	background-color: white;
+	padding: 20px;
+}
+
+#dialog {
+}
+
+
+#sheetNewRaid {
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	visibility: hidden;
+}

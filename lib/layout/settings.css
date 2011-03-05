@@ -1,0 +1,152 @@
+#settings {
+	position: relative;
+	left: 20px;
+	top: 20px;
+	text-align: left;
+	font-size: 12px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	border-spacing: 0px 0px;
+	width: 980px;
+	overflow-y: visible;
+    float: left;
+}
+
+#settings h1 {
+	margin-left: 0px;
+	margin-bottom: 10px;
+	margin-right: 0px;
+	margin-top: 0px;
+	border-left-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-top-width: 0px;
+	border-bottom-color: #989898;
+	border-bottom-style: dotted;
+	height: 20px;
+	font-weight: bold;
+	font-size: 16px;
+	vertical-align: center;
+	color: #7d7d7d;
+	padding: 0px;
+}
+
+#settings .propLabel {
+	width: 100px;
+	display: inline-block;
+}
+
+#settings .propLabel2 {
+	margin-left: 10px;
+	display: inline-block;
+}
+
+#settings .propDeleteRaid {
+}
+
+#settings .timeField {
+	width: 32px;
+	margin-right: 5px;
+}
+
+#settings .metricField {
+	width: 96px;
+}
+
+#settings .propLockRaid {
+	margin-bottom: 20px;
+}
+
+#settings .groupSlot {
+	float: left;
+	margin-right: 8px;
+}
+
+#settings .groupSlot .top {
+	background-image: url(images/userslot_top.png);
+	background-repeat: no-repeat;
+	width: 238px;
+	height: 20px;
+	text-align: center;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #666666;
+	padding-top: 10px;
+}
+
+#settings .groupSlot .center {
+	background-image: url(images/userslot_center.png);
+	background-repeat: repeat-y;
+	width: 238px;
+	height: 320px;
+	overflow-y: auto; 
+}
+
+#settings .groupSlot .bottom {
+	background-image: url(images/userslot_bottom.png);
+	background-repeat: no-repeat;
+	width: 238px;
+	height: 7px;
+}
+
+#settings .groupTarget {
+	background-color: #eeeeee;
+	-moz-border-radius: 6px; 
+	-webkit-border-radius: 6px; 
+	border-radius: 6px;
+}
+
+#applyButton {
+	margin-top: 20px;
+}
+
+#settings .user {
+	clear: left;
+	padding: 4px;
+	margin-left: 5px;
+	white-space: nowrap;
+}
+
+#settings .user .userImage {
+	float: left;
+}
+
+#settings .user .userName {
+	float: left;
+	padding-top: 2px;
+	width: 110px;
+	margin-left: 10px;
+}
+
+#settings .user .userNameLocal {
+	float: left;
+	padding-top: 8px;
+	width: 110px;
+	margin-left: 10px;
+}
+
+#settings .user .userFunction {
+	float: right;
+	width: 24px;
+	height: 24px;
+	margin-right: 2px;
+	cursor: pointer;
+}
+
+#settings .user .functionDelete {
+	background-image: url(images/clear_off.png);
+	background-repeat: no-repeat;
+}
+
+#settings .user .functionDelete:hover {
+	background-image: url(images/clear.png);
+}
+
+#settings .user .functionEdit {
+	background-image: url(images/edituser_off.png);
+	background-repeat: no-repeat;
+}
+
+#settings .user .functionEdit:hover {
+	background-image: url(images/edituser.png);
+}

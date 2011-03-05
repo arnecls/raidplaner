@@ -1,0 +1,251 @@
+#calendarPositioner {
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+#calendar {
+    float: left;
+    margin: 0px;
+	text-align: left;
+	font-size: 12px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	padding: 0;
+	border-spacing: 0;
+	border-collapse: collapse;
+	table-layout: fixed;
+	width: 980px;
+}
+
+#calendar tr.row {
+	height: 81px;
+    max-height: 81px;
+}
+
+#calendar td {
+	min-width: 137px;
+	width: 137px;
+}
+
+#calendar .weekday {
+	border-left-width: 0px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-top-width: 0px;
+	border-bottom-color: #9a9a9a;
+	border-bottom-style: dotted;
+	height: 20px;
+	font-weight: bold;
+	font-size: 16px;
+	vertical-align: center;
+	color: #7d7d7d;
+}
+
+#calendar .calendarDay {
+	height: 77px;
+    max-height: 77px;
+}
+
+#calendar .dayOfMonth {
+	text-shadow: 1px 1px 2px #808080;
+    filter: progid:DXImageTransform.Microsoft.Shadow(direction=135, strength=2, color=#929292);
+	color: #d2d2d2;
+	font-size: 24px;
+    text-align: left;
+    zoom: 1;
+}
+
+#calendar .dayOfOther {
+	text-shadow: 1px 1px 1px #e3e3e3;
+    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=1, offy=1, color=#e3e3e3);
+	text-align: left;
+	font-size: 10px;
+	color: #7d7d7d;
+}
+
+#calendar .today {
+	border-style: solid;
+	border-color: #ffee91;
+	border-width: 2px;
+	vertical-align: top;
+}
+
+#calendar .day {
+	border-right-color: #9a9a9a;
+	border-bottom-color: #9a9a9a;
+	border-bottom-style: dotted;
+	border-right-style: dotted;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	vertical-align: top;
+}
+
+#calendar .dayFirst {
+	border-right-color: #9a9a9a;
+	border-bottom-color: #9a9a9a;
+	border-bottom-style: dotted;
+	border-right-style: dotted;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-left-color: #9a9a9a;
+	border-left-style: dotted;
+	border-left-width: 1px;
+	vertical-align: top;
+}
+
+#month {
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	font-size: 20px;
+    color: #7d7d7d;    
+    padding-left: 20px;
+    vertical-align: top;
+}
+
+#calendarFunctions {
+    clear: left;
+    position: relative;
+    top: 20px;
+	text-align: left;
+	padding-left: 20px;
+	height: 40px;
+	display: block;
+}
+
+#calendar .raid {
+	margin-right: 4px;
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+}
+
+#calendar .raid .overlayCanceled {
+	background-image: url(images/raid_canceled_small.png);
+	background-repeat: no-repeat;
+	float: right;
+	top: -16px;
+	width: 32px;
+	height: 32px;
+	position: relative;
+}
+
+#calendar .raid .overlayLocked {
+	background-image: url(images/raid_locked_small.png);
+	background-repeat: no-repeat;
+	float: right;
+	top: -16px;
+	width: 32px;
+	height: 32px;
+	position: relative;
+}
+
+#calendar .raid .statusok {
+	float: right;
+	right: 2px;
+	position: relative;
+	top: 16px;
+	text-shadow: -1px -1px 2px black;
+    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
+	font-weight: bold;
+	font-size: 14px;
+	color: #00ff00;
+}
+
+#calendar .raid .statusabsent {
+	float: right;
+	right: 2px;
+	position: relative;
+	top: 16px;
+	text-shadow: -1px -1px 2px black;
+    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
+	font-weight: bold;
+	font-size: 14px;
+	color: #ff4b48;
+}
+
+#calendar .raid .statuswait {
+	float: right;
+	right: 2px;
+	position: relative;
+	top: 16px;
+	text-shadow: -1px -1px 2px black;
+    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
+	font-weight: bold;
+	font-size: 14px;
+	color: #ffff00;
+}
+
+#calendar .raid .status {
+	float: right;
+	right: 2px;
+	position: relative;
+	top: 16px;
+	text-shadow: -1px -1px 2px black;
+    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
+	font-weight: bold;
+	font-size: 14px;
+	color: #cccccc;
+}
+
+#calendar .raid .tooltip {
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	visibility: hidden;
+}
+
+#calendar .raid .comment {
+	left: 0px;
+	top: 0px;
+	position: fixed;
+	visibility: hidden;
+}
+
+.comment .submit {
+	position: relative;
+	top: 5px;
+	margin: 0px;
+}
+
+.comment .text {
+	padding: 2px;
+	font-size: 12px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	display: block;
+	border: 1px solid #666666;
+	background-color: black;
+	color: white;
+	width: 250px;
+	height: 49px;
+	margin-top: 10px;
+}
+
+.commentbadge {
+	width: 32px;
+	height: 41px;
+	background: url(images/badge.png);
+	background-repeat: no-repeat;
+	position: relative;
+	float: right;
+	top: -13px;
+	cursor: pointer;
+}
+
+.commentbadge:hover {
+	background: url(images/badge_over.png);
+}
+
+.infobadge {
+	width: 32px;
+	height: 41px;
+	background: url(images/raidbadge.png);
+	background-repeat: no-repeat;
+	position: relative;
+	float: right;
+	top: -13px;
+	cursor: pointer;
+}
+
+.infobadge:hover {
+	background: url(images/raidbadge_over.png);
+}
+

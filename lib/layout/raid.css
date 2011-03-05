@@ -1,0 +1,387 @@
+#raiddetail {
+	text-align: left;
+	color: black;
+	font-size: 12px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	left: 20px;
+	top: 20px;
+	position: relative;
+	width: 980px;
+    float: left;
+}
+
+#raiddetail select {
+	font-size: 12px;
+}
+
+#raiddetail .textdummy {
+	color: #c7c7c7;
+}
+
+#raiddetail .textinput {
+	color: black;
+}
+
+#raiddetail .descriptionbox {
+	background-color: #cccccc;
+	color: white;
+	border: 1px solid #aaaaaa;
+	padding: 2px;
+	font-size: 12px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+}
+
+#raiddetail .separatortop {
+	margin-top: 10px;
+	background-repeat: no-repeat;
+	background-image: url(images/shadow_top.png);
+	display: block;
+	clear: both;
+	width: 100%;
+	height: 17px;
+}
+
+#raiddetail .separatorbottom {
+	background-repeat: no-repeat;
+	background-image: url(images/shadow_bottom.png);
+	display: block;
+	clear: both;
+	width: 100%;
+	height: 17px;
+}
+
+#raiddetail .icon {
+	display: block;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	height: 64px;
+	float: left;
+	width: 64px;
+}
+
+#raiddetail .location {
+	font-weight: bold;
+	font-size: 16px;
+}
+
+#raiddetail .time {
+	font-style: italic;
+	font-size: 10px;
+}
+
+#raiddetail .description {
+	width: 305px;
+	min-width: 305px;
+	max-width: 305px;
+	margin-top: 10px;
+	height: 32px;
+}
+
+#raiddetail .buttonclear {
+	background-repeat: no-repeat;
+	background-image: url(images/icon_delete.png);
+	float: right;
+	position: relative;
+	left: 20px;
+	width: 32px;
+	height: 32px;
+}
+
+#raiddetail .stageselect {
+	float: left;
+	position: absolute;
+	left: 845px;
+	top: 0px;
+	width: 130px;
+	display: inline-block;
+}
+
+#raiddetail .buttonfield {
+	margin-bottom: -35px;
+	height: 20px;
+	top: -35px;
+	position: relative;
+	text-align: right;
+}
+
+#raiddetail .slotfield {
+	margin-bottom: 15px;
+	float: left;
+	display: block;
+}
+
+#raiddetail .slotfield6 {
+	width: 150px;
+	height: 260px;
+}
+
+#raiddetail .slotfield12 {
+	width: 280px;
+	height: 260px;
+}
+
+#raiddetail .slotfield24 {
+	width: 530px;
+	height: 260px;
+}
+
+.slotfield .type {
+	margin-bottom: 15px;
+	margin-top: 15px;
+	float: left;
+	color: black;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.notarget {
+	opacity: 0.1;
+	filter:Alpha(opacity=10);
+}
+
+.slotfield .slotcount {
+	margin-bottom: 15px;
+	margin-top: 15px;
+	margin-left: 20px;
+	float: left;
+}
+
+.slotfield .slotrow {
+	width: 130px;
+	float: left;
+}
+
+.slotfield .slot {
+	margin-bottom: 3px;
+	height: 32px;
+	width: 130px;
+}
+
+.slotfield .target {
+	background-image: url(images/selectedslot.png);
+	background-repeat: no-repeat;
+}
+
+.slotfield .occupied {
+	cursor: pointer;
+}
+
+.slotfield .slot .class {
+	float: left;
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-image: url(../../images/classessmall/empty.png);
+	height: 32px;
+	width: 32px;
+}
+
+.slotfield .slot .badge {
+	float: right;
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-image: url(images/smallbadge.png);
+	height: 16px;
+	width: 12px;
+	position: relative;
+	top: -2px;
+}
+
+.slotfield .slot .name {
+	margin-top: 10px;
+	margin-left: 5px;
+	color: black;
+	font-size: 12px;
+	display: inline-block;
+}
+
+.slotfield .slot .comment {
+	visibility: hidden;
+	float: right;
+	position: absolute;
+}
+
+#benchBlock {
+	display: inline-block;
+	float: left;
+	background-repeat: no-repeat;
+	width:64px;
+	height: 120px;
+	margin-top: -5px;
+}
+
+.blockTank {
+	background-image: url(images/block_tanks.png);
+	z-index: 20;
+}
+
+.blockHeal {
+	background-image: url(images/block_heal.png);
+	z-index: 20;
+}
+
+.blockDmg {
+	background-image: url(images/block_dmg.png);
+	z-index: 20;
+}
+
+#benchcontainer {
+	display: inline-block;
+	width: 910px;
+	margin-top: -5px;
+}
+
+.bench {
+	margin-top: 5px;
+	height: 100px;
+	width: 910px;
+	display: block;
+	overflow-y: auto;
+}
+
+.bench .slot {
+	display: inline-block;
+	margin-right: 10px;
+	margin-top: 4px;
+	margin-bottom: 6px;
+	cursor: pointer;
+}
+
+.bench .slot .class {
+	float: left;
+	display: inline-block;
+	height: 24px;
+	width: 24px;
+	z-index: 10;
+}
+
+.bench .slot .badge {
+	float: left;
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-image: url(images/smallbadge.png);
+	height: 16px;
+	width: 12px;
+	position: relative;
+	top: -2px;
+	left: 25px;
+	z-index: 20;
+}
+
+.bench .slot .nobadge {
+	float: left;
+	display: inline-block;
+	height: 16px;
+	width: 12px;
+}
+
+.bench .slot .name {
+	color: black;
+	display: inline-block;
+	font-size: 12px;
+	margin-left: 4px;
+	margin-top: 5px;
+}
+
+.bench .slot .unavailable {
+	opacity: 0.50;
+	filter:Alpha(opacity=50);
+	color: red;
+}
+
+.bench .slot .comment {
+	visibility: hidden;
+	float: right;
+	position: absolute;
+}
+
+.tankbench {
+	margin-top: 11px;
+	display: block;
+	background-image: url(../../images/classessmall/tank_off.png);
+	height: 32px;
+	background-repeat: no-repeat;
+	width: 32px;
+	opacity: 0.5;
+	filter:Alpha(opacity=50);
+}
+
+.tankbench:hover {
+	opacity: 1.0;
+	filter:Alpha(opacity=100);
+	z-index: 10;
+}
+
+.tankbenchactive {
+	background-image: url(../../images/classessmall/tank.png);
+	opacity: 1.0;
+	filter:Alpha(opacity=100);
+	z-index: 10;
+}
+
+.healbench {
+	margin-top: 2px;
+	display: block;
+	background-image: url(../../images/classessmall/heal_off.png);
+	height: 32px;
+	background-repeat: no-repeat;
+	width: 32px;
+	opacity: 0.5;
+	filter:Alpha(opacity=50);
+	z-index: 10;
+}
+
+.healbench:hover {
+	opacity: 1.0;
+	filter:Alpha(opacity=100);
+	z-index: 10;
+}
+
+.healbenchactive {
+	background-image: url(../../images/classessmall/heal.png);
+	opacity: 1.0;
+	filter:Alpha(opacity=100);
+	z-index: 10;
+}
+
+.dmgbench {
+	margin-top: 2px;
+	display: block;
+	background-image: url(../../images/classessmall/dmg_off.png);
+	height: 32px;
+	background-repeat: no-repeat;
+	width: 32px;
+	opacity: 0.5;
+	filter:Alpha(opacity=50);
+	z-index: 10;
+}
+
+.dmgbench:hover {
+	opacity: 1.0;
+	filter:Alpha(opacity=100);
+	z-index: 10;
+}
+
+.dmgbenchactive {
+	background-image: url(../../images/classessmall/dmg.png);
+	background-repeat: no-repeat;
+	opacity: 1.0;
+	filter:Alpha(opacity=100);
+	z-index: 10;
+}
+
+.onBench {
+	top: 2px;
+	float: right;
+	position: relative;
+	right: 2px;
+	text-shadow: -1px -1px 1px black;
+    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
+	font-weight: bold;
+	font-size: 14px;
+	color: #00FF00;
+}
+
+.onBench .unavail {
+	color: #FF0000;
+}
+
