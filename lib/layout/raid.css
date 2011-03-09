@@ -374,8 +374,6 @@
 	float: right;
 	position: relative;
 	right: 2px;
-	text-shadow: -1px -1px 1px black;
-    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
 	font-weight: bold;
 	font-size: 14px;
 	color: #00FF00;

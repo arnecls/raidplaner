@@ -1,94 +1,9 @@
-.tooltip {
-}
-
-.tooltip .textstatusok {
-	color: #00ff00;
-	display: inline;
-	font-size: 12px;
-}
-
-.tooltip .textstatusabsent {
-	color: #ff4b48;
-	display: inline;
-	font-size: 12px;
-}
-
-.tooltip .textstatuswait {
-	color: #ffff00;
-	display: inline;
-	font-size: 12px;
-}
-
-.tooltip .textstatus {
-	color: #cccccc;
-	display: inline;	
-	font-size: 12px;
-}
-
-.tooltip .icon {
-	display: block;
-	margin-bottom: 10px;
-	margin-right: 10px;
-	height: 64px;
-	float: left;
-	width: 64px;
-}
-
-.tooltip .location {
-	font-weight: bold;
-	font-size: 16px;
-	margin-right: 10px;
-}
-
-.tooltip .time {
-	font-style: italic;
-	font-size: 10px;
-}
-
-.tooltip .description {
-	max-width: 350px;
-	margin-top: 10px;
-}
-
-.tooltip .functions {
-	clear: left;
-	margin-top: 10px;
-}
-
-.class_select {
-	width: 50px;
-	margin-right: 5px;
-	margin-left: 5px;
-	line-height: 12px;
-	font-size: 9px;
-    float: left;
-    text-align: center;
-}
-
-#tooltip {
-	z-index: 100;
-	border-spacing: 0px 0px;
-	left: 10px;
-	top: 10px;
-	position: absolute;
-	display: block;
-	table-layout: fixed;
-    zoom: 1;
-}
-
-/***************************************************
- info overlay (tooltip container)
-***************************************************/
-
-#tooltip .top {
-	height: 24px;
-}
-
 #tooltip .top .left {
 	background-repeat: no-repeat;
 	padding: 0px;
 	margin: 0px;
 	background-image: url(images/info_topleft.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_topleft.png");
 	width: 26px;
 }
 
@@ -96,27 +11,27 @@
 	width: 36px;
 	background-repeat: repeat-x;
 	background-image: url(images/info_toparrow.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_toparrow.png");
 }
 
 #tooltip .top .arrowtr {
 	width: 62px;
 	background-repeat: repeat-x;
 	background-image: url(images/info_toparrow_right.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_toparrow_right.png");
 }
 
 #tooltip .top .center {
 	background-image: url(images/info_top.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_top.png");
 	background-repeat: repeat-x;
 }
 
 #tooltip .top .right {
 	background-repeat: no-repeat;
 	background-image: url(images/info_topright.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_topright.png");
 	width: 18px;
-}
-
-#tooltip .middle {
-	height: 45px
 }
 
 #tooltip .middle .left {
@@ -124,6 +39,7 @@
 	margin: 0px;
 	background-repeat: repeat-y;
 	background-image: url(images/info_left.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_left.png");
 	width: 26px;
 }
 
@@ -132,25 +48,16 @@
 	margin: 0px;
 	background-repeat: repeat-y;
 	background-image: url(images/info_leftarrow.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_leftarrow.png");
 	width: 26px;
     height: 45px;
-}
-
-#tooltip .middle .center {
-	color: white;
-	font-size: 11px;
-	font-family: Helvetica, Verdana, Arial, sans-serif;
-	background-image: url(images/overlay.png);
-    background-repeat: repeat;
 }
 
 #tooltip .middle .right {
 	background-repeat: repeat-y;
 	background-image: url(images/info_right.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_right.png");
 	width: 18px;
-}
-
-#tooltip .middle2 {
 }
 
 #tooltip .middle2 .left {
@@ -158,23 +65,22 @@
 	margin: 0px;
 	background-repeat: repeat-y;
 	background-image: url(images/info_left.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_left.png");
 	width: 26px;
 }
 
 #tooltip .middle2 .right {
 	background-repeat: repeat-y;
 	background-image: url(images/info_right.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_right.png");
 	width: 18px;
-}
-
-#tooltip .bottom {
-	height: 31px;
 }
 
 #tooltip .bottom .left {
 	padding: 0px;
 	margin: 0px;
 	background-image: url(images/info_bottomleft.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_bottomleft.png");
 	background-repeat: no-repeat;
 	width: 26px;
 }
@@ -183,15 +89,18 @@
 	width: 36px;
 	background-repeat: repeat-x;
 	background-image: url(images/info_bottomarrow.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_bottomarrow.png");
 }
 
 #tooltip .bottom .center {
 	background-image: url(images/info_bottom.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_bottom.png");
 	background-repeat: repeat-x;
 }
 
 #tooltip .bottom .right {
 	background-image: url(images/info_bottomright.png);
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_bottomright.png");
 	background-repeat: no-repeat;
 	width: 18px;
 }

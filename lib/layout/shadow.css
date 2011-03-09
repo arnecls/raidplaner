@@ -1,0 +1,15 @@
+.shadow_inlay {
+	text-shadow: -1px -1px 2px black;
+}
+
+.shadow_gray {
+	text-shadow: 1px 1px 2px #808080;
+}
+
+.shadow_white {
+	text-shadow: 1px 1px 1px #e3e3e3;
+}
+
+.shadow_inlay_hard {
+	text-shadow: -1px -1px 1px black;
+}

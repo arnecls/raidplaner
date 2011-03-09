@@ -46,8 +46,6 @@
 }
 
 #calendar .dayOfMonth {
-	text-shadow: 1px 1px 2px #808080;
-    filter: progid:DXImageTransform.Microsoft.Shadow(direction=135, strength=2, color=#929292);
 	color: #d2d2d2;
 	font-size: 24px;
     text-align: left;
@@ -55,8 +53,6 @@
 }
 
 #calendar .dayOfOther {
-	text-shadow: 1px 1px 1px #e3e3e3;
-    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=1, offy=1, color=#e3e3e3);
 	text-align: left;
 	font-size: 10px;
 	color: #7d7d7d;
@@ -143,8 +139,6 @@
 	right: 2px;
 	position: relative;
 	top: 16px;
-	text-shadow: -1px -1px 2px black;
-    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
 	font-weight: bold;
 	font-size: 14px;
 	color: #00ff00;
@@ -155,8 +149,6 @@
 	right: 2px;
 	position: relative;
 	top: 16px;
-	text-shadow: -1px -1px 2px black;
-    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
 	font-weight: bold;
 	font-size: 14px;
 	color: #ff4b48;
@@ -167,8 +159,6 @@
 	right: 2px;
 	position: relative;
 	top: 16px;
-	text-shadow: -1px -1px 2px black;
-    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
 	font-weight: bold;
 	font-size: 14px;
 	color: #ffff00;
@@ -179,8 +169,6 @@
 	right: 2px;
 	position: relative;
 	top: 16px;
-	text-shadow: -1px -1px 2px black;
-    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
 	font-weight: bold;
 	font-size: 14px;
 	color: #cccccc;

@@ -1,0 +1,15 @@
+.shadow_inlay {
+	filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
+}
+
+.shadow_gray {
+    filter: progid:DXImageTransform.Microsoft.Shadow(direction=135, strength=2, color=#929292);
+}
+
+.shadow_white {
+	filter: progid:DXImageTransform.Microsoft.DropShadow(offx=1, offy=1, color=#e3e3e3);
+}
+
+.shadow_inlay_hard {
+	filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
+}
