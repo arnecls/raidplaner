@@ -54,17 +54,16 @@
 		<script type="text/javascript" src="lib/script/settings.js?version=<?php echo $siteVersion; ?>"></script>
 		<?php } ?>
 		
-		<?php if ( RegisteredUser() ) { ?>
-    	
+		<?php if ( RegisteredUser() ) { ?>    	
     	<script type="text/javascript" src="lib/script/initmenu.js?version=<?php echo $siteVersion; ?>"></script>
-    	
     	<?php } else { ?>
     	
     	<script type="text/javascript" src="lib/script/login.js?version=<?php echo $siteVersion; ?>"></script>
-    	<?php if ( ALLOW_REGISTRATION ) { ?>	
+    		<?php if ( ALLOW_REGISTRATION ) { ?>	
 		<script type="text/javascript" src="lib/script/register.js?version=<?php echo $siteVersion; ?>"></script>
-		<?php } ?>			
+			<?php } ?>			
 		<script type="text/javascript" src="lib/script/initlogin.js?version=<?php echo $siteVersion; ?>"></script>
+    	
     	<?php } ?>
  	</head>
 	
@@ -73,6 +72,7 @@
     		<div id="logo"></div>
     		<div id="menu">
     			<?php if ( RegisteredUser() ) { ?>
+    			
     			<span class="logout">
     				<form method="post" action="index.php">
     					<input type="hidden" name="nocheck"/>
@@ -83,14 +83,18 @@
                 <span id="button_calendar" class="menu_button"><?php echo L("Calendar"); ?></span>
     			<span id="button_raid" class="menu_button"><?php echo L("Raid"); ?></span>
     			<span id="button_profile" class="menu_button"><?php echo L("Profile"); ?></span>
-    			<?php if ( ValidAdmin() ) { ?>
+    			
+    				<?php if ( ValidAdmin() ) { ?>
     			<span id="button_settings" class="menu_button"><?php echo L("Settings"); ?></span>
-    			<?php } ?>
+    				<?php } ?>
+    			
     			<?php } else { ?>
+    			
     			<span id="button_login" class="menu_button"><?php echo L("Login"); ?></span>
-    			<?php if ( ALLOW_REGISTRATION ) { ?>
+    				<?php if ( ALLOW_REGISTRATION ) { ?>
     			<span id="button_register" class="menu_button"><?php echo L("Register"); ?></span>
-    			<?php } ?>
+    				<?php } ?>
+    			
     			<?php } ?>
     		</div>
     		<div id="body">

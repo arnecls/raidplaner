@@ -1,4 +1,8 @@
 <?php
+	// Note: You should never ever rely on that data as the only source of
+	// user information. These can easily be changed on the clients side and are
+	// only meant for caching or display related logic
+		
 	require_once(dirname(__FILE__)."/../private/users.php");
     
     if ( ValidUser() )
@@ -80,6 +84,7 @@ var g_User = {
 	role1			: new Array( <?php echoRole1(); ?> ),
 	role2			: new Array( <?php echoRole2(); ?> ),
 	isRaidlead		: <?php echo ValidRaidlead() ? "true" : "false"; ?>,
+	isAdmin			: <?php echo ValidAdmin() ? "true" : "false"; ?>,
 	id				: <?php echo $_SESSION["User"]["UserId"]; ?>
 };
 
