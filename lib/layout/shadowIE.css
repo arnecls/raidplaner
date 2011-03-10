@@ -1,15 +1,15 @@
 .shadow_inlay {
-	filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
+    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000, positive='true');
 }
 
 .shadow_gray {
-    filter: progid:DXImageTransform.Microsoft.Shadow(direction=135, strength=2, color=#929292);
+    filter: progid:DXImageTransform.Microsoft.Shadow(direction=135, strength=2, color=#929292, positive='true');
 }
 
 .shadow_white {
-	filter: progid:DXImageTransform.Microsoft.DropShadow(offx=1, offy=1, color=#e3e3e3);
+    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=1, offy=1, color=#e3e3e3, positive='true');
 }
 
 .shadow_inlay_hard {
-	filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000);
+    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=-1, offy=-1, color=#000000, positive='true');
 }

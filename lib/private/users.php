@@ -168,6 +168,7 @@
         	$_SESSION["User"]["Role1"] = array( $_SESSION["User"]["Role1"] );
             $_SESSION["User"]["Role2"] = array( $_SESSION["User"]["Role2"] );
         	$_SESSION["User"]["CharacterId"] = array( $_SESSION["User"]["CharacterId"] );
+            $_SESSION["User"]["CharacterName"] = array( $_SESSION["User"]["CharacterName"] );
         	
         	while ( $row = $UserQuery->fetch() )
         	{

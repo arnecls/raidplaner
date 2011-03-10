@@ -6,7 +6,7 @@
 	require_once("lib/private/users.php");
     
     UserProxy::GetInstance(); // Init user
-    $siteVersion = "0.89";
+    $siteVersion = "0.810";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
@@ -25,7 +25,17 @@
 		<link rel="stylesheet" type="text/css" href="lib/layout/shadow.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/sheet.css?version=<?php echo $siteVersion; ?>"/>
 		
-		<!--[if IE lt 9]>
+        <!--[if IE 9]>
+		<link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
+		<![endif]-->
+        
+		<!--[if IE 8]>
+		<link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $siteVersion; ?>"/>
+		<link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
+		<link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $siteVersion; ?>"/>
+		<![endif]-->
+        
+        <!--[if IE 7]>
 		<link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $siteVersion; ?>"/>

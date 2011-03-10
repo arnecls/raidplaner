@@ -1,3 +1,10 @@
+/* IE7 only hack */
+* + html  .tooltip .functions {
+	clear: left;
+	margin-top: 10px;
+    display: inline;
+}
+
 #tooltip .top .left {
 	background-repeat: no-repeat;
 	padding: 0px;
