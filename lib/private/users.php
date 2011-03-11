@@ -15,8 +15,18 @@
 			assert(self::$Instance == NULL);
 			
 		    session_name("mugraid");
-            session_start();
-                            
+		    session_start();
+            
+            if ( isset($_REQUEST["sticky"]) )
+            {
+            	if ( $_REQUEST["sticky"] == "true" )
+            		session_set_cookie_params( 60 * 60 * 24 * 7 * 4 ); // 1 month
+            	else            
+            		session_set_cookie_params(0);
+            		
+            	session_regenerate_id(true);
+            }
+            
             $Connector = Connector::GetInstance();
             
             if (isset($_REQUEST["logout"]))

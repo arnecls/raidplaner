@@ -218,9 +218,30 @@ body {
 	padding-right: 2px;
 }
 
+.login .buttonfield {
+	width: 150px;
+	position: relative;
+	left: 50%;
+	top: 10px;
+	margin-left: -70px;
+}
+
 .login .button_login {
-	margin-top: 10px;
 	width: 100px;
+	height: 24px;
+	float: left;
+}
+
+.login .button_sticky {
+	width: 28px;
+	height: 22px;
+	float: left;
+}
+
+.login .button_register {
+	width: 100px;
+	height: 24px;
+	margin-top: 10px;
 }
 
 #eventblocker {
