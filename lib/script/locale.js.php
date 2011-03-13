@@ -1,5 +1,7 @@
 <?php
 	header("Content-type: text/javascript");
+	
+	define( "LOCALE_MAIN", true );
 	require_once(dirname(__FILE__)."/../private/locale.php");
 ?>
 

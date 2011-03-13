@@ -35,12 +35,23 @@ function uniord($c)
     return false;
 }
 
+function xmlSpecialChar( $character )
+{
+	$utf8Key = mb_convert_encoding( $character, "UTF-8" );	 	
+	return "&#".uniord($utf8Key).";"; 
+}
+
 function xmlentities( $string, $compat, $charset ) 
 {
 	$string = htmlentities( $string, $compat );
 	$htmlTranslationTable = get_html_translation_table( HTML_ENTITIES, $compat );
  	
  	$translationTable = array();
+ 	
+ 	$translationTable["@"] = xmlSpecialChar("@");
+ 	$translationTable["["] = xmlSpecialChar("[");
+ 	$translationTable["]"] = xmlSpecialChar("]");
+ 	$translationTable["'"] = xmlSpecialChar("'");
  	
 	foreach ( $htmlTranslationTable as $key => $value)
 	{ 

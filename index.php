@@ -1,11 +1,18 @@
 <?php
-	if ( !isset($_REQUEST["nocheck"]) )
+	define( "LOCALE_MAIN", true );
+	require_once("lib/private/locale.php");
+	
+    if ( !isset($_REQUEST["nocheck"]) )
 	{
 		include_once("oldbrowser.php");
     }
     
-    require_once("lib/private/locale.php");
-	require_once("lib/private/users.php");
+    if ( !file_exists("lib/config/config.php") )
+    {
+    	die( L("Raidplaner is not yet configured.")."<br>".L("Please run setup or follow the manual installation instructions.") );
+    }
+    
+    require_once("lib/private/users.php");
     
     UserProxy::GetInstance(); // Init user
     $siteVersion = "0.812";

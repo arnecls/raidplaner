@@ -8,7 +8,7 @@
         
         if ( isset($_User["cleartext"]) )
         {
-            $Connector = Connector::GetExternInstance(SQL_HOST, PHPBB3_TABLE, PHPBB3_USER, PHPBB3_PASS);
+            $Connector = new Connector(SQL_HOST, PHPBB3_DATABASE, PHPBB3_USER, PHPBB3_PASS);
             $UserSt = $Connector->prepare("SELECT user_id, user_password ".
                                           "FROM `".PHPBB3_TABLE_PREFIX."users` ".
                                           "WHERE username_clean = :Login LIMIT 1");
