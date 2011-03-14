@@ -15,8 +15,6 @@
 	
 		public function __construct($_Host, $_Database, $_User, $_Pass)
 		{
-			assert(self::$Instance == NULL);
-			
 			try
 			{
                 $this->Host  = $_Host;
