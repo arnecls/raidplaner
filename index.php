@@ -56,6 +56,7 @@
 		
 		<script type="text/javascript" src="lib/script/jquery-1.5.1.min.js"></script>
 		<script type="text/javascript" src="lib/script/jquery-ui-1.8.10.custom.min.js"></script>
+		<script type="text/javascript" src="lib/script/jquery.ba-hashchange.min.js"></script>
 
 		<script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>		
 		<script type="text/javascript" src="lib/script/combobox.js?version=<?php echo $siteVersion; ?>"></script>
