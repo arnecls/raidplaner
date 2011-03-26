@@ -45,7 +45,7 @@
                         $DefaultGroup = "none";
                         $UserSt->closeCursor();
                         
-                        $Connector = Connector::GetExternInstance(SQL_HOST, PHPBB3_TABLE, PHPBB3_USER, PHPBB3_PASS);
+                        $Connector = Connector::GetExternInstance(SQL_HOST, PHPBB3_DATABASE, PHPBB3_USER, PHPBB3_PASS);
                         $UserSt = $Connector->prepare("SELECT group_id ".
                                                       "FROM `".PHPBB3_TABLE_PREFIX."user_group` ".
                                                       "WHERE user_id = :UserId");
