@@ -43,7 +43,7 @@ function xmlSpecialChar( $character )
 
 function xmlentities( $string, $compat, $charset ) 
 {
-	$string = htmlentities( $string, $compat );
+	$string = htmlentities( $string, $compat, $charset );
 	$htmlTranslationTable = get_html_translation_table( HTML_ENTITIES, $compat );
  	
  	$translationTable = array();
@@ -55,8 +55,7 @@ function xmlentities( $string, $compat, $charset )
  	
 	foreach ( $htmlTranslationTable as $key => $value)
 	{ 
-	 	$utf8Key = mb_convert_encoding($key, "UTF-8");	 	
-		$translationTable[ $value ] = "&#".uniord($utf8Key).";"; 
+	 	$translationTable[ $value ] = xmlSpecialChar($key);
 	}
 	
 	$translated = strtr( $string, $translationTable );
