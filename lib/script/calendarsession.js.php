@@ -1,5 +1,6 @@
 <?php
-	session_name("mugraid");
+	session_name("ppx_raidplaner");
+	ini_set("session.cookie_httponly", true);
     session_start();
 	
 	header("Content-type: text/javascript");

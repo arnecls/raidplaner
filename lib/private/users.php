@@ -14,15 +14,25 @@
 		{
 			assert(self::$Instance == NULL);
 			
-		    session_name("mugraid");
+		    session_name("ppx_raidplaner");
+		    ini_set("session.cookie_httponly", true);
 		    session_start();
-            
+		    
             if ( isset($_REQUEST["sticky"]) )
-            {
+            {            	
             	if ( $_REQUEST["sticky"] == "true" )
-            		session_set_cookie_params( 60 * 60 * 24 * 7 * 4 ); // 1 month
-            	else            
-            		session_set_cookie_params(0);
+            	{
+            		$lifeTime = 60 * 60 * 24 * 7 * 4;
+            		
+            		ini_set("session.gc_maxlifetime", $lifeTime);
+					ini_set("session.gc_divisor", "1");
+					ini_set("session.gc_probability", "1");
+					ini_set("session.cookie_lifetime", $lifeTime);
+            	}
+            	else
+            	{            
+            		session_set_cookie_params( 0 );
+            	}
             		
             	session_regenerate_id(true);
             }
