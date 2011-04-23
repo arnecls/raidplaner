@@ -290,10 +290,30 @@ body {
 #dialog {
 }
 
+#prompt_text {
+	background: #222222;
+	border: 1px solid #666666;
+	color: white;
+	margin-top: 10px;
+	width: 98%;
+	height: 20px;
+	padding-left: 3px;
+}
 
 #sheetNewRaid {
 	left: 0px;
 	top: 0px;
 	position: fixed;
 	visibility: hidden;
+}
+
+#version {
+	font-size: 10px;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	color: #a0a0a0;
+	position: relative;
+	float: right;
+	display: inline-block;
+	top: -26px;
+	right: 26px;
 }

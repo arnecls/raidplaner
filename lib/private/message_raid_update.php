@@ -100,9 +100,11 @@ function msgRaidUpdate( $Request )
 		        	if ( intval($PlayerId) == 0 )
 		        	{
 		        		$UpdateAttendance = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
-			    												"( CharacterId, UserId, RaidId, Status, Role ) ".
-			    												"VALUES ( :CharacterId, 0, :RaidId, 'ok', 'tank' )" );
-			    	}
+			    												"( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
+			    												"VALUES ( :CharacterId, 0, :RaidId, 'ok', 'tank', :Name )" );
+			    	
+			    		$UpdateAttendance->bindValue( ":Name", substr($PlayerId, 2, strlen($PlayerId) ), PDO::PARAM_STR);
+			       }
 		        	else
 		        	{
 		        		$UpdateAttendance = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
@@ -136,8 +138,10 @@ function msgRaidUpdate( $Request )
 		        	if ( intval($PlayerId) == 0 )
 		        	{
 		        		$UpdateAttendance = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
-			    												"( CharacterId, UserId, RaidId, Status, Role ) ".
-			    												"VALUES ( :CharacterId, 0, :RaidId, 'ok', 'heal' )" );
+			    												"( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
+			    												"VALUES ( :CharacterId, 0, :RaidId, 'ok', 'heal', :Name )" );
+			    	
+			    		$UpdateAttendance->bindValue( ":Name", substr($PlayerId, 2, strlen($PlayerId) ), PDO::PARAM_STR);
 			    	}
 		        	else
 		        	{
@@ -172,8 +176,10 @@ function msgRaidUpdate( $Request )
 		        	if ( intval($PlayerId) == 0 )
 		        	{
 		        		$UpdateAttendance = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
-			    												"( CharacterId, UserId, RaidId, Status, Role ) ".
-			    												"VALUES ( :CharacterId, 0, :RaidId, 'ok', 'dmg' )" );
+			    												"( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
+			    												"VALUES ( :CharacterId, 0, :RaidId, 'ok', 'dmg', :Name )" );
+			    	
+			    		$UpdateAttendance->bindValue( ":Name", substr($PlayerId, 2, strlen($PlayerId) ), PDO::PARAM_STR);
 			    	}
 		        	else
 		        	{

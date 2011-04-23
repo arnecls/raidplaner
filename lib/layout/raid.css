@@ -194,6 +194,18 @@
 	display: inline-block;
 }
 
+.slotfield .slot .name_field {
+	margin-left: 5px;
+	margin-top: 5px;
+	color: black;
+	font-size: 12px;
+	display: inline-block;
+	width: 80px;
+	border: 0px;
+	border-bottom: 1px solid #aaaaaa;
+	background-color: transparent;
+}
+
 .slotfield .slot .comment {
 	visibility: hidden;
 	float: right;

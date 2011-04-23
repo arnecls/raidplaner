@@ -104,6 +104,9 @@
 		$g_Locale[ "This username is already in use." ]					= "Dieser Benutzername wird bereits verwendet.";
 		$g_Locale[ "Registration complete." ]							= "Registrierung erfolgreich.";
 		$g_Locale[ "Your account is currently locked." ]				= "Dein Account ist momentan gesperrt.";
+		$g_Locale[ "Please tell us why you will be absent." ]			= "Bitte teile uns mit warum du abwesend bist.";
+		$g_Locale[ "Set to absent" ]									= "Ich bin abwesend";
+		$g_Locale[ "Input required" ]									= "Eingabe erwartet";
 		
 		$g_Locale[ "Please contact your admin to get your account unlocked." ] 								= "Bitte wende dich an deinen Administrator um deinen Account freizuschalten.";
 		$g_Locale[ "Continue without updating" ]															= "Ohne Aktualisierung fortfahren";

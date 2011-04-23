@@ -43,7 +43,13 @@ function xmlSpecialChar( $character )
 
 function xmlentities( $string, $compat, $charset ) 
 {
-	$string = htmlentities( $string, $compat, $charset );
+	$validString = htmlentities( $string, $compat, $charset );
+	
+	// if the given charset did not work use fallback
+	
+	if ( $validString == "" )
+		$validString = htmlentities( $string, $compat | ENT_IGNORE, "ISO8859-15" );
+	
 	$htmlTranslationTable = get_html_translation_table( HTML_ENTITIES, $compat );
  	
  	$translationTable = array();
@@ -58,10 +64,10 @@ function xmlentities( $string, $compat, $charset )
 	 	$translationTable[ $value ] = xmlSpecialChar($key);
 	}
 	
-	$translated = strtr( $string, $translationTable );
+	$translated = strtr( $validString, $translationTable );
 	
 	if ($translated === false)
-		return $string;
+		return $validString;
 
 	return $translated;
 }
