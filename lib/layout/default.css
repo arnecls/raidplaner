@@ -19,7 +19,7 @@ body {
 	left: 50%;
 	top: 50%;
 	display: block;
-	position: fixed;
+	position: absolute;
 	height: 768px;
 	width: 1024px;
 }
