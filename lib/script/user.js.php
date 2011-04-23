@@ -4,11 +4,12 @@
 	// only meant for caching or display related logic
 		
 	require_once(dirname(__FILE__)."/../private/users.php");
+	UserProxy::GetInstance(); // Init user
+	
+    header("Content-type: text/javascript");
     
     if ( ValidUser() )
 	{
-		header("Content-type: text/javascript");
-    
 		function echoCharacterIds()
 		{
 			$first = true;
@@ -92,7 +93,6 @@ var g_User = {
 	} 
 	else 
 	{
-		header("Content-type: text/javascript");
 ?>
     
 var g_User = null;

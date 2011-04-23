@@ -15,25 +15,26 @@
 			assert(self::$Instance == NULL);
 			
 		    session_name("ppx_raidplaner");
+		    
 		    ini_set("session.cookie_httponly", true);
+		    ini_set("session.hash_function", 1);
+		    
 		    session_start();
 		    
-            if ( isset($_REQUEST["sticky"]) )
+		    if ( isset($_REQUEST["sticky"]) )
             {            	
             	if ( $_REQUEST["sticky"] == "true" )
             	{
             		$lifeTime = 60 * 60 * 24 * 7 * 4;
             		
             		ini_set("session.gc_maxlifetime", $lifeTime);
-					ini_set("session.gc_divisor", "1");
-					ini_set("session.gc_probability", "1");
 					ini_set("session.cookie_lifetime", $lifeTime);
-            	}
+	        	}
             	else
-            	{            
-            		session_set_cookie_params( 0 );
+            	{
+            		ini_set("session.cookie_lifetime", 0);
             	}
-            		
+            	
             	session_regenerate_id(true);
             }
             
@@ -41,6 +42,7 @@
             
             if (isset($_REQUEST["logout"]))
             {
+            	
                 // explicit unlog
                 unset($_SESSION["User"]);
                 unset($_SESSION["Calendar"]);
@@ -52,8 +54,8 @@
                 if ($this->CheckSessionCRC()) 
                 {
                 	$this->UpdateCharacters();
-                    return; // ### valid
-                }
+                	return; // ### valid
+                }                
             }
             else if (isset($_REQUEST["user"]) && isset($_REQUEST["pass"]))
             {
@@ -67,7 +69,7 @@
                 
                 // Login via PHPBB3
                 if ( PHPBB3_BINDING && BindPHPBB3User($LoginUser) ) 
-                    return;  // ### valid
+                	return;  // ### valid
             }
             
             // All checks failed -> logout
@@ -277,7 +279,7 @@
         
         if (isset($_SESSION["User"]))
         {
-            return ($_SESSION["User"]["Group"] != "none");
+        	return ($_SESSION["User"]["Group"] != "none");
         }
         
         return false;

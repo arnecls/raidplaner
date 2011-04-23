@@ -186,7 +186,7 @@ body {
 
 .login input.text {
 	margin-left: 0px;
-	margin-bottom: 2px;
+	margin-bottom: 4px;
 	margin-right: 0px;
 	margin-top: 0px;
 	color: #c7c7c7;
@@ -195,15 +195,20 @@ body {
 	font-size: 16px;
 	font-family: Helvetica, Verdana, Arial, sans-serif;
 	width: 196px;
-	height: 16px;
-	padding-top: 4px;
+	height: 15px;
+	padding-top: 6px;
 	padding-left: 2px;
 	padding-right: 2px;
+	
+	border-left: 1px solid #aaaaaa;
+	border-top: 1px solid #aaaaaa;
+	border-right: 1px solid white;
+	border-bottom: 1px solid white;
 }
 
 .login input.textactive {
 	margin-left: 0px;
-	margin-bottom: 2px;
+	margin-bottom: 4px;
 	margin-right: 0px;
 	margin-top: 0px;
 	color: black;
@@ -212,10 +217,15 @@ body {
 	font-size: 16px;
 	font-family: Helvetica, Verdana, Arial, sans-serif;
 	width: 196px;
-	height: 16px;
-	padding-top: 4px;
+	height: 15px;
+	padding-top: 6px;
 	padding-left: 2px;
 	padding-right: 2px;
+	
+	border-left: 1px solid #aaaaaa;
+	border-top: 1px solid #aaaaaa;
+	border-right: 1px solid white;
+	border-bottom: 1px solid white;
 }
 
 .login .buttonfield {

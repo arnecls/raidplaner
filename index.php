@@ -15,7 +15,7 @@
     require_once("lib/private/users.php");
     
     UserProxy::GetInstance(); // Init user
-    $siteVersion = "0.813";
+    $siteVersion = "0.9";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
@@ -57,15 +57,16 @@
 		<script type="text/javascript" src="lib/script/jquery-1.5.1.min.js"></script>
 		<script type="text/javascript" src="lib/script/jquery-ui-1.8.10.custom.min.js"></script>
 		<script type="text/javascript" src="lib/script/jquery.ba-hashchange.min.js"></script>
-
 		<script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>		
-		<script type="text/javascript" src="lib/script/combobox.js?version=<?php echo $siteVersion; ?>"></script>
+		
 		<script type="text/javascript" src="lib/script/user.js.php?version=<?php echo $siteVersion; ?>"></script>
+		<script type="text/javascript" src="lib/script/calendarsession.js.php?version=<?php echo $siteVersion; ?>"></script>
+		
+		<script type="text/javascript" src="lib/script/calendar.js?version=<?php echo $siteVersion; ?>"></script>
+		<script type="text/javascript" src="lib/script/combobox.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/messagehub.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/sheet.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/tooltip.js?version=<?php echo $siteVersion; ?>"></script>
-		<script type="text/javascript" src="lib/script/calendar.js?version=<?php echo $siteVersion; ?>"></script>
-		<script type="text/javascript" src="lib/script/calendarsession.js.php?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/raid.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/raidlist.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/profile.js?version=<?php echo $siteVersion; ?>"></script>
