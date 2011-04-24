@@ -24,7 +24,7 @@
 	        {
 	        	echo "<raid>";
 	        	
-	        	$Data = $ListRaidSt->fetch();
+	        	$Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC );
 	        	
 	        	echo "<raidId>".$Data["RaidId"]."</raidId>";
                 echo "<locationId>".$Data["LocationId"]."</locationId>";
@@ -58,7 +58,7 @@
 		        			}
 		        			else
 		        			{
-		        				$DefaultData = $CharSt->fetch();
+		        				$DefaultData = $CharSt->fetch( PDO::FETCH_ASSOC );
 		        				
 		        				echo "<attendee>";
 		        				
@@ -107,7 +107,7 @@
 		        			echo "</attendee>";
 		        		}		        		
 		        	}
-		        	while ( $Data = $ListRaidSt->fetch() );
+		        	while ( $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC ) );
 	        	}
 	        	
 	        	echo "</raid>";	        		        

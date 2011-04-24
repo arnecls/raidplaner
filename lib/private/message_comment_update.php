@@ -30,7 +30,7 @@ function msgCommentUpdate( $Request )
 	    $RaidSt->bindValue(":RaidId",  $raidId, PDO::PARAM_INT);
 		$RaidSt->execute();
 		
-		$RaidData = $RaidSt->fetch();
+		$RaidData = $RaidSt->fetch( PDO::FETCH_ASSOC );
 		
 		$RaidSt->closeCursor();
 		

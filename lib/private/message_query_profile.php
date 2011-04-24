@@ -27,7 +27,7 @@ function msgQueryProfile( $Request )
         {
         	$userName = "unknown";
         	
-        	while ( $Data = $Characters->fetch() )
+        	while ( $Data = $Characters->fetch( PDO::FETCH_ASSOC ) )
 	        {
 	        	$userName = $Data["Login"];
 	        	
@@ -52,7 +52,7 @@ function msgQueryProfile( $Request )
 		        }
 		        else
 		        {
-		        	$Data = $Users->fetch();
+		        	$Data = $Users->fetch( PDO::FETCH_ASSOC );
 		        	
 		        	echo "<userid>".$userId."</userid>";
 	        		echo "<name>".$Data["Login"]."</name>";

@@ -37,7 +37,7 @@ class Settings
 	
 		if ( $query->execute() )
 		{
-			while ( $Data = $query->fetch() )
+			while ( $Data = $query->fetch( PDO::FETCH_ASSOC ) )
 			{
 				$this->Property[$Data["Name"]] = Array( 
 					"IntValue"  => intval($Data["IntValue"]),

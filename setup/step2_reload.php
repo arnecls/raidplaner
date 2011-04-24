@@ -11,7 +11,7 @@
 	
 	if ( $Groups->execute() )
 	{
-		while ( $Group = $Groups->fetch() )
+		while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
 		{
 			echo "<group>";
 			echo "<id>".$Group["group_id"]."</id>";

@@ -13,7 +13,7 @@
 		$Groups->execute();		
 		$phpBBGroups = Array();
 		
-		while ( $Group = $Groups->fetch() )
+		while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
 		{
 			array_push( $phpBBGroups, $Group );
 		}		 

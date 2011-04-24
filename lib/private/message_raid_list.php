@@ -48,7 +48,7 @@
 	        {
 	        	echo "<raidList>";
 	        	
-		        while ( $Data = $ListRaidSt->fetch() )
+		        while ( $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC ) )
 		        {
 		        	echo "<raid>";
 		        	echo "<id>".$Data["RaidId"]."</id>";

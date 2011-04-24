@@ -14,7 +14,7 @@ function msgQuerySettings( $Request )
         }
         else
         {	        
-	        while ( $Data = $Users->fetch() )
+	        while ( $Data = $Users->fetch( PDO::FETCH_ASSOC ) )
 	        {
 	        	echo "<user>";
 	        	echo "<id>".$Data["UserId"]."</id>";
@@ -35,7 +35,7 @@ function msgQuerySettings( $Request )
         }
         else
         {	        
-	        while ( $Data = $Settings->fetch() )
+	        while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
 	        {
 	        	echo "<setting>";
 	        	echo "<id>".$Data["SettingId"]."</id>";

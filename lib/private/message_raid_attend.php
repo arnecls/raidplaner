@@ -29,7 +29,7 @@ function msgRaidAttend( $Request )
 	    
 	    if ( $LockCheckSt->rowCount() > 0 )
 		{
-			$raidInfo = $LockCheckSt->fetch();			
+			$raidInfo = $LockCheckSt->fetch( PDO::FETCH_ASSOC );			
 			$changeAllowed = $raidInfo["Stage"] == "open";
 	    }
 	    
@@ -52,7 +52,7 @@ function msgRaidAttend( $Request )
 				{
 					if ( $CheckSt->rowCount() > 0 )
 					{
-						$characterInfo = $CheckSt->fetch();
+						$characterInfo = $CheckSt->fetch( PDO::FETCH_ASSOC );
 						
 						$changeAllowed &= ($characterInfo["UserId"] == $userId );
 						$role = $characterInfo["Role1"];
@@ -143,7 +143,7 @@ function msgRaidAttend( $Request )
 	    $RaidSt->bindValue(":RaidId",  $raidId, PDO::PARAM_INT);
 		$RaidSt->execute();
 		
-		$RaidData = $RaidSt->fetch();
+		$RaidData = $RaidSt->fetch( PDO::FETCH_ASSOC );
 		
 		$RaidSt->closeCursor();
 		

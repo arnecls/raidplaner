@@ -22,7 +22,7 @@
             {
                 // Found user in phpbb
                 
-                $UserData = $UserSt->fetch();
+                $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
                 $UserSt->closeCursor();
                         
                 if ( phpbb_check_hash($User["Password"], $UserData["user_password"]) )
@@ -56,7 +56,7 @@
                         $MemberGroups   = explode(",", PHPBB3_MEMBER_GROUPS );
                         $RaidleadGroups = explode(",", PHPBB3_RAIDLEAD_GROUPS );
                         
-                        while ($Group = $UserSt->fetch())
+                        while ($Group = $UserSt->fetch( PDO::FETCH_ASSOC ))
                         {
                             if ( in_array($Group["group_id"], $MemberGroups) )
                             {

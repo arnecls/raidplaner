@@ -75,7 +75,7 @@
                		
                		if ($UserSt->rowcount() > 0)
                		{
-	               		$UserData = $UserSt->fetch();
+	               		$UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
 	               		
 	               		$CryptDesc = mcrypt_module_open( UserProxy::$CryptName, "", "ecb", "" );
 	        			$IV        = mcrypt_create_iv( mcrypt_enc_get_iv_size($CryptDesc), MCRYPT_RAND );
@@ -158,13 +158,13 @@
                 
                 if ( $UserSt->rowCount() > 0 )
                 {                
-                	$UserDataFromDb = $UserSt->fetch();
+                	$UserDataFromDb = $UserSt->fetch( PDO::FETCH_ASSOC );
                 
 	                while ( $item = current( $UserDataFromDb ) )
 	                {
 	                	$key = key( $UserDataFromDb );
 	                	
-	                	if ( !is_numeric($key) && ($key != "Hash") )
+	                	if ( $key != "Hash" )
 	                	{
 		                	if ( !isset( $_SESSION["User"][ $key ] ) )
 		                	{
@@ -258,14 +258,14 @@
 		
 		private static function SetSessionVariables( $UserQuery )
 		{
-			$_SESSION["User"] = $UserQuery->fetch();
+			$_SESSION["User"] = $UserQuery->fetch( PDO::FETCH_ASSOC );
         	
         	$_SESSION["User"]["Role1"] = array( $_SESSION["User"]["Role1"] );
             $_SESSION["User"]["Role2"] = array( $_SESSION["User"]["Role2"] );
         	$_SESSION["User"]["CharacterId"] = array( $_SESSION["User"]["CharacterId"] );
             $_SESSION["User"]["CharacterName"] = array( $_SESSION["User"]["CharacterName"] );
         	
-        	while ( $row = $UserQuery->fetch() )
+        	while ( $row = $UserQuery->fetch( PDO::FETCH_ASSOC ) )
         	{
         		array_push( $_SESSION["User"]["Role1"], $row["Role1"] );
             	array_push( $_SESSION["User"]["Role2"], $row["Role2"] );
@@ -353,7 +353,7 @@
 		           	$_SESSION["User"]["CharacterId"] = array();
 		           	$_SESSION["User"]["CharacterName"] = array();
 		           	
-		           	while ( $row = $CharacterSt->fetch() )
+		           	while ( $row = $CharacterSt->fetch( PDO::FETCH_ASSOC ) )
 	            	{
 	            		array_push( $_SESSION["User"]["Role1"], $row["Role1"] );
 	                	array_push( $_SESSION["User"]["Role2"], $row["Role2"] );

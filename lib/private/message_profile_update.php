@@ -27,7 +27,7 @@ function msgProfileUpdate( $Request )
 	    }
         else
         {
-        	while ( $Data = $Characters->fetch() )
+        	while ( $Data = $Characters->fetch( PDO::FETCH_ASSOC ) )
 	        {
 	        	array_push( $ValidCharacterIds, $Data["CharacterId"] );
 	        }

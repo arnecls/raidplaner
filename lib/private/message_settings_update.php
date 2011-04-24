@@ -15,7 +15,7 @@ function updateGroup( $Connector, $GroupName, $IdArray )
     
     $CurrentGroupIds = Array();        
     
-    while ( $User = $userGroup->fetch() )
+    while ( $User = $userGroup->fetch( PDO::FETCH_ASSOC ) )
     {
     	array_push( $CurrentGroupIds, intval($User["UserId"]) );	
     }
@@ -115,7 +115,7 @@ function msgSettingsUpdate( $Request )
 	        
 	        // remove characters and attendances 
 	        
-	        while ( $Data = $characters->fetch() )
+	        while ( $Data = $characters->fetch( PDO::FETCH_ASSOC ) )
 	        {
 	        	$dropCharacter  = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharacterId LIMIT 1" );
 	    		$dropAttendance = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE CharacterId = :CharacterId" );

@@ -16,7 +16,7 @@ function msgQueryLocations( $Request )
             return;
         }
         
-        while ( $Data = $ListLocations->fetch() )
+        while ( $Data = $ListLocations->fetch( PDO::FETCH_ASSOC ) )
         {
         	echo "<location>";
         	echo "<id>".$Data["LocationId"]."</id>";

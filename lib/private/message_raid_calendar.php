@@ -37,7 +37,7 @@ function parseRaidQuery( $QueryResult, $Limit )
     $RaidData = Array();
     $RaidInfo = Array();
     
-    while ($Data = $QueryResult->fetch())
+    while ($Data = $QueryResult->fetch( PDO::FETCH_ASSOC ))
     {
     	array_push($RaidData, $Data);
     	
