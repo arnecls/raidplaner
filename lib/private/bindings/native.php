@@ -1,13 +1,13 @@
 <?php
-	function BindNativeUser( $_User )
+	function BindNativeUser( $User )
 	{
-		$password = $_User["Password"];
+		$password = $User["Password"];
 		
-		if ( isset($_User["cleartext"]) && $_User["cleartext"] )
+		if ( isset($User["cleartext"]) && $User["cleartext"] )
 		{
 			$password = sha1( $password );
 		}
 			
-		return UserProxy::TryLoginUser( $_User["Login"], $password, "none" );
+		return UserProxy::TryLoginUser( $User["Login"], $password, "none" );
 	}
 ?>

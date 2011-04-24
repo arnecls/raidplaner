@@ -6,7 +6,17 @@
     
     class UserProxy
 	{
-		private static $Instance = NULL;
+		private static $Instance = null;
+		private static $StickyLifeTime = 2419200; // 60 * 60 * 24 * 7 * 4; // 1 month
+		private static $StickyCookieName = "ppx_rp_sticky";
+		
+		private static $Bindings = array(
+			"Default" => array( "Function" => "BindNativeUser", "Available" => true ),
+			"PHPBB3"  => array( "Function" => "BindPHPBB3User", "Available" => PHPBB3_BINDING )
+		);
+		
+		private static $Hash = null;
+		private static $CryptName = "rijndael-256";
 		
 		// --------------------------------------------------------------------------------------------
 	
@@ -21,31 +31,14 @@
 		    
 		    session_start();
 		    
-		    if ( isset($_REQUEST["sticky"]) )
+		    if (isset($_REQUEST["logout"]))
             {            	
-            	if ( $_REQUEST["sticky"] == "true" )
-            	{
-            		$lifeTime = 60 * 60 * 24 * 7 * 4;
-            		
-            		ini_set("session.gc_maxlifetime", $lifeTime);
-					ini_set("session.cookie_lifetime", $lifeTime);
-	        	}
-            	else
-            	{
-            		ini_set("session.cookie_lifetime", 0);
-            	}
-            	
-            	session_regenerate_id(true);
-            }
-            
-            $Connector = Connector::GetInstance();
-            
-            if (isset($_REQUEST["logout"]))
-            {
-            	
                 // explicit unlog
                 unset($_SESSION["User"]);
                 unset($_SESSION["Calendar"]);
+                
+                unset($_COOKIE[self::$StickyCookieName]);
+                setcookie( self::$StickyCookieName, null, 0, "", "", false, true );
             }
             
             if (isset($_SESSION["User"]) && isset($_SESSION["User"]["UserId"]))
@@ -57,19 +50,92 @@
                 	return; // ### valid
                 }                
             }
-            else if (isset($_REQUEST["user"]) && isset($_REQUEST["pass"]))
+            else 
             {
-                $LoginUser = array( "Login"     => $_REQUEST["user"],
-                                    "Password"  => $_REQUEST["pass"],
-                                    "cleartext" => true);
+            	$LoginUser = null;
+            	
+            	if (isset($_REQUEST["user"]) && isset($_REQUEST["pass"]))
+                {
+                	$LoginUser = array( "Login"     => $_REQUEST["user"],
+                    	                "Password"  => $_REQUEST["pass"],
+                    	                "cleartext" => true );
+                }
+                else if ( isset($_COOKIE[self::$StickyCookieName]) )
+               	{
+               		// Reconstruct login data from cookie + database hash
+               		
+               		$Connector = Connector::GetInstance();
+                        
+               		$CookieData = unserialize( base64_decode($_COOKIE[self::$StickyCookieName]) );
+               		
+               		$UserSt = $Connector->prepare( "SELECT Hash FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId" );
+               		
+               		$UserSt->bindValue(":UserId", $CookieData["ID"], PDO::PARAM_INT );
+               		$UserSt->execute();
+               		
+               		if ($UserSt->rowcount() > 0)
+               		{
+	               		$UserData = $UserSt->fetch();
+	               		
+	               		$CryptDesc = mcrypt_module_open( UserProxy::$CryptName, "", "ecb", "" );
+	        			$IV        = mcrypt_create_iv( mcrypt_enc_get_iv_size($CryptDesc), MCRYPT_RAND );
+	        			
+	        			mcrypt_generic_init( $CryptDesc, $UserData["Hash"], $IV );
+	        			
+	        			$LoginData = unserialize( mdecrypt_generic($CryptDesc, base64_decode($CookieData["Data"]) ) );
+	        			
+	        			mcrypt_generic_deinit($CryptDesc);
+						mcrypt_module_close($CryptDesc);
+						
+						$LoginUser = array( "Login"     => $LoginData["Login"], 
+	                    	                "Password"  => $LoginData["Password"],
+	                        	            "cleartext" => false );
+					}
+					
+					$UserSt->closeCursor();
+                }
                 
-                // Pure internal login
-                if ( BindNativeUser($LoginUser) ) 
-                    return;  // ### valid
-                
-                // Login via PHPBB3
-                if ( PHPBB3_BINDING && BindPHPBB3User($LoginUser) ) 
-                	return;  // ### valid
+                if ( $LoginUser != null )
+                {
+	                foreach ( self::$Bindings as $Binding )
+	                {
+	                	if ( $Binding["Available"] && call_user_func($Binding["Function"], $LoginUser) )
+	                	{
+	                		// Login worked
+	                		
+	                		if ( isset($_REQUEST["sticky"]) && ($_REQUEST["sticky"] == "true") )
+	                		{
+	                			// Sticky login is requested
+	                			
+	                			$Data = array( 	"Login"    => $LoginUser["Login"], 
+	                							"Password" => $_SESSION["User"]["Password"] );
+	                			
+	                			$CryptDesc = mcrypt_module_open( UserProxy::$CryptName, "", "ecb", "" );
+	                			$IV        = mcrypt_create_iv( mcrypt_enc_get_iv_size($CryptDesc), MCRYPT_RAND );
+	                			
+	                			mcrypt_generic_init( $CryptDesc, self::$Hash, $IV );
+	                			
+	                			$EncryptedData = mcrypt_generic($CryptDesc, serialize($Data));
+	                			
+	                			mcrypt_generic_deinit($CryptDesc);
+    							mcrypt_module_close($CryptDesc);
+	                			
+	                			$CookieData["ID"]   = $_SESSION["User"]["UserId"];	                			
+	                			$CookieData["Data"] = base64_encode( $EncryptedData );
+	                			                			
+			            		setcookie( self::$StickyCookieName, base64_encode( serialize($CookieData) ), time() + self::$StickyLifeTime, "", "", false, true );
+			            	}
+			            	else if ( !isset($_COOKIE[self::$StickyCookieName]) )
+			            	{
+			            		setcookie( self::$StickyCookieName, null, 0, "", "", false, true );
+			            	}
+			            	
+			            	self::$Hash = null; // do not store hash
+			            	
+	                		return;
+	                	}
+	                }
+	            }
             }
             
             // All checks failed -> logout
@@ -83,7 +149,7 @@
 		{
 			if (isset($_SESSION["User"]))
             {
-                $Connector = Connector::GetInstance();
+            	$Connector = Connector::GetInstance();
                 $UserSt = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."User` ".
                                               "WHERE UserId = :UserId LIMIT 1");
                 
@@ -98,24 +164,27 @@
 	                {
 	                	$key = key( $UserDataFromDb );
 	                	
-	                	if ( !isset( $_SESSION["User"][ $key ] ) )
+	                	if ( !is_numeric($key) && ($key != "Hash") )
 	                	{
-	                		return false;
-	                	}
-	                	
-	                	if ( crc32($_SESSION["User"][ $key ]) != crc32($item) ) 
-	                	{
-	                		return false;
-	                	}
+		                	if ( !isset( $_SESSION["User"][ $key ] ) )
+		                	{
+		                		return false;
+		                	}
+		                	
+		                	if ( crc32($_SESSION["User"][ $key ]) != crc32($item) ) 
+		                	{
+		                		return false;
+		                	}
+		                }
 	                	
 	                	next( $UserDataFromDb );
-	                }
+	                }	                
 	                
 	                return true;
 	        	}
 	        	
 	        	$UserSt->closeCursor();
-            }
+            }            
             
             return false;
 		}
@@ -142,14 +211,18 @@
             
             if ( $UserSt->execute() && ($UserSt->rowCount() == 0) )
             {
+            	$Salt = rand(1,100) * time() + rand();
+                self::$Hash = md5( strval($Salt) . sha1($Login.$Password) );
+                	
             	$UserSt->closeCursor();
 	            $UserSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."User` (".
-	                                          "`Group`, ExternalId, ExternalBinding, Login, Password) ".
-	                                          "VALUES ('".$Group."', :ExternalUserId, '".$BindingName."', :Login, :Password)");
+	                                          "`Group`, ExternalId, ExternalBinding, Login, Password, Hash) ".
+	                                          "VALUES ('".$Group."', :ExternalUserId, '".$BindingName."', :Login, :Password, :Hash)");
 	                                          
 	            $UserSt->bindValue(":ExternalUserId",   $ExternalUserId,    PDO::PARAM_INT);
 	            $UserSt->bindValue(":Login",    		strtolower($Login), PDO::PARAM_STR);
 	            $UserSt->bindValue(":Password", 		$Password,  		PDO::PARAM_STR);
+	            $UserSt->bindValue(":Hash", 			self::$Hash, 		PDO::PARAM_STR);
 	            
 	            $UserSt->execute();
 	            $UserSt->closeCursor();
@@ -183,7 +256,7 @@
 		
 		// --------------------------------------------------------------------------------------------
 		
-		public static function SetSessionVariables( $UserQuery )
+		private static function SetSessionVariables( $UserQuery )
 		{
 			$_SESSION["User"] = $UserQuery->fetch();
         	
@@ -199,6 +272,11 @@
             	array_push( $_SESSION["User"]["CharacterId"], $row["CharacterId"] );
         		array_push( $_SESSION["User"]["CharacterName"], $row["CharacterName"] );
         	}
+        	
+        	$Hash = $_SESSION["User"]["Hash"];
+        	unset( $_SESSION["User"]["Hash"] );
+        	
+        	return $Hash;
 		}
 		
 		// --------------------------------------------------------------------------------------------
@@ -207,21 +285,47 @@
 		public static function TryLoginUser( $Login, $Password, $BindingName )
 		{
 			$Connector = Connector::GetInstance();
-            $UserSt = $Connector->prepare(	"SELECT ".RP_TABLE_PREFIX."User.*, ".RP_TABLE_PREFIX."Character.Name AS CharacterName, ".RP_TABLE_PREFIX."Character.Role1, ".RP_TABLE_PREFIX."Character.Role2, ".RP_TABLE_PREFIX."Character.CharacterId FROM `".RP_TABLE_PREFIX."User` ".
+			
+			$UserSt = $Connector->prepare(	"SELECT ".RP_TABLE_PREFIX."User.*, ".RP_TABLE_PREFIX."Character.Name AS CharacterName, ".RP_TABLE_PREFIX."Character.Role1, ".RP_TABLE_PREFIX."Character.Role2, ".RP_TABLE_PREFIX."Character.CharacterId FROM `".RP_TABLE_PREFIX."User` ".
             								"LEFT JOIN `".RP_TABLE_PREFIX."Character` USING (UserId) ".
-                                          	"WHERE Login = :Login AND Password = :Password AND ExternalBinding = '".$BindingName."' ".
-                                          	"ORDER BY Mainchar, ".RP_TABLE_PREFIX."Character.Name" );
-                   
+                   	                      	"WHERE Login = :Login AND Password = :Password AND ExternalBinding = '".$BindingName."' ".
+                       	                  	"ORDER BY Mainchar, ".RP_TABLE_PREFIX."Character.Name" );
                                           
             $UserSt->bindValue(":Login",    strtolower($Login), PDO::PARAM_STR);
             $UserSt->bindValue(":Password", $Password, 			PDO::PARAM_STR);
             
-            $UserSt->execute();
+            if (!$UserSt->execute() )
+            {
+            	$ErrorInfo = $UserSt->errorInfo();
+				echo "<error>".L("Database error")."</error>";
+        		echo "<error>".$ErrorInfo[0]."</error>";
+       			echo "<error>".$ErrorInfo[2]."</error>";
+            
+            	die();
+            }
+            
             $Success = $UserSt->rowCount() > 0;
             
             if ( $Success )
             {
-            	UserProxy::SetSessionVariables( $UserSt );
+            	self::$Hash = UserProxy::SetSessionVariables( $UserSt );
+            	        		
+            	// Fallback for pre-0.9.1 databases
+            	// Deprecated block. Remove with 1.0
+            	
+            	if ( self::$Hash == "" )
+            	{
+            		$Salt = rand(1,100) * time() + rand();
+                	self::$Hash = md5( strval($Salt) . sha1($Login.$Password) );
+                
+            		$UpdateSt = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET Hash = :Hash WHERE UserId = :UserId" );
+            		
+            		$UpdateSt->bindValue( ":UserId", $_SESSION["User"]["UserId"],	PDO::PARAM_INT );
+            		$UpdateSt->bindValue( ":Hash",   self::$Hash, 					PDO::PARAM_STR );
+            		
+            		$UpdateSt->execute();
+            		$UpdateSt->closeCursor();
+            	}
             }
             
             $UserSt->closeCursor();

@@ -2,18 +2,18 @@
     require_once dirname(__FILE__)."/hash_phpbb3.php";
     require_once dirname(__FILE__)."/../../config/config.phpbb3.php";
     
-    function BindPHPBB3User($_User)
+    function BindPHPBB3User($User)
 	{
         $Success = false;
         
-        if ( isset($_User["cleartext"]) )
+        if ( isset($User["cleartext"]) && ($User["cleartext"] == true) )
         {
             $Connector = new Connector(SQL_HOST, PHPBB3_DATABASE, PHPBB3_USER, PHPBB3_PASS);
             $UserSt = $Connector->prepare("SELECT user_id, user_password ".
                                           "FROM `".PHPBB3_TABLE_PREFIX."users` ".
                                           "WHERE username_clean = :Login LIMIT 1");
             
-            $UserSt->bindValue(":Login", strtolower($_User["Login"]), PDO::PARAM_STR);
+            $UserSt->bindValue(":Login", strtolower($User["Login"]), PDO::PARAM_STR);
             
             $UserSt->execute();
             $Success = ($UserSt->rowCount() == 1);
@@ -25,11 +25,11 @@
                 $UserData = $UserSt->fetch();
                 $UserSt->closeCursor();
                         
-                if ( phpbb_check_hash($_User["Password"], $UserData["user_password"]) )
+                if ( phpbb_check_hash($User["Password"], $UserData["user_password"]) )
                 {
                     // password check ok
                 	
-                	$Success = UserProxy::TryLoginUser( $_User["Login"], $UserData["user_password"], "phpbb3" );
+                	$Success = UserProxy::TryLoginUser( $User["Login"], $UserData["user_password"], "phpbb3" );
                 	
                     if ( $Success) 
                     {
@@ -74,8 +74,8 @@
                     
                         $UserSt->closeCursor();
                         
-                        UserProxy::CreateUser( $DefaultGroup, $UserData["user_id"], "phpbb3", $_User["Login"], $UserData["user_password"] );
-                        $Success = UserProxy::TryLoginUser( $_User["Login"], $UserData["user_password"], "phpbb3" );
+                        UserProxy::CreateUser( $DefaultGroup, $UserData["user_id"], "phpbb3", $User["Login"], $UserData["user_password"] );
+                        $Success = UserProxy::TryLoginUser( $User["Login"], $UserData["user_password"], "phpbb3" );
                     }
                     
                     $UserSt->closeCursor();
@@ -92,7 +92,7 @@
         }
         else // password not cleartext
         {
-        	$Success = UserProxy::TryLoginUser( $_User["Login"], $_User["Password"], "phpbb3" );
+        	$Success = UserProxy::TryLoginUser( $User["Login"], $User["Password"], "phpbb3" );
         }
         
         return $Success;
