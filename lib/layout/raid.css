@@ -126,7 +126,7 @@
 }
 
 .slotfield .type {
-	margin-bottom: 15px;
+	margin-bottom: 12px;
 	margin-top: 15px;
 	float: left;
 	color: black;
@@ -140,10 +140,30 @@
 }
 
 .slotfield .slotcount {
-	margin-bottom: 15px;
+	margin-bottom: 12px;
 	margin-top: 15px;
 	margin-left: 20px;
 	float: left;
+}
+
+.slotfield6 .target {
+	background-image: url(images/selectedslot6.png);
+	background-repeat: no-repeat;
+}
+
+.slotfield12 .target {
+	background-image: url(images/selectedslot12.png);
+	background-repeat: no-repeat;
+}
+
+.slotfield24 .target {
+	background-image: url(images/selectedslot24.png);
+	background-repeat: no-repeat;
+}
+
+.slotfield .slotcontainer {
+	height: 215px;
+	padding: 4px;
 }
 
 .slotfield .slotrow {
@@ -155,11 +175,6 @@
 	margin-bottom: 3px;
 	height: 32px;
 	width: 130px;
-}
-
-.slotfield .target {
-	background-image: url(images/selectedslot.png);
-	background-repeat: no-repeat;
 }
 
 .slotfield .occupied {
