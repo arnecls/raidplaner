@@ -25,7 +25,7 @@
 		<title>Raidplaner config</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         
-        <script type="text/javascript" src="../lib/script/jquery-1.5.1.min.js"></script>
+        <script type="text/javascript" src="../lib/script/jquery-1.5.2.min.js"></script>
         <script type="text/javascript" src="step2.js.php"></script>
     </head>
 	
