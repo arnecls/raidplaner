@@ -4,6 +4,7 @@
     require_once dirname(__FILE__)."/bindings/native.php";
     require_once dirname(__FILE__)."/bindings/phpbb3.php";
     require_once dirname(__FILE__)."/bindings/eqdkp.php";
+    require_once dirname(__FILE__)."/bindings/vbulletin3.php";
     
     class UserProxy
 	{
@@ -14,7 +15,8 @@
 		private static $Bindings = array(
 			"Default" => array( "Function" => "BindNativeUser", "Available" => true ),
 			"PHPBB3"  => array( "Function" => "BindPHPBB3User", "Available" => PHPBB3_BINDING ),
-			"EQDKP"   => array( "Function" => "BindEQDKPUser",  "Available" => EQDKP_BINDING )
+			"EQDKP"   => array( "Function" => "BindEQDKPUser",  "Available" => EQDKP_BINDING ),
+			"VB3"     => array( "Function" => "BindVB3User",  	"Available" => VB3_BINDING )
 		);
 		
 		private static $Hash = null;

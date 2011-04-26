@@ -19,7 +19,7 @@
             
             if ( $Success )
             {
-                // Found user in phpbb
+                // Found user in eqdkp
                 
                 $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
                 $UserSt->closeCursor();
@@ -61,23 +61,11 @@
                         		break; // ### not active, defaults to "none" ###
 	                    	}
 	                    	
-	                    	if ( $Right["auth_setting"] == "Y" )
+	                    	if ( (($Right["auth_value"] == "a_raid_add") || ($Right["auth_value"] == "a_raid_upd"))
+	                    		 && ($Right["auth_setting"] == "Y") )
 	                    	{
-	                    		switch ($Right["auth_value"])
-	                    		{
-	                    		case "a_raid_add":
-	                    		case "a_raid_upd":
-	                    			if ($DefaultGroup != "admin")
-	                    				$DefaultGroup = "raidlead";
-	                    			break;
-	                    			
-	                    		case "a_config_man":
-	                    			$DefaultGroup = "admin";
-	                    			break;
-	                    			
-	                    		default:
-	                    			break;
-	                    		}	                    	
+	                    		$DefaultGroup = "raidlead";
+	                    		break;
 	                    	}
 	                    }
             
