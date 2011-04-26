@@ -2,7 +2,8 @@
 
 function updateGroup( $Connector, $GroupName, $IdArray )
 {
-	$userGroup = $Connector->prepare( "SELECT UserId FROM `".RP_TABLE_PREFIX."User` WHERE `Group` = \"".$GroupName."\"" );
+	$userGroup = $Connector->prepare( "SELECT UserId FROM `".RP_TABLE_PREFIX."User` WHERE `Group` = :GroupName" );	
+	$userGroup->bindValue(":GroupName", $GroupName, PDO::PARAM_STR );
 		
 	if ( !$userGroup->execute() )
     {
@@ -25,8 +26,9 @@ function updateGroup( $Connector, $GroupName, $IdArray )
     
     foreach ( $ChangedIds as $UserId )
     {
-    	$changeUser = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET `Group` = \"".$GroupName."\" WHERE UserId = :UserId " );
+    	$changeUser = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET `Group` = :GroupName WHERE UserId = :UserId " );
     	$changeUser->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+    	$changeUser->bindValue(":GroupName", $GroupName, PDO::PARAM_STR );
     	
     	if ( !$changeUser->execute() )
         {

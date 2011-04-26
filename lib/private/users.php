@@ -3,6 +3,7 @@
     require_once dirname(__FILE__)."/../config/config.php";
     require_once dirname(__FILE__)."/bindings/native.php";
     require_once dirname(__FILE__)."/bindings/phpbb3.php";
+    require_once dirname(__FILE__)."/bindings/eqdkp.php";
     
     class UserProxy
 	{
@@ -12,7 +13,8 @@
 		
 		private static $Bindings = array(
 			"Default" => array( "Function" => "BindNativeUser", "Available" => true ),
-			"PHPBB3"  => array( "Function" => "BindPHPBB3User", "Available" => PHPBB3_BINDING )
+			"PHPBB3"  => array( "Function" => "BindPHPBB3User", "Available" => PHPBB3_BINDING ),
+			"EQDKP"   => array( "Function" => "BindEQDKPUser",  "Available" => EQDKP_BINDING )
 		);
 		
 		private static $Hash = null;
@@ -217,12 +219,14 @@
             	$UserSt->closeCursor();
 	            $UserSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."User` (".
 	                                          "`Group`, ExternalId, ExternalBinding, Login, Password, Hash) ".
-	                                          "VALUES ('".$Group."', :ExternalUserId, '".$BindingName."', :Login, :Password, :Hash)");
+	                                          "VALUES (:Group, :ExternalUserId, :Binding, :Login, :Password, :Hash)");
 	                                          
 	            $UserSt->bindValue(":ExternalUserId",   $ExternalUserId,    PDO::PARAM_INT);
 	            $UserSt->bindValue(":Login",    		strtolower($Login), PDO::PARAM_STR);
 	            $UserSt->bindValue(":Password", 		$Password,  		PDO::PARAM_STR);
 	            $UserSt->bindValue(":Hash", 			self::$Hash, 		PDO::PARAM_STR);
+	            $UserSt->bindValue(":Group", 			$Group, 			PDO::PARAM_STR);
+	            $UserSt->bindValue(":Binding", 			$BindingName, 		PDO::PARAM_STR);
 	            
 	            $UserSt->execute();
 	            $UserSt->closeCursor();
