@@ -32,6 +32,7 @@
 	height: 64px;
 	float: left;
 	width: 64px;
+	cursor: pointer;
 }
 
 .tooltip .location {
@@ -63,6 +64,7 @@
 	font-size: 9px;
     float: left;
     text-align: center;
+    cursor: pointer;
 }
 
 #tooltip {

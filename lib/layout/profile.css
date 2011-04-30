@@ -63,6 +63,7 @@
 	margin-right: 5px;
 	margin-bottom: 10px;
 	margin-left: 10px;
+	cursor: pointer;
 }
 
 #profile .charslot .clearchar {
@@ -91,6 +92,10 @@
 	top: 15px;
 	left: 29px;
 	z-index: 10;
+}
+
+#profile .charslot .newclass {
+	cursor: pointer;
 }
 
 #profile .charslot .class .badge {
@@ -148,6 +153,7 @@
 	margin-left: 4px;
 	margin-right: 4px;
 	margin-top: 8px;
+	cursor: pointer;
 }
 
 #profile .button_profile {
