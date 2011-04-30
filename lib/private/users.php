@@ -205,6 +205,16 @@
 		
 		// --------------------------------------------------------------------------------------------
 		
+		private static function GenerateHash( $User, $Password )
+		{
+			$Salt = sha1( strval(microtime() + rand()) . $_SERVER["REMOTE_ADDR"] );
+			$Hash = sha1( $User.$Password );
+			
+			self::$Hash = md5( $Salt.$Hash );
+		}
+		
+		// --------------------------------------------------------------------------------------------
+		
 		public static function CreateUser( $Group, $ExternalUserId, $BindingName, $Login, $Password )
 		{
 			$Connector = Connector::GetInstance();
@@ -215,9 +225,8 @@
             
             if ( $UserSt->execute() && ($UserSt->rowCount() == 0) )
             {
-            	$Salt = rand(1,100) * time() + rand();
-                self::$Hash = md5( strval($Salt) . sha1($Login.$Password) );
-                	
+            	self::GenerateHash( $Login, $Password );
+            		
             	$UserSt->closeCursor();
 	            $UserSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."User` (".
 	                                          "`Group`, ExternalId, ExternalBinding, Login, Password, Hash) ".
@@ -242,22 +251,52 @@
 		
 		// --------------------------------------------------------------------------------------------
 		
-		public static function UpdatePasswordIfDifferent( $Password )
+		public static function CheckForBindingUpdate( $ExternalId, $Username, $Password, $Binding, $UpdateSession )
 		{
-			if ( $_SESSION["User"]["Password"] != $Password )
+			$Connector = Connector::GetInstance();
+            $UserSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
+                                          "Password = :Password, Login = :Username ".
+                                          "WHERE ExternalId = :ExternalId AND ExternalBinding = :ExternalBinding LIMIT 1");
+                                      
+            $UserSt->bindValue(":ExternalId", 		$ExternalId, PDO::PARAM_INT);
+            $UserSt->bindValue(":ExternalBinding",  $Binding,	 PDO::PARAM_STR);
+            $UserSt->bindValue(":Username",  		$Username,	 PDO::PARAM_STR);
+            $UserSt->bindValue(":Password",  		$Password,	 PDO::PARAM_STR);
+            
+            $UserSt->execute();
+            
+            $Updated = $UserSt->rowCount() == 1;
+            $UserSt->closeCursor();
+            
+            if ($Updated && $UpdateSession)
             {
-				$Connector = Connector::GetInstance();
-	            $UserSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
-	                                          "Password = :Pass ".
-	                                          "WHERE UserId = :UserId");
-	                                      
-	            $UserSt->bindValue(":UserId", $_SESSION["User"]["UserId"],	PDO::PARAM_INT);
-	            $UserSt->bindValue(":Pass",   $Password,					PDO::PARAM_STR);
-	            $UserSt->execute();
-	            $UserSt->closeCursor();
-	            
-	            $_SESSION["User"]["Password"] = $Password;
-	        }
+            	$_SESSION["User"]["Password"] = $Password;
+            	$_SESSION["User"]["Login"]    = $Username;
+            }
+		
+			return $Updated;
+		}
+		
+		// --------------------------------------------------------------------------------------------
+		
+		public static function ConvertCurrentUserToLocalBinding()
+		{
+			$Connector = Connector::GetInstance();
+            $UserSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
+                                          "ExternalId = 0, ExternalBinding = \"none\" ".
+                                          "WHERE UserId = :UserId LIMIT 1");
+                                          
+            $UserSt->bindValue(":UserId", $_SESSION["User"]["UserId"], PDO::PARAM_INT);
+            $UserSt->execute();
+            
+            $Updated = $UserSt->rowCount() == 1;
+            $UserSt->closeCursor();
+            
+            if ( $Updated )
+            {
+            	$_SESSION["User"]["ExternalId"] = 0;
+            	$_SESSION["User"]["ExternalBinding"] = "none";
+			}
 		}
 		
 		// --------------------------------------------------------------------------------------------
@@ -321,8 +360,7 @@
             	
             	if ( self::$Hash == "" )
             	{
-            		$Salt = rand(1,100) * time() + rand();
-                	self::$Hash = md5( strval($Salt) . sha1($Login.$Password) );
+            		self::GenerateHash($Login, $Password);
                 
             		$UpdateSt = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET Hash = :Hash WHERE UserId = :UserId" );
             		

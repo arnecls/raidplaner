@@ -29,6 +29,8 @@
  * Hash the password
  */
 
+$phpbb_config = Array();
+
 function phpbb_hash($password)
 {
    $itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -216,19 +218,12 @@ function _hash_crypt_private($password, $setting, &$itoa64)
  */
 function unique_id($extra = 'c')
 {
-  static $dss_seeded = false;
-  global $config;
+  global $phpbb_config;
 
-  $val = $config['rand_seed'] . microtime();
+  $val = $phpbb_config['rand_seed'] . microtime();
   $val = md5($val);
-  $config['rand_seed'] = md5($config['rand_seed'] . $val . $extra);
+  $phpbb_config['rand_seed'] = md5($phpbb_config['rand_seed'] . $val . $extra);
 
-  if ($dss_seeded !== true && ($config['rand_seed_last_update'] < time() - rand(1,10)))
-  {
-      set_config('rand_seed', $config['rand_seed'], true);
-      set_config('rand_seed_last_update', time(), true);
-      $dss_seeded = true;
-  }
 
   return substr($val, 4, 16);
 }
