@@ -34,6 +34,7 @@
 		<link rel="stylesheet" type="text/css" href="lib/layout/shadow.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/sheet.css?version=<?php echo $siteVersion; ?>"/>
 		
+		
         <!--[if IE 9]>
 		<link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
 		<![endif]-->
@@ -57,6 +58,7 @@
 		<script type="text/javascript" src="lib/script/jquery-1.5.2.min.js"></script>
 		<script type="text/javascript" src="lib/script/jquery-ui-1.8.10.custom.min.js"></script>
 		<script type="text/javascript" src="lib/script/jquery.ba-hashchange.min.js"></script>
+		
 		<script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>		
 		
 		<script type="text/javascript" src="lib/script/user.js.php?version=<?php echo $siteVersion; ?>"></script>
@@ -89,6 +91,7 @@
  	</head>
 	
 	<body>
+		<div style="width: 1024px; height: 1px">&nbsp;</div>
 		<div id="appwindow">
     		<div id="logo"></div>
     		<div id="menu">

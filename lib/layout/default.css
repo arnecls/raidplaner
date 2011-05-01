@@ -5,6 +5,7 @@ body {
 	background-image: url(images/bg_index3.png);
 	background-color: black;
 	font-size: 12px;
+	overflow: auto;
 }
 
 .preload {
@@ -20,8 +21,9 @@ body {
 	top: 50%;
 	display: block;
 	position: absolute;
-	height: 768px;
+	height: 780px;
 	width: 1024px;
+	overflow: visible;
 }
 
 #logo {
