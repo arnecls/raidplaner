@@ -225,6 +225,32 @@
 	visibility: hidden;
 	float: right;
 	position: absolute;
+	vertical-align: top;
+}
+
+.comment .comment_item {
+	display: inline-block;
+}
+
+.comment .comment_text {
+	display: inline-block;
+	position: relative;
+	max-width: 200px;
+	vertical-align: top;
+}
+
+.comment .comment_role {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.comment .comment_name {
+	font-weight: bold;
+	font-size: 14px;
+	margin-bottom: 5px;
 }
 
 #benchBlock {
