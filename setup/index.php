@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         
         <script type="text/javascript" src="../lib/script/jquery-1.5.2.min.js"></script>
-        <script type="text/javascript" src="step1.js.php"></script>
+        <script type="text/javascript" src="script/main.js"></script>
         
     </head>
 	
@@ -23,17 +23,59 @@
 			<div style="padding: 20px">
 				<div>
 					<h2><?php echo L("Filesystem permission checks"); ?></h2>
+					<?php echo L("The raidplaner needs a PHP 5.2 installation configured with the mcrypt and PDO extensions."); ?><br/>
 					<?php echo L("Setup needs write permission on all files in the config folder located at ")."\"lib / config\"."; ?><br/>
 					<?php echo L("If any of these checks fails you have to change permissions to \"writeable\" for your http server's user."); ?><br/>
-					<?php echo L("On how to change permissions, please consult your FTP client's helpfiles."); ?><br/>
+					<?php echo L("On how to change permissions, please consult your FTP client's helpfiles."); ?><br/><br/>
 					<br/>
+					
+					<?php echo L("PHP version"); ?> : <?php
+						$version = explode('.', phpversion());
+						$testsFailed = 0;
+						
+						if ( ($version[0] > 5) || ($version[0] == 5 && $version[1] >= 2) )
+							echo "<span style=\"color: green\">".L("Ok");
+						else
+						{
+							++$testsFailed;
+							echo "<span style=\"color: red\">".L("Outdated PHP version");
+						}
+							
+						echo " (".phpversion().")</span>";
+					?><br/>
+					
+					<?php echo L("PDO module"); ?> : <?php
+						$extensions = get_loaded_extensions();
+						
+						if ( in_array("PDO", $extensions) )
+							echo "<span style=\"color: green\">".L("Ok")."</span>";
+						else
+						{
+							++$testsFailed;
+							echo "<span style=\"color: red\">".L("PDO not configured with PHP")."</span>";
+						}					
+					?><br/>
+					
+					<?php echo L("mcrypt module"); ?> : <?php
+						if ( in_array("mcrypt", $extensions) )
+							echo "<span style=\"color: green\">".L("Ok")."</span>";
+						else
+						{
+							++$testsFailed;
+							echo "<span style=\"color: red\">".L("Mcrypt not configured with PHP")."</span>";
+						}
+					?><br/><br/>
+					
 					<?php echo L("Config folder"); ?> : <?php
 						$configFolderState = is_writable("../lib/config");
 						
 						if ( $configFolderState )
 							echo "<span style=\"color: green\">".L("Ok")."</span>";
 						else
+						{
+							++$testsFailed;
 							echo "<span style=\"color: red\">".L("Not writeable")."</span>";
+						}
 					?><br/>
 					
 					<?php echo L("Main config file"); ?> : <?php
@@ -43,7 +85,10 @@
 						if ( $configFileState )
 							echo "<span style=\"color: green\">".L("Ok")."</span>";
 						else
+						{
+							++$testsFailed;
 							echo "<span style=\"color: red\">".L("Not writeable")."</span>";
+						}
 					?><br/>
 					
 					<?php echo L("PHPBB3 config file"); ?> : <?php
@@ -53,34 +98,45 @@
 						if ( $phpbbConfigFileState )
 							echo "<span style=\"color: green\">".L("Ok")."</span>";
 						else
+						{
+							++$testsFailed;
 							echo "<span style=\"color: red\">".L("Not writeable")."</span>";
+						}
+					?><br/>
+					
+					<?php echo L("EQDKP config file"); ?> : <?php
+						$phpbbConfigFileState = (!file_exists("../lib/config/config.eqdkp.php") && $configFolderState) || 
+												is_writable("../lib/config/config.eqdkp.php");
+											
+						if ( $phpbbConfigFileState )
+							echo "<span style=\"color: green\">".L("Ok")."</span>";
+						else
+						{
+							++$testsFailed;
+							echo "<span style=\"color: red\">".L("Not writeable")."</span>";
+						}
+					?><br/>
+					
+					<?php echo L("vBulletin config file"); ?> : <?php
+						$phpbbConfigFileState = (!file_exists("../lib/config/config.vb3.php") && $configFolderState) || 
+												is_writable("../lib/config/config.vb3.php");
+											
+						if ( $phpbbConfigFileState )
+							echo "<span style=\"color: green\">".L("Ok")."</span>";
+						else
+						{
+							++$testsFailed;
+							echo "<span style=\"color: red\">".L("Not writeable")."</span>";
+						}
 					?><br/>
 				</div>
 				
 				<?php 
-					if ( $configFolderState && $configFileState && $phpbbConfigFileState )
+					if ( $testsFailed == 0)
 					{
 				?>
-				<div style="margin-top: 1.5em">
-					<h2><?php echo L("Database connection"); ?></h2>
-					<input type="text" id="host" value="<?php echo (defined("SQL_HOST")) ? SQL_HOST : "localhost" ?>"/> <?php echo L("Database host"); ?><br/>
-					<input type="text" id="database" value="<?php echo (defined("RP_USER")) ? RP_DATABASE : "raidplaner" ?>"/> <?php echo L("Raidplaner database"); ?><br/>
-					<input type="text" id="user" value="<?php echo (defined("RP_USER")) ? RP_USER : "root" ?>"/> <?php echo L("User with permissions for that database"); ?><br/>
-					<input type="password" id="password"/> <?php echo L("Password for that user"); ?><br/>
-					<input type="password" id="password_check"/> <?php echo L("Please repeat the password"); ?><br/>
-					<br/>
-					<input type="text" id="prefix" value="<?php echo (defined("RP_TABLE_PREFIX")) ? RP_TABLE_PREFIX : "table_" ?>"/> <?php echo L("Prefix for tables in the database"); ?><br/>
-				</div>
-				
-				<div style="margin-top: 1.5em">
-					<h2 style="margin-top: 1.5em"><?php echo L("Advanced options"); ?></h2>
-					<input type="checkbox" id="allow_registration"<?php echo (!defined("ALLOW_REGISTRATION") || ALLOW_REGISTRATION) ? " checked=\"checked\"" : "" ?>/> <?php echo L("Allow users to register manually"); ?><br/>
-					<input type="password" id="admin_password"/> <?php echo L("Password for the admin user"); ?><br/>
-					<input type="password" id="admin_password_check"/> <?php echo L("Please repeat the password"); ?><br/>
-				</div>	
-				
 				<div style="position: fixed; right: 50%; top: 50%; margin-right: -380px; margin-top: 260px">
-					<button onclick="checkForm()"><?php echo L("Save and continue"); ?></button>
+					<button onclick="loadSetupDb()"><?php echo L("Continue"); ?></button>
 				</div>			
 				<?php
 					} // if (permissions ok)

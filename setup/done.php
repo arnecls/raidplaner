@@ -8,14 +8,14 @@
 		<title>Raidplaner config</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         
-        <script type="text/javascript" src="lib/script/jquery-1.5.2.min.js"></script>
+        <script type="text/javascript" src="../lib/script/jquery-1.5.2.min.js"></script>
     </head>
 	
 	<body style="font-family: helvetica, arial, sans-serif; font-size: 11px; line-height: 1.5em; background-color: #cccccc; color: black">
 		<div style="width: 800px; height: 600px; position: fixed; left: 50%; top: 50%; margin-left: -400px; margin-top: -300px; background-color: white">
 			<div style="background-color: black; color: white; padding: 10px">
 				Packedpixel<br/>
-				<span style="font-size: 24px">Raidplaner setup (3/3)</span>
+				<span style="font-size: 24px">Raidplaner setup</span>
 			</div>
 			<div style="padding: 20px">
 				<div>

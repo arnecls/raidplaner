@@ -143,11 +143,11 @@
 		$g_Locale[ "PHPBB3 binding" ] = null;
 		$g_Locale[ "Allow users to login using their PHPBB3 account" ] = null;
 		$g_Locale[ "PHPBB3 database" ] = null;
-		$g_Locale[ "PHPBB3 group conversion" ] = null;
 		$g_Locale[ "Load groups using these settings" ] = null;
 		$g_Locale[ "Users of the following groups gain \"member\" rights upon first login" ] = null;
 		$g_Locale[ "Users of the following groups gain \"raidlead\" rights upon first login" ] = null;
 		$g_Locale[ "Back" ] = null;
+		$g_Locale[ "Continue" ] = "Weiter";
 		$g_Locale[ "Setup complete" ] = null;
 		$g_Locale[ "Raidplaner has been successfully set up." ] = null;
 		$g_Locale[ "You should now delete the setup folder and secure the following folders:" ] = null;
@@ -155,9 +155,31 @@
 		$g_Locale[ "If you encounter any bugs or if you have feature requests, please visit our bugtracker at " ] = null;
 		$g_Locale[ "Reload failed" ] = null;
 		$g_Locale[ "Connection test failed" ] = null;
-		$g_Locale[ "Database password must not be empty." ] = null;
-		$g_Locale[ "Database passwords did not match." ] = null;
+		$g_Locale[ "Connection test succeeded" ] = null;
 		$g_Locale[ "Admin passwords did not match." ] = null;
 		$g_Locale[ "Admin password must not be empty." ] = null;
+		$g_Locale[ "Outdated PHP version" ] = null;
+		$g_Locale[ "PHP version" ] = null;
+		$g_Locale[ "mcrypt module" ] = null;
+		$g_Locale[ "Mcrypt not configured with PHP" ] = null;
+		$g_Locale[ "PDO module" ] = null;
+		$g_Locale[ "PDO not configured with PHP" ] = null;
+		$g_Locale[ "The raidplaner needs a PHP 5.2 installation configured with the mcrypt and PDO extensions." ] = null;
+		$g_Locale[ "Please configure the database the raidplaner will place it's data into." ] = null;
+		$g_Locale[ "If the database is already in use by another installation you can enter a prefix to avoid name conflicts." ] = null;
+		$g_Locale[ "If you want to bind the raidplaner to a third party forum the raidplaner database must be on the same server as the forum's database." ] = null;
+		$g_Locale[ "Allow users to login using their EQDKP account" ] = null;
+		$g_Locale[ "Allow users to login using their vBulletin account" ] = null;
+		$g_Locale[ "EQDKP binding" ] = null;
+		$g_Locale[ "EQDKP database" ] = null;
+		$g_Locale[ "Verify these settings" ] = null;
+		$g_Locale[ "vBulletin binding" ] = null;
+		$g_Locale[ "vBulletin database" ] = null;
+		$g_Locale[ "PHPBB Database password must not be empty." ] = null;
+		$g_Locale[ "PHPBB Database passwords did not match." ] = null;
+		$g_Locale[ "EQDKP Database password must not be empty." ] = null;
+		$g_Locale[ "EQDKP Database passwords did not match." ] = null;
+		$g_Locale[ "vBulletin Database password must not be empty." ] = null;
+		$g_Locale[ "vBulletin Database passwords did not match." ] = null;
 	}
 ?>

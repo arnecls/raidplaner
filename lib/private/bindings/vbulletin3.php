@@ -1,5 +1,5 @@
 <?php
-    require_once dirname(__FILE__)."/../../config/config.vb3.php";
+    @include_once dirname(__FILE__)."/../../config/config.vb3.php";
     
     function vb3_check_hash( $ClearText, $Password, $Salt )
     {

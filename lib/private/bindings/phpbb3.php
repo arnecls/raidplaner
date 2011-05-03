@@ -1,6 +1,6 @@
 <?php
     require_once dirname(__FILE__)."/hash_phpbb3.php";
-    require_once dirname(__FILE__)."/../../config/config.phpbb3.php";
+    @include_once dirname(__FILE__)."/../../config/config.phpbb3.php";
     
     function BindPHPBB3User($User)
 	{

@@ -148,6 +148,7 @@
 		$g_Locale[ "Users of the following groups gain \"member\" rights upon first login" ] = "Benutzer der folgenden Gruppe bekommen automatisch \"Mitglieder\" Rechte beim ersten login"; 
 		$g_Locale[ "Users of the following groups gain \"raidlead\" rights upon first login" ] = "Benutzer der folgenden Gruppe bekommen automatisch \"Raidleiter\" Rechte beim ersten login";
 		$g_Locale[ "Back" ] = "Zur&uuml;ck";
+		$g_Locale[ "Continue" ] = "Weiter";
 		$g_Locale[ "Setup complete" ] = "Installation abgeschlossen";
 		$g_Locale[ "Raidplaner has been successfully set up." ] = "Der Raidplaner ist jetzt erfolgreich konfiguriert.";
 		$g_Locale[ "You should now delete the setup folder and secure the following folders:" ] = "Du solltest nun den setup Ordner l&ouml;schen und die folgenden Ordner absichern:";
@@ -155,9 +156,32 @@
 		$g_Locale[ "If you encounter any bugs or if you have feature requests, please visit our bugtracker at " ] = "Bei Fehlern oder Ideen f&uuml;r neue Features besuche bitte unseren Bugtracker unter ";
 		$g_Locale[ "Reload failed" ] = "Ladevorgang fehlgeschlagen";
 		$g_Locale[ "Connection test failed" ] = "Verbindungstest fehlgeschlagen";
-		$g_Locale[ "Database password must not be empty." ] = "Datenbank Passwort darf nicht leer sein";
-		$g_Locale[ "Database passwords did not match." ] = "Datenbank-Passwoerter stimmen nicht ueberein";
+		$g_Locale[ "Connection test succeeded" ] = "Verbindungstest erfolgreich";
 		$g_Locale[ "Admin passwords did not match." ] = "Administrator-Passwoerter stimmen nicht ueberein";
 		$g_Locale[ "Admin password must not be empty." ] = "Administrator-Passwort darf nicht leer sein";
+		$g_Locale[ "Outdated PHP version" ] = "Veraltete PHP Version";
+		$g_Locale[ "PHP version" ] = "PHP Version";
+		$g_Locale[ "mcrypt module" ] = "mcrypt Modul";
+		$g_Locale[ "Mcrypt not configured with PHP" ] = "PHP wurde nicht mit mcrypt konfiguriert";
+		$g_Locale[ "PDO module" ] = "PDO Modul";
+		$g_Locale[ "PDO not configured with PHP" ] = "PHP wurde nicht mit PDO konfiguriert";
+		$g_Locale[ "The raidplaner needs a PHP 5.2 installation configured with the mcrypt and PDO extensions." ] = "Der Raidplaner ben&ouml;tigt eine PHP 5.2 Installation die mit der mcrypt und PDO Erweiterung Konfiguriert wurde.";
+		$g_Locale[ "Please configure the database the raidplaner will place it's data into." ] = "Bitte gib die Konfigurationsdaten der Datenbank an in der die Raidplaner Daten abgelegt werden k&ouml;nnen.";
+		$g_Locale[ "If the database is already in use by another installation you can enter a prefix to avoid name conflicts." ] = "Wenn die Datenank bereits von einer anderen Installation verwendet wird kann ein Pr&auml;fix angegeben werden um Namenskonflikte zu vermeiden.";
+		$g_Locale[ "If you want to bind the raidplaner to a third party forum the raidplaner database must be on the same server as the forum's database." ] = "Wenn der Raidplaner an ein externes Forum gebunden werden soll, so m&uuml;ssen die Datenbanken auf dem gleichen Server liegen.";
+		$g_Locale[ "Allow users to login using their EQDKP account" ] = "Erlaube es Nutzern sicht mit ihrem EQDKP Account anzumelden";
+		$g_Locale[ "Allow users to login using their vBulletin account" ] = "Erlaube es Nutzern sicht mit ihrem vBulletin Account anzumelden";
+		$g_Locale[ "EQDKP binding" ] = "EQDKP Anbindung";
+		$g_Locale[ "EQDKP database" ] = "Name der EQDKP Datenbank";
+		$g_Locale[ "Verify these settings" ] = "&Uuml;berpr&uuml;fe diese Einstellung";
+		$g_Locale[ "vBulletin binding" ] = "vBulletin Anbindung";
+		$g_Locale[ "vBulletin database" ] = "Name der vBulletin Datenbank";
+		$g_Locale[ "PHPBB Database password must not be empty." ] = "PHPBB Datenbank Passwort darf nicht leer sein";
+		$g_Locale[ "PHPBB Database passwords did not match." ] = "PHPBB Datenbank-Passwoerter stimmen nicht ueberein";
+		$g_Locale[ "EQDKP Database password must not be empty." ] = "EQDKP Datenbank Passwort darf nicht leer sein";
+		$g_Locale[ "EQDKP Database passwords did not match." ] = "EQDKP Datenbank-Passwoerter stimmen nicht ueberein";
+		$g_Locale[ "vBulletin Database password must not be empty." ] = "vBulletin Datenbank Passwort darf nicht leer sein";
+		$g_Locale[ "vBulletin Database passwords did not match." ] = "vBulletin Datenbank-Passwoerter stimmen nicht ueberein";
+		
 	}
 ?>

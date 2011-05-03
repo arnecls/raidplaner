@@ -1,5 +1,5 @@
 <?php
-	require_once dirname(__FILE__)."/../../config/config.eqdkp.php";
+	@include_once dirname(__FILE__)."/../../config/config.eqdkp.php";
    	
 	function BindEQDKPUser($User)
 	{

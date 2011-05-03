@@ -1,6 +1,5 @@
 <?php
 
-	require_once(dirname(__FILE__)."/../config/config.php");
 	require_once(dirname(__FILE__)."/tools_string.php");
 	require_once(dirname(__FILE__)."/locale.php");
 	
@@ -32,7 +31,8 @@
 		
 		public static function GetInstance()
 		{
-		    return self::GetExternInstance(SQL_HOST, RP_DATABASE, RP_USER, RP_PASS);
+		    require_once(dirname(__FILE__)."/../config/config.php");
+			return self::GetExternInstance(SQL_HOST, RP_DATABASE, RP_USER, RP_PASS);
 		}
 		
 		// --------------------------------------------------------------------------------------------

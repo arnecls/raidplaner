@@ -2,9 +2,9 @@
 	header("Content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
     
-	require_once("../lib/private/connector.class.php");
+	require_once("../../lib/private/connector.class.php");
 	
-	$configFile = fopen( "../lib/config/config.php", "w+" );
+	$configFile = fopen( "../../lib/config/config.php", "w+" );
 	
 	fwrite( $configFile, "<?php\n");
 	
@@ -18,11 +18,11 @@
 	fwrite( $configFile, "?>");	
 	fclose( $configFile );
 	
-	require_once("../lib/config/config.php");
+	require_once("../../lib/config/config.php");
 
 	$connector = Connector::GetInstance();
 	
-	$connector->exec( "CREATE TABLE `".$_REQUEST["prefix"]."Attendance` (
+	$connector->exec( "CREATE TABLE IF NOT EXISTS `".$_REQUEST["prefix"]."Attendance` (
 		  `CharacterId` int(10) unsigned NOT NULL,
 		  `UserId` int(11) unsigned NOT NULL,
 		  `RaidId` int(10) unsigned NOT NULL,
@@ -34,7 +34,7 @@
 		  KEY `RaidId` (`RaidId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;" );
 	
-	$connector->exec( "CREATE TABLE `".$_REQUEST["prefix"]."Character` (
+	$connector->exec( "CREATE TABLE IF NOT EXISTS `".$_REQUEST["prefix"]."Character` (
 		  `CharacterId` int(10) unsigned NOT NULL AUTO_INCREMENT,
 		  `UserId` int(10) unsigned NOT NULL,
 		  `Name` varchar(64) NOT NULL,
@@ -46,14 +46,14 @@
 		  KEY `UserId` (`UserId`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
 		
-	$connector->exec( "CREATE TABLE `".$_REQUEST["prefix"]."Location` (
+	$connector->exec( "CREATE TABLE IF NOT EXISTS `".$_REQUEST["prefix"]."Location` (
 		  `LocationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
 		  `Name` varchar(128) NOT NULL,
 		  `Image` varchar(255) NOT NULL,
 		  PRIMARY KEY (`LocationId`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
 		
-	$connector->exec( "CREATE TABLE `".$_REQUEST["prefix"]."Raid` (
+	$connector->exec( "CREATE TABLE IF NOT EXISTS `".$_REQUEST["prefix"]."Raid` (
 		  `RaidId` int(10) unsigned NOT NULL AUTO_INCREMENT,
 		  `LocationId` int(10) unsigned NOT NULL,
 		  `Stage` enum('open','locked','canceled') NOT NULL DEFAULT 'open',
@@ -68,7 +68,7 @@
 		  KEY `LocationId` (`LocationId`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
 		
-	$connector->exec( "CREATE TABLE `".$_REQUEST["prefix"]."Setting` (
+	$connector->exec( "CREATE TABLE IF NOT EXISTS `".$_REQUEST["prefix"]."Setting` (
 		  `SettingId` int(10) unsigned NOT NULL AUTO_INCREMENT,
 		  `Name` varchar(64) NOT NULL,
 		  `IntValue` int(11) NOT NULL,
@@ -77,18 +77,40 @@
 		  FULLTEXT KEY `Name` (`Name`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
 		
-	$connector->exec( "CREATE TABLE `".$_REQUEST["prefix"]."User` (
+	$connector->exec( "CREATE TABLE IF NOT EXISTS `".$_REQUEST["prefix"]."User` (
 		  `UserId` int(10) unsigned NOT NULL AUTO_INCREMENT,
 		  `Group` enum('admin','raidlead','member','none') NOT NULL,
 		  `ExternalId` int(10) unsigned NOT NULL,
-		  `ExternalBinding` enum('none','phpbb3') NOT NULL,
+		  `ExternalBinding` enum('none', 'phpbb3', 'eqdkp', 'vb3') NOT NULL,
 		  `Login` varchar(255) NOT NULL,
 		  `Password` char(64) NOT NULL,
+		  `Hash` char(32) NOT NULL,
 		  PRIMARY KEY (`UserId`),
 		  KEY `ExternalId` (`ExternalId`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
 		
-	$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` VALUES(1, 'PurgeRaids', 7257600, '');" );
-	$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` VALUES(2, 'LockRaids', 3600, '');" );	
-	$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."User` VALUES(1, 'admin', 0, 'none', 'admin', '".sha1($_REQUEST["adminpass"])."');" );
+	$testSt = $connector->prepare( "SELECT * FROM `".$_REQUEST["prefix"]."Setting` LIMIT 1" );
+	$testSt->execute();
+	
+	if ( $testSt->rowCount() == 0 )
+	{
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` VALUES(1, 'PurgeRaids', 7257600, '');" );
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` VALUES(2, 'LockRaids', 3600, '');" );	
+	}
+	
+	$testSt->closeCursor();
+	
+	$testSt = $connector->prepare( "SELECT * FROM `".$_REQUEST["prefix"]."User` LIMIT 1" );
+	$testSt->execute();
+	
+	if ( $testSt->rowCount() == 0 )
+	{
+		$Salt = sha1( strval(microtime() + rand()) . $_SERVER["REMOTE_ADDR"] );
+		$Hash = sha1( "admin".$_REQUEST["adminpass"] );			
+		$Hash = md5( $Salt.$Hash );
+			
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."User` VALUES(1, 'admin', 0, 'none', 'admin', '".sha1($_REQUEST["adminpass"])."', '".$Hash."');" );
+	}
+	
+	$testSt->closeCursor();
 ?>

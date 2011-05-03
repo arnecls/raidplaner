@@ -2,6 +2,7 @@
     require_once dirname(__FILE__)."/connector.class.php";
     require_once dirname(__FILE__)."/../config/config.php";
     require_once dirname(__FILE__)."/bindings/native.php";
+    
     require_once dirname(__FILE__)."/bindings/phpbb3.php";
     require_once dirname(__FILE__)."/bindings/eqdkp.php";
     require_once dirname(__FILE__)."/bindings/vbulletin3.php";

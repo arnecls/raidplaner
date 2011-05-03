@@ -1,6 +1,6 @@
 <?php
 	define( "LOCALE_SETUP", true );
-	require_once(dirname(__FILE__)."/../lib/private/locale.php");
+	require_once(dirname(__FILE__)."/../../lib/private/locale.php");
 ?>
 
 function checkForm() 
@@ -37,7 +37,7 @@ function checkForm()
 	
 	$.ajax({
 		type     : "POST",
-		url      : "step1_check.php",
+		url      : "query/setup_db_check.php",
 		dataType : "xml",
 		async    : true,
 		data     : parameter,
@@ -73,17 +73,11 @@ function dbCheckDone( a_XMLData )
 		
 		$.ajax({
     		type     : "POST",
-			url      : "step1_done.php",
+			url      : "query/setup_db_done.php",
 			dataType : "xml",
 			async    : true,
 			data     : parameter,
-			success  : loadStep2
+			success  : loadBindings
 		});
 	}
-}
-
-function loadStep2()
-{
-	var url = window.location.href.substring( 0, window.location.href.lastIndexOf("/") );
-	window.location.href = url + "/step2.php";
 }
