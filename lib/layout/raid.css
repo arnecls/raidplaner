@@ -336,9 +336,25 @@
 }
 
 .bench .slot .unavailable {
+	opacity: 0.60;
+	filter:Alpha(opacity=60);
+	color: #ff0000;
+}
+
+.bench .slot img.unavailable {
+	opacity: 0.60;
+	filter:Alpha(opacity=60);
+}
+
+.bench .slot .undecided {
 	opacity: 0.50;
 	filter:Alpha(opacity=50);
-	color: red;
+	color: #eeee00;
+}
+
+.bench .slot img.undecided {
+	opacity: 0.30;
+	filter:Alpha(opacity=30);
 }
 
 .bench .slot .comment {

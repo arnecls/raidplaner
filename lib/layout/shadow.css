@@ -13,3 +13,7 @@
 .shadow_inlay_hard {
 	text-shadow: -1px -1px 1px black;
 }
+
+.shadow_default {
+	text-shadow: 1px 1px 1px black;
+}

@@ -26,6 +26,8 @@
 	        	
 	        	$Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC );
 	        	
+	        	$Participants = Array();
+	        	
 	        	echo "<raidId>".$Data["RaidId"]."</raidId>";
                 echo "<locationId>".$Data["LocationId"]."</locationId>";
                 echo "<location>".$Data["LocationName"]."</location>";
@@ -44,6 +46,9 @@
                 {
 		        	do
 		        	{
+		        		if ( $Data["UserId"] != 0 )
+		        				array_push( $Participants, intval($Data["UserId"]) );
+		        				
 		        		if ( ($Data["CharacterId"] == 0) && ($Data["UserId"] != 0) )
 		        		{
 		        			$CharSt = $Connector->prepare(	"SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
@@ -58,14 +63,14 @@
 		        			}
 		        			else
 		        			{
-		        				$DefaultData = $CharSt->fetch( PDO::FETCH_ASSOC );
+		        				$CharData = $CharSt->fetch( PDO::FETCH_ASSOC );
 		        				
 		        				echo "<attendee>";
 		        				
-		        				if ( $DefaultData["CharacterId"] == NULL )
+		        				if ( $CharData["CharacterId"] == NULL )
 		        				{
 		        					echo "<id>0</id>";
-			        				echo "<name>[".$DefaultData["UserName"]."]</name>";
+			        				echo "<name>[".$CharData["UserName"]."]</name>";
 			        				echo "<mainchar>false</mainchar>";
 		        					echo "<class>empty</class>";
 			        				echo "<role>dmg</role>";
@@ -74,13 +79,13 @@
 		        				}
 		        				else
 		        				{
-		        					echo "<id>".$DefaultData["CharacterId"]."</id>";
-			        				echo "<name>".$DefaultData["Name"]."</name>";
-			        				echo "<mainchar>".$DefaultData["Mainchar"]."</mainchar>";
-		        					echo "<class>".$DefaultData["Class"]."</class>";
-			        				echo "<role>".$DefaultData["Role1"]."</role>";
-			        				echo "<role1>".$DefaultData["Role1"]."</role1>";
-			        				echo "<role2>".$DefaultData["Role2"]."</role2>";		        		
+		        					echo "<id>".$CharData["CharacterId"]."</id>";
+			        				echo "<name>".$CharData["Name"]."</name>";
+			        				echo "<mainchar>".$CharData["Mainchar"]."</mainchar>";
+		        					echo "<class>".$CharData["Class"]."</class>";
+			        				echo "<role>".$CharData["Role1"]."</role>";
+			        				echo "<role1>".$CharData["Role1"]."</role1>";
+			        				echo "<role2>".$CharData["Role2"]."</role2>";		        		
 			        			}
 		        		
 			        			echo "<status>".$Data["Status"]."</status>";
@@ -110,6 +115,36 @@
 		        	while ( $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC ) );
 	        	}
 	        	
+	        	$AllUsersSt = $Connector->prepare(	"SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.UserId ".
+    												"FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
+    												"WHERE Mainchar = \"true\" AND `Group` != \"none\"" );
+    												
+    			
+    			$AllUsersSt->execute();
+    			
+    			while ( $User = $AllUsersSt->fetch( PDO::FETCH_ASSOC ) )
+    			{
+    				if ( !in_array( intval($User["UserId"]), $Participants ) )
+    				{
+    					echo "<attendee>";
+		        		
+	        			echo "<id>".$User["CharacterId"]."</id>";
+	        			echo "<name>".$User["Name"]."</name>";
+	        			echo "<class>".$User["Class"]."</class>";
+	        			echo "<mainchar>true</mainchar>";
+	        			echo "<role>".$User["Role1"]."</role>";
+	        			echo "<role1>".$User["Role1"]."</role1>";
+	        			echo "<role2>".$User["Role2"]."</role2>";		        		
+	        		
+	        			echo "<status>undecided</status>";
+	        			echo "<comment></comment>";
+	        			
+		        		echo "</attendee>";
+    				}
+    			}
+    			
+    			$AllUsersSt->closeCursor();
+    			
 	        	echo "</raid>";	        		        
 	        }
 	        
