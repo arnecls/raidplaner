@@ -1,0 +1,1 @@
+ALTER TABLE  `raid_User` ADD  `Created` DATETIME NOT NULL;
