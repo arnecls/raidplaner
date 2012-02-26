@@ -106,7 +106,13 @@
 		$g_Locale[ "Your account is currently locked." ]				= "Dein Account ist momentan gesperrt.";
 		$g_Locale[ "Please tell us why you will be absent." ]			= "Bitte teile uns mit warum du abwesend bist.";
 		$g_Locale[ "Set to absent" ]									= "Ich bin abwesend";
-		$g_Locale[ "Input required" ]									= "Eingabe erwartet";
+		$g_Locale[ "Input required" ]									= "Eingabe erwartet";		
+		
+		$g_Locale[ "Raid attendance" ]									= "Raidteilnahme";
+		$g_Locale[ "Roles in attended raids" ]							= "Rollenverteilung in raids";
+		$g_Locale[ "Queued" ]											= "Angemeldet";
+		$g_Locale[ "Attended" ]											= "Teilgenommen";
+		$g_Locale[ "Missed" ]											= "Verpasst";
 		
 		$g_Locale[ "Please contact your admin to get your account unlocked." ] 								= "Bitte wende dich an deinen Administrator um deinen Account freizuschalten.";
 		$g_Locale[ "Continue without updating" ]															= "Ohne Aktualisierung fortfahren";

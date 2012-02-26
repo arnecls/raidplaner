@@ -106,7 +106,13 @@
 		$g_Locale[ "Your account is currently locked." ]				= null;
 		$g_Locale[ "Please tell us why you will be absent." ]			= null;
 		$g_Locale[ "Set to absent" ]									= null;
-		$g_Locale[ "Input required" ]									= null;	
+		$g_Locale[ "Input required" ]									= null;
+		
+		$g_Locale[ "Raid attendance" ]									= null;
+		$g_Locale[ "Roles in attended raids" ]							= null;			
+		$g_Locale[ "Queued" ]											= null;
+		$g_Locale[ "Attended" ]											= null;
+		$g_Locale[ "Missed" ]											= null;
 		
 		$g_Locale[ "Please contact your admin to get your account unlocked." ] 								= null;
 		$g_Locale[ "Continue without updating" ]															= null;

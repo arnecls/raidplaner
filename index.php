@@ -15,7 +15,7 @@
     require_once("lib/private/users.php");
     
     UserProxy::GetInstance(); // Init user
-    $siteVersion = "0.9.3";
+    $siteVersion = "0.9.4";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
@@ -29,7 +29,7 @@
 		<link rel="stylesheet" type="text/css" href="lib/layout/raid.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/raidlist.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/profile.css?version=<?php echo $siteVersion; ?>"/>
-		<link rel="stylesheet" type="text/css" href="lib/layout/jquery-ui-1.8.10.custom.css"/>
+		<link rel="stylesheet" type="text/css" href="lib/layout/jquery-ui-1.8.18.custom.css"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/tooltip.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/shadow.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/sheet.css?version=<?php echo $siteVersion; ?>"/>
@@ -55,8 +55,8 @@
 		<link rel="stylesheet" type="text/css" href="lib/layout/settings.css?version=<?php echo $siteVersion; ?>"/>
 		<?php } ?>
 		
-		<script type="text/javascript" src="lib/script/jquery-1.5.2.min.js"></script>
-		<script type="text/javascript" src="lib/script/jquery-ui-1.8.10.custom.min.js"></script>
+		<script type="text/javascript" src="lib/script/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="lib/script/jquery-ui-1.8.18.custom.min.js"></script>
 		<script type="text/javascript" src="lib/script/jquery.ba-hashchange.min.js"></script>
 		
 		<script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>		

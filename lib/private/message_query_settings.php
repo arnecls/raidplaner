@@ -5,6 +5,8 @@ function msgQuerySettings( $Request )
 	if ( ValidAdmin() )
     {    
 		$Connector = Connector::GetInstance();
+		
+		// Load users
     	
     	$Users = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` ORDER BY Login, `Group`");
     	
@@ -26,6 +28,8 @@ function msgQuerySettings( $Request )
 	    }
 	    	
         $Users->closeCursor();
+        
+        // Load settings
         
         $Settings = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Setting` ORDER BY Name");
     	

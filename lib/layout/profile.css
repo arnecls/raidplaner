@@ -7,7 +7,6 @@
 	font-family: Helvetica, Verdana, Arial, sans-serif;
 	border-spacing: 0px 0px;
 	width: 980px;
-	overflow-y: auto;
     float: left;
 }
 
@@ -35,7 +34,8 @@
 	display: inline-block;
 	vertical-align: top;
 	width: 910px;
-	height: 160px;
+	height: 190px;
+	overflow-y: auto;
 }
 
 #profile .charslot {
@@ -62,7 +62,6 @@
 	height: 148px;
 	margin-right: 5px;
 	margin-bottom: 10px;
-	margin-left: 10px;
 	cursor: pointer;
 }
 
@@ -158,4 +157,128 @@
 
 #profile .button_profile {
     clear: left;
+    margin-top: 10px;
+}
+
+#attendance .attendanceCount {
+	height: 26px;
+	margin-top: 15px;
+	display: inline-block;
+	text-align: right;
+}
+
+#attendance .attendanceType {
+	height: 26px;
+	margin-top: 10px;
+	display: inline-block;
+	text-align: right;
+}
+
+#attendance .label {
+	position: relative;
+	display: inline-block;
+	left: 10px;
+	top: 3px;
+	color: #666666;
+}
+
+#attendance .count {
+	position: relative;
+	font-size: 14px;
+	right: 5px;
+	top: 4px;
+}
+
+#attendance .start {
+	background: url("images/progress_start.png");
+	width: 7px;
+	height: 26px;
+	position: absolute;
+}
+
+#attendance .end {
+	background: url("images/progress_end.png");
+	width: 7px;
+	height: 26px;
+	position: absolute;
+	margin-left: -7px;
+}
+
+#attendance .ok {
+	background: url("images/progress_green.png");
+	display: inline-block;
+	height: 26px;
+	color: #00AA00;
+}
+
+#attendance .available {
+	background: url("images/progress_yellow_stripe.png");
+	display: inline-block;
+	height: 26px;
+	color: #888822;
+}
+
+#attendance .unavailable {
+	background: url("images/progress_red_stripe.png");
+	display: inline-block;
+	height: 26px;
+	color: #AA6666;
+}
+
+#attendance .missed {
+	background: url("images/progress_grey.png");
+	display: inline-block;
+	height: 26px;
+	color: #777777;
+}
+
+#attendance .dmg {
+	background: url("images/progress_yellow.png");
+	display: inline-block;
+	height: 26px;
+	color: #888822;
+}
+
+#attendance .heal {
+	background: url("images/progress_white.png");
+	display: inline-block;
+	height: 26px;
+	color: #AAAAAA;
+}
+
+#attendance .tank {
+	background: url("images/progress_brown.png");
+	display: inline-block;
+	height: 26px;
+	color: #998855;
+}
+
+#attendance .labels {
+	margin-top: 40px;
+}
+
+#attendance .box {
+	margin-right: 10px;
+	display: inline-block;
+}
+
+#attendance .labels .label {
+	position: relative;
+	display: inline-block;
+	left: 0px;
+	top: -10px;
+	margin-right: 10 px;
+	color: #666666;
+	width: 140px;
+}
+
+#attendance .labels .start {
+	position: relative;
+	display: inline-block;
+}
+
+#attendance .labels .end {
+	display: inline-block;
+	position: relative;
+	margin-left: 0px;
 }
