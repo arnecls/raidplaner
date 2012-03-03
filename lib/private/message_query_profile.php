@@ -11,7 +11,32 @@ function msgQueryProfile( $Request )
 			$userId = intval( $_REQUEST["id"] );
 		}
 		
+		$Created   = $_SESSION["User"]["Created"];
     	$Connector = Connector::GetInstance();
+        
+        // Admintool relevant data
+        
+        if ( ValidAdmin() && isset( $_REQUEST["id"] ) )
+        {
+        	$Users = $Connector->prepare( "SELECT Login, Created FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
+        	$Users->bindValue( ":UserId", $userId, PDO::PARAM_INT );
+        	
+        	if ( !$Users->execute() )
+	        {
+	        	postErrorMessage( $User );
+	        }
+	        else
+	        {
+	        	$Data = $Users->fetch( PDO::FETCH_ASSOC );
+	        	
+	        	echo "<userid>".$userId."</userid>";
+        		echo "<name>".$Data["Login"]."</name>";
+        		
+        		$Created = $Data["Created"];
+	        }
+	        
+	        $Users->closeCursor();
+        }
     	
     	// Load characters
     	
@@ -49,8 +74,9 @@ function msgQueryProfile( $Request )
         // Total raid count
         
         $NumRaids = 0;
-        $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` WHERE Start <= FROM_UNIXTIME(:Start)" );
-        $Raids->bindValue( ":Start", time(), PDO::PARAM_INT );
+        $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` WHERE Start > :Registered AND Start < FROM_UNIXTIME(:Now)" );
+        $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
+    	$Raids->bindValue( ":Registered", $Created, PDO::PARAM_STR );
         
         if ( !$Raids->execute() )
         {
@@ -69,11 +95,12 @@ function msgQueryProfile( $Request )
         $Attendance = $Connector->prepare(	"Select `Status`, `Role`, COUNT(*) AS `Count` ".
         									"FROM `".RP_TABLE_PREFIX."Attendance` ".
     										"LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) ".
-    										"WHERE UserId = :UserId AND Start <= FROM_UNIXTIME(:Start) ".
+    										"WHERE UserId = :UserId AND Start > :Registered AND Start < FROM_UNIXTIME(:Now) ".
     										"GROUP BY `Status`, `Role` ORDER BY Status" );
-    	
+    										
     	$Attendance->bindValue( ":UserId", $userId, PDO::PARAM_INT );
-    	$Attendance->bindValue( ":Start", time(), PDO::PARAM_INT );
+    	$Attendance->bindValue( ":Registered", $Created, PDO::PARAM_STR );
+    	$Attendance->bindValue( ":Now", time(), PDO::PARAM_INT );
         
         if ( !$Attendance->execute() )
         {
@@ -109,28 +136,6 @@ function msgQueryProfile( $Request )
 	    }
 	    	
         $Attendance->closeCursor();
-        
-        // Admintool relevant data
-        
-        if ( ValidAdmin() && isset( $_REQUEST["id"] ) )
-        {
-        	$Users = $Connector->prepare( "SELECT Login FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
-        	$Users->bindValue( ":UserId", $userId, PDO::PARAM_INT );
-        	
-        	if ( !$Users->execute() )
-	        {
-	        	postErrorMessage( $User );
-	        }
-	        else
-	        {
-	        	$Data = $Users->fetch( PDO::FETCH_ASSOC );
-	        	
-	        	echo "<userid>".$userId."</userid>";
-        		echo "<name>".$Data["Login"]."</name>";
-	        }
-	        
-	        $Users->closeCursor();
-        }
     }
     else
     {

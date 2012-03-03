@@ -113,6 +113,14 @@
 		$g_Locale[ "Queued" ]											= "Angemeldet";
 		$g_Locale[ "Attended" ]											= "Teilgenommen";
 		$g_Locale[ "Missed" ]											= "Verpasst";
+		$g_Locale[ "Default raid start time" ]							= "Voreingestellter Raidstart";
+		$g_Locale[ "Default raid end time" ]							= "Voreingestelltes Raidende";
+		$g_Locale[ "Default raid size" ]								= "Voreingestellte Raidgr&ouml;&szlig;e";
+		$g_Locale[ "Banner click landing page" ]						= "Banner-Klick Zielseite";
+		$g_Locale[ "Site banner" ]										= "Seitenbanner";
+		$g_Locale[ "Delete location and raids" ]						= "Instanz und Raids entfernen";		
+		$g_Locale[ "Do you really want to delete this location?" ]		= "M&ouml;chtest du diese Instanz wirklich l&ouml;schen?";
+		$g_Locale[ "This will also delete all raids at this location." ] = "Alle Raids in dieser Instanz werden ebenfalls gel&ouml;scht.";
 		
 		$g_Locale[ "Please contact your admin to get your account unlocked." ] 								= "Bitte wende dich an deinen Administrator um deinen Account freizuschalten.";
 		$g_Locale[ "Continue without updating" ]															= "Ohne Aktualisierung fortfahren";

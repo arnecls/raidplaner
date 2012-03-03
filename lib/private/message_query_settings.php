@@ -42,7 +42,6 @@ function msgQuerySettings( $Request )
 	        while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
 	        {
 	        	echo "<setting>";
-	        	echo "<id>".$Data["SettingId"]."</id>";
 	        	echo "<name>".$Data["Name"]."</name>";
 	        	echo "<intValue>".$Data["IntValue"]."</intValue>";
 	        	echo "<textValue>".$Data["TextValue"]."</textValue>";
@@ -51,6 +50,8 @@ function msgQuerySettings( $Request )
 	    }
 	    	
         $Settings->closeCursor();
+        
+        msgQueryLocations( $Request );
     }
     else
     {

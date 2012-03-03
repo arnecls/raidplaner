@@ -113,6 +113,14 @@
 		$g_Locale[ "Queued" ]											= null;
 		$g_Locale[ "Attended" ]											= null;
 		$g_Locale[ "Missed" ]											= null;
+		$g_Locale[ "Default raid start time" ]							= null;
+		$g_Locale[ "Default raid end time" ]							= null;
+		$g_Locale[ "Default raid size" ]								= null;
+		$g_Locale[ "Banner click landing page" ]						= null;
+		$g_Locale[ "Site banner" ]										= null;
+		$g_Locale[ "Delete location and raids" ]						= null;		
+		$g_Locale[ "Do you really want to delete this location?" ]		= null;
+		$g_Locale[ "This will also delete all raids at this location." ] = null;
 		
 		$g_Locale[ "Please contact your admin to get your account unlocked." ] 								= null;
 		$g_Locale[ "Continue without updating" ]															= null;

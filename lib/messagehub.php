@@ -13,6 +13,7 @@
     include_once("private/message_raid_update.php");
     include_once("private/message_raid_delete.php");
     include_once("private/message_query_locations.php");
+    include_once("private/message_query_newraid.php");
     include_once("private/message_query_profile.php");
     include_once("private/message_query_settings.php");
     include_once("private/message_profile_update.php");
@@ -59,6 +60,10 @@
         case "raid_update":
         	msgRaidUpdate( $_REQUEST );
             break;
+            
+        case "query_newraiddata":
+        	msgQueryNewRaidData( $_REQUEST );
+        	break;
             
         case "query_locations":
         	msgQueryLocations( $_REQUEST );

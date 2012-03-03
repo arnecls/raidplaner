@@ -230,8 +230,8 @@
             		
             	$UserSt->closeCursor();
 	            $UserSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."User` (".
-	                                          "`Group`, ExternalId, ExternalBinding, Login, Password, Hash) ".
-	                                          "VALUES (:Group, :ExternalUserId, :Binding, :Login, :Password, :Hash)");
+	                                          "`Group`, ExternalId, ExternalBinding, Login, Password, Hash, Created) ".
+	                                          "VALUES (:Group, :ExternalUserId, :Binding, :Login, :Password, :Hash, FROM_UNIXTIME(:Created))");
 	                                          
 	            $UserSt->bindValue(":ExternalUserId",   $ExternalUserId,    PDO::PARAM_INT);
 	            $UserSt->bindValue(":Login",    		strtolower($Login), PDO::PARAM_STR);
@@ -239,6 +239,7 @@
 	            $UserSt->bindValue(":Hash", 			self::$Hash, 		PDO::PARAM_STR);
 	            $UserSt->bindValue(":Group", 			$Group, 			PDO::PARAM_STR);
 	            $UserSt->bindValue(":Binding", 			$BindingName, 		PDO::PARAM_STR);
+	            $UserSt->bindValue(":Created", 			time(), 			PDO::PARAM_INT);
 	            
 	            $UserSt->execute();
 	            $UserSt->closeCursor();

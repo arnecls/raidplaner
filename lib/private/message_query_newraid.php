@@ -1,12 +1,38 @@
 <?php
 
-function msgQueryLocations( $Request )
+function msgQueryNewRaidData( $Request )
 {
-	if ( ValidAdmin() )
+	if ( ValidRaidlead() )
     {
     	$Connector = Connector::GetInstance();
     	
-    	// Locations
+    	// Settings
+    	
+    	$NewRaidSettings = $Connector->prepare("Select Name, IntValue FROM `".RP_TABLE_PREFIX."Setting`");
+    	
+    	if ( !$NewRaidSettings->execute() )
+        {
+        	postErrorMessage( $NewRaidSettings );
+        }
+        else
+        {
+        	echo "<settings>";
+	        	
+        	$OfInterest = array( "RaidSize", "RaidStartHour", "RaidStartMinute", "RaidEndHour", "RaidEndMinute" );
+        	while ( $Data = $NewRaidSettings->fetch( PDO::FETCH_ASSOC ) )
+	        {
+	        	if ( in_array($Data["Name"], $OfInterest) )
+	        	{
+	        		echo "<".$Data["Name"].">".$Data["IntValue"]."</".$Data["Name"].">";
+	        	}
+	        }
+	        
+	        echo "</settings>";
+        }
+        
+        $NewRaidSettings->closeCursor();
+        
+        // Locations
     	
     	$ListLocations = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Location` ORDER BY Name");
         

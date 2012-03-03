@@ -28,10 +28,23 @@ body {
 
 #logo {
 	display: block;
-	background-repeat: no-repeat;
-	background-image: url(images/logo.jpg);
 	height: 140px;
 	width: 1024px;
+}
+
+.logo_wotlk {
+	background-repeat: no-repeat;
+	background-image: url(images/logo_wotlk.jpg);
+}
+
+.logo_cata {
+	background-repeat: no-repeat;
+	background-image: url(images/logo_cata.jpg);
+}
+
+.logo_mop {
+	background-repeat: no-repeat;
+	background-image: url(images/logo_mop.jpg);
 }
 
 #menu {

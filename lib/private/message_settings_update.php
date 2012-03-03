@@ -44,6 +44,50 @@ function updateGroup( $Connector, $GroupName, $IdArray )
     
     return true;
 }
+
+// -----------------------------------------------------------------------------
+
+function generateQueryStringInt( $CurrentValues, &$BindValues, $ValueName, $NewValue )
+{
+	if ( isset($CurrentValues[$ValueName]) )
+    {
+    	if ( $CurrentValues[$ValueName]["number"] != $NewValue )
+    	{
+    		array_push( $BindValues, array(":".$ValueName, $NewValue, PDO::PARAM_INT) );
+    		return "UPDATE `".RP_TABLE_PREFIX."Setting` SET IntValue = :".$ValueName." WHERE Name=\"".$ValueName."\"; ";
+    	}
+    }
+    else
+    {
+    	array_push( $BindValues, array(":".$ValueName, $NewValue, PDO::PARAM_INT) );
+    	return "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`) VALUES ('".$ValueName."', :".$ValueName."); ";
+    }
+    
+    return "";
+}
+
+// -----------------------------------------------------------------------------
+
+function generateQueryStringText( $CurrentValues, &$BindValues, $ValueName, $NewValue )
+{
+	if ( isset($CurrentValues[$ValueName]) )
+    {
+    	if ( $CurrentValues[$ValueName]["text"] != $NewValue )
+    	{
+    		array_push( $BindValues, array(":".$ValueName, $NewValue, PDO::PARAM_STR) );
+    		return "UPDATE `".RP_TABLE_PREFIX."Setting` SET TextValue = :".$ValueName." WHERE Name=\"".$ValueName."\"; ";
+    	}
+    }
+    else
+    {
+    	array_push( $BindValues, array(":".$ValueName, $NewValue, PDO::PARAM_STR) );
+    	return "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `TextValue`) VALUES ('".$ValueName."', :".$ValueName."); ";    	
+    }
+    
+    return "";
+}
+
+// -----------------------------------------------------------------------------
         
 function msgSettingsUpdate( $Request )
 {
@@ -53,37 +97,144 @@ function msgSettingsUpdate( $Request )
     	
     	// Update settings
     	
-    	$updatePurge = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Setting` SET IntValue = :purgeTime WHERE Name=\"PurgeRaids\"" );
-    	$updatePurge->bindValue( ":purgeTime", $Request["purgeTime"], PDO::PARAM_INT );
-
-		
-		if ( !$updatePurge->execute() )
-        {
-        	postErrorMessage( $updatePurge );
-        }
-	    	
-        $updatePurge->closeCursor();    	
+    	$existingSettings = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Setting`" );
+    	$currentValues = array();
     	
-    	$updateLock = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Setting` SET IntValue = :lockTime WHERE Name=\"LockRaids\"" );
-	    $updateLock->bindValue( ":lockTime", $Request["lockTime"], PDO::PARAM_INT );
-	    
-	    if ( !$updateLock->execute() )
+    	if ( !$existingSettings->execute() )
         {
-        	postErrorMessage( $updateLock );
+        	postErrorMessage( $existingSettings );
         }
+        else
+        {
+        	while ( $Data = $existingSettings->fetch( PDO::FETCH_ASSOC ) )
+	        {
+	        	$currentValues[$Data["Name"]] = array( "number" => $Data["IntValue"], "text" => $Data["TextValue"] );
+	        }
+        }
+        
+        $existingSettings->closeCursor();
+        $queryString = "";
+        $bindValues = array();
+        
+        // Generate settings update query
+        
+        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "PurgeRaids", $Request["purgeTime"] );
+        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "LockRaids", $Request["lockTime"] );
+        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidStartHour", $Request["raidStartHour"] );
+        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidStartMinute", $Request["raidStartMinute"] );
+        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidEndHour", $Request["raidEndHour"] );
+        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidEndMinute", $Request["raidEndMinute"] );
+        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidSize", $Request["raidSize"] );
+        $queryString .= generateQueryStringText( $currentValues, $bindValues, "Site", $Request["site"] );
+        $queryString .= generateQueryStringText( $currentValues, $bindValues, "Banner", $Request["banner"] );
+        
+        if ( $queryString != "" )
+       	{
+       		$settingsUpdate = $Connector->prepare( $queryString );
+        	
+        	foreach( $bindValues as $bindData )
+        	{
+        		$settingsUpdate->bindValue( $bindData[0], $bindData[1], $bindData[2] );
+        	}
+        	
+        	$Connector->beginTransaction();
+        	if ( !$settingsUpdate->execute() )
+        	{
+        		postErrorMessage( $settingsUpdate );
+        		$Connector->rollBack();
+        	}
+        	else
+        	{
+        		$Connector->commit();
+        	}
 	    	
-        $updateLock->closeCursor();
-
+        	$settingsUpdate->closeCursor();        	
+        }
+        
+        // Update locations
+        
+        $existingLocations = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Location`" );
+    	$currentValues = array();
+    	
+    	if ( !$existingLocations->execute() )
+        {
+        	postErrorMessage( $existingLocations );
+        }
+        else
+        {
+        	while ( $Data = $existingLocations->fetch( PDO::FETCH_ASSOC ) )
+	        {
+	        	$currentValues[$Data["LocationId"]] = array( "Name" => $Data["Name"], "Image" => $Data["Image"] );
+	        }
+        }
+        
+        $existingLocations->closeCursor();
+        $queryString = "";
+        $bindValues = array();
+        
+        // Build location query
+        
+        for ( $i=0; $i < sizeof($Request["locationIds"]); ++$i )
+        {
+        	$locationId      = intval($Request["locationIds"][$i]);
+        	$currentLocation = $currentValues[$locationId];        	
+        	$locationName    = $Request["locationNames"][$i];
+        	$locationImage   = ( isset($Request["locationImages"]) && isset($Request["locationImages"][$i]) && ($Request["locationImages"][$i] != "undefined") ) 
+        		? $Request["locationImages"][$i]
+        		: $currentLocation["Image"];
+        	
+        	if ( ($locationName != $currentLocation["Name"]) || ($locationImage != $currentLocation["Image"]) )
+        	{
+        		array_push( $bindValues, array(":Name".$locationId, $locationName, PDO::PARAM_STR) );
+        		array_push( $bindValues, array(":Image".$locationId, $locationImage, PDO::PARAM_STR) );
+    			$queryString .= "UPDATE `".RP_TABLE_PREFIX."Location` SET Name = :Name".$locationId.", Image = :Image".$locationId." WHERE LocationId=".$locationId."; ";
+        	}
+        }
+        
+        if ( isset($Request["locationRemoved"]) )
+        {
+        	foreach( $Request["locationRemoved"] as $locationId )
+       		{
+        		$queryString .= "DELETE `".RP_TABLE_PREFIX."Location`, `".RP_TABLE_PREFIX."Raid`, `".RP_TABLE_PREFIX."Attendance` FROM `".RP_TABLE_PREFIX."Location` ".
+        						"LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(LocationId) ".
+        						"LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(RaidId) ".
+        						" WHERE LocationId=".intval($locationId)."; ";
+        	}
+        }
+        
+        if ( $queryString != "" )
+       	{
+       		$locationUpdate = $Connector->prepare( $queryString );
+        	
+        	foreach( $bindValues as $bindData )
+        	{
+        		$locationUpdate->bindValue( $bindData[0], $bindData[1], $bindData[2] );
+        	}
+        	
+        	$Connector->beginTransaction();
+        	
+        	if ( !$locationUpdate->execute() )
+        	{
+        		postErrorMessage( $locationUpdate );
+		        $Connector->rollBack();
+        	}
+        	else
+        	{
+        		$Connector->commit();
+        	}
+	    	
+        	$locationUpdate->closeCursor();        	
+        }
 		
 		// Update users and groups
 		
 		$Connector->beginTransaction();
 		
-		$BannedIds   = $_REQUEST["banned"];
-		$MemberIds   = $_REQUEST["member"];
-		$RaidleadIds = $_REQUEST["raidlead"];
-		$AdminIds    = $_REQUEST["admin"];
-		$RemovedIds  = $_REQUEST["removed"];
+		$BannedIds   = (isset($Request["banned"]))   ? $Request["banned"]   : array();
+		$MemberIds   = (isset($Request["member"]))   ? $Request["member"]   : array();
+		$RaidleadIds = (isset($Request["raidlead"])) ? $Request["raidlead"] : array();
+		$AdminIds    = (isset($Request["admin"]))    ? $Request["admin"]    : array();
+		$RemovedIds  = (isset($Request["removed"]))  ? $Request["removed"]  : array();
 		
 		if ( !updateGroup( $Connector, "none", $BannedIds ) ) 
 			return;

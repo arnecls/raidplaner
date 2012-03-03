@@ -11,6 +11,19 @@
     float: left;
 }
 
+#raidsettings {
+	padding-left: 60px;
+	padding-top: 10px;
+}
+
+#locationsettings {
+	padding-left: 10px;
+	padding-top: 10px;
+	height: 410px;
+	width: 900px;
+	overflow-y: auto;
+}
+
 #settings h1 {
 	margin-left: 0px;
 	margin-bottom: 10px;
@@ -31,7 +44,7 @@
 }
 
 #settings .propLabel {
-	width: 100px;
+	width: 170px;
 	display: inline-block;
 }
 
@@ -41,6 +54,31 @@
 }
 
 #settings .propDeleteRaid {
+	margin-bottom: 4px;
+}
+
+#settings .propLockRaid {
+	margin-bottom: 14px;
+}
+
+#settings .propRaidStart {
+	margin-bottom: 4px;
+}
+
+#settings .propRaidEnd {
+	margin-bottom: 4px;
+}
+
+#settings .propRaidSize {
+	margin-bottom: 14px;
+}
+
+#settings .propSite {
+	margin-bottom: 4px;
+}
+
+#settings .propBanner {
+	margin-bottom: 14px;
 }
 
 #settings .timeField {
@@ -52,19 +90,15 @@
 	width: 96px;
 }
 
-#settings .propLockRaid {
-	margin-bottom: 20px;
-}
-
 #settings .groupSlot {
 	float: left;
-	margin-right: 8px;
+	margin-right: 7px;
 }
 
 #settings .groupSlot .top {
 	background-image: url(images/userslot_top.png);
 	background-repeat: no-repeat;
-	width: 238px;
+	width: 227px;
 	height: 20px;
 	text-align: center;
 	font-family: Helvetica, Verdana, Arial, sans-serif;
@@ -77,15 +111,15 @@
 #settings .groupSlot .center {
 	background-image: url(images/userslot_center.png);
 	background-repeat: repeat-y;
-	width: 238px;
-	height: 320px;
+	width: 227px;
+	height: 380px;
 	overflow-y: auto; 
 }
 
 #settings .groupSlot .bottom {
 	background-image: url(images/userslot_bottom.png);
 	background-repeat: no-repeat;
-	width: 238px;
+	width: 227px;
 	height: 7px;
 }
 
@@ -97,7 +131,9 @@
 }
 
 #applyButton {
-	margin-top: 20px;
+	position: absolute;
+	top: 470px;
+	left: 820px;
 }
 
 #settings .user {
@@ -115,21 +151,20 @@
 	float: left;
 	padding-top: 2px;
 	width: 110px;
-	margin-left: 10px;
+	margin-left: 8px;
 }
 
 #settings .user .userNameLocal {
 	float: left;
 	padding-top: 8px;
 	width: 110px;
-	margin-left: 10px;
+	margin-left: 8px;
 }
 
 #settings .user .userFunction {
 	float: right;
 	width: 24px;
 	height: 24px;
-	margin-right: 2px;
 	cursor: pointer;
 }
 
@@ -149,4 +184,138 @@
 
 #settings .user .functionEdit:hover {
 	background-image: url(images/edituser.png);
+}
+
+#settings .tabs {
+	width: 47px;
+	height: 180px;
+	padding-top: 11px;
+	float: left;
+	background-repeat: no-repeat;
+}
+
+#settings .tab_icon {
+	width: 32px;
+	height: 32px;
+	margin-left: 2px;
+	margin-top: 5px;
+}
+
+#settings .users {
+	background-image: url(images/block_users.png);
+}
+
+#settings .locations {
+	background-image: url(images/block_locations.png);
+}
+
+#settings .settings {
+	background-image: url(images/block_settings.png);
+}
+
+#settings .stats {
+	background-image: url(images/block_stats.png);
+}
+
+#settings .icon_users {
+	background-image: url(images/icon_users.png);
+}
+
+#settings .icon_locations {
+	background-image: url(images/icon_locations.png);
+}
+
+#settings .icon_settings {
+	background-image: url(images/icon_settings.png);
+}
+
+#settings .icon_stats {
+	background-image: url(images/icon_stats.png);
+}
+
+#settings .icon_users_off {
+	background-image: url(images/icon_users_off.png);
+	opacity: 0.2;
+	filter:Alpha(opacity=20);
+}
+
+#settings .icon_locations_off {
+	background-image: url(images/icon_locations_off.png);
+	opacity: 0.2;
+	filter:Alpha(opacity=20);
+}
+
+#settings .icon_settings_off {
+	background-image: url(images/icon_settings_off.png);
+	opacity: 0.2;
+	filter:Alpha(opacity=20);
+}
+
+#settings .icon_stats_off {
+	background-image: url(images/icon_stats_off.png);
+	opacity: 0.2;
+	filter:Alpha(opacity=20);
+}
+
+
+#settings .icon_users_off:hover {
+	background-image: url(images/icon_users_off.png);
+	opacity: 1.0;
+	filter:Alpha(opacity=100);
+}
+
+#settings .icon_locations_off:hover {
+	background-image: url(images/icon_locations_off.png);
+	opacity: 1.0;
+	filter:Alpha(opacity=100);
+}
+
+#settings .icon_settings_off:hover {
+	background-image: url(images/icon_settings_off.png);
+	opacity: 1.0;
+	filter:Alpha(opacity=100);
+}
+
+#settings .icon_stats_off:hover {
+	background-image: url(images/icon_stats_off.png);
+	opacity: 1.0;
+	filter:Alpha(opacity=100);
+}
+
+#locationsettings .location {
+	width: 270px;
+	height: 40px;
+	display: inline-block;
+	margin-right: 25px;
+	margin-bottom: 10px;
+}
+
+#locationsettings .locationimg {
+	width: 32px;
+	height: 32px;
+	margin-right: 10px;
+	display: inline-block;
+}
+
+#locationsettings .locationname {
+	width: 180px;
+	height: 18px;
+	margin-right: 5px;
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	top: -14px;
+}
+
+#locationsettings .deletecmd {
+	background-image: url(images/clear_off.png);
+	display: inline-block;
+	position: relative;
+	top: -6px;
+	height: 24px;
+	width: 24px;
+}
+
+#locationsettings .deletecmd:hover {
+	background-image: url(images/clear.png);
 }
