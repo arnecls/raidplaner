@@ -24,6 +24,14 @@
 	overflow-y: auto;
 }
 
+#statistics {
+	padding-left: 10px;
+	padding-top: 10px;
+	height: 410px;
+	width: 900px;
+	overflow-y: auto;
+}
+
 #settings h1 {
 	margin-left: 0px;
 	margin-bottom: 10px;
@@ -318,4 +326,96 @@
 
 #locationsettings .deletecmd:hover {
 	background-image: url(images/clear.png);
+}
+
+#statistics .name {
+	float: left;
+	position: relative;
+	width: 140px;
+	top: 7px;
+}
+
+#statistics .bar {
+	margin-bottom: 5px;	
+}
+
+#statistics .start {
+	background: url("images/progress_start.png");
+	width: 7px;
+	height: 26px;
+	position: absolute;
+}
+
+#statistics .end {
+	background: url("images/progress_end.png");
+	width: 7px;
+	height: 26px;
+	position: absolute;
+	margin-left: -7px;
+}
+
+#statistics .ok {
+	background: url("images/progress_green.png");
+	display: inline-block;
+	height: 26px;
+	color: #00AA00;
+}
+
+#statistics .available {
+	background: url("images/progress_yellow_stripe.png");
+	display: inline-block;
+	height: 26px;
+	color: #888822;
+}
+
+#statistics .unavailable {
+	background: url("images/progress_red_stripe.png");
+	display: inline-block;
+	height: 26px;
+	color: #AA6666;
+}
+
+#statistics .missed {
+	background: url("images/progress_grey.png");
+	display: inline-block;
+	height: 26px;
+	color: #777777;
+}
+
+#statistics .count {
+	position: relative;
+	font-size: 14px;
+	right: -5px;
+	top: 4px;
+}
+
+#statistics .labels {
+	margin-bottom: 20px;
+	margin-left: 140px;
+}
+
+#statistics .box {
+	margin-right: 10px;
+	display: inline-block;
+}
+
+#statistics .labels .label {
+	position: relative;
+	display: inline-block;
+	left: 0px;
+	top: -10px;
+	margin-right: 10 px;
+	color: #666666;
+	width: 140px;
+}
+
+#statistics .labels .start {
+	position: relative;
+	display: inline-block;
+}
+
+#statistics .labels .end {
+	display: inline-block;
+	position: relative;
+	margin-left: 0px;
 }
