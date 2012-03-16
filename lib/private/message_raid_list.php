@@ -32,7 +32,9 @@
 	        
 	        // -------------------------
 	        
-	        $ListRaidSt = $Connector->prepare("Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.* ".
+	        $ListRaidSt = $Connector->prepare("Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.*, ".
+	                                          "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.Start) AS StartUTC, ".
+	                                          "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.End) AS EndUTC ".
 	        								  "FROM `".RP_TABLE_PREFIX."Raid` ".
 	                                          "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
 	                                          "WHERE ".RP_TABLE_PREFIX."Raid.Start < FROM_UNIXTIME(:Start)".
@@ -50,15 +52,18 @@
 	        	
 		        while ( $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC ) )
 		        {
+		            $StartDate = getdate($Data["StartUTC"]);
+		            $EndDate   = getdate($Data["EndUTC"]);
+		            
 		        	echo "<raid>";
 		        	echo "<id>".$Data["RaidId"]."</id>";
 		        	echo "<location>".$Data["Name"]."</location>";
 		        	echo "<stage>".$Data["Stage"]."</stage>";
 		        	echo "<image>".$Data["Image"]."</image>";
 		        	echo "<size>".$Data["Size"]."</size>";
-		        	echo "<startDate>".substr( $Data["Start"], 0, 10 )."</startDate>";
-                	echo "<start>".substr( $Data["Start"], 11, 5 )."</start>";
-                	echo "<end>".substr( $Data["End"], 11, 5 )."</end>";
+		        	echo "<startDate>".$StartDate["year"]."-".$StartDate["mon"]."-".$StartDate["mday"]."</startDate>";
+                	echo "<start>".$StartDate["hours"].":".$StartDate["minutes"]."</start>";
+                	echo "<end>".$EndDate["hours"].":".$EndDate["minutes"]."</end>";
                 	echo "</raid>";
 		        }
 		        
