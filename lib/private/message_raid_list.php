@@ -1,4 +1,5 @@
 <?php
+	
 	function msgRaidList( $Request )
 	{
 		if (ValidUser())
@@ -61,9 +62,9 @@
 		        	echo "<stage>".$Data["Stage"]."</stage>";
 		        	echo "<image>".$Data["Image"]."</image>";
 		        	echo "<size>".$Data["Size"]."</size>";
-		        	echo "<startDate>".$StartDate["year"]."-".$StartDate["mon"]."-".$StartDate["mday"]."</startDate>";
-                	echo "<start>".$StartDate["hours"].":".$StartDate["minutes"]."</start>";
-                	echo "<end>".$EndDate["hours"].":".$EndDate["minutes"]."</end>";
+		        	echo "<startDate>".$StartDate["year"]."-".LeadingZero10($StartDate["mon"])."-".LeadingZero10($StartDate["mday"])."</startDate>";
+                	echo "<start>".LeadingZero10($StartDate["hours"]).":".LeadingZero10($StartDate["minutes"])."</start>";
+                	echo "<end>".LeadingZero10($EndDate["hours"]).":".LeadingZero10($EndDate["minutes"])."</end>";
                 	echo "</raid>";
 		        }
 		        

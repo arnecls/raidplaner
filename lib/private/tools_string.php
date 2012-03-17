@@ -77,4 +77,12 @@ function requestToXML( $string, $compat, $charset )
 	return xmlentities( stripcslashes( urldecode( $string ) ), $compat, $charset );
 }
 
+function LeadingZero10( $Value )
+{
+	if ($Value < 10)
+		return "0".$Value;
+		
+	return $Value;
+}
+
 ?>
