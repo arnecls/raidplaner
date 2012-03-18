@@ -178,7 +178,7 @@ function msgSettingsUpdate( $Request )
         {
         	$locationId      = intval($Request["locationIds"][$i]);
         	$currentLocation = $currentValues[$locationId];        	
-        	$locationName    = $Request["locationNames"][$i];
+        	$locationName    = requestToXML( $Request["locationNames"][$i], ENT_COMPAT, "UTF-8" );
         	$locationImage   = ( isset($Request["locationImages"]) && isset($Request["locationImages"][$i]) && ($Request["locationImages"][$i] != "undefined") ) 
         		? $Request["locationImages"][$i]
         		: $currentLocation["Image"];
