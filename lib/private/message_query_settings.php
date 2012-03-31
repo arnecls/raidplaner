@@ -3,8 +3,12 @@
 function msgQuerySettings( $Request )
 {
 	if ( ValidAdmin() )
-    {    
-		$Connector = Connector::GetInstance();
+    {
+        $Connector = Connector::GetInstance();
+		
+		// Pass through parameter 
+		
+		echo "<show>".$Request["showPanel"]."</show>";
 		
 		// Load users
     	
