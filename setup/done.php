@@ -8,7 +8,7 @@
 		<title>Raidplaner config</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         
-        <script type="text/javascript" src="../lib/script/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="../lib/script/jquery-1.7.2.min.js"></script>
     </head>
 	
 	<body style="font-family: helvetica, arial, sans-serif; font-size: 11px; line-height: 1.5em; background-color: #cccccc; color: black">

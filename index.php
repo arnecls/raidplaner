@@ -55,7 +55,7 @@
 		<link rel="stylesheet" type="text/css" href="lib/layout/settings.css?version=<?php echo $siteVersion; ?>"/>
 		<?php } ?>
 		
-		<script type="text/javascript" src="lib/script/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="lib/script/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="lib/script/jquery-ui-1.8.18.custom.min.js"></script>
 		<script type="text/javascript" src="lib/script/jquery.ba-hashchange.min.js"></script>
 		

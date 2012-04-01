@@ -92,10 +92,12 @@
 #settings .timeField {
 	width: 32px;
 	margin-right: 5px;
+	display: inline-block;
 }
 
 #settings .metricField {
 	width: 96px;
+	display: inline-block;
 }
 
 #settings .groupSlot {
@@ -346,6 +348,15 @@
 	position: absolute;
 }
 
+#statistics .start_bar {
+	background: url("images/progress_start.png");
+	width: 7px;
+	height: 26px;
+	position: relative;
+	float: left;
+	left: 7px;
+}
+
 #statistics .end {
 	background: url("images/progress_end.png");
 	width: 7px;
@@ -359,6 +370,7 @@
 	display: inline-block;
 	height: 26px;
 	color: #00AA00;
+	text-align: right;
 }
 
 #statistics .available {
@@ -366,6 +378,7 @@
 	display: inline-block;
 	height: 26px;
 	color: #888822;
+	text-align: right;
 }
 
 #statistics .unavailable {
@@ -373,6 +386,7 @@
 	display: inline-block;
 	height: 26px;
 	color: #AA6666;
+	text-align: right;
 }
 
 #statistics .missed {
@@ -380,12 +394,13 @@
 	display: inline-block;
 	height: 26px;
 	color: #777777;
+	text-align: right;
 }
 
 #statistics .count {
 	position: relative;
 	font-size: 14px;
-	right: -5px;
+	right: 5px;
 	top: 4px;
 }
 
