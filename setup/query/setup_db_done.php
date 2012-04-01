@@ -1,6 +1,7 @@
 <?php
 	header("Content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+    echo "<database>";
     
 	require_once("../../lib/private/connector.class.php");
 	
@@ -85,6 +86,7 @@
 		  `Login` varchar(255) NOT NULL,
 		  `Password` char(64) NOT NULL,
 		  `Hash` char(32) NOT NULL,
+		  `Created` datetime NOT NULL,
 		  PRIMARY KEY (`UserId`),
 		  KEY `ExternalId` (`ExternalId`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
@@ -94,8 +96,16 @@
 	
 	if ( $testSt->rowCount() == 0 )
 	{
-		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` VALUES(1, 'PurgeRaids', 7257600, '');" );
-		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` VALUES(2, 'LockRaids', 3600, '');" );	
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('PurgeRaids', 7257600, '');" );
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('LockRaids', 3600, '');" );		
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidStartHour', 30, '');" );
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidStartMinute', 0, '');" );
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidEndHour', 23, '');" );
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidEndMinute', 0, '');" );
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidSize', 10, '');" );
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Site', '', '');" );
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Banner', '', 'cata');" );
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 94, '');" );	
 	}
 	
 	$testSt->closeCursor();
@@ -109,8 +119,10 @@
 		$Hash = sha1( "admin".$_REQUEST["adminpass"] );			
 		$Hash = md5( $Salt.$Hash );
 			
-		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."User` VALUES(1, 'admin', 0, 'none', 'admin', '".sha1($_REQUEST["adminpass"])."', '".$Hash."');" );
+		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."User` VALUES(1, 'admin', 0, 'none', 'admin', '".sha1($_REQUEST["adminpass"])."', '".$Hash."', NOW());" );
 	}
 	
 	$testSt->closeCursor();
+	
+	echo "</database>";
 ?>

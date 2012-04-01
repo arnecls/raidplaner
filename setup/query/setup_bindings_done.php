@@ -1,6 +1,7 @@
 <?php
 	header("Content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+    echo "<bindings>";    
     
 	require_once("../../lib/private/connector.class.php");
 	
@@ -61,4 +62,6 @@
 	
 	fwrite( $vb3_config, "?>");	
 	fclose( $vb3_config );
+	
+	echo "</bindings>";    
 ?>
