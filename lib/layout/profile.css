@@ -34,8 +34,10 @@
 	display: inline-block;
 	vertical-align: top;
 	width: 910px;
-	height: 190px;
-	overflow-y: auto;
+	height: 170px;
+	overflow-x: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
 }
 
 #profile .charslot {
