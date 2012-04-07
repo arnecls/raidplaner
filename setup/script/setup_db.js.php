@@ -1,5 +1,6 @@
 <?php
-	define( "LOCALE_SETUP", true );
+	header("Content-type: text/javascript");
+    define( "LOCALE_SETUP", true );
 	require_once(dirname(__FILE__)."/../../lib/private/locale.php");
 ?>
 

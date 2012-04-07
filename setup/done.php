@@ -15,7 +15,7 @@
 		<div style="width: 800px; height: 600px; position: fixed; left: 50%; top: 50%; margin-left: -400px; margin-top: -300px; background-color: white">
 			<div style="background-color: black; color: white; padding: 10px">
 				Packedpixel<br/>
-				<span style="font-size: 24px">Raidplaner setup</span>
+				<span style="font-size: 24px">Raidplaner</span>
 			</div>
 			<div style="padding: 20px">
 				<div>

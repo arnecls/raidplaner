@@ -196,6 +196,22 @@
 		$g_Locale[ "EQDKP Database passwords did not match." ] = "EQDKP Datenbank-Passwoerter stimmen nicht ueberein";
 		$g_Locale[ "vBulletin Database password must not be empty." ] = "vBulletin Datenbank Passwort darf nicht leer sein";
 		$g_Locale[ "vBulletin Database passwords did not match." ] = "vBulletin Datenbank-Passwoerter stimmen nicht ueberein";
+		$g_Locale[ "Install" ] = "Installieren";
+		$g_Locale[ "Update" ] = "Updaten";
 		
+		$g_Locale[ "Version detection and update" ] = "Versionserkennung und Update";
+		$g_Locale[ "Setup will try to detect your current version." ] = "Setup versucht die aktuelle Version zu erkennen.";
+		$g_Locale[ "If the detected version does not match your installed version you may always choose manually, too." ] = "Wenn die erkannte Version nicht der installierten Version entspricht kann die korrekte Version manuell ausgew&auml;hlt werden.";
+		$g_Locale[ "The update will only affect changes in the database." ] = "Das update betrifft nur &auml;nderungen in der Datenbank.";
+		$g_Locale[ "If the database did not change you will not need to do this step." ] = "Wurde die Datenbank nicht ver&auml;ndert, kann dieser Schritt &uuml;bersprungen werden.";
+		$g_Locale[ "Detected version" ] = "Erkannte Version";
+		$g_Locale[ "No update necessary." ] = "Kein Update notwendig";
+		$g_Locale[ "Update from version" ] = "Update der Version";
+		$g_Locale[ "to version" ] = "auf Version";
+		$g_Locale[ "Update errors" ] = "Fehler w&auml;hrend des Updates";
+		$g_Locale[ "The following errors were reported during update." ] = "Die folgenden Fehler wurden w&auml;hrend des updates gemeldet.";
+		$g_Locale[ "This may hint on an already (partially) updated database." ] = "Dies kann auf eine bereits (teilweise) upgedatete Datenbank hinweisen.";
+	    $g_Locale[ "Ignore" ] = "Ignorieren";
+	    $g_Locale[ "Retry" ] = "Wiederholen";
 	}
 ?>
