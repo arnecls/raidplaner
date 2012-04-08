@@ -25,9 +25,8 @@
                 width: 90%;
                 height: 90%;
                 position: absolute;
-                top: 50%;
-                margin-top: -45%;
-                margin-left: 5%;
+                top: 5%;
+                left: 5%;
                 background-color: white;
                 border: 1px solid black;
                 padding: 6px;

@@ -88,7 +88,7 @@
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (CharacterId) ".
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING (RaidId) ".
                                               "GROUP BY `".RP_TABLE_PREFIX."Character`.UserId ".
-                                              "ORDER BY `".RP_TABLE_PREFIX."Raid`.Start, `".RP_TABLE_PREFIX."Raid`.UserId" );
+                                              "ORDER BY `".RP_TABLE_PREFIX."Raid`.Start, `".RP_TABLE_PREFIX."Character`.UserId" );
                                                
         if ( $DataStatement->execute() )
         {                          
