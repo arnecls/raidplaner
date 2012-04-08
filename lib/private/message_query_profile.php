@@ -14,33 +14,29 @@ function msgQueryProfile( $Request )
 		$Created   = $_SESSION["User"]["Created"];
     	$Connector = Connector::GetInstance();
         
-        // Admintool relevant data
+        // Admintool relevant data        
         
-        if ( ValidAdmin() && isset( $_REQUEST["id"] ) )
-        {
-        	$Users = $Connector->prepare( "SELECT Login, Created FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
-        	$Users->bindValue( ":UserId", $userId, PDO::PARAM_INT );
-        	
-        	if ( !$Users->execute() )
-	        {
-	        	postErrorMessage( $User );
-	        }
-	        else
-	        {
-	        	$Data = $Users->fetch( PDO::FETCH_ASSOC );
-	        	
-	        	echo "<userid>".$userId."</userid>";
-        		echo "<name>".$Data["Login"]."</name>";
-        		
-        		$Created = $Data["Created"];
-	        }
-	        
-	        $Users->closeCursor();
-        }
+    	$Users = $Connector->prepare( "SELECT Login, Created, ExternalBinding FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
+    	$Users->bindValue( ":UserId", $userId, PDO::PARAM_INT );
     	
+    	if ( !$Users->execute() )
+        {
+        	postErrorMessage( $User );
+        }
+        else
+        {
+        	$Data = $Users->fetch( PDO::FETCH_ASSOC );
+        	
+        	echo "<userid>".$userId."</userid>";
+    		echo "<name>".$Data["Login"]."</name>";
+    		echo "<binding>".$Data["ExternalBinding"]."</binding>";
+        }
+        
+        $Users->closeCursor();
+        
     	// Load characters
     	
-    	$Characters = $Connector->prepare(	"Select ".RP_TABLE_PREFIX."Character.* ".
+    	$Characters = $Connector->prepare(	"Select `".RP_TABLE_PREFIX."Character`.* ".
     										"FROM `".RP_TABLE_PREFIX."Character` ".
     										"WHERE UserId = :UserId ORDER BY Mainchar, Name");
     	
@@ -51,13 +47,9 @@ function msgQueryProfile( $Request )
         	postErrorMessage( $Characters );
         }
         else
-        {
-        	$userName = "unknown";
-        	
+        {       
         	while ( $Data = $Characters->fetch( PDO::FETCH_ASSOC ) )
 	        {
-	        	$userName = $Data["Login"];
-	        	
 	        	echo "<character>";
 	        	echo "<id>".$Data["CharacterId"]."</id>";
 	        	echo "<name>".$Data["Name"]."</name>";
