@@ -331,38 +331,42 @@
 }
 
 #statistics .name {
-	float: left;
-	position: relative;
+	display: inline-block;
 	width: 140px;
-	top: 7px;
+	line-height: 32px;
+	vertical-align: bottom;
 }
 
 #statistics .bar {
-	margin-bottom: 5px;	
+	display: inline-block;
+	margin-bottom: 5px;
 }
 
 #statistics .start {
 	background: url("images/progress_start.png");
+	display: inline-block;
 	width: 7px;
 	height: 26px;
 	position: absolute;
+	float: left;
 }
 
 #statistics .start_bar {
 	background: url("images/progress_start.png");
 	width: 7px;
 	height: 26px;
-	position: relative;
+	position: absolute;
 	float: left;
-	left: 7px;
 }
 
 #statistics .end {
 	background: url("images/progress_end.png");
+	display: inline-block;
 	width: 7px;
 	height: 26px;
 	position: absolute;
 	margin-left: -7px;
+	float: right;
 }
 
 #statistics .ok {
@@ -415,13 +419,13 @@
 }
 
 #statistics .labels .label {
-	position: relative;
 	display: inline-block;
-	left: 0px;
-	top: -10px;
-	margin-right: 10 px;
+	margin-left: 0px;
+	margin-right: 10px;
 	color: #666666;
 	width: 140px;
+    line-height: 32px;
+    vertical-align: bottom;
 }
 
 #statistics .labels .start {

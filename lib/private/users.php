@@ -253,6 +253,59 @@
 		
 		// --------------------------------------------------------------------------------------------
 		
+		public static function ChangePassword( $UserId, $NewPassword, $OldPassword )
+		{
+			$changeCurrentUser = ($UserId == $_SESSION["User"]["UserId"]);
+			
+			if ( $changeCurrentUser && ($OldPassword != $_SESSION["User"]["Password"]) )
+				return false; // current user password does not match
+				
+			if ( !$changeCurrentUser && !ValidAdmin() )
+				return false; // security requirements not met
+			
+			$Connector = Connector::GetInstance();
+            $UserSt = $Connector->prepare("SELECT Login FROM `".RP_TABLE_PREFIX."User` ".
+                                          "WHERE ExternalBinding = 'none' AND UserId = :UserId ".
+                                          (($changeCurrentUser) ? "AND Password = :OldPass LIMIT 1" : "LIMIT 1") );
+            
+            $UserSt->bindValue( ":UserId", $UserId, PDO::PARAM_STR );
+            if ($changeCurrentUser) $UserSt->bindValue( ":OldPass", $OldPassword, PDO::PARAM_STR );
+            
+            // Check if user with old password and id exists (password check and query login)
+            
+            if ( $UserSt->execute() && ($UserSt->rowCount() != 0) )
+            {
+            	$userData = $UserSt->fetch( PDO::FETCH_ASSOC );
+            	
+            	self::GenerateHash( $userData["Login"], $Password );
+            		
+            	$UserSt->closeCursor();
+	            $UserSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Password = :Password, Hash = :Hash WHERE UserId = :UserId LIMIT 1" );
+	                                          
+	            $UserSt->bindValue(":UserId",   $UserId,      PDO::PARAM_INT);
+	            $UserSt->bindValue(":Password", $NewPassword, PDO::PARAM_STR);
+	            $UserSt->bindValue(":Hash", 	self::$Hash,  PDO::PARAM_STR);
+	            
+	            $UserSt->execute();
+				$UserSt->closeCursor();
+				
+				// Update session to keep login valid
+				
+				if ( $changeCurrentUser )
+				{					
+					$_SESSION["User"]["Password"] = $NewPassword;
+				}
+				
+				self::$Hash = null; // do not store hash				
+				return true;
+			}
+			
+			$UserSt->closeCursor();
+			return false;
+		}
+		
+		// --------------------------------------------------------------------------------------------
+		
 		public static function CheckForBindingUpdate( $ExternalId, $Username, $Password, $Binding, $UpdateSession )
 		{
 			$Connector = Connector::GetInstance();

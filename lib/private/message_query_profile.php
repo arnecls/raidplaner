@@ -6,9 +6,9 @@ function msgQueryProfile( $Request )
     {
 		$userId = intval( $_SESSION["User"]["UserId"] );
 	
-		if ( ValidAdmin() && isset( $_REQUEST["id"] ) )
+		if ( ValidAdmin() && isset( $Request["id"] ) )
 		{
-			$userId = intval( $_REQUEST["id"] );
+			$userId = intval( $Request["id"] );
 		}
 		
 		$Created   = $_SESSION["User"]["Created"];

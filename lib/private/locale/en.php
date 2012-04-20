@@ -121,6 +121,10 @@
 		$g_Locale[ "Delete location and raids" ]						= null;		
 		$g_Locale[ "Do you really want to delete this location?" ]		= null;
 		$g_Locale[ "This will also delete all raids at this location." ] = null;
+		$g_Locale[ "Change password" ] 									= null;
+		$g_Locale[ "Old password" ] 									= null;
+		$g_Locale[ "Wrong password" ] 									= null;
+		$g_Locale[ "Password cannot be changed." ]						= null;	
 
 		$g_Locale[ "Please contact your admin to get your account unlocked." ] 								= null;
 		$g_Locale[ "Continue without updating" ]															= null;
