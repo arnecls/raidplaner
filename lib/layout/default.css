@@ -245,9 +245,9 @@ body {
 
 .login .buttonfield {
 	width: 150px;
-	position: relative;
+	position: absolute;
 	left: 50%;
-	top: 10px;
+	top: 70px;
 	margin-left: -70px;
 }
 

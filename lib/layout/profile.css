@@ -165,23 +165,28 @@
 
 #attendance .attendanceCount {
 	height: 26px;
-	margin-top: 15px;
+	margin-top: 10px;
+	margin-right: 10px;
 	display: inline-block;
 	text-align: right;
+	float: left;
 }
 
 #attendance .attendanceType {
 	height: 26px;
 	margin-top: 10px;
+	margin-right: 10px;
 	display: inline-block;
 	text-align: right;
+	float: left;
 }
 
 #attendance .label {
-	display: inline-block;
-    margin-left: 10px;
+	display: block;
     line-height: 26px;
-    vertical-align: bottom;
+	vertical-align: bottom;
+	float: left;
+	margin-top: 10px;
 }
 
 #attendance .count {
@@ -261,19 +266,23 @@
 
 #attendance .box {
 	display: inline-block;
+	width: 14px;
+	float: left;
 }
 
 #attendance .labels {
-	margin-top: 20px;
+	padding-top: 20px;
+	clear: left;
 }
 
 #attendance .labels .label {
-	display: inline-block;
+	display: block;
 	margin-left: 10px;
 	margin-right: 10px;
+	margin-top: 0px;
 	color: #666666;
 	width: 140px;
-    line-height: 32px;
+    line-height: 26px;
     vertical-align: bottom;
 }
 

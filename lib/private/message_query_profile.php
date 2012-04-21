@@ -93,7 +93,7 @@ function msgQueryProfile( $Request )
     	$Attendance->bindValue( ":UserId", $userId, PDO::PARAM_INT );
     	$Attendance->bindValue( ":Registered", $Created, PDO::PARAM_STR );
     	$Attendance->bindValue( ":Now", time(), PDO::PARAM_INT );
-        
+		
         if ( !$Attendance->execute() )
         {
         	postErrorMessage( $Attendance );

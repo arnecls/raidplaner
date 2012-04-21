@@ -69,8 +69,7 @@
                	{
                		// Reconstruct login data from cookie + database hash
                		
-               		$Connector = Connector::GetInstance();
-                        
+               		$Connector  = Connector::GetInstance();                        
                		$CookieData = unserialize( base64_decode($_COOKIE[self::$StickyCookieName]) );
                		
                		$UserSt = $Connector->prepare( "SELECT Hash FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId" );
@@ -359,7 +358,7 @@
 		private static function SetSessionVariables( $UserQuery )
 		{
 			$_SESSION["User"] = $UserQuery->fetch( PDO::FETCH_ASSOC );
-        	
+			
         	$_SESSION["User"]["Role1"] = array( $_SESSION["User"]["Role1"] );
             $_SESSION["User"]["Role2"] = array( $_SESSION["User"]["Role2"] );
         	$_SESSION["User"]["CharacterId"] = array( $_SESSION["User"]["CharacterId"] );
@@ -409,7 +408,8 @@
             if ( $Success )
             {
             	self::$Hash = UserProxy::SetSessionVariables( $UserSt );
-            	        		
+            	
+				/*        		
             	// Fallback for pre-0.9.1 databases
             	// Deprecated block. Remove with 1.0
             	
@@ -424,7 +424,7 @@
             		
             		$UpdateSt->execute();
             		$UpdateSt->closeCursor();
-            	}
+            	}*/
             }
             
             $UserSt->closeCursor();
