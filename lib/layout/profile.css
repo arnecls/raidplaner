@@ -207,11 +207,10 @@
 
 #attendance .end {
 	background: url("images/progress_end.png");
-	display: inline-block;
 	width: 7px;
 	height: 26px;
 	margin-left: -7px;
-	position: absolute;
+	position: relative;
 	float: right;
 }
 
