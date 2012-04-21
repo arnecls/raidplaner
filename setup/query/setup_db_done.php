@@ -75,7 +75,8 @@
 		  `IntValue` int(11) NOT NULL,
 		  `TextValue` varchar(255) NOT NULL,
 		  PRIMARY KEY (`SettingId`),
-		  FULLTEXT KEY `Name` (`Name`)
+		  FULLTEXT KEY `Name` (`Name`),
+		  UNIQUE KEY `Unique_Name` (`Name`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
 		
 	$connector->exec( "CREATE TABLE IF NOT EXISTS `".$_REQUEST["prefix"]."User` (

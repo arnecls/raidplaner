@@ -36,7 +36,7 @@
 					<input type="password" id="password"/> <?php echo L("Password for that user"); ?><br/>
 					<input type="password" id="password_check"/> <?php echo L("Please repeat the password"); ?><br/>
 					<br/>
-					<input type="text" id="prefix" value="<?php echo (defined("RP_TABLE_PREFIX")) ? RP_TABLE_PREFIX : "table_" ?>"/> <?php echo L("Prefix for tables in the database"); ?><br/>
+					<input type="text" id="prefix" value="<?php echo (defined("RP_TABLE_PREFIX")) ? RP_TABLE_PREFIX : "raids_" ?>"/> <?php echo L("Prefix for tables in the database"); ?><br/>
 				</div>
 				
 				<div style="margin-top: 1.5em">
