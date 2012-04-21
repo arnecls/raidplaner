@@ -47,6 +47,11 @@ body {
 	background-image: url(images/logo_mop.jpg);
 }
 
+.logo_bc {
+	background-repeat: no-repeat;
+	background-image: url(images/logo_bc.jpg);
+}
+
 #menu {
 	display: block;
 	height: 50px;
