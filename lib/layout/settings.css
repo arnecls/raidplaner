@@ -361,9 +361,9 @@
 	background: url("images/progress_end.png");
 	width: 7px;
 	height: 26px;
-	position: relative;
+	position: absolute;
 	margin-left: -7px;
-	float: right;
+	float: left;
 }
 
 #statistics .ok {

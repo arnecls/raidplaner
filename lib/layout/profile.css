@@ -210,8 +210,8 @@
 	width: 7px;
 	height: 26px;
 	margin-left: -7px;
-	position: relative;
-	float: right;
+	position: absolute;
+	float: left;
 }
 
 #attendance .ok {
