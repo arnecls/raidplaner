@@ -8,6 +8,21 @@ body {
 	overflow: auto;
 }
 
+a {
+	color: #666666;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #666666;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #000000;
+	text-decoration: underline;
+}
+
 .preload {
 	visibility: hidden;
 	position: fixed;

@@ -119,6 +119,7 @@
                             <option value="92"<?php if ($Version==92) echo " selected"; ?>>0.9.2</option>
                             <option value="93"<?php if ($Version==93) echo " selected"; ?>>0.9.3</option>
                             <option value="94"<?php if ($Version==94) echo " selected"; ?>>0.9.4</option>
+                            <option value="95"<?php if ($Version==95) echo " selected"; ?>>0.9.5</option>
                         </select>
                         <span> <?php echo L("to version")." ".$CurrentMajor.".".$CurrentMinor.".".$CurrentPatch; ?></span>
                         

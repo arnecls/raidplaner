@@ -15,13 +15,15 @@
     require_once("lib/private/users.php");
     
     UserProxy::GetInstance(); // Init user
-    $siteVersion = "0.9.4";
+    $siteVersion = 94;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
 	<head>
 		<title>Raidplaner</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        
+        <link rel="icon" href="favicon.png" type="image/png">
         
 		<link rel="stylesheet" type="text/css" href="lib/layout/default.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/combobox.css?version=<?php echo $siteVersion; ?>"/>
@@ -50,6 +52,10 @@
 		<link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $siteVersion; ?>"/>
 		<![endif]-->
+		
+		<script type="text/javascript">
+			var g_SiteVersion = <?php echo $siteVersion; ?>;
+		</script>
 		
 		<?php if ( ValidAdmin() ) { ?>
 		<link rel="stylesheet" type="text/css" href="lib/layout/settings.css?version=<?php echo $siteVersion; ?>"/>
@@ -161,7 +167,7 @@
     				}
     			?>
     		</div>
-    		<span id="version"><?php echo "version ".$siteVersion; ?></span>
+    		<span id="version"><?php echo "version ".intVal($siteVersion / 100).".".intVal(($siteVersion % 100) / 10).".".intVal($siteVersion % 10); ?></span>
 		</div>
 		
 		<div id="eventblocker"></div>

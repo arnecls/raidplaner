@@ -17,7 +17,7 @@
 }
 
 #locationsettings {
-	padding-left: 10px;
+	padding-left: 15px;
 	padding-top: 10px;
 	height: 410px;
 	width: 900px;
@@ -25,11 +25,33 @@
 }
 
 #statistics {
-	padding-left: 10px;
+	padding-left: 15px;
 	padding-top: 10px;
 	height: 410px;
 	width: 900px;
 	overflow-y: auto;
+}
+
+#about {
+	padding-left: 15px;
+	padding-top: 15px;
+	height: 410px;
+	width: 900px;
+	overflow-y: auto;
+}
+
+#about .version {
+	width: 400px; 
+	height: 200px; 
+	position: relative; 
+	left: 50%; 
+	top: 50%; 
+	margin-left: -200px; 
+	margin-top: -50px; 
+	text-align: center;
+	font-size: 24px;
+	font-weight: bold;
+	color: #666666;
 }
 
 #settings h1 {
@@ -198,7 +220,7 @@
 
 #settings .tabs {
 	width: 47px;
-	height: 180px;
+	height: 220px;
 	padding-top: 11px;
 	float: left;
 	background-repeat: no-repeat;
@@ -227,6 +249,10 @@
 	background-image: url(images/block_stats.png);
 }
 
+#settings .about {
+	background-image: url(images/block_about.png);
+}
+
 #settings .icon_users {
 	background-image: url(images/icon_users.png);
 }
@@ -241,6 +267,10 @@
 
 #settings .icon_stats {
 	background-image: url(images/icon_stats.png);
+}
+
+#settings .icon_about {
+	background-image: url(images/icon_about.png);
 }
 
 #settings .icon_users_off {
@@ -267,6 +297,12 @@
 	filter:Alpha(opacity=20);
 }
 
+#settings .icon_about_off {
+	background-image: url(images/icon_about_off.png);
+	opacity: 0.2;
+	filter:Alpha(opacity=20);
+}
+
 
 #settings .icon_users_off:hover {
 	background-image: url(images/icon_users_off.png);
@@ -288,6 +324,12 @@
 
 #settings .icon_stats_off:hover {
 	background-image: url(images/icon_stats_off.png);
+	opacity: 1.0;
+	filter:Alpha(opacity=100);
+}
+
+#settings .icon_about_off:hover {
+	background-image: url(images/icon_about_off.png);
 	opacity: 1.0;
 	filter:Alpha(opacity=100);
 }

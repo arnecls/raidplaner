@@ -121,6 +121,31 @@
 	
 	// ----------------------------------------------------------------------------
 	
+	function upgrade_094()
+	{
+		echo "<update version=\"94\">";
+		
+		$Connector = Connector::GetInstance();
+		
+		echo "<step name=\"New class\">";
+        
+        $ClassStatement = $Connector->prepare( "ALTER TABLE  `raid_Character` CHANGE  `Class`  `Class` "
+			"ENUM('deathknight','druid','hunter','mage','monk','paladin','priest','rogue','shaman','warlock','warrior')" );
+	
+		if ( !$ClassStatement->execute() )
+        {
+            postErrorMessage( $ClassStatement );
+        }
+        
+        $ClassStatement->closeCursor();
+		
+		echo "</step>";
+		
+        echo "</update>";
+	}
+	
+	// ----------------------------------------------------------------------------
+	
 	function setVersion( $a_Version )
 	{
         $Connector = Connector::GetInstance();
@@ -137,8 +162,10 @@
             upgrade_092();
         case 93:
             upgrade_093();
+        case 94:
+        	upgrade_094();
         default:
-            setVersion(94);
+            setVersion(95);
             break;
     	}
     }

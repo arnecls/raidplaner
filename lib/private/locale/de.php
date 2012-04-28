@@ -43,6 +43,7 @@
 		$g_Locale[ "Druid" ]											= "Druide";
 		$g_Locale[ "Hunter" ]											= "J&auml;ger";
 		$g_Locale[ "Mage" ]												= "Magier";
+		$g_Locale[ "Monk" ]												= "M&ouml;nch";
 		$g_Locale[ "Paladin" ]											= "Paladin";
 		$g_Locale[ "Priest" ]											= "Priester";
 		$g_Locale[ "Rogue" ]											= "Schurke";
@@ -106,8 +107,7 @@
 		$g_Locale[ "Your account is currently locked." ]				= "Dein Account ist momentan gesperrt.";
 		$g_Locale[ "Please tell us why you will be absent." ]			= "Bitte teile uns mit warum du abwesend bist.";
 		$g_Locale[ "Set to absent" ]									= "Ich bin abwesend";
-		$g_Locale[ "Input required" ]									= "Eingabe erwartet";		
-		
+		$g_Locale[ "Input required" ]									= "Eingabe erwartet";
 		$g_Locale[ "Raid attendance" ]									= "Raidteilnahme";
 		$g_Locale[ "Roles in attended raids" ]							= "Rollenverteilung in raids";
 		$g_Locale[ "Queued" ]											= "Angemeldet";
@@ -124,7 +124,12 @@
 		$g_Locale[ "Change password" ] 									= "Passwort &auml;ndern";
 		$g_Locale[ "Old password" ] 									= "Altes Passwort";
 		$g_Locale[ "Wrong password" ] 									= "Falsches Passwort";
-		$g_Locale[ "Password cannot be changed." ]						= "Passwort kann nicht ver&auml;ndert werden.";	
+		$g_Locale[ "Password cannot be changed." ]						= "Passwort kann nicht ver&auml;ndert werden.";
+		$g_Locale[ "Check for updates" ]								= "Suche nach Updates";
+		$g_Locale[ "This raidplaner is up to date." ]					= "Dieser Raidplaner ist aktuell.";
+		$g_Locale[ "There is a new version available:" ]				= "Es ist eine neue Version verf&uuml;gbar:";
+		$g_Locale[ "Visit the project homepage" ]						= "Zur Projekt-Homepage";
+		
 		
 		$g_Locale[ "Please contact your admin to get your account unlocked." ] 								= "Bitte wende dich an deinen Administrator um deinen Account freizuschalten.";
 		$g_Locale[ "Continue without updating" ]															= "Ohne Aktualisierung fortfahren";

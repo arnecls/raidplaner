@@ -39,6 +39,7 @@
 		$g_Locale[ "Druid" ]											= null;
 		$g_Locale[ "Hunter" ]											= null;
 		$g_Locale[ "Mage" ]												= null;
+		$g_Locale[ "Monk" ]												= null;
 		$g_Locale[ "Paladin" ]											= null;
 		$g_Locale[ "Priest" ]											= null;
 		$g_Locale[ "Rogue" ]											= null;
@@ -106,8 +107,7 @@
 		$g_Locale[ "Your account is currently locked." ]				= null;
 		$g_Locale[ "Please tell us why you will be absent." ]			= null;
 		$g_Locale[ "Set to absent" ]									= null;
-		$g_Locale[ "Input required" ]									= null;
-		
+		$g_Locale[ "Input required" ]									= null;		
 		$g_Locale[ "Raid attendance" ]									= null;
 		$g_Locale[ "Roles in attended raids" ]							= null;			
 		$g_Locale[ "Queued" ]											= null;
@@ -124,7 +124,12 @@
 		$g_Locale[ "Change password" ] 									= null;
 		$g_Locale[ "Old password" ] 									= null;
 		$g_Locale[ "Wrong password" ] 									= null;
-		$g_Locale[ "Password cannot be changed." ]						= null;	
+		$g_Locale[ "Password cannot be changed." ]						= null;
+		$g_Locale[ "Check for updates" ]								= null;
+		$g_Locale[ "This raidplaner is up to date." ]					= null;
+		$g_Locale[ "There is a new version available:" ]				= null;
+		$g_Locale[ "Visit the project homepage" ]						= null;
+	
 
 		$g_Locale[ "Please contact your admin to get your account unlocked." ] 								= null;
 		$g_Locale[ "Continue without updating" ]															= null;
