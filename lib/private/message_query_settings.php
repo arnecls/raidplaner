@@ -55,6 +55,18 @@ function msgQuerySettings( $Request )
 	    	
         $Settings->closeCursor();
         
+        // Load banner
+        
+        $BannerFiles = scandir( "../images/banner" );
+        
+        foreach ( $BannerFiles as $Banner )
+        {
+        	if ( ($Banner != ".") && ($Banner != "..") )
+        	{
+        		echo "<banner>".substr($Banner, 0, strrpos($Banner, "."))."</banner>";
+        	}
+        }
+        
         // Query number of raids
         
         $NumRaids = 0;

@@ -53,9 +53,7 @@
 		<link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $siteVersion; ?>"/>
 		<![endif]-->
 		
-		<script type="text/javascript">
-			var g_SiteVersion = <?php echo $siteVersion; ?>;
-		</script>
+		<script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $siteVersion; ?>"></script>
 		
 		<?php if ( ValidAdmin() ) { ?>
 		<link rel="stylesheet" type="text/css" href="lib/layout/settings.css?version=<?php echo $siteVersion; ?>"/>
@@ -99,36 +97,7 @@
 	<body>
 		<div style="width: 1024px; height: 1px">&nbsp;</div>
 		<div id="appwindow">
-			<?php 
-			
-				$Connector = Connector::GetInstance();
-				$Settings = $Connector->prepare("Select `Name`, `TextValue` FROM `".RP_TABLE_PREFIX."Setting` WHERE Name=\"Site\" OR Name=\"Banner\"");
-    	
-		        if ( $Settings->execute() )
-		        {
-		        	$Values = array( "Site" => "", "Banner" => "cata" );	        
-			        while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
-			        {
-			        	$Values[$Data["Name"]] = $Data["TextValue"];
-			        }
-			        
-			        if ( $Values["Site"] == "" )
-			       	{
-			        	echo "<div id=\"logo\" class=\"logo_".$Values["Banner"]."\"></div>";
-			        }
-			        else
-			        {			        
-			        	echo "<a href=\"".$Values["Site"]."\" id=\"landingPage\"><div id=\"logo\" class=\"logo_".$Values["Banner"]."\"></div></a>";
-			       	}
-			    }
-			    else
-			   	{
-			   		echo "<div id=\"logo\" class=\"logo_cata\"></div>";
-			   	}
-			    	
-		        $Settings->closeCursor();
-				
-			?>
+			<div id="logo"></div>
     		<div id="menu">
     			<?php if ( RegisteredUser() ) { ?>
     			
@@ -242,31 +211,7 @@
 							</select>					
 						</div>
 						<div style="margin-bottom: 10px">
-							<select id="starthour" style="width: 48px">
-								<option value="4">4</option>
-								<option value="3">3</option>
-								<option value="2">2</option>
-								<option value="1">1</option>
-								<option value="0">24</option>
-								<option value="23">23</option>
-								<option value="22">22</option>
-								<option value="21">21</option>
-								<option value="20">20</option>
-								<option value="19">19</option>
-								<option value="18">18</option>
-								<option value="17">17</option>
-								<option value="16">16</option>
-								<option value="15">15</option>
-								<option value="14">14</option>
-								<option value="13">13</option>
-								<option value="12">12</option>
-								<option value="11">11</option>
-								<option value="10">10</option>
-								<option value="9">9</option>
-								<option value="8">8</option>
-								<option value="7">7</option>
-								<option value="6">6</option>
-								<option value="5">5</option>
+							<select id="starthour">
 							</select>
 							<span>:</span>
 							<select id="startminute" style="width: 48px">
@@ -276,31 +221,7 @@
 								<option value="45">45</option>
 							</select>
 							<span style="display: inline-block; width: 29px; text-align:center"><?php echo L("to"); ?></span>
-							<select id="endhour" style="width: 48px">
-								<option value="4">4</option>
-								<option value="3">3</option>
-								<option value="2">2</option>
-								<option value="1">1</option>
-								<option value="0">24</option>
-								<option value="23">23</option>
-								<option value="22">22</option>
-								<option value="21">21</option>
-								<option value="20">20</option>
-								<option value="19">19</option>
-								<option value="18">18</option>
-								<option value="17">17</option>
-								<option value="16">16</option>
-								<option value="15">15</option>
-								<option value="14">14</option>
-								<option value="13">13</option>
-								<option value="12">12</option>
-								<option value="11">11</option>
-								<option value="10">10</option>
-								<option value="9">9</option>
-								<option value="8">8</option>
-								<option value="7">7</option>
-								<option value="6">6</option>
-								<option value="5">5</option>
+							<select id="endhour">
 							</select>
 							<span>:</span>
 							<select id="endminute" style="width: 48px">

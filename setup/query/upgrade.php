@@ -125,21 +125,11 @@
 	{
 		echo "<update version=\"94\">";
 		
-		$Connector = Connector::GetInstance();
+		$updates = Array( "Monk class support" => "ALTER TABLE  `".RP_TABLE_PREFIX."Character` CHANGE  `Class`  `Class` ENUM('deathknight','druid','hunter','mage','monk','paladin','priest','rogue','shaman','warlock','warrior');",
+						  "Timestamp setting"  => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('TimeFormat', 24, '');",
+						  "Reset banner"	   => "UPDATE `".RP_TABLE_PREFIX."Setting` SET TextValue='cataclysm' WHERE Name='Banner' LIMIT 1;" );
 		
-		echo "<step name=\"New class\">";
-        
-        $ClassStatement = $Connector->prepare( "ALTER TABLE  `raid_Character` CHANGE  `Class`  `Class` "
-			"ENUM('deathknight','druid','hunter','mage','monk','paladin','priest','rogue','shaman','warlock','warrior')" );
-	
-		if ( !$ClassStatement->execute() )
-        {
-            postErrorMessage( $ClassStatement );
-        }
-        
-        $ClassStatement->closeCursor();
-		
-		echo "</step>";
+		doUpgrade( $updates );
 		
         echo "</update>";
 	}

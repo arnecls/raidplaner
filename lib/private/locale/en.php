@@ -129,6 +129,7 @@
 		$g_Locale[ "This raidplaner is up to date." ]					= null;
 		$g_Locale[ "There is a new version available:" ]				= null;
 		$g_Locale[ "Visit the project homepage" ]						= null;
+		$g_Locale[ "Time format" ]										= null;
 	
 
 		$g_Locale[ "Please contact your admin to get your account unlocked." ] 								= null;

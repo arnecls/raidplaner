@@ -105,17 +105,12 @@
 }
 
 #sheet_body .description {
-	min-width: 310px;
-	max-width: 310px;
-	width: 310px;
-	
 	min-height: 100px;
 	max-height: 100px;
 	height: 100px;
 }
 
 #selectlocation {
-	width: 192px;
 }
 
 #newlocation {

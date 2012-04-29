@@ -129,6 +129,7 @@
 		$g_Locale[ "This raidplaner is up to date." ]					= "Dieser Raidplaner ist aktuell.";
 		$g_Locale[ "There is a new version available:" ]				= "Es ist eine neue Version verf&uuml;gbar:";
 		$g_Locale[ "Visit the project homepage" ]						= "Zur Projekt-Homepage";
+		$g_Locale[ "Time format" ]										= "Zeitformat";
 		
 		
 		$g_Locale[ "Please contact your admin to get your account unlocked." ] 								= "Bitte wende dich an deinen Administrator um deinen Account freizuschalten.";
