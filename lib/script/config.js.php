@@ -86,7 +86,8 @@ function onChangeConfig()
 	
 	// Update raid time fields
 	
-	if ( (!g_User == null) && (g_User.isAdmin || g_User.isRaidlead) )
+	if ( (g_User != null) && 
+		 (g_User.isAdmin || g_User.isRaidlead) )
 	{	
 		var HTMLString = "";
 		
