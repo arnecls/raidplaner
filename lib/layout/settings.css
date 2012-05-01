@@ -112,8 +112,12 @@
 }
 
 #settings .propBanner {
-	margin-bottom: 14px;
+	margin-bottom: 4px;
 }
+
+#settings .propBackground {
+	margin-bottom: 4px;
+}	
 
 #settings .timeField {
 	width: 32px;

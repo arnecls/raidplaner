@@ -2,8 +2,7 @@ body {
 	padding: 0px;
 	margin: 0px;
 	background-repeat: repeat;
-	background-image: url(images/bg_index3.png);
-	background-color: black;
+	background-color: #898989;
 	font-size: 12px;
 	overflow: auto;
 }

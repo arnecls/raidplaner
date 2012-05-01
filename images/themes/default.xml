@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+	<banner>cataclysm.jpg</banner>
+	<bgimage>flower.png</bgimage>
+	<bgrepeat>repeat-xy</bgrepeat>
+	<bgcolor>#898989</bgcolor>
+</theme>

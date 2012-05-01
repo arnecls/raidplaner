@@ -127,8 +127,8 @@ function msgSettingsUpdate( $Request )
         $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidEndMinute", $Request["raidEndMinute"] );
         $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidSize", $Request["raidSize"] );
         $queryString .= generateQueryStringText( $currentValues, $bindValues, "Site", $Request["site"] );
-        $queryString .= generateQueryStringText( $currentValues, $bindValues, "Banner", $Request["banner"] );
-        
+        $queryString .= generateQueryStringText( $currentValues, $bindValues, "Theme", $Request["theme"] );
+               
         if ( $queryString != "" )
        	{
        		$settingsUpdate = $Connector->prepare( $queryString );

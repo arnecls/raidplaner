@@ -3,15 +3,15 @@
 	require_once("../private/connector.class.php");
 
 	$Connector = Connector::GetInstance();
-	$Settings = $Connector->prepare("Select `Name`, `TextValue`, `IntValue` FROM `".RP_TABLE_PREFIX."Setting` WHERE ".
-		"Name=\"Site\" OR ".
-		"Name=\"Banner\" OR ".
-		"Name=\"TimeFormat\"" );
+	$Settings = $Connector->prepare("Select `Name`, `TextValue`, `IntValue` FROM `".RP_TABLE_PREFIX."Setting`");
 
     if ( $Settings->execute() )
     {
-    	$Site = "";
-    	$Banner = "cataclysm";
+    	$Site      = "";
+    	$Banner     = "cataclysm.jpg";
+    	$Background = "flower.png";
+    	$BGColor    = "#898989";
+    	$BGRepeat   = "repeat-xy";
     	$TimeFormat = 24;
     	
         while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
@@ -22,8 +22,17 @@
         		$Site = $Data["TextValue"];
         		break;
         	
-        	case "Banner":
-        		$Banner = $Data["TextValue"];
+        	case "Theme":
+        		$ThemeFile = "../../images/themes/".$Data["TextValue"].".xml";
+        		
+        		if ( file_exists($ThemeFile) )
+        		{
+	        		$Theme = new SimpleXMLElement( file_get_contents($ThemeFile) );
+	        		$Banner = $Theme->banner;
+	        		$Background = $Theme->bgimage;
+	        		$BGColor = $Theme->bgcolor;
+	        		$BGRepeat = $Theme->bgrepeat;
+	        	}
         		break;
         	
         	case "TimeFormat":
@@ -37,21 +46,24 @@
     }
     	
     $Settings->closeCursor();
-    
-    if ( !file_exists("../../images/banner/".$Banner.".jpg") )
-    	$Banner = "cataclysm";
 ?>
 
 var g_SiteVersion = <?php echo intval($_REQUEST["version"]) ?>;
-var g_Banner = "images/banner/<?php echo $Banner; ?>.jpg";
 var g_BannerLink = "<?php echo $Site; ?>";
 var g_TimeFormat = <?php echo $TimeFormat; ?>;
+
+var g_Theme = {
+	background : "<?php echo $Background; ?>",
+	banner     : "<?php echo $Banner; ?>",
+	bgrepeat   : "<?php echo $BGRepeat; ?>",
+	bgcolor    : "<?php echo $BGColor; ?>"
+};
 
 // -----------------------------------------------------------------------------
 
 function onChangeConfig()
 {
-	// Create logo
+	// Update logo
 	
 	$("#logo").detach();
 	
@@ -60,9 +72,19 @@ function onChangeConfig()
 	else
 		$("#menu").before("<div id=\"logo\"></div>");
 	
-	$("#logo").css("background-image", "url(" + g_Banner + ")");
 	
-	// Create raid time fields
+	// Update theme
+	
+	$("#logo").css("background-image", "url(images/banner/" + g_Theme.banner + ")");
+	$("body").css("background-color", g_Theme.bgcolor );
+	$("body").css("background-repeat", g_Theme.bgrepeat );
+	
+	if ( g_Theme.background == "none" )
+		$("body").css("background-image", "none");
+	else
+		$("body").css("background-image", "url(images/background/" + g_Theme.background + ")");
+	
+	// Update raid time fields
 	
 	if ( g_User.isAdmin || g_User.isRaidlead )
 	{	

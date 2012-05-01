@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+	<banner>mists_of_pandaria.jpg</banner>
+	<bgimage>mists_of_pandaria.jpg</bgimage>
+	<bgrepeat>repeat-x</bgrepeat>
+	<bgcolor>#878787</bgcolor>
+</theme>

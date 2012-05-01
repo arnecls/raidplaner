@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+	<banner>burning_crusade.jpg</banner>
+	<bgimage>burning_crusade.jpg</bgimage>
+	<bgrepeat>repeat-x</bgrepeat>
+	<bgcolor>#8a8a8a</bgcolor>
+</theme>

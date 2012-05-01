@@ -55,15 +55,15 @@ function msgQuerySettings( $Request )
 	    	
         $Settings->closeCursor();
         
-        // Load banner
+        // Load themes
         
-        $BannerFiles = scandir( "../images/banner" );
+        $ThemeFiles = scandir( "../images/themes" );
         
-        foreach ( $BannerFiles as $Banner )
+        foreach ( $ThemeFiles as $Theme )
         {
-        	if ( ($Banner != ".") && ($Banner != "..") )
+        	if ( ($Theme != ".") && ($Theme != "..") )
         	{
-        		echo "<banner>".substr($Banner, 0, strrpos($Banner, "."))."</banner>";
+        		echo "<theme>".substr($Theme, 0, strrpos($Theme, "."))."</theme>";
         	}
         }
         
