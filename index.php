@@ -24,18 +24,16 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         
         <link rel="icon" href="favicon.png" type="image/png">
-        
-		<link rel="stylesheet" type="text/css" href="lib/layout/default.css?version=<?php echo $siteVersion; ?>"/>
+		<link rel="stylesheet" type="text/css" href="lib/layout/jquery-ui-1.8.18.custom.css"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/default.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/combobox.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/calendar.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/raid.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/raidlist.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/profile.css?version=<?php echo $siteVersion; ?>"/>
-		<link rel="stylesheet" type="text/css" href="lib/layout/jquery-ui-1.8.18.custom.css"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/tooltip.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/shadow.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/sheet.css?version=<?php echo $siteVersion; ?>"/>
-		
 		
         <!--[if IE 9]>
 		<link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
@@ -64,10 +62,8 @@
 		<script type="text/javascript" src="lib/script/jquery.ba-hashchange.min.js"></script>
 		
 		<script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>		
-		
 		<script type="text/javascript" src="lib/script/user.js.php?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/calendarsession.js.php?version=<?php echo $siteVersion; ?>"></script>
-		
 		<script type="text/javascript" src="lib/script/calendar.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/combobox.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/messagehub.js?version=<?php echo $siteVersion; ?>"></script>
@@ -77,6 +73,7 @@
 		<script type="text/javascript" src="lib/script/raidlist.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/profile.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/main.js?version=<?php echo $siteVersion; ?>"></script>
+		
 		<?php if ( ValidAdmin() ) { ?>
 		<script type="text/javascript" src="lib/script/settings.js?version=<?php echo $siteVersion; ?>"></script>
 		<?php } ?>

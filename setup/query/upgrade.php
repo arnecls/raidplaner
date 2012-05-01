@@ -128,7 +128,7 @@
 		$updates = Array( "Monk class support"    => "ALTER TABLE  `".RP_TABLE_PREFIX."Character` CHANGE  `Class`  `Class` ENUM('deathknight','druid','hunter','mage','monk','paladin','priest','rogue','shaman','warlock','warrior');",
 						  "Timestamp setting"     => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('TimeFormat', 24, '');",
 						  "Remove banner setting" => "DELETE FROM `".RP_TABLE_PREFIX."Setting` WHERE Name = 'Banner' LIMIT 1;",
-						  "Theme setting" 	      => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Theme', '', 'default');" );
+						  "Theme setting" 	      => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Theme', '', 'cataclysm');" );
 		
 		doUpgrade( $updates );
 		

@@ -61,9 +61,11 @@ function msgQuerySettings( $Request )
         
         foreach ( $ThemeFiles as $Theme )
         {
-        	if ( ($Theme != ".") && ($Theme != "..") )
+        	$ThemeName = substr($Theme, 0, strrpos($Theme, "."));
+        	
+        	if ( ($ThemeName != "") && ($ThemeName != ".") )
         	{
-        		echo "<theme>".substr($Theme, 0, strrpos($Theme, "."))."</theme>";
+        		echo "<theme>".$ThemeName."</theme>";
         	}
         }
         
