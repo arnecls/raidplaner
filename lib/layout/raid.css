@@ -253,6 +253,36 @@
 	margin-bottom: 5px;
 }
 
+.comment .move_left {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	background-image: url(images/move_left.png);
+	background-repeat: no-repeat;
+	left: 24px;
+	top: 52px;
+}
+
+.comment .move_right {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	background-image: url(images/move_right.png);
+	background-repeat: no-repeat;
+	left: 48px;
+	top: 52px;
+}
+
+.comment .move_up {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	background-image: url(images/move_up.png);
+	background-repeat: no-repeat;
+	left: 48px;
+	top: 52px;
+}
+
 #benchBlock {
 	display: inline-block;
 	float: left;
