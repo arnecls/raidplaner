@@ -130,7 +130,8 @@
 		$g_Locale[ "There is a new version available:" ]				= null;
 		$g_Locale[ "Visit the project homepage" ]						= null;
 		$g_Locale[ "Time format" ]										= null;
-	
+		$g_Locale[ "Theme" ]											= null;
+		$g_Locale[ "Move user to group" ]								= null;	
 
 		$g_Locale[ "Please contact your admin to get your account unlocked." ] 								= null;
 		$g_Locale[ "Continue without updating" ]															= null;
