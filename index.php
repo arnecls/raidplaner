@@ -64,6 +64,7 @@
 		<script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>		
 		<script type="text/javascript" src="lib/script/user.js.php?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/calendarsession.js.php?version=<?php echo $siteVersion; ?>"></script>
+		<script type="text/javascript" src="lib/script/mobile.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/calendar.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/combobox.js?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/messagehub.js?version=<?php echo $siteVersion; ?>"></script>
