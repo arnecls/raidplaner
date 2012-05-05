@@ -4,7 +4,7 @@
 	@include_once(dirname(__FILE__)."/../lib/config/config.php");
 	require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
 	
-	$CurrentVersion = 94;
+	$CurrentVersion = 95;
 	$CurrentPatch = $CurrentVersion % 10;
     $CurrentMinor = ($CurrentVersion / 10) % 10;
     $CurrentMajor = ($CurrentVersion / 100) % 10;
@@ -106,10 +106,14 @@
                             $Minor = ($Version / 10) % 10;
                             $Major = ($Version / 100) % 10;
                             
-                            echo "<span style=\"color: green\">".$Major.".".$Minor.".".$Patch."</span><br/>";
                             if ( $Version == $CurrentVersion )
                             {
+                                echo "<span style=\"color: green\">".$Major.".".$Minor.".".$Patch."</span><br/>";
                                 echo "<br/><span style=\"font-size: 20px; color: green\">".L("No update necessary.")."</span>";
+                            }
+                            else
+                            {
+                                echo "<span style=\"color: orange\">".$Major.".".$Minor.".".$Patch."</span><br/>";
                             }
                         ?>
                         
