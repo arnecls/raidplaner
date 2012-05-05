@@ -225,7 +225,7 @@
 	visibility: hidden;
 	float: right;
 	position: fixed;
-	display: inline-block;
+	display: block;
 	white-space: nowrap;
 }
 
@@ -255,6 +255,7 @@
 	height: 32px;
 	margin-right: 10px;
 	cursor: pointer;
+	float: left;
 }
 
 .comment .comment_name {
@@ -265,6 +266,7 @@
 
 .comment .move_left {
 	position: absolute;
+	display: inline-block;
 	width: 16px;
 	height: 16px;
 	background-image: url(images/move_left.png);
@@ -276,6 +278,7 @@
 
 .comment .move_right {
 	position: absolute;
+	display: inline-block;
 	width: 16px;
 	height: 16px;
 	background-image: url(images/move_right.png);
@@ -287,6 +290,7 @@
 
 .comment .move_up {
 	position: absolute;
+	display: inline-block;
 	width: 16px;
 	height: 16px;
 	background-image: url(images/move_up.png);
@@ -368,6 +372,9 @@
 	display: inline-block;
 	height: 16px;
 	width: 12px;
+	position: relative;
+	top: -2px;
+	left: 25px;
 }
 
 .bench .slot .name {
@@ -376,6 +383,7 @@
 	margin-left: 6px;
 	margin-top: 5px;
 	float: left;
+	display: inline-block;
 }
 
 .bench .slot .unavailable {
@@ -404,13 +412,15 @@
 	visibility: hidden;
 	float: right;
 	position: fixed;
-	display: inline-block;
+	display: block;
+	white-space: nowrap;
 }
 
 .bench .slot .twinkicon {
 	position: relative;
-	left: 23px;
-	top: 12px;
+	float: left;
+	left: 0px;
+	top: 14px;
 	width: 15px;
 	height: 16px;
 	background-image: url(images/twinkbadge.png);
