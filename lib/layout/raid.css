@@ -261,6 +261,7 @@
 	background-repeat: no-repeat;
 	left: 24px;
 	top: 52px;
+	z-index: 15;
 }
 
 .comment .move_right {
@@ -271,6 +272,7 @@
 	background-repeat: no-repeat;
 	left: 48px;
 	top: 52px;
+	z-index: 15;
 }
 
 .comment .move_up {
@@ -281,6 +283,7 @@
 	background-repeat: no-repeat;
 	left: 48px;
 	top: 52px;
+	z-index: 15;
 }
 
 #benchBlock {
