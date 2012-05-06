@@ -6,6 +6,7 @@
 	position: absolute;
 	display: block;
     zoom: 1;
+    visibility: none;
 }
 
 #sheetoverlay .top {
