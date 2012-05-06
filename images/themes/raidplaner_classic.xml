@@ -2,6 +2,6 @@
 <theme>
 	<banner>cataclysm.jpg</banner>
 	<bgimage>flower.png</bgimage>
-	<bgrepeat>repeat-xy</bgrepeat>
+	<bgrepeat>repeat</bgrepeat>
 	<bgcolor>#898989</bgcolor>
 </theme>
