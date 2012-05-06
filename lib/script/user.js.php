@@ -6,7 +6,7 @@
 	require_once(dirname(__FILE__)."/../private/users.php");
 	UserProxy::GetInstance(); // Init user
 	
-    header("Content-type: text/javascript");
+    if (!defined("UNIFIED_SCRIPT")) header("Content-type: text/javascript");
     
     if ( ValidUser() )
 	{

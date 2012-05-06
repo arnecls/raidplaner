@@ -1,5 +1,6 @@
 <?php
-	header("Content-type: text/javascript");
+	if (!defined("UNIFIED_SCRIPT")) header("Content-type: text/javascript");
+	
 	require_once("../private/connector.class.php");
 
 	$Connector = Connector::GetInstance();

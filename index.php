@@ -24,6 +24,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         
         <link rel="icon" href="favicon.png" type="image/png">
+		<link rel="stylesheet" type="text/css" href="lib/layout/_layout.css.php?version=<?php echo $siteVersion; ?>"/>
+        
+        <!--
 		<link rel="stylesheet" type="text/css" href="lib/layout/jquery-ui-1.8.18.custom.css"/>
         <link rel="stylesheet" type="text/css" href="lib/layout/default.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/combobox.css?version=<?php echo $siteVersion; ?>"/>
@@ -34,6 +37,8 @@
 		<link rel="stylesheet" type="text/css" href="lib/layout/tooltip.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/shadow.css?version=<?php echo $siteVersion; ?>"/>
 		<link rel="stylesheet" type="text/css" href="lib/layout/sheet.css?version=<?php echo $siteVersion; ?>"/>
+		<link rel="stylesheet" type="text/css" href="lib/layout/settings.css?version=<?php echo $siteVersion; ?>"/>
+		-->
 		
         <!--[if IE 9]>
 		<link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
@@ -51,11 +56,12 @@
 		<link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $siteVersion; ?>"/>
 		<![endif]-->
 		
-		<script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $siteVersion; ?>"></script>
 		
-		<?php if ( ValidAdmin() ) { ?>
-		<link rel="stylesheet" type="text/css" href="lib/layout/settings.css?version=<?php echo $siteVersion; ?>"/>
-		<?php } ?>
+		<script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $siteVersion; ?>"></script>
+		<script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>"></script>
+				
+		<!--
+		<script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $siteVersion; ?>"></script>
 		
 		<script type="text/javascript" src="lib/script/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="lib/script/jquery-ui-1.8.18.custom.min.js"></script>
@@ -90,6 +96,7 @@
 		<script type="text/javascript" src="lib/script/initlogin.js?version=<?php echo $siteVersion; ?>"></script>
     	
     	<?php } ?>
+    	-->
  	</head>
 	
 	<body>
