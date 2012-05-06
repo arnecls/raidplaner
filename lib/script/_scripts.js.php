@@ -11,7 +11,6 @@
 	include_once("jquery.ba-hashchange.min.js");
 	
 	include_once("config.js.php");
-	include_once("locale.js.php");
 	include_once("messagehub.js");
 	include_once("mobile.js");
 	include_once("combobox.js");

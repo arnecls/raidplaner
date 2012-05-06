@@ -57,6 +57,7 @@
 		<![endif]-->
 		
 		
+		<script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>"></script>
 				
@@ -67,7 +68,6 @@
 		<script type="text/javascript" src="lib/script/jquery-ui-1.8.18.custom.min.js"></script>
 		<script type="text/javascript" src="lib/script/jquery.ba-hashchange.min.js"></script>
 		
-		<script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>		
 		<script type="text/javascript" src="lib/script/user.js.php?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/calendarsession.js.php?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/mobile.js?version=<?php echo $siteVersion; ?>"></script>
