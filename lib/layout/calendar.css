@@ -60,9 +60,10 @@
 
 #calendar .today {
 	border-style: solid;
-	border-color: #ffee91;
-	border-width: 2px;
+	border-color: #b88e8e;
+	border-width: 1px;
 	vertical-align: top;
+	background-color: rgba(215, 215, 210, 0.4);
 }
 
 #calendar .day {
