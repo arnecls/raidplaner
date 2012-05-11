@@ -58,9 +58,25 @@ function msgRaidUpdate( $Request )
         $UpdateRaidSt->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
         $UpdateRaidSt->bindValue(":Description", requestToXML( $Request["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
         
-        $UpdateRaidSt->bindValue(":TankSlots",	$Request["tankSlots"], PDO::PARAM_INT);
-        $UpdateRaidSt->bindValue(":HealSlots",	$Request["healSlots"], PDO::PARAM_INT);
-        $UpdateRaidSt->bindValue(":DmgSlots",	$Request["locationSize"] - ( $Request["tankSlots"] + $Request["healSlots"] ), PDO::PARAM_INT);
+        $RaidSize   = intval($Request["locationSize"]);
+        $NumTanks   = intval($Request["tankSlots"]);
+        $NumHealers = intval($Request["healSlots"]);
+        
+        // sanity checks
+        
+        if ( $RaidSize - $NumTanks < 2 )
+        {
+        	$NumTanks   = $RaidSize - 2;
+        	$NumHealers = 1;
+        }
+        else if ( $RaidSize - ($NumTanks + $NumHealers) < 1 )
+        {
+        	$NumHealers = $RaidSize - $NumTanks - 1;
+        }
+        
+        $UpdateRaidSt->bindValue(":TankSlots",	$NumTanks, PDO::PARAM_INT);
+        $UpdateRaidSt->bindValue(":HealSlots",	$NumHealers, PDO::PARAM_INT);
+        $UpdateRaidSt->bindValue(":DmgSlots",	$Request["locationSize"] - ( $NumTanks + $NumHealers ), PDO::PARAM_INT);
         
         if (!$UpdateRaidSt->execute())
         {
