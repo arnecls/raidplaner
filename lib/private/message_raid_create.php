@@ -46,9 +46,13 @@ function msgRaidCreate( $Request )
 	        $NewRaidSt->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
 	        $NewRaidSt->bindValue(":Description", requestToXML( $Request["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
 	        
-	        $NewRaidSt->bindValue(":TankSlots",	( $Request["locationSize"] == 25 ) ? 2  : 2, PDO::PARAM_INT);
-	        $NewRaidSt->bindValue(":DmgSlots",	( $Request["locationSize"] == 25 ) ? 17 : 5, PDO::PARAM_INT);
-	        $NewRaidSt->bindValue(":HealSlots",	( $Request["locationSize"] == 25 ) ? 6  : 3, PDO::PARAM_INT);
+	        $DefaultTankSlots = Array( 25 => 2,  10 => 2, 5 => 1 );
+	        $DefaultHealSlots = Array( 25 => 6,  10 => 3, 5 => 1 );
+	        $DefaultDmgSlots  = Array( 25 => 17, 10 => 5, 5 => 3 );
+	        
+	        $NewRaidSt->bindValue(":TankSlots",	$DefaultTankSlots[$Request["locationSize"]], PDO::PARAM_INT);
+	        $NewRaidSt->bindValue(":HealSlots",	$DefaultHealSlots[$Request["locationSize"]], PDO::PARAM_INT);
+	        $NewRaidSt->bindValue(":DmgSlots",	$DefaultDmgSlots[$Request["locationSize"]], PDO::PARAM_INT);
 	        
 	        if (!$NewRaidSt->execute())
 	        {

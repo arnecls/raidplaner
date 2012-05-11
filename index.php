@@ -60,7 +60,7 @@
 		<script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $siteVersion; ?>"></script>
 		<script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>"></script>
-				
+		
 		<!--
 		<script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $siteVersion; ?>"></script>
 		
@@ -97,7 +97,7 @@
     	
     	<?php } ?>
     	-->
- 	</head>
+   </head>
 	
 	<body>
 		<div style="width: 1024px; height: 1px">&nbsp;</div>
@@ -211,6 +211,7 @@
 								<option value="0"><?php echo L("New dungeon"); ?></option>
 							</select>
 							<select id="selectsize" style="width: 48px">
+								<option value="5">5</option>
 								<option value="10">10</option>
 								<option value="25">25</option>
 							</select>					
