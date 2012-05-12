@@ -214,7 +214,7 @@
 	margin-top: 5px;
 	color: black;
 	font-size: 12px;
-	width: 80px;
+	width: 75px;
 	border: 0px;
 	border-bottom: 1px solid #aaaaaa;
 	background-color: transparent;
@@ -351,6 +351,12 @@
 	display: inline-block;
 	height: 24px;
 	width: 24px;
+}
+
+.bench .slot .class .class_icon {
+	float: left;
+	height: 24px;
+	width: 24px;
 	z-index: 10;
 }
 
@@ -362,8 +368,8 @@
 	height: 16px;
 	width: 12px;
 	position: relative;
-	top: -2px;
-	left: 25px;
+	top: -26px;
+	left: 14px;
 	z-index: 20;
 }
 
@@ -373,8 +379,18 @@
 	height: 16px;
 	width: 12px;
 	position: relative;
-	top: -2px;
-	left: 25px;
+	top: -26px;
+	left: 14px;
+}
+
+.bench .slot .twinkicon {
+	position: relative;
+	float: left;
+	top: -28px;
+	left: 12px;
+	width: 15px;
+	height: 16px;
+	background-image: url(images/twinkbadge.png);
 }
 
 .bench .slot .name {
@@ -414,16 +430,6 @@
 	position: fixed;
 	display: block;
 	white-space: nowrap;
-}
-
-.bench .slot .twinkicon {
-	position: relative;
-	float: left;
-	left: 0px;
-	top: 14px;
-	width: 15px;
-	height: 16px;
-	background-image: url(images/twinkbadge.png);
 }
 
 .tankbench {
