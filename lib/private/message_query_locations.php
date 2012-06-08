@@ -43,7 +43,7 @@ function msgQueryLocations( $Request )
     }
     else
     {
-        echo "<error>".L("Access denied")."</error>";
+        echo "<error>".L("AccessDenied")."</error>";
     }
 }
    

@@ -46,7 +46,7 @@ function msgRaidDelete( $Request )
     }
     else
     {
-        echo "<error>".L("Access denied")."</error>";
+        echo "<error>".L("AccessDenied")."</error>";
     }
 }
 

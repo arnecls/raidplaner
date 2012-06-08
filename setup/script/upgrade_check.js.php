@@ -15,9 +15,9 @@ function showLog( a_XMLData )
     var numErrors = 0;
     
     $("#error").empty().append(
-        "<h2><?php echo L("Update errors"); ?></h2>" +
-        "<?php echo L("The following errors were reported during update."); ?><br/>" +
-        "<?php echo L("This may hint on an already (partially) updated database."); ?>" +
+        "<h2><?php echo L("UpdateErrors"); ?></h2>" +
+        "<?php echo L("ReportedErrors"); ?><br/>" +
+        "<?php echo L("PartiallyUpdated"); ?>" +
         "<br/><br/>" );
     
     $("#error").append( "<button onclick=\"loadCleanup()\"><?php echo L("Ignore"); ?></button>" );

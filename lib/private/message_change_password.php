@@ -12,7 +12,7 @@ function msgChangePassword( $Request )
 			
 			if ( !UserProxy::ChangePassword(intval($_REQUEST["id"]), sha1($Request["passNew"]), sha1($Request["passOld"])) )
 			{
-				echo "<error>".L("Password cannot be changed.")."</error>";
+				echo "<error>".L("PasswordLocked")."</error>";
 			}
 		
 			msgQueryProfile( $_REQUEST );
@@ -23,7 +23,7 @@ function msgChangePassword( $Request )
 			
 			if ( !UserProxy::ChangePassword(intval($_SESSION["User"]["UserId"]), sha1($Request["passNew"]), sha1($Request["passOld"])) )
 			{
-				echo "<error>".L("Wrong password")."</error>";
+				echo "<error>".L("WrongPassword")."</error>";
 			}
 		
 			msgQueryProfile( Array() );
@@ -31,7 +31,7 @@ function msgChangePassword( $Request )
     }
     else
     {
-        echo "<error>".L("Access denied")."</error>";
+        echo "<error>".L("AccessDenied")."</error>";
     }
 }
 

@@ -22,14 +22,14 @@
 			</div>
 			<div style="padding: 20px">
 				<div>
-					<h2><?php echo L("Filesystem permission checks"); ?></h2>
-					<?php echo L("The raidplaner needs a PHP 5.2 installation configured with the mcrypt and PDO extensions."); ?><br/>
-					<?php echo L("Setup needs write permission on all files in the config folder located at ")."\"lib / config\"."; ?><br/>
-					<?php echo L("If any of these checks fails you have to change permissions to \"writeable\" for your http server's user."); ?><br/>
-					<?php echo L("On how to change permissions, please consult your FTP client's helpfiles."); ?><br/><br/>
+					<h2><?php echo L("FilesystemChecks"); ?></h2>
+					<?php echo L("PHPRequirements"); ?><br/>
+					<?php echo L("WritePermissionRequired")."\"lib / config\"."; ?><br/>
+					<?php echo L("ChangePermissions"); ?><br/>
+					<?php echo L("FTPClientHelp"); ?><br/><br/>
 					<br/>
 					
-					<?php echo L("PHP version"); ?> : <?php
+					<?php echo L("PHPVersion"); ?> : <?php
 						$version = explode('.', phpversion());
 						$testsFailed = 0;
 						
@@ -38,13 +38,13 @@
 						else
 						{
 							++$testsFailed;
-							echo "<span style=\"color: red\">".L("Outdated PHP version");
+							echo "<span style=\"color: red\">".L("OutdatedPHP");
 						}
 							
 						echo " (".phpversion().")</span>";
 					?><br/>
 					
-					<?php echo L("PDO module"); ?> : <?php
+					<?php echo L("PDOModule"); ?> : <?php
 						$extensions = get_loaded_extensions();
 						
 						if ( in_array("PDO", $extensions) )
@@ -52,21 +52,21 @@
 						else
 						{
 							++$testsFailed;
-							echo "<span style=\"color: red\">".L("PDO not configured with PHP")."</span>";
+							echo "<span style=\"color: red\">".L("PDONotFound")."</span>";
 						}					
 					?><br/>
 					
-					<?php echo L("mcrypt module"); ?> : <?php
+					<?php echo L("McryptModule"); ?> : <?php
 						if ( in_array("mcrypt", $extensions) )
 							echo "<span style=\"color: green\">".L("Ok")."</span>";
 						else
 						{
 							++$testsFailed;
-							echo "<span style=\"color: red\">".L("Mcrypt not configured with PHP")."</span>";
+							echo "<span style=\"color: red\">".L("McryptNotFound")."</span>";
 						}
 					?><br/><br/>
 					
-					<?php echo L("Config folder"); ?> : <?php
+					<?php echo L("ConfigFolder"); ?> : <?php
 						$configFolderState = is_writable("../lib/config");
 						
 						if ( $configFolderState )
@@ -74,11 +74,11 @@
 						else
 						{
 							++$testsFailed;
-							echo "<span style=\"color: red\">".L("Not writeable")."</span>";
+							echo "<span style=\"color: red\">".L("NotWriteable")."</span>";
 						}
 					?><br/>
 					
-					<?php echo L("Main config file"); ?> : <?php
+					<?php echo L("MainConfigFile"); ?> : <?php
 						$configFileState = (!file_exists("../lib/config/config.php") && $configFolderState) || 
 											is_writable("../lib/config/config.php");
 						
@@ -87,11 +87,11 @@
 						else
 						{
 							++$testsFailed;
-							echo "<span style=\"color: red\">".L("Not writeable")."</span>";
+							echo "<span style=\"color: red\">".L("NotWriteable")."</span>";
 						}
 					?><br/>
 					
-					<?php echo L("PHPBB3 config file"); ?> : <?php
+					<?php echo L("PHPBB3ConfigFile"); ?> : <?php
 						$phpbbConfigFileState = (!file_exists("../lib/config/config.phpbb3.php") && $configFolderState) || 
 												is_writable("../lib/config/config.phpbb3.php");
 											
@@ -100,11 +100,11 @@
 						else
 						{
 							++$testsFailed;
-							echo "<span style=\"color: red\">".L("Not writeable")."</span>";
+							echo "<span style=\"color: red\">".L("NotWriteable")."</span>";
 						}
 					?><br/>
 					
-					<?php echo L("EQDKP config file"); ?> : <?php
+					<?php echo L("EQDKPConfigFile"); ?> : <?php
 						$phpbbConfigFileState = (!file_exists("../lib/config/config.eqdkp.php") && $configFolderState) || 
 												is_writable("../lib/config/config.eqdkp.php");
 											
@@ -113,11 +113,11 @@
 						else
 						{
 							++$testsFailed;
-							echo "<span style=\"color: red\">".L("Not writeable")."</span>";
+							echo "<span style=\"color: red\">".L("NotWriteable")."</span>";
 						}
 					?><br/>
 					
-					<?php echo L("vBulletin config file"); ?> : <?php
+					<?php echo L("VBulletinConfigFile"); ?> : <?php
 						$phpbbConfigFileState = (!file_exists("../lib/config/config.vb3.php") && $configFolderState) || 
 												is_writable("../lib/config/config.vb3.php");
 											
@@ -126,7 +126,7 @@
 						else
 						{
 							++$testsFailed;
-							echo "<span style=\"color: red\">".L("Not writeable")."</span>";
+							echo "<span style=\"color: red\">".L("NotWriteable")."</span>";
 						}
 					?><br/>
 				</div>

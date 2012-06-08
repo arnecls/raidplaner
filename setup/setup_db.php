@@ -23,31 +23,31 @@
 			</div>
 			<div style="padding: 20px">
 				<div style="margin-top: 1.5em">
-					<h2><?php echo L("Database connection"); ?></h2>
+					<h2><?php echo L("DatabaseConnection"); ?></h2>
 					
-					<?php echo L("Please configure the database the raidplaner will place it's data into."); ?><br/>
-					<?php echo L("If the database is already in use by another installation you can enter a prefix to avoid name conflicts."); ?><br/>
-					<?php echo L("If you want to bind the raidplaner to a third party forum the raidplaner database must be on the same server as the forum's database."); ?><br/>
+					<?php echo L("ConfigureDatabase"); ?><br/>
+					<?php echo L("EnterPrefix"); ?><br/>
+					<?php echo L("SameAsForumDatabase"); ?><br/>
 					<br/>
 					
-					<input type="text" id="host" value="<?php echo (defined("SQL_HOST")) ? SQL_HOST : "localhost" ?>"/> <?php echo L("Database host"); ?><br/>
-					<input type="text" id="database" value="<?php echo (defined("RP_USER")) ? RP_DATABASE : "raidplaner" ?>"/> <?php echo L("Raidplaner database"); ?><br/>
-					<input type="text" id="user" value="<?php echo (defined("RP_USER")) ? RP_USER : "root" ?>"/> <?php echo L("User with permissions for that database"); ?><br/>
-					<input type="password" id="password"/> <?php echo L("Password for that user"); ?><br/>
-					<input type="password" id="password_check"/> <?php echo L("Please repeat the password"); ?><br/>
+					<input type="text" id="host" value="<?php echo (defined("SQL_HOST")) ? SQL_HOST : "localhost" ?>"/> <?php echo L("DatabaseHost"); ?><br/>
+					<input type="text" id="database" value="<?php echo (defined("RP_USER")) ? RP_DATABASE : "raidplaner" ?>"/> <?php echo L("RaidplanerDatabase"); ?><br/>
+					<input type="text" id="user" value="<?php echo (defined("RP_USER")) ? RP_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+					<input type="password" id="password"/> <?php echo L("UserPassword"); ?><br/>
+					<input type="password" id="password_check"/> <?php echo L("RepeatPassword"); ?><br/>
 					<br/>
-					<input type="text" id="prefix" value="<?php echo (defined("RP_TABLE_PREFIX")) ? RP_TABLE_PREFIX : "raids_" ?>"/> <?php echo L("Prefix for tables in the database"); ?><br/>
+					<input type="text" id="prefix" value="<?php echo (defined("RP_TABLE_PREFIX")) ? RP_TABLE_PREFIX : "raids_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
 				</div>
 				
 				<div style="margin-top: 1.5em">
-					<h2 style="margin-top: 1.5em"><?php echo L("Advanced options"); ?></h2>
-					<input type="checkbox" id="allow_registration"<?php echo (!defined("ALLOW_REGISTRATION") || ALLOW_REGISTRATION) ? " checked=\"checked\"" : "" ?>/> <?php echo L("Allow users to register manually"); ?><br/>
-					<input type="password" id="admin_password"/> <?php echo L("Password for the admin user"); ?><br/>
-					<input type="password" id="admin_password_check"/> <?php echo L("Please repeat the password"); ?><br/>
+					<h2 style="margin-top: 1.5em"><?php echo L("AdvancedOptions"); ?></h2>
+					<input type="checkbox" id="allow_registration"<?php echo (!defined("ALLOW_REGISTRATION") || ALLOW_REGISTRATION) ? " checked=\"checked\"" : "" ?>/> <?php echo L("AllowManualRegistration"); ?><br/>
+					<input type="password" id="admin_password"/> <?php echo L("AdminPassword"); ?><br/>
+					<input type="password" id="admin_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
 				</div>	
 				
 				<div style="position: fixed; right: 50%; top: 50%; margin-right: -380px; margin-top: 260px">
-					<button onclick="checkForm()"><?php echo L("Save and continue"); ?></button>
+					<button onclick="checkForm()"><?php echo L("SaveAndContinue"); ?></button>
 				</div>
 			</div>
 		</div>

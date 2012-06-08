@@ -41,7 +41,7 @@ $s_Classes = Array(
 	"paladin"       => Array( "Paladin", 	 Roles::$hybrid ),
 	"priest"  	    => Array( "Priest", 	 Roles::$offensiveHeal ),
 	"rogue"         => Array( "Rogue", 		 Roles::$damage ),
-	"shaman"        => Array( "Schaman", 	 Roles::$offensiveHeal ),
+	"shaman"        => Array( "Shaman", 	 Roles::$offensiveHeal ),
 	"warlock"       => Array( "Warlock", 	 Roles::$damage ),
 	"warrior"       => Array( "Warrior", 	 Roles::$offensiveTank )
 );

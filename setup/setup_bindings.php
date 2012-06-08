@@ -83,32 +83,32 @@
 			<div style="padding: 20px">
 			
 				<div id="bindings">
-					<input type="checkbox" id="allow_phpbb3"<?php echo (defined("PHPBB3_BINDING") && PHPBB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("Allow users to login using their PHPBB3 account"); ?><br/>
-					<input type="checkbox" id="allow_eqdkp"<?php echo (defined("EQDKP_BINDING") && EQDKP_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("Allow users to login using their EQDKP account"); ?><br/>
-					<input type="checkbox" id="allow_vb3"<?php echo (defined("VB3_BINDING") && VB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("Allow users to login using their vBulletin account"); ?><br/>
+					<input type="checkbox" id="allow_phpbb3"<?php echo (defined("PHPBB3_BINDING") && PHPBB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("AllowPHPBB3Login"); ?><br/>
+					<input type="checkbox" id="allow_eqdkp"<?php echo (defined("EQDKP_BINDING") && EQDKP_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("AllowEQDKPLogin"); ?><br/>
+					<input type="checkbox" id="allow_vb3"<?php echo (defined("VB3_BINDING") && VB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("AllowVBulletinLogin"); ?><br/>
 					<br/>
 					<div style="border-bottom: 1px solid black">
-					<button id="button_phpbb3" class="tab_active" onclick="showConfig('phpbb3')"><?php echo L("PHPBB3 binding"); ?></button>
-					<button id="button_eqdkp" class="tab_inactive" onclick="showConfig('eqdkp')"><?php echo L("EQDKP binding"); ?></button>
-					<button id="button_vbulletin" class="tab_inactive" onclick="showConfig('vbulletin')"><?php echo L("vBulletin binding"); ?></button>
+					<button id="button_phpbb3" class="tab_active" onclick="showConfig('phpbb3')"><?php echo L("PHPBB3Binding"); ?></button>
+					<button id="button_eqdkp" class="tab_inactive" onclick="showConfig('eqdkp')"><?php echo L("EQDKPBinding"); ?></button>
+					<button id="button_vbulletin" class="tab_inactive" onclick="showConfig('vbulletin')"><?php echo L("VBulletinBinding"); ?></button>
 					</div>
 				</div>
 				
 				<div id="phpbb3">
 					<div>
 						<h2><?php echo L("PHPBB3 binding"); ?></h2>
-						<input type="text" id="phpbb3_database" value="<?php echo (defined("PHPBB3_DATABASE")) ? PHPBB3_DATABASE : "phpbb" ?>"/> <?php echo L("PHPBB3 database"); ?><br/>
-						<input type="text" id="phpbb3_user" value="<?php echo (defined("PHPBB3_TABLE")) ? PHPBB3_USER : "root" ?>"/> <?php echo L("User with permissions for that database"); ?><br/>
-						<input type="password" id="phpbb3_password"/> <?php echo L("Password for that user"); ?><br/>
-						<input type="password" id="phpbb3_password_check"/> <?php echo L("Please repeat the password"); ?><br/>
+						<input type="text" id="phpbb3_database" value="<?php echo (defined("PHPBB3_DATABASE")) ? PHPBB3_DATABASE : "phpbb" ?>"/> <?php echo L("PHPBB3Database"); ?><br/>
+						<input type="text" id="phpbb3_user" value="<?php echo (defined("PHPBB3_TABLE")) ? PHPBB3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+						<input type="password" id="phpbb3_password"/> <?php echo L("UserPassword"); ?><br/>
+						<input type="password" id="phpbb3_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
 						<br/>
-						<input type="text" id="phpbb3_prefix" value="<?php echo (defined("PHPBB3_TABLE_PREFIX")) ? PHPBB3_TABLE_PREFIX : "phpbb_" ?>"/> <?php echo L("Prefix for tables in the database"); ?><br/>
+						<input type="text" id="phpbb3_prefix" value="<?php echo (defined("PHPBB3_TABLE_PREFIX")) ? PHPBB3_TABLE_PREFIX : "phpbb_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
 					</div>
 					
 					<div style="margin-top: 1em">
-						<button onclick="reloadPHPBB3Groups()"><?php echo L("Load groups using these settings"); ?></button><br/><br/>
+						<button onclick="reloadPHPBB3Groups()"><?php echo L("LoadGroups"); ?></button><br/><br/>
 						
-						<?php echo L("Users of the following groups gain \"member\" rights upon first login"); ?><br/>
+						<?php echo L("AutoMemberLogin"); ?><br/>
 						<select id="phpbb3_member" multiple="multiple" style="width: 400px; height: 5.5em">
 						<?php
 							if ( defined("PHPBB3_DATABASE") )
@@ -126,7 +126,7 @@
 						?>
 						</select>
 						<br/><br/>
-						<?php echo L("Users of the following groups gain \"raidlead\" rights upon first login"); ?><br/>
+						<?php echo L("AutoLeadLogin"); ?><br/>
 						<select id="phpbb3_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
 						<?php
 							if ( defined("PHPBB3_DATABASE") )
@@ -148,33 +148,33 @@
 				
 				<div id="eqdkp">
 					<div>
-						<h2><?php echo L("EQDKP binding"); ?></h2>
-						<input type="text" id="eqdkp_database" value="<?php echo (defined("EQDKP_DATABASE")) ? EQDKP_DATABASE : "eqdkp" ?>"/> <?php echo L("EQDKP database"); ?><br/>
-						<input type="text" id="eqdkp_user" value="<?php echo (defined("EQDKP_TABLE")) ? EQDKP_USER : "root" ?>"/> <?php echo L("User with permissions for that database"); ?><br/>
-						<input type="password" id="eqdkp_password"/> <?php echo L("Password for that user"); ?><br/>
-						<input type="password" id="eqdkp_password_check"/> <?php echo L("Please repeat the password"); ?><br/>
+						<h2><?php echo L("EQDKPBinding"); ?></h2>
+						<input type="text" id="eqdkp_database" value="<?php echo (defined("EQDKP_DATABASE")) ? EQDKP_DATABASE : "eqdkp" ?>"/> <?php echo L("EQDKPDatabase"); ?><br/>
+						<input type="text" id="eqdkp_user" value="<?php echo (defined("EQDKP_TABLE")) ? EQDKP_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+						<input type="password" id="eqdkp_password"/> <?php echo L("UserPassword"); ?><br/>
+						<input type="password" id="eqdkp_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
 						<br/>
-						<input type="text" id="eqdkp_prefix" value="<?php echo (defined("EQDKP_TABLE_PREFIX")) ? EQDKP_TABLE_PREFIX : "eqdkp_" ?>"/> <?php echo L("Prefix for tables in the database"); ?><br/>
+						<input type="text" id="eqdkp_prefix" value="<?php echo (defined("EQDKP_TABLE_PREFIX")) ? EQDKP_TABLE_PREFIX : "eqdkp_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
 					</div>
 					
-					<br/><br/><button onclick="checkEQDKP()"><?php echo L("Verify these settings"); ?></button>				
+					<br/><br/><button onclick="checkEQDKP()"><?php echo L("VerifySettings"); ?></button>				
 				</div>
 				
 				<div id="vbulletin">
 					<div>
-						<h2><?php echo L("vBulletin binding"); ?></h2>
-						<input type="text" id="vb3_database" value="<?php echo (defined("VB3_DATABASE")) ? VB3_DATABASE : "vbulletin" ?>"/> <?php echo L("vBulletin database"); ?><br/>
-						<input type="text" id="vb3_user" value="<?php echo (defined("VB3_TABLE")) ? VB3_USER : "root" ?>"/> <?php echo L("User with permissions for that database"); ?><br/>
-						<input type="password" id="vb3_password"/> <?php echo L("Password for that user"); ?><br/>
-						<input type="password" id="vb3_password_check"/> <?php echo L("Please repeat the password"); ?><br/>
+						<h2><?php echo L("VBulletinBinding"); ?></h2>
+						<input type="text" id="vb3_database" value="<?php echo (defined("VB3_DATABASE")) ? VB3_DATABASE : "vbulletin" ?>"/> <?php echo L("VBulletinDatabase"); ?><br/>
+						<input type="text" id="vb3_user" value="<?php echo (defined("VB3_TABLE")) ? VB3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+						<input type="password" id="vb3_password"/> <?php echo L("UserPassword"); ?><br/>
+						<input type="password" id="vb3_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
 						<br/>
-						<input type="text" id="vb3_prefix" value="<?php echo (defined("VB3_TABLE_PREFIX")) ? VB3_TABLE_PREFIX : "vb_" ?>"/> <?php echo L("Prefix for tables in the database"); ?><br/>
+						<input type="text" id="vb3_prefix" value="<?php echo (defined("VB3_TABLE_PREFIX")) ? VB3_TABLE_PREFIX : "vb_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
 					</div>
 					
 					<div style="margin-top: 1em">
 						<button onclick="reloadVB3Groups()"><?php echo L("Load groups using these settings"); ?></button><br/><br/>
 						
-						<?php echo L("Users of the following groups gain \"member\" rights upon first login"); ?><br/>
+						<?php echo L("AutoMemberLogin"); ?><br/>
 						<select id="vb3_member" multiple="multiple" style="width: 400px; height: 5.5em">
 						<?php
 							if ( defined("VB3_DATABASE") )
@@ -192,7 +192,7 @@
 						?>
 						</select>
 						<br/><br/>
-						<?php echo L("Users of the following groups gain \"raidlead\" rights upon first login"); ?><br/>
+						<?php echo L("AutoLeadLogin"); ?><br/>
 						<select id="vb3_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
 						<?php
 							if ( defined("VB3_DATABASE") )
@@ -213,7 +213,7 @@
 				</div>
 										
 				<div style="position: fixed; right: 50%; top: 50%; margin-right: -380px; margin-top: 260px">
-					<button onclick="checkForm()"><?php echo L("Save and continue"); ?></button>
+					<button onclick="checkForm()"><?php echo L("SaveAndContinue"); ?></button>
 				</div>
 			</div>
 		</div>

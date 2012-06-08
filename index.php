@@ -10,7 +10,7 @@
     
     if ( !file_exists("lib/config/config.php") )
     {
-    	die( L("Raidplaner is not yet configured.")."<br>".L("Please run setup or follow the manual installation instructions.") );
+    	die( L("RaidplanerNotConfigured")."<br>".L("PleaseRunSetup") );
     }
     
     require_once("lib/private/users.php");
@@ -136,8 +136,8 @@
     				if ( !ValidUser() && RegisteredUser() )
     				{
     					echo "<div id=\"lockMessage\">";
-    					echo L("Your account is currently locked.")."<br/>";
-    					echo L("Please contact your admin to get your account unlocked.");
+    					echo L("AccountIsLocked")."<br/>";
+    					echo L("ContactAdminToUnlock");
     					echo "</div>";
     				}
     			?>
@@ -150,7 +150,7 @@
 		<div id="ajaxblocker">
 			<div class="background ui-corner-all">
 				<img src="lib/layout/images/busy.gif"/><br/><br/>
-				<?php echo L("Busy. Please wait."); ?>
+				<?php echo L("Busy"); ?>
 			</div>
 		</div>
 		
@@ -209,7 +209,7 @@
 					<span style="display: inline-block; vertical-align: top">
 						<div style="margin-bottom: 10px">
 							<select id="selectlocation" onchange="onLocationChange(this)">
-								<option value="0"><?php echo L("New dungeon"); ?></option>
+								<option value="0"><?php echo L("NewDungeon"); ?></option>
 							</select>
 							<select id="selectsize" style="width: 48px">
 								<?php
@@ -246,7 +246,7 @@
 						<textarea id="descriptiondummy" class="textdummy description"><?php echo L("Description"); ?></textarea>
 						<textarea id="description" class="textinput description"></textarea>
 					</div>
-					<button id="newRaidSubmit"><?php echo L("Create raid"); ?></button>
+					<button id="newRaidSubmit"><?php echo L("CreateRaid"); ?></button>
 				</span>
 			</div>			
 		</div>	

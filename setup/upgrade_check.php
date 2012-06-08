@@ -63,14 +63,14 @@
 			</div>
 			<div style="padding: 20px">
 				<div>
-					<h2><?php echo L("Version detection and update"); ?></h2>
-					<?php echo L("Setup will try to detect your current version."); ?><br/>
-					<?php echo L("If the detected version does not match your installed version you may always choose manually, too."); ?><br/>
-					<?php echo L("The update will only affect changes in the database."); ?><br/>
-					<?php echo L("If the database did not change you will not need to do this step."); ?><br/>
+					<h2><?php echo L("VersionDetection"); ?></h2>
+					<?php echo L("VersionDetectProgress"); ?><br/>
+					<?php echo L("ChooseManually"); ?><br/>
+					<?php echo L("OnlyDBAffected"); ?><br/>
+					<?php echo L("NoChangeNoAction"); ?><br/>
 					<br/><br/>
 					
-					<?php echo L("Database connection"); ?> : <?php
+					<?php echo L("DatabaseConnection"); ?> : <?php
 					    try
             			{
                             $Connector  = Connector::GetInstance(true);
@@ -84,7 +84,7 @@
 						if ( $databaseOk )
 						{
 							echo "<span style=\"color: green\">".L("Ok")."</span><br/>";
-				            echo L("Detected version").": ";
+				            echo L("DetectedVersion").": ";
 				            
 				            $GetVersion = $Connector->prepare("SELECT IntValue FROM `".RP_TABLE_PREFIX."Setting` WHERE Name='Version' LIMIT 1");
         
@@ -109,7 +109,7 @@
                             if ( $Version == $CurrentVersion )
                             {
                                 echo "<span style=\"color: green\">".$Major.".".$Minor.".".$Patch."</span><br/>";
-                                echo "<br/><span style=\"font-size: 20px; color: green\">".L("No update necessary.")."</span>";
+                                echo "<br/><span style=\"font-size: 20px; color: green\">".L("NoUpdateNecessary")."</span>";
                             }
                             else
                             {
@@ -118,14 +118,14 @@
                         ?>
                         
                         <br/><br/>
-                        <span><?php echo L("Update from version") ?>: </span>
+                        <span><?php echo L("UpdateFrom") ?>: </span>
                         <select id="version">
                             <option value="92"<?php if ($Version==92) echo " selected"; ?>>0.9.2</option>
                             <option value="93"<?php if ($Version==93) echo " selected"; ?>>0.9.3</option>
                             <option value="94"<?php if ($Version==94) echo " selected"; ?>>0.9.4</option>
                             <option value="95"<?php if ($Version==95) echo " selected"; ?>>0.9.5</option>
                         </select>
-                        <span> <?php echo L("to version")." ".$CurrentMajor.".".$CurrentMinor.".".$CurrentPatch; ?></span>
+                        <span> <?php echo L("UpdateTo")." ".$CurrentMajor.".".$CurrentMinor.".".$CurrentPatch; ?></span>
                         
                         <div style="position: fixed; right: 50%; top: 50%; margin-right: -380px; margin-top: 260px">
     					   <button onclick="updateDatabase()"><?php echo L("Continue"); ?></button>

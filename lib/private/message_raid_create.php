@@ -88,7 +88,7 @@ function msgRaidCreate( $Request )
     }
     else
     {
-        echo "<error>".L("Access denied")."</error>";
+        echo "<error>".L("AccessDenied")."</error>";
     }
 }
 

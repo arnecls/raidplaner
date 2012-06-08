@@ -19,16 +19,16 @@
 			</div>
 			<div style="padding: 20px">
 				<div>
-					<h2><?php echo L("Setup complete"); ?></h2>
+					<h2><?php echo L("SetupComplete"); ?></h2>
 					<?php 
-						echo L("Raidplaner has been successfully set up.")."<br/>";
-						echo L("You should now delete the setup folder and secure the following folders:")."<br/>";
+						echo L("RaidplanerSetupDone")."<br/>";
+						echo L("DeleteSetupFolder")."<br/>";
 						echo "<br/>";
 						echo "lib / private<br/>";
 						echo "lib / config<br/>";
 						echo "<br/>";
-						echo L("Thank you for using packedpixel Raidplaner.")."<br/>";
-						echo L("If you encounter any bugs or if you have feature requests, please visit our bugtracker at ");
+						echo L("ThankYou")."<br/>";
+						echo L("VisitBugtracker");
 						echo "<a href=\"http://code.google.com/p/ppx-raidplaner/issues/list\">Google Code</a>."
 					?>
 				</div>

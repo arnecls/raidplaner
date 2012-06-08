@@ -17,6 +17,7 @@ var g_Locale = new Array();
 
 function L( a_Key ) {
 	if ( g_Locale[a_Key] == null )
-		return a_Key;		
+		return "LOCA_MISSING_"+a_Key;
+		
 	return g_Locale[a_Key]; 
 };

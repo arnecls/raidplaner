@@ -14,7 +14,7 @@ function checkForm()
 	
 	if ( $("#admin_password").val().length == 0 )
 	{
-		alert("<?php echo L("Admin password must not be empty."); ?>");
+		alert("<?php echo L("AdminPasswordEmpty"); ?>");
 		return;
 	}
 	
@@ -25,7 +25,7 @@ function checkForm()
 	
 	if ( $("#admin_password").val() != $("#admin_password_check").val() )
 	{
-		alert("<?php echo L("Admin passwords did not match."); ?>");
+		alert("<?php echo L("AdminPasswordNoMatch"); ?>");
 		return;
 	}
 	
@@ -58,7 +58,7 @@ function dbCheckDone( a_XMLData )
 			errorString += $(this).text() + "\n";
 		});
 		
-		alert("<?php echo L("Connection test failed"); ?>:\n\n" + errorString );
+		alert("<?php echo L("ConnectionTestFailed"); ?>:\n\n" + errorString );
 	}
 	else
 	{

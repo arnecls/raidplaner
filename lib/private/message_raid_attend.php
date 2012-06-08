@@ -129,12 +129,12 @@ function msgRaidAttend( $Request )
 			}
 			else
 			{
-				echo "<error>".L("Not your character").". ".L("Access denied")."</error>";
+				echo "<error>".L("ForeignCharacter").". ".L("AccessDenied")."</error>";
 			}
 		}
 		else
 		{
-			echo "<error>".L("Raid is locked")."</error>";
+			echo "<error>".L("RaidLocked")."</error>";
 		}
 		
 		// reload calendar
@@ -154,7 +154,7 @@ function msgRaidAttend( $Request )
 	}
     else
     {
-        echo "<error>".L("Access denied")."</error>";
+        echo "<error>".L("AccessDenied")."</error>";
     }
 }
 

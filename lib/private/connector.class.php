@@ -86,7 +86,7 @@
 	function postErrorMessage( $Statement )
 	{
 		$ErrorInfo = $Statement->errorInfo();
-		echo "<error>".L("Database error")."</error>";
+		echo "<error>".L("DatabaseError")."</error>";
         echo "<error>".$ErrorInfo[0]."</error>";
         echo "<error>".$ErrorInfo[2]."</error>";
 	}

@@ -396,7 +396,7 @@
             if (!$UserSt->execute() )
             {
             	$ErrorInfo = $UserSt->errorInfo();
-				echo "<error>".L("Database error")."</error>";
+				echo "<error>".L("DatabaseError")."</error>";
         		echo "<error>".$ErrorInfo[0]."</error>";
        			echo "<error>".$ErrorInfo[2]."</error>";
             
@@ -525,12 +525,12 @@
     	{
 	    	if ( !UserProxy::CreateUser("none", 0, "none", $Request["name"], sha1($Request["pass"])) )
 	    	{
-	    		echo "<error>".L("This username is already in use.")."</error>";
+	    		echo "<error>".L("NameInUse")."</error>";
 	    	}
 		}
 		else
 		{
-			echo "<error>".L("Access denied")."</error>";
+			echo "<error>".L("AccessDenied")."</error>";
 		}
     }
 ?>

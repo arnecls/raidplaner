@@ -104,13 +104,13 @@
             break;
             
         default:
-            echo "<error>".L("Unknown request")."</error>";
+            echo "<error>".L("UnknownRequest")."</error>";
             break;
         }
     }
     else
     {
-        echo "<error>".L("Invalid request")."</error>";
+        echo "<error>".L("InvalidRequest")."</error>";
     }
     
     echo "</messagehub>";

@@ -16,7 +16,7 @@ function onReloadPHPBB3( a_XMLData )
 			errorString += $(this).text() + "\n";
 		});
 		
-		alert("<?php echo L("Reload failed"); ?>:\n\n" + errorString );
+		alert("<?php echo L("ReloadFailed"); ?>:\n\n" + errorString );
 		return;
 	}	
 	
@@ -45,7 +45,7 @@ function onReloadVB3( a_XMLData )
 			errorString += $(this).text() + "\n";
 		});
 		
-		alert("<?php echo L("Reload failed"); ?>:\n\n" + errorString );
+		alert("<?php echo L("ReloadFailed"); ?>:\n\n" + errorString );
 		return;
 	}	
 	
@@ -74,24 +74,24 @@ function onCheckEQDKP( a_XMLData )
 			errorString += $(this).text() + "\n";
 		});
 		
-		alert("<?php echo L("Connection test failed"); ?>:\n\n" + errorString );
+		alert("<?php echo L("ConnectionTestFailed"); ?>:\n\n" + errorString );
 		return;
 	}
 	
-	alert("<?php echo L("Connection test succeeded"); ?>");
+	alert("<?php echo L("ConnectionTestOk"); ?>");
 }
 
 function reloadPHPBB3Groups() 
 {
 	if ( $("#phpbb3_password").val().length == 0 )
 	{
-		alert("<?php echo L("PHPBB Database password must not be empty."); ?>");
+		alert("<?php echo L("PHPBBPasswordEmpty"); ?>");
 		return;
 	}
 	
 	if ( $("#phpbb3_password").val() != $("#phpbb3_password_check").val() )
 	{
-		alert("<?php echo L("PHPBB Database passwords did not match."); ?>");
+		alert("<?php echo L("PHPBBDBPasswordsMatch"); ?>");
 		return;
 	}
 	
@@ -116,13 +116,13 @@ function reloadVB3Groups()
 {
 	if ( $("#vb3_password").val().length == 0 )
 	{
-		alert("<?php echo L("vBulletin Database password must not be empty."); ?>");
+		alert("<?php echo L("VBulletinPasswordEmpty"); ?>");
 		return;
 	}
 	
 	if ( $("#vb3_password").val() != $("#vb3_password_check").val() )
 	{
-		alert("<?php echo L("vBulletin Database passwords did not match."); ?>");
+		alert("<?php echo L("VBulletinDBPasswordsMatch"); ?>");
 		return;
 	}
 	
@@ -147,13 +147,13 @@ function checkEQDKP()
 {
 	if ( $("#eqdkp_password").val().length == 0 )
 	{
-		alert("<?php echo L("EQDKP Database password must not be empty."); ?>");
+		alert("<?php echo L("EQDKPPasswordEmpty"); ?>");
 		return;
 	}
 	
 	if ( $("#eqdkp_password").val() != $("#eqdkp_password_check").val() )
 	{
-		alert("<?php echo L("EQDKP Database passwords did not match."); ?>");
+		alert("<?php echo L("EQDKPDBPasswordsMatch"); ?>");
 		return;
 	}
 	
@@ -180,13 +180,13 @@ function checkForm()
 	{
 		if ( $("#phpbb3_password").val().length == 0 )
 		{
-			alert("<?php echo L("PHPBB Database password must not be empty."); ?>");
+			alert("<?php echo L("PHPBBPasswordEmpty"); ?>");
 			return;
 		}
 		
 		if ( $("#phpbb3_password").val() != $("#phpbb3_password_check").val() )
 		{
-			alert("<?php echo L("PHPBB Database passwords did not match."); ?>");
+			alert("<?php echo L("PHPBBDBPasswordsMatch"); ?>");
 			return;
 		}
 	}
@@ -195,13 +195,13 @@ function checkForm()
 	{	
 		if ( $("#eqdkp_password").val().length == 0 )
 		{
-			alert("<?php echo L("EQDKP Database password must not be empty."); ?>");
+			alert("<?php echo L("EQDKPPasswordEmpty"); ?>");
 			return;
 		}
 		
 		if ( $("#eqdkp_password").val() != $("#eqdkp_password_check").val() )
 		{
-			alert("<?php echo L("EQDKP Database passwords did not match."); ?>");
+			alert("<?php echo L("EQDKPDBPasswordsMatch"); ?>");
 			return;
 		}
 	}
@@ -210,13 +210,13 @@ function checkForm()
 	{	
 		if ( $("#vb3_password").val().length == 0 )
 		{
-			alert("<?php echo L("vBulletin Database password must not be empty."); ?>");
+			alert("<?php echo L("VBulletinPasswordEmpty"); ?>");
 			return;
 		}
 		
 		if ( $("#vb3_password").val() != $("#vb3_password_check").val() )
 		{
-			alert("<?php echo L("vBulletin Database passwords did not match."); ?>");
+			alert("<?php echo L("VBulletinDBPasswordsMatch"); ?>");
 			return;
 		}
 	}
@@ -263,7 +263,7 @@ function dbCheckDone( a_XMLData )
 			errorString += $(this).prev().text() + ": " + $(this).text() + "\n\n";
 		});
 		
-		alert("<?php echo L("Connection test failed"); ?>:\n\n" + errorString );
+		alert("<?php echo L("ConnectionTestFailed"); ?>:\n\n" + errorString );
 		return;
 	}
 	
