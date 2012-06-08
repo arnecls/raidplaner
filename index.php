@@ -1,6 +1,7 @@
 <?php
 	define( "LOCALE_MAIN", true );
 	require_once("lib/private/locale.php");
+	require_once("lib/private/gameconfig.php");
 	
     if ( !isset($_REQUEST["nocheck"]) )
 	{
@@ -211,9 +212,12 @@
 								<option value="0"><?php echo L("New dungeon"); ?></option>
 							</select>
 							<select id="selectsize" style="width: 48px">
-								<option value="5">5</option>
-								<option value="10">10</option>
-								<option value="25">25</option>
+								<?php
+									while ( list($groupSize,$slots) = each($s_GroupSizes) )
+									{
+										echo "<option value=\"".$groupSize."\">".$groupSize."</option>";
+									}
+								?>
 							</select>					
 						</div>
 						<div style="margin-bottom: 10px">

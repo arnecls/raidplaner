@@ -40,7 +40,7 @@
 		  `UserId` int(10) unsigned NOT NULL,
 		  `Name` varchar(64) NOT NULL,
 		  `Mainchar` enum('true','false') NOT NULL DEFAULT 'false',
-		  `Class` enum('deathknight','druid','hunter','mage','monk','paladin','priest','rogue','shaman','warlock','warrior') NOT NULL,
+		  `Class` CHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
 		  `Role1` enum('dmg','heal','tank') NOT NULL,
 		  `Role2` enum('dmg','heal','tank') NOT NULL,
 		  PRIMARY KEY (`CharacterId`),

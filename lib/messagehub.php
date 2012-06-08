@@ -3,6 +3,7 @@
     require_once(dirname(__FILE__)."/private/users.php");
     require_once(dirname(__FILE__)."/private/tools_string.php");
     require_once(dirname(__FILE__)."/private/settings.class.php");
+    require_once(dirname(__FILE__)."/private/gameconfig.php");
     
     include_once("private/raid_maintenance.php");
     include_once("private/message_raid_detail.php");

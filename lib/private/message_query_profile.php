@@ -2,6 +2,8 @@
 
 function msgQueryProfile( $Request )
 {
+	global $s_Roles;
+	
 	if ( ValidUser() )
     {
 		$userId = intval( $_SESSION["User"]["UserId"] );
@@ -103,10 +105,17 @@ function msgQueryProfile( $Request )
         	$AttendanceData = array( 
         		"available"   => 0, 
         		"unavailable" => 0, 
-        		"ok"          => 0,
-        		"dmg" 		  => 0,
-        		"heal"        => 0,
-        		"tank"        => 0 );
+        		"ok"          => 0 );
+        		
+        	// Initialize roles 
+        	
+        	while ( list($RoleIdent,$RoleData) = each($s_Roles) )
+        	{
+        		$AttendanceData[$RoleIdent] = 0;
+        	}
+        	reset($s_Roles);
+        	
+        	// Pull data
         	
         	while ( $Data = $Attendance->fetch( PDO::FETCH_ASSOC ) )
 	        {

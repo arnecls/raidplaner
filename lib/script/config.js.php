@@ -2,6 +2,7 @@
 	if (!defined("UNIFIED_SCRIPT")) header("Content-type: text/javascript");
 	
 	require_once("../private/connector.class.php");
+	require_once("../private/gameconfig.php");
 
 	$Connector = Connector::GetInstance();
 	$Settings = $Connector->prepare("Select `Name`, `TextValue`, `IntValue` FROM `".RP_TABLE_PREFIX."Setting`");
@@ -59,6 +60,56 @@ var g_Theme = {
 	bgrepeat   : "<?php echo $BGRepeat; ?>",
 	bgcolor    : "<?php echo $BGColor; ?>"
 };
+
+var g_RoleNames = Array(<?php echo sizeof($s_Roles); ?>);
+var g_Classes  = Array(<?php echo sizeof($s_Classes); ?>);
+var g_ClassIdx = Array(<?php echo sizeof($s_Classes); ?>);
+var g_GroupSizes = Array(<?php
+	for ($i=0; list($Count,$RoleSizes) = each($s_GroupSizes); ++$i)
+	{
+		if ($i>0) echo ",";
+		echo $Count;
+	}
+	reset($s_GroupSizes);
+?>);
+var g_GroupRoleSizes = Array(<?php echo sizeof($s_GroupSizes); ?>);
+
+<?php
+	for ( $i=0; list($RoleIdent,$RoleName) = each($s_Roles); ++$i )
+	{
+		echo "g_RoleNames[\"".$RoleIdent."\"] = L(\"".$RoleName."\");\n";
+	}
+	reset($s_Roles);
+?>
+
+<?php 
+
+	for ( $i=0; list($ClassIdent,$ClassConfig) = each($s_Classes); ++$i )
+	{
+		echo "g_ClassIdx[\"".$ClassIdent."\"] = ".$i."; ";
+		echo "g_Classes[".$i."] = {";
+		echo "ident : \"".$ClassIdent."\", ";
+		echo "text : L(\"".$ClassConfig[0]."\"), ";
+		echo "roles : Array(";
+		
+		for ( $r=0; $r < sizeof($ClassConfig[1]); ++$r )
+		{
+			if ($r > 0) echo ",";
+			echo "\"".$ClassConfig[1][$r]."\""; 
+		}
+		
+		echo ")};\n";
+	}
+	reset($s_Classes);
+?>
+
+<?php
+	while ( list($Count,$RoleSizes) = each($s_GroupSizes) )
+	{
+		echo "g_GroupRoleSizes[".$Count."] = Array(".$RoleSizes[0].",".$RoleSizes[1].",".$RoleSizes[2].");\n";
+	}
+	reset($s_GroupSizes);
+?>
 
 // -----------------------------------------------------------------------------
 

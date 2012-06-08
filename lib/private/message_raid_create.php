@@ -4,6 +4,7 @@ function msgRaidCreate( $Request )
 {
 	if ( ValidRaidlead() )
     {
+    	global $s_GroupSizes;
     	$Connector = Connector::GetInstance();
     	
     	$locationId = $Request["locationId"];
@@ -46,13 +47,29 @@ function msgRaidCreate( $Request )
 	        $NewRaidSt->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
 	        $NewRaidSt->bindValue(":Description", requestToXML( $Request["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
 	        
-	        $DefaultTankSlots = Array( 25 => 2,  10 => 2, 5 => 1 );
-	        $DefaultHealSlots = Array( 25 => 6,  10 => 3, 5 => 1 );
-	        $DefaultDmgSlots  = Array( 25 => 17, 10 => 5, 5 => 3 );
+	        while ( list($groupSize,$slots) = each($s_GroupSizes) )
+			{
+				echo "<option value=\"".$groupSize."\">".$groupSize."</option>";
+			}
+			
+			// Get the default sizes
+			
+			if ( isset($s_GroupSizes[$Request["locationSize"]]) )
+			{
+				$DefaultSizes = $s_GroupSizes[$Request["locationSize"]];
+			}
+			else
+			{
+				$TankDefaultSize = ceil($Request["locationSize"]/9);
+				$HealDefaultSize = ceil($Request["locationSize"]/4.2);
+				$DmgDefaultSize  = $Request["locationSize"] - ($TankDefaultSize+$HealDefaultSize);
+				
+				$DefaultSizes = Array( $DmgDefaultSize, $HealDefaultSize, $TankDefaultSize );
+	        }
 	        
-	        $NewRaidSt->bindValue(":TankSlots",	$DefaultTankSlots[$Request["locationSize"]], PDO::PARAM_INT);
-	        $NewRaidSt->bindValue(":HealSlots",	$DefaultHealSlots[$Request["locationSize"]], PDO::PARAM_INT);
-	        $NewRaidSt->bindValue(":DmgSlots",	$DefaultDmgSlots[$Request["locationSize"]], PDO::PARAM_INT);
+	        $NewRaidSt->bindValue(":TankSlots",	$DefaultSizes[0], PDO::PARAM_INT);
+	        $NewRaidSt->bindValue(":HealSlots",	$DefaultSizes[1], PDO::PARAM_INT);
+	        $NewRaidSt->bindValue(":DmgSlots",	$DefaultSizes[2], PDO::PARAM_INT);
 	        
 	        if (!$NewRaidSt->execute())
 	        {
