@@ -75,7 +75,7 @@
 		$g_Locale[ "ConfirmRaidDelete" ]		= "Soll dieser Raid wirklich gel&ouml;schen werden?";
 		$g_Locale[ "Cancel" ]					= "Abbrechen";
 		$g_Locale[ "Notification" ]				= "Hinweis";
-		$g_Locale[ "Delete character" ]			= "Charakter entfernen";
+		$g_Locale[ "DeleteCharacter" ]			= "Charakter entfernen";
 		$g_Locale[ "Busy" ]						= "Inhalte werden geladen. Bitte warten.";
 		$g_Locale[ "RequestError" ]				= "Eine Anfrage hat einen Fehler gemeldet.";
 		$g_Locale[ "Users" ]					= "Benutzer";
@@ -220,5 +220,6 @@
 		$g_Locale[ "PartiallyUpdated" ] 		= "Dies kann auf eine bereits (teilweise) upgedatete Datenbank hinweisen.";
 	    $g_Locale[ "Ignore" ] 					= "Ignorieren";
 	    $g_Locale[ "Retry" ] 					= "Wiederholen";
+		$g_Locale[ "DatabaseError" ]			= "Datenbank Fehler";
 	}
 ?>

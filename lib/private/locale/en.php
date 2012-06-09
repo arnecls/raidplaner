@@ -196,7 +196,7 @@
 		$g_Locale[ "EQDKPConfigFile" ] 			= "EQDKP config file";
 		$g_Locale[ "VerifySettings" ] 			= "Verify these settings";
 		$g_Locale[ "VBulletinBinding" ] 		= "vBulletin binding";
-		$g_Locale[ "VBulletinConfigFile" ] 			= "vBulletin config file";
+		$g_Locale[ "VBulletinConfigFile" ] 		= "vBulletin config file";
 		$g_Locale[ "VBulletinDatabase" ] 		= "vBulletin database";
 		$g_Locale[ "PHPBBPasswordEmpty" ] 		= "PHPBB Database password must not be empty.";
 		$g_Locale[ "PHPBBDBPasswordsMatch" ] 	= "PHPBB Database passwords did not match.";
@@ -220,5 +220,6 @@
 		$g_Locale[ "PartiallyUpdated" ] 		= "This may hint on an already (partially) updated database.";
 		$g_Locale[ "Ignore" ] 					= "Ignore";
 	    $g_Locale[ "Retry" ] 					= "Retry";
+		$g_Locale[ "DatabaseError" ]			= "Database error";
 	}
 ?>

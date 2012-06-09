@@ -96,7 +96,7 @@
 				
 				<div id="phpbb3">
 					<div>
-						<h2><?php echo L("PHPBB3 binding"); ?></h2>
+						<h2><?php echo L("PHPBB3Binding"); ?></h2>
 						<input type="text" id="phpbb3_database" value="<?php echo (defined("PHPBB3_DATABASE")) ? PHPBB3_DATABASE : "phpbb" ?>"/> <?php echo L("PHPBB3Database"); ?><br/>
 						<input type="text" id="phpbb3_user" value="<?php echo (defined("PHPBB3_TABLE")) ? PHPBB3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
 						<input type="password" id="phpbb3_password"/> <?php echo L("UserPassword"); ?><br/>
@@ -172,7 +172,7 @@
 					</div>
 					
 					<div style="margin-top: 1em">
-						<button onclick="reloadVB3Groups()"><?php echo L("Load groups using these settings"); ?></button><br/><br/>
+						<button onclick="reloadVB3Groups()"><?php echo L("LoadGroups"); ?></button><br/><br/>
 						
 						<?php echo L("AutoMemberLogin"); ?><br/>
 						<select id="vb3_member" multiple="multiple" style="width: 400px; height: 5.5em">

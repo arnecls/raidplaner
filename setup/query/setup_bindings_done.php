@@ -3,6 +3,7 @@
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
     echo "<bindings>";    
     
+    define( "LOCALE_SETUP", true );
 	require_once("../../lib/private/connector.class.php");
 	
 	$phpbb3_config = fopen( "../../lib/config/config.phpbb3.php", "w+" );

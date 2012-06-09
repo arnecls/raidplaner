@@ -2,6 +2,7 @@
 	header("Content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
     
+    define( "LOCALE_SETUP", true );
 	require_once("../../lib/private/connector.class.php");
 	
 	echo "<test>";

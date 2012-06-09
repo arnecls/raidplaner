@@ -1,4 +1,5 @@
 <?php
+	define( "LOCALE_SETUP", true );
 	require_once(dirname(__FILE__)."/../../lib/private/connector.class.php");
 	require_once(dirname(__FILE__)."/../../lib/config/config.php");
 
