@@ -63,7 +63,7 @@
 		$g_Locale[ "NoName" ] 					= "Einem neuen Charakter wurde kein Name zugewiesen.";
 		$g_Locale[ "NoClass" ] 					= "Einem neuen Charakter wurde keine Klasse zugewiesen.";
 		$g_Locale[ "NotSignedUp" ]				= "Nicht angemeldet";
-		$g_Locale[ "Queued" ]					= "Auf der Warteliste als ";
+		$g_Locale[ "QueuedAs" ]					= "Auf der Warteliste als ";
 		$g_Locale[ "Raiding" ]					= "Aufgestellt als ";	
 		$g_Locale[ "RaidOpen" ] 				= "Raid freigegeben";
 		$g_Locale[ "RaidLocked" ] 				= "Raid gesperrt";

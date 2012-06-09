@@ -63,7 +63,7 @@
 		$g_Locale[ "NoClass" ] 					= "A new character has no class assigned.";
 		$g_Locale[ "NotSignedUp" ]				= "Not signed up";
 		$g_Locale[ "Absent" ]					= "Absent";
-		$g_Locale[ "Queued" ]					= "Queued as ";
+		$g_Locale[ "QueuedAs" ]					= "Queued as ";
 		$g_Locale[ "Raiding" ]					= "Raiding as ";
 		$g_Locale[ "RaidOpen" ] 				= "Raid open";
 		$g_Locale[ "RaidLocked" ] 				= "Raid locked";
