@@ -1,4 +1,5 @@
 <?php
+	require_once("lib/private/locale.php");
 	require_once("lib/private/browser.php");
 
 	function isSupportedVersion()
