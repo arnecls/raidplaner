@@ -2,7 +2,7 @@
 
 function msgQueryLocations( $Request )
 {
-	if ( ValidAdmin() )
+	if ( ValidRaidlead() )
     {
     	$Connector = Connector::GetInstance();
     	
