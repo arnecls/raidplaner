@@ -15,5 +15,5 @@
 }
 
 .shadow_default {
-	filter: progid:DXImageTransform.Microsoft.DropShadow(offx=1, offy=1, color=#000000, positive='true');
+    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=1, offy=1, color=#000000, positive='true');
 }

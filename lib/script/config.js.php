@@ -61,9 +61,11 @@ var g_Theme = {
 	bgcolor    : "<?php echo $BGColor; ?>"
 };
 
-var g_RoleNames = Array(<?php echo sizeof($s_Roles); ?>);
-var g_Classes  = Array(<?php echo sizeof($s_Classes); ?>);
-var g_ClassIdx = Array(<?php echo sizeof($s_Classes); ?>);
+var g_RoleNames  = Array(<?php echo sizeof($s_Roles); ?>);
+var g_RoleIds    = Array(<?php echo sizeof($s_Roles); ?>);
+var g_RoleIdents = Array(<?php echo sizeof($s_Roles); ?>);
+var g_Classes    = Array(<?php echo sizeof($s_Classes); ?>);
+var g_ClassIdx   = Array(<?php echo sizeof($s_Classes); ?>);
 var g_GroupSizes = Array(<?php
 	for ($i=0; list($Count,$RoleSizes) = each($s_GroupSizes); ++$i)
 	{
@@ -78,6 +80,8 @@ var g_GroupRoleSizes = Array(<?php echo sizeof($s_GroupSizes); ?>);
 	for ( $i=0; list($RoleIdent,$RoleName) = each($s_Roles); ++$i )
 	{
 		echo "g_RoleNames[\"".$RoleIdent."\"] = L(\"".$RoleName."\");\n";
+		echo "g_RoleIds[\"".$RoleIdent."\"] = ".$i.";\n";
+		echo "g_RoleIdents[".$i."] = \"".$RoleIdent."\";\n";
 	}
 	reset($s_Roles);
 ?>

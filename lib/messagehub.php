@@ -22,21 +22,21 @@
     include_once("private/message_settings_update.php");
     include_once("private/message_change_password.php");
     
-	$ValidUser = ValidUser();	
-	
-	header("Content-type: text/xml");
+    $ValidUser = ValidUser();    
+    
+    header("Content-type: text/xml");
     
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-	echo "<messagehub>";
-	
-	$Settings = Settings::GetInstance();
-	
-	if ( isset($_REQUEST["Action"]) )
+    echo "<messagehub>";
+    
+    $Settings = Settings::GetInstance();
+    
+    if ( isset($_REQUEST["Action"]) )
     {   
-    	switch ( strtolower($_REQUEST["Action"]) )
+        switch ( strtolower($_REQUEST["Action"]) )
         {
         case "raid_attend":
-        	msgRaidAttend( $_REQUEST );
+            msgRaidAttend( $_REQUEST );
             break;
         
         case "raid_create":
@@ -44,63 +44,63 @@
             break;
             
         case "raid_calendar":
-        	lockOldRaids( $Settings->Property["LockRaids"]["IntValue"] );
-        	purgeOldRaids( $Settings->Property["PurgeRaids"]["IntValue"] );
+            lockOldRaids( $Settings->Property["LockRaids"]["IntValue"] );
+            purgeOldRaids( $Settings->Property["PurgeRaids"]["IntValue"] );
             msgRaidCalendar( $_REQUEST );
             break;
           
         case "raid_list":
             lockOldRaids( $Settings->Property["LockRaids"]["IntValue"] );
-        	purgeOldRaids( $Settings->Property["PurgeRaids"]["IntValue"] );
+            purgeOldRaids( $Settings->Property["PurgeRaids"]["IntValue"] );
             msgRaidList( $_REQUEST );
             break;
             
         case "raid_detail":
-        	msgRaidDetail( $_REQUEST );
+            msgRaidDetail( $_REQUEST );
             break;
             
         case "raid_update":
-        	msgRaidUpdate( $_REQUEST );
+            msgRaidUpdate( $_REQUEST );
             break;
             
         case "query_newraiddata":
-        	msgQueryNewRaidData( $_REQUEST );
-        	break;
+            msgQueryNewRaidData( $_REQUEST );
+            break;
             
         case "query_locations":
-        	msgQueryLocations( $_REQUEST );
-        	break;
-        	
+            msgQueryLocations( $_REQUEST );
+            break;
+            
         case "query_profile":
-        	msgQueryProfile( $_REQUEST );
-        	break;
+            msgQueryProfile( $_REQUEST );
+            break;
         
         case "query_settings":
-        	msgQuerySettings( $_REQUEST );
-        	break;
-        	
-        case "profile_update":
-        	msgProfileUpdate( $_REQUEST );
-        	break;
-        	
-        case "comment_update":
-        	msgCommentUpdate( $_REQUEST );
-        	break;
-        	
-        case "raid_delete":
-        	msgRaidDelete( $_REQUEST );
-        	break;
-        	
-        case "settings_update":
-        	msgSettingsUpdate( $_REQUEST );
-        	break;
-        	
-        case "user_create":
-        	msgUserCreate( $_REQUEST );
+            msgQuerySettings( $_REQUEST );
             break;
-        	
+            
+        case "profile_update":
+            msgProfileUpdate( $_REQUEST );
+            break;
+            
+        case "comment_update":
+            msgCommentUpdate( $_REQUEST );
+            break;
+            
+        case "raid_delete":
+            msgRaidDelete( $_REQUEST );
+            break;
+            
+        case "settings_update":
+            msgSettingsUpdate( $_REQUEST );
+            break;
+            
+        case "user_create":
+            msgUserCreate( $_REQUEST );
+            break;
+            
         case "change_password":
-        	msgChangePassword( $_REQUEST );
+            msgChangePassword( $_REQUEST );
             break;
             
         default:

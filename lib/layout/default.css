@@ -1,345 +1,345 @@
 body {
-	padding: 0px;
-	margin: 0px;
-	background-repeat: repeat;
-	background-color: #898989;
-	font-size: 12px;
-	overflow: auto;
+    padding: 0px;
+    margin: 0px;
+    background-repeat: repeat;
+    background-color: #898989;
+    font-size: 12px;
+    overflow: auto;
 }
 
 a {
-	color: #666666;
-	text-decoration: none;
+    color: #666666;
+    text-decoration: none;
 }
 
 a:visited {
-	color: #666666;
-	text-decoration: none;
+    color: #666666;
+    text-decoration: none;
 }
 
 a:hover {
-	color: #000000;
-	text-decoration: underline;
+    color: #000000;
+    text-decoration: underline;
 }
 
 .preload {
-	visibility: hidden;
-	position: fixed;
-	float: left;
+    visibility: hidden;
+    position: fixed;
+    float: left;
 }
 
 #appwindow {
-	margin-top: -384px;
-	margin-left: -490px;
-	left: 50%;
-	top: 50%;
-	display: block;
-	position: absolute;
-	height: 780px;
-	width: 1024px;
-	overflow: visible;
+    margin-top: -384px;
+    margin-left: -490px;
+    left: 50%;
+    top: 50%;
+    display: block;
+    position: absolute;
+    height: 780px;
+    width: 1024px;
+    overflow: visible;
 }
 
 #logo {
-	display: block;
-	height: 140px;
-	width: 1024px;
-	background-repeat: no-repeat;
-	background-color: black;
+    display: block;
+    height: 140px;
+    width: 1024px;
+    background-repeat: no-repeat;
+    background-color: black;
 }
 
 #menu {
-	display: block;
-	height: 50px;
-	background-repeat: repeat-x;
-	background-image: url(images/button_background.png);
-	width: 1024px;
+    display: block;
+    height: 50px;
+    background-repeat: repeat-x;
+    background-image: url(images/button_background.png);
+    width: 1024px;
 }
 
 #lockMessage {
-	float: left;
-	position: relative;
-	left: 50%;
-	top: 50%;
-	width: 300px;
-	height: 100px;
-	margin-left: -150px;
-	margin-top: -50px;
-	text-align: center;
-	font-size: 14px;
-	font-family: Helvetica, Verdana, Arial, sans-serif;
+    float: left;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 300px;
+    height: 100px;
+    margin-left: -150px;
+    margin-top: -50px;
+    text-align: center;
+    font-size: 14px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
 }
 
 .menu_button {
-	display: inline-block;
-	height: 35px;
-	width: 134px;
-	background-repeat: no-repeat;
-	font-family: Helvetica, Verdana, Arial, sans-serif;
-	font-size: 14px;
-	text-align: center;
-	color: white;
-	padding-left: 30px;
-	padding-top: 15px;
-	cursor: pointer;
+    display: inline-block;
+    height: 35px;
+    width: 134px;
+    background-repeat: no-repeat;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+    padding-left: 30px;
+    padding-top: 15px;
+    cursor: pointer;
 }
 
 #button_login {
-	background-image: url(images/button_login.png);
+    background-image: url(images/button_login.png);
 }
 
 #button_login:hover {
-	background-image: url(images/button_login_over.png);
+    background-image: url(images/button_login_over.png);
 }
 
 #button_login.on {
-	background-image: url(images/button_login_on.png);
+    background-image: url(images/button_login_on.png);
 }
 
 #button_register {
-	background-image: url(images/button_register.png);
+    background-image: url(images/button_register.png);
 }
 
 #button_register:hover {
-	background-image: url(images/button_register_over.png);
+    background-image: url(images/button_register_over.png);
 }
 
 #button_register.on {
-	background-image: url(images/button_register_on.png);
+    background-image: url(images/button_register_on.png);
 }
 
 #button_calendar {
-	background-image: url(images/button_calendar.png);
+    background-image: url(images/button_calendar.png);
 }
 
 #button_calendar:hover {
-	background-image: url(images/button_calendar_over.png);
+    background-image: url(images/button_calendar_over.png);
 }
 
 #button_calendar.on {
-	background-image: url(images/button_calendar_on.png);
+    background-image: url(images/button_calendar_on.png);
 }
 
 #button_raid {
-	background-image: url(images/button_raid.png);
+    background-image: url(images/button_raid.png);
 }
 
 #button_raid:hover {
-	background-image: url(images/button_raid_over.png);
+    background-image: url(images/button_raid_over.png);
 }
 
 #button_raid.on {
-	background-image: url(images/button_raid_on.png);
+    background-image: url(images/button_raid_on.png);
 }
 
 #button_profile {
-	background-image: url(images/button_profile.png);
+    background-image: url(images/button_profile.png);
 }
 
 #button_profile:hover {
-	background-image: url(images/button_profile_over.png);
+    background-image: url(images/button_profile_over.png);
 }
 
 #button_profile.on {
-	background-image: url(images/button_profile_on.png);
+    background-image: url(images/button_profile_on.png);
 }
 
 #button_settings {
-	background-image: url(images/button_settings.png);
+    background-image: url(images/button_settings.png);
 }
 
 #button_settings:hover {
-	background-image: url(images/button_settings_over.png);
+    background-image: url(images/button_settings_over.png);
 }
 
 #button_settings.on {
-	background-image: url(images/button_settings_on.png);
+    background-image: url(images/button_settings_on.png);
 }
 
 #body {
-	text-align: center;
-	display: block;
-	height: 576px;
-	width: 1024px;
-	background-image: url(images/background.png);
-	background-repeat: repeat-x;
+    text-align: center;
+    display: block;
+    height: 576px;
+    width: 1024px;
+    background-image: url(images/background.png);
+    background-repeat: repeat-x;
 }
 
 .button {
-	width: 24px;
-	height: 24px;
-	cursor: pointer;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
 }
 
 .logout {
-	position: relative;
-	display: inline-block;
-	padding: 0px;
-	margin-right: 10px;
-	margin-top: 10px;
-	height: 40px;
-	float: right;
+    position: relative;
+    display: inline-block;
+    padding: 0px;
+    margin-right: 10px;
+    margin-top: 10px;
+    height: 40px;
+    float: right;
 }
 
 .logout form {
-	margin: 0px;
+    margin: 0px;
 }
 
 .logout .button_logout {
-	height: 24px;
+    height: 24px;
 }
 
 .login {
-	width: 200px;
-	height: 200px;
-	left: 50%;
-	top: 50%;
-	position: relative;
-	margin-left: -100px;
-	margin-top: -50px;
-	float: left;
+    width: 200px;
+    height: 200px;
+    left: 50%;
+    top: 50%;
+    position: relative;
+    margin-left: -100px;
+    margin-top: -50px;
+    float: left;
 }
 
 .login input.text {
-	margin-left: 0px;
-	margin-bottom: 4px;
-	margin-right: 0px;
-	margin-top: 0px;
-	color: #c7c7c7;
-	background-color: #ececec;
-	display: block;
-	font-size: 16px;
-	font-family: Helvetica, Verdana, Arial, sans-serif;
-	width: 196px;
-	height: 15px;
-	padding-top: 6px;
-	padding-left: 2px;
-	padding-right: 2px;
-	
-	border-left: 1px solid #aaaaaa;
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid white;
-	border-bottom: 1px solid white;
+    margin-left: 0px;
+    margin-bottom: 4px;
+    margin-right: 0px;
+    margin-top: 0px;
+    color: #c7c7c7;
+    background-color: #ececec;
+    display: block;
+    font-size: 16px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    width: 196px;
+    height: 15px;
+    padding-top: 6px;
+    padding-left: 2px;
+    padding-right: 2px;
+    
+    border-left: 1px solid #aaaaaa;
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
 }
 
 .login input.textactive {
-	margin-left: 0px;
-	margin-bottom: 4px;
-	margin-right: 0px;
-	margin-top: 0px;
-	color: black;
-	background-color: #ececec;
-	display: block;
-	font-size: 16px;
-	font-family: Helvetica, Verdana, Arial, sans-serif;
-	width: 196px;
-	height: 15px;
-	padding-top: 6px;
-	padding-left: 2px;
-	padding-right: 2px;
-	
-	border-left: 1px solid #aaaaaa;
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid white;
-	border-bottom: 1px solid white;
+    margin-left: 0px;
+    margin-bottom: 4px;
+    margin-right: 0px;
+    margin-top: 0px;
+    color: black;
+    background-color: #ececec;
+    display: block;
+    font-size: 16px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    width: 196px;
+    height: 15px;
+    padding-top: 6px;
+    padding-left: 2px;
+    padding-right: 2px;
+    
+    border-left: 1px solid #aaaaaa;
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
 }
 
 .login .buttonfield {
-	width: 150px;
-	position: absolute;
-	left: 50%;
-	top: 70px;
-	margin-left: -70px;
+    width: 150px;
+    position: absolute;
+    left: 50%;
+    top: 70px;
+    margin-left: -70px;
 }
 
 .login .button_login {
-	width: 100px;
-	height: 24px;
-	float: left;
+    width: 100px;
+    height: 24px;
+    float: left;
 }
 
 .login .button_sticky {
-	width: 28px;
-	height: 22px;
-	float: left;
+    width: 28px;
+    height: 22px;
+    float: left;
 }
 
 .login .button_register {
-	width: 100px;
-	height: 24px;
-	margin-top: 10px;
+    width: 100px;
+    height: 24px;
+    margin-top: 10px;
 }
 
 #eventblocker {
-	background-color: black;
-	z-index: 15;
-	left: 0px;
-	top: 0px;
-	position: fixed;
-	visibility: hidden;
-	display: block;
-	height: 100%;
-	width: 100%;
-	opacity: 0.4;
-	filter: Alpha(opacity=40);
+    background-color: black;
+    z-index: 15;
+    left: 0px;
+    top: 0px;
+    position: fixed;
+    visibility: hidden;
+    display: block;
+    height: 100%;
+    width: 100%;
+    opacity: 0.4;
+    filter: Alpha(opacity=40);
 }
 
 #ajaxblocker {
-	background-color: black;
-	z-index: 1000;
-	left: 0px;
-	top: 0px;
-	position: fixed;
-	display: block;
-	height: 100%;
-	width: 100%;
-	opacity: 0.75;
-	filter: Alpha(opacity=75);
-	text-align: center;
-	padding: 20px;
+    background-color: black;
+    z-index: 1000;
+    left: 0px;
+    top: 0px;
+    position: fixed;
+    display: block;
+    height: 100%;
+    width: 100%;
+    opacity: 0.75;
+    filter: Alpha(opacity=75);
+    text-align: center;
+    padding: 20px;
 }
 
 #ajaxblocker .background {
-	font-size: 16px;
-	font-family: Helvetica, Verdana, Arial, sans-serif;
-	color: black;
-	position: fixed; 
-	left: 50%; 
-	top: 50%; 
-	width: 200px; 
-	margin-left: -100px;
-	margin-top: -50px; 
-	background-color: white;
-	padding: 20px;
+    font-size: 16px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    color: black;
+    position: fixed; 
+    left: 50%; 
+    top: 50%; 
+    width: 200px; 
+    margin-left: -100px;
+    margin-top: -50px; 
+    background-color: white;
+    padding: 20px;
 }
 
 #dialog {
 }
 
 #prompt_text {
-	background: #222222;
-	border: 1px solid #666666;
-	color: white;
-	margin-top: 10px;
-	width: 98%;
-	height: 20px;
-	padding-left: 3px;
+    background: #222222;
+    border: 1px solid #666666;
+    color: white;
+    margin-top: 10px;
+    width: 98%;
+    height: 20px;
+    padding-left: 3px;
 }
 
 #sheetNewRaid {
-	left: 0px;
-	top: 0px;
-	position: fixed;
-	visibility: hidden;
+    left: 0px;
+    top: 0px;
+    position: fixed;
+    visibility: hidden;
 }
 
 #version {
-	font-size: 10px;
-	font-family: Helvetica, Verdana, Arial, sans-serif;
-	color: #a0a0a0;
-	position: relative;
-	float: right;
-	display: inline-block;
-	top: -26px;
-	right: 26px;
+    font-size: 10px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    color: #a0a0a0;
+    position: relative;
+    float: right;
+    display: inline-block;
+    top: -26px;
+    right: 26px;
 }

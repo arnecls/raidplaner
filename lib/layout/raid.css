@@ -1,523 +1,171 @@
 #raiddetail {
-	text-align: left;
-	color: black;
-	font-size: 12px;
-	font-family: Helvetica, Verdana, Arial, sans-serif;
-	left: 20px;
-	top: 20px;
-	position: relative;
-	width: 980px;
+    text-align: left;
+    color: black;
+    font-size: 12px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    left: 20px;
+    top: 20px;
+    position: relative;
+    width: 980px;
     float: left;
 }
 
-#raiddetail select {
-	font-size: 12px;
+#raiddetail .tabs {
+    width: 47px;
+    height: 220px;
+    padding-top: 11px;
+    float: left;
+    background-repeat: no-repeat;
 }
 
-#raiddetail .textdummy {
-	color: #c7c7c7;
+#raiddetail .tab_icon {
+    width: 32px;
+    height: 32px;
+    margin-left: 2px;
+    margin-top: 5px;
 }
 
-#raiddetail .textinput {
-	color: black;
+#raiddetail .setup {
+    background-image: url(images/block_users.png);
 }
 
-#raiddetail .descriptionbox {
-	background-color: #cccccc;
-	color: white;
-	border: 1px solid #aaaaaa;
-	padding: 2px;
-	font-size: 12px;
-	font-family: Helvetica, Verdana, Arial, sans-serif;
+#raiddetail .slackers {
+    background-image: url(images/block_locations.png);
 }
 
-#raiddetail .separatortop {
-	margin-top: 10px;
-	background-repeat: no-repeat;
-	background-image: url(images/shadow_top.png);
-	display: block;
-	clear: both;
-	width: 100%;
-	height: 17px;
+#raiddetail .settings {
+    background-image: url(images/block_settings.png);
 }
 
-#raiddetail .separatorbottom {
-	background-repeat: no-repeat;
-	background-image: url(images/shadow_bottom.png);
-	display: block;
-	clear: both;
-	width: 100%;
-	height: 17px;
+#raiddetail .icon_setup {
+    background-image: url(images/icon_raid.png);
 }
 
-#raiddetail .icon {
-	display: block;
-	margin-bottom: 10px;
-	margin-right: 10px;
-	height: 64px;
-	float: left;
-	width: 64px;
+#raiddetail .icon_slackers {
+    background-image: url(images/icon_users.png);
 }
 
-#raiddetail .location {
-	font-weight: bold;
-	font-size: 16px;
+#raiddetail .icon_settings {
+    background-image: url(images/icon_settings.png);
 }
 
-#raiddetail .time {
-	font-style: italic;
-	font-size: 10px;
+#raiddetail .icon_setup_off {
+    background-image: url(images/icon_raid_off.png);
+    opacity: 0.2;
+    filter:Alpha(opacity=20);
 }
 
-#raiddetail .description {
-	width: 305px;
-	min-width: 305px;
-	max-width: 305px;
-	margin-top: 10px;
-	height: 32px;
+#raiddetail .icon_setup_off:hover {
+    opacity: 1.0;
+    filter:Alpha(opacity=100);
 }
 
-#raiddetail .buttonclear {
-	background-repeat: no-repeat;
-	background-image: url(images/icon_delete.png);
-	float: right;
-	position: relative;
-	left: 20px;
-	width: 32px;
-	height: 32px;
+#raiddetail .icon_slackers_off {
+    background-image: url(images/icon_users_off.png);
+    opacity: 0.2;
+    filter:Alpha(opacity=20);
 }
 
-#raiddetail .stageselect {
-	float: left;
-	position: absolute;
-	left: 845px;
-	top: 0px;
-	width: 130px;
-	display: inline-block;
+#raiddetail .icon_slackers_off:hover {
+    opacity: 1.0;
+    filter:Alpha(opacity=100);
 }
 
-#raiddetail .buttonfield {
-	margin-bottom: -35px;
-	height: 20px;
-	top: -35px;
-	position: relative;
-	text-align: right;
+#raiddetail .icon_settings_off {
+    background-image: url(images/icon_settings_off.png);
+    opacity: 0.2;
+    filter:Alpha(opacity=20);
 }
 
-#raiddetail .slotfield {
-	margin-bottom: 15px;
-	float: left;
-	display: block;
+#raiddetail .icon_settings_off:hover {
+    opacity: 1.0;
+    filter:Alpha(opacity=100);
 }
 
-#raiddetail .slotfield6 {
-	width: 150px;
-	height: 260px;
+#raiddetail .setup {
 }
 
-#raiddetail .slotfield12 {
-	width: 280px;
-	height: 260px;
+#raiddetail .raidinfo {
+    height: 64px;
+    margin-bottom: 5px;
 }
 
-#raiddetail .slotfield24 {
-	width: 530px;
-	height: 260px;
+#raiddetail .raidicon {
+    float:left;
+    width: 64px;
+    height: 64px;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
-.slotfield .type {
-	margin-bottom: 12px;
-	margin-top: 15px;
-	float: left;
-	color: black;
-	font-weight: bold;
-	font-size: 20px;
+#raiddetail .raidname {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
-.notarget {
-	opacity: 0.1;
-	filter:Alpha(opacity=10);
+#raiddetail .raidsize {
+    font-size: 10px;
 }
 
-.slotfield .slotcount {
-	margin-bottom: 12px;
-	margin-top: 15px;
-	margin-left: 20px;
-	float: left;
+#raiddetail .datetime {
+    font-size: 10px;
 }
 
-.slotfield6 .target {
-	background-image: url(images/selectedslot6.png);
-	background-repeat: no-repeat;
+#raiddetail .playerIcon {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    float: left;
 }
 
-.slotfield12 .target {
-	background-image: url(images/selectedslot12.png);
-	background-repeat: no-repeat;
+#raiddetail .playerName {
+    height: 16px;
+    display: inline-block;
+    float: left;
+    position: relative;
+    font-size: 12px;
+    top: 10px;
+    left: 4px;
 }
 
-.slotfield24 .target {
-	background-image: url(images/selectedslot24.png);
-	background-repeat: no-repeat;
+#raiddetail .roleList {
+    margin-left: 10px; 
+    height: 380px;
+    float: left;
 }
 
-.slotfield .slotcontainer {
-	height: 215px;
-	padding: 4px;
+#raiddetail .nobreak {
+    float: left;
+    margin-bottom: 4px;
+    margin-right: 5px;
+    width: 140px;
 }
 
-.slotfield .slotrow {
-	width: 130px;
-	float: left;
+#raiddetail .break {
+    clear: left;
+    float: left;
+    margin-bottom: 4px;
+    margin-right: 5px;
+    width: 140px;
 }
 
-.slotfield .slot {
-	margin-bottom: 3px;
-	height: 32px;
-	width: 130px;
+#raiddetail .activeSlot {
+    background-image: url(images/slot_set.png);
 }
 
-.slotfield .occupied {
-	cursor: pointer;
+#raiddetail .waitSlot {
+    background-image: url(images/slot_wait.png);
 }
 
-.slotfield .slot .class {
-	float: left;
-	display: inline-block;
-	background-repeat: no-repeat;
-	background-image: url(../../images/classessmall/empty.png);
-	height: 32px;
-	width: 32px;
+#raiddetail .benchSlot {
+    background-image: url(images/slot_bench.png);
 }
 
-.slotfield .slot .badge {
-	float: right;
-	display: inline-block;
-	background-repeat: no-repeat;
-	background-image: url(images/smallbadge.png);
-	height: 16px;
-	width: 12px;
-	position: relative;
-	top: -2px;
+#raiddetail .emptySlot {
+    background-image: url(images/slot_wait.png);
 }
 
-.slotfield .slot .name {
-	margin-top: 10px;
-	margin-left: 8px;
-	color: black;
-	font-size: 12px;
-	float: left;
+#raiddetail .clipchange {
+    background-image: url(images/slot_more.png);
 }
-
-.slotfield .slot .name_field {
-	margin-left: 8px;
-	margin-top: 5px;
-	color: black;
-	font-size: 12px;
-	width: 75px;
-	border: 0px;
-	border-bottom: 1px solid #aaaaaa;
-	background-color: transparent;
-	float: left;
-}
-
-.slotfield .slot .comment {
-	visibility: hidden;
-	float: right;
-	position: fixed;
-	display: block;
-	white-space: nowrap;
-}
-
-.slotfield .slot .twinkicon {
-	position: relative;
-	left: 20px;
-	top: 18px;
-	width: 15px;
-	height: 16px;
-	background-image: url(images/twinkbadge.png);
-}
-
-.comment .comment_item {
-	display: inline-block;
-}
-
-.comment .comment_text {
-	display: inline-block;
-	position: relative;
-	max-width: 200px;
-	vertical-align: top;
-}
-
-.comment .comment_role {
-	display: inline-block;
-	width: 32px;
-	height: 32px;
-	margin-right: 10px;
-	cursor: pointer;
-	float: left;
-}
-
-.comment .comment_name {
-	font-weight: bold;
-	font-size: 14px;
-	margin-bottom: 5px;
-}
-
-.comment .move_left {
-	position: absolute;
-	display: inline-block;
-	width: 16px;
-	height: 16px;
-	background-image: url(images/move_left.png);
-	background-repeat: no-repeat;
-	left: 24px;
-	top: 52px;
-	z-index: 15;
-}
-
-.comment .move_right {
-	position: absolute;
-	display: inline-block;
-	width: 16px;
-	height: 16px;
-	background-image: url(images/move_right.png);
-	background-repeat: no-repeat;
-	left: 48px;
-	top: 52px;
-	z-index: 15;
-}
-
-.comment .move_up {
-	position: absolute;
-	display: inline-block;
-	width: 16px;
-	height: 16px;
-	background-image: url(images/move_up.png);
-	background-repeat: no-repeat;
-	left: 48px;
-	top: 52px;
-	z-index: 15;
-}
-
-#benchBlock {
-	display: inline-block;
-	float: left;
-	background-repeat: no-repeat;
-	width:64px;
-	height: 120px;
-	margin-top: -5px;
-}
-
-.blockTank {
-	background-image: url(images/block_tanks.png);
-	z-index: 20;
-}
-
-.blockHeal {
-	background-image: url(images/block_heal.png);
-	z-index: 20;
-}
-
-.blockDmg {
-	background-image: url(images/block_dmg.png);
-	z-index: 20;
-}
-
-#benchcontainer {
-	display: inline-block;
-	width: 910px;
-	margin-top: -5px;
-}
-
-.bench {
-	margin-top: 5px;
-	height: 100px;
-	width: 910px;
-	display: block;
-	overflow-y: auto;
-}
-
-.bench .slot {
-	display: inline-block;
-	margin-right: 10px;
-	margin-top: 4px;
-	margin-bottom: 6px;
-	cursor: pointer;
-}
-
-.bench .slot .class {
-	float: left;
-	display: inline-block;
-	height: 24px;
-	width: 24px;
-}
-
-.bench .slot .class .class_icon {
-	float: left;
-	height: 24px;
-	width: 24px;
-	z-index: 10;
-}
-
-.bench .slot .badge {
-	float: left;
-	display: inline-block;
-	background-repeat: no-repeat;
-	background-image: url(images/smallbadge.png);
-	height: 16px;
-	width: 12px;
-	position: relative;
-	top: -26px;
-	left: 14px;
-	z-index: 20;
-}
-
-.bench .slot .nobadge {
-	float: left;
-	display: inline-block;
-	height: 16px;
-	width: 12px;
-	position: relative;
-	top: -26px;
-	left: 14px;
-}
-
-.bench .slot .twinkicon {
-	position: relative;
-	float: left;
-	top: -28px;
-	left: 12px;
-	width: 15px;
-	height: 16px;
-	background-image: url(images/twinkbadge.png);
-}
-
-.bench .slot .name {
-	color: black;
-	font-size: 12px;
-	margin-left: 6px;
-	margin-top: 5px;
-	float: left;
-	display: inline-block;
-}
-
-.bench .slot .unavailable {
-	opacity: 0.60;
-	filter:Alpha(opacity=60);
-	color: #ff0000;
-}
-
-.bench .slot img.unavailable {
-	opacity: 0.60;
-	filter:Alpha(opacity=60);
-}
-
-.bench .slot .undecided {
-	opacity: 0.50;
-	filter:Alpha(opacity=50);
-	color: #eeee00;
-}
-
-.bench .slot img.undecided {
-	opacity: 0.30;
-	filter:Alpha(opacity=30);
-}
-
-.bench .slot .comment {
-	visibility: hidden;
-	float: right;
-	position: fixed;
-	display: block;
-	white-space: nowrap;
-}
-
-.tankbench {
-	margin-top: 11px;
-	display: block;
-	background-image: url(../../images/classessmall/tank_off.png);
-	height: 32px;
-	background-repeat: no-repeat;
-	width: 32px;
-	opacity: 0.5;
-	filter:Alpha(opacity=50);
-}
-
-.tankbench:hover {
-	opacity: 1.0;
-	filter:Alpha(opacity=100);
-	z-index: 10;
-}
-
-.tankbenchactive {
-	background-image: url(../../images/classessmall/tank.png);
-	opacity: 1.0;
-	filter:Alpha(opacity=100);
-	z-index: 10;
-}
-
-.healbench {
-	margin-top: 2px;
-	display: block;
-	background-image: url(../../images/classessmall/heal_off.png);
-	height: 32px;
-	background-repeat: no-repeat;
-	width: 32px;
-	opacity: 0.5;
-	filter:Alpha(opacity=50);
-	z-index: 10;
-}
-
-.healbench:hover {
-	opacity: 1.0;
-	filter:Alpha(opacity=100);
-	z-index: 10;
-}
-
-.healbenchactive {
-	background-image: url(../../images/classessmall/heal.png);
-	opacity: 1.0;
-	filter:Alpha(opacity=100);
-	z-index: 10;
-}
-
-.dmgbench {
-	margin-top: 2px;
-	display: block;
-	background-image: url(../../images/classessmall/dmg_off.png);
-	height: 32px;
-	background-repeat: no-repeat;
-	width: 32px;
-	opacity: 0.5;
-	filter:Alpha(opacity=50);
-	z-index: 10;
-}
-
-.dmgbench:hover {
-	opacity: 1.0;
-	filter:Alpha(opacity=100);
-	z-index: 10;
-}
-
-.dmgbenchactive {
-	background-image: url(../../images/classessmall/dmg.png);
-	background-repeat: no-repeat;
-	opacity: 1.0;
-	filter:Alpha(opacity=100);
-	z-index: 10;
-}
-
-.onBench {
-	top: 2px;
-	float: right;
-	position: relative;
-	right: 2px;
-	font-weight: bold;
-	font-size: 14px;
-	color: #00FF00;
-}
-
-.onBench .unavail {
-	color: #FF0000;
-}
-

@@ -1,161 +1,161 @@
 #profile {
-	position: relative;
-	left: 20px;
-	top: 20px;
-	text-align: left;
-	font-size: 12px;
-	font-family: Helvetica, Verdana, Arial, sans-serif;
-	border-spacing: 0px 0px;
-	width: 980px;
+    position: relative;
+    left: 20px;
+    top: 20px;
+    text-align: left;
+    font-size: 12px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    border-spacing: 0px 0px;
+    width: 980px;
     float: left;
 }
 
 #profile h1 {
-	margin-left: 0px;
-	margin-bottom: 10px;
-	margin-right: 0px;
-	margin-top: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 1px;
-	border-right-width: 0px;
-	border-top-width: 0px;
-	border-bottom-color: #989898;
-	border-bottom-style: dotted;
-	height: 20px;
-	font-weight: bold;
-	font-size: 16px;
-	vertical-align: center;
-	color: #7d7d7d;
-	padding: 0px;
+    margin-left: 0px;
+    margin-bottom: 10px;
+    margin-right: 0px;
+    margin-top: 0px;
+    border-left-width: 0px;
+    border-bottom-width: 1px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+    border-bottom-color: #989898;
+    border-bottom-style: dotted;
+    height: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    vertical-align: center;
+    color: #7d7d7d;
+    padding: 0px;
 }
 
 
 #charlist {
-	display: inline-block;
-	vertical-align: top;
-	width: 910px;
-	height: 175px;
-	overflow-x: auto;
-	overflow-y: hidden;
-	white-space: nowrap;
-	margin-top: 15px;
+    display: inline-block;
+    vertical-align: top;
+    width: 910px;
+    height: 175px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    margin-top: 15px;
 }
 
 #profile .charslot {
-	vertical-align: top;
-	background: url(images/charslot.png);
-	background-repeat: no-repeat;
-	display: inline-block;
-	width: 123px;
-	height: 148px;
-	margin-right: 5px;
-	margin-bottom: 10px;
+    vertical-align: top;
+    background: url(images/charslot.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 123px;
+    height: 148px;
+    margin-right: 5px;
+    margin-bottom: 10px;
 }
 
 #profile .newchar {
-	background: url(images/charslot_new.png);
+    background: url(images/charslot_new.png);
 }
 
 #profile .charslot_add {
-	vertical-align: top;
-	background: url(images/charslot_add.png);
-	background-repeat: no-repeat;
-	display: inline-block;
-	width: 123px;
-	height: 148px;
-	margin-right: 5px;
-	margin-bottom: 10px;
-	cursor: pointer;
+    vertical-align: top;
+    background: url(images/charslot_add.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 123px;
+    height: 148px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
 }
 
 #profile .charslot .clearchar {
-	background: url(images/clear_off.png);
-	background-repeat: no-repeat;
-	width: 24px;
-	height: 24px;
-	display: block;
-	position: relative;
-	float: right;
-	top: 5px;
-	left: -3px;
-	cursor: pointer;
+    background: url(images/clear_off.png);
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+    display: block;
+    position: relative;
+    float: right;
+    top: 5px;
+    left: -3px;
+    cursor: pointer;
 }
 
 #profile .charslot .clearchar:hover {
-	background: url(images/clear.png);
-	background-repeat: no-repeat;
+    background: url(images/clear.png);
+    background-repeat: no-repeat;
 }
 
 #profile .charslot .class {
-	width: 64px;
-	height: 64px;
-	display: block;
-	position: relative;
-	top: 15px;
-	left: 29px;
-	z-index: 10;
+    width: 64px;
+    height: 64px;
+    display: block;
+    position: relative;
+    top: 15px;
+    left: 29px;
+    z-index: 10;
 }
 
 #profile .charslot .newclass {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 #profile .charslot .class .badge {
-	width: 38px;
-	height: 48px;
-	display: block;
-	position: relative;
-	top: -18px;
-	left: -28px;
-	z-index: 20;
+    width: 38px;
+    height: 48px;
+    display: block;
+    position: relative;
+    top: -18px;
+    left: -28px;
+    z-index: 20;
 }
 
 #profile .charslot .class .mainchar {
-	background: url(images/mainchar.png);
-	background-repeat: no-repeat;
+    background: url(images/mainchar.png);
+    background-repeat: no-repeat;
 }
 
 #profile .charslot .class .twink {
-	background: url(images/twink.png);
-	background-repeat: no-repeat;
-	cursor: pointer;
+    background: url(images/twink.png);
+    background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 #profile .charslot .class .twink:hover {
-	background: url(images/mainchar.png);
-	background-repeat: no-repeat;
+    background: url(images/mainchar.png);
+    background-repeat: no-repeat;
 }
 
-#profile .charslot .name {	
-	text-align: center;	
-	width: 121px;
-	height: 32px;
-	display: block;
-	position: relative;
-	text-align: center;
-	top: 20px;
+#profile .charslot .name {    
+    text-align: center;    
+    width: 121px;
+    height: 32px;
+    display: block;
+    position: relative;
+    text-align: center;
+    top: 20px;
 }
 
-#profile .charslot .newname {	
-	text-align: center;	
-	width: 110px;
-	height: 10px;
-	display: block;
-	position: relative;
-	text-align: center;
-	top: 20px;
-	left: 4px;
-	margin-bottom:16px;
+#profile .charslot .newname {    
+    text-align: center;    
+    width: 110px;
+    height: 10px;
+    display: block;
+    position: relative;
+    text-align: center;
+    top: 20px;
+    left: 4px;
+    margin-bottom:16px;
 }
 
 #profile .charslot .role {
-	width: 32px;
-	height: 32px;
-	display: inline-block;
-	margin-left: 4px;
-	margin-right: 4px;
-	margin-top: 8px;
-	cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 8px;
+    cursor: pointer;
 }
 
 #profile .button_profile {
@@ -164,135 +164,149 @@
 }
 
 #attendance .attendanceCount {
-	height: 26px;
-	margin-top: 10px;
-	margin-right: 10px;
-	display: inline-block;
-	text-align: right;
-	float: left;
+    height: 26px;
+    margin-top: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    text-align: right;
+    float: left;
 }
 
 #attendance .attendanceType {
-	height: 26px;
-	margin-top: 10px;
-	margin-right: 10px;
-	display: inline-block;
-	text-align: right;
-	float: left;
+    height: 26px;
+    margin-top: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    text-align: right;
+    float: left;
 }
 
 #attendance .label {
-	display: block;
+    display: block;
     line-height: 26px;
-	vertical-align: bottom;
-	float: left;
-	margin-top: 10px;
-	color: #666666;
+    vertical-align: bottom;
+    float: left;
+    margin-top: 10px;
+    color: #666666;
 }
 
 #attendance .count {
-	position: relative;
-	font-size: 14px;
-	right: 5px;
-	top: 4px;
+    position: relative;
+    font-size: 14px;
+    right: 5px;
+    top: 4px;
 }
 
 #attendance .start {
-	background: url("images/progress_start.png");
-	display: inline-block;
-	width: 7px;
-	height: 26px;
-	float: left;
-	position: absolute;
+    background: url("images/progress_start.png");
+    display: inline-block;
+    width: 7px;
+    height: 26px;
+    float: left;
+    position: absolute;
 }
 
 #attendance .end {
-	background: url("images/progress_end.png");
-	width: 7px;
-	height: 26px;
-	margin-left: -7px;
-	position: absolute;
-	float: left;
+    background: url("images/progress_end.png");
+    width: 7px;
+    height: 26px;
+    margin-left: -7px;
+    position: absolute;
+    float: left;
 }
 
 #attendance .ok {
-	background: url("images/progress_green.png");
-	display: inline-block;
-	height: 26px;
-	color: #00AA00;
+    background: url("images/progress_green.png");
+    display: inline-block;
+    height: 26px;
+    color: #00AA00;
 }
 
 #attendance .available {
-	background: url("images/progress_yellow_stripe.png");
-	display: inline-block;
-	height: 26px;
-	color: #888822;
+    background: url("images/progress_yellow_stripe.png");
+    display: inline-block;
+    height: 26px;
+    color: #888822;
 }
 
 #attendance .unavailable {
-	background: url("images/progress_red_stripe.png");
-	display: inline-block;
-	height: 26px;
-	color: #AA6666;
+    background: url("images/progress_red_stripe.png");
+    display: inline-block;
+    height: 26px;
+    color: #AA6666;
 }
 
 #attendance .missed {
-	background: url("images/progress_grey.png");
-	display: inline-block;
-	height: 26px;
-	color: #777777;
+    background: url("images/progress_grey.png");
+    display: inline-block;
+    height: 26px;
+    color: #777777;
 }
 
-#attendance .dmg {
-	background: url("images/progress_yellow.png");
-	display: inline-block;
-	height: 26px;
-	color: #888822;
+#attendance .role1 {
+    background: url("images/progress_brown.png");
+    display: inline-block;
+    height: 26px;
+    color: #998855;
 }
 
-#attendance .heal {
-	background: url("images/progress_white.png");
-	display: inline-block;
-	height: 26px;
-	color: #AAAAAA;
+#attendance .role2 {
+    background: url("images/progress_white.png");
+    display: inline-block;
+    height: 26px;
+    color: #AAAAAA;
 }
 
-#attendance .tank {
-	background: url("images/progress_brown.png");
-	display: inline-block;
-	height: 26px;
-	color: #998855;
+#attendance .role3 {
+    background: url("images/progress_yellow.png");
+    display: inline-block;
+    height: 26px;
+    color: #888822;
+}
+
+#attendance .role4 {
+    background: url("images/progress_blue.png");
+    display: inline-block;
+    height: 26px;
+    color: #998855;
+}
+
+#attendance .role5 {
+    background: url("images/progress_violet.png");
+    display: inline-block;
+    height: 26px;
+    color: #998855;
 }
 
 #attendance .box {
-	display: inline-block;
-	width: 14px;
-	float: left;
+    display: inline-block;
+    width: 14px;
+    float: left;
 }
 
 #attendance .labels {
-	padding-top: 20px;
-	clear: left;
+    padding-top: 20px;
+    clear: left;
 }
 
 #attendance .labels .label {
-	display: block;
-	margin-left: 10px;
-	margin-right: 10px;
-	margin-top: 0px;
-	color: #666666;
-	width: 140px;
+    display: block;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 0px;
+    color: #666666;
+    width: 140px;
     line-height: 26px;
     vertical-align: bottom;
 }
 
 #attendance .labels .start {
-	position: relative;
-	display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 #attendance .labels .end {
-	display: inline-block;
-	position: relative;
-	margin-left: 0px;
+    display: inline-block;
+    position: relative;
+    margin-left: 0px;
 }

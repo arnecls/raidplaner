@@ -138,6 +138,36 @@
 	
 	// ----------------------------------------------------------------------------
 	
+	function upgrade_095()
+	{
+		echo "<update version=\"94\">";
+		
+		$updates = Array( "Rename role fields" 		 => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE  `TankSlots` `SlotsRole1` TINYINT(2) UNSIGNED NOT NULL,".
+												  	    "CHANGE `DmgSlots` `SlotsRole2` TINYINT(2) UNSIGNED NOT NULL,"
+												  	    "CHANGE `HealSlots` `SlotsRole3` TINYINT(2) UNSIGNED NOT NULL;",
+						  "New role fields"	   		 => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `SlotsRole4` TINYINT(2) UNSIGNED NOT NULL,".
+											      		"ADD `SlotsRole5` TINYINT(2) UNSIGNED NOT NULL;",
+						  "Char roles are numbers"   => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Role1` `Role1` TINYINT(1) UNSIGNED NOT NULL,".
+												  	    "CHANGE `Role2` `Role2` TINYINT(1) UNSIGNED NOT NULL",
+						  "Attend roles are numbers" => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` CHANGE `Role` `Role` TINYINT(1) UNSIGNED NOT NULL",
+						  "Char role fields"         => "UPDATE `".RP_TABLE_PREFIX."Character` SET Role1=0 WHERE Role1=3; UPDATE `".RP_TABLE_PREFIX."Character` SET Role2=0 WHERE Role2=3;". // Tank 3 -> 0
+                                                        "UPDATE `".RP_TABLE_PREFIX."Character` SET Role1=3 WHERE Role1=1; UPDATE `".RP_TABLE_PREFIX."Character` SET Role2=3 WHERE Role2=1;". // Dmg  1 -> 3
+                                                        "UPDATE `".RP_TABLE_PREFIX."Character` SET Role1=1 WHERE Role1=2; UPDATE `".RP_TABLE_PREFIX."Character` SET Role2=1 WHERE Role2=2;". // Heal 2 -> 1
+                                                        "UPDATE `".RP_TABLE_PREFIX."Character` SET Role1=2 WHERE Role1=3; UPDATE `".RP_TABLE_PREFIX."Character` SET Role2=2 WHERE Role2=3;", // Dmg  3 -> 2
+						  "Attendance role fields"   => "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Role=0 WHERE Role=3;". // Tank 3 -> 0
+                                                        "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Role=3 WHERE Role=1;". // Dmg  1 -> 3
+                                                        "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Role=1 WHERE Role=2;". // Heal 2 -> 1
+                                                        "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Role=2 WHERE Role=3;", // Dmg  3 -> 2
+						  "unsigned raid size"       => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE `Size` `Size` TINYINT(2) UNSIGNED NOT NULL;",
+						  "raid modes"               => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `Mode` ENUM('manual', 'auto', 'all') NOT NULL AFTER `End`;" );						  
+						  
+		doUpgrade( $updates );
+		
+        echo "</update>";
+	}
+	
+	// ----------------------------------------------------------------------------
+	
 	function setVersion( $a_Version )
 	{
         $Connector = Connector::GetInstance();
@@ -156,8 +186,10 @@
             upgrade_093();
         case 94:
         	upgrade_094();
+        case 95:
+        	upgrade_095();
         default:
-            setVersion(95);
+            setVersion(96);
             break;
     	}
     }

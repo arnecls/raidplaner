@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <theme>
-	<banner>wrath_of_the_lichking.jpg</banner>
-	<bgimage>wrath_of_the_lichking.jpg</bgimage>
-	<bgrepeat>repeat-x</bgrepeat>
-	<bgcolor>#797979</bgcolor>
+    <banner>wrath_of_the_lichking.jpg</banner>
+    <bgimage>wrath_of_the_lichking.jpg</bgimage>
+    <bgrepeat>repeat-x</bgrepeat>
+    <bgcolor>#797979</bgcolor>
 </theme>

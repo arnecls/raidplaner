@@ -1,215 +1,215 @@
 #raidlist {
     float: left;
-	position: relative;
-	left: 20px;
-	top: 20px;
-	text-align: left;
-	font-size: 12px;
-	font-family: Helvetica, Verdana, Arial, sans-serif;
-	border-spacing: 0px 0px;
-	width: 980px;
+    position: relative;
+    left: 20px;
+    top: 20px;
+    text-align: left;
+    font-size: 12px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    border-spacing: 0px 0px;
+    width: 980px;
 }
 
 #nextRaids {
-	width: 980px;
+    width: 980px;
 }
 
 #raidlist h1 {
-	margin-left: 0px;
-	margin-bottom: 10px;
-	margin-right: 0px;
-	margin-top: 0px;
-	border-left-width: 0px;
-	border-bottom-width: 1px;
-	border-right-width: 0px;
-	border-top-width: 0px;
-	border-bottom-color: #989898;
-	border-bottom-style: dotted;
-	height: 20px;
-	font-weight: bold;
-	font-size: 16px;
-	vertical-align: center;
-	color: #7d7d7d;
-	padding: 0px;
+    margin-left: 0px;
+    margin-bottom: 10px;
+    margin-right: 0px;
+    margin-top: 0px;
+    border-left-width: 0px;
+    border-bottom-width: 1px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+    border-bottom-color: #989898;
+    border-bottom-style: dotted;
+    height: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    vertical-align: center;
+    color: #7d7d7d;
+    padding: 0px;
 }
 
 .raidSlot {
-	display: inline-block;
-	background: url(images/raidslot.png);
-	background-repeat: no-repeat;
-	width: 310px;
-	height: 85px;
-	margin-right: 15px;
-	margin-bottom: 10px;
+    display: inline-block;
+    background: url(images/raidslot.png);
+    background-repeat: no-repeat;
+    width: 310px;
+    height: 85px;
+    margin-right: 15px;
+    margin-bottom: 10px;
 }
 
 .raidSlot .tooltip {
-	left: 0px;
-	top: 0px;
-	position: fixed;
-	visibility: hidden;
+    left: 0px;
+    top: 0px;
+    position: fixed;
+    visibility: hidden;
 }
 
 .raidSlot .comment {
-	left: 0px;
-	top: 0px;
-	position: fixed;
-	visibility: hidden;
+    left: 0px;
+    top: 0px;
+    position: fixed;
+    visibility: hidden;
 }
 
 .raidSlot .locationImg {
-	position: relative;
-	float: left;
-	left: 10px;
-	top: 11px;
-	width: 64px;
-	height: 64px;
-	cursor: pointer;
+    position: relative;
+    float: left;
+    left: 10px;
+    top: 11px;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
 }
 
 .raidSlot .overlayStatus {
-	position: relative;
-	float: right;
-	background-repeat: no-repeat;
-	top: -67px;
-	width: 64px;
-	height: 64px;
+    position: relative;
+    float: right;
+    background-repeat: no-repeat;
+    top: -67px;
+    width: 64px;
+    height: 64px;
 }
 
 .raidSlot .overlayStatusOk {
 }
 
 .raidSlot .overlayStatusOpen {
-	background-image: url("images/raid_open.gif");
+    background-image: url("images/raid_open.gif");
 }
 
 .raidSlot .overlayStatusCanceled {
-	background-image: url("images/raid_canceled.png");
+    background-image: url("images/raid_canceled.png");
 }
 
 .raidSlot .overlayStatusLocked {
-	background-image: url("images/raid_locked.png");
+    background-image: url("images/raid_locked.png");
 }
 
 .raidSlot .raidInfo {
-	position: relative;
-	float: left;
-	font-size: 10px;
-	left: 20px;
-	top: 11px;
-	width: 140px;
-	margin-right: 20px;
-	height: 64px;
+    position: relative;
+    float: left;
+    font-size: 10px;
+    left: 20px;
+    top: 11px;
+    width: 140px;
+    margin-right: 20px;
+    height: 64px;
 }
 
 .raidSlot .raidInfo .location {
-	font-weight: bold;
-	font-size: 12px;
-	margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 5px;
 }
 
 .raidSlot .setupInfo {
-	position: relative;
-	float: left;
-	top: 10px;
-	left: 10px;
-	width: 70px;	
-	height: 70px;
+    position: relative;
+    float: left;
+    top: 10px;
+    left: 10px;
+    width: 70px;    
+    height: 70px;
 }
 
 .setupInfo .count {
-	float: right;
-	position: relative;
-	top: 16px;
-	right: 2px;
-	font-weight: bold;
-	font-size: 14px;
+    float: right;
+    position: relative;
+    top: 16px;
+    right: 2px;
+    font-weight: bold;
+    font-size: 14px;
 
 }
 
 .setupInfo .setupTank {
-	background: url(../../images/classessmall/tank.png);
-	float: left;
-	width: 32px;	
-	height: 32px;
-	margin-right: 2px;
-	margin-bottom: 2px;	
+    background: url(../../images/classessmall/tank.png);
+    float: left;
+    width: 32px;    
+    height: 32px;
+    margin-right: 2px;
+    margin-bottom: 2px;    
 }
 
 .setupInfo .setupHeal {
-	background: url(../../images/classessmall/heal.png);
-	float: left;
-	width: 32px;	
-	height: 32px;
-	margin-bottom: 2px;
+    background: url(../../images/classessmall/heal.png);
+    float: left;
+    width: 32px;    
+    height: 32px;
+    margin-bottom: 2px;
 }
 
 .setupInfo .setupDmg {
-	background: url(../../images/classessmall/dmg.png);
-	float: left;
-	width: 32px;	
-	height: 32px;
-	margin-right: 2px;
+    background: url(../../images/classessmall/dmg.png);
+    float: left;
+    width: 32px;    
+    height: 32px;
+    margin-right: 2px;
 }
 
 .setupInfo .setupBench {
-	background: url(../../images/classessmall/empty.png);
-	float: left;
-	width: 32px;	
-	height: 32px;
+    background: url(../../images/classessmall/empty.png);
+    float: left;
+    width: 32px;    
+    height: 32px;
 }
 
 #raidHistory {
-	width: 980px;
-	height: 260px;
-	overflow-y: auto;
+    width: 980px;
+    height: 260px;
+    overflow-y: auto;
 }
 
 #raidHistory .historySlot {
-	display: inline-block;
-	margin-right: 20px;
-	margin-bottom: 10px;
-	height: 32px;
-	cursor: pointer;
+    display: inline-block;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    height: 32px;
+    cursor: pointer;
 }
 
 .historySlot .icon {
-	display: inline-block;
-	float: left;
-	width: 32px;
-	height: 32px;
+    display: inline-block;
+    float: left;
+    width: 32px;
+    height: 32px;
 }
 
 .historySlot .overlayCanceled {
-	display: inline-block;
-	background-image: url(images/raid_canceled_small.png);
-	background-repeat: no-repeat;
-	float: left;
-	width: 32px;
-	height: 32px;
-	margin-left: -32px;
-	position: relative;
+    display: inline-block;
+    background-image: url(images/raid_canceled_small.png);
+    background-repeat: no-repeat;
+    float: left;
+    width: 32px;
+    height: 32px;
+    margin-left: -32px;
+    position: relative;
 }
 
 
 .historySlot .overlayLocked {
-	display: inline-block;
-	background-image: url(images/raid_locked_small.png);
-	background-repeat: no-repeat;
-	float: left;
-	width: 32px;
-	height: 32px;
-	margin-left: -32px;
-	position: relative;
+    display: inline-block;
+    background-image: url(images/raid_locked_small.png);
+    background-repeat: no-repeat;
+    float: left;
+    width: 32px;
+    height: 32px;
+    margin-left: -32px;
+    position: relative;
 }
 
 .historySlot .name {
-	margin-top: 2px;
-	display: inline-block;
-	font-size: 12px;
-	vertical-align: top;
-	margin-left: 10px;
-	width: 132px;
-	white-space: nowrap;
-	overflow: hidden;
+    margin-top: 2px;
+    display: inline-block;
+    font-size: 12px;
+    vertical-align: top;
+    margin-left: 10px;
+    width: 132px;
+    white-space: nowrap;
+    overflow: hidden;
 }
