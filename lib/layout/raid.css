@@ -95,7 +95,7 @@
     width: 64px;
     height: 64px;
     margin-right: 10px;
-    margin-left: 10px;
+    margin-left: 12px;
 }
 
 #raiddetail .raidname {
@@ -130,24 +130,37 @@
 }
 
 #raiddetail .roleList {
-    margin-left: 10px; 
+    margin-left: 12px; 
     height: 380px;
+    float: left;
+    overflow-y: hidden;
+}
+
+#raiddetail .roleList h2 { 
+    position: absolute;
+}
+
+#raiddetail .clip {    
+    margin-top: 45px;
+    display: none;
     float: left;
 }
 
 #raiddetail .nobreak {
     float: left;
     margin-bottom: 4px;
-    margin-right: 5px;
+    margin-right: 4px;
     width: 140px;
+    height: 32px;
 }
 
 #raiddetail .break {
     clear: left;
     float: left;
     margin-bottom: 4px;
-    margin-right: 5px;
+    margin-right: 4px;
     width: 140px;
+    height: 32px;
 }
 
 #raiddetail .activeSlot {

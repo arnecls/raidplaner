@@ -59,15 +59,19 @@ $s_Classes = Array(
 $s_GroupSizes = Array(
     5  => Array(1,1,3),
     10 => Array(2,3,5),
-    25 => Array(2,6,17)
+    25 => Array(2,6,17),
+    40 => Array(1,1,38)
 );
 
 // Check $s_GroupSizes for constraints not matched
 
 while ( list($Count,$RoleSizes) = each($s_GroupSizes) )
 {
-    assert( $Count == $RoleSizes[0] + $RoleSizes[1] + $RoleSizes[2] );
-    assert( $Count <= 25 );
+    $slotSum = 0;
+    foreach ( $RoleSizes as $count )
+        $slotSum += $count;
+        
+    assert( $Count == $slotSum );
 }
 
 reset($s_GroupSizes);
