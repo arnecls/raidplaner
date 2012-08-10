@@ -143,7 +143,7 @@
 		echo "<update version=\"94\">";
 		
 		$updates = Array( "Rename role fields" 		 => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE  `TankSlots` `SlotsRole1` TINYINT(2) UNSIGNED NOT NULL,".
-												  	    "CHANGE `DmgSlots` `SlotsRole2` TINYINT(2) UNSIGNED NOT NULL,"
+												  	    "CHANGE `DmgSlots` `SlotsRole2` TINYINT(2) UNSIGNED NOT NULL,".
 												  	    "CHANGE `HealSlots` `SlotsRole3` TINYINT(2) UNSIGNED NOT NULL;",
 						  "New role fields"	   		 => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `SlotsRole4` TINYINT(2) UNSIGNED NOT NULL,".
 											      		"ADD `SlotsRole5` TINYINT(2) UNSIGNED NOT NULL;",
