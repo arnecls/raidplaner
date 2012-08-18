@@ -164,7 +164,7 @@
 }
 
 #raiddetail .activeSlot {
-    background-image: url(images/slot_set.png);
+    /*background-image: url(images/slot_set.png);*/
 }
 
 #raiddetail .waitSlot {
@@ -172,11 +172,15 @@
 }
 
 #raiddetail .benchSlot {
-    background-image: url(images/slot_bench.png);
+    background-image: url(images/slot_set.png);
 }
 
 #raiddetail .emptySlot {
     background-image: url(images/slot_wait.png);
+}
+
+#raiddetail .randomSlot {
+    background-image: url(images/slot_random.png);
 }
 
 #raiddetail .clipchange {
