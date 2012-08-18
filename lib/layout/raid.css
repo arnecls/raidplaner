@@ -129,6 +129,20 @@
     left: 4px;
 }
 
+#raiddetail .editableName {
+    height: 16px;
+    width: 95px;
+    display: inline-block;
+    float: left;
+    position: relative;
+    font-size: 12px;
+    top: 5px;
+    left: 4px;
+    background-color: transparent;
+    border: 0px solid transparent;
+    border-bottom: 1px dotted #888;
+}
+
 #raiddetail .roleList {
     margin-left: 12px; 
     height: 380px;
@@ -152,6 +166,7 @@
     margin-right: 4px;
     width: 140px;
     height: 32px;
+    overflow: hidden;
 }
 
 #raiddetail .break {
@@ -161,6 +176,7 @@
     margin-right: 4px;
     width: 140px;
     height: 32px;
+    overflow: hidden;
 }
 
 #raiddetail .activeSlot {
