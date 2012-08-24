@@ -5,24 +5,28 @@
     color: #00ff00;
     display: inline;
     font-size: 12px;
+    white-space: nowrap;
 }
 
 .tooltip .textstatusabsent {
     color: #ff4b48;
     display: inline;
     font-size: 12px;
+    white-space: nowrap;
 }
 
 .tooltip .textstatuswait {
     color: #ffff00;
     display: inline;
     font-size: 12px;
+    white-space: nowrap;
 }
 
 .tooltip .textstatus {
     color: #cccccc;
     display: inline;    
     font-size: 12px;
+    white-space: nowrap;
 }
 
 .tooltip .icon {
@@ -54,6 +58,7 @@
 .tooltip .functions {
     clear: left;
     margin-top: 10px;
+    white-space: nowrap;
 }
 
 .class_select {

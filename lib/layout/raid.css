@@ -116,31 +116,32 @@
     width: 32px;
     height: 32px;
     display: inline-block;
+    position: relative;
     float: left;
 }
 
 #raiddetail .playerName {
     height: 16px;
     display: inline-block;
-    float: left;
     position: relative;
-    font-size: 12px;
+    float: left;
+    font-size: 11px;
     top: 10px;
-    left: 4px;
+    left: 5px;
 }
 
 #raiddetail .editableName {
     height: 16px;
-    width: 95px;
+    width: 92px;
     display: inline-block;
-    float: left;
     position: relative;
-    font-size: 12px;
-    top: 5px;
+    float: left;
+    font-size: 11px;
+    top: 6px;
     left: 4px;
     background-color: transparent;
     border: 0px solid transparent;
-    border-bottom: 1px dotted #888;
+    border-bottom: 1px dotted #BBB;
 }
 
 #raiddetail .roleList {
@@ -166,7 +167,7 @@
     margin-right: 4px;
     width: 140px;
     height: 32px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 #raiddetail .break {
@@ -176,29 +177,54 @@
     margin-right: 4px;
     width: 140px;
     height: 32px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 #raiddetail .activeSlot {
     /*background-image: url(images/slot_set.png);*/
+    cursor: pointer;
+}
+
+#raiddetail .activeSlotComment {
+    background-image: url(images/slot_set_comment.png);
+    cursor: pointer;
 }
 
 #raiddetail .waitSlot {
     background-image: url(images/slot_wait.png);
+    cursor: pointer;
 }
 
-#raiddetail .benchSlot {
-    background-image: url(images/slot_set.png);
+#raiddetail .waitSlotComment {
+    background-image: url(images/slot_wait_comment.png);
+    cursor: pointer;
 }
 
 #raiddetail .emptySlot {
-    background-image: url(images/slot_wait.png);
+    background-image: url(images/slot_bench.png);
+}
+
+#raiddetail .benchSlot {
+    background-image: url(images/slot_bench.png);
 }
 
 #raiddetail .randomSlot {
     background-image: url(images/slot_random.png);
+    cursor: pointer;
 }
 
 #raiddetail .clipchange {
     background-image: url(images/slot_more.png);
+    cursor: pointer;
+}
+
+#raiddetail .twinkbadge {
+    background-image: url(images/twinkbadge.png);
+    width: 15px;
+    height: 16px;
+    float: left;
+    position: absolute;
+    left: 19px;
+    top: 19px;
+    display: inline-block;
 }

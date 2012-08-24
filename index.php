@@ -202,7 +202,7 @@
         <?php if ( ValidRaidlead() ) { ?>
         
         <div id="sheetNewRaid">
-            <div id="newRaid">
+            <div id="newRaid" style="width: 555px">
                 <span style="display: inline-block; vertical-align: top; margin-right: 20px" id="raiddatepicker"></span>    
                 <span style="display: inline-block; vertical-align: top">
                     <span style="display: inline-block; margin-right: 5px" class="imagepicker" id="locationimagepicker"><div class="imagelist" id="locationimagelist"></div></span>
