@@ -120,6 +120,24 @@
     float: left;
 }
 
+.playerTooltipIcon {
+    width: 32px;
+    height: 32px;
+    float: left;
+}
+
+.playerTooltipText {
+    float: left;
+    margin-left: 10px;
+    max-width: 200px;
+}
+
+.playerTooltipText .name {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 3px;
+}
+
 #raiddetail .playerName {
     height: 16px;
     display: inline-block;
@@ -181,7 +199,7 @@
 }
 
 #raiddetail .activeSlot {
-    /*background-image: url(images/slot_set.png);*/
+    background-image: url(images/slot_set.png);
     cursor: pointer;
 }
 
@@ -201,10 +219,6 @@
 }
 
 #raiddetail .emptySlot {
-    background-image: url(images/slot_bench.png);
-}
-
-#raiddetail .benchSlot {
     background-image: url(images/slot_bench.png);
 }
 

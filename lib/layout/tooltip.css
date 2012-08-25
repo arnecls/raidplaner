@@ -90,7 +90,7 @@
 ***************************************************/
 
 #tooltip .top {
-    height: 24px;
+    height: 18px;
 }
 
 #tooltip .top .left {
@@ -98,7 +98,7 @@
     padding: 0px;
     margin: 0px;
     background-image: url(images/info_topleft.png);
-    width: 26px;
+    width: 21px;
 }
 
 #tooltip .top .arrow {
@@ -121,7 +121,7 @@
 #tooltip .top .right {
     background-repeat: no-repeat;
     background-image: url(images/info_topright.png);
-    width: 18px;
+    width: 12px;
 }
 
 #tooltip .middle {
@@ -133,7 +133,7 @@
     margin: 0px;
     background-repeat: repeat-y;
     background-image: url(images/info_left.png);
-    width: 26px;
+    width: 21px;
 }
 
 #tooltip .middle .arrow {
@@ -141,7 +141,7 @@
     margin: 0px;
     background-repeat: repeat-y;
     background-image: url(images/info_leftarrow.png);
-    width: 26px;
+    width: 21px;
     height: 45px;
 }
 
@@ -156,7 +156,7 @@
 #tooltip .middle .right {
     background-repeat: repeat-y;
     background-image: url(images/info_right.png);
-    width: 18px;
+    width: 12px;
 }
 
 #tooltip .middle2 {
@@ -167,17 +167,17 @@
     margin: 0px;
     background-repeat: repeat-y;
     background-image: url(images/info_left.png);
-    width: 26px;
+    width: 21px;
 }
 
 #tooltip .middle2 .right {
     background-repeat: repeat-y;
     background-image: url(images/info_right.png);
-    width: 18px;
+    width: 12px;
 }
 
 #tooltip .bottom {
-    height: 31px;
+    height: 19px;
 }
 
 #tooltip .bottom .left {
@@ -185,7 +185,7 @@
     margin: 0px;
     background-image: url(images/info_bottomleft.png);
     background-repeat: no-repeat;
-    width: 26px;
+    width: 21px;
 }
 
 #tooltip .bottom .arrow {
@@ -202,5 +202,5 @@
 #tooltip .bottom .right {
     background-image: url(images/info_bottomright.png);
     background-repeat: no-repeat;
-    width: 18px;
+    width: 12px;
 }
