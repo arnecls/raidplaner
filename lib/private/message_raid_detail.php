@@ -39,6 +39,7 @@
                 echo "<locationId>".$Data["LocationId"]."</locationId>";
                 echo "<location>".$Data["LocationName"]."</location>";
                 echo "<stage>".$Data["Stage"]."</stage>";
+                echo "<mode>".$Data["Mode"]."</mode>";
                 echo "<image>".$Data["LocationImage"]."</image>";
                 echo "<size>".$Data["Size"]."</size>";
                 echo "<startDate>".$StartDate["year"]."-".LeadingZero10($StartDate["mon"])."-".LeadingZero10($StartDate["mday"])."</startDate>";

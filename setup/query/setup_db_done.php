@@ -62,7 +62,7 @@
 		  `Size` tinyint(2) unsigned NOT NULL,
 		  `Start` datetime NOT NULL,
 		  `End` datetime NOT NULL,
-		  `Mode` enum('manual','auto','all') NOT NULL,
+		  `Mode` enum('manual','attend','all') NOT NULL,
 		  `Description` text NOT NULL,
 		  `SlotsRole1` tinyint(2) unsigned NOT NULL,
 		  `SlotsRole2` tinyint(2) unsigned  NOT NULL,

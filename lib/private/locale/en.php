@@ -139,6 +139,13 @@
         $g_Locale[ "PleaseRunSetup" ]           = "Please run setup or follow the manual installation instructions.";
         $g_Locale[ "Players" ]                  = "Players";
         $g_Locale[ "DatabaseError" ]            = "Database request error";
+        $g_Locale[ "RequiredForRole" ]          = "Required for role";
+        $g_Locale[ "Comment" ]                  = "Comment";
+        $g_Locale[ "RaidStatus" ]               = "Status";
+        $g_Locale[ "RaidSetupStyle" ]           = "Attendance style";        
+        $g_Locale[ "RaidModeManual" ]           = "Setup by raidlead";
+        $g_Locale[ "RaidModeAttend" ]           = "Setup by attend";
+        $g_Locale[ "RaidModeAll" ]              = "Just list";
     }
     
     if ( defined("LOCALE_SETUP") )
