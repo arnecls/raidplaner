@@ -53,6 +53,7 @@
     background-image: url(images/icon_raid_off.png);
     opacity: 0.2;
     filter:Alpha(opacity=20);
+    cursor: pointer;
 }
 
 #raiddetail .icon_setup_off:hover {
@@ -64,6 +65,7 @@
     background-image: url(images/icon_users_off.png);
     opacity: 0.2;
     filter:Alpha(opacity=20);
+    cursor: pointer;
 }
 
 #raiddetail .icon_slackers_off:hover {
@@ -75,6 +77,7 @@
     background-image: url(images/icon_settings_off.png);
     opacity: 0.2;
     filter:Alpha(opacity=20);
+    cursor: pointer;
 }
 
 #raiddetail .icon_settings_off:hover {
