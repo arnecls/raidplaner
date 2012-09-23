@@ -146,6 +146,8 @@
         $g_Locale[ "RaidModeManual" ]           = "Aufstellung durch Raidleiter";
         $g_Locale[ "RaidModeAttend" ]           = "Aufstellung nach Anmeldung";
         $g_Locale[ "RaidModeAll" ]              = "Nur Liste";
+        $g_Locale[ "AbsentPlayers" ]            = "Abgemeldete Spieler";
+        $g_Locale[ "UndecidedPlayers" ]         = "Unentschlossene Spieler";
         
     }
     

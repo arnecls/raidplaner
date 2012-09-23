@@ -146,6 +146,8 @@
         $g_Locale[ "RaidModeManual" ]           = "Setup by raidlead";
         $g_Locale[ "RaidModeAttend" ]           = "Setup by attend";
         $g_Locale[ "RaidModeAll" ]              = "Just list";
+        $g_Locale[ "AbsentPlayers" ]            = "Absent players";
+        $g_Locale[ "UndecidedPlayers" ]         = "Undecided players";
     }
     
     if ( defined("LOCALE_SETUP") )

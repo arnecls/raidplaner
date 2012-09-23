@@ -244,6 +244,12 @@
     display: inline-block;
 }
 
+#raiddetail .slackerspanel {
+    position: absolute;
+    left: 58px;
+    float: left;
+}
+
 #raiddetail .settingspanel {
     position: relative;
     left: 12px;
@@ -279,4 +285,8 @@
     border: 1px solid #aaa;
     color: #fefefe;
     padding: 3px;
+}
+
+#absentList {
+    height: 170px;
 }
