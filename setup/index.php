@@ -8,7 +8,7 @@
 		<title>Raidplaner config</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         
-        <script type="text/javascript" src="../lib/script/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="../lib/script/jquery-1.8.2.min.js"></script>
         <script type="text/javascript" src="script/main.js"></script>
         <script type="text/javascript" src="script/index.js"></script>
         

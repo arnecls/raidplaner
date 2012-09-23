@@ -1,7 +1,7 @@
 <?php
     header("Content-type: text/css");    
 
-    include_once("jquery-ui-1.8.18.custom.css");
+    include_once("jquery-ui-1.8.23.custom.css");
     include_once("default.css");
     include_once("combobox.css");
     include_once("calendar.css");
