@@ -59,78 +59,100 @@
                     do
                     {
                         if ( $Data["UserId"] != 0 )
-                                array_push( $Participants, intval($Data["UserId"]) );
-                                
-                        if ( ($Data["CharacterId"] == 0) && ($Data["UserId"] != 0) )
                         {
-                            $CharSt = $Connector->prepare(    "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
-                                                            "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
-                                                            "WHERE UserId = :UserId ORDER BY Mainchar, CharacterId ASC LIMIT 1" );
+                            array_push( $Participants, intval($Data["UserId"]) );
+                        }
                             
-                            $CharSt->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
+                        if ( $Data["CharacterId"] == 0 )
+                        {
+                            // CharacterId is 0 on random players or players that are absent
+                                                
+                            if ( $Data["UserId"] != 0 )
+                            {
+                                // Fetch the mainchar of the registered player and display this
+                                // character as "absent"
+                                
+                                $CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
+                                                                "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
+                                                                "WHERE UserId = :UserId ORDER BY Mainchar, CharacterId ASC LIMIT 1" );
                             
-                            if (!$CharSt->execute())
-                            {
-                                postErrorMessage( $ErrorInfo );
-                            }
-                            else
-                            {
-                                $CharData = $CharSt->fetch( PDO::FETCH_ASSOC );
+                                $CharSt->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
                                 
-                                echo "<attendee>";
-                                
-                                if ( $CharData["CharacterId"] == NULL )
+                                if (!$CharSt->execute())
                                 {
-                                    echo "<id>0</id>";
-                                    echo "<name>[".$CharData["UserName"]."]</name>";
-                                    echo "<mainchar>false</mainchar>";
-                                    echo "<class>empty</class>";
-                                    echo "<role>dmg</role>";
-                                    echo "<role1>dmg</role1>";
-                                    echo "<role2>dmg</role2>";
+                                    postErrorMessage( $ErrorInfo );
                                 }
                                 else
                                 {
-                                    echo "<id>".$CharData["CharacterId"]."</id>";
-                                    echo "<name>".$CharData["Name"]."</name>";
-                                    echo "<mainchar>".$CharData["Mainchar"]."</mainchar>";
-                                    echo "<class>".$CharData["Class"]."</class>";
-                                    echo "<role>".$CharData["Role1"]."</role>";
-                                    echo "<role1>".$CharData["Role1"]."</role1>";
-                                    echo "<role2>".$CharData["Role2"]."</role2>";                        
+                                    $CharData = $CharSt->fetch( PDO::FETCH_ASSOC );
+                                    
+                                    if ( $CharData["CharacterId"] != NULL )
+                                    {
+                                        echo "<attendee>";
+                                        
+                                        echo "<id>".$CharData["CharacterId"]."</id>";
+                                        echo "<name>".$CharData["Name"]."</name>";
+                                        echo "<mainchar>".$CharData["Mainchar"]."</mainchar>";
+                                        echo "<class>".$CharData["Class"]."</class>";
+                                        echo "<role>".$CharData["Role1"]."</role>";
+                                        echo "<role1>".$CharData["Role1"]."</role1>";
+                                        echo "<role2>".$CharData["Role2"]."</role2>";
+                                        echo "<status>".$Data["Status"]."</status>";
+                                        echo "<comment>".$Data["Comment"]."</comment>";
+                                        
+                                        echo "</attendee>";                      
+                                    }
+                                    // else {
+                                    // Character has been deleted or player has no character.
+                                    // This character does not need to be displayed. }                                                     
                                 }
-                        
-                                echo "<status>".$Data["Status"]."</status>";
-                                echo "<comment>".$Data["Comment"]."</comment>";
-                                echo "</attendee>";
-                            }
                             
-                            $CharSt->closeCursor();
+                                $CharSt->closeCursor();
+                            }
+                            else
+                            {
+                                // CharacterId and UserId set to 0 means "random player"
+                                
+                                echo "<attendee>";
+                                
+                                echo "<id>0</id>";
+                                echo "<name>".$Data["Comment"]."</name>";
+                                echo "<class>random</class>";
+                                echo "<mainchar>true</mainchar>";
+                                echo "<role>".$Data["Role"]."</role>";
+                                echo "<role1>".$Data["Role"]."</role1>";
+                                echo "<role2>".$Data["Role"]."</role2>";
+                                echo "<status>".$Data["Status"]."</status>";
+                                echo "<comment></comment>";
+                                
+                                echo "</attendee>";
+                            } 
                         }
                         else
                         {
+                            // CharacterId is set
+                            
                             echo "<attendee>";
-                        
+                            
                             echo "<id>".$Data["CharacterId"]."</id>";
                             echo "<name>".$Data["Name"]."</name>";
                             echo "<class>".$Data["Class"]."</class>";
                             echo "<mainchar>".$Data["Mainchar"]."</mainchar>";
                             echo "<role>".$Data["Role"]."</role>";
                             echo "<role1>".$Data["Role1"]."</role1>";
-                            echo "<role2>".$Data["Role2"]."</role2>";                        
-                        
+                            echo "<role2>".$Data["Role2"]."</role2>";
                             echo "<status>".$Data["Status"]."</status>";
                             echo "<comment>".$Data["Comment"]."</comment>";
+                            
                             echo "</attendee>";
                         }                        
                     }
                     while ( $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC ) );
                 }
                 
-                $AllUsersSt = $Connector->prepare(    "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.UserId ".
+                $AllUsersSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.UserId ".
                                                     "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
                                                     "WHERE Mainchar = \"true\" AND `Group` != \"none\"" );
-                                                    
                 
                 $AllUsersSt->execute();
                 
@@ -146,8 +168,7 @@
                         echo "<mainchar>true</mainchar>";
                         echo "<role>".$User["Role1"]."</role>";
                         echo "<role1>".$User["Role1"]."</role1>";
-                        echo "<role2>".$User["Role2"]."</role2>";                        
-                    
+                        echo "<role2>".$User["Role2"]."</role2>";
                         echo "<status>undecided</status>";
                         echo "<comment></comment>";
                         
@@ -155,8 +176,7 @@
                     }
                 }
                 
-                $AllUsersSt->closeCursor();
-                
+                $AllUsersSt->closeCursor();                
                 echo "</raid>";                            
             }
             

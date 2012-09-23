@@ -184,7 +184,7 @@ function formatTime(a_Hour, a_Minute)
 {
 	if ( g_TimeFormat == 12 )
 	{
-		var numericHour = parseInt(a_Hour);
+		var numericHour = parseInt(a_Hour, 10);
 		var postFix = " pm";
 		
 		if ( numericHour < 12 )
