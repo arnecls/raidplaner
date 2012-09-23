@@ -243,8 +243,8 @@
 
 #raiddetail .settingspanel {
     position: relative;
-    left: -1px;
-    top: -10px;
+    left: 12px;
+    float: left;
 }
 
 #raiddetail .locationicon {

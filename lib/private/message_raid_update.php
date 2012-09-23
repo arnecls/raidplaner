@@ -134,6 +134,7 @@ function msgRaidUpdate( $Request )
             {
                 if ( isset($Request["role".($RoleIdx+1)]) )
                 {
+                    $NumAttends = 0;
                     $AttendsForRole = $Request["role".($RoleIdx+1)];
                     
                     // Attendances are passed in the form [id,status,id,status, … ]
@@ -142,6 +143,15 @@ function msgRaidUpdate( $Request )
                     for ( $AttendIdx=0; $AttendIdx < sizeof($AttendsForRole); $AttendIdx += 2 )
                     {
                         $UpdateSlot = null;
+                        $Status = $AttendsForRole[$AttendIdx+1];
+                        
+                        if ( $Status == "ok" )
+                        {
+                            if ( $NumAttends < $SlotSizes[$RoleIdx] )
+                                ++$NumAttends;
+                            else
+                                $Status = "available";
+                        }
                         
                         if ( $AttendsForRole[$AttendIdx] < 0 )
                         {
@@ -153,8 +163,7 @@ function msgRaidUpdate( $Request )
                                                                "( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
                                                                "VALUES ( 0, 0, :RaidId, :Status, :Role, :Name )" );
                         
-                            $UpdateSlot->bindValue( ":Name", $AttendsForRole[$AttendIdx+1], PDO::PARAM_STR);
-                            $UpdateSlot->bindValue( ":Status", $AttendsForRole[$AttendIdx+2], PDO::PARAM_STR);
+                            $UpdateSlot->bindValue( ":Name", $AttendsForRole[$AttendIdx+2], PDO::PARAM_STR);
                             ++$AttendIdx;
                         }
                         else
@@ -166,9 +175,9 @@ function msgRaidUpdate( $Request )
                                                                "WHERE RaidId = :RaidId AND Status != 'unavialable' AND CharacterId = :CharacterId LIMIT 1" );
                                                                     
                             $UpdateSlot->bindValue( ":CharacterId", $AttendsForRole[$AttendIdx], PDO::PARAM_INT);
-                            $UpdateSlot->bindValue( ":Status", $AttendsForRole[$AttendIdx+1], PDO::PARAM_STR);
                         }
                         
+                        $UpdateSlot->bindValue( ":Status", $Status, PDO::PARAM_STR);
                         $UpdateSlot->bindValue( ":RaidId", $Request["id"], PDO::PARAM_INT);
                         $UpdateSlot->bindValue( ":Role", $RoleIdx, PDO::PARAM_INT);
                         
