@@ -16,7 +16,7 @@
     require_once("lib/private/users.php");
     
     UserProxy::GetInstance(); // Init user
-    $siteVersion = 95;
+    $siteVersion = 95.3;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
@@ -202,7 +202,7 @@
 		<?php if ( ValidRaidlead() ) { ?>
 		
 		<div id="sheetNewRaid">
-			<div id="newRaid">
+			<div id="newRaid" style="width: 556px">
 				<span style="display: inline-block; vertical-align: top; margin-right: 20px" id="raiddatepicker"></span>	
 				<span style="display: inline-block; vertical-align: top">
 					<span style="display: inline-block; margin-right: 5px" class="imagepicker" id="locationimagepicker"><div class="imagelist" id="locationimagelist"></div></span>

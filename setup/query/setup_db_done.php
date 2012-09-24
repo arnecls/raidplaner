@@ -113,17 +113,21 @@
 	
 	$testSt->closeCursor();
 	
-	$testSt = $connector->prepare( "SELECT * FROM `".$_REQUEST["prefix"]."User` LIMIT 1" );
+	$testSt = $connector->prepare( "SELECT * FROM `".$_REQUEST["prefix"]."User` WHERE UserId=1 LIMIT 1" );
 	$testSt->execute();
 	
+	$Salt = sha1( strval(microtime() + rand()) . $_SERVER["REMOTE_ADDR"] );
+	$Hash = sha1( "admin".$_REQUEST["adminpass"] );			
+    $Hash = md5( $Salt.$Hash );
+		
 	if ( $testSt->rowCount() == 0 )
 	{
-		$Salt = sha1( strval(microtime() + rand()) . $_SERVER["REMOTE_ADDR"] );
-		$Hash = sha1( "admin".$_REQUEST["adminpass"] );			
-		$Hash = md5( $Salt.$Hash );
-			
 		$connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."User` VALUES(1, 'admin', 0, 'none', 'admin', '".sha1($_REQUEST["adminpass"])."', '".$Hash."', FROM_UNIXTIME(".time()."));" );
 	}
+	//else
+	//{
+    //    $connector->exec( "UPDATE `".$_REQUEST["prefix"]."User` SET `Password`='".sha1($_REQUEST["adminpass"])."', `Hash`='".$Hash."' WHERE UserId=1 LIMIT 1;" );		
+	//}
 	
 	$testSt->closeCursor();
 	

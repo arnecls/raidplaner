@@ -41,6 +41,9 @@ function msgRaidCreate( $Request )
 	        $StartDateTime = mktime($Request["startHour"], $Request["startMinute"], 0, $Request["month"], $Request["day"], $Request["year"]);
 	        $EndDateTime   = mktime($Request["endHour"], $Request["endMinute"], 0, $Request["month"], $Request["day"], $Request["year"]);
 	        
+	        if ( $EndDateTime < $StartDateTime )
+	           $EndDateTime += 60*60*24;
+	        
 	        $NewRaidSt->bindValue(":LocationId",  $locationId, PDO::PARAM_INT);
 	        $NewRaidSt->bindValue(":Size",        $Request["locationSize"], PDO::PARAM_INT);
 	        $NewRaidSt->bindValue(":Start",       $StartDateTime, PDO::PARAM_INT);

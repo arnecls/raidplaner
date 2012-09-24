@@ -50,6 +50,9 @@ function msgRaidUpdate( $Request )
 		$StartDateTime = mktime($Request["startHour"], $Request["startMinute"], 0, $Request["month"], $Request["day"], $Request["year"]);
         $EndDateTime   = mktime($Request["endHour"], $Request["endMinute"], 0, $Request["month"], $Request["day"], $Request["year"]);
         
+        if ( $EndDateTime < $StartDateTime )
+	           $EndDateTime += 60*60*24;
+        
         $UpdateRaidSt->bindValue(":RaidId",  	 $Request["id"], PDO::PARAM_INT);
         $UpdateRaidSt->bindValue(":LocationId",  $locationId, PDO::PARAM_INT);
         $UpdateRaidSt->bindValue(":Stage",  	 $Request["stage"], PDO::PARAM_STR);
