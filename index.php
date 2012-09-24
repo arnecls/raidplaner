@@ -16,7 +16,7 @@
     require_once("lib/private/users.php");
     
     UserProxy::GetInstance(); // Init user
-    $siteVersion = 96;
+    $siteVersion = 96.0;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
