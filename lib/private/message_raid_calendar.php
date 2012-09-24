@@ -116,14 +116,16 @@ function parseRaidQuery( $QueryResult, $Limit )
                 echo "<comment>".$comment."</comment>";
                 echo "<role>".$role."</role>";
                 
-                echo "<tankCount>" .$RaidInfo[$Data["RaidId"]]["tanks"]."</tankCount>";
+                // TODO: Update to new role system
+                
+                /*echo "<tankCount>" .$RaidInfo[$Data["RaidId"]]["tanks"]."</tankCount>";
                 echo "<healCount>".$RaidInfo[$Data["RaidId"]]["heal"]."</healCount>";
                 echo "<dmgCount>".$RaidInfo[$Data["RaidId"]]["dmg"]."</dmgCount>";
                 echo "<benchCount>".$RaidInfo[$Data["RaidId"]]["bench"]."</benchCount>";
                 
                 echo "<tankSlots>".$Data["TankSlots"]."</tankSlots>";
                 echo "<healSlots>".$Data["HealSlots"]."</healSlots>";
-                echo "<dmgSlots>".$Data["DmgSlots"]."</dmgSlots>";
+                echo "<dmgSlots>".$Data["DmgSlots"]."</dmgSlots>";*/
                 
                 echo "</raid>";
                 

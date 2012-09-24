@@ -13,19 +13,20 @@ function msgRaidAttend( $Request )
         // check user/character match
         
         $changeAllowed = true;
-        $role = "dmg";
+        $raidInfo = Array();
+        $role = 0;
         
         // Check if locked
         
-        $LockCheckSt = $Connector->prepare("SELECT Stage FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
+        $LockCheckSt = $Connector->prepare("SELECT Stage,Mode,SlotsRole1,SlotsRole2,SlotsRole3,SlotsRole4,SlotsRole5 FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
         $LockCheckSt->bindValue(":RaidId", $raidId, PDO::PARAM_INT);
         
         if ( !$LockCheckSt->execute() )
-           {
-               postErrorMessage( $LockCheckSt );
-               $LockCheckSt->closeCursor();
-               return;
-           }
+        {
+            postErrorMessage( $LockCheckSt );
+            $LockCheckSt->closeCursor();
+            return;
+        }
         
         if ( $LockCheckSt->rowCount() > 0 )
         {
@@ -94,14 +95,63 @@ function msgRaidAttend( $Request )
                             "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, :Comment )" );
                     }
                     
-                    $status = "available";
-                    $characterId = $attendanceIdx;
+                    // Define the status and id to set
                     
                     if ( $attendanceIdx == -1 )
                     {
                         $status = "unavailable";
                         $characterId = intval( $Request["fallback"] );
                     }
+                    else
+                    {
+                        switch ( $raidInfo["Mode"] )
+                        {                        
+                        case "all":
+                            $status = "ok";
+                            break;
+                            
+                        case "attend":
+                            // Gather slot usage
+                            
+                            $AttendanceSt = $Connector->prepare("SELECT Role, COUNT(Role) AS Count FROM `".RP_TABLE_PREFIX."Attendance` WHERE RaidId = :RaidId GROUP BY Role");
+                            $AttendanceSt->bindValue(":RaidId", $raidId, PDO::PARAM_INT);
+        
+                            if ( !$AttendanceSt->execute() )
+                            {
+                                postErrorMessage( $AttendanceSt );
+                                $AttendanceSt->closeCursor();
+                                return;
+                            }
+                            
+                            $SlotUsage = Array();
+        
+                            while ( $Data = $AttendanceSt->fetch( PDO::FETCH_ASSOC ) )
+                            {
+                                $SlotCount[ $Data["Role"] ] = $Data["Count"];
+                            }
+                            
+                            $AttendanceSt->closeCursor();
+        
+                            if ( $SlotCount[$role] < $raidInfo["SlotsRole".($role+1)] )
+                            {
+                                $status = "ok";
+                            }
+                            else
+                            {
+                                $status = "available";
+                            }
+                            break;
+                            
+                        default:
+                        case "manual":
+                            $status = "available";
+                            break;
+                        }
+                        
+                        $characterId = $attendanceIdx;
+                    }
+                    
+                    // Define comment
                     
                     $comment = "";
                     
@@ -111,11 +161,11 @@ function msgRaidAttend( $Request )
                     }
                     
                     $attendSt->bindValue(":CharacterId", $characterId, PDO::PARAM_INT);
-                    $attendSt->bindValue(":RaidId",       $raidId,      PDO::PARAM_INT);
+                    $attendSt->bindValue(":RaidId",      $raidId,      PDO::PARAM_INT);
                     $attendSt->bindValue(":UserId",      $userId,      PDO::PARAM_INT);
-                    $attendSt->bindValue(":Status",       $status,      PDO::PARAM_STR);
-                    $attendSt->bindValue(":Role",           $role,        PDO::PARAM_STR);
-                    $attendSt->bindValue(":Comment",       $comment,     PDO::PARAM_STR);
+                    $attendSt->bindValue(":Status",      $status,      PDO::PARAM_STR);
+                    $attendSt->bindValue(":Role",        $role,        PDO::PARAM_INT);
+                    $attendSt->bindValue(":Comment",     $comment,     PDO::PARAM_STR);
                     
                     if (!$attendSt->execute())
                     {
