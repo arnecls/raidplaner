@@ -219,6 +219,16 @@
     cursor: pointer;
 }
 
+#raiddetail .benchSlot {
+    background-image: url(images/slot_bench.png);
+    cursor: pointer;
+}
+
+#raiddetail .benchSlotComment {
+    background-image: url(images/slot_bench_comment.png);
+    cursor: pointer;
+}
+
 #raiddetail .emptySlot {
     background-image: url(images/slot_bench.png);
 }
