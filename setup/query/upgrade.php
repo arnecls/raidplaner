@@ -140,7 +140,7 @@
 	
 	function upgrade_095()
 	{
-		echo "<update version=\"94\">";
+		echo "<update version=\"95\">";
 		
 		$updates = Array( "Rename role fields" 		 => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE  `TankSlots` `SlotsRole1` TINYINT(2) UNSIGNED NOT NULL,".
 												  	    "CHANGE `DmgSlots` `SlotsRole2` TINYINT(2) UNSIGNED NOT NULL,".
@@ -159,7 +159,8 @@
                                                         "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Role=1 WHERE Role=2;". // Heal 2 -> 1
                                                         "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Role=2 WHERE Role=3;", // Dmg  3 -> 2
 						  "unsigned raid size"       => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE `Size` `Size` TINYINT(2) UNSIGNED NOT NULL;",
-						  "raid modes"               => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `Mode` ENUM('manual', 'attend', 'all') NOT NULL AFTER `End`;" );						  
+						  "raid modes"               => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `Mode` ENUM('manual', 'attend', 'all') NOT NULL AFTER `End`;",						  
+						  "raid mode setting" 	     => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidMode', '', 'manual');" );						  
 						  
 		doUpgrade( $updates );
 		

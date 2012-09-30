@@ -114,7 +114,7 @@
         $g_Locale[ "DefaultStartTime" ]         = "Voreingestellter Raidstart";
         $g_Locale[ "DefaultEndTime" ]           = "Voreingestelltes Raidende";
         $g_Locale[ "DefaultRaidSize" ]          = "Voreingestellte Raidgr&ouml;&szlig;e";
-        $g_Locale[ "BannerPage" ]               = "Banner-Klick Zielseite";
+        $g_Locale[ "BannerPage" ]               = "Link f&uuml;r Seitenbanner";
         $g_Locale[ "DeleteLocationRaids" ]      = "Instanz und Raids entfernen";        
         $g_Locale[ "ConfirmDeleteLocation" ]    = "M&ouml;chtest du diese Instanz wirklich l&ouml;schen?";
         $g_Locale[ "NoteDeleteRaidsToo" ]       = "Alle Raids in dieser Instanz werden ebenfalls gel&ouml;scht.";
@@ -148,6 +148,7 @@
         $g_Locale[ "RaidModeAll" ]              = "Nur Liste";
         $g_Locale[ "AbsentPlayers" ]            = "Abgemeldete Spieler";
         $g_Locale[ "UndecidedPlayers" ]         = "Unentschlossene Spieler";
+        $g_Locale[ "DefaultRaidMode" ]          = "Voreingestellte Anmeldeform";        
     }
     
     if ( defined("LOCALE_SETUP") )

@@ -203,7 +203,16 @@
         
         <div id="sheetNewRaid">
             <div id="newRaid" style="width: 556px">
-                <span style="display: inline-block; vertical-align: top; margin-right: 20px" id="raiddatepicker"></span>    
+                <span style="display: inline-block; vertical-align: top; margin-right: 20px">
+                    <div id="raiddatepicker"></div>
+                    <div style="margin-top: 24px">
+                        <select id="selectmode" style="width: 212px">
+                            <option value="manual"><? echo L("RaidModeManual"); ?></option>
+                            <option value="attend"><? echo L("RaidModeAttend"); ?></option>
+                            <option value="all"><? echo L("RaidModeAll"); ?></option>
+                        </select>                        
+                    </div>
+                </span>  
                 <span style="display: inline-block; vertical-align: top">
                     <span style="display: inline-block; margin-right: 5px" class="imagepicker" id="locationimagepicker"><div class="imagelist" id="locationimagelist"></div></span>
                     <span style="display: inline-block; vertical-align: top">

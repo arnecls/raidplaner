@@ -8,7 +8,7 @@ function msgQueryNewRaidData( $Request )
         
         // Settings
         
-        $NewRaidSettings = $Connector->prepare("Select Name, IntValue FROM `".RP_TABLE_PREFIX."Setting`");
+        $NewRaidSettings = $Connector->prepare("Select Name, IntValue, TextValue FROM `".RP_TABLE_PREFIX."Setting`");
         
         if ( !$NewRaidSettings->execute() )
         {
@@ -18,12 +18,19 @@ function msgQueryNewRaidData( $Request )
         {
             echo "<settings>";
                 
-            $OfInterest = array( "RaidSize", "RaidStartHour", "RaidStartMinute", "RaidEndHour", "RaidEndMinute" );
+            $IntOfInterest = array( "RaidSize", "RaidStartHour", "RaidStartMinute", "RaidEndHour", "RaidEndMinute" );
+            $TextOfInterest = array( "RaidMode" );
+            
             while ( $Data = $NewRaidSettings->fetch( PDO::FETCH_ASSOC ) )
             {
-                if ( in_array($Data["Name"], $OfInterest) )
+                if ( in_array($Data["Name"], $IntOfInterest) )
                 {
                     echo "<".$Data["Name"].">".$Data["IntValue"]."</".$Data["Name"].">";
+                }
+                
+                if ( in_array($Data["Name"], $TextOfInterest) )
+                {
+                    echo "<".$Data["Name"].">".$Data["TextValue"]."</".$Data["Name"].">";
                 }
             }
             

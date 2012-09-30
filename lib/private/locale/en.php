@@ -114,7 +114,7 @@
         $g_Locale[ "DefaultStartTime" ]         = "Default raid start time";
         $g_Locale[ "DefaultEndTime" ]           = "Default raid end time";
         $g_Locale[ "DefaultRaidSize" ]          = "Default raid size";
-        $g_Locale[ "BannerPage" ]               = "Banner click landing page";
+        $g_Locale[ "BannerPage" ]               = "Page banner link";
         $g_Locale[ "DeleteLocationRaids" ]      = "Delete location and raids";        
         $g_Locale[ "ConfirmDeleteLocation" ]    = "Do you really want to delete this location?";
         $g_Locale[ "NoteDeleteRaidsToo" ]       = "This will also delete all raids at this location.";
@@ -148,6 +148,7 @@
         $g_Locale[ "RaidModeAll" ]              = "Just list";
         $g_Locale[ "AbsentPlayers" ]            = "Absent players";
         $g_Locale[ "UndecidedPlayers" ]         = "Undecided players";
+        $g_Locale[ "DefaultRaidMode" ]          = "Default attendance mode"; 
     }
     
     if ( defined("LOCALE_SETUP") )

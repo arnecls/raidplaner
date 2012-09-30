@@ -51,7 +51,7 @@ function msgRaidCreate( $Request )
             $NewRaidSt->bindValue(":Size",        $Request["locationSize"], PDO::PARAM_INT);
             $NewRaidSt->bindValue(":Start",       $StartDateTime, PDO::PARAM_INT);
             $NewRaidSt->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
-            $NewRaidSt->bindValue(":Mode",        $Mode, PDO::PARAM_INT);
+            $NewRaidSt->bindValue(":Mode",        $Request["mode"], PDO::PARAM_STR);
             $NewRaidSt->bindValue(":Description", requestToXML( $Request["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
             
             while ( list($groupSize,$slots) = each($s_GroupSizes) )
