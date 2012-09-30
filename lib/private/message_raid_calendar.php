@@ -32,6 +32,7 @@ function prepareRaidListRequest( $Month, $Year )
 
 function parseRaidQuery( $QueryResult, $Limit )
 {
+    global $s_Roles;
     echo "<raids>";
     
     $RaidData = Array();
@@ -41,24 +42,25 @@ function parseRaidQuery( $QueryResult, $Limit )
     {
         array_push($RaidData, $Data);
         
+        // Create used slot counts
+        
         if ( !isset($RaidInfo[$Data["RaidId"]]) )
         {
-            $RaidInfo[$Data["RaidId"]]["tanks"] = 0;
-            $RaidInfo[$Data["RaidId"]]["heal"] = 0;
-            $RaidInfo[$Data["RaidId"]]["dmg"] = 0;
+            for ( $i=0; $i < sizeof($s_Roles); ++$i )
+            {
+                $RaidInfo[$Data["RaidId"]]["role".$i] = 0;
+            }
+            
             $RaidInfo[$Data["RaidId"]]["bench"] = 0;
         }
         
-        if ( $Data["Status"] == "ok" )
-        {        
-            if ( $Data["Role"] == "tank" )      ++$RaidInfo[$Data["RaidId"]]["tanks"];
-            else if ( $Data["Role"] == "heal" ) ++$RaidInfo[$Data["RaidId"]]["heal"];
-            else if ( $Data["Role"] == "dmg" )  ++$RaidInfo[$Data["RaidId"]]["dmg"];
-            }
-            else if ( $Data["Status"] == "available" )
-            {
-                ++$RaidInfo[$Data["RaidId"]]["bench"];
-            }        
+        // Count used slots
+                
+        if ( ($Data["Status"] == "ok") || 
+             ($Data["Status"] == "available") )
+        {
+            ++$RaidInfo[$Data["RaidId"]]["role".$Data["Role"]];
+        }
     }
     
     $LastRaidId = -1;
@@ -116,16 +118,11 @@ function parseRaidQuery( $QueryResult, $Limit )
                 echo "<comment>".$comment."</comment>";
                 echo "<role>".$role."</role>";
                 
-                // TODO: Update to new role system
-                
-                /*echo "<tankCount>" .$RaidInfo[$Data["RaidId"]]["tanks"]."</tankCount>";
-                echo "<healCount>".$RaidInfo[$Data["RaidId"]]["heal"]."</healCount>";
-                echo "<dmgCount>".$RaidInfo[$Data["RaidId"]]["dmg"]."</dmgCount>";
-                echo "<benchCount>".$RaidInfo[$Data["RaidId"]]["bench"]."</benchCount>";
-                
-                echo "<tankSlots>".$Data["TankSlots"]."</tankSlots>";
-                echo "<healSlots>".$Data["HealSlots"]."</healSlots>";
-                echo "<dmgSlots>".$Data["DmgSlots"]."</dmgSlots>";*/
+                for ( $i=0; $i < sizeof($s_Roles); ++$i )
+                {                    
+                    echo "<role".$i."Slots>".$Data["SlotsRole".($i+1)]."</role".$i."Slots>";
+                    echo "<role".$i.">".$RaidInfo[$Data["RaidId"]]["role".$i]."</role".$i.">";
+                }
                 
                 echo "</raid>";
                 

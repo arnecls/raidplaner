@@ -148,7 +148,6 @@
         $g_Locale[ "RaidModeAll" ]              = "Nur Liste";
         $g_Locale[ "AbsentPlayers" ]            = "Abgemeldete Spieler";
         $g_Locale[ "UndecidedPlayers" ]         = "Unentschlossene Spieler";
-        
     }
     
     if ( defined("LOCALE_SETUP") )

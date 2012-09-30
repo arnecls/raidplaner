@@ -230,7 +230,7 @@
 }
 
 #raiddetail .emptySlot {
-    background-image: url(images/slot_bench.png);
+    height: 32px;
 }
 
 #raiddetail .randomSlot {
