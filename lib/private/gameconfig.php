@@ -23,9 +23,9 @@ assert( sizeof($s_Roles) <= 5 );
 
 
 $s_RoleImages = Array(
+    "images/roles/slot_role4.png",
     "images/roles/slot_role2.png",
-    "images/roles/slot_role1.png",
-    "images/roles/slot_role3.png"
+    "images/roles/slot_role1.png"
 );
 
 // Predefined role arrays for convenience
