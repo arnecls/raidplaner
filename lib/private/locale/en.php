@@ -149,6 +149,8 @@
         $g_Locale[ "AbsentPlayers" ]            = "Absent players";
         $g_Locale[ "UndecidedPlayers" ]         = "Undecided players";
         $g_Locale[ "DefaultRaidMode" ]          = "Default attendance mode"; 
+        $g_Locale[ "AbsentNoReason" ]           = "No message given.";   
+        $g_Locale[ "Undecided" ]                = "Has not made a statement, yet.";    
     }
     
     if ( defined("LOCALE_SETUP") )

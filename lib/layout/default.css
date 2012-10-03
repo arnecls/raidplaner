@@ -171,6 +171,10 @@ a:hover {
     cursor: pointer;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 .logout {
     position: relative;
     display: inline-block;

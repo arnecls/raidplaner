@@ -148,7 +148,9 @@
         $g_Locale[ "RaidModeAll" ]              = "Nur Liste";
         $g_Locale[ "AbsentPlayers" ]            = "Abgemeldete Spieler";
         $g_Locale[ "UndecidedPlayers" ]         = "Unentschlossene Spieler";
-        $g_Locale[ "DefaultRaidMode" ]          = "Voreingestellte Anmeldeform";        
+        $g_Locale[ "DefaultRaidMode" ]          = "Voreingestellte Anmeldeform";
+        $g_Locale[ "AbsentNoReason" ]           = "Kein Grund angegeben.";   
+        $g_Locale[ "Undecided" ]                = "Hat noch keine Aussage getroffen.";  
     }
     
     if ( defined("LOCALE_SETUP") )

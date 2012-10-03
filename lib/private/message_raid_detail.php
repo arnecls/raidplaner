@@ -73,8 +73,8 @@
                                 // character as "absent"
                                 
                                 $CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
-                                                                "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
-                                                                "WHERE UserId = :UserId ORDER BY Mainchar, CharacterId ASC LIMIT 1" );
+                                                                "FROM `".RP_TABLE_PREFIX."Character` LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
+                                                                "WHERE UserId = :UserId ORDER BY Mainchar, CharacterId ASC" );
                             
                                 $CharSt->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
                                 
@@ -98,8 +98,21 @@
                                         echo "<role1>".$CharData["Role1"]."</role1>";
                                         echo "<role2>".$CharData["Role2"]."</role2>";
                                         echo "<status>".$Data["Status"]."</status>";
-                                        echo "<comment>".$Data["Comment"]."</comment>";
+                                        echo "<comment>".$Data["Comment"]."</comment>";                                        
+                                        echo "<twinks>";
                                         
+                                        while ( $TwinkData = $CharSt->fetch( PDO::FETCH_ASSOC ) )
+                                        {
+                                            echo "<character>";
+                                            echo "<id>".$TwinkData["CharacterId"]."</id>";
+                                            echo "<name>".$TwinkData["Name"]."</name>";
+                                            echo "<class>".$TwinkData["Class"]."</class>";
+                                            echo "<role1>".$TwinkData["Role1"]."</role1>";
+                                            echo "<role2>".$TwinkData["Role2"]."</role2>";
+                                            echo "</character>";
+                                        }
+                                        
+                                        echo "</twinks>";                                        
                                         echo "</attendee>";                      
                                     }
                                     // else {
@@ -124,6 +137,7 @@
                                 echo "<role2>".$Data["Role"]."</role2>";
                                 echo "<status>".$Data["Status"]."</status>";
                                 echo "<comment></comment>";
+                                echo "<twinks></twinks>";
                                 
                                 echo "</attendee>";
                             } 
@@ -143,36 +157,96 @@
                             echo "<role2>".$Data["Role2"]."</role2>";
                             echo "<status>".$Data["Status"]."</status>";
                             echo "<comment>".$Data["Comment"]."</comment>";
+                            echo "<twinks>";
                             
+                            /*$CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
+                                                            "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
+                                                            "WHERE UserId = :UserId AND CharacterId != :CharacterId ORDER BY Mainchar, CharacterId ASC" );
+                                        
+                            $CharSt->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
+                            $CharSt->bindValue( ":CharacterId", $Data["CharacterId"], PDO::PARAM_INT );
+                                
+                            if (!$CharSt->execute())
+                            {
+                                postErrorMessage( $ErrorInfo );
+                            }
+                            else
+                            {
+                                while ( $TwinkData = $CharSt->fetch( PDO::FETCH_ASSOC ) )
+                                {
+                                    echo "<character>";
+                                    echo "<id>".$TwinkData["CharacterId"]."</id>";
+                                    echo "<name>".$TwinkData["Name"]."</name>";
+                                    echo "<class>".$TwinkData["Class"]."</class>";
+                                    echo "<role1>".$TwinkData["Role1"]."</role1>";
+                                    echo "<role2>".$TwinkData["Role2"]."</role2>";
+                                    echo "</character>";
+                                }
+                            }*/
+                            
+                            echo "</twinks>";
                             echo "</attendee>";
                         }                        
                     }
                     while ( $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC ) );
                 }
                 
-                $AllUsersSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.UserId ".
-                                                    "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
-                                                    "WHERE Mainchar = \"true\" AND `Group` != \"none\"" );
+                // Fetch all registered and unblocked users
+                
+                $AllUsersSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."User.UserId ".
+                                                    "FROM `".RP_TABLE_PREFIX."User` ".
+                                                    "WHERE `Group` != \"none\"" );
                 
                 $AllUsersSt->execute();
                 
-                while ( $User = $AllUsersSt->fetch( PDO::FETCH_ASSOC ) )
+                while ( $User = $AllUsersSt->fetch(PDO::FETCH_ASSOC) )
                 {
                     if ( !in_array( intval($User["UserId"]), $Participants ) )
                     {
-                        echo "<attendee>";
+                        // Users that are not registered for this raid are undecided
+                        // Fetch their character data, maincharacter first
                         
-                        echo "<id>".$User["CharacterId"]."</id>";
-                        echo "<name>".$User["Name"]."</name>";
-                        echo "<class>".$User["Class"]."</class>";
-                        echo "<mainchar>true</mainchar>";
-                        echo "<role>".$User["Role1"]."</role>";
-                        echo "<role1>".$User["Role1"]."</role1>";
-                        echo "<role2>".$User["Role2"]."</role2>";
-                        echo "<status>undecided</status>";
-                        echo "<comment></comment>";
+                        $CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
+                                                        "FROM `".RP_TABLE_PREFIX."Character` LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
+                                                        "WHERE UserId = :UserId ORDER BY Mainchar, CharacterId ASC" );
+                    
+                        $CharSt->bindValue( ":UserId", $User["UserId"], PDO::PARAM_INT );
                         
-                        echo "</attendee>";
+                        if (!$CharSt->execute())
+                        {
+                            postErrorMessage( $ErrorInfo );
+                        }
+                        else if ( $UserData = $CharSt->fetch(PDO::FETCH_ASSOC) )
+                        {
+                            echo "<attendee>";
+                            
+                            echo "<id>".$UserData["CharacterId"]."</id>";
+                            echo "<name>".$UserData["Name"]."</name>";
+                            echo "<class>".$UserData["Class"]."</class>";
+                            echo "<mainchar>".$UserData["Mainchar"]."</mainchar>";
+                            echo "<role>".$UserData["Role1"]."</role>";
+                            echo "<role1>".$UserData["Role1"]."</role1>";
+                            echo "<role2>".$UserData["Role2"]."</role2>";
+                            echo "<status>undecided</status>";
+                            echo "<comment></comment>";
+                            echo "<twinks>";
+                                            
+                            while ( $TwinkData = $CharSt->fetch(PDO::FETCH_ASSOC) )
+                            {
+                                echo "<character>";
+                                echo "<id>".$TwinkData["CharacterId"]."</id>";
+                                echo "<name>".$TwinkData["Name"]."</name>";
+                                echo "<class>".$TwinkData["Class"]."</class>";
+                                echo "<role1>".$TwinkData["Role1"]."</role1>";
+                                echo "<role2>".$TwinkData["Role2"]."</role2>";
+                                echo "</character>";
+                            }
+                            
+                            echo "</twinks>";                        
+                            echo "</attendee>";
+                        }
+                        
+                        $CharSt->closeCursor();
                     }
                 }
                 

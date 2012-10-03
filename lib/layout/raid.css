@@ -127,16 +127,41 @@
     float: left;
 }
 
+.playerTooltipIconLarge {
+    width: 64px;
+    height: 64px;
+    text-align: right;
+}
+
+.playerTooltipIconLarge .twinkcount {
+    font-size: 14px;
+    position: relative;
+    top: 45px;
+    right: 5px;
+}
+
 .playerTooltipText {
     float: left;
     margin-left: 10px;
+    min-width: 150px;
     max-width: 200px;
 }
 
 .playerTooltipText .name {
     font-weight: bold;
-    font-size: 1.1em;
-    margin-bottom: 3px;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.playerTooltipText .name .twinkbadge {
+    background-image: url(images/twinkbadge.png);
+    width: 15px;
+    height: 16px;
+    display: inline-block;
+    float: left;
+    position: relative;
+    top: -1px;
+    margin-right: 4px;
 }
 
 #raiddetail .playerName {
@@ -201,7 +226,6 @@
 
 #raiddetail .activeSlot {
     background-image: url(images/slot_set.png);
-    cursor: pointer;
 }
 
 #raiddetail .activeSlotComment {
@@ -211,7 +235,6 @@
 
 #raiddetail .waitSlot {
     background-image: url(images/slot_wait.png);
-    cursor: pointer;
 }
 
 #raiddetail .waitSlotComment {
@@ -221,7 +244,6 @@
 
 #raiddetail .benchSlot {
     background-image: url(images/slot_bench.png);
-    cursor: pointer;
 }
 
 #raiddetail .benchSlotComment {
