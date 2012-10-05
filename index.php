@@ -59,11 +59,10 @@
         
         
         <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>
-        <!--
         <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $siteVersion; ?>"></script>
         <script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>"></script>
-        -->
         
+        <!--
         <script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $siteVersion; ?>"></script>
         
         <script type="text/javascript" src="lib/script/jquery-1.8.2.min.js"></script>
@@ -82,7 +81,7 @@
         <script type="text/javascript" src="lib/script/raidlist.js?version=<?php echo $siteVersion; ?>"></script>
         <script type="text/javascript" src="lib/script/profile.js?version=<?php echo $siteVersion; ?>"></script>
         <script type="text/javascript" src="lib/script/main.js?version=<?php echo $siteVersion; ?>"></script>
-        
+                
         <?php if ( ValidAdmin() ) { ?>
         <script type="text/javascript" src="lib/script/settings.js?version=<?php echo $siteVersion; ?>"></script>
         <?php } ?>
@@ -98,6 +97,7 @@
         <script type="text/javascript" src="lib/script/initlogin.js?version=<?php echo $siteVersion; ?>"></script>
         
         <?php } ?>
+        -->
    </head>
     
     <body>
