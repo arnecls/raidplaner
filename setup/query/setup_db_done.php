@@ -25,12 +25,14 @@
 	$connector = Connector::GetInstance();
 	
 	$connector->exec( "CREATE TABLE IF NOT EXISTS `".$_REQUEST["prefix"]."Attendance` (
-		  `CharacterId` int(10) unsigned NOT NULL,
+		  `AttendanceId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `CharacterId` int(10) unsigned NOT NULL,
 		  `UserId` int(11) unsigned NOT NULL,
 		  `RaidId` int(10) unsigned NOT NULL,
-		  `Status` tinyint(1) unsigned NOT NULL,
-		  `Role` enum('dmg','heal','tank') NOT NULL,
+		  `Status` enum('ok','available','unavailable') NOT NULL,
+		  `Role` tinyint(1) unsigned NOT NULL,
 		  `Comment` text NOT NULL,
+		  PRIMARY KEY (`AttendanceId`),
 		  KEY `UserId` (`UserId`),
 		  KEY `CharacterId` (`CharacterId`),
 		  KEY `RaidId` (`RaidId`)

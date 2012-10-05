@@ -142,9 +142,10 @@
 	{
 		echo "<update version=\"95\">";
 		
-		$updates = Array( "Rename role fields" 		 => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE  `TankSlots` `SlotsRole1` TINYINT(2) UNSIGNED NOT NULL,".
-												  	    "CHANGE `DmgSlots` `SlotsRole2` TINYINT(2) UNSIGNED NOT NULL,".
-												  	    "CHANGE `HealSlots` `SlotsRole3` TINYINT(2) UNSIGNED NOT NULL;",
+		$updates = Array( "Primary key attendace"    => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` ADD  `AttendanceId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;".
+		                  "Rename role fields" 		 => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE  `TankSlots` `SlotsRole1` TINYINT(2) UNSIGNED NOT NULL,".
+												  	    "CHANGE `HealSlots` `SlotsRole2` TINYINT(2) UNSIGNED NOT NULL,".
+												  	    "CHANGE `DmgSlots` `SlotsRole3` TINYINT(2) UNSIGNED NOT NULL;",
 						  "New role fields"	   		 => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `SlotsRole4` TINYINT(2) UNSIGNED NOT NULL,".
 											      		"ADD `SlotsRole5` TINYINT(2) UNSIGNED NOT NULL;",
 						  "Char roles are numbers"   => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Role1` `Role1` TINYINT(1) UNSIGNED NOT NULL,".

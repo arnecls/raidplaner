@@ -194,6 +194,88 @@ function msgRaidUpdate( $Request )
                 }
             }
             
+            // Assure mode constraints
+        
+            if ( $Request["mode"] == "all" )
+            {
+                // Mode "all" means all players are either "ok" or "unavailable"
+                
+                $AttendenceSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET Status = \"ok\" ".
+                                                    "WHERE RaidId = :RaidId AND Status = \"available\"" );
+                                                    
+                $AttendenceSt->bindValue(":RaidId", $Request["id"], PDO::PARAM_INT);
+        
+                if (!$AttendenceSt->execute())
+                {
+                    postErrorMessage( $AttendenceSt );        
+                    $AttendenceSt->closeCursor();
+                    $Connector->rollBack();
+                    return; // ### return, error ###
+                }
+                
+                $AttendenceSt->closeCursor();
+            }
+            else
+            {
+                // Assure there no more "ok" players than allowed by slot size
+                
+                for ( $RoleId=0; $RoleId<sizeof($SlotSizes); ++$RoleId )
+                {
+                    if ( $SlotSizes[$RoleId] > 0 )
+                    {
+                        $AttendenceSt = $Connector->prepare("SELECT AttendanceId, COUNT(AttendanceId) AS Count ".
+                                                            "FROM `".RP_TABLE_PREFIX."Attendance` ".
+                                                            "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
+                                                            "ORDER BY AttendanceId" );
+                                                    
+                        $AttendenceSt->bindValue(":RaidId", $Request["id"], PDO::PARAM_INT);
+                        $AttendenceSt->bindValue(":RoleId", $RoleId, PDO::PARAM_INT);
+                        
+                        if (!$AttendenceSt->execute())
+                        {
+                            postErrorMessage( $AttendenceSt );        
+                            $AttendenceSt->closeCursor();
+                            $Connector->rollBack();
+                            return; // ### return, error ###
+                        }
+                        else
+                        {
+                            $Data = $AttendenceSt->fetch( PDO::FETCH_ASSOC );
+                            
+                            if ( $Data["Count"] > $SlotSizes[$RoleId] )
+                            {
+                                // Get the first AttendanceId that is invalid
+                                
+                                for ( $i=0; $i < $SlotSizes[$RoleId]; ++$i )
+                                {
+                                    $Data = $AttendenceSt->fetch(PDO::FETCH_ASSOC);
+                                }
+                                
+                                $FixSt = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Status = \"available\" ".
+                                                              "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
+                                                              "AND AttendanceId >= :FirstId" );
+                                                              
+                                $FixSt->bindValue(":RaidId", $Request["id"], PDO::PARAM_INT);
+                                $FixSt->bindValue(":RoleId", $RoleId, PDO::PARAM_INT);
+                                $FixSt->bindValue(":FirstId", $Data["AttendanceId"], PDO::PARAM_INT);
+                                
+                                if (!$FixSt->execute())
+                                {
+                                    postErrorMessage( $FixSt );        
+                                    $FixSt->closeCursor();
+                                    $Connector->rollBack();
+                                    return; // ### return, error ###
+                                }
+                        
+                                $FixSt->closeCursor();
+                            }
+                        }
+                        
+                        $AttendenceSt->closeCursor();
+                    }
+                }
+            }
+        
             $Connector->commit();
         }
         
