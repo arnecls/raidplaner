@@ -109,6 +109,25 @@ function msgRaidUpdate( $Request )
         {        
             $UpdateRaidSt->closeCursor();
             
+            
+            // Remove the attends marked for delete.
+            // Only random player attends can be removed.
+            
+            for ( $i=0; $i<sizeof($Request["removed"]); ++$i )
+            {
+                $RemoveSlot = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` ".
+                                                   "WHERE AttendanceId = :AttendanceId AND CharacterId = 0 AND UserId = 0" );
+                
+                $RemoveSlot->bindValue( ":AttendanceId", $Request["removed"][$i], PDO::PARAM_INT );
+                
+                if (!$RemoveSlot->execute())
+                {
+                    postErrorMessage( $RemoveSlot );
+                }
+                                 
+                $RemoveSlot->closeCursor();       
+            }
+            
             // Now iterate over all role lists and update the players in it
             // Random player will be re-inserted, "real" players will be update if they
             // did not change to "unavailable" while editing the raid.
@@ -130,13 +149,13 @@ function msgRaidUpdate( $Request )
                         $Status       = $AttendsForRole[$AttendIdx+1];
                         $Name         = $AttendsForRole[$AttendIdx+2];
                         
-                        if ( $Status == "ok" )
+                        /*if ( $Status == "ok" )
                         {
                             if ( $NumAttends < $SlotSizes[$RoleIdx] )
                                 ++$NumAttends;
                             else
                                 $Status = "available";
-                        }
+                        }*/
                         
                         if ( $AttendanceId < 0 )
                         {

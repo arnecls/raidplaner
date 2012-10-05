@@ -233,6 +233,15 @@
     cursor: pointer;
 }
 
+#raiddetail .spilledSlot {
+    background-image: url(images/slot_spill.png);
+}
+
+#raiddetail .spilledSlotComment {
+    background-image: url(images/slot_spill_comment.png);
+    cursor: pointer;
+}
+
 #raiddetail .waitSlot {
     background-image: url(images/slot_wait.png);
 }
