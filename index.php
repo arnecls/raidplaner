@@ -207,9 +207,9 @@
                     <div id="raiddatepicker"></div>
                     <div style="margin-top: 24px">
                         <select id="selectmode" style="width: 212px">
-                            <option value="manual"><? echo L("RaidModeManual"); ?></option>
-                            <option value="attend"><? echo L("RaidModeAttend"); ?></option>
-                            <option value="all"><? echo L("RaidModeAll"); ?></option>
+                            <option value="manual"><?php echo L("RaidModeManual"); ?></option>
+                            <option value="attend"><?php echo L("RaidModeAttend"); ?></option>
+                            <option value="all"><?php echo L("RaidModeAll"); ?></option>
                         </select>                        
                     </div>
                 </span>  

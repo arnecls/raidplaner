@@ -11,7 +11,7 @@
     margin: 0px;
     background-image: url(images/info_topleft.png);
     filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_topleft.png");
-    width: 26px;
+    width: 21px;
 }
 
 #tooltip .top .arrow {
@@ -38,7 +38,7 @@
     background-repeat: no-repeat;
     background-image: url(images/info_topright.png);
     filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_topright.png");
-    width: 18px;
+    width: 12px;
 }
 
 #tooltip .middle .left {
@@ -47,7 +47,7 @@
     background-repeat: repeat-y;
     background-image: url(images/info_left.png);
     filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_left.png");
-    width: 26px;
+    width: 21px;
 }
 
 #tooltip .middle .arrow {
@@ -56,7 +56,7 @@
     background-repeat: repeat-y;
     background-image: url(images/info_leftarrow.png);
     filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_leftarrow.png");
-    width: 26px;
+    width: 21px;
     height: 45px;
 }
 
@@ -64,7 +64,7 @@
     background-repeat: repeat-y;
     background-image: url(images/info_right.png);
     filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_right.png");
-    width: 18px;
+    width: 12px;
 }
 
 #tooltip .middle2 .left {
@@ -73,14 +73,14 @@
     background-repeat: repeat-y;
     background-image: url(images/info_left.png);
     filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_left.png");
-    width: 26px;
+    width: 21px;
 }
 
 #tooltip .middle2 .right {
     background-repeat: repeat-y;
     background-image: url(images/info_right.png);
     filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_right.png");
-    width: 18px;
+    width: 12px;
 }
 
 #tooltip .bottom .left {
@@ -89,7 +89,7 @@
     background-image: url(images/info_bottomleft.png);
     filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_bottomleft.png");
     background-repeat: no-repeat;
-    width: 26px;
+    width: 21px;
 }
 
 #tooltip .bottom .arrow {
@@ -109,5 +109,5 @@
     background-image: url(images/info_bottomright.png);
     filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/info_bottomright.png");
     background-repeat: no-repeat;
-    width: 18px;
+    width: 12px;
 }

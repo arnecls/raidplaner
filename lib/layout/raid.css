@@ -196,11 +196,10 @@
 }
 
 #raiddetail .roleList h2 { 
-    position: absolute;
+    position: relative;
 }
 
 #raiddetail .clip {    
-    margin-top: 45px;
     display: none;
     float: left;
 }
