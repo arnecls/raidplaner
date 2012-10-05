@@ -25,7 +25,7 @@
 			break;
 			
 		case Browser::BROWSER_OPERA:
-			return $browserInfo->getVersion() >= 9;
+		    return $browserInfo->getVersion() >= 11;
 			break;
 		}
 		
@@ -42,7 +42,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     </head>
     <body style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.8em;">
-    	<div style="width: 600px; height: 460px; position: fixed; left: 50%; top: 50%; margin-left: -300px; margin-top: -230px">
+        <div style="width: 600px; height: 460px; position: fixed; left: 50%; top: 50%; margin-left: -300px; margin-top: -230px">
     		<img src="lib/layout/images/alert.png" style="margin-bottom: 20px"/><br/>
     		<div style="font-size: 20px; font-weight: bold"><?php echo L("UpdateBrowser"); ?></div><br/>
     		<?php echo L("UsingOldBrowser"); ?><br/>

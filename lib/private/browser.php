@@ -581,7 +581,7 @@
             }
             else if( stripos($this->_agent,'opera') !== false ) {
                 $resultant = stristr($this->_agent, 'opera');
-                if( preg_match('/Version\/(10.*)$/',$resultant,$matches) ) {
+                if( preg_match('/Version\/(.*)$/',$resultant,$matches) ) {
                     $this->setVersion($matches[1]);
                 }
                 else if( preg_match('/\//',$resultant) ) {
