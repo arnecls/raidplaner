@@ -109,23 +109,6 @@ function msgRaidUpdate( $Request )
         {        
             $UpdateRaidSt->closeCursor();
             
-            // Remove all random slots (no user id assignmend, so always re-inserted)
-                
-            $DeleteReserved = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` ".
-                                                   "WHERE CharacterId = 0 AND UserId = 0 AND RaidId = :RaidId" );
-                                                    
-            $DeleteReserved->bindValue( ":RaidId", $Request["id"], PDO::PARAM_INT);
-                    
-            if (!$DeleteReserved->execute())
-            {
-                postErrorMessage( $DeleteReserved );
-                $DeleteReserved->closeCursor();
-                $Connector->rollBack();
-                return; // ### return, errror ###
-            }
-            
-            $DeleteReserved->closeCursor();
-            
             // Now iterate over all role lists and update the players in it
             // Random player will be re-inserted, "real" players will be update if they
             // did not change to "unavailable" while editing the raid.
@@ -140,10 +123,12 @@ function msgRaidUpdate( $Request )
                     // Attendances are passed in the form [id,status,id,status, … ]
                     // So we iterate with a stride of 2
                     
-                    for ( $AttendIdx=0; $AttendIdx < sizeof($AttendsForRole); $AttendIdx += 2 )
+                    for ( $AttendIdx=0; $AttendIdx < sizeof($AttendsForRole); $AttendIdx += 3 )
                     {
-                        $UpdateSlot = null;
-                        $Status = $AttendsForRole[$AttendIdx+1];
+                        $UpdateSlot   = null;
+                        $AttendanceId = $AttendsForRole[$AttendIdx];
+                        $Status       = $AttendsForRole[$AttendIdx+1];
+                        $Name         = $AttendsForRole[$AttendIdx+2];
                         
                         if ( $Status == "ok" )
                         {
@@ -153,9 +138,9 @@ function msgRaidUpdate( $Request )
                                 $Status = "available";
                         }
                         
-                        if ( $AttendsForRole[$AttendIdx] < 0 )
+                        if ( $AttendanceId < 0 )
                         {
-                            // Random player, re-insert
+                            // New random player, insert
                             // Random players have one additional information set, so we need to
                             // move $AttendIdx here.
                             
@@ -163,23 +148,33 @@ function msgRaidUpdate( $Request )
                                                                "( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
                                                                "VALUES ( 0, 0, :RaidId, :Status, :Role, :Name )" );
                         
-                            $UpdateSlot->bindValue( ":Name", $AttendsForRole[$AttendIdx+2], PDO::PARAM_STR);
-                            ++$AttendIdx;
+                            $UpdateSlot->bindValue( ":Name", $Name, PDO::PARAM_STR);
+                        }
+                        else if ( $Name != null )
+                        {
+                            // Random player, update name, too
+                            
+                            $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
+                                                               "Status = :Status, Role = :Role, Comment = :Name ".
+                                                               "WHERE RaidId = :RaidId AND Status != 'unavialable' AND AttendanceId = :AttendanceId LIMIT 1" );
+                                                                    
+                            $UpdateSlot->bindValue( ":AttendanceId", $AttendanceId, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":Name",         $Name, PDO::PARAM_STR);
                         }
                         else
                         {
-                            // Real player, update if possible
+                            // Existing player, update
                             
                             $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
                                                                "Status = :Status, Role = :Role ".
-                                                               "WHERE RaidId = :RaidId AND Status != 'unavialable' AND CharacterId = :CharacterId LIMIT 1" );
+                                                               "WHERE RaidId = :RaidId AND Status != 'unavialable' AND AttendanceId = :AttendanceId LIMIT 1" );
                                                                     
-                            $UpdateSlot->bindValue( ":CharacterId", $AttendsForRole[$AttendIdx], PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":AttendanceId", $AttendanceId, PDO::PARAM_INT);
                         }
                         
                         $UpdateSlot->bindValue( ":Status", $Status, PDO::PARAM_STR);
                         $UpdateSlot->bindValue( ":RaidId", $Request["id"], PDO::PARAM_INT);
-                        $UpdateSlot->bindValue( ":Role", $RoleIdx, PDO::PARAM_INT);
+                        $UpdateSlot->bindValue( ":Role",   $RoleIdx, PDO::PARAM_INT);
                         
                         if (!$UpdateSlot->execute())
                         {
@@ -223,7 +218,7 @@ function msgRaidUpdate( $Request )
                 {
                     if ( $SlotSizes[$RoleId] > 0 )
                     {
-                        $AttendenceSt = $Connector->prepare("SELECT AttendanceId, COUNT(AttendanceId) AS Count ".
+                        $AttendenceSt = $Connector->prepare("SELECT AttendanceId ".
                                                             "FROM `".RP_TABLE_PREFIX."Attendance` ".
                                                             "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
                                                             "ORDER BY AttendanceId" );
@@ -240,20 +235,20 @@ function msgRaidUpdate( $Request )
                         }
                         else
                         {
-                            $Data = $AttendenceSt->fetch( PDO::FETCH_ASSOC );
-                            
-                            if ( $Data["Count"] > $SlotSizes[$RoleId] )
+                            if ( $AttendenceSt->rowCount() > $SlotSizes[$RoleId] )
                             {
-                                // Get the first AttendanceId that is invalid
+                                // Get the last AttendanceId that is still valid
                                 
                                 for ( $i=0; $i < $SlotSizes[$RoleId]; ++$i )
-                                {
+                                {                                    
                                     $Data = $AttendenceSt->fetch(PDO::FETCH_ASSOC);
                                 }
                                 
+                                // Fix the overhead
+                                
                                 $FixSt = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Status = \"available\" ".
                                                               "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
-                                                              "AND AttendanceId >= :FirstId" );
+                                                              "AND AttendanceId > :FirstId" );
                                                               
                                 $FixSt->bindValue(":RaidId", $Request["id"], PDO::PARAM_INT);
                                 $FixSt->bindValue(":RoleId", $RoleId, PDO::PARAM_INT);

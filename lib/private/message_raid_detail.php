@@ -8,7 +8,7 @@
             $Connector = Connector::GetInstance();
             
             $ListRaidSt = $Connector->prepare("Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.Name AS LocationName, ".RP_TABLE_PREFIX."Location.Image AS LocationImage, ".
-                                              RP_TABLE_PREFIX."Attendance.UserId, ".RP_TABLE_PREFIX."Attendance.CharacterId, ".RP_TABLE_PREFIX."Attendance.Status, ".RP_TABLE_PREFIX."Attendance.Role, ".RP_TABLE_PREFIX."Attendance.Comment, ".
+                                              RP_TABLE_PREFIX."Attendance.AttendanceId, ".RP_TABLE_PREFIX."Attendance.UserId, ".RP_TABLE_PREFIX."Attendance.CharacterId, ".RP_TABLE_PREFIX."Attendance.Status, ".RP_TABLE_PREFIX."Attendance.Role, ".RP_TABLE_PREFIX."Attendance.Comment, ".
                                               RP_TABLE_PREFIX."Character.Name, ".RP_TABLE_PREFIX."Character.Class, ".RP_TABLE_PREFIX."Character.Mainchar, ".RP_TABLE_PREFIX."Character.Role1, ".RP_TABLE_PREFIX."Character.Role2, ".
                                               "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.Start) AS StartUTC, ".
                                               "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.End) AS EndUTC ".
@@ -90,7 +90,8 @@
                                     {
                                         echo "<attendee>";
                                         
-                                        echo "<id>".$CharData["CharacterId"]."</id>";
+                                        echo "<id>".$Data["AttendanceId"]."</id>";
+                                        echo "<charid>".$CharData["CharacterId"]."</charid>";
                                         echo "<name>".$CharData["Name"]."</name>";
                                         echo "<mainchar>".$CharData["Mainchar"]."</mainchar>";
                                         echo "<class>".$CharData["Class"]."</class>";
@@ -125,10 +126,14 @@
                             else
                             {
                                 // CharacterId and UserId set to 0 means "random player"
+                                // The id field will be initialized with -100<id>.
+                                // Newly added random players will get an id of -1 and counting
+                                // this way we're quite safe
                                 
                                 echo "<attendee>";
                                 
-                                echo "<id>0</id>";
+                                echo "<id>".$Data["AttendanceId"]."</id>";
+                                echo "<charid>0</charid>";
                                 echo "<name>".$Data["Comment"]."</name>";
                                 echo "<class>random</class>";
                                 echo "<mainchar>true</mainchar>";
@@ -148,7 +153,8 @@
                             
                             echo "<attendee>";
                             
-                            echo "<id>".$Data["CharacterId"]."</id>";
+                            echo "<id>".$Data["AttendanceId"]."</id>";
+                            echo "<charid>".$Data["CharacterId"]."</charid>";
                             echo "<name>".$Data["Name"]."</name>";
                             echo "<class>".$Data["Class"]."</class>";
                             echo "<mainchar>".$Data["Mainchar"]."</mainchar>";
