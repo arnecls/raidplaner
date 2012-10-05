@@ -85,43 +85,52 @@
 
 #settings .propDeleteRaid {
     margin-bottom: 4px;
+    width: 700px;
 }
 
 #settings .propLockRaid {
     margin-bottom: 14px;
+    width: 700px;
 }
 
 #settings .propTimeFormat {
     margin-bottom: 4px;
+    width: 700px;
 }
 
 #settings .propRaidStart {
     margin-bottom: 4px;
+    width: 700px;
 }
 
 #settings .propRaidEnd {
     margin-bottom: 4px;
+    width: 700px;
 }
 
 #settings .propRaidSize {
     margin-bottom: 4px;
+    width: 700px;
 }
 
 #settings .propRaidMode {
     margin-bottom: 14px;
+    width: 700px;
 }
-
 
 #settings .propSite {
     margin-bottom: 4px;
+    width: 700px;
 }
 
 #settings .propBanner {
     margin-bottom: 4px;
+    width: 700px;
 }
 
 #settings .propBackground {
     margin-bottom: 4px;
+    width: 700px;
 }    
 
 #settings .timeField {

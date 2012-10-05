@@ -34,7 +34,9 @@
 .combobox_open {
     width: 21px;
     height: 21px;
+    opacity: 1.0;
     filter: alpha(opacity=100);
+    float: none;
 }
 
 .combobox_value {
