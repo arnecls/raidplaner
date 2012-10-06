@@ -1,7 +1,7 @@
 <?php
-	header("Content-type: text/javascript");
+    header("Content-type: text/javascript");
     define( "LOCALE_SETUP", true );
-	require_once(dirname(__FILE__)."/../../lib/private/locale.php");
+    require_once(dirname(__FILE__)."/../../lib/private/locale.php");
 ?>
 
 function hideError()
@@ -66,17 +66,17 @@ function showLog( a_XMLData )
 function updateDatabase()
 {
     var parameter = {
-		version  : $("#version").val()
-	};
-	
-	$.ajax({
-		type     : "POST",
-		url      : "query/upgrade.php",
-		dataType : "xml",
-		async    : true,
-		data     : parameter,
-		success  : showLog
-	});
+        version  : $("#version").val()
+    };
+    
+    $.ajax({
+        type     : "POST",
+        url      : "query/upgrade.php",
+        dataType : "xml",
+        async    : true,
+        data     : parameter,
+        success  : showLog
+    });
 }
 
 jQuery(document).ready( function() {

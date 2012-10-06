@@ -10,10 +10,10 @@
 //
 // You can define up to 5 roles.
 // The order of the roles defined here will be the order presentation in the Raid detail sheet.
-// If you change the order of these items on an already active raidplaner instance (with 
+// If you change the order of these items on an already active raidplaner instance (with
 // registered users and/or attends) you will have to change all role fields the database, too.
 
-$s_Roles = Array(    
+$s_Roles = Array(
     "tank" => "Tank",
     "heal" => "Healer",
     "dmg"  => "Damage"
@@ -30,7 +30,7 @@ $s_RoleImages = Array(
 
 // Predefined role arrays for convenience
 
-class Roles 
+class Roles
 {
     public static $damage        = Array("dmg");
     public static $heal          = Array("heal");
@@ -45,7 +45,7 @@ class Roles
 // Class ident is also mapped to an image in images/classes[big|small]/<class ident>.png
 // The "empty" class must always be present and first in list
 
-$s_Classes = Array( 
+$s_Classes = Array(
     "empty"         => Array( "",            Roles::$damage ),
     "deathknight"   => Array( "Deathknight", Roles::$offensiveTank ),
     "druid"         => Array( "Druid",       Roles::$hybrid ),
@@ -77,10 +77,10 @@ while ( list($Count,$RoleSizes) = each($s_GroupSizes) )
     $slotSum = 0;
     foreach ( $RoleSizes as $count )
         $slotSum += $count;
-        
+
     assert( $Count == $slotSum );
 }
 
 reset($s_GroupSizes);
-    
+
 ?>

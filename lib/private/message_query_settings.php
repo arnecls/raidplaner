@@ -5,21 +5,21 @@ function msgQuerySettings( $Request )
     if ( ValidAdmin() )
     {
         $Connector = Connector::GetInstance();
-        
-        // Pass through parameter 
-        
+
+        // Pass through parameter
+
         echo "<show>".$Request["showPanel"]."</show>";
-        
+
         // Load users
-        
+
         $Users = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` ORDER BY Login, `Group`");
-        
+
         if ( !$Users->execute() )
         {
             postErrorMessage( $Users );
         }
         else
-        {            
+        {
             while ( $Data = $Users->fetch( PDO::FETCH_ASSOC ) )
             {
                 echo "<user>";
@@ -30,19 +30,19 @@ function msgQuerySettings( $Request )
                 echo "</user>";
             }
         }
-            
+
         $Users->closeCursor();
-        
+
         // Load settings
-        
+
         $Settings = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Setting` ORDER BY Name");
-        
+
         if ( !$Settings->execute() )
         {
             postErrorMessage( $Settings );
         }
         else
-        {            
+        {
             while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
             {
                 echo "<setting>";
@@ -52,29 +52,29 @@ function msgQuerySettings( $Request )
                 echo "</setting>";
             }
         }
-            
+
         $Settings->closeCursor();
-        
+
         // Load themes
-        
+
         $ThemeFiles = scandir( "../images/themes" );
-        
+
         foreach ( $ThemeFiles as $Theme )
         {
             $ThemeName = substr($Theme, 0, strrpos($Theme, "."));
-            
+
             if ( ($ThemeName != "") && ($ThemeName != ".") )
             {
                 echo "<theme>".$ThemeName."</theme>";
             }
         }
-        
+
         // Query number of raids
-        
+
         $NumRaids = 0;
         $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` WHERE Start < FROM_UNIXTIME(:Now)" );
         $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
-        
+
         if ( !$Raids->execute() )
         {
             postErrorMessage( $User );
@@ -84,31 +84,31 @@ function msgQuerySettings( $Request )
             $Data = $Raids->fetch( PDO::FETCH_ASSOC );
             $NumRaids = $Data["NumberOfRaids"];
         }
-        
+
         $Raids->closeCursor();
-        
+
         echo "<numRaids>".$NumRaids."</numRaids>";
-        
+
         // Query attendance
-        
+
         $Attendance = $Connector->prepare("SELECT `".RP_TABLE_PREFIX."Character`.Name, `".RP_TABLE_PREFIX."Attendance`.Status, `".RP_TABLE_PREFIX."User`.UserId, COUNT(*) AS Count ".
                                            "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(UserId) ".
                                            "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
                                            "WHERE `".RP_TABLE_PREFIX."Character`.Mainchar = 'true' AND `".RP_TABLE_PREFIX."Raid`.Start > `".RP_TABLE_PREFIX."User`.Created AND `".RP_TABLE_PREFIX."Raid`.Start < FROM_UNIXTIME(:Now) ".
                                            "GROUP BY UserId, Status ORDER BY Name" );
-                                     
+
         $Attendance->bindValue( ":Now", time(), PDO::PARAM_INT );
-        
+
         if ( !$Attendance->execute() )
         {
             postErrorMessage( $Attendance );
         }
         else
-        {            
+        {
             $UserId = 0;
             $MainCharName = "";
             $StateCounts = array( "available" => 0, "unavailable" => 0, "ok" => 0 );
-            
+
             while ( $Data = $Attendance->fetch( PDO::FETCH_ASSOC ) )
             {
                 if ( $UserId == 0 )
@@ -125,19 +125,19 @@ function msgQuerySettings( $Request )
                     echo "<available>".$StateCounts["available"]."</available>";
                     echo "<unavailable>".$StateCounts["unavailable"]."</unavailable>";
                     echo "</attendance>";
-                    
+
                     $StateCounts["ok"] = 0;
                     $StateCounts["available"] = 0;
                     $StateCounts["unavailable"] = 0;
                     $UserId = $Data["UserId"];
                     $MainCharName = $Data["Name"];
                 }
-                
+
                 $StateCounts[$Data["Status"]] += $Data["Count"];
             }
-            
+
             if ($UserId != 0)
-            {            
+            {
                 echo "<attendance>";
                 echo "<id>".$UserId."</id>";
                 echo "<name>".$MainCharName."</name>";
@@ -147,11 +147,11 @@ function msgQuerySettings( $Request )
                 echo "</attendance>";
             }
         }
-            
+
         $Attendance->closeCursor();
-        
+
         // Locations
-        
+
         msgQueryLocations( $Request );
     }
     else
@@ -159,5 +159,5 @@ function msgQuerySettings( $Request )
         echo "<error>".L("AccessDenied")."</error>";
     }
 }
-   
+
 ?>

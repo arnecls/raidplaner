@@ -1,19 +1,19 @@
 <?php
-	define( "LOCALE_SETUP", true );
-	require_once(dirname(__FILE__)."/../lib/private/locale.php");
-	@include_once(dirname(__FILE__)."/../lib/config/config.php");
-	require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
-	
-	$CurrentVersion = 96;
-	$CurrentPatch = $CurrentVersion % 10;
+    define( "LOCALE_SETUP", true );
+    require_once(dirname(__FILE__)."/../lib/private/locale.php");
+    @include_once(dirname(__FILE__)."/../lib/config/config.php");
+    require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
+    
+    $CurrentVersion = 96;
+    $CurrentPatch = $CurrentVersion % 10;
     $CurrentMinor = ($CurrentVersion / 10) % 10;
     $CurrentMajor = ($CurrentVersion / 100) % 10;
                             
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
-	<head>
-		<title>Raidplaner config</title>
+    <head>
+        <title>Raidplaner config</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         
         <script type="text/javascript" src="../lib/script/jquery-1.8.2.min.js"></script>
@@ -54,50 +54,50 @@
             }
         </style>
     </head>
-	
-	<body style="font-family: helvetica, arial, sans-serif; font-size: 11px; line-height: 1.5em; background-color: #cccccc; color: black">
-		<div style="width: 800px; height: 600px; position: fixed; left: 50%; top: 50%; margin-left: -400px; margin-top: -300px; background-color: white">
-			<div style="background-color: black; color: white; padding: 10px">
-				Packedpixel<br/>
-				<span style="font-size: 24px">Raidplaner update (1/1)</span>
-			</div>
-			<div style="padding: 20px">
-				<div>
-					<h2><?php echo L("VersionDetection"); ?></h2>
-					<?php echo L("VersionDetectProgress"); ?><br/>
-					<?php echo L("ChooseManually"); ?><br/>
-					<?php echo L("OnlyDBAffected"); ?><br/>
-					<?php echo L("NoChangeNoAction"); ?><br/>
-					<br/><br/>
-					
-					<?php echo L("DatabaseConnection"); ?> : <?php
-					    try
-            			{
+    
+    <body style="font-family: helvetica, arial, sans-serif; font-size: 11px; line-height: 1.5em; background-color: #cccccc; color: black">
+        <div style="width: 800px; height: 600px; position: fixed; left: 50%; top: 50%; margin-left: -400px; margin-top: -300px; background-color: white">
+            <div style="background-color: black; color: white; padding: 10px">
+                Packedpixel<br/>
+                <span style="font-size: 24px">Raidplaner update (1/1)</span>
+            </div>
+            <div style="padding: 20px">
+                <div>
+                    <h2><?php echo L("VersionDetection"); ?></h2>
+                    <?php echo L("VersionDetectProgress"); ?><br/>
+                    <?php echo L("ChooseManually"); ?><br/>
+                    <?php echo L("OnlyDBAffected"); ?><br/>
+                    <?php echo L("NoChangeNoAction"); ?><br/>
+                    <br/><br/>
+                    
+                    <?php echo L("DatabaseConnection"); ?> : <?php
+                        try
+                        {
                             $Connector  = Connector::GetInstance(true);
                             $databaseOk = true;
-            			}
-            			catch (PDOException $Exception)
-            			{
+                        }
+                        catch (PDOException $Exception)
+                        {
                             $databaseOk = false;
-            			}
-            		
-						if ( $databaseOk )
-						{
-							echo "<span style=\"color: green\">".L("Ok")."</span><br/>";
-				            echo L("DetectedVersion").": ";
-				            
-				            $GetVersion = $Connector->prepare("SELECT IntValue FROM `".RP_TABLE_PREFIX."Setting` WHERE Name='Version' LIMIT 1");
+                        }
+                    
+                        if ( $databaseOk )
+                        {
+                            echo "<span style=\"color: green\">".L("Ok")."</span><br/>";
+                            echo L("DetectedVersion").": ";
+                            
+                            $GetVersion = $Connector->prepare("SELECT IntValue FROM `".RP_TABLE_PREFIX."Setting` WHERE Name='Version' LIMIT 1");
         
                             if ( !$GetVersion->execute() )
                             {
-                            	$Version = 93;
+                                $Version = 93;
                             }
                             else
                             {
-                    	        if ( $Data = $GetVersion->fetch(PDO::FETCH_ASSOC) )
-                    	           $Version = intval($Data["IntValue"]);
-                    	        else
-                    	           $Version = 93;
+                                if ( $Data = $GetVersion->fetch(PDO::FETCH_ASSOC) )
+                                   $Version = intval($Data["IntValue"]);
+                                else
+                                   $Version = 93;
                             }
                             
                             $GetVersion->closeCursor();
@@ -129,21 +129,21 @@
                         <span> <?php echo L("UpdateTo")." ".$CurrentMajor.".".$CurrentMinor.".".$CurrentPatch; ?></span>
                         
                         <div style="position: fixed; right: 50%; top: 50%; margin-right: -380px; margin-top: 260px">
-    					   <button onclick="updateDatabase()"><?php echo L("Continue"); ?></button>
-    				    </div>
+                           <button onclick="updateDatabase()"><?php echo L("Continue"); ?></button>
+                        </div>
                         
                     <?php
-						}
-						else
-						{
-							++$testsFailed;
-							echo "<span style=\"color: red\">".L("Database settings are not correct")."</span>";
-						}
-					?>
-				</div>
-			</div>
-		</div>
+                        }
+                        else
+                        {
+                            ++$testsFailed;
+                            echo "<span style=\"color: red\">".L("Database settings are not correct")."</span>";
+                        }
+                    ?>
+                </div>
+            </div>
+        </div>
         <div id="error">
-		</div>
-	</body>
+        </div>
+    </body>
 </html>

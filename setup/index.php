@@ -1,11 +1,11 @@
 <?php
-	define( "LOCALE_SETUP", true );
-	require_once(dirname(__FILE__)."/../lib/private/locale.php");
+    define( "LOCALE_SETUP", true );
+    require_once(dirname(__FILE__)."/../lib/private/locale.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
-	<head>
-		<title>Raidplaner config</title>
+    <head>
+        <title>Raidplaner config</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         
         <script type="text/javascript" src="../lib/script/jquery-1.8.2.min.js"></script>
@@ -67,17 +67,17 @@
             }
         </style>
     </head>
-	
-	<body style="font-family: helvetica, arial, sans-serif; font-size: 11px; line-height: 1.5em; background-color: #cccccc; color: black">
-		<div style="width: 800px; height: 600px; position: fixed; left: 50%; top: 50%; margin-left: -400px; margin-top: -300px; background-color: white">
-			<div style="background-color: black; color: white; padding: 10px">
-				Packedpixel<br/>
-				<span style="font-size: 24px">Raidplaner</span>
-			</div>
-			<div style="padding: 20px; text-align: center">
+    
+    <body style="font-family: helvetica, arial, sans-serif; font-size: 11px; line-height: 1.5em; background-color: #cccccc; color: black">
+        <div style="width: 800px; height: 600px; position: fixed; left: 50%; top: 50%; margin-left: -400px; margin-top: -300px; background-color: white">
+            <div style="background-color: black; color: white; padding: 10px">
+                Packedpixel<br/>
+                <span style="font-size: 24px">Raidplaner</span>
+            </div>
+            <div style="padding: 20px; text-align: center">
                 <div id="install" class="button up" style="height: 80px; margin-top: 190px; font-size: 3em"><span><?php echo L("Install"); ?></span></div>
                 <div id="upgrade" class="button up" style="height: 24px; margin-top: 10px; font-size: 1em"><span style="margin-top: -0.6em"><?php echo L("Update"); ?></span></div>
-    		</div>
-		</div>
-	</body>
+            </div>
+        </div>
+    </body>
 </html>

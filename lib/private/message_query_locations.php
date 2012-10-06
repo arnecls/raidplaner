@@ -5,12 +5,12 @@ function msgQueryLocations( $Request )
     if ( ValidRaidlead() )
     {
         $Connector = Connector::GetInstance();
-        
+
         // Locations
-        
+
         $ListLocations = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Location` ORDER BY Name");
-        
-        
+
+
         if ( !$ListLocations->execute() )
         {
             postErrorMessage( $ListLocations );
@@ -26,13 +26,13 @@ function msgQueryLocations( $Request )
                 echo "</location>";
             }
         }
-        
+
         $ListLocations->closeCursor();
-        
+
         // Images
-        
+
         $images = scandir("../images/raidsmall");
-        
+
         foreach ( $images as $image )
         {
             if ( strripos( $image, ".png" ) !== false )
@@ -46,5 +46,5 @@ function msgQueryLocations( $Request )
         echo "<error>".L("AccessDenied")."</error>";
     }
 }
-   
+
 ?>

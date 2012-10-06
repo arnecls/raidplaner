@@ -61,7 +61,7 @@
      *  + Updated the checkes for Firefox
      *  + Added the NOKIA platform
      *  + Added Checks for the NOKIA brower(s)
-     *  
+     *
      * 2009-11-08:
      *  + PHP 5.3 Support
      *  + Added support for BlackBerry OS and BlackBerry browser
@@ -177,7 +177,7 @@
         const BROWSER_MSN = 'MSN Browser';                        // http://explorer.msn.com/
         const BROWSER_MSNBOT = 'MSN Bot';                         // http://search.msn.com/msnbot.htm
                                                                   // http://en.wikipedia.org/wiki/Msnbot  (used for Bing as well)
-        
+
         const BROWSER_NETSCAPE_NAVIGATOR = 'Netscape Navigator';  // http://browser.netscape.com/ (DEPRECATED)
         const BROWSER_GALEON = 'Galeon';                          // http://galeon.sourceforge.net/ (DEPRECATED)
         const BROWSER_NETPOSITIVE = 'NetPositive';                // http://en.wikipedia.org/wiki/NetPositive (DEPRECATED)
@@ -201,7 +201,7 @@
         const PLATFORM_SUNOS = 'SunOS';
         const PLATFORM_OPENSOLARIS = 'OpenSolaris';
         const PLATFORM_ANDROID = 'Android';
-        
+
         const OPERATING_SYSTEM_UNKNOWN = 'unknown';
 
         public function Browser($useragent="") {
@@ -388,7 +388,7 @@
 
                 // WebKit base check (post mobile and others)
                 $this->checkBrowserSafari() ||
-                
+
                 // everyone else
                 $this->checkBrowserNetPositive() ||
                 $this->checkBrowserFirebird() ||
@@ -467,8 +467,8 @@
                 return true;
             }
             return false;
-        }        
-        
+        }
+
         /**
          * Determine if the browser is the W3C Validator or not (last updated 1.7)
          * @return boolean True if the browser is the W3C Validator otherwise false
