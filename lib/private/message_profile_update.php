@@ -34,7 +34,7 @@ function msgProfileUpdate( $Request )
 
             $Characters->closeCursor();
 
-            $NumCharacters = is_array( $Request["id"] ) ? sizeof($Request["id"]) : 0;
+            $NumCharacters = is_array( $Request["charId"] ) ? sizeof($Request["charId"]) : 0;
 
             // Sanity check mainchar
 
@@ -66,7 +66,7 @@ function msgProfileUpdate( $Request )
 
             for ( $CharIndex=0; $CharIndex < $NumCharacters; ++$CharIndex )
             {
-                $CharId = $Request["id"][$CharIndex];
+                $CharId = $Request["charId"][$CharIndex];
 
                 if ( $CharId == 0 )
                 {
