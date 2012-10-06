@@ -81,8 +81,7 @@
     top: 10px;
     position: absolute;
     display: block;
-    table-layout: fixed;
-    zoom: 1;
+    table-layout: auto;
 }
 
 /***************************************************
@@ -125,7 +124,7 @@
 }
 
 #tooltip .middle {
-    height: 45px
+    height: 45px;
 }
 
 #tooltip .middle .left {
