@@ -1,3 +1,7 @@
+html {
+    height: 100%;
+}
+
 body {
     padding: 0px;
     margin: 0px;
@@ -5,6 +9,9 @@ body {
     background-color: #898989;
     font-size: 12px;
     overflow: auto;
+    min-width: 1024px;
+    min-height: 768px;
+    height: 100%;
 }
 
 a {
@@ -29,13 +36,11 @@ a:hover {
 }
 
 #appwindow {
-    margin-top: -384px;
-    margin-left: -490px;
-    left: 50%;
+    position: relative;
     top: 50%;
+    margin: -390px auto 0 auto;    
     display: block;
-    position: absolute;
-    height: 780px;
+    height: 768px;
     width: 1024px;
     overflow: visible;
 }
@@ -280,8 +285,7 @@ a:hover {
     left: 0px;
     top: 0px;
     position: fixed;
-    visibility: hidden;
-    display: block;
+    display: none;
     height: 100%;
     width: 100%;
     opacity: 0.4;

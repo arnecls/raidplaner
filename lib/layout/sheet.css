@@ -4,9 +4,8 @@
     left: 50%;
     top: 50%;
     position: absolute;
-    display: block;
+    display: none;
     zoom: 1;
-    visibility: none;
 }
 
 #sheetoverlay .top {

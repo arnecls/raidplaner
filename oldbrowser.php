@@ -25,7 +25,7 @@
 			break;
 			
 		case Browser::BROWSER_OPERA:
-		    return $browserInfo->getVersion() >= 11;
+		    return intval($browserInfo->getVersion()) >= 11;
 			break;
 		}
 		

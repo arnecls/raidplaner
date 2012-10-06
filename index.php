@@ -101,7 +101,6 @@
    </head>
     
     <body>
-        <div style="width: 1024px; height: 1px">&nbsp;</div>
         <div id="appwindow">
             <div id="logo"></div>
             <div id="menu">
