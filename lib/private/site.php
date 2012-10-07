@@ -1,8 +1,8 @@
 <?php
     
+    require_once(dirname(__FILE__)."/../config/config.php");
     require_once("connector.class.php");
-    require_once("gameconfig.php");
-
+    
     $g_Site = Array(
         "BannerLink" => "",
         "Banner"     => "cataclysm.jpg",
@@ -37,7 +37,7 @@
                     break;
     
                 case "Theme":
-                    $ThemeFile = "../../images/themes/".$Data["TextValue"].".xml";
+                    $ThemeFile = dirname(__FILE__)."/../../images/themes/".$Data["TextValue"].".xml";
     
                     if ( file_exists($ThemeFile) )
                     {
