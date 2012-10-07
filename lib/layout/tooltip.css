@@ -1,4 +1,7 @@
 .tooltip {
+	width: auto;
+	height: auto;
+	display: inline-block;
 }
 
 .tooltip .textstatusok {
