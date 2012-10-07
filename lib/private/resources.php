@@ -19,7 +19,7 @@
                 case "jpeg":
                 case "png":
                 case "gif":
-                    echo "<img src=\"".$Folder."/".$fileName."\" style=\"width:1px; height:1px\"/>";
+                    echo "<img src=\"".$Folder."/".$fileName."\"/>";
                     break;
 
                 default:
@@ -34,4 +34,5 @@
     dumpImages( "images/raidbig" );
     dumpImages( "images/classessmall" );
     dumpImages( "images/classesbig" );
+    dumpImages( "images/roles" );
 ?>
