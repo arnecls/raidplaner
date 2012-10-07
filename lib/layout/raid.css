@@ -320,6 +320,7 @@
     width: 120px;
     max-width: 120px;
     float: left;
+    display: inline-block;
     clear: left;
     margin-bottom: 8px;
     vertical-align: top;
@@ -329,6 +330,8 @@
     margin-left: 6px;
     margin-bottom: 8px;
     vertical-align: top;
+    float: left;
+    display: inline-block;
 }
 
 #raiddetail .settingEdit {
