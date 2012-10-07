@@ -90,6 +90,7 @@
         $g_Locale[ "Minutes" ]                  = "Minute(s)";
         $g_Locale[ "Hours" ]                    = "Hour(s)";
         $g_Locale[ "Days" ]                     = "Day(s)";
+        $g_Locale[ "Weeks" ]                    = "Week(s)";
         $g_Locale[ "Month" ]                    = "Month";
         $g_Locale[ "Locked" ]                   = "Locked";
         $g_Locale[ "Members" ]                  = "Members";
