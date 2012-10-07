@@ -192,7 +192,7 @@
     margin-left: 12px; 
     height: 380px;
     float: left;
-    overflow-y: hidden;
+    overflow: visible;
 }
 
 #raiddetail .roleList h2 { 
@@ -225,6 +225,7 @@
 }
 
 #raiddetail .activeSlot {
+    background-image: url(images/slot_set.png);
 }
 
 #raiddetail .activeSlotComment {
@@ -281,6 +282,17 @@
     position: absolute;
     left: 19px;
     top: 19px;
+    display: inline-block;
+}
+
+#raiddetail .slotMarker {
+    background-image: url(images/slot_marker.png);
+    width: 9px;
+    height: 32px;
+    float: left;
+    position: relative;
+    left: -5px;
+    top: 0px;
     display: inline-block;
 }
 
