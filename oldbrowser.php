@@ -40,9 +40,35 @@
     <head>
         <title><?php echo L("UpdateBrowser"); ?></title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <style type="text/css" media="screen">
+            html {
+                height: 100%;
+            }
+            
+            body {
+                min-width: 800px;
+                min-height: 600px;
+                text-align: center; 
+                font-family: Helvetica, Arial, sans-serif; 
+                font-size: 14px; l
+                ine-height: 1.8em;
+                padding: 0px;
+                margin: 0px;
+                height: 100%;
+            }
+            
+            div.appwindow {
+                width: 600px; 
+                height: 460px; 
+                position: relative; 
+                top: 50%; 
+                margin: -230px auto 0 auto; 
+                background-color: white;
+            }
+        </style>
     </head>
-    <body style="text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.8em;">
-        <div style="width: 600px; height: 460px; position: fixed; left: 50%; top: 50%; margin-left: -300px; margin-top: -230px">
+    <body>
+        <div class="appwindow">
             <img src="lib/layout/images/alert.png" style="margin-bottom: 20px"/><br/>
             <div style="font-size: 20px; font-weight: bold"><?php echo L("UpdateBrowser"); ?></div><br/>
             <?php echo L("UsingOldBrowser"); ?><br/>

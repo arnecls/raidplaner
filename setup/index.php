@@ -12,6 +12,7 @@
         <script type="text/javascript" src="script/main.js"></script>
         <script type="text/javascript" src="script/index.js"></script>
         
+        <link rel="stylesheet" type="text/css" href="layout/default.css">
         <style type="text/css" media="screen">
             div.button {
                 width: 240px;
@@ -68,8 +69,8 @@
         </style>
     </head>
     
-    <body style="font-family: helvetica, arial, sans-serif; font-size: 11px; line-height: 1.5em; background-color: #cccccc; color: black">
-        <div style="width: 800px; height: 600px; position: fixed; left: 50%; top: 50%; margin-left: -400px; margin-top: -300px; background-color: white">
+    <body>
+        <div class="appwindow">
             <div style="background-color: black; color: white; padding: 10px">
                 Packedpixel<br/>
                 <span style="font-size: 24px">Raidplaner</span>

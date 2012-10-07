@@ -1,0 +1,25 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-width: 800px;
+    min-height: 600px;
+    font-family: helvetica, arial, sans-serif; 
+    font-size: 11px; 
+    line-height: 1.5em; 
+    background-color: #cccccc; 
+    color: black;
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+}
+
+div.appwindow {
+    width: 800px; 
+    height: 600px; 
+    position: relative; 
+    top: 50%; 
+    margin: -300px auto 0 auto; 
+    background-color: white;
+}
