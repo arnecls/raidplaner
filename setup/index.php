@@ -21,8 +21,7 @@
                 font-weight: bold;
                 vertical-align: middle;
                 position: relative;
-                left: 50%;
-                margin-left: -120px;
+                margin: auto;
                 
                 -moz-border-radius: 4px; 
                 -webkit-border-radius: 4px; 
@@ -76,8 +75,8 @@
                 <span style="font-size: 24px">Raidplaner</span>
             </div>
             <div style="padding: 20px; text-align: center">
-                <div id="install" class="button up" style="height: 80px; margin-top: 190px; font-size: 3em"><span><?php echo L("Install"); ?></span></div>
-                <div id="upgrade" class="button up" style="height: 24px; margin-top: 10px; font-size: 1em"><span style="margin-top: -0.6em"><?php echo L("Update"); ?></span></div>
+                <div id="install" class="button up" style="height: 80px; top: 190px; font-size: 3em"><span><?php echo L("Install"); ?></span></div>
+                <div id="upgrade" class="button up" style="height: 24px; top: 200px; font-size: 1em"><span style="margin-top: -0.6em"><?php echo L("Update"); ?></span></div>
             </div>
         </div>
     </body>
