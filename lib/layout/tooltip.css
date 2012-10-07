@@ -51,8 +51,9 @@
 }
 
 .tooltip .description {
-    max-width: 350px;
+    max-width: 200px;
     margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 .tooltip .functions {

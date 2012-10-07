@@ -3,62 +3,20 @@
 
     require_once("../private/connector.class.php");
     require_once("../private/gameconfig.php");
-
-    $Connector = Connector::GetInstance();
-    $Settings = $Connector->prepare("Select `Name`, `TextValue`, `IntValue` FROM `".RP_TABLE_PREFIX."Setting`");
-
-    if ( $Settings->execute() )
-    {
-        $Site      = "";
-        $Banner     = "cataclysm.jpg";
-        $Background = "flower.png";
-        $BGColor    = "#898989";
-        $BGRepeat   = "repeat-xy";
-        $TimeFormat = 24;
-
-        while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
-        {
-            switch( $Data["Name"] )
-            {
-            case "Site":
-                $Site = $Data["TextValue"];
-                break;
-
-            case "Theme":
-                $ThemeFile = "../../images/themes/".$Data["TextValue"].".xml";
-
-                if ( file_exists($ThemeFile) )
-                {
-                    $Theme = new SimpleXMLElement( file_get_contents($ThemeFile) );
-                    $Banner = $Theme->banner;
-                    $Background = $Theme->bgimage;
-                    $BGColor = $Theme->bgcolor;
-                    $BGRepeat = $Theme->bgrepeat;
-                }
-                break;
-
-            case "TimeFormat":
-                $TimeFormat = $Data["IntValue"];
-                break;
-
-            default:
-                break;
-            };
-        }
-    }
-
-    $Settings->closeCursor();
+    require_once("../private/site.php");
+    
+    loadSiteSettings();
 ?>
 
 var g_SiteVersion = <?php echo intval($_REQUEST["version"]) ?>;
-var g_BannerLink = "<?php echo $Site; ?>";
-var g_TimeFormat = <?php echo $TimeFormat; ?>;
+var g_BannerLink = "<?php echo $g_Site["BannerLink"]; ?>";
+var g_TimeFormat = <?php echo $g_Site["TimeFormat"]; ?>;
 
 var g_Theme = {
-    background : "<?php echo $Background; ?>",
-    banner     : "<?php echo $Banner; ?>",
-    bgrepeat   : "<?php echo $BGRepeat; ?>",
-    bgcolor    : "<?php echo $BGColor; ?>"
+    background : "<?php echo $g_Site["Background"]; ?>",
+    banner     : "<?php echo $g_Site["Banner"]; ?>",
+    bgrepeat   : "<?php echo $g_Site["BGRepeat"]; ?>",
+    bgcolor    : "<?php echo $g_Site["BGColor"]; ?>"
 };
 
 var g_RoleNames  = Array(<?php echo sizeof($s_Roles); ?>);
@@ -134,13 +92,11 @@ function onChangeConfig()
     // Update theme
 
     $("#logo").css("background-image", "url(images/banner/" + g_Theme.banner + ")");
-    $("body").css("background-color", g_Theme.bgcolor );
-    $("body").css("background-repeat", g_Theme.bgrepeat );
-
+    
     if ( g_Theme.background == "none" )
-        $("body").css("background-image", "none");
+        $("body").css("background", g_Theme.bgcolor + " none " + g_Theme.bgrepeat );
     else
-        $("body").css("background-image", "url(images/background/" + g_Theme.background + ")");
+        $("body").css("background", g_Theme.bgcolor + " url(images/background/" + g_Theme.background + ") " + g_Theme.bgrepeat );
 
     // Update raid time fields
 

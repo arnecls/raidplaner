@@ -14,8 +14,11 @@
     }
     
     require_once("lib/private/users.php");
+    require_once("lib/private/site.php");
     
     UserProxy::GetInstance(); // Init user
+    loadSiteSettings();
+    
     $siteVersion = 96.0;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -98,11 +101,17 @@
         
         <?php } ?>
         -->
-   </head>
-    
-    <body>
+    </head>
+   
+    <body style="background: <?php echo $g_Site["BGColor"] ?> <?php echo ($g_Site["Background"] == "none") ? "none" : "url(images/background/".$g_Site["Background"].")" ?> <?php echo $g_Site["BGRepeat"] ?>">
         <div id="appwindow">
-            <div id="logo"></div>
+            <?php 
+                if ( $g_Site["BannerLink"] == "" )
+                    echo "<div id=\"logo\" style=\"background-image: url(images/banner/".$g_Site["Banner"].")\"></div>";
+                else
+                    echo "<a id=\"logo\" href=\"".$g_Site["BannerLink"]."\" style=\"background-image: url(images/banner/".$g_Site["Banner"].")\"></a>";
+            ?>
+            
             <div id="menu">
                 <?php if ( RegisteredUser() ) { ?>
                 
@@ -201,7 +210,7 @@
         <?php if ( ValidRaidlead() ) { ?>
         
         <div id="sheetNewRaid">
-            <div id="newRaid" style="width: 556px">
+            <div id="newRaid" style="width: 560px">
                 <span style="display: inline-block; vertical-align: top; margin-right: 20px">
                     <div id="raiddatepicker"></div>
                     <div style="margin-top: 24px">
