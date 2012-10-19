@@ -124,8 +124,12 @@ function msgQueryProfile( $Request )
 
                 if ( $Data["Status"] == "ok" )
                 {
-                    $resolvedRole = $RoleKeys[ intval($Data["Role"])-1 ];
-                    $AttendanceData[ $resolvedRole ] += $Data["Count"];
+                    $roleIdx = intval($Data["Role"]);
+                    if ( $roleIdx < sizeof($RoleKeys) )
+                    {
+                        $resolvedRole = $RoleKeys[ $roleIdx ];
+                        $AttendanceData[ $resolvedRole ] += $Data["Count"];
+                    }
                 }
             }
 
