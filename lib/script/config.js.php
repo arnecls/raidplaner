@@ -70,7 +70,15 @@ var g_GroupRoleSizes = Array(<?php echo sizeof($s_GroupSizes); ?>);
 <?php
     while ( list($Count,$RoleSizes) = each($s_GroupSizes) )
     {
-        echo "g_GroupRoleSizes[".$Count."] = Array(".$RoleSizes[0].",".$RoleSizes[1].",".$RoleSizes[2].");\n";
+        
+        echo "g_GroupRoleSizes[".$Count."] = [";
+        $Separator = "";
+        foreach( $RoleSizes as $RoleSize )
+        {
+            echo $Separator.$RoleSize;
+            $Separator = ",";
+        }
+        echo "];\n";
     }
     reset($s_GroupSizes);
 ?>
