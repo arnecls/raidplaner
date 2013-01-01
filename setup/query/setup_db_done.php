@@ -29,7 +29,7 @@
           `CharacterId` int(10) unsigned NOT NULL,
           `UserId` int(11) unsigned NOT NULL,
           `RaidId` int(10) unsigned NOT NULL,
-          `Status` enum('ok','available','unavailable') NOT NULL,
+          `Status` enum('ok','available','unavailable','undecided') NOT NULL,
           `Role` tinyint(1) unsigned NOT NULL,
           `Comment` text NOT NULL,
           PRIMARY KEY (`AttendanceId`),
