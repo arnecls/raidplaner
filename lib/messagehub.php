@@ -1,4 +1,5 @@
 <?php
+    define( "LOCALE_MAIN", true );
     require_once(dirname(__FILE__)."/private/locale.php");
     require_once(dirname(__FILE__)."/private/users.php");
     require_once(dirname(__FILE__)."/private/tools_string.php");
