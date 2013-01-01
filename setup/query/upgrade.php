@@ -128,7 +128,7 @@
         
         $updates = Array( "Timestamp setting"      => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('TimeFormat', 24, '');",
                           "Remove banner setting"  => "DELETE FROM `".RP_TABLE_PREFIX."Setting` WHERE Name = 'Banner' LIMIT 1;",
-                          "Theme setting"            => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Theme', '', 'cataclysm');",
+                          "Theme setting"          => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Theme', '', 'cataclysm');",
                           "Configurable classes"   => "ALTER TABLE  `".RP_TABLE_PREFIX."Character` CHANGE `Class` `Class` CHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;");
         
         doUpgrade( $updates );
@@ -143,11 +143,11 @@
         echo "<update version=\"95\">";
         
         $updates = Array( "Primary key attendance"   => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` ADD  `AttendanceId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;",
-                          "Rename role fields"          => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE  `TankSlots` `SlotsRole1` TINYINT(2) UNSIGNED NOT NULL,".
-                                                          "CHANGE `HealSlots` `SlotsRole2` TINYINT(2) UNSIGNED NOT NULL,".
-                                                          "CHANGE `DmgSlots` `SlotsRole3` TINYINT(2) UNSIGNED NOT NULL;",
-                          "New role fields"                => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `SlotsRole4` TINYINT(2) UNSIGNED NOT NULL,".
-                                                          "ADD `SlotsRole5` TINYINT(2) UNSIGNED NOT NULL;",
+                          "Rename role fields"       => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE  `TankSlots` `SlotsRole1` TINYINT(2) UNSIGNED NOT NULL,".
+                                                        "CHANGE `HealSlots` `SlotsRole2` TINYINT(2) UNSIGNED NOT NULL,".
+                                                        "CHANGE `DmgSlots` `SlotsRole3` TINYINT(2) UNSIGNED NOT NULL;",
+                          "New role fields"          => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `SlotsRole4` TINYINT(2) UNSIGNED NOT NULL,".
+                                                        "ADD `SlotsRole5` TINYINT(2) UNSIGNED NOT NULL;",
                           "Char roles are numbers"   => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Role1` `Role1` TINYINT(1) UNSIGNED NOT NULL,".
                                                           "CHANGE `Role2` `Role2` TINYINT(1) UNSIGNED NOT NULL",
                           "Attend roles are numbers" => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` CHANGE `Role` `Role` TINYINT(1) UNSIGNED NOT NULL",
@@ -161,8 +161,21 @@
                                                         "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Role=2 WHERE Role=3;", // Dmg  3 -> 2
                           "unsigned raid size"       => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE `Size` `Size` TINYINT(2) UNSIGNED NOT NULL;",
                           "raid modes"               => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `Mode` ENUM('manual', 'attend', 'all') NOT NULL AFTER `End`;",                          
-                          "raid mode setting"          => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidMode', '', 'manual');" );                          
+                          "raid mode setting"        => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidMode', '', 'manual');" );                          
                           
+        doUpgrade( $updates );
+        
+        echo "</update>";
+    }
+    
+    // ----------------------------------------------------------------------------
+    
+    function upgrade_096()
+    {
+        echo "<update version=\"96\">";
+        
+        $updates = Array( "Undecided comments" => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` CHANGE `Status` `Status` ENUM('ok', 'available', 'unavailable', 'undecided') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL" );
+        
         doUpgrade( $updates );
         
         echo "</update>";
@@ -190,8 +203,10 @@
             upgrade_094();
         case 95:
             upgrade_095();
+        case 96:
+            upgrade_096();
         default:
-            setVersion(96);
+            setVersion(97);
             break;
         }
     }

@@ -19,7 +19,7 @@
     UserProxy::GetInstance(); // Init user
     loadSiteSettings();
     
-    $siteVersion = 96.1;
+    $siteVersion = 97;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>

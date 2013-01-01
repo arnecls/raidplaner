@@ -120,7 +120,8 @@ function msgQueryProfile( $Request )
 
             while ( $Data = $Attendance->fetch( PDO::FETCH_ASSOC ) )
             {
-                $AttendanceData[ $Data["Status"] ] += $Data["Count"];
+                if ( $Data["Status"] != "undecided" )
+                    $AttendanceData[ $Data["Status"] ] += $Data["Count"];
 
                 if ( $Data["Status"] == "ok" )
                 {

@@ -133,7 +133,8 @@ function msgQuerySettings( $Request )
                     $MainCharName = $Data["Name"];
                 }
 
-                $StateCounts[$Data["Status"]] += $Data["Count"];
+                if ( $Data["Status"] != "undecided" )
+                    $StateCounts[$Data["Status"]] += $Data["Count"];
             }
 
             if ($UserId != 0)
