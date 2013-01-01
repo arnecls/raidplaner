@@ -8,7 +8,7 @@
     loadSiteSettings();
 ?>
 
-var g_SiteVersion = <?php echo intval($_REQUEST["version"]) ?>;
+var g_SiteVersion = <?php echo floatval($_REQUEST["version"]) ?>;
 var g_BannerLink = "<?php echo $g_Site["BannerLink"]; ?>";
 var g_TimeFormat = <?php echo $g_Site["TimeFormat"]; ?>;
 
