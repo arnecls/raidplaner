@@ -31,7 +31,7 @@
         <link rel="stylesheet" type="text/css" href="lib/layout/_layout.css.php?version=<?php echo $siteVersion; ?>"/>
         
         <!--
-        <link rel="stylesheet" type="text/css" href="lib/layout/jquery-ui-1.8.23.custom.css"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/jquery-ui-1.10.0.custom.min.css"/>
         <link rel="stylesheet" type="text/css" href="lib/layout/default.css?version=<?php echo $siteVersion; ?>"/>
         <link rel="stylesheet" type="text/css" href="lib/layout/combobox.css?version=<?php echo $siteVersion; ?>"/>
         <link rel="stylesheet" type="text/css" href="lib/layout/calendar.css?version=<?php echo $siteVersion; ?>"/>
@@ -63,13 +63,12 @@
         
         <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>
         <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>"></script>
+        <!--<script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>"></script>-->
         
-        <!--
         <script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $siteVersion; ?>"></script>
         
-        <script type="text/javascript" src="lib/script/jquery-1.8.2.min.js"></script>
-        <script type="text/javascript" src="lib/script/jquery-ui-1.8.23.custom.min.js"></script>
+        <script type="text/javascript" src="lib/script/jquery-1.9.0.min.js"></script>
+        <script type="text/javascript" src="lib/script/jquery-ui-1.10.0.custom.min.js"></script>
         <script type="text/javascript" src="lib/script/jquery.ba-hashchange.min.js"></script>
         
         <script type="text/javascript" src="lib/script/user.js.php?version=<?php echo $siteVersion; ?>"></script>
@@ -100,7 +99,7 @@
         <script type="text/javascript" src="lib/script/initlogin.js?version=<?php echo $siteVersion; ?>"></script>
         
         <?php } ?>
-        -->
+        
     </head>
    
     <body style="background: <?php echo $g_Site["BGColor"] ?> <?php echo ($g_Site["Background"] == "none") ? "none" : "url(images/background/".$g_Site["Background"].")" ?> <?php echo $g_Site["BGRepeat"] ?>">

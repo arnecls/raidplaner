@@ -6,8 +6,10 @@
     
     header("Content-type: text/javascript");
 
-    include_once("jquery-1.8.2.min.js");
-    include_once("jquery-ui-1.8.23.custom.min.js");
+    include_once("jquery-1.9.0.min.js");
+    echo "\n";
+    include_once("jquery-ui-1.10.0.custom.min.js");
+    echo "\n";
     include_once("jquery.ba-hashchange.min.js");
     
     include_once("config.js.php");
