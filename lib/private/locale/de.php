@@ -151,7 +151,9 @@
         $g_Locale[ "UndecidedPlayers" ]         = "Unentschlossene Spieler";
         $g_Locale[ "DefaultRaidMode" ]          = "Voreingestellte Anmeldeform";
         $g_Locale[ "AbsentNoReason" ]           = "Kein Grund angegeben.";   
-        $g_Locale[ "Undecided" ]                = "Hat noch keine Aussage getroffen.";  
+        $g_Locale[ "Undecided" ]                = "Hat noch keine Aussage getroffen.";
+        $g_Locale[ "UnappliedChanges" ]         = "M&ouml;chtest du die ungesicherten &Auml;nderungen verwerfen?";
+        $g_Locale[ "DiscardChanges" ]           = "Ja, verwerfen";
     }
     
     if ( defined("LOCALE_SETUP") )

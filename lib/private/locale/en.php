@@ -150,8 +150,10 @@
         $g_Locale[ "AbsentPlayers" ]            = "Absent players";
         $g_Locale[ "UndecidedPlayers" ]         = "Undecided players";
         $g_Locale[ "DefaultRaidMode" ]          = "Default attendance mode"; 
-        $g_Locale[ "AbsentNoReason" ]           = "No message given.";   
-        $g_Locale[ "Undecided" ]                = "Has not made a statement, yet.";    
+        $g_Locale[ "AbsentNoReason" ]           = "No message given.";
+        $g_Locale[ "Undecided" ]                = "Has not made a statement, yet.";
+        $g_Locale[ "UnappliedChanges" ]         = "Do you want to discard unapplied changes?";
+        $g_Locale[ "DiscardChanges" ]           = "Yes, discard";
     }
     
     if ( defined("LOCALE_SETUP") )
