@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         
         <link rel="stylesheet" type="text/css" href="layout/default.css">
-        <script type="text/javascript" src="../lib/script/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="../lib/script/jquery-1.9.0.min.js"></script>
         <script type="text/javascript" src="script/main.js"></script>
         <script type="text/javascript" src="script/setup_db.js.php"></script>
         
