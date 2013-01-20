@@ -151,14 +151,19 @@
 
 #profile .charslot .newname {    
     text-align: center;    
-    width: 110px;
-    height: 10px;
+    width: 105px;
+    height: 14px;
     display: block;
     position: relative;
     text-align: center;
-    top: 20px;
-    left: 4px;
-    margin-bottom:16px;
+    top: 18px;
+    left: 8px;
+    margin-bottom:14px;
+    padding: 0px;
+    font-size: 12px;
+    border: 0px solid transparent;
+    border-bottom: 1px dotted #666;
+    background-color: transparent;
 }
 
 #profile .charslot .role {
