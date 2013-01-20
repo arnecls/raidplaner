@@ -35,10 +35,15 @@
     vertical-align: top;
     width: 910px;
     height: 175px;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     white-space: nowrap;
     margin-top: 15px;
+}
+
+#charlist .charGroup {
+    display: hidden;
+    width: 910px;
+    height: 175px;
 }
 
 #profile .charslot {
@@ -53,12 +58,20 @@
 }
 
 #profile .newchar {
-    background: url(images/charslot_new.png);
-}
-
-#profile .charslot_add {
     vertical-align: top;
     background: url(images/charslot_add.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 123px;
+    height: 148px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+#profile .nextgroup {
+    vertical-align: top;
+    background: url(images/charslot_more.png);
     background-repeat: no-repeat;
     display: inline-block;
     width: 123px;
