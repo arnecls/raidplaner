@@ -12,6 +12,8 @@
         return false;
     }
     
+    // -------------------------------------------------------------------------
+    
     function BindVB3User($User)
     {
         if ( isset($User["cleartext"]) && ($User["cleartext"] == true) )
@@ -22,67 +24,51 @@
             // Check if user already exists in local database
             // Fetch userid from raidplaner table
             
-            $ExternalIdSt = $RaidConnect->prepare( "SELECT ExternalId FROM `".RP_TABLE_PREFIX."User` WHERE Login = :Login AND ExternalBinding = \"vb3\" LIMIT 1" );
+            $ExternalIdSt = $RaidConnect->prepare( "SELECT ExternalId, Hash FROM `".RP_TABLE_PREFIX."User` WHERE Login = :Login AND ExternalBinding = \"vb3\" LIMIT 1" );
             
             $ExternalIdSt->bindValue(":Login", strtolower($User["Login"]), PDO::PARAM_STR);
             $ExternalIdSt->execute();
             
-            if ( $IdData = $ExternalIdSt->fetch(PDO::FETCH_ASSOC) )
+            if ( $LocalData = $ExternalIdSt->fetch(PDO::FETCH_ASSOC) )
             {
                 // Local user found
-                // Fetch salt from vbulletin user table
+                // Try login. vbulletin allows two hash variants, so check both
+                // The correct one will be stored in session data
                 
-                $SaltSt = $Connector->prepare( "SELECT salt FROM  `".VB3_TABLE_PREFIX."User` WHERE userid = :ExternalId LIMIT 1" );
+                $passwordHash1 = md5(md5($User["Password"]).$LocalData["Hash"]);
+                $passwordHash2 = md5($User["Password"].$LocalData["Hash"]);
                 
-                $SaltSt->bindValue(":ExternalId", $IdData["ExternalId"], PDO::PARAM_INT);
-                $SaltSt->execute();
-                
-                if ( $SaltData = $SaltSt->fetch(PDO::FETCH_ASSOC) )
+                if ( UserProxy::TryLoginUser($User["Login"], $passwordHash1, "vb3") || 
+                     UserProxy::TryLoginUser($User["Login"], $passwordHash2, "vb3") )
                 {
-                    // vbulletin user found
-                    // Try login. vbulletin allows two hash variants, so check both
-                    // The correct one will be stored in session data
+                    // Check if the binding changed
                     
-                    $passwordHash1 = md5(md5($User["Password"]).$SaltData["salt"]);
-                    $passwordHash2 = md5($User["Password"].$SaltData["salt"]);
+                    $UserSt = $Connector->prepare("SELECT username, password, salt ".
+                                                  "FROM `".VB3_TABLE_PREFIX."user` ".
+                                                  "WHERE userid = :UserId LIMIT 1");
+                                              
+                    $UserSt->bindValue(":UserId", $_SESSION["User"]["ExternalId"], PDO::PARAM_INT);
+                    $UserSt->execute();
                     
-                    if ( UserProxy::TryLoginUser($User["Login"], $passwordHash1, "vb3") || 
-                         UserProxy::TryLoginUser($User["Login"], $passwordHash2, "vb3") )
+                    if ( $UserData = $UserSt->fetch( PDO::FETCH_ASSOC ) )
                     {
-                        // Check if the binding changed
+                        // Password or login changed?
                         
-                        $UserSt = $Connector->prepare(    "SELECT username, password ".
-                                                          "FROM `".VB3_TABLE_PREFIX."user` ".
-                                                          "WHERE userid = :UserId LIMIT 1");
-                                                  
-                        $UserSt->bindValue(":UserId", $_SESSION["User"]["ExternalId"], PDO::PARAM_INT);
-                        $UserSt->execute();
+                        UserProxy::CheckForBindingUpdate( $_SESSION["User"]["ExternalId"], $UserData["username"], $UserData["password"], "vb3", true, $UserData["salt"] );
+                    }
+                    else
+                    {
+                        // No user found, so the user does not exist in vbulletin anymore
+                        // convert to local user
                         
-                        if ( $UserData = $UserSt->fetch( PDO::FETCH_ASSOC ) )
-                        {
-                            // Password or login changed
-                            UserProxy::CheckForBindingUpdate( $_SESSION["User"]["ExternalId"], $UserData["username"], $UserData["password"], "vb3", true );
-                        }
-                        
-                        $UserSt->closeCursor();
-                        $SaltSt->closeCursor();
-                        $ExternalIdSt->closeCursor();
-                        
-                        return true; // ### valid, registered user ###
-                    }            
-                }
-                else
-                {
-                    // No user found, so the user does not exist in vbulletin anymore
-                    // In this case we have to stop here as the salt is missing
+                        UserProxy::ConvertCurrentUserToLocalBinding();
+                    }
                     
-                    $SaltSt->closeCursor();
+                    $UserSt->closeCursor();
                     $ExternalIdSt->closeCursor();
                     
-                    return false;
+                    return true; // ### valid, registered user ###
                 }
-                
-                $SaltSt->closeCursor();
             }
             
             $ExternalIdSt->closeCursor();
@@ -108,7 +94,7 @@
                     // password check validated
                     // Check if username or password changed for an existing binding
                     
-                    if ( UserProxy::CheckForBindingUpdate( $ExternalUserData["userid"], strtolower($User["Login"]), $ExternalUserData["password"], "vb3", false ) )
+                    if ( UserProxy::CheckForBindingUpdate($ExternalUserData["userid"], strtolower($User["Login"]), $ExternalUserData["password"], "vb3", false, $ExternalUserData["salt"]) )
                     {
                         UserProxy::TryLoginUser($User["Login"], $ExternalUserData["password"], "vb3");
                         return true; // ### user changed password or was renamed ###
@@ -146,14 +132,18 @@
                 
                     $UserSt->closeCursor();
                     
-                    UserProxy::CreateUser( $DefaultGroup, $ExternalUserData["userid"], "vb3", $User["Login"], $ExternalUserData["password"] );
+                    UserProxy::CreateUser( $DefaultGroup, $ExternalUserData["userid"], "vb3", $User["Login"], $ExternalUserData["password"], $ExternalUserData["salt"] );
                     $Success = UserProxy::TryLoginUser( $User["Login"], $ExternalUserData["password"], "vb3" );
                 
-                    return true; // ### new user ###
+                    return $Success; // ### new user ###
                 }
             }
+            else
+            {
+                $UserSt->closeCursor();
+            }
             
-            $UserSt->closeCursor();
+            // User not found in vbulletin or invalid password            
         }
         else if ( UserProxy::TryLoginUser($User["Login"], $User["Password"], "vb3") )
         {

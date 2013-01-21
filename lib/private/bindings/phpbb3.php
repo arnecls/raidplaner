@@ -37,9 +37,9 @@
             {
                 // Check if the binding changed
                 
-                $UserSt = $Connector->prepare(    "SELECT username_clean, user_password ".
-                                                  "FROM `".PHPBB3_TABLE_PREFIX."users` ".
-                                                  "WHERE user_id = :UserId LIMIT 1");
+                $UserSt = $Connector->prepare("SELECT username_clean, user_password ".
+                                              "FROM `".PHPBB3_TABLE_PREFIX."users` ".
+                                              "WHERE user_id = :UserId LIMIT 1");
                                           
                 $UserSt->bindValue(":UserId", $_SESSION["User"]["ExternalId"], PDO::PARAM_INT);
                 $UserSt->execute();
@@ -121,13 +121,15 @@
                     $NewUserSt->closeCursor();
                     
                     UserProxy::CreateUser( $DefaultGroup, $ExternalUserData["user_id"], "phpbb3", $User["Login"], $ExternalUserData["user_password"] );
-                    UserProxy::TryLoginUser( $User["Login"], $ExternalUserData["user_password"], "phpbb3" );
+                    $Success = UserProxy::TryLoginUser( $User["Login"], $ExternalUserData["user_password"], "phpbb3" );
                 
-                    return true; // ### new user ###
+                    return $Success; // ### new user ###
                 }
             }
-            
-            $UserSt->closeCursor();
+            else
+            {            
+                $UserSt->closeCursor();
+            }
         }
         else if ( UserProxy::TryLoginUser($User["Login"], $User["Password"], "phpbb3") )
         {
