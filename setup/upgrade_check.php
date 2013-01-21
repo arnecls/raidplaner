@@ -4,7 +4,7 @@
     @include_once(dirname(__FILE__)."/../lib/config/config.php");
     require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
     
-    $CurrentVersion = 96;
+    $CurrentVersion = 97;
     $CurrentPatch = $CurrentVersion % 10;
     $CurrentMinor = ($CurrentVersion / 10) % 10;
     $CurrentMajor = ($CurrentVersion / 100) % 10;

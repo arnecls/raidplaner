@@ -5,6 +5,7 @@
     define( "LOCALE_SETUP", true );
     require_once("../../lib/private/connector.class.php");
     require_once(dirname(__FILE__)."/../../lib/config/config.php");
+    @include_once(dirname(__FILE__)."/../../lib/config/config.vb3.php");
     
     echo "<upgrade>";
     
@@ -177,6 +178,68 @@
         $updates = Array( "Undecided comments" => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` CHANGE `Status` `Status` ENUM('ok', 'available', 'unavailable', 'undecided') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL" );
         
         doUpgrade( $updates );
+        
+        // vBulletin user hash change
+        
+        if ( defined("VB3_BINDING") && VB3_BINDING )
+        {
+            echo "<step name=\"Convert VB Users\">";
+            
+            $Connector = Connector::GetInstance();
+            
+            $UserQuery = $Connector->prepare("SELECT UserId, ExternalId FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding = 'vb3'");
+            
+            if ( !$UserQuery->execute() )
+            {
+                postErrorMessage( $UserQuery );
+            }
+            else
+            {
+                $VbConnector = new Connector(SQL_HOST, VB3_DATABASE, VB3_USER, VB3_PASS);
+                $VbUserQuery = $VbConnector->prepare("SELECT userid,salt FROM `".VB3_TABLE_PREFIX."user`");
+                
+                if ( !$VbUserQuery->execute() )
+                {
+                    postErrorMessage( $VbUserQuery );
+                }
+                else
+                {
+                    // Gather all vbulletin users
+                    
+                    $vbUsers = array();
+                    while ( $UserData = $VbUserQuery->fetch(PDO::FETCH_ASSOC) )
+                    {
+                        $vbUsers[$UserData["userid"]] = $UserData["salt"];
+                    }
+                    
+                    // Update salt per user
+                
+                    while ( $UserData = $UserQuery->fetch(PDO::FETCH_ASSOC) )
+                    {
+                        if ( isset($vbUsers[$UserData["ExternalId"]]) )
+                        {
+                            $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Hash=:Hash WHERE UserId=:UserId LIMIT 1");
+                            
+                            $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
+                            $UpdateUser->bindValue(":Hash", $vbUsers[$UserData["ExternalId"]], PDO::PARAM_STR);
+                            
+                            if ( !$UpdateUser->execute() )
+                            {
+                                postErrorMessage( $VbUserQuery );
+                            }
+                            
+                            $UpdateUser->closeCursor();
+                        }
+                    }
+                }
+                
+                $VbUserQuery->closeCursor();
+            }
+            
+            $UserQuery->closeCursor();
+            
+            echo "</step>";
+        }
         
         echo "</update>";
     }
