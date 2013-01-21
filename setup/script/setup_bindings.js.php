@@ -176,7 +176,7 @@ function checkEQDKP()
 
 function checkForm() 
 {
-    if ( $("#allow_phpbb3").attr("checked") )
+    if ( $("#allow_phpbb3:checked").val() == "on" )
     {
         if ( $("#phpbb3_password").val().length == 0 )
         {
@@ -191,7 +191,7 @@ function checkForm()
         }
     }
         
-    if ( $("#allow_eqdkp").attr("checked") )
+    if ( $("#allow_eqdkp:checked").val() == "on" )
     {    
         if ( $("#eqdkp_password").val().length == 0 )
         {
@@ -206,7 +206,7 @@ function checkForm()
         }
     }
     
-    if ( $("#allow_vb3").attr("checked") )
+    if ( $("#allow_vb3:checked").val() == "on" )
     {    
         if ( $("#vb3_password").val().length == 0 )
         {
@@ -292,7 +292,7 @@ function dbCheckDone( a_XMLData )
     });
     
     var parameter = {
-        phpbb3_allow    : $("#allow_phpbb3").val(),
+        phpbb3_allow    : $("#allow_phpbb3:checked").val() == "on",
         phpbb3_database : $("#phpbb3_database").val(),
         phpbb3_user     : $("#phpbb3_user").val(),
         phpbb3_password : $("#phpbb3_password").val(),
@@ -300,7 +300,7 @@ function dbCheckDone( a_XMLData )
         phpbb3_member   : phpbb3_memberGroups,
         phpbb3_raidlead : phpbb3_raidLeadGroups,
 
-        vb3_allow    : $("#allow_vb3").val(),
+        vb3_allow    : $("#allow_vb3:checked").val() == "on",
         vb3_database : $("#vb3_database").val(),
         vb3_user     : $("#vb3_user").val(),
         vb3_password : $("#vb3_password").val(),
@@ -308,7 +308,7 @@ function dbCheckDone( a_XMLData )
         vb3_member   : vb3_memberGroups,
         vb3_raidlead : vb3_raidLeadGroups,
     
-        eqdkp_allow    : $("#allow_eqdkp").val(),
+        eqdkp_allow    : $("#allow_eqdkp:checked").val() == "on",
         eqdkp_database : $("#eqdkp_database").val(),
         eqdkp_user     : $("#eqdkp_user").val(),
         eqdkp_password : $("#eqdkp_password").val(),

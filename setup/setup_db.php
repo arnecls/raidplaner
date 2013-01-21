@@ -1,7 +1,7 @@
 <?php
     define( "LOCALE_SETUP", true );
     require_once(dirname(__FILE__)."/../lib/private/locale.php");
-    @include_once(dirname(__FILE__)."/../lib/config/config.php")
+    @include_once(dirname(__FILE__)."/../lib/config/config.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>

@@ -6,7 +6,7 @@
     @include_once(dirname(__FILE__)."/../lib/config/config.vb3.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.eqdkp.php");
     
-    if ( defined("PHPBB3_DATABASE") )
+    if ( defined("PHPBB3_BINDING") && PHPBB3_BINDING )
     {
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
     
@@ -24,7 +24,7 @@
         $Groups->closeCursor();     
     }
     
-    if ( defined("VB3_DATABASE") )
+    if ( defined("VB3_BINDING") && VB3_BINDING )
     {
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
     
