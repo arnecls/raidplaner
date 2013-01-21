@@ -13,7 +13,7 @@
     // phpbb3
     
     fwrite( $phpbb3_config, "<?php\n");
-    fwrite( $phpbb3_config, "\tdefine(\"PHPBB3_BINDING\", ".(($_REQUEST["phpbb3_check"]) ? "true" : "false").");\n");
+    fwrite( $phpbb3_config, "\tdefine(\"PHPBB3_BINDING\", ".(($_REQUEST["phpbb3_allow"]) ? "true" : "false").");\n");
     
     if ( $_REQUEST["phpbb3_allow"] )
     {
@@ -32,7 +32,7 @@
     // eqdkp
     
     fwrite( $eqdkp_config, "<?php\n");
-    fwrite( $eqdkp_config, "\tdefine(\"EQDKP_BINDING\", ".(($_REQUEST["eqdkp_check"]) ? "true" : "false").");\n");
+    fwrite( $eqdkp_config, "\tdefine(\"EQDKP_BINDING\", ".(($_REQUEST["eqdkp_allow"]) ? "true" : "false").");\n");
     
     if ( $_REQUEST["eqdkp_allow"] )
     {
@@ -48,7 +48,7 @@
     // vBulletin
     
     fwrite( $vb3_config, "<?php\n");
-    fwrite( $vb3_config, "\tdefine(\"VB3_BINDING\", ".(($_REQUEST["vb3_check"]) ? "true" : "false").");\n");
+    fwrite( $vb3_config, "\tdefine(\"VB3_BINDING\", ".(($_REQUEST["vb3_allow"]) ? "true" : "false").");\n");
     
     if ( $_REQUEST["vb3_allow"] )
     {
