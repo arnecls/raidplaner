@@ -15,7 +15,7 @@
     fwrite( $phpbb3_config, "<?php\n");
     fwrite( $phpbb3_config, "\tdefine(\"PHPBB3_BINDING\", ".(($_REQUEST["phpbb3_check"]) ? "true" : "false").");\n");
     
-    if ( $_REQUEST["phpbb3_check"] )
+    if ( $_REQUEST["phpbb3_allow"] )
     {
         fwrite( $phpbb3_config, "\tdefine(\"PHPBB3_DATABASE\", \"".$_REQUEST["phpbb3_database"]."\");\n");
         fwrite( $phpbb3_config, "\tdefine(\"PHPBB3_USER\", \"".$_REQUEST["phpbb3_user"]."\");\n");
@@ -34,7 +34,7 @@
     fwrite( $eqdkp_config, "<?php\n");
     fwrite( $eqdkp_config, "\tdefine(\"EQDKP_BINDING\", ".(($_REQUEST["eqdkp_check"]) ? "true" : "false").");\n");
     
-    if ( $_REQUEST["eqdkp_check"] )
+    if ( $_REQUEST["eqdkp_allow"] )
     {
         fwrite( $eqdkp_config, "\tdefine(\"EQDKP_DATABASE\", \"".$_REQUEST["eqdkp_database"]."\");\n");
         fwrite( $eqdkp_config, "\tdefine(\"EQDKP_USER\", \"".$_REQUEST["eqdkp_user"]."\");\n");
@@ -50,7 +50,7 @@
     fwrite( $vb3_config, "<?php\n");
     fwrite( $vb3_config, "\tdefine(\"VB3_BINDING\", ".(($_REQUEST["vb3_check"]) ? "true" : "false").");\n");
     
-    if ( $_REQUEST["vb3_check"] )
+    if ( $_REQUEST["vb3_allow"] )
     {
         fwrite( $vb3_config, "\tdefine(\"VB3_DATABASE\", \"".$_REQUEST["vb3_database"]."\");\n");
         fwrite( $vb3_config, "\tdefine(\"VB3_USER\", \"".$_REQUEST["vb3_user"]."\");\n");
