@@ -13,9 +13,9 @@
     // phpbb3
     
     fwrite( $phpbb3_config, "<?php\n");
-    fwrite( $phpbb3_config, "\tdefine(\"PHPBB3_BINDING\", ".(($_REQUEST["phpbb3_allow"]) ? "true" : "false").");\n");
+    fwrite( $phpbb3_config, "\tdefine(\"PHPBB3_BINDING\", ".(($_REQUEST["phpbb3_check"]) ? "true" : "false").");\n");
     
-    if ( $_REQUEST["phpbb3_allow"] )
+    if ( $_REQUEST["phpbb3_check"] )
     {
         fwrite( $phpbb3_config, "\tdefine(\"PHPBB3_DATABASE\", \"".$_REQUEST["phpbb3_database"]."\");\n");
         fwrite( $phpbb3_config, "\tdefine(\"PHPBB3_USER\", \"".$_REQUEST["phpbb3_user"]."\");\n");
@@ -32,9 +32,9 @@
     // eqdkp
     
     fwrite( $eqdkp_config, "<?php\n");
-    fwrite( $eqdkp_config, "\tdefine(\"EQDKP_BINDING\", ".(($_REQUEST["eqdkp_allow"]) ? "true" : "false").");\n");
+    fwrite( $eqdkp_config, "\tdefine(\"EQDKP_BINDING\", ".(($_REQUEST["eqdkp_check"]) ? "true" : "false").");\n");
     
-    if ( $_REQUEST["eqdkp_allow"] )
+    if ( $_REQUEST["eqdkp_check"] )
     {
         fwrite( $eqdkp_config, "\tdefine(\"EQDKP_DATABASE\", \"".$_REQUEST["eqdkp_database"]."\");\n");
         fwrite( $eqdkp_config, "\tdefine(\"EQDKP_USER\", \"".$_REQUEST["eqdkp_user"]."\");\n");
@@ -48,9 +48,9 @@
     // vBulletin
     
     fwrite( $vb3_config, "<?php\n");
-    fwrite( $vb3_config, "\tdefine(\"VB3_BINDING\", ".(($_REQUEST["vb3_allow"]) ? "true" : "false").");\n");
+    fwrite( $vb3_config, "\tdefine(\"VB3_BINDING\", ".(($_REQUEST["vb3_check"]) ? "true" : "false").");\n");
     
-    if ( $_REQUEST["vb3_allow"] )
+    if ( $_REQUEST["vb3_check"] )
     {
         fwrite( $vb3_config, "\tdefine(\"VB3_DATABASE\", \"".$_REQUEST["vb3_database"]."\");\n");
         fwrite( $vb3_config, "\tdefine(\"VB3_USER\", \"".$_REQUEST["vb3_user"]."\");\n");
