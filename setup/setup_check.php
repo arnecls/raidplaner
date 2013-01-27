@@ -106,10 +106,10 @@
                     ?><br/>
                     
                     <?php echo L("EQDKPConfigFile"); ?> : <?php
-                        $phpbbConfigFileState = (!file_exists("../lib/config/config.eqdkp.php") && $configFolderState) || 
+                        $eqdkpConfigFileState = (!file_exists("../lib/config/config.eqdkp.php") && $configFolderState) || 
                                                 is_writable("../lib/config/config.eqdkp.php");
                                             
-                        if ( $phpbbConfigFileState )
+                        if ( $eqdkpConfigFileState )
                             echo "<span style=\"color: green\">".L("Ok")."</span>";
                         else
                         {
@@ -119,10 +119,10 @@
                     ?><br/>
                     
                     <?php echo L("VBulletinConfigFile"); ?> : <?php
-                        $phpbbConfigFileState = (!file_exists("../lib/config/config.vb3.php") && $configFolderState) || 
+                        $vbulletinConfigFileState = (!file_exists("../lib/config/config.vb3.php") && $configFolderState) || 
                                                 is_writable("../lib/config/config.vb3.php");
                                             
-                        if ( $phpbbConfigFileState )
+                        if ( $vbulletinConfigFileState )
                             echo "<span style=\"color: green\">".L("Ok")."</span>";
                         else
                         {
@@ -132,10 +132,23 @@
                     ?><br/>
                     
                     <?php echo L("MyBBConfigFile"); ?> : <?php
-                        $phpbbConfigFileState = (!file_exists("../lib/config/config.mybb.php") && $configFolderState) || 
+                        $mybbConfigFileState = (!file_exists("../lib/config/config.mybb.php") && $configFolderState) || 
                                                 is_writable("../lib/config/config.mybb.php");
                                             
-                        if ( $phpbbConfigFileState )
+                        if ( $mybbConfigFileState )
+                            echo "<span style=\"color: green\">".L("Ok")."</span>";
+                        else
+                        {
+                            ++$testsFailed;
+                            echo "<span style=\"color: red\">".L("NotWriteable")."</span>";
+                        }
+                    ?><br/>
+                    
+                    <?php echo L("SMFConfigFile"); ?> : <?php
+                        $smfConfigFileState = (!file_exists("../lib/config/config.smf.php") && $configFolderState) || 
+                                                is_writable("../lib/config/config.smf.php");
+                                            
+                        if ( $smfConfigFileState )
                             echo "<span style=\"color: green\">".L("Ok")."</span>";
                         else
                         {

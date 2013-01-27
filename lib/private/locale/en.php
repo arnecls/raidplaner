@@ -232,7 +232,7 @@
         $g_Locale[ "EQDKPDatabase" ]            = "EQDKP database";
         $g_Locale[ "EQDKPPasswordEmpty" ]       = "EQDKP Database password must not be empty.";
         $g_Locale[ "EQDKPDBPasswordsMatch" ]    = "EQDKP Database passwords did not match.";
-        $g_Locale[ "VBulletinBinding" ]         = "vBulletin binding";
+        $g_Locale[ "VBulletinBinding" ]         = "vBulletin3 binding";
         $g_Locale[ "VBulletinConfigFile" ]      = "vBulletin config file";
         $g_Locale[ "VBulletinDatabase" ]        = "vBulletin database";
         $g_Locale[ "VBulletinPasswordEmpty" ]   = "vBulletin Database password must not be empty.";
@@ -242,6 +242,10 @@
         $g_Locale[ "MyBBDatabase" ]             = "MyBB database";
         $g_Locale[ "MyBBPasswordEmpty" ]        = "MyBB Database password must not be empty.";
         $g_Locale[ "MyBBDBPasswordsMatch" ]     = "MyBB Database passwords did not match.";
-        $g_Locale[ "MyBB3Binding" ]             = "MyBB binding";
+        $g_Locale[ "SMFBinding" ]               = "SMF binding";
+        $g_Locale[ "SMFConfigFile" ]            = "SMF config file";
+        $g_Locale[ "SMFDatabase" ]              = "SMF database";
+        $g_Locale[ "SMFPasswordEmpty" ]         = "SMF Database password must not be empty.";
+        $g_Locale[ "SMFDBPasswordsMatch" ]      = "SMF Database passwords did not match.";
     }
 ?>

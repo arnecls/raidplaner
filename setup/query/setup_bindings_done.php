@@ -10,6 +10,7 @@
     $eqdkp_config = fopen( "../../lib/config/config.eqdkp.php", "w+" );
     $vb3_config = fopen( "../../lib/config/config.vb3.php", "w+" );
     $mybb_config = fopen( "../../lib/config/config.mybb.php", "w+" );
+    $smf_config = fopen( "../../lib/config/config.smf.php", "w+" );
     
     // phpbb3
     
@@ -78,8 +79,24 @@
         fwrite( $mybb_config, "\tdefine(\"MYBB_RAIDLEAD_GROUPS\", \"".implode( ",", $_REQUEST["mybb_raidlead"] )."\");\n");
     }
     
-    fwrite( $mybb_config, "?>");    
-    fclose( $mybb_config );
+    // SMF
+    
+    fwrite( $smf_config, "<?php\n");
+    fwrite( $smf_config, "\tdefine(\"SMF_BINDING\", ".$_REQUEST["smf_allow"].");\n");
+    
+    if ( $_REQUEST["smf_allow"] )
+    {
+        fwrite( $smf_config, "\tdefine(\"SMF_DATABASE\", \"".$_REQUEST["smf_database"]."\");\n");
+        fwrite( $smf_config, "\tdefine(\"SMF_USER\", \"".$_REQUEST["smf_user"]."\");\n");
+        fwrite( $smf_config, "\tdefine(\"SMF_PASS\", \"".$_REQUEST["smf_password"]."\");\n");
+        fwrite( $smf_config, "\tdefine(\"SMF_TABLE_PREFIX\", \"".$_REQUEST["smf_prefix"]."\");\n");
+    
+        fwrite( $smf_config, "\tdefine(\"SMF_MEMBER_GROUPS\", \"".implode( ",", $_REQUEST["smf_member"] )."\");\n");
+        fwrite( $smf_config, "\tdefine(\"SMF_RAIDLEAD_GROUPS\", \"".implode( ",", $_REQUEST["smf_raidlead"] )."\");\n");
+    }
+    
+    fwrite( $smf_config, "?>");    
+    fclose( $smf_config );
     
     echo "</bindings>";    
 ?>

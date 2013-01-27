@@ -91,6 +91,35 @@ function onReloadMyBB( a_XMLData )
     $("#mybb_raidlead").empty().append( HTMLString );
 }
 
+function onReloadSMF( a_XMLData )
+{
+    var groups = $(a_XMLData).children("grouplist");
+    
+    if ( groups.children("error").size() > 0 )
+    {
+        var errorString = "";
+        
+        groups.children("error").each( function() {
+            errorString += $(this).text() + "\n";
+        });
+        
+        alert("<?php echo L("ReloadFailed"); ?>:\n\n" + errorString );
+        return;
+    }    
+    
+    HTMLString = "<option value=\"0\">Board default</option>";
+    
+    groups.children("group").each( function() {
+        var id = $(this).children("id").text();
+        var name = $(this).children("name").text();
+        
+        HTMLString += "<option value=\"" + id + "\">" + name + "</option>";
+    });
+    
+    $("#smf_member").empty().append( HTMLString );
+    $("#smf_raidlead").empty().append( HTMLString );
+}
+
 function onCheckEQDKP( a_XMLData )
 {
     var groups = $(a_XMLData).children("check");
@@ -203,6 +232,37 @@ function reloadMyBBGroups()
     });
 }
 
+function reloadSMFGroups() 
+{
+    if ( $("#smf_password").val().length == 0 )
+    {
+        alert("<?php echo L("SMFPasswordEmpty"); ?>");
+        return;
+    }
+    
+    if ( $("#smf_password").val() != $("#smf_password_check").val() )
+    {
+        alert("<?php echo L("SMFPasswordsMatch"); ?>");
+        return;
+    }
+    
+    var parameter = {
+        database : $("#smf_database").val(),
+        user     : $("#smf_user").val(),
+        password : $("#smf_password").val(),
+        prefix   : $("#smf_prefix").val()
+    };
+    
+    $.ajax({
+        type     : "POST",
+        url      : "query/groups_smf.php",
+        dataType : "xml",
+        async    : true,
+        data     : parameter,
+        success  : onReloadSMF
+    });
+}
+
 function checkEQDKP()
 {
     if ( $("#eqdkp_password").val().length == 0 )
@@ -240,6 +300,7 @@ function checkForm()
     var useEQDKP = $("#allow_eqdkp:checked").val() == "on";
     var useVBulletin = $("#allow_vb3:checked").val() == "on";
     var useMyBB = $("#allow_mybb:checked").val() == "on";
+    var useSMF = $("#allow_smf:checked").val() == "on";
     
     if ( usePhpBB )
     {
@@ -300,6 +361,21 @@ function checkForm()
             return;
         }
     }
+    
+    if ( useSMF )
+    {    
+        if ( $("#smf_password").val().length == 0 )
+        {
+            alert("<?php echo L("SMFPasswordEmpty"); ?>");
+            return;
+        }
+        
+        if ( $("#smf_password").val() != $("#smf_password_check").val() )
+        {
+            alert("<?php echo L("SMFDBPasswordsMatch"); ?>");
+            return;
+        }
+    }
         
     var parameter = {
         phpbb3_check    : usePhpBB,
@@ -324,7 +400,13 @@ function checkForm()
         mybb_database : $("#mybb_database").val(),
         mybb_user     : $("#mybb_user").val(),
         mybb_password : $("#mybb_password").val(),
-        mybb_prefix   : $("#mybb_prefix").val()
+        mybb_prefix   : $("#mybb_prefix").val(),
+    
+        smf_check    : useSMF,
+        smf_database : $("#smf_database").val(),
+        smf_user     : $("#smf_user").val(),
+        smf_password : $("#smf_password").val(),
+        smf_prefix   : $("#smf_prefix").val()
     };
     
     $.ajax({
@@ -395,6 +477,20 @@ function dbCheckDone( a_XMLData )
         mybb_raidLeadGroups.push( $(this).val() );
     });
     
+    // smf
+    
+    var smf_memberGroups = new Array();
+    
+    $("#smf_member option:selected").each( function() {
+        smf_memberGroups.push( $(this).val() );
+    });
+    
+    var smf_raidLeadGroups = new Array();
+    
+    $("#smf_raidlead option:selected").each( function() {
+        smf_raidLeadGroups.push( $(this).val() );
+    });
+    
     var parameter = {
         phpbb3_allow    : $("#allow_phpbb3:checked").val() == "on",
         phpbb3_database : $("#phpbb3_database").val(),
@@ -424,7 +520,15 @@ function dbCheckDone( a_XMLData )
         mybb_password : $("#mybb_password").val(),
         mybb_prefix   : $("#mybb_prefix").val(),
         mybb_member   : mybb_memberGroups,
-        mybb_raidlead : mybb_raidLeadGroups
+        mybb_raidlead : mybb_raidLeadGroups,
+
+        smf_allow    : $("#allow_smf:checked").val() == "on",
+        smf_database : $("#smf_database").val(),
+        smf_user     : $("#smf_user").val(),
+        smf_password : $("#smf_password").val(),
+        smf_prefix   : $("#smf_prefix").val(),
+        smf_member   : smf_memberGroups,
+        smf_raidlead : smf_raidLeadGroups
     };
     
     $.ajax({
@@ -441,6 +545,7 @@ $(document).ready( function() {
     $("#eqdkp").hide();
     $("#vbulletin").hide();
     $("#mybb").hide();
+    $("#smf").hide();
 });
 
 function showConfig( a_Name )
@@ -449,6 +554,7 @@ function showConfig( a_Name )
     $("#eqdkp").hide();
     $("#vbulletin").hide();
     $("#mybb").hide();
+    $("#smf").hide();
     
     $(".tab_active").removeClass("tab_active").addClass("tab_inactive");
     

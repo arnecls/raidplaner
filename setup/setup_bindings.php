@@ -6,6 +6,7 @@
     @include_once(dirname(__FILE__)."/../lib/config/config.vb3.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.eqdkp.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.mybb.php");
+    @include_once(dirname(__FILE__)."/../lib/config/config.smf.php");
     
     if ( defined("PHPBB3_BINDING") && PHPBB3_BINDING )
     {
@@ -56,6 +57,26 @@
         while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
         {
             array_push( $MyBBGroups, $Group );
+        }
+        
+        $Groups->closeCursor(); 
+    }
+    
+    if ( defined("SMF_BINDING") && SMF_BINDING )
+    {
+        require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
+    
+        $Connector = new Connector(SQL_HOST, SMF_DATABASE, SMF_USER, SMF_PASS); 
+        $Groups = $Connector->prepare( "SELECT id_group, group_name FROM `".SMF_TABLE_PREFIX."membergroups` ORDER BY group_name" );
+        
+        $Groups->execute();        
+        $SMFGroups = Array();
+        
+        array_push( $SMFGroups, Array("id_group" => 0, "group_name" => "Board default") );
+        
+        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        {
+            array_push( $SMFGroups, $Group );
         }
         
         $Groups->closeCursor(); 
@@ -121,6 +142,7 @@
                     <div id="button_eqdkp" class="tab_inactive" onclick="showConfig('eqdkp')"><input type="checkbox" id="allow_eqdkp"<?php echo (defined("EQDKP_BINDING") && EQDKP_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("EQDKPBinding"); ?></div>
                     <div id="button_vbulletin" class="tab_inactive" onclick="showConfig('vbulletin')"><input type="checkbox" id="allow_vb3"<?php echo (defined("VB3_BINDING") && VB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("VBulletinBinding"); ?></div>
                     <div id="button_mybb" class="tab_inactive" onclick="showConfig('mybb')"><input type="checkbox" id="allow_mybb"<?php echo (defined("MYBB_BINDING") && MYBB_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("MyBBBinding"); ?></div>
+                    <div id="button_smf" class="tab_inactive" onclick="showConfig('smf')"><input type="checkbox" id="allow_smf"<?php echo (defined("SMF_BINDING") && SMF_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("SMFBinding"); ?></div>
                     </div>
                 </div>
                 
@@ -245,7 +267,7 @@
                 <div id="mybb">
                     <div>
                         <h2><?php echo L("MYBBBinding"); ?></h2>
-                        <input type="text" id="mybb_database" value="<?php echo (defined("MYBB_DATABASE")) ? MYBB_DATABASE : "phpbb" ?>"/> <?php echo L("MyBBDatabase"); ?><br/>
+                        <input type="text" id="mybb_database" value="<?php echo (defined("MYBB_DATABASE")) ? MYBB_DATABASE : "mybb" ?>"/> <?php echo L("MyBBDatabase"); ?><br/>
                         <input type="text" id="mybb_user" value="<?php echo (defined("MYBB_TABLE")) ? MYBB_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
                         <input type="password" id="mybb_password"/> <?php echo L("UserPassword"); ?><br/>
                         <input type="password" id="mybb_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
@@ -287,6 +309,58 @@
                                 foreach( $MyBBGroups as $Group )
                                 {
                                     echo "<option value=\"".$Group["gid"]."\"".((in_array($Group["gid"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["title"]."</option>";
+                                }
+                            }
+                        ?>
+                        </select>
+                    </div>                    
+                </div>
+                
+                <div id="smf">
+                    <div>
+                        <h2><?php echo L("SMFBinding"); ?></h2>
+                        <input type="text" id="smf_database" value="<?php echo (defined("SMF_DATABASE")) ? SMF_DATABASE : "smf" ?>"/> <?php echo L("SMFDatabase"); ?><br/>
+                        <input type="text" id="smf_user" value="<?php echo (defined("SMF_TABLE")) ? SMF_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+                        <input type="password" id="smf_password"/> <?php echo L("UserPassword"); ?><br/>
+                        <input type="password" id="smf_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
+                        <br/>
+                        <input type="text" id="smf_prefix" value="<?php echo (defined("SMF_TABLE_PREFIX")) ? SMF_TABLE_PREFIX : "smf_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
+                    </div>
+                    
+                    <div style="margin-top: 1em">
+                        <button onclick="reloadSMFGroups()"><?php echo L("LoadGroups"); ?></button><br/><br/>
+                        
+                        <?php echo L("AutoMemberLogin"); ?><br/>
+                        <select id="smf_member" multiple="multiple" style="width: 400px; height: 5.5em">
+                        <?php
+                            if ( defined("SMF_DATABASE") )
+                            {
+                                $GroupIds = array();
+                                
+                                if ( defined("SMF_MEMBER_GROUPS") )
+                                    $GroupIds = explode( ",", SMF_MEMBER_GROUPS );
+                                
+                                foreach( $SMFGroups as $Group )
+                                {
+                                    echo "<option value=\"".$Group["id_group"]."\"".((in_array($Group["id_group"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["group_name"]."</option>";
+                                }
+                            }
+                        ?>
+                        </select>
+                        <br/><br/>
+                        <?php echo L("AutoLeadLogin"); ?><br/>
+                        <select id="smf_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
+                        <?php
+                            if ( defined("SMF_DATABASE") )
+                            {
+                                $GroupIds = array();
+                                
+                                if ( defined("SMF_RAIDLEAD_GROUPS") )
+                                    $GroupIds = explode( ",", SMF_RAIDLEAD_GROUPS );
+                                
+                                foreach( $SMFGroups as $Group )
+                                {
+                                    echo "<option value=\"".$Group["id_group"]."\"".((in_array($Group["id_group"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["group_name"]."</option>";
                                 }
                             }
                         ?>

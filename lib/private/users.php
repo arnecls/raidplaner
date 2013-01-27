@@ -7,6 +7,7 @@
     require_once dirname(__FILE__)."/bindings/eqdkp.php";
     require_once dirname(__FILE__)."/bindings/vbulletin3.php";
     require_once dirname(__FILE__)."/bindings/mybb.php";
+    require_once dirname(__FILE__)."/bindings/smf.php";
 
     class UserProxy
     {
@@ -19,7 +20,8 @@
             "PHPBB3"  => array( "Function" => "BindPHPBB3User", "Available" => PHPBB3_BINDING ),
             "EQDKP"   => array( "Function" => "BindEQDKPUser",  "Available" => EQDKP_BINDING ),
             "VB3"     => array( "Function" => "BindVB3User",    "Available" => VB3_BINDING ),
-            "MYBB"    => array( "Function" => "BindMyBBUser",   "Available" => MYBB_BINDING )
+            "MYBB"    => array( "Function" => "BindMyBBUser",   "Available" => MYBB_BINDING ),
+            "SMF"     => array( "Function" => "BindSMFUser",    "Available" => SMF_BINDING )
         );
 
         private static $Salt = null;

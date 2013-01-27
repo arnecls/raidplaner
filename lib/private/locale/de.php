@@ -232,7 +232,7 @@
         $g_Locale[ "EQDKPDatabase" ]            = "Name der EQDKP Datenbank";
         $g_Locale[ "EQDKPPasswordEmpty" ]       = "EQDKP Datenbank Passwort darf nicht leer sein";
         $g_Locale[ "EQDKPDBPasswordsMatch" ]    = "EQDKP Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein";
-        $g_Locale[ "VBulletinBinding" ]         = "vBulletin Anbindung";
+        $g_Locale[ "VBulletinBinding" ]         = "vBulletin3 Anbindung";
         $g_Locale[ "VBulletinConfigFile" ]      = "vBulletin Konfigurationsdatei";
         $g_Locale[ "VBulletinDatabase" ]        = "Name der vBulletin Datenbank";
         $g_Locale[ "VBulletinPasswordEmpty" ]   = "vBulletin Datenbank Passwort darf nicht leer sein";
@@ -241,6 +241,11 @@
         $g_Locale[ "MyBBConfigFile" ]           = "MyBB Konfigurationsdatei";
         $g_Locale[ "MyBBDatabase" ]             = "Name der MyBB Datenbank";
         $g_Locale[ "MyBBPasswordEmpty" ]        = "MyBB Datenbank Passwort darf nicht leer sein.";
-        $g_Locale[ "MyBBDBPasswordsMatch" ]     = "MyBB Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";
+        $g_Locale[ "MyBBDBPasswordsMatch" ]     = "MyBB Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";        
+        $g_Locale[ "SMFBinding" ]              = "SMF Anbindung";
+        $g_Locale[ "SMFConfigFile" ]           = "SMF Konfigurationsdatei";
+        $g_Locale[ "SMFDatabase" ]             = "Name der SMF Datenbank";
+        $g_Locale[ "SMFPasswordEmpty" ]        = "SMF Datenbank Passwort darf nicht leer sein.";
+        $g_Locale[ "SMFDBPasswordsMatch" ]     = "SMF Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";
     }
 ?>
