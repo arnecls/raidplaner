@@ -8,7 +8,7 @@ function checkForm()
 {
     if ( $("#password").val().length == 0 )
     {
-        alert("<?php echo L("Database password must not be empty."); ?>");
+        alert("<?php echo L("DatabasePasswordEmpty"); ?>");
         return;
     }
     
@@ -20,7 +20,7 @@ function checkForm()
     
     if ( $("#password").val() != $("#password_check").val() )
     {
-        alert("<?php echo L("Database passwords did not match."); ?>");
+        alert("<?php echo L("DatabasePasswordNoMatch"); ?>");
     }
     
     if ( $("#admin_password").val() != $("#admin_password_check").val() )

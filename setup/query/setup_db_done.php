@@ -89,7 +89,7 @@
           `UserId` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `Group` enum('admin','raidlead','member','none') NOT NULL,
           `ExternalId` int(10) unsigned NOT NULL,
-          `ExternalBinding` enum('none', 'phpbb3', 'eqdkp', 'vb3') NOT NULL,
+          `ExternalBinding` enum('none', 'phpbb3', 'eqdkp', 'vb3', 'mybb', 'smf') NOT NULL,
           `Login` varchar(255) NOT NULL,
           `Password` char(64) NOT NULL,
           `Hash` char(32) NOT NULL,

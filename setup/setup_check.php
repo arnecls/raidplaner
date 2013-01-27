@@ -130,6 +130,19 @@
                             echo "<span style=\"color: red\">".L("NotWriteable")."</span>";
                         }
                     ?><br/>
+                    
+                    <?php echo L("MyBBConfigFile"); ?> : <?php
+                        $phpbbConfigFileState = (!file_exists("../lib/config/config.mybb.php") && $configFolderState) || 
+                                                is_writable("../lib/config/config.mybb.php");
+                                            
+                        if ( $phpbbConfigFileState )
+                            echo "<span style=\"color: green\">".L("Ok")."</span>";
+                        else
+                        {
+                            ++$testsFailed;
+                            echo "<span style=\"color: red\">".L("NotWriteable")."</span>";
+                        }
+                    ?><br/>
                 </div>
                 
                 <?php 

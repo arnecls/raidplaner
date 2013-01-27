@@ -5,6 +5,7 @@
     @include_once(dirname(__FILE__)."/../lib/config/config.phpbb3.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.vb3.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.eqdkp.php");
+    @include_once(dirname(__FILE__)."/../lib/config/config.mybb.php");
     
     if ( defined("PHPBB3_BINDING") && PHPBB3_BINDING )
     {
@@ -41,6 +42,24 @@
         
         $Groups->closeCursor(); 
     }
+    
+    if ( defined("MYBB_BINDING") && MYBB_BINDING )
+    {
+        require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
+    
+        $Connector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS); 
+        $Groups = $Connector->prepare( "SELECT gid, title FROM `".MYBB_TABLE_PREFIX."usergroups` ORDER BY title" );
+        
+        $Groups->execute();        
+        $MyBBGroups = Array();
+        
+        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        {
+            array_push( $MyBBGroups, $Group );
+        }
+        
+        $Groups->closeCursor(); 
+    }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
@@ -55,7 +74,8 @@
         
         <style>
             .tab_active {
-                margin: 0px;
+                margin: 0px 0px 0px 2px;
+                padding: 2px 10px 2px 5px;
                 border-left: 1px solid black;
                 border-right: 1px solid black;
                 border-top: 1px solid black;
@@ -63,14 +83,26 @@
                 background-color: white;
                 position: relative;
                 top: 1px;
+                display: inline-block;
+                cursor: pointer;
+                z-index: 10;
             }
             
             .tab_inactive {
-                margin: 0px;
+                margin: 0px 0px 0px 2px;
+                padding: 2px 10px 2px 5px;
                 border: 1px solid black;
                 background-color: #dddddd;
                 position: relative;
                 top: 1px;
+                display: inline-block;
+                cursor: pointer;
+            }
+            
+            .binding_label {
+                margin-left: 5px;
+                width: 160px;
+                display: inline-block;
             }
         </style>
     </head>
@@ -84,14 +116,11 @@
             <div style="padding: 20px">
             
                 <div id="bindings">
-                    <input type="checkbox" id="allow_phpbb3"<?php echo (defined("PHPBB3_BINDING") && PHPBB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("AllowPHPBB3Login"); ?><br/>
-                    <input type="checkbox" id="allow_eqdkp"<?php echo (defined("EQDKP_BINDING") && EQDKP_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("AllowEQDKPLogin"); ?><br/>
-                    <input type="checkbox" id="allow_vb3"<?php echo (defined("VB3_BINDING") && VB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("AllowVBulletinLogin"); ?><br/>
-                    <br/>
-                    <div style="border-bottom: 1px solid black">
-                    <button id="button_phpbb3" class="tab_active" onclick="showConfig('phpbb3')"><?php echo L("PHPBB3Binding"); ?></button>
-                    <button id="button_eqdkp" class="tab_inactive" onclick="showConfig('eqdkp')"><?php echo L("EQDKPBinding"); ?></button>
-                    <button id="button_vbulletin" class="tab_inactive" onclick="showConfig('vbulletin')"><?php echo L("VBulletinBinding"); ?></button>
+                    <div style="margin: 0px; padding: 0 0 0 2px; border-bottom: 1px solid black">
+                    <div id="button_phpbb3" class="tab_active" onclick="showConfig('phpbb3')"><input type="checkbox" id="allow_phpbb3"<?php echo (defined("PHPBB3_BINDING") && PHPBB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("PHPBB3Binding"); ?></div>
+                    <div id="button_eqdkp" class="tab_inactive" onclick="showConfig('eqdkp')"><input type="checkbox" id="allow_eqdkp"<?php echo (defined("EQDKP_BINDING") && EQDKP_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("EQDKPBinding"); ?></div>
+                    <div id="button_vbulletin" class="tab_inactive" onclick="showConfig('vbulletin')"><input type="checkbox" id="allow_vb3"<?php echo (defined("VB3_BINDING") && VB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("VBulletinBinding"); ?></div>
+                    <div id="button_mybb" class="tab_inactive" onclick="showConfig('mybb')"><input type="checkbox" id="allow_mybb"<?php echo (defined("MYBB_BINDING") && MYBB_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("MyBBBinding"); ?></div>
                     </div>
                 </div>
                 
@@ -206,6 +235,58 @@
                                 foreach( $VB3Groups as $Group )
                                 {
                                     echo "<option value=\"".$Group["usergroupid"]."\"".((in_array($Group["usergroupid"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["title"]."</option>";
+                                }
+                            }
+                        ?>
+                        </select>
+                    </div>                    
+                </div>
+                
+                <div id="mybb">
+                    <div>
+                        <h2><?php echo L("MYBBBinding"); ?></h2>
+                        <input type="text" id="mybb_database" value="<?php echo (defined("MYBB_DATABASE")) ? MYBB_DATABASE : "phpbb" ?>"/> <?php echo L("MyBBDatabase"); ?><br/>
+                        <input type="text" id="mybb_user" value="<?php echo (defined("MYBB_TABLE")) ? MYBB_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+                        <input type="password" id="mybb_password"/> <?php echo L("UserPassword"); ?><br/>
+                        <input type="password" id="mybb_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
+                        <br/>
+                        <input type="text" id="mybb_prefix" value="<?php echo (defined("MYBB_TABLE_PREFIX")) ? MYBB_TABLE_PREFIX : "mybb_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
+                    </div>
+                    
+                    <div style="margin-top: 1em">
+                        <button onclick="reloadMyBBGroups()"><?php echo L("LoadGroups"); ?></button><br/><br/>
+                        
+                        <?php echo L("AutoMemberLogin"); ?><br/>
+                        <select id="mybb_member" multiple="multiple" style="width: 400px; height: 5.5em">
+                        <?php
+                            if ( defined("MYBB_DATABASE") )
+                            {
+                                $GroupIds = array();
+                                
+                                if ( defined("MYBB_MEMBER_GROUPS") )
+                                    $GroupIds = explode( ",", MYBB_MEMBER_GROUPS );
+                                
+                                foreach( $MyBBGroups as $Group )
+                                {
+                                    echo "<option value=\"".$Group["gid"]."\"".((in_array($Group["gid"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["title"]."</option>";
+                                }
+                            }
+                        ?>
+                        </select>
+                        <br/><br/>
+                        <?php echo L("AutoLeadLogin"); ?><br/>
+                        <select id="mybb_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
+                        <?php
+                            if ( defined("MYBB_DATABASE") )
+                            {
+                                $GroupIds = array();
+                                
+                                if ( defined("MYBB_RAIDLEAD_GROUPS") )
+                                    $GroupIds = explode( ",", MYBB_RAIDLEAD_GROUPS );
+                                
+                                foreach( $MyBBGroups as $Group )
+                                {
+                                    echo "<option value=\"".$Group["gid"]."\"".((in_array($Group["gid"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["title"]."</option>";
                                 }
                             }
                         ?>

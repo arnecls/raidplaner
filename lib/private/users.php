@@ -6,18 +6,20 @@
     require_once dirname(__FILE__)."/bindings/phpbb3.php";
     require_once dirname(__FILE__)."/bindings/eqdkp.php";
     require_once dirname(__FILE__)."/bindings/vbulletin3.php";
+    require_once dirname(__FILE__)."/bindings/mybb.php";
 
     class UserProxy
     {
         private static $Instance = null;
-        private static $StickyLifeTime = 2592000; // 60 * 60 * 24 * 30; // 1 month
+        private static $StickyLifeTime = 604800; // 60 * 60 * 24 * 7; // 1 week
         private static $StickyCookieName = "ppx_raidplaner_sticky";
 
         private static $Bindings = array(
             "Default" => array( "Function" => "BindNativeUser", "Available" => true ),
             "PHPBB3"  => array( "Function" => "BindPHPBB3User", "Available" => PHPBB3_BINDING ),
             "EQDKP"   => array( "Function" => "BindEQDKPUser",  "Available" => EQDKP_BINDING ),
-            "VB3"     => array( "Function" => "BindVB3User",    "Available" => VB3_BINDING )
+            "VB3"     => array( "Function" => "BindVB3User",    "Available" => VB3_BINDING ),
+            "MYBB"    => array( "Function" => "BindMyBBUser",   "Available" => MYBB_BINDING )
         );
 
         private static $Salt = null;
@@ -113,13 +115,13 @@
                         // Logged in via binding
                         // Process sticky cookie request and clear salt value
 
-                        if ( isset($_REQUEST["sticky"]) && 
-                             ($_REQUEST["sticky"] == "true") )
+                        if ( (isset($_REQUEST["sticky"]) && ($_REQUEST["sticky"] == "true")) ||
+                             (isset($_COOKIE[self::$StickyCookieName])) )
                         {
                             // Sticky login is requested
                             
-                            $data = array(  "Login"    => $LoginUser["Login"],
-                                            "Password" => $_SESSION["User"]["Password"] );
+                            $data = array( "Login"    => $LoginUser["Login"],
+                                           "Password" => $_SESSION["User"]["Password"] );
 
                             $cookieData = intval($_SESSION["User"]["UserId"]).",".implode(",",$this->EncryptData(self::$Salt, $data));
                             
@@ -267,9 +269,16 @@
                     self::$Salt = $Salt;
                 else
                     self::GenerateSalt( $Login );
-                    
-                $hashedPassword = HashNativePasswordWithSalt($Password, self::$Salt);
-                    
+                
+                if ( $BindingName == "none" )
+                {
+                    $hashedPassword = HashNativePasswordWithSalt($Password, self::$Salt);
+                }
+                else
+                {
+                    $hashedPassword = $Password;
+                }
+                   
                 $UserSt->closeCursor();
                 $UserSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."User` (".
                                               "`Group`, ExternalId, ExternalBinding, Login, Password, Hash, Created) ".
@@ -497,11 +506,11 @@
                 if ( $CharacterSt->execute() )
                 {
                     $_SESSION["User"]["Role1"] = array();
-                       $_SESSION["User"]["Role2"] = array();
-                       $_SESSION["User"]["CharacterId"] = array();
-                       $_SESSION["User"]["CharacterName"] = array();
+                    $_SESSION["User"]["Role2"] = array();
+                    $_SESSION["User"]["CharacterId"] = array();
+                    $_SESSION["User"]["CharacterName"] = array();
 
-                       while ( $row = $CharacterSt->fetch( PDO::FETCH_ASSOC ) )
+                    while ( $row = $CharacterSt->fetch( PDO::FETCH_ASSOC ) )
                     {
                         array_push( $_SESSION["User"]["Role1"], $row["Role1"] );
                         array_push( $_SESSION["User"]["Role2"], $row["Role2"] );
