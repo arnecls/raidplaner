@@ -175,7 +175,7 @@
     {
         echo "<update version=\"96\">";
         
-        $updates = Array( "Undecided comments" => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` CHANGE `Status` `Status` ENUM('ok', 'available', 'unavailable', 'undecided') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL" );
+        $updates = Array( "Undecided comments" => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CHANGE `Status` `Status` ENUM('ok', 'available', 'unavailable', 'undecided') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;" );
         
         doUpgrade( $updates );
         
@@ -194,7 +194,9 @@
                 postErrorMessage( $UserQuery );
             }
             else
-            {
+            {                
+                // Update vbulletin users
+                
                 $VbConnector = new Connector(SQL_HOST, VB3_DATABASE, VB3_USER, VB3_PASS);
                 $VbUserQuery = $VbConnector->prepare("SELECT userid,salt FROM `".VB3_TABLE_PREFIX."user`");
                 
@@ -225,7 +227,7 @@
                             
                             if ( !$UpdateUser->execute() )
                             {
-                                postErrorMessage( $VbUserQuery );
+                                postErrorMessage( $UpdateUser );
                             }
                             
                             $UpdateUser->closeCursor();
@@ -240,6 +242,43 @@
             
             echo "</step>";
         }
+        
+        echo "<step name=\"Rainbowtable fix\">";
+        
+        // Update native password hashes
+        
+        $NativeUserQuery = $Connector->prepare("SELECT UserId, Hash, Password FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding=\"native\"");
+        
+        if ( !$NativeUserQuery->execute() )
+        {
+            postErrorMessage( $NativeUserQuery );
+        }
+        else
+        {
+            while ( $UserData = $NativeUserQuery->fetch(PDO::FETCH_ASSOC) )
+            {
+                // Old style passwords are stored as sha1 hash -> 160 bits (20 bytes -> 40 char hex)
+                // New style passwords are stored as sha256 hash -> 256 bits (32 bytes -> 64 char hex)
+                if ( strlen($UserData["Password"]) < 64 )
+                {
+                    $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Password=:Password WHERE UserId= :UserId LIMIT 1");
+                                
+                    $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
+                    $UpdateUser->bindValue(":Password", hash("sha256", .$UserData["Password"].$UserData["Hash"]), PDO::PARAM_STR);
+                    
+                    if ( !$UpdateUser->execute() )
+                    {
+                        postErrorMessage( $UpdateUser );
+                    }
+                    
+                    $UpdateUser->closeCursor();
+                }
+            }                    
+        }
+        
+        $NativeUserQuery>closeCursor();
+        
+        echo "</step>";
         
         echo "</update>";
     }

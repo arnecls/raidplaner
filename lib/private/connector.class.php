@@ -18,7 +18,8 @@
             {
                 $this->Host  = $_Host;
                 $this->Database = $_Database;
-                parent::__construct("mysql:dbname=".$_Database.";host=".$_Host, $_User, $_Pass);
+                parent::__construct("mysql:dbname=".$_Database.";host=".$_Host, $_User, $_Pass,
+                    array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             }
             catch (PDOException $Exception)
             {

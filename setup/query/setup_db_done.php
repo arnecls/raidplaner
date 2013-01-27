@@ -123,16 +123,17 @@
     $testSt->execute();
     
     $Salt = sha1( strval(microtime() + rand()) . $_SERVER["REMOTE_ADDR"] );
-    $Hash = sha1( "admin".$_REQUEST["adminpass"] );            
-    $Hash = md5( $Salt.$Hash );
-        
+    $HashSalt = md5( "admin".$Salt );
+    $hashedPassword = hash("sha256", sha1($_REQUEST["adminpass"]).$HashSalt);
+            
     if ( $testSt->rowCount() == 0 )
     {
-        $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."User` VALUES(1, 'admin', 0, 'none', 'admin', '".sha1($_REQUEST["adminpass"])."', '".$Hash."', FROM_UNIXTIME(".time()."));" );
-    }
+        $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."User` VALUES(1, 'admin', 0, 'none', 'admin', '".$hashedPassword."', '".$HashSalt."', FROM_UNIXTIME(".time()."));" );
+    }   
+    // Reset admin password 
     //else
     //{
-    //    $connector->exec( "UPDATE `".$_REQUEST["prefix"]."User` SET `Password`='".sha1($_REQUEST["adminpass"])."', `Hash`='".$Hash."' WHERE UserId=1 LIMIT 1;" );        
+    //    $connector->exec( "UPDATE `".$_REQUEST["prefix"]."User` SET `Password`='".$hashedPassword."', `Hash`='".$HashSalt."' WHERE UserId=1 LIMIT 1;" );        
     //}
     
     $testSt->closeCursor();

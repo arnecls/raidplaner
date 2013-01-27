@@ -3,7 +3,8 @@
        
     function BindEQDKPUser($User)
     {
-        if ( isset($User["cleartext"]) && ($User["cleartext"] == true) )
+        if ( isset($User["cleartext"]) && 
+            ($User["cleartext"] == true) )
         {
             $Connector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
             
@@ -16,9 +17,9 @@
             {
                 // Check if the binding changed
                 
-                $UserSt = $Connector->prepare(    "SELECT username, user_password ".
-                                                  "FROM `".EQDKP_TABLE_PREFIX."users` ".
-                                                  "WHERE user_id = :UserId LIMIT 1");
+                $UserSt = $Connector->prepare("SELECT username, user_password ".
+                                              "FROM `".EQDKP_TABLE_PREFIX."users` ".
+                                              "WHERE user_id = :UserId LIMIT 1");
                                           
                 $UserSt->bindValue(":UserId", $_SESSION["User"]["ExternalId"], PDO::PARAM_INT);
                 $UserSt->execute();
@@ -32,7 +33,7 @@
                 {
                     // No user found, so the user does not exist in eqdkp anymore
                     // In this case convert to local user
-                    UserProxy::ConvertCurrentUserToLocalBinding();
+                    UserProxy::ConvertCurrentUserToLocalBinding($User["Password"]);
                 }
                 
                 $UserSt->closeCursor();
@@ -63,8 +64,7 @@
                     
                     if ( UserProxy::CheckForBindingUpdate( $ExternalUserData["user_id"], strtolower($User["Login"]), $ExternalUserData["user_password"], "eqdkp", false ) )
                     {
-                        UserProxy::TryLoginUser($User["Login"], $ExternalUserData["user_password"], "eqdkp");
-                        return true; // ### user changed password or was renamed ###
+                        return UserProxy::TryLoginUser($User["Login"], $ExternalUserData["user_password"], "eqdkp"); // ### return, user modified ###
                     }                    
                     
                     // User not yet registered

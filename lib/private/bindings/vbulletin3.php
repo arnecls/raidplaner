@@ -16,7 +16,8 @@
     
     function BindVB3User($User)
     {
-        if ( isset($User["cleartext"]) && ($User["cleartext"] == true) )
+        if ( isset($User["cleartext"]) && 
+             ($User["cleartext"] == true) )
         {
             $Connector = new Connector(SQL_HOST, VB3_DATABASE, VB3_USER, VB3_PASS);
             $RaidConnect = Connector::GetInstance();
@@ -61,7 +62,7 @@
                         // No user found, so the user does not exist in vbulletin anymore
                         // convert to local user
                         
-                        UserProxy::ConvertCurrentUserToLocalBinding();
+                        UserProxy::ConvertCurrentUserToLocalBinding($User["Password"]);
                     }
                     
                     $UserSt->closeCursor();
@@ -96,8 +97,7 @@
                     
                     if ( UserProxy::CheckForBindingUpdate($ExternalUserData["userid"], strtolower($User["Login"]), $ExternalUserData["password"], "vb3", false, $ExternalUserData["salt"]) )
                     {
-                        UserProxy::TryLoginUser($User["Login"], $ExternalUserData["password"], "vb3");
-                        return true; // ### user changed password or was renamed ###
+                        return UserProxy::TryLoginUser($User["Login"], $ExternalUserData["password"], "vb3"); // ### return, user modified ###
                     }                    
                     
                     // User not yet registered

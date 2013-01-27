@@ -10,7 +10,7 @@ function msgChangePassword( $Request )
         {
             // Admin changes other user's password
 
-            if ( !UserProxy::ChangePassword(intval($_REQUEST["id"]), sha1($Request["passNew"]), sha1($Request["passOld"])) )
+            if ( !UserProxy::ChangePassword(intval($_REQUEST["id"]), $Request["passNew"], $Request["passOld"]) )
             {
                 echo "<error>".L("PasswordLocked")."</error>";
             }
@@ -21,7 +21,7 @@ function msgChangePassword( $Request )
         {
             // User changes password
 
-            if ( !UserProxy::ChangePassword(intval($_SESSION["User"]["UserId"]), sha1($Request["passNew"]), sha1($Request["passOld"])) )
+            if ( !UserProxy::ChangePassword(intval($_SESSION["User"]["UserId"]), $Request["passNew"], $Request["passOld"]) )
             {
                 echo "<error>".L("WrongPassword")."</error>";
             }
