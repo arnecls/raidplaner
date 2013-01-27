@@ -248,7 +248,7 @@
         
         // Update native password hashes
         
-        $NativeUserQuery = $Connector->prepare("SELECT UserId, Hash, Password FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding=\"native\"");
+        $NativeUserQuery = $Connector->prepare("SELECT UserId, Hash, Password FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding=\"none\"");
         
         if ( !$NativeUserQuery->execute() )
         {
@@ -260,12 +260,13 @@
             {
                 // Old style passwords are stored as sha1 hash -> 160 bits (20 bytes -> 40 char hex)
                 // New style passwords are stored as sha256 hash -> 256 bits (32 bytes -> 64 char hex)
+                
                 if ( strlen($UserData["Password"]) < 64 )
                 {
                     $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Password=:Password WHERE UserId= :UserId LIMIT 1");
                                 
                     $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
-                    $UpdateUser->bindValue(":Password", hash("sha256", .$UserData["Password"].$UserData["Hash"]), PDO::PARAM_STR);
+                    $UpdateUser->bindValue(":Password", hash("sha256", $UserData["Password"].$UserData["Hash"]), PDO::PARAM_STR);
                     
                     if ( !$UpdateUser->execute() )
                     {
@@ -277,7 +278,7 @@
             }                    
         }
         
-        $NativeUserQuery>closeCursor();
+        $NativeUserQuery->closeCursor();
         
         echo "</step>";
         

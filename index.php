@@ -115,10 +115,10 @@
                 <?php if ( RegisteredUser() ) { ?>
                 
                 <span class="logout">
-                    <form method="post" action="index.php">
+                    <form method="post" action="index.php" id="logout">
                         <input type="hidden" name="nocheck"/>
                         <input type="hidden" name="logout"/>
-                        <button onclick="submit()" class="button_logout"><?php echo L("Logout"); ?></button>
+                        <button onclick="return onLogOut()" class="button_logout"><?php echo L("Logout"); ?></button>
                     </form>
                 </span>
                 <span id="button_calendar" class="menu_button"><?php echo L("Calendar"); ?></span>

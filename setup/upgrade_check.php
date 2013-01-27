@@ -91,6 +91,7 @@
         
                             if ( !$GetVersion->execute() )
                             {
+                                postErrorMessage($GetVersion);
                                 $Version = 93;
                             }
                             else

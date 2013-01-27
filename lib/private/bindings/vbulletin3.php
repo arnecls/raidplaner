@@ -125,7 +125,6 @@
                         if ( in_array($Group["usergroupid"], $RaidleadGroups) )
                         {
                             $DefaultGroup = "raidlead";
-                            break; // ### break, best possible group ###
                         }
                     }
         
