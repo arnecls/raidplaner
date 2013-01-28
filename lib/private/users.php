@@ -464,11 +464,12 @@
 
             $UserSt = $Connector->prepare("SELECT ".RP_TABLE_PREFIX."User.*, ".RP_TABLE_PREFIX."Character.Name AS CharacterName, ".RP_TABLE_PREFIX."Character.Role1, ".RP_TABLE_PREFIX."Character.Role2, ".RP_TABLE_PREFIX."Character.CharacterId FROM `".RP_TABLE_PREFIX."User` ".
                                           "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING (UserId) ".
-                                          "WHERE Login = :Login AND Password = :Password AND ExternalBinding = '".$BindingName."' ".
+                                          "WHERE Login = :Login AND Password = :Password AND ExternalBinding = :Binding ".
                                           "ORDER BY Mainchar, ".RP_TABLE_PREFIX."Character.Name" );
 
             $UserSt->bindValue(":Login",    strtolower($Login), PDO::PARAM_STR);
             $UserSt->bindValue(":Password", $HashedPassword,    PDO::PARAM_STR);
+            $UserSt->bindValue(":Binding",  $BindingName,       PDO::PARAM_STR);
 
             if (!$UserSt->execute() )
             {
