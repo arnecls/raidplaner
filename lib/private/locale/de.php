@@ -221,7 +221,8 @@
         $g_Locale[ "PartiallyUpdated" ]         = "Dies kann auf eine bereits (teilweise) upgedatete Datenbank hinweisen.";
         $g_Locale[ "Ignore" ]                   = "Ignorieren";
         $g_Locale[ "Retry" ]                    = "Wiederholen";
-        $g_Locale[ "DatabaseError" ]            = "Datenbank Fehler";        
+        $g_Locale[ "DatabaseError" ]            = "Datenbank Fehler";
+        $g_Locale[ "EditBindings" ]             = "Benutzeranbindung bearbeiten";        
         $g_Locale[ "PHPBB3Binding" ]            = "PHPBB3 Anbindung";
         $g_Locale[ "PHPBB3ConfigFile" ]         = "PHPBB3 Konfigurationsdatei";
         $g_Locale[ "PHPBB3Database" ]           = "Name der PHPBB3 Datenbank";

@@ -6,4 +6,5 @@ jQuery(document).ready( function() {
         
     $("#install").click( function() { document.location.href = "setup_check.php"; });
     $("#upgrade").click( function() { document.location.href = "upgrade_check.php"; });
+    $("#binding").click( function() { document.location.href = "setup_bindings.php"; });
 });

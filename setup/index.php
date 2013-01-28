@@ -75,8 +75,18 @@
                 <span style="font-size: 24px">Raidplaner</span>
             </div>
             <div style="padding: 20px; text-align: center">
-                <div id="install" class="button up" style="height: 80px; top: 190px; font-size: 3em"><span><?php echo L("Install"); ?></span></div>
-                <div id="upgrade" class="button up" style="height: 24px; top: 200px; font-size: 1em"><span style="margin-top: -0.6em"><?php echo L("Update"); ?></span></div>
+                <div id="install" class="button up" style="height: 80px; top: 170px; font-size: 3em"><span><?php echo L("Install"); ?></span></div>
+                <div id="upgrade" class="button up" style="height: 34px; top: 175px; font-size: 1.5em"><span style="margin-top: -0.5em"><?php echo L("Update"); ?></span></div>
+                <?php 
+                    $configFolderState = is_writable("../lib/config");
+                    $configFileState = (file_exists("../lib/config/config.php") && $configFolderState) || 
+                                       is_writable("../lib/config/config.php");
+                        
+                    if ($configFolderState && $configFileState)
+                    {
+                ?>
+                <div id="binding" class="button up" style="width: 200px; height: 24px; top: 195px; font-size: 1em"><span style="margin-top: -0.6em"><?php echo L("EditBindings"); ?></span></div>
+                <?php } ?>
             </div>
         </div>
     </body>
