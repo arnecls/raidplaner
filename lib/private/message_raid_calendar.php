@@ -79,7 +79,7 @@ function parseRaidQuery( $QueryResult, $Limit )
             // or it's the last entry
             // or the next entry is a different raid
 
-            $IsCorrectUser = $Data["UserId"] == intval($_SESSION["User"]["UserId"]);
+            $IsCorrectUser = $Data["UserId"] == UserProxy::GetInstance()->UserId;
 
             if ( ($IsCorrectUser) ||
                  ($Data["UserId"] == NULL) ||

@@ -18,7 +18,7 @@
     
     UserProxy::GetInstance(); // Init user
     loadSiteSettings();
-    
+        
     $siteVersion = 97;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -30,19 +30,10 @@
         <link rel="icon" href="favicon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="lib/layout/_layout.css.php?version=<?php echo $siteVersion; ?>"/>
         
-        <!--
-        <link rel="stylesheet" type="text/css" href="lib/layout/jquery-ui-1.10.0.custom.min.css"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/default.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/combobox.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/calendar.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/raid.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/raidlist.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/profile.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/tooltip.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadow.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/sheet.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/settings.css?version=<?php echo $siteVersion; ?>"/>
-        -->
+        <?php
+            //define("STYLE_DEBUG", true);
+            //include_once("lib/layout/_layout.css.php");
+        ?>
         
         <!--[if IE 9]>
         <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
@@ -65,40 +56,10 @@
         <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $siteVersion; ?>"></script>
         <!--<script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>"></script>-->
         
-        <script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $siteVersion; ?>"></script>
-        
-        <script type="text/javascript" src="lib/script/jquery-1.9.0.min.js"></script>
-        <script type="text/javascript" src="lib/script/jquery-ui-1.10.0.custom.min.js"></script>
-        <script type="text/javascript" src="lib/script/jquery.ba-hashchange.min.js"></script>
-        
-        <script type="text/javascript" src="lib/script/user.js.php?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/calendarsession.js.php?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/mobile.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/calendar.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/combobox.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/messagehub.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/sheet.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/tooltip.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/raid.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/raidlist.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/profile.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/main.js?version=<?php echo $siteVersion; ?>"></script>
-                
-        <?php if ( ValidAdmin() ) { ?>
-        <script type="text/javascript" src="lib/script/settings.js?version=<?php echo $siteVersion; ?>"></script>
-        <?php } ?>
-        
-        <?php if ( RegisteredUser() ) { ?>        
-        <script type="text/javascript" src="lib/script/initmenu.js?version=<?php echo $siteVersion; ?>"></script>
-        <?php } else { ?>
-        
-        <script type="text/javascript" src="lib/script/login.js?version=<?php echo $siteVersion; ?>"></script>
-            <?php if ( ALLOW_REGISTRATION ) { ?>    
-        <script type="text/javascript" src="lib/script/register.js?version=<?php echo $siteVersion; ?>"></script>
-            <?php } ?>            
-        <script type="text/javascript" src="lib/script/initlogin.js?version=<?php echo $siteVersion; ?>"></script>
-        
-        <?php } ?>
+        <?php
+            define("SCRIPT_DEBUG", true);
+            include_once("lib/script/_scripts.js.php");
+        ?>
         
     </head>
    

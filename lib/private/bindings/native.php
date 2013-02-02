@@ -2,64 +2,107 @@
     require_once dirname(__FILE__)."/../connector.class.php";
     require_once dirname(__FILE__)."/../../config/config.php";
     
-    
-    function HashNativePasswordWithSalt( $Password, $Salt )
+    class NativeBinding
     {
-        return hash("sha256", sha1($Password).$Salt);
-    }
+        public static $HashMethod = "native_sha256s";
+        public $BindingName = "none";
     
-    // -------------------------------------------------------------------------
-    
-    function HashNativePasswordForName( $UserName, $Password )
-    {
-        $Connector = Connector::GetInstance();
-        $UserSt = $Connector->prepare("SELECT Hash FROM ".RP_TABLE_PREFIX."User WHERE Login = :Login AND ExternalBinding = 'none' LIMIT 1");
-        $UserSt->BindValue( "Login", $UserName, PDO::PARAM_STR );
+        // -------------------------------------------------------------------------
         
-        $HashedPassword = null;
-        
-        if ( $UserSt->execute() && $UserSt->rowCount() > 0 )
+        public function __construct( $Name )
         {
-            $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
-            $HashedPassword = HashNativePasswordWithSalt($Password, $UserData["Hash"]);
+            $this->BindingName = $Name;
         }
-            
-        $UserSt->closeCursor();
-        return $HashedPassword;
-    }
-    
-    // -------------------------------------------------------------------------
-    
-    function HashNativePasswordForId( $UserId, $Password )
-    {
-        $Connector = Connector::GetInstance();
-        $UserSt = $Connector->prepare("SELECT Hash FROM ".RP_TABLE_PREFIX."User WHERE UserId = :UserId AND ExternalBinding = 'none' LIMIT 1");
-        $UserSt->BindValue( "UserId", $UserId, PDO::PARAM_STR );
         
-        $HashedPassword = null;
+        // -------------------------------------------------------------------------
         
-        if ( $UserSt->execute() && $UserSt->rowCount() > 0 )
+        public function IsActive()
         {
-            $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
-            $HashedPassword = HashNativePasswordWithSalt($Password, $UserData["Hash"]);
+            return true;
         }
-            
-        $UserSt->closeCursor();
-        return $HashedPassword;
-    }
-    
-    // -------------------------------------------------------------------------
         
-    function BindNativeUser( $User )
-    {
-        $password = $User["Password"];
+        // -------------------------------------------------------------------------
         
-        if ( isset($User["cleartext"]) && 
-             $User["cleartext"] )
+        private function GenerateInfo( $UserData )
         {
-            $password = HashNativePasswordForName($User["Login"], $User["Password"]);
-        }
+            $info = new UserInfo();
+            $info->UserName    = $UserData["Login"];
+            $info->Password    = $UserData["Password"];
+            $info->Salt        = $UserData["Salt"];
+            $info->Group       = $UserData["Group"];
+            $info->PassBinding = $UserData["ExternalBinding"];
             
-        return UserProxy::TryLoginUser( $User["Login"], $password, "none" );
+            if (($UserData["ExternalBinding"] != "none") && 
+                ($UserData["BindingActive"] == "true")) 
+            {
+                $info->UserId      = $UserData["ExternalId"];
+                $info->BindingName = $UserData["ExternalBinding"];
+            }
+            else
+            {
+                $info->UserId      = $UserData["UserId"];
+                $info->BindingName = $this->BindingName;
+            }
+            
+            return $info;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function GetUserInfoByName( $UserName )
+        {
+            $Connector = Connector::GetInstance();
+            $UserSt = $Connector->prepare("SELECT * FROM ".RP_TABLE_PREFIX."User ".
+                                          "WHERE Login = :Login LIMIT 1");
+                                          
+            $UserSt->BindValue( ":Login", strtolower($UserName), PDO::PARAM_STR );
+        
+            if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+            {
+                $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                $UserSt->closeCursor();
+                
+                return $this->GenerateInfo($UserData);
+            }
+        
+            $UserSt->closeCursor();
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function GetUserInfoById( $UserId )
+        {
+            $Connector = Connector::GetInstance();
+            $UserSt = $Connector->prepare("SELECT * FROM ".RP_TABLE_PREFIX."User ".
+                                          "WHERE UserId = :UserId LIMIT 1");
+                                          
+            $UserSt->BindValue( ":UserId", $UserId, PDO::PARAM_INT );
+        
+            if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+            {
+                $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                $UserSt->closeCursor();
+                
+                return $this->GenerateInfo($UserData);
+            }
+        
+            $UserSt->closeCursor();
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function GetMethodFromPass( $Password )
+        {
+            return self::$HashMethod;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public static function Hash( $Password, $Salt )
+        {
+            return hash("sha256", sha1($Password).$Salt);
+        }
     }
 ?>

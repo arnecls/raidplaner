@@ -177,7 +177,10 @@
         
         $updates = Array( "Undecided comments"               => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CHANGE `Status` `Status` ENUM('ok', 'available', 'unavailable', 'undecided') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
                           "New bindings"                     => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `ExternalBinding` `ExternalBinding` ENUM('none', 'phpbb3', 'eqdkp', 'vb3', 'mybb', 'smf') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
-                          "Support for long EQDKP passwords" => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `Password` `Password` CHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;" );
+                          "Support for long EQDKP passwords" => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `Password` `Password` CHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
+                          "HMAC support fields"              => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `Hash` `Salt` CHAR(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;".
+                                                                "ALTER TABLE `".RP_TABLE_PREFIX."User` ADD `OneTimeKey` CHAR(32) NOT NULL AFTER `Salt`, ADD `SessionKey` CHAR(32) NOT NULL AFTER `OneTimeKey`;".
+                                                                "ALTER TABLE `".RP_TABLE_PREFIX."User` ADD `BindingActive` ENUM('true', 'false') NOT NULL DEFAULT 'true' AFTER `ExternalBinding`;");
         
         doUpgrade( $updates );
         
@@ -210,22 +213,22 @@
                 {
                     // Gather all vbulletin users
                     
-                    $vbUsers = array();
+                    $vbUserSalt = array();
                     while ( $UserData = $VbUserQuery->fetch(PDO::FETCH_ASSOC) )
                     {
-                        $vbUsers[$UserData["userid"]] = $UserData["salt"];
+                        $vbUserSalt[$UserData["userid"]] = $UserData["salt"];
                     }
                     
                     // Update salt per user
                 
                     while ( $UserData = $UserQuery->fetch(PDO::FETCH_ASSOC) )
                     {
-                        if ( isset($vbUsers[$UserData["ExternalId"]]) )
+                        if ( isset($vbUserSalt[$UserData["ExternalId"]]) )
                         {
-                            $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Hash=:Hash WHERE UserId=:UserId LIMIT 1");
+                            $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Salt = :Salt WHERE UserId = :UserId LIMIT 1");
                             
                             $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
-                            $UpdateUser->bindValue(":Hash", $vbUsers[$UserData["ExternalId"]], PDO::PARAM_STR);
+                            $UpdateUser->bindValue(":Salt", $vbUserSalt[$UserData["ExternalId"]], PDO::PARAM_STR);
                             
                             if ( !$UpdateUser->execute() )
                             {
@@ -264,10 +267,11 @@
                 
                 if ( strlen($UserData["Password"]) < 64 )
                 {
-                    $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Password=:Password WHERE UserId= :UserId LIMIT 1");
+                    $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Password=:Password, BindingActive='false' ".
+                                                      "WHERE UserId= :UserId LIMIT 1");
                                 
                     $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
-                    $UpdateUser->bindValue(":Password", hash("sha256", $UserData["Password"].$UserData["Hash"]), PDO::PARAM_STR);
+                    $UpdateUser->bindValue(":Password", hash("sha256", $UserData["Password"].$UserData["Salt"]), PDO::PARAM_STR);
                     
                     if ( !$UpdateUser->execute() )
                     {

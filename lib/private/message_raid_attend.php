@@ -8,7 +8,7 @@ function msgRaidAttend( $Request )
 
         $attendanceIdx = intval( $Request["attendanceIndex"] );
         $raidId = intval( $Request["raidId"] );
-        $userId = intval( $_SESSION["User"]["UserId"] );
+        $userId = intval( UserProxy::GetInstance()->UserId );
 
         // check user/character match
 

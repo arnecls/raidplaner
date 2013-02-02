@@ -4,7 +4,7 @@ function msgProfileUpdate( $Request )
 {
     if ( ValidUser() )
     {
-        $userId = intval( $_SESSION["User"]["UserId"] );
+        $userId = UserProxy::GetInstance()->UserId;
 
         if ( ValidAdmin() && isset( $Request["userid"] ) )
         {

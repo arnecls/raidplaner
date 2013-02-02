@@ -259,6 +259,12 @@ a:hover {
     border-bottom: 1px solid white;
 }
 
+.login input.textactive:disabled {
+    color: #888;
+    background-color: #ccc;
+    border: 1px solid #aaaaaa;
+}
+
 .login .buttonfield {
     width: 150px;
     position: absolute;

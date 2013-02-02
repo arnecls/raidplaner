@@ -4,76 +4,84 @@
     // only meant for caching or display related logic
         
     require_once(dirname(__FILE__)."/../private/users.php");
-    UserProxy::GetInstance(); // Init user
-    
     if (!defined("UNIFIED_SCRIPT")) header("Content-type: text/javascript");
     
     if ( ValidUser() )
     {
+        $CurrentUser = UserProxy::GetInstance();
+        
         function echoCharacterIds()
         {
+            global $CurrentUser;
             $first = true;
-            foreach ( $_SESSION["User"]["CharacterId"] as $CharacterId )
+            
+            foreach ( $CurrentUser->Characters as $Character )
             {
                 if ($first)
                 {
-                    echo "\"".intval( $CharacterId )."\"";
+                    echo "\"".intval( $Character->CharacterId )."\"";
                     $first = false;
                 }
                 else
                 {
-                    echo ", ".intval( $CharacterId );
+                    echo ", ".intval( $Character->CharacterId );
                 }
             }
         }
         
         function echoCharacterNames()
         {
+            global $CurrentUser;
             $first = true;
-            foreach ( $_SESSION["User"]["CharacterName"] as $CharacterName )
+            
+            foreach ( $CurrentUser->Characters as $Character )
             {
                 if ($first)
                 {
-                    echo "\"".$CharacterName."\"";
+                    echo "\"".$Character->Name."\"";
                     $first = false;
                 }
                 else
                 {
-                    echo ", \"".$CharacterName."\"";
+                    echo ", \"".$Character->Name."\"";
                 }
             }
         }
         
         function echoRole1()
         {
+            global $CurrentUser;
             $first = true;
-            foreach ( $_SESSION["User"]["Role1"] as $Role1 )
+            
+            foreach ( $CurrentUser->Characters as $Character )
             {
                 if ($first)
                 {
-                    echo "\"".$Role1."\"";
+                    echo "\"".$Character->Role1."\"";
                     $first = false;
                 }
                 else
                 {
-                    echo ", \"".$Role1."\"";
+                    echo ", \"".$Character->Role1."\"";
                 }
             }
         }
         
         function echoRole2()
         {
+            global $CurrentUser;
             $first = true;
-            foreach ( $_SESSION["User"]["Role2"] as $Role2 )
+            
+            foreach ( $CurrentUser->Characters as $Character )
             {
                 if ($first)
                 {
-                    echo "\"".$Role2."\"";
+                    echo "\"".$Character->Role2."\"";
                     $first = false;
                 }
                 else
                 {
-                    echo ", \"".$Role2."\"";
+                    echo ", \"".$Character->Role2."\"";
                 }
             }
         }
@@ -81,12 +89,12 @@
 
 var g_User = {
     characterIds    : new Array( <?php echoCharacterIds(); ?> ),
-    characterNames    : new Array( <?php echoCharacterNames(); ?> ),
-    role1            : new Array( <?php echoRole1(); ?> ),
-    role2            : new Array( <?php echoRole2(); ?> ),
-    isRaidlead        : <?php echo ValidRaidlead() ? "true" : "false"; ?>,
-    isAdmin            : <?php echo ValidAdmin() ? "true" : "false"; ?>,
-    id                : <?php echo $_SESSION["User"]["UserId"]; ?>
+    characterNames  : new Array( <?php echoCharacterNames(); ?> ),
+    role1           : new Array( <?php echoRole1(); ?> ),
+    role2           : new Array( <?php echoRole2(); ?> ),
+    isRaidlead      : <?php echo ValidRaidlead() ? "true" : "false"; ?>,
+    isAdmin         : <?php echo ValidAdmin() ? "true" : "false"; ?>,
+    id              : <?php echo $CurrentUser->UserId; ?>
 };
 
 <?php

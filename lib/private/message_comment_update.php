@@ -7,7 +7,7 @@ function msgCommentUpdate( $Request )
         $Connector = Connector::GetInstance();
 
         $raidId = intval( $Request["raidId"] );
-        $userId = intval( $_SESSION["User"]["UserId"] );
+        $userId = UserProxy::GetInstance()->UserId;
 
         $CheckSt = $Connector->prepare("SELECT UserId FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId AND RaidId = :RaidId LIMIT 1");
         $CheckSt->bindValue(":UserId", $userId, PDO::PARAM_INT);

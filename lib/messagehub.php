@@ -22,6 +22,8 @@
     include_once("private/message_comment_update.php");
     include_once("private/message_settings_update.php");
     include_once("private/message_change_password.php");
+    include_once("private/message_query_credentials.php");
+    include_once("private/message_user_create.php");
     
     $ValidUser = ValidUser();    
     
@@ -36,6 +38,10 @@
     {   
         switch ( strtolower($_REQUEST["Action"]) )
         {
+        case "query_credentials":
+            msgQueryCredentials( $_REQUEST );
+            break;
+            
         case "raid_attend":
             msgRaidAttend( $_REQUEST );
             break;

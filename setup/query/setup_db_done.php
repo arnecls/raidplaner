@@ -90,9 +90,12 @@
           `Group` enum('admin','raidlead','member','none') NOT NULL,
           `ExternalId` int(10) unsigned NOT NULL,
           `ExternalBinding` enum('none', 'phpbb3', 'eqdkp', 'vb3', 'mybb', 'smf') NOT NULL,
+          `BindingActive` enum('true','false') NOT NULL DEFAULT 'true',
           `Login` varchar(255) NOT NULL,
           `Password` char(128) NOT NULL,
-          `Hash` char(32) NOT NULL,
+          `Salt` char(64) NOT NULL,
+          `OneTimeKey` char(32) NOT NULL,
+          `SessionKey` char(32) NOT NULL,
           `Created` datetime NOT NULL,
           PRIMARY KEY (`UserId`),
           KEY `ExternalId` (`ExternalId`)

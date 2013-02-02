@@ -6,14 +6,13 @@ function msgQueryProfile( $Request )
 
     if ( ValidUser() )
     {
-        $userId = intval( $_SESSION["User"]["UserId"] );
+        $userId = UserProxy::GetInstance()->UserId;
 
         if ( ValidAdmin() && isset( $Request["id"] ) )
         {
             $userId = intval( $Request["id"] );
         }
 
-        $Created   = $_SESSION["User"]["Created"];
         $Connector = Connector::GetInstance();
 
         // Admintool relevant data
@@ -32,39 +31,26 @@ function msgQueryProfile( $Request )
             echo "<userid>".$userId."</userid>";
             echo "<name>".$Data["Login"]."</name>";
             echo "<binding>".$Data["ExternalBinding"]."</binding>";
+            
+            $Created = $Data["Created"];
         }
 
         $Users->closeCursor();
 
         // Load characters
-
-        $Characters = $Connector->prepare(  "Select `".RP_TABLE_PREFIX."Character`.* ".
-                                            "FROM `".RP_TABLE_PREFIX."Character` ".
-                                            "WHERE UserId = :UserId ORDER BY Mainchar, Name");
-
-        $Characters->bindValue( ":UserId", $userId, PDO::PARAM_INT );
-
-        if ( !$Characters->execute() )
+        
+        foreach ( UserProxy::GetInstance()->Characters as $Data )
         {
-            postErrorMessage( $Characters );
+            echo "<character>";
+            echo "<id>".$Data["CharacterId"]."</id>";
+            echo "<name>".$Data["Name"]."</name>";
+            echo "<class>".$Data["Class"]."</class>";
+            echo "<mainchar>".$Data["IsMainChar"]."</mainchar>";
+            echo "<role1>".$Data["Role1"]."</role1>";
+            echo "<role2>".$Data["Role2"]."</role2>";
+            echo "</character>";
         }
-        else
-        {
-            while ( $Data = $Characters->fetch( PDO::FETCH_ASSOC ) )
-            {
-                echo "<character>";
-                echo "<id>".$Data["CharacterId"]."</id>";
-                echo "<name>".$Data["Name"]."</name>";
-                echo "<class>".$Data["Class"]."</class>";
-                echo "<mainchar>".$Data["Mainchar"]."</mainchar>";
-                echo "<role1>".$Data["Role1"]."</role1>";
-                echo "<role2>".$Data["Role2"]."</role2>";
-                echo "</character>";
-            }
-        }
-
-        $Characters->closeCursor();
-
+        
         // Total raid count
 
         $NumRaids = 0;
