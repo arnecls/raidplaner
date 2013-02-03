@@ -15,6 +15,9 @@
         "main.js" );
         
     // Conditional scripts
+    // When using release mode, this script should be loaded with an additional,
+    // unused paramter so that the browser may correctly cache the two different
+    // versions.
         
     if ( RegisteredUser() )
     {
@@ -25,16 +28,17 @@
             "raidlist.js",
             "profile.js",
             "initmenu.js",
-            "combobox.js", );
-            
-        if ( ValidAdmin() )
-            array_push($loader_files_opt, "settings.js");
+            "combobox.js",
+            "settings.js",
+            "crypto/sha1.js",
+            "crypto/sha256.js" );
     }
     else
     {
         $loader_files_opt = Array(
             "login.js",
             "initlogin.js",
+            "register.js",
             "crypto/md5.js",
             "crypto/sha1.js",
             "crypto/sha256.js",
@@ -42,9 +46,6 @@
             "crypto/tripledes.js",
             "crypto/bCrypt.js",
             "hash.js");
-            
-        if ( ALLOW_REGISTRATION )
-            array_push($loader_files_opt, "register.js");
     }
             
     $loader_files = array_merge( $loader_files_base, $loader_files_opt );

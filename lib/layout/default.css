@@ -227,7 +227,7 @@ a:hover {
     font-family: Helvetica, Verdana, Arial, sans-serif;
     width: 196px;
     height: 15px;
-    padding-top: 6px;
+    padding-top: 5px;
     padding-left: 2px;
     padding-right: 2px;
     
@@ -249,7 +249,7 @@ a:hover {
     font-family: Helvetica, Verdana, Arial, sans-serif;
     width: 196px;
     height: 15px;
-    padding-top: 6px;
+    padding-top: 5px;
     padding-left: 2px;
     padding-right: 2px;
     
@@ -289,6 +289,67 @@ a:hover {
     width: 100px;
     height: 24px;
     margin-top: 10px;
+}
+
+#strprogress {
+    width: 200px;
+    height: 16px;
+    background-color: #ccc;
+    text-align: left;                
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    -khtml-border-radius: 4px; 
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #aaa;
+}
+
+#strength {
+    display: inline-block;
+    height: 16px;
+    background-color: #ccc;
+    width: 0%;    
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    -khtml-border-radius: 4px; 
+    border-radius: 4px;
+}
+
+#hashing {
+    position: absolute;
+    top: -20px;
+    width: 200px;
+    height: 16px;
+    background-color: #ccc;
+    text-align: left;                
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    -khtml-border-radius: 4px; 
+    border-radius: 4px;
+}
+
+#hashprogress {
+    display: inline-block;
+    height: 16px;
+    background-color: #ace;
+    width: 0%;    
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    -khtml-border-radius: 4px; 
+    border-radius: 4px;
+}
+
+.pglabel {
+    display: inline-block;
+    position: absolute;
+    float:left;
+    width: 202px;
+    margin-top: 1px;
+    font-size: 10px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    color: #888;
+    text-align:center;
 }
 
 #eventblocker {

@@ -154,6 +154,9 @@
         $g_Locale[ "Undecided" ]                = "Has not made a statement, yet.";
         $g_Locale[ "UnappliedChanges" ]         = "Do you want to discard unapplied changes?";
         $g_Locale[ "DiscardChanges" ]           = "Yes, discard";
+        $g_Locale[ "NoSuchUser" ]               = "The given user could not be found.";
+        $g_Locale[ "HashingInProgress" ]        = "Hashing password";
+        $g_Locale[ "PassStrength"]              = "Passwort strength";
     }
     
     if ( defined("LOCALE_SETUP") )

@@ -18,7 +18,7 @@
     
     UserProxy::GetInstance(); // Init user
     loadSiteSettings();
-        
+		     
     $siteVersion = 97;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -54,7 +54,7 @@
         
         <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>
         <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $siteVersion; ?>"></script>
-        <!--<script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>"></script>-->
+        <!--<script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>&r=<?php echo (RegisteredUser()) ? 1 : 0; ?>"></script>-->
         
         <?php
             define("SCRIPT_DEBUG", true);
