@@ -45,7 +45,7 @@ function msgQueryProfile( $Request )
             echo "<id>".$Data->CharacterId."</id>";
             echo "<name>".$Data->Name."</name>";
             echo "<class>".$Data->ClassName."</class>";
-            echo "<mainchar>".$Data->IsMainChar."</mainchar>";
+            echo "<mainchar>".(($Data->IsMainChar) ? "true" : "false")."</mainchar>";
             echo "<role1>".$Data->Role1."</role1>";
             echo "<role2>".$Data->Role2."</role2>";
             echo "</character>";

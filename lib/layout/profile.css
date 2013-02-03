@@ -142,7 +142,7 @@
 #profile .charslot .name {    
     text-align: center;    
     width: 121px;
-    height: 32px;
+    height: 30px;
     display: block;
     position: relative;
     text-align: center;
@@ -170,10 +170,18 @@
     width: 32px;
     height: 32px;
     display: inline-block;
-    margin-left: 4px;
-    margin-right: 4px;
-    margin-top: 8px;
     cursor: pointer;
+    background-repeat: no-repeat;
+}
+
+#profile .charslot .mainrole {
+    background: url(images/mainrole.png);
+    width: 42px;
+    height: 42px;
+    display: inline-block;
+    cursor: pointer;
+    float: left;
+    position: relative;
 }
 
 #profile .button_profile {
