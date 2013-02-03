@@ -94,7 +94,7 @@
                 <span id="button_profile" class="menu_button"><?php echo L("Profile"); ?></span>
                 
                     <?php if ( ValidAdmin() ) { ?>
-                <span id="button_settings" class="menu_button"><?php echo L("Settings"); ?></span>
+                <span id="button_settings_users" class="menu_button"><?php echo L("Settings"); ?></span>
                     <?php } ?>
                 
                 <?php } else { ?>

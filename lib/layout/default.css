@@ -155,15 +155,15 @@ a:hover {
     background-image: url(images/button_profile_on.png);
 }
 
-#button_settings {
+#button_settings_users {
     background-image: url(images/button_settings.png);
 }
 
-#button_settings:hover {
+#button_settings_users:hover {
     background-image: url(images/button_settings_over.png);
 }
 
-#button_settings.on {
+#button_settings_users.on {
     background-image: url(images/button_settings_on.png);
 }
 
@@ -343,13 +343,14 @@ a:hover {
 .pglabel {
     display: inline-block;
     position: absolute;
-    float:left;
-    width: 202px;
-    margin-top: 1px;
+    width: 200px;
+    height: 12px;
+    margin-top: 2px;
     font-size: 10px;
     font-family: Helvetica, Verdana, Arial, sans-serif;
     color: #888;
     text-align:center;
+    float:left;
 }
 
 #eventblocker {

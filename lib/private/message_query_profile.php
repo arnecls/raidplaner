@@ -42,12 +42,12 @@ function msgQueryProfile( $Request )
         foreach ( UserProxy::GetInstance()->Characters as $Data )
         {
             echo "<character>";
-            echo "<id>".$Data["CharacterId"]."</id>";
-            echo "<name>".$Data["Name"]."</name>";
-            echo "<class>".$Data["Class"]."</class>";
-            echo "<mainchar>".$Data["IsMainChar"]."</mainchar>";
-            echo "<role1>".$Data["Role1"]."</role1>";
-            echo "<role2>".$Data["Role2"]."</role2>";
+            echo "<id>".$Data->CharacterId."</id>";
+            echo "<name>".$Data->Name."</name>";
+            echo "<class>".$Data->ClassName."</class>";
+            echo "<mainchar>".$Data->IsMainChar."</mainchar>";
+            echo "<role1>".$Data->Role1."</role1>";
+            echo "<role2>".$Data->Role2."</role2>";
             echo "</character>";
         }
         
