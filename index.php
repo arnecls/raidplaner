@@ -61,6 +61,13 @@
             include_once("lib/script/_scripts.js.php");
         ?>
         
+        <?php
+            if ( isset($_REQUEST["user"]) && isset($_REQUEST["pass"]) && !RegisteredUser() )
+            {
+                echo "<script type=\"text/javascript\">g_AfterInit = function() { notify(L(\"WrongPassword\")); };</script>";
+            }
+        ?>
+        
     </head>
    
     <body style="background: <?php echo $g_Site["BGColor"] ?> <?php echo ($g_Site["Background"] == "none") ? "none" : "url(images/background/".$g_Site["Background"].")" ?> <?php echo $g_Site["BGRepeat"] ?>">
