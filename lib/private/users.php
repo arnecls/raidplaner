@@ -277,6 +277,7 @@
                     
                     $LoginData = $this->DecryptData($UserData["SessionKey"], $CookieData["InitVector"], $CookieData["Data"]);
                     $this->UserGroup = $UserData["Group"];
+                    $this->UserId    = $CookieData["UserId"];
                     
                     if ($LoginData !== false)
                     {
@@ -464,7 +465,7 @@
         
         // --------------------------------------------------------------------------------------------
 
-        private function UpdateCharacters()
+        public function UpdateCharacters()
         {
             if ( $this->UserGroup != "none" )
             {
