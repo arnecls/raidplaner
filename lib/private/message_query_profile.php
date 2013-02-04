@@ -39,16 +39,42 @@ function msgQueryProfile( $Request )
 
         // Load characters
         
-        foreach ( UserProxy::GetInstance()->Characters as $Data )
+        if ( $userId == UserProxy::GetInstance()->UserId )
         {
-            echo "<character>";
-            echo "<id>".$Data->CharacterId."</id>";
-            echo "<name>".$Data->Name."</name>";
-            echo "<class>".$Data->ClassName."</class>";
-            echo "<mainchar>".(($Data->IsMainChar) ? "true" : "false")."</mainchar>";
-            echo "<role1>".$Data->Role1."</role1>";
-            echo "<role2>".$Data->Role2."</role2>";
-            echo "</character>";
+            foreach ( UserProxy::GetInstance()->Characters as $Data )
+            {
+                echo "<character>";
+                echo "<id>".$Data->CharacterId."</id>";
+                echo "<name>".$Data->Name."</name>";
+                echo "<class>".$Data->ClassName."</class>";
+                echo "<mainchar>".(($Data->IsMainChar) ? "true" : "false")."</mainchar>";
+                echo "<role1>".$Data->Role1."</role1>";
+                echo "<role2>".$Data->Role2."</role2>";
+                echo "</character>";
+            }
+        }
+        else
+        {
+            $CharacterSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Character` ".
+                                                "WHERE UserId = :UserId ".
+                                                "ORDER BY Mainchar, Name" );
+
+            $CharacterSt->bindValue(":UserId", $userId, PDO::PARAM_INT);
+            $CharacterSt->execute();
+            
+            while ( $row = $CharacterSt->fetch( PDO::FETCH_ASSOC ) )
+            {
+                echo "<character>";
+                echo "<id>".$row["CharacterId"]."</id>";
+                echo "<name>".$row["Name"]."</name>";
+                echo "<class>".$row["Class"]."</class>";
+                echo "<mainchar>".(($row["IsMainchar"]) ? "true" : "false")."</mainchar>";
+                echo "<role1>".$row["Role1"]."</role1>";
+                echo "<role2>".$row["Role2"]."</role2>";
+                echo "</character>";
+            }
+            
+            $CharacterSt->closeCursor();
         }
         
         // Total raid count
