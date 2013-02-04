@@ -131,9 +131,12 @@
                     $UserData  = $UserSt->fetch( PDO::FETCH_ASSOC );                
                     $LoginData = $this->DecryptData($UserData["SessionKey"], $CookieData["InitVector"], $CookieData["Data"]);
                 
-                    $LoginUser = array( "Login"     => $LoginData["Login"],
-                                        "Password"  => $LoginData["Password"],
-                                        "UseOTK"    => false );
+                    if ( $LoginData !== false )
+                    {
+                        $LoginUser = array( "Login"     => $LoginData["Login"],
+                                            "Password"  => $LoginData["Password"],
+                                            "UseOTK"    => false );
+                    }
                 }
 
                 $UserSt->closeCursor();
@@ -144,8 +147,7 @@
             
             if ( !$this->ProcessLoginRequest($LoginUser) )
             {
-                // All checks failed -> logout
-            
+                // All checks failed -> logout            
                 $this->ResetUser();
             }
         }
@@ -217,7 +219,7 @@
             $decryptedData = mcrypt_decrypt(UserProxy::$CryptName, $Key, base64_decode($Data), MCRYPT_MODE_CBC, base64_decode($InitVector));
             mcrypt_module_close($cryptDesc);
             
-            return unserialize($decryptedData);
+            return @unserialize($decryptedData);
         }
         
         // --------------------------------------------------------------------------------------------
@@ -276,11 +278,13 @@
                     $LoginData = $this->DecryptData($UserData["SessionKey"], $CookieData["InitVector"], $CookieData["Data"]);
                     $this->UserGroup = $UserData["Group"];
                     
-                    return ($LoginData["Login"]    == $UserData["Login"]) &&
-                           ($LoginData["Password"] == $UserData["Password"]) &&
-                           ($LoginData["Remote"]   == $_SERVER["REMOTE_ADDR"]); 
-                    
-                    // ### return, valid session cookie ###
+                    if ($LoginData !== false)
+                    {
+                        return ($LoginData["Login"]    == $UserData["Login"]) &&
+                               ($LoginData["Password"] == $UserData["Password"]) &&
+                               ($LoginData["Remote"]   == $_SERVER["REMOTE_ADDR"]); 
+                        // ### return, valid session cookie ###
+                    }
                 }
                 
                 $UserSt->closeCursor();
@@ -363,13 +367,15 @@
             if ($UserSt->rowcount() > 0)
             {
                 $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
-                $UserSt->closeCursor();
-                
                 $this->InvalidateOneTimeKey( $this->UserId );
                         
                 $HashedPassword = hash("sha256", $UserData["OneTimeKey"].$UserData["Password"]);
                 
-                return $SignedPassword == $HashedPassword;
+                if ( $SignedPassword == $HashedPassword )
+                {
+                    $UserSt->closeCursor();
+                    return true;
+                }
             }
             
             $UserSt->closeCursor();

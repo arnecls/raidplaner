@@ -62,7 +62,9 @@
         ?>
         
         <?php
-            if ( isset($_REQUEST["user"]) && isset($_REQUEST["pass"]) && !RegisteredUser() )
+            if ( isset($_REQUEST["user"]) && 
+                 isset($_REQUEST["pass"]) && 
+                 !RegisteredUser() )
             {
                 echo "<script type=\"text/javascript\">g_AfterInit = function() { notify(L(\"WrongPassword\")); };</script>";
             }
