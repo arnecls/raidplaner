@@ -6,9 +6,9 @@ function msgProfileUpdate( $Request )
     {
         $userId = UserProxy::GetInstance()->UserId;
 
-        if ( ValidAdmin() && isset( $Request["userid"] ) )
+        if ( ValidAdmin() && isset( $Request["id"] ) )
         {
-            $userId = intval( $Request["userid"] );
+            $userId = intval( $Request["id"] );
         }
 
         $Connector = Connector::GetInstance();
@@ -164,14 +164,7 @@ function msgProfileUpdate( $Request )
             UserProxy::GetInstance()->UpdateCharacters();
         }
 
-        if ( ValidAdmin() && isset( $Request["userid"] ) )
-        {
-            msgQuerySettings( $Request );
-        }
-        else
-        {
-            msgQueryProfile( $Request );
-        }
+        msgQueryProfile( $Request );
     }
     else
     {

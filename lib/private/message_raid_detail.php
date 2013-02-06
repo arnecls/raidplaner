@@ -53,16 +53,21 @@
                 echo "<required>".$Data["SlotsRole4"]."</required>";
                 echo "<required>".$Data["SlotsRole5"]."</required>";
                 echo "</slots>";
+                
+                $MaxAttendanceId = 1;
 
                 if ( $Data["UserId"] != NULL )
                 {
                     do
                     {
+                        // Track max attendance id to give undecided players (without a comment) a distinct one.
+                        $MaxAttendanceId = Max($MaxAttendanceId,$Data["AttendanceId"]);
+
                         if ( $Data["UserId"] != 0 )
                         {
                             array_push( $Participants, intval($Data["UserId"]) );
                         }
-
+                        
                         if ( $Data["CharacterId"] == 0 )
                         {
                             // CharacterId is 0 on random players or players that are absent
@@ -90,7 +95,7 @@
                                     {
                                         echo "<attendee>";
 
-                                        echo "<id>".$Data["AttendanceId"]."</id>";
+                                        echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
                                         echo "<charid>".$CharData["CharacterId"]."</charid>";
                                         echo "<name>".$CharData["Name"]."</name>";
                                         echo "<mainchar>".$CharData["Mainchar"]."</mainchar>";
@@ -132,7 +137,7 @@
 
                                 echo "<attendee>";
 
-                                echo "<id>".$Data["AttendanceId"]."</id>";
+                                echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
                                 echo "<charid>0</charid>";
                                 echo "<name>".$Data["Comment"]."</name>";
                                 echo "<class>random</class>";
@@ -153,7 +158,7 @@
 
                             echo "<attendee>";
 
-                            echo "<id>".$Data["AttendanceId"]."</id>";
+                            echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
                             echo "<charid>".$Data["CharacterId"]."</charid>";
                             echo "<name>".$Data["Name"]."</name>";
                             echo "<class>".$Data["Class"]."</class>";
@@ -224,9 +229,14 @@
                         }
                         else if ( $UserData = $CharSt->fetch(PDO::FETCH_ASSOC) )
                         {
+                            // Absent user have no attendance Id, so we need to generate one
+                            // that is not in use (for this raid).
+                            
+                            ++$MaxAttendanceId;
                             echo "<attendee>";
 
-                            echo "<id>".$UserData["CharacterId"]."</id>";
+                            echo "<id>".$MaxAttendanceId."</id>";
+                            echo "<charid>".$UserData["CharacterId"]."</charid>";
                             echo "<name>".$UserData["Name"]."</name>";
                             echo "<class>".$UserData["Class"]."</class>";
                             echo "<mainchar>".$UserData["Mainchar"]."</mainchar>";

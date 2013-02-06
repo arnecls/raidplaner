@@ -15,7 +15,8 @@
     fwrite( $configFile, "\tdefine(\"RP_USER\", \"".$_REQUEST["user"]."\");\n");
     fwrite( $configFile, "\tdefine(\"RP_PASS\", \"".$_REQUEST["password"]."\");\n");
     fwrite( $configFile, "\tdefine(\"RP_TABLE_PREFIX\", \"".$_REQUEST["prefix"]."\");\n");    
-    fwrite( $configFile, "\tdefine(\"ALLOW_REGISTRATION\", ".$_REQUEST["register"].");\n");
+    fwrite( $configFile, "\tdefine(\"ALLOW_REGISTRATION\", ".$_REQUEST["register"].");\n");   
+    fwrite( $configFile, "\tdefine(\"USE_CLEARTEXT_PASSWORDS\", false);\n");
     
     fwrite( $configFile, "?>");    
     fclose( $configFile );
