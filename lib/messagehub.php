@@ -42,6 +42,10 @@
             msgQueryCredentials( $_REQUEST );
             break;
             
+        case "query_credentials_id":
+            msgQueryCredentialsById( $_REQUEST );
+            break;
+            
         case "raid_attend":
             msgRaidAttend( $_REQUEST );
             break;

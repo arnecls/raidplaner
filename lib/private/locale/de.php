@@ -121,6 +121,7 @@
         $g_Locale[ "NoteDeleteRaidsToo" ]       = "Alle Raids in dieser Instanz werden ebenfalls gel&ouml;scht.";
         $g_Locale[ "ChangePassword" ]           = "Passwort &auml;ndern";
         $g_Locale[ "OldPassword" ]              = "Altes Passwort";
+        $g_Locale[ "AdminPassword" ]            = "Administrator passwort";
         $g_Locale[ "WrongPassword" ]            = "Falsches Passwort";
         $g_Locale[ "PasswordLocked" ]           = "Passwort kann nicht ver&auml;ndert werden.";
         $g_Locale[ "UpdateCheck" ]              = "Suche nach Updates";
@@ -157,6 +158,9 @@
         $g_Locale[ "NoSuchUser" ]               = "Der angegebene Benutzer konnte nicht gefunden werden.";
         $g_Locale[ "HashingInProgress" ]        = "Passwort hashing";
         $g_Locale[ "PassStrength"]              = "Passwortst&auml;rke";
+        $g_Locale[ "OldPasswordEmpty" ]         = "Das alte Passwort darf nicht leer sein.";
+        $g_Locale[ "AdminPasswordEmpty" ]       = "Das Administrator Passwort darf nicht leer sein.";
+        $g_Locale[ "PasswordChanged" ]          = "Das Passwort wurde ge&auml;ndert.";
     }
     
     if ( defined("LOCALE_SETUP") )

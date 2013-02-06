@@ -121,6 +121,7 @@
         $g_Locale[ "NoteDeleteRaidsToo" ]       = "This will also delete all raids at this location.";
         $g_Locale[ "ChangePassword" ]           = "Change password";
         $g_Locale[ "OldPassword" ]              = "Old password";
+        $g_Locale[ "AdminPassword" ]            = "Administrator password";
         $g_Locale[ "WrongPassword" ]            = "Wrong password";
         $g_Locale[ "PasswordLocked" ]           = "Password cannot be changed.";
         $g_Locale[ "UpdateCheck" ]              = "Check for updates";
@@ -157,6 +158,9 @@
         $g_Locale[ "NoSuchUser" ]               = "The given user could not be found.";
         $g_Locale[ "HashingInProgress" ]        = "Hashing password";
         $g_Locale[ "PassStrength"]              = "Passwort strength";
+        $g_Locale[ "OldPasswordEmpty" ]         = "The old password must not be empty.";
+        $g_Locale[ "AdminPasswordEmpty" ]       = "The administrator password must not be empty.";
+        $g_Locale[ "PasswordChanged" ]          = "The password has been changed.";
     }
     
     if ( defined("LOCALE_SETUP") )

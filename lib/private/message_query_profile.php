@@ -17,7 +17,7 @@ function msgQueryProfile( $Request )
 
         // Admintool relevant data
 
-        $Users = $Connector->prepare( "SELECT Login, Created, ExternalBinding FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
+        $Users = $Connector->prepare( "SELECT Login, Created, ExternalBinding, BindingActive FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
         $Users->bindValue( ":UserId", $userId, PDO::PARAM_INT );
 
         if ( !$Users->execute() )
@@ -30,6 +30,7 @@ function msgQueryProfile( $Request )
 
             echo "<userid>".$userId."</userid>";
             echo "<name>".$Data["Login"]."</name>";
+            echo "<bindingActive>".(($Data["BindingActive"]) ? "true" : "false")."</bindingActive>";
             echo "<binding>".$Data["ExternalBinding"]."</binding>";
             
             $Created = $Data["Created"];
