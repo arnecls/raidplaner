@@ -117,5 +117,12 @@
         {
             return self::$HashMethod;
         }
+        
+        // -------------------------------------------------------------------------
+        
+        public static function Hash( $Password, $Salt, $Method )
+        {
+            return sha1($Salt.$Password);
+        }
     }
 ?>

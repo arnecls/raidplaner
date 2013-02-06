@@ -141,12 +141,7 @@
             if (($Password[0] == '_') && ($length == 20))
             {
                 $Parts = explode(":", $Password);
-                $Count = strpos(self::$Itoa64, $Password[1]) | 
-                         (strpos(self::$Itoa64, $Password[2]) << 6) |
-                         (strpos(self::$Itoa64, $Password[3]) << 12) |
-                         (strpos(self::$Itoa64, $Password[4]) << 18);
-                         
-                return $Count.":".substr($Parts[0],5,4).":".$Parts[1];
+                return substr($Parts[0],0,9).":".$Parts[1];
             }
             
             if ((substr($Password, 0, 3) == '$S$') && ($length == 98))
@@ -187,70 +182,87 @@
     
     		return self::$HashMethod_md5;
         }
-    }
-    
-    // ----------------------------------------------------------------------------
-	// LEGACY
-    // ----------------------------------------------------------------------------
-	
-    /*function eqdkp_hash_crypt( $Password, $StoredPassword )
-    {
-        $parts = explode(':', $StoredPassword);
-        $key   = $parts[0];
-        $salt  = $parts[1];
         
-        $preHash = hash('sha512', $salt.$Password);
+        // -------------------------------------------------------------------------
         
-        return crypt($preHash, $key);
-    }
-
-    // ----------------------------------------------------------------------------
-		
-    function eqdkp_hash_sha512_rounds( $Password, $StoredPassword )
-    {
-        $itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        
-        $parts = explode(':', $StoredPassword);
-        $key  = $parts[0];
-        $salt = $parts[1];
-        
-        $preHash = hash('sha512', $salt.$Password);
-        
-        $count = 1 << strpos($itoa64, $key[3]);
-        $salt = substr($key, 4, 8);
-        
-        $hash = hash('sha512', $salt.$preHash, TRUE);
-        
-		do 
-		{
-			$hash = hash('sha512', $hash.$preHash, TRUE);
-		} 
-		while (--$count);
-		
-		$prefix  = substr($key, 0, 12);
-		$hashLen = strlen($hash);
-		$postfix = "";		
-						
-		$i = 0;
-		do 
-		{
-            $value = ord($hash[$i++]);
-            $postfix .= $itoa64[$value & 0x3f];
+        private static function Encode64( $input, $count )
+        {
+            $output = '';
+            $i = 0;
             
-            if ($i < $hashLen) $value |= ord($hash[$i]) << 8;            	
-            $postfix .= $itoa64[($value >> 6) & 0x3f];
+            do {
+                $value = ord($input[$i++]);
+                $output .= self::$Itoa64[$value & 0x3f];
+                
+                if ($i < $count)
+                {
+                   $value |= ord($input[$i]) << 8;
+                }
+                
+                $output .= self::$Itoa64[($value >> 6) & 0x3f];
+                
+                if ($i++ >= $count)
+                {
+                   break;
+                }
+                
+                if ($i < $count)
+                {
+                   $value |= ord($input[$i]) << 16;
+                }
+                
+                $output .= self::$Itoa64[($value >> 12) & 0x3f];
+                
+                if ($i++ >= $count)
+                {
+                   break;
+                }
+                
+                $output .= self::$Itoa64[($value >> 18) & 0x3f];
+            } while ($i < $count);
             
-            if ($i++ < $hashLen)
+            return $output;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public static function Hash( $Password, $Salt, $Method )
+        {
+            if ( ($Method == self::$HashMethod_sha512b) ||
+                 ($Method == self::$HashMethod_sha512d) )
             {
-                if ($i < $hashLen) $value |= ord($hash[$i]) << 16;
-                $postfix .= $itoa64[($value >> 12) & 0x3f];
-            
-                if ($i++ < $hashLen)
-            	   $postfix .= $itoa64[($value >> 18) & 0x3f];
+                $parts  = explode(":",$Salt);
+                $config = $parts[0];
+                $salt   = $parts[1];
+                
+                $preHash = hash('sha512', $salt.$Password);                
+                return crypt($preHash, $config).":".$salt;
             }
-        }  
-		while ($i < $hashLen);
-		
-		return $prefix.$postfix;
-    }*/
+            
+            if ( $Method == self::$HashMethod_sha512r )
+            {
+                $parts   = explode(":",$Salt);
+                $countB2 = intval($parts[0], 10);
+                $count   = 1 << $countB2;
+                $salt    = $parts[1];
+                $salt2   = $parts[2];
+                
+                $preHash = hash("sha512", $salt.$Password);
+                $hash    = hash("sha512", $salt2.$preHash, true);
+                
+                do {
+                    $hash = hash("sha512", $hash.$preHash, true);
+                } while(--$count);
+                
+                return '$S$'.self::$Itoa64[$countB2].$salt2.self::Encode64($hash,strlen($hash)).":".$salt;
+            }
+            
+            if ( $Method == self::$HashMethod_sha512s )
+            {
+                return hash("sha512", $Salt.$Password);
+            }
+            
+            return md5($Password);
+        }
+    }
 ?>

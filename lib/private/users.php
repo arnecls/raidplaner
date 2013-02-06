@@ -111,7 +111,7 @@
                 
                 $LoginUser = array( "Login"    => $_REQUEST["user"],
                                     "Password" => $_REQUEST["pass"],
-                                    "UseOTK"   => true );
+                                    "Cookie"   => false );
             }
             else if ( isset($_COOKIE[self::$StickyCookieName]) )
             {
@@ -135,7 +135,7 @@
                     {
                         $LoginUser = array( "Login"     => $LoginData["Login"],
                                             "Password"  => $LoginData["Password"],
-                                            "UseOTK"    => false );
+                                            "Cookie"    => true );
                     }
                 }
 
@@ -220,6 +220,22 @@
             mcrypt_module_close($cryptDesc);
             
             return @unserialize($decryptedData);
+        }
+        
+        // --------------------------------------------------------------------------------------------
+
+        private function ValidateCleartextPassword( $Password, $UserId, $BindingName )
+        {
+            $Binding  = self::$Bindings[$BindingName];
+            $UserInfo = $Binding->GetUserInfoById($UserId);
+            
+            if ($UserInfo == null)
+                return false;
+            
+            $Method = $Binding->GetMethodFromPass($UserInfo->Password);
+            $Hashed = $Binding->Hash($Password, $UserInfo->Salt, $Method);
+            
+            return $UserInfo->Password == $Hashed;
         }
         
         // --------------------------------------------------------------------------------------------
@@ -333,7 +349,11 @@
                 }
                 
                 $UpdateUserSt->closeCursor();
-                $hashMethod = self::$Bindings[$UserInfo->PassBinding]->GetMethodFromPass($UserInfo->Password);
+                
+                if (defined("USE_CLEARTEXT_PASSWORDS") && USE_CLEARTEXT_PASSWORDS)
+                    $hashMethod = "cleartext";
+                else
+                    $hashMethod = self::$Bindings[$UserInfo->PassBinding]->GetMethodFromPass($UserInfo->Password);
                 
                 return Array( "salt"   => $UserInfo->Salt, 
                               "key"    => $OneTimeKey, 
@@ -396,21 +416,36 @@
         public function ValidateCredentials( $SignedPassword )
         {
             $Connector = Connector::GetInstance();
-            $UserSt = $Connector->prepare( "SELECT OneTimeKey, Password FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
+            $UserSt = $Connector->prepare( "SELECT OneTimeKey, Password, ExternalBinding, BindingActive, ExternalId FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
             $UserSt->bindValue(":UserId", $this->UserId, PDO::PARAM_INT );
             $UserSt->execute();
             
             if ($UserSt->rowcount() > 0)
             {
                 $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
-                $this->InvalidateOneTimeKey( $this->UserId );
-                        
-                $HashedPassword = hash("sha256", $UserData["OneTimeKey"].$UserData["Password"]);
                 
-                if ( $SignedPassword == $HashedPassword )
+                if ( defined("USE_CLEARTEXT_PASSWORDS") && USE_CLEARTEXT_PASSWORDS )
                 {
+                    // Cleartext mode fallback
+                
                     $UserSt->closeCursor();
-                    return true;
+                    $UserId = (($UserData["BindingActive"] == "false") || ($UserData["ExternalBinding"] == "none")) 
+                        ? $this->UserId 
+                        : $UserData["ExternalId"];
+                    
+                    return $this->ValidateCleartextPassword( $SignedPassword, $UserId, $UserData["ExternalBinding"] );
+                }
+                else
+                {
+                    $this->InvalidateOneTimeKey( $this->UserId );
+                        
+                    $HashedStoredPassword = hash("sha256", $UserData["OneTimeKey"].$UserData["Password"]);
+                
+                    if ( $SignedPassword == $HashedStoredPassword )
+                    {
+                        $UserSt->closeCursor();
+                        return true;
+                    }
                 }
             }
             
@@ -435,28 +470,43 @@
             {
                 $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
                 $UserSt->closeCursor();
-                       
-                if ( $LoginUser["UseOTK"] )
-                {
-                    // User logged in using one-time-key authentication
-                    // In this case we get a HMAC based password and need 
-                    // to reset the key
-                    
-                    $this->InvalidateOneTimeKey( $UserData["UserId"] );
-                    
-                    $HashedPassword = hash("sha256", $UserData["OneTimeKey"].$UserData["Password"]);
-                }
-                else
+                                
+                if ( $LoginUser["Cookie"] )
                 {
                     // User logged in using the encrypted cookie data.
                     // In this case just check the password.
                     
-                    $HashedPassword = $UserData["Password"];
+                    $PasswordCheckOk = ($LoginUser["Password"] == $UserData["Password"]);
+                }
+                else
+                {
+                    if ( defined("USE_CLEARTEXT_PASSWORDS") && USE_CLEARTEXT_PASSWORDS )
+                    {
+                        // User logged in using a cleartext password.
+                        // In this case we encrypt locally via php.
+                        
+                        $UserId = (($UserData["BindingActive"] == "false") || ($UserData["ExternalBinding"] == "none")) 
+                            ? $UserData["UserId"] 
+                            : $UserData["ExternalId"];
+                    
+                        
+                        $PasswordCheckOk = $this->ValidateCleartextPassword( $LoginUser["Password"], $UserId, $UserData["ExternalBinding"] );
+                    }
+                    else
+                    { 
+                        // User logged in using one-time-key authentication
+                        // In this case we get a HMAC based password and need 
+                        // to reset the key
+                        
+                        $this->InvalidateOneTimeKey( $UserData["UserId"] );                        
+                        $HashedStoredPassword = hash("sha256", $UserData["OneTimeKey"].$UserData["Password"]);                            
+                        $PasswordCheckOk = ($LoginUser["Password"] == $HashedStoredPassword);
+                    }
                 }
                 
-                // Test and proceed ...
+                // Test and proceed ...                
                 
-                if ( $HashedPassword == $LoginUser["Password"] )
+                if ( $PasswordCheckOk )
                 {
                     
                     // Login successfull. Prepare session.

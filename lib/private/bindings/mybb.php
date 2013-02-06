@@ -117,5 +117,12 @@
         {
             return self::$HashMethod;
         }
+        
+        // -------------------------------------------------------------------------
+        
+        public static function Hash( $Password, $Salt, $Method )
+        {
+            return md5(md5($Salt).md5($Password));
+        }
     }
 ?>

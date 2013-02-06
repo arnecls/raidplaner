@@ -100,7 +100,7 @@
         
         // -------------------------------------------------------------------------
         
-        public static function Hash( $Password, $Salt )
+        public static function Hash( $Password, $Salt, $Method )
         {
             return hash("sha256", sha1($Password).$Salt);
         }

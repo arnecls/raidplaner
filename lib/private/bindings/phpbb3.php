@@ -145,5 +145,69 @@
                 
             return self::$HashMethod_md5;
         }
+        
+        // -------------------------------------------------------------------------
+        
+        private static function Encode64( $input, $count )
+        {
+            $output = '';
+            $i = 0;
+            
+            do {
+                $value = ord($input[$i++]);
+                $output .= self::$Itoa64[$value & 0x3f];
+                
+                if ($i < $count)
+                {
+                   $value |= ord($input[$i]) << 8;
+                }
+                
+                $output .= self::$Itoa64[($value >> 6) & 0x3f];
+                
+                if ($i++ >= $count)
+                {
+                   break;
+                }
+                
+                if ($i < $count)
+                {
+                   $value |= ord($input[$i]) << 16;
+                }
+                
+                $output .= self::$Itoa64[($value >> 12) & 0x3f];
+                
+                if ($i++ >= $count)
+                {
+                   break;
+                }
+                
+                $output .= self::$Itoa64[($value >> 18) & 0x3f];
+            } while ($i < $count);
+            
+            return $output;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public static function Hash( $Password, $Salt, $Method )
+        {
+            if ($Method == self::$HashMethod_md5 )
+            {
+                return md5($Password);
+            }
+            
+            $Parts   = explode(":",$Salt);
+            $CountB2 = intval($Parts[0],10);
+            $Count   = 1 << $CountB2;
+            $Salt    = $Parts[1];
+            
+            $hash = md5($Salt.$Password, true);
+            
+            do {
+                $hash = md5($hash.$Password, true);
+            } while (--$Count);
+            
+            return '$H$'.self::$Itoa64[$CountB2].$Salt.self::Encode64($hash,16);
+        }
     }
 ?>

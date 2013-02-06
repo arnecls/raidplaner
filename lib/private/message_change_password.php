@@ -11,7 +11,7 @@ function msgChangePassword( $Request )
             // for validity (e.g. only admin may change other user's passwords)
             
             $Salt = UserProxy::GenerateKey128();
-            $HashedPassword = NativeBinding::Hash( $Request["passNew"], $Salt );
+            $HashedPassword = NativeBinding::Hash( $Request["passNew"], $Salt, "none" );
         
             if ( !UserProxy::ChangePassword($_REQUEST["id"], $HashedPassword, $Salt) )
             {
