@@ -5,7 +5,7 @@
     // Scripts that are always loaded
     
     $loader_files_base = Array( 
-        "jquery-1.9.0.min.js",
+        "jquery-1.9.1.min.js",
         "jquery-ui-1.10.0.custom.min.js",
         "jquery.ba-hashchange.min.js",
         "config.js.php",
