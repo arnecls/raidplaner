@@ -318,6 +318,7 @@ a:hover {
 
 #hashing {
     position: absolute;
+    left: 0px;
     top: -20px;
     width: 202px;
     height: 16px;
@@ -332,7 +333,7 @@ a:hover {
 #hashprogress {
     display: inline-block;
     height: 16px;
-    background-color: #ace;
+    background-color: #666;
     width: 0%;    
     -moz-border-radius: 4px; 
     -webkit-border-radius: 4px; 

@@ -172,16 +172,19 @@
     display: inline-block;
     cursor: pointer;
     background-repeat: no-repeat;
+    float: left;
 }
 
 #profile .charslot .mainrole {
-    background: url(images/mainrole.png);
-    width: 42px;
-    height: 42px;
+    background: url(images/star.png);
+    width: 24px;
+    height: 24px;
     display: inline-block;
     cursor: pointer;
     float: left;
     position: relative;
+    top: 14px;
+    left: 13px;
 }
 
 #profile .button_profile {

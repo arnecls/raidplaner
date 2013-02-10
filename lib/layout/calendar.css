@@ -43,13 +43,13 @@
 #calendar .calendarDay {
     height: 77px;
     max-height: 77px;
+    position: relative;
 }
 
 #calendar .dayOfMonth {
     color: #d2d2d2;
     font-size: 24px;
     text-align: left;
-    zoom: 1;
 }
 
 #calendar .dayOfOther {

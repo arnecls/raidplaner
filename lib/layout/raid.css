@@ -120,23 +120,47 @@
     float: left;
 }
 
+.playerIcon .mainbadge {
+    background-image: url(images/star.png);
+    width: 18px;
+    height: 16px;
+    position: absolute;
+    left: 12px;
+    top: 14px;
+}
+
 .playerTooltipIcon {
     width: 32px;
     height: 32px;
     float: left;
 }
 
+.playerTooltipRoleIcon {
+    width: 32px;
+    height: 32px;
+}
+
 .playerTooltipIconLarge {
     width: 64px;
     height: 64px;
-    text-align: right;
+    text-align: center;
+    float: left;
 }
 
 .playerTooltipIconLarge .twinkcount {
-    font-size: 14px;
+    background-image: url(images/switchable.png);
+    font-size: 12px;
     position: relative;
     top: 45px;
-    right: 5px;
+    width: 64px;
+    height: 15px;
+    text-align: center;
+    padding-top: 1px;
+}
+
+.secondaryAlpha {
+    opacity: 0.6;
+    filter:Alpha(opacity=60);
 }
 
 .playerTooltipText {
@@ -149,18 +173,7 @@
 .playerTooltipText .name {
     font-weight: bold;
     font-size: 1.2em;
-    margin-bottom: 5px;
-}
-
-.playerTooltipText .name .twinkbadge {
-    background-image: url(images/twinkbadge.png);
-    width: 15px;
-    height: 16px;
-    display: inline-block;
-    float: left;
-    position: relative;
-    top: -1px;
-    margin-right: 4px;
+    margin-bottom: 10px;
 }
 
 #raiddetail .playerName {
@@ -273,14 +286,14 @@
     cursor: pointer;
 }
 
-#raiddetail .twinkbadge {
-    background-image: url(images/twinkbadge.png);
-    width: 15px;
-    height: 16px;
+.playerTooltipIconLarge .mainbadge {
+    background-image: url(images/star.png);
+    width: 24px;
+    height: 24px;
     float: left;
     position: absolute;
-    left: 19px;
-    top: 19px;
+    left: 14px;
+    top: 14px;
     display: inline-block;
 }
 

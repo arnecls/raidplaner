@@ -3,11 +3,26 @@
 }
 
 .shadow_gray {
-    filter: progid:DXImageTransform.Microsoft.Shadow(direction=135, strength=2, color=#929292, positive='true');
+    color: #929292;
+    font-size: 24px;
+    filter: progid:DXImageTransform.Microsoft.Blur(pixelsize=1);
+}
+
+.shadow_gray_iefix {
+    position: absolute;
+    left: 2px;
+    top: 2px;
 }
 
 .shadow_white {
-    filter: progid:DXImageTransform.Microsoft.DropShadow(offx=1, offy=1, color=#e3e3e3, positive='true');
+    color: #e3e3e3;
+    font-size: 10px;
+}
+
+.shadow_white_iefix {
+   position: absolute;
+    left: 0px;
+    top: 0px;
 }
 
 .shadow_inlay_hard {

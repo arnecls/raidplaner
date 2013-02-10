@@ -85,7 +85,7 @@
                 <?php if ( RegisteredUser() ) { ?>
                 
                 <span class="logout">
-                    <form method="post" action="index.php" id="logout">
+                    <form id="logout" method="post" action="index.php">
                         <input type="hidden" name="nocheck"/>
                         <input type="hidden" name="logout"/>
                         <button onclick="return onLogOut()" class="button_logout"><?php echo L("Logout"); ?></button>
@@ -179,7 +179,7 @@
         <?php if ( ValidRaidlead() ) { ?>
         
         <div id="sheetNewRaid">
-            <div id="newRaid" style="width: 600px">
+            <div id="newRaid" style="width: 555px">
                 <span style="display: inline-block; vertical-align: top; margin-right: 20px">
                     <div id="raiddatepicker"></div>
                     <div style="margin-top: 24px">
@@ -191,7 +191,7 @@
                     </div>
                 </span>  
                 <span style="display: inline-block; vertical-align: top">
-                    <span style="display: inline-block; margin-right: 5px" class="imagepicker" id="locationimagepicker"><div class="imagelist" id="locationimagelist"></div></span>
+                    <span style="display: inline-block; margin-right: 5px; float: left" class="imagepicker" id="locationimagepicker"><div class="imagelist" id="locationimagelist"></div></span>
                     <span style="display: inline-block; vertical-align: top">
                         <div style="margin-bottom: 10px">
                             <select id="selectlocation" onchange="onLocationChange(this)">
@@ -228,7 +228,7 @@
                             </select>
                         </div>
                     </span>
-                    <div style="margin-bottom: 10px">
+                    <div style="margin-bottom: 10px; clear: left">
                         <textarea id="descriptiondummy" class="textdummy description"><?php echo L("Description"); ?></textarea>
                         <textarea id="description" class="textinput description"></textarea>
                     </div>
