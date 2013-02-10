@@ -132,7 +132,7 @@
             
     if ( $testSt->rowCount() == 0 )
     {
-        $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."User` VALUES(1, 'admin', 0, 'none', 'admin', '".$hashedPassword."', '".$HashSalt."', FROM_UNIXTIME(".time()."));" );
+        $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."User` VALUES(1, 'admin', 0, 'none', 'true', 'admin', '".$hashedPassword."', '".$HashSalt."', '', '', FROM_UNIXTIME(".time()."));" );
     }   
     // Reset admin password 
     //else
