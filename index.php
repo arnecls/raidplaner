@@ -182,13 +182,6 @@
             <div id="newRaid" style="width: 555px">
                 <span style="display: inline-block; vertical-align: top; margin-right: 20px">
                     <div id="raiddatepicker"></div>
-                    <div style="margin-top: 24px">
-                        <select id="selectmode" style="width: 212px">
-                            <option value="manual"><?php echo L("RaidModeManual"); ?></option>
-                            <option value="attend"><?php echo L("RaidModeAttend"); ?></option>
-                            <option value="all"><?php echo L("RaidModeAll"); ?></option>
-                        </select>                        
-                    </div>
                 </span>  
                 <span style="display: inline-block; vertical-align: top">
                     <span style="display: inline-block; margin-right: 5px; float: left" class="imagepicker" id="locationimagepicker"><div class="imagelist" id="locationimagelist"></div></span>
@@ -206,20 +199,20 @@
                                 ?>
                             </select>                    
                         </div>
-                        <div style="margin-bottom: 10px">
+                        <div>
                             <select id="starthour">
                             </select>
-                            <span>:</span>
+                            <span style="display: inline-block; width: 4px; text-align:center">:</span>
                             <select id="startminute" style="width: 48px">
                                 <option value="0">00</option>
                                 <option value="15">15</option>
                                 <option value="30">30</option>
                                 <option value="45">45</option>
                             </select>
-                            <span style="display: inline-block; width: 29px; text-align:center"><?php echo L("to"); ?></span>
+                            <span style="display: inline-block; width: 25px; text-align:center"><?php echo L("to"); ?></span>
                             <select id="endhour">
                             </select>
-                            <span>:</span>
+                            <span style="display: inline-block; width: 4px; text-align:center">:</span>
                             <select id="endminute" style="width: 48px">
                                 <option value="0">00</option>
                                 <option value="15">15</option>
@@ -228,11 +221,19 @@
                             </select>
                         </div>
                     </span>
-                    <div style="margin-bottom: 10px; clear: left">
+                    <div style="margin-top: 20px; clear: left">
                         <textarea id="descriptiondummy" class="textdummy description"><?php echo L("Description"); ?></textarea>
                         <textarea id="description" class="textinput description"></textarea>
                     </div>
-                    <button id="newRaidSubmit"><?php echo L("CreateRaid"); ?></button>
+                    <div style="margin-top: 10px">
+                        <select id="selectmode" style="width: 190px">
+                            <option value="manual"><?php echo L("RaidModeManual"); ?></option>
+                            <option value="attend"><?php echo L("RaidModeAttend"); ?></option>
+                            <option value="all"><?php echo L("RaidModeAll"); ?></option>
+                        </select>
+                        <button id="newRaidSubmit" style="position: relative; left: 17px"><?php echo L("CreateRaid"); ?></button>                 
+                    </div>
+                    
                 </span>
             </div>            
         </div>    

@@ -529,7 +529,6 @@
     background-image: url(images/move_left.png);
     background-repeat: no-repeat;
     top: 65px;
-    z-index: 15;
 }
 
 .grp_move_right {
@@ -539,5 +538,4 @@
     background-image: url(images/move_right.png);
     background-repeat: no-repeat;
     top: 65px;
-    z-index: 15;
 }

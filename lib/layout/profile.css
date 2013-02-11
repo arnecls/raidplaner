@@ -106,7 +106,6 @@
     position: relative;
     top: 15px;
     left: 29px;
-    z-index: 10;
 }
 
 #profile .charslot .newclass {
@@ -120,7 +119,6 @@
     position: relative;
     top: -18px;
     left: -28px;
-    z-index: 20;
 }
 
 #profile .charslot .class .mainchar {

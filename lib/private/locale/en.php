@@ -229,7 +229,8 @@
         $g_Locale[ "Ignore" ]                   = "Ignore";
         $g_Locale[ "Retry" ]                    = "Retry";
         $g_Locale[ "DatabaseError" ]            = "Database error";
-        $g_Locale[ "EditBindings" ]             = "Edit user bindings";
+        $g_Locale[ "EditBindings" ]             = "Edit bindings";
+        $g_Locale[ "RepairDatabase" ]           = "Repair databse";
         $g_Locale[ "PHPBB3Binding" ]            = "PHPBB3 binding";
         $g_Locale[ "PHPBB3ConfigFile" ]         = "PHPBB3 config file";
         $g_Locale[ "PHPBB3Database" ]           = "PHPBB3 database";

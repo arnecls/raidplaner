@@ -356,7 +356,6 @@ a:hover {
 
 #eventblocker {
     background-color: black;
-    z-index: 15;
     left: 0px;
     top: 0px;
     position: fixed;
@@ -369,7 +368,6 @@ a:hover {
 
 #ajaxblocker {
     background-color: black;
-    z-index: 1000;
     left: 0px;
     top: 0px;
     position: fixed;

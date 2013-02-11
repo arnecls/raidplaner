@@ -229,7 +229,8 @@
         $g_Locale[ "Ignore" ]                   = "Ignorieren";
         $g_Locale[ "Retry" ]                    = "Wiederholen";
         $g_Locale[ "DatabaseError" ]            = "Datenbank Fehler";
-        $g_Locale[ "EditBindings" ]             = "Benutzeranbindung bearbeiten";        
+        $g_Locale[ "EditBindings" ]             = "Anbindungen bearbeiten";
+        $g_Locale[ "RepairDatabase" ]           = "Datenbank reparieren";        
         $g_Locale[ "PHPBB3Binding" ]            = "PHPBB3 Anbindung";
         $g_Locale[ "PHPBB3ConfigFile" ]         = "PHPBB3 Konfigurationsdatei";
         $g_Locale[ "PHPBB3Database" ]           = "Name der PHPBB3 Datenbank";
@@ -250,10 +251,10 @@
         $g_Locale[ "MyBBDatabase" ]             = "Name der MyBB Datenbank";
         $g_Locale[ "MyBBPasswordEmpty" ]        = "MyBB Datenbank Passwort darf nicht leer sein.";
         $g_Locale[ "MyBBDBPasswordsMatch" ]     = "MyBB Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";        
-        $g_Locale[ "SMFBinding" ]              = "SMF Anbindung";
-        $g_Locale[ "SMFConfigFile" ]           = "SMF Konfigurationsdatei";
-        $g_Locale[ "SMFDatabase" ]             = "Name der SMF Datenbank";
-        $g_Locale[ "SMFPasswordEmpty" ]        = "SMF Datenbank Passwort darf nicht leer sein.";
-        $g_Locale[ "SMFDBPasswordsMatch" ]     = "SMF Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";
+        $g_Locale[ "SMFBinding" ]               = "SMF Anbindung";
+        $g_Locale[ "SMFConfigFile" ]            = "SMF Konfigurationsdatei";
+        $g_Locale[ "SMFDatabase" ]              = "Name der SMF Datenbank";
+        $g_Locale[ "SMFPasswordEmpty" ]         = "SMF Datenbank Passwort darf nicht leer sein.";
+        $g_Locale[ "SMFDBPasswordsMatch" ]      = "SMF Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";
     }
 ?>
