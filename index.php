@@ -179,7 +179,7 @@
         <?php if ( ValidRaidlead() ) { ?>
         
         <div id="sheetNewRaid">
-            <div id="newRaid" style="width: 555px">
+            <div id="newRaid" style="width:580px">
                 <span style="display: inline-block; vertical-align: top; margin-right: 20px">
                     <div id="raiddatepicker"></div>
                 </span>  
@@ -190,6 +190,7 @@
                             <select id="selectlocation" onchange="onLocationChange(this)">
                                 <option value="0"><?php echo L("NewDungeon"); ?></option>
                             </select>
+                            <span style="display: inline-block; width: 3px;"></span>
                             <select id="selectsize" style="width: 48px">
                                 <?php
                                     while ( list($groupSize,$slots) = each($s_GroupSizes) )
@@ -202,17 +203,17 @@
                         <div>
                             <select id="starthour">
                             </select>
-                            <span style="display: inline-block; width: 4px; text-align:center">:</span>
+                            <span style="display: inline-block; width: 4px; text-align:center; position: relative; top: -5px">:</span>
                             <select id="startminute" style="width: 48px">
                                 <option value="0">00</option>
                                 <option value="15">15</option>
                                 <option value="30">30</option>
                                 <option value="45">45</option>
                             </select>
-                            <span style="display: inline-block; width: 25px; text-align:center"><?php echo L("to"); ?></span>
+                            <span style="display: inline-block; width: 20px; text-align:center; position: relative; top: -5px"><?php echo L("to"); ?></span>
                             <select id="endhour">
                             </select>
-                            <span style="display: inline-block; width: 4px; text-align:center">:</span>
+                            <span style="display: inline-block; width: 4px; text-align:center; position: relative; top: -5px">:</span>
                             <select id="endminute" style="width: 48px">
                                 <option value="0">00</option>
                                 <option value="15">15</option>
@@ -226,12 +227,12 @@
                         <textarea id="description" class="textinput description"></textarea>
                     </div>
                     <div style="margin-top: 10px">
-                        <select id="selectmode" style="width: 190px">
+                        <select id="selectmode" style="width: 180px; float: left">
                             <option value="manual"><?php echo L("RaidModeManual"); ?></option>
                             <option value="attend"><?php echo L("RaidModeAttend"); ?></option>
                             <option value="all"><?php echo L("RaidModeAll"); ?></option>
                         </select>
-                        <button id="newRaidSubmit" style="position: relative; left: 17px"><?php echo L("CreateRaid"); ?></button>                 
+                        <button id="newRaidSubmit" style="float:right"><?php echo L("CreateRaid"); ?></button>                 
                     </div>
                     
                 </span>

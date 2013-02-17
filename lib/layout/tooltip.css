@@ -90,6 +90,7 @@
     position: absolute;
     display: block;
     table-layout: auto;
+	z-index: 1;
 }
 
 /***************************************************
