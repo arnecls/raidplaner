@@ -55,6 +55,7 @@
     float: left;
     zoom: 1;
     z-index: 1;
+    clear: both;
     display: none;
 }
 
