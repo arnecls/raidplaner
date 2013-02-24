@@ -1,15 +1,7 @@
 <?php
-    header("Content-type: text/xml");
-    echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-    
-    define( "LOCALE_SETUP", true );
-    require_once("../../lib/private/connector.class.php");
+    require_once(dirname(__FILE__)."/../../lib/private/connector.class.php");
     require_once(dirname(__FILE__)."/../../lib/config/config.php");
     @include_once(dirname(__FILE__)."/../../lib/config/config.vb3.php");
-    
-    echo "<upgrade>";
-    
-    // ----------------------------------------------------------------------------
     
     function doUpgrade( $a_Statement)
     {
@@ -18,15 +10,19 @@
         
         while ( list($name, $query) = each($a_Statement) )
         {
-            echo "<step name=\"".$name."\">";
+            echo "<div class=\"update_step\">".$name;
             
             $Action = $Connector->prepare( $query );
             if ( !$Action->execute() )
             {
-                postErrorMessage( $Action );
+                postHTMLErrorMessage( $Action );
+            }
+            else
+            {
+                echo "<div class=\"update_step_ok\">OK</div>";
             }
             
-            echo "</step>";
+            echo "</div>";
         }
         
         $Connector->commit();
@@ -36,20 +32,20 @@
     
     function upgrade_092()
     {
-       echo "<update version=\"92\">";
+       echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.2 ".L("UpdateTo")." 0.9.3";
        
        $queries = Array( "External binding" => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `ExternalBinding` `ExternalBinding` ENUM('none',  'phpbb3',  'eqdkp',  'vb3') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;" );
        
        doUpgrade( $queries );
-       echo "</update>";
+       echo "</div>";
     }
     
     // ----------------------------------------------------------------------------
     
     function upgrade_093()
     {
-        echo "<update version=\"93\">";
-        
+        echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.3 ".L("UpdateTo")." 0.9.4";
+       
         $Connector = Connector::GetInstance();
         
         // Check for exisiting unique index
@@ -84,7 +80,7 @@
         
         // Update user creation dates
         
-        echo "<step name=\"User creation date detection\">";
+        echo "<div class=\"update_step\">User creation date detection";
             
         $DataStatement = $Connector->prepare( "SELECT `".RP_TABLE_PREFIX."Character`.UserId, `".RP_TABLE_PREFIX."Raid`.Start FROM `".RP_TABLE_PREFIX."Character` ".
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (CharacterId) ".
@@ -106,26 +102,27 @@
             
             if ( !$Action->execute() )
             {
-                postErrorMessage( $Action );
+                postHTMLErrorMessage( $Action );
                 $Connector->rollback();
             }
             else
             {
+                echo "<div class=\"update_step_ok\">OK</div>";
                 $Connector->commit();
             }
         }
         
         $DataStatement->closeCursor();
                           
-        echo "</step>";
-        echo "</update>";
+        echo "</div>";
+        echo "</div>";
     }
     
     // ----------------------------------------------------------------------------
     
     function upgrade_094()
     {
-        echo "<update version=\"94\">";
+        echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.4 ".L("UpdateTo")." 0.9.5";
         
         $updates = Array( "Timestamp setting"      => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('TimeFormat', 24, '');",
                           "Remove banner setting"  => "DELETE FROM `".RP_TABLE_PREFIX."Setting` WHERE Name = 'Banner' LIMIT 1;",
@@ -134,14 +131,14 @@
         
         doUpgrade( $updates );
         
-        echo "</update>";
+        echo "</div>";
     }
     
     // ----------------------------------------------------------------------------
     
     function upgrade_095()
     {
-        echo "<update version=\"95\">";
+        echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.5 ".L("UpdateTo")." 0.9.6";
         
         $updates = Array( "Primary key attendance"   => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` ADD  `AttendanceId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;",
                           "Rename role fields"       => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE  `TankSlots` `SlotsRole1` TINYINT(2) UNSIGNED NOT NULL,".
@@ -166,14 +163,14 @@
                           
         doUpgrade( $updates );
         
-        echo "</update>";
+        echo "</div>";
     }
     
     // ----------------------------------------------------------------------------
     
     function upgrade_096()
     {
-        echo "<update version=\"96\">";
+        echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.6 ".L("UpdateTo")." 0.9.7";
         
         $updates = Array( "Undecided comments"               => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CHANGE `Status` `Status` ENUM('ok', 'available', 'unavailable', 'undecided') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
                           "New bindings"                     => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `ExternalBinding` `ExternalBinding` ENUM('none', 'phpbb3', 'eqdkp', 'vb3', 'mybb', 'smf') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
@@ -188,7 +185,7 @@
         
         if ( defined("VB3_BINDING") && VB3_BINDING )
         {
-            echo "<step name=\"Convert VB Users\">";
+            echo "<div class=\"update_step\">Convert VB Users";
             
             $Connector = Connector::GetInstance();
             
@@ -196,7 +193,7 @@
             
             if ( !$UserQuery->execute() )
             {
-                postErrorMessage( $UserQuery );
+                postHTMLErrorMessage( $UserQuery );
             }
             else
             {                
@@ -207,10 +204,12 @@
                 
                 if ( !$VbUserQuery->execute() )
                 {
-                    postErrorMessage( $VbUserQuery );
+                    postHTMLErrorMessage( $VbUserQuery );
                 }
                 else
                 {
+                    $error = false;
+                    
                     // Gather all vbulletin users
                     
                     $vbUserSalt = array();
@@ -232,7 +231,8 @@
                             
                             if ( !$UpdateUser->execute() )
                             {
-                                postErrorMessage( $UpdateUser );
+                                $error = true;
+                                postHTMLErrorMessage( $UpdateUser );
                             }
                             
                             $UpdateUser->closeCursor();
@@ -241,14 +241,17 @@
                 }
                 
                 $VbUserQuery->closeCursor();
+                
+                if (!$error)
+                    echo "<div class=\"update_step_ok\">OK</div>";
             }
             
             $UserQuery->closeCursor();
             
-            echo "</step>";
+            echo "</div>";
         }
         
-        echo "<step name=\"Rainbowtable fix\">";
+        echo "<div class=\"update_step\">Rainbowtable fix";
         
         // Update native password hashes
         
@@ -256,10 +259,12 @@
         
         if ( !$NativeUserQuery->execute() )
         {
-            postErrorMessage( $NativeUserQuery );
+            postHTMLErrorMessage( $NativeUserQuery );
         }
         else
         {
+            $error = false;
+            
             while ( $UserData = $NativeUserQuery->fetch(PDO::FETCH_ASSOC) )
             {
                 // Old style passwords are stored as sha1 hash -> 160 bits (20 bytes -> 40 char hex)
@@ -275,19 +280,22 @@
                     
                     if ( !$UpdateUser->execute() )
                     {
-                        postErrorMessage( $UpdateUser );
+                        $error = true;
+                        postHTMLErrorMessage( $UpdateUser );
                     }
                     
                     $UpdateUser->closeCursor();
                 }
-            }                    
+            }
+            
+            if (!$error)
+                echo "<div class=\"update_step_ok\">OK</div>";                   
         }
         
         $NativeUserQuery->closeCursor();
         
-        echo "</step>";
-        
-        echo "</update>";
+        echo "</div>";        
+        echo "</div>";
     }
     
     // ----------------------------------------------------------------------------
@@ -319,6 +327,4 @@
             break;
         }
     }
-        
-    echo "</upgrade>";
 ?>

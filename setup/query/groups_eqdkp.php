@@ -5,9 +5,9 @@
 
     header("Content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-    echo "<check>";
+    echo "<grouplist>";
     
-    $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]);
+    $TestConnectionEQDKP = new Connector( SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"] );
         
-    echo "</check>";
+    echo "</grouplist>";
 ?>

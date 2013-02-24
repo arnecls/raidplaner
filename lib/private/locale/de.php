@@ -182,6 +182,8 @@
         $g_Locale[ "TablePrefix" ]              = "Prefix f&uuml;r die Tabellen in der Datenbank";
         $g_Locale[ "AdvancedOptions" ]          = "Erweiterte Einstellungen";
         $g_Locale[ "AllowManualRegistration" ]  = "Erlaube es Nutzern sich manuell zu registrieren";
+        $g_Locale[ "AdminPasswordSetup"]        = "Der Administrator (Anmeldename \"admin\") ist ein Benutzer der immer alle verf&uuml;gbaren Rechte besitzt.";
+        $g_Locale[ "AdminNotMoveable"]          = "Der Nutzer admin kann nicht umbenannt oder in eine andere Gruppe verschoben werden.";
         $g_Locale[ "AdminPassword" ]            = "Passwort f&uuml;r den Administrator";
         $g_Locale[ "SaveAndContinue" ]          = "Speichern und fortsetzen";
         $g_Locale[ "LoadGroups" ]               = "Lade Gruppen mit den angegebenen Verbindungsdaten";
@@ -190,6 +192,7 @@
         $g_Locale[ "Back" ]                     = "Zur&uuml;ck";
         $g_Locale[ "Continue" ]                 = "Weiter";
         $g_Locale[ "SetupComplete" ]            = "Installation abgeschlossen";
+        $g_Locale[ "UpdateComplete" ]           = "Update abgeschlossen";
         $g_Locale[ "RaidplanerSetupDone" ]      = "Der Raidplaner ist jetzt erfolgreich konfiguriert.";
         $g_Locale[ "DeleteSetupFolder" ]        = "Du solltest nun den setup Ordner l&ouml;schen und die folgenden Ordner absichern:";
         $g_Locale[ "ThankYou" ]                 = "Danke das du den packedpixel Raidplaner verwendest.";
@@ -223,6 +226,7 @@
         $g_Locale[ "NoUpdateNecessary" ]        = "Kein Update notwendig";
         $g_Locale[ "UpdateFrom" ]               = "Update der Version";
         $g_Locale[ "UpdateTo" ]                 = "auf Version";
+        $g_Locale[ "Error" ]                    = "Fehler";
         $g_Locale[ "UpdateErrors" ]             = "Fehler w&auml;hrend des Updates";
         $g_Locale[ "ReportedErrors" ]           = "Die folgenden Fehler wurden w&auml;hrend des updates gemeldet.";
         $g_Locale[ "PartiallyUpdated" ]         = "Dies kann auf eine bereits (teilweise) upgedatete Datenbank hinweisen.";
@@ -230,7 +234,24 @@
         $g_Locale[ "Retry" ]                    = "Wiederholen";
         $g_Locale[ "DatabaseError" ]            = "Datenbank Fehler";
         $g_Locale[ "EditBindings" ]             = "Anbindungen bearbeiten";
-        $g_Locale[ "RepairDatabase" ]           = "Datenbank reparieren";        
+        $g_Locale[ "RepairDatabase" ]           = "Datenbank reparieren";
+        $g_Locale[ "EditConfig" ]               = "Konfiguration bearbeiten";
+        $g_Locale[ "ResetPassword" ]            = "Admin Passwort setzen";
+        $g_Locale[ "Repair" ]                   = "Datenbank Inkonsistenzen reparieren";
+        $g_Locale[ "GameconfigProblems" ]       = "Durch Ver&auml;nderungen in der lib/gameconfig.php k&ouml;nnen ung&uuml;tige Datenbankeintr&auml;ge entstehen (z.B. Charaktere mit ung&uuml;tigen Rollen).";
+        $g_Locale[ "RepairTheseProblems" ]      = "Dieses Script behebt diese Probleme so gut wie m&ouml;glich.";
+        $g_Locale[ "RepairDone" ]               = "Reparatur abgeschlossen.";
+        
+        $g_Locale[ "ItemsRepaired" ]            = "Eintr&auml;ge repariert";
+        $g_Locale[ "ItemsToResolve" ]           = "Eintr&auml;ge m&uuml;ssen manuell aufgel&ouml;st werden";        
+        $g_Locale[ "InvalidCharacters" ]        = "Ung&uuml;ltige Charaktere";
+        $g_Locale[ "InvalidAttendances" ]       = "Ung&uuml;ltige Anmeldungen";
+        $g_Locale[ "Delete" ]                   = "L&ouml;schen";
+        $g_Locale[ "Resolve" ]                  = "Aufl&ouml;sen";
+        $g_Locale[ "StrayRoles" ]               = "Ung&uuml;ltige Rollen";
+        $g_Locale[ "StrayCharacters" ]          = "Gel&ouml;schte Charaktere";
+        $g_Locale[ "StrayUsers" ]               = "Gel&ouml;schte Benutzer";
+                
         $g_Locale[ "PHPBB3Binding" ]            = "PHPBB3 Anbindung";
         $g_Locale[ "PHPBB3ConfigFile" ]         = "PHPBB3 Konfigurationsdatei";
         $g_Locale[ "PHPBB3Database" ]           = "Name der PHPBB3 Datenbank";

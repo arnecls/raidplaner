@@ -4,7 +4,7 @@
     require_once(dirname(__FILE__)."/../../lib/private/locale.php");
 ?>
 
-function checkForm() 
+function checkConfigForm( a_OnSuccess, a_Parameter ) 
 {
     if ( $("#password").val().length == 0 )
     {
@@ -12,21 +12,9 @@ function checkForm()
         return;
     }
     
-    if ( $("#admin_password").val().length == 0 )
-    {
-        alert("<?php echo L("AdminPasswordEmpty"); ?>");
-        return;
-    }
-    
     if ( $("#password").val() != $("#password_check").val() )
     {
         alert("<?php echo L("DatabasePasswordNoMatch"); ?>");
-    }
-    
-    if ( $("#admin_password").val() != $("#admin_password_check").val() )
-    {
-        alert("<?php echo L("AdminPasswordNoMatch"); ?>");
-        return;
     }
     
     var parameter = {
@@ -38,15 +26,39 @@ function checkForm()
     
     $.ajax({
         type     : "POST",
-        url      : "query/setup_db_check.php",
+        url      : "query/install_config_check.php",
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : dbCheckDone
+        success  : function(a_XMLData) { a_OnSuccess(a_XMLData,a_Parameter); }
     });
 }
 
-function dbCheckDone( a_XMLData )
+// ----------------------------------------------------------------------------
+
+function OnCheckConfigConnection( a_XMLData )
+{
+    var testResult = $(a_XMLData).children("test");
+    
+    if ( testResult.children("error").size() > 0 )
+    {
+        var errorString = "";
+        
+        testResult.children("error").each( function() {
+            errorString += $(this).text() + "\n";
+        });
+        
+        alert("<?php echo L("ConnectionTestFailed"); ?>:\n\n" + errorString );
+    }
+    else
+    {
+        alert("<?php echo L("ConnectionTestOk"); ?>");
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+function OnConfigSubmit( a_XMLData, a_NextPage )
 {
     var testResult = $(a_XMLData).children("test");
     
@@ -68,17 +80,16 @@ function dbCheckDone( a_XMLData )
             user      : $("#user").val(),
             password  : $("#password").val(),
             prefix    : $("#prefix").val(),
-            adminpass : $("#admin_password").val(),
-            register  : $("#allow_registration")[0].checked
+            register  : $("#allow_registration:checked").val() == "on"
         };
         
         $.ajax({
             type     : "POST",
-            url      : "query/setup_db_done.php",
+            url      : "query/submit_config.php",
             dataType : "xml",
             async    : true,
             data     : parameter,
-            success  : loadBindings
+            success  : function() { open(a_NextPage); }
         });
     }
 }

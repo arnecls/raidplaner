@@ -26,5 +26,17 @@
         $TestConnectionVB3 = new Connector( SQL_HOST, $_REQUEST["vb3_database"], $_REQUEST["vb3_user"], $_REQUEST["vb3_password"] );
     }
     
+    if ( $_REQUEST["mybb_check"] == "true" )
+    {
+        echo "<name>myBB</name>";
+        $TestConnectionMYBB = new Connector( SQL_HOST, $_REQUEST["mybb_database"], $_REQUEST["mybb_user"], $_REQUEST["mybb_password"] );
+    }
+    
+    if ( $_REQUEST["smf_check"] == "true" )
+    {
+        echo "<name>SMF</name>";
+        $TestConnectionSMF = new Connector( SQL_HOST, $_REQUEST["smf_database"], $_REQUEST["smf_user"], $_REQUEST["smf_password"] );
+    }
+    
     echo "</test>";
 ?>

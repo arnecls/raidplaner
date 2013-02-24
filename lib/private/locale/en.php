@@ -183,6 +183,8 @@
         $g_Locale[ "AdvancedOptions" ]          = "Advanced options";
         $g_Locale[ "AllowManualRegistration" ]  = "Allow users to register manually";
         $g_Locale[ "AdminPassword" ]            = "Password for the admin user";
+        $g_Locale[ "AdminPasswordSetup"]        = "The administrator (login name \"admin\") is a user that always has all available rights.";
+        $g_Locale[ "AdminNotMoveable"]          = "The admin user cannot be renamed or moved into a different group.";
         $g_Locale[ "SaveAndContinue" ]          = "Save and continue";
         $g_Locale[ "LoadGroups" ]               = "Load groups using these settings";
         $g_Locale[ "AutoMemberLogin" ]          = "Users of the following groups gain \"member\" rights upon first login";
@@ -190,6 +192,7 @@
         $g_Locale[ "Back" ]                     = "Back";
         $g_Locale[ "Continue" ]                 = "Continue";
         $g_Locale[ "SetupComplete" ]            = "Setup complete";
+        $g_Locale[ "UpdateComplete" ]           = "Update complete";
         $g_Locale[ "RaidplanerSetupDone" ]      = "Raidplaner has been successfully set up.";
         $g_Locale[ "DeleteSetupFolder" ]        = "You should now delete the setup folder and secure the following folders:";
         $g_Locale[ "ThankYou" ]                 = "Thank you for using packedpixel Raidplaner.";
@@ -214,6 +217,7 @@
         $g_Locale[ "VerifySettings" ]           = "Verify these settings";
         $g_Locale[ "Install" ]                  = "Install";
         $g_Locale[ "Update" ]                   = "Update";
+        $g_Locale[ "Error" ]                    = "Error";
         $g_Locale[ "VersionDetection" ]         = "Version detection and update";
         $g_Locale[ "VersionDetectProgress" ]    = "Setup will try to detect your current version.";
         $g_Locale[ "ChooseManually" ]           = "If the detected version does not match your installed version you may always choose manually, too.";
@@ -230,7 +234,24 @@
         $g_Locale[ "Retry" ]                    = "Retry";
         $g_Locale[ "DatabaseError" ]            = "Database error";
         $g_Locale[ "EditBindings" ]             = "Edit bindings";
+        $g_Locale[ "EditConfig" ]               = "Edit conifguration";
+        $g_Locale[ "ResetPassword" ]            = "Set admin password";
         $g_Locale[ "RepairDatabase" ]           = "Repair databse";
+        $g_Locale[ "Repair" ]                   = "Repaire database inconsistencies";
+        $g_Locale[ "GameconfigProblems" ]       = "By changing the lib/gameconfig.php inconsistent database entries can be created (e.g. characters with invalid roles).";
+        $g_Locale[ "RepairTheseProblems" ]      = "This script fixes these problems as good as possible.";
+        $g_Locale[ "RepairDone" ]               = "Repair done.";
+        
+        $g_Locale[ "ItemsRepaired" ]            = "Items repaired";
+        $g_Locale[ "ItemsToResolve" ]           = "Items need to be resolved manually";
+        $g_Locale[ "InvalidCharacters" ]        = "Invalid characters";
+        $g_Locale[ "InvalidAttendances" ]       = "Invalid attendances";
+        $g_Locale[ "Delete" ]                   = "Delete";
+        $g_Locale[ "Resolve" ]                  = "Resolve";
+        $g_Locale[ "StrayRoles" ]               = "Invalid roles";
+        $g_Locale[ "StrayCharacters" ]          = "Deleted characters";
+        $g_Locale[ "StrayUsers" ]               = "Deleted users";
+        
         $g_Locale[ "PHPBB3Binding" ]            = "PHPBB3 binding";
         $g_Locale[ "PHPBB3ConfigFile" ]         = "PHPBB3 config file";
         $g_Locale[ "PHPBB3Database" ]           = "PHPBB3 database";

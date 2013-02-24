@@ -4,7 +4,7 @@
     require_once(dirname(__FILE__)."/../../lib/private/locale.php");
 ?>
 
-function onReloadPHPBB3( a_XMLData )
+function OnReloadPHPBB3( a_XMLData )
 {
     var groups = $(a_XMLData).children("grouplist");
     
@@ -33,7 +33,9 @@ function onReloadPHPBB3( a_XMLData )
     $("#phpbb3_raidlead").empty().append( HTMLString );
 }
 
-function onReloadVB3( a_XMLData )
+// ----------------------------------------------------------------------------
+
+function OnReloadVB3( a_XMLData )
 {
     var groups = $(a_XMLData).children("grouplist");
     
@@ -62,7 +64,9 @@ function onReloadVB3( a_XMLData )
     $("#vb3_raidlead").empty().append( HTMLString );
 }
 
-function onReloadMyBB( a_XMLData )
+// ----------------------------------------------------------------------------
+
+function OnReloadMyBB( a_XMLData )
 {
     var groups = $(a_XMLData).children("grouplist");
     
@@ -91,7 +95,9 @@ function onReloadMyBB( a_XMLData )
     $("#mybb_raidlead").empty().append( HTMLString );
 }
 
-function onReloadSMF( a_XMLData )
+// ----------------------------------------------------------------------------
+
+function OnReloadSMF( a_XMLData )
 {
     var groups = $(a_XMLData).children("grouplist");
     
@@ -120,9 +126,11 @@ function onReloadSMF( a_XMLData )
     $("#smf_raidlead").empty().append( HTMLString );
 }
 
-function onCheckEQDKP( a_XMLData )
+// ----------------------------------------------------------------------------
+
+function OnCheckEQDKP( a_XMLData )
 {
-    var groups = $(a_XMLData).children("check");
+    var groups = $(a_XMLData).children("grouplist");
     
     if ( groups.children("error").size() > 0 )
     {
@@ -139,7 +147,9 @@ function onCheckEQDKP( a_XMLData )
     alert("<?php echo L("ConnectionTestOk"); ?>");
 }
 
-function reloadPHPBB3Groups() 
+// ----------------------------------------------------------------------------
+
+function ReloadPHPBB3Groups() 
 {
     if ( $("#phpbb3_password").val().length == 0 )
     {
@@ -166,11 +176,13 @@ function reloadPHPBB3Groups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : onReloadPHPBB3
+        success  : OnReloadPHPBB3
     });
 }
 
-function reloadVB3Groups() 
+// ----------------------------------------------------------------------------
+
+function ReloadVB3Groups() 
 {
     if ( $("#vb3_password").val().length == 0 )
     {
@@ -197,11 +209,13 @@ function reloadVB3Groups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : onReloadVB3
+        success  : OnReloadVB3
     });
 }
 
-function reloadMyBBGroups() 
+// ----------------------------------------------------------------------------
+
+function ReloadMyBBGroups() 
 {
     if ( $("#mybb_password").val().length == 0 )
     {
@@ -228,11 +242,13 @@ function reloadMyBBGroups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : onReloadMyBB
+        success  : OnReloadMyBB
     });
 }
 
-function reloadSMFGroups() 
+// ----------------------------------------------------------------------------
+
+function ReloadSMFGroups() 
 {
     if ( $("#smf_password").val().length == 0 )
     {
@@ -259,11 +275,13 @@ function reloadSMFGroups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : onReloadSMF
+        success  : OnReloadSMF
     });
 }
 
-function checkEQDKP()
+// ----------------------------------------------------------------------------
+
+function CheckEQDKP()
 {
     if ( $("#eqdkp_password").val().length == 0 )
     {
@@ -286,15 +304,17 @@ function checkEQDKP()
     
     $.ajax({
         type     : "POST",
-        url      : "query/test_eqdkp.php",
+        url      : "query/groups_eqdkp.php",
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : onCheckEQDKP
+        success  : OnCheckEQDKP
     });
 }
 
-function checkForm() 
+// ----------------------------------------------------------------------------
+
+function CheckBindingForm(a_Parameter) 
 {
     var usePhpBB = $("#allow_phpbb3:checked").val() == "on";
     var useEQDKP = $("#allow_eqdkp:checked").val() == "on";
@@ -411,15 +431,17 @@ function checkForm()
     
     $.ajax({
         type     : "POST",
-        url      : "query/setup_bindings_check.php",
+        url      : "query/install_bindings_check.php",
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : dbCheckDone
+        success  : function(a_XMLData) { OnDbCheckDone(a_XMLData, a_Parameter); }
     });
 }
 
-function dbCheckDone( a_XMLData )
+// ----------------------------------------------------------------------------
+
+function OnDbCheckDone( a_XMLData, a_NextPage )
 {
     var testResult = $(a_XMLData).children("test");
     
@@ -533,20 +555,15 @@ function dbCheckDone( a_XMLData )
     
     $.ajax({
         type     : "POST",
-        url      : "query/setup_bindings_done.php",
+        url      : "query/submit_bindings.php",
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : loadCleanup
+        success  : function() { open(a_NextPage); }
     });
 }
 
-$(document).ready( function() {
-    $("#eqdkp").hide();
-    $("#vbulletin").hide();
-    $("#mybb").hide();
-    $("#smf").hide();
-});
+// ----------------------------------------------------------------------------
 
 function showConfig( a_Name )
 {

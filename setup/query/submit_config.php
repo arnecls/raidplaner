@@ -5,6 +5,8 @@
     
     define( "LOCALE_SETUP", true );
     require_once("../../lib/private/connector.class.php");
+        
+    // Write config file
     
     $configFile = fopen( "../../lib/config/config.php", "w+" );
     
@@ -22,6 +24,8 @@
     fclose( $configFile );
     
     require_once("../../lib/config/config.php");
+    
+    // Create tables if necessary
 
     $connector = Connector::GetInstance();
     
@@ -102,6 +106,8 @@
           KEY `ExternalId` (`ExternalId`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
         
+    // Add default values for settings table
+        
     $testSt = $connector->prepare( "SELECT * FROM `".$_REQUEST["prefix"]."Setting` LIMIT 1" );
     $testSt->execute();
     
@@ -120,25 +126,6 @@
         $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('TimeFormat', 24, '');" );
         $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 96, '');" );    
     }
-    
-    $testSt->closeCursor();
-    
-    $testSt = $connector->prepare( "SELECT * FROM `".$_REQUEST["prefix"]."User` WHERE UserId=1 LIMIT 1" );
-    $testSt->execute();
-    
-    $Salt = sha1( strval(microtime() + rand()) . $_SERVER["REMOTE_ADDR"] );
-    $HashSalt = md5( "admin".$Salt );
-    $hashedPassword = hash("sha256", sha1($_REQUEST["adminpass"]).$HashSalt);
-            
-    if ( $testSt->rowCount() == 0 )
-    {
-        $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."User` VALUES(1, 'admin', 0, 'none', 'true', 'admin', '".$hashedPassword."', '".$HashSalt."', '', '', FROM_UNIXTIME(".time()."));" );
-    }   
-    // Reset admin password 
-    //else
-    //{
-    //    $connector->exec( "UPDATE `".$_REQUEST["prefix"]."User` SET `Password`='".$hashedPassword."', `Hash`='".$HashSalt."' WHERE UserId=1 LIMIT 1;" );        
-    //}
     
     $testSt->closeCursor();
     

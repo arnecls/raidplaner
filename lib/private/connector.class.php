@@ -83,6 +83,8 @@
             return $StatementObj;
         }
     }
+    
+    // --------------------------------------------------------------------------------------------
 
     function postErrorMessage( $Statement )
     {
@@ -90,5 +92,17 @@
         echo "<error>".L("DatabaseError")."</error>";
         echo "<error>".$ErrorInfo[0]."</error>";
         echo "<error>".$ErrorInfo[2]."</error>";
+    }
+    
+    // --------------------------------------------------------------------------------------------
+
+    function postHTMLErrorMessage( $Statement )
+    {
+        $ErrorInfo = $Statement->errorInfo();
+        echo "<div class=\"database_error\">";
+        echo "<div class=\"error_head\">".L("DatabaseError")."</div>";
+        echo "<div class=\"error_line error_line1\">".$ErrorInfo[0]."</div>";
+        echo "<div class=\"error_line error_line2\">".$ErrorInfo[2]."</div>";
+        echo "</div>";
     }
 ?>
