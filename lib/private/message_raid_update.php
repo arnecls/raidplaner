@@ -109,7 +109,6 @@ function msgRaidUpdate( $Request )
         {
             $UpdateRaidSt->closeCursor();
 
-
             // Remove the attends marked for delete.
             // Only random player attends can be removed.
 
@@ -175,7 +174,7 @@ function msgRaidUpdate( $Request )
 
                             $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
                                                                "Status = :Status, Role = :Role, Comment = :Name ".
-                                                               "WHERE RaidId = :RaidId AND Status != 'unavialable' AND AttendanceId = :AttendanceId LIMIT 1" );
+                                                               "WHERE RaidId = :RaidId AND Status != 'unavailable' AND AttendanceId = :AttendanceId LIMIT 1" );
 
                             $UpdateSlot->bindValue( ":AttendanceId", $AttendanceId, PDO::PARAM_INT);
                             $UpdateSlot->bindValue( ":Name",         $Name, PDO::PARAM_STR);
@@ -186,7 +185,7 @@ function msgRaidUpdate( $Request )
 
                             $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
                                                                "Status = :Status, Role = :Role ".
-                                                               "WHERE RaidId = :RaidId AND Status != 'unavialable' AND AttendanceId = :AttendanceId LIMIT 1" );
+                                                               "WHERE RaidId = :RaidId AND Status != 'unavailable' AND AttendanceId = :AttendanceId LIMIT 1" );
 
                             $UpdateSlot->bindValue( ":AttendanceId", $AttendanceId, PDO::PARAM_INT);
                         }
