@@ -254,7 +254,7 @@
         
         // Update native password hashes
         
-        $NativeUserQuery = $Connector->prepare("SELECT UserId, Hash, Password FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding=\"none\"");
+        $NativeUserQuery = $Connector->prepare("SELECT UserId, Salt, Password FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding=\"none\"");
         
         if ( !$NativeUserQuery->execute() )
         {
