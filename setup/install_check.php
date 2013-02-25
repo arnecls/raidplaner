@@ -180,5 +180,5 @@
     <div class="button_back" style="background-image: url(layout/install_white.png)"><?php echo L("Back"); ?></div>
     <?php if ($testsFailed==0) { ?>
     <div class="button_next" style="background-image: url(layout/config_white.png)"><?php echo L("Continue"); ?></div>
-    <? } ?>
+    <?php } ?>
 <?php include("layout/footer.html"); ?>

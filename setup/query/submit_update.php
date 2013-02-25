@@ -180,14 +180,13 @@
                                                                 "ALTER TABLE `".RP_TABLE_PREFIX."User` ADD `BindingActive` ENUM('true', 'false') NOT NULL DEFAULT 'true' AFTER `ExternalBinding`;");
         
         doUpgrade( $updates );
+		$Connector = Connector::GetInstance();
         
         // vBulletin user hash change
         
         if ( defined("VB3_BINDING") && VB3_BINDING )
         {
             echo "<div class=\"update_step\">Convert VB Users";
-            
-            $Connector = Connector::GetInstance();
             
             $UserQuery = $Connector->prepare("SELECT UserId, ExternalId FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding = 'vb3'");
             

@@ -4,7 +4,7 @@
 ?>
 <?php include("layout/header.html"); ?>
 
-<? if (isset($_REQUEST["single"])) { ?>
+<?php if (isset($_REQUEST["single"])) { ?>
 <script type="text/javascript">
     $(document).ready( function() {
         $(".button_back").click( function() { open("index.php"); });
@@ -43,7 +43,7 @@
 
 </div>
 <div class="bottom_navigation">
-<? if (isset($_REQUEST["single"])) { ?>
+<?php if (isset($_REQUEST["single"])) { ?>
     <div class="button_back" style="background-image: url(layout/install_white.png)"><?php echo L("Back"); ?></div>
     <div class="button_next" style="background-image: url(layout/update_white.png)"><?php echo L("Continue"); ?></div>
 <?php } else { ?>

@@ -124,7 +124,7 @@
         $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Site', '', '');" );
         $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Theme', '', 'cataclysm');" );
         $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('TimeFormat', 24, '');" );
-        $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 96, '');" );    
+        $connector->exec( "INSERT INTO `".$_REQUEST["prefix"]."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 97, '');" );    
     }
     
     $testSt->closeCursor();
