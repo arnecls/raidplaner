@@ -117,7 +117,6 @@
         <input type="text" id="phpbb3_user" value="<?php echo (defined("PHPBB3_TABLE")) ? PHPBB3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="phpbb3_password"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="phpbb3_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
-        <br/>
         <input type="text" id="phpbb3_prefix" value="<?php echo (defined("PHPBB3_TABLE_PREFIX")) ? PHPBB3_TABLE_PREFIX : "phpbb_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
     </div>
     
@@ -127,7 +126,7 @@
         <?php echo L("AutoMemberLogin"); ?><br/>
         <select id="phpbb3_member" multiple="multiple" style="width: 400px; height: 5.5em">
         <?php
-            if ( defined("PHPBB3_DATABASE") )
+            if ( defined("PHPBB3_BINDING") && PHPBB3_BINDING )
             {
                 $GroupIds = array();
                 
@@ -145,7 +144,7 @@
         <?php echo L("AutoLeadLogin"); ?><br/>
         <select id="phpbb3_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
         <?php
-            if ( defined("PHPBB3_DATABASE") )
+            if ( defined("PHPBB3_BINDING") && PHPBB3_BINDING )
             {
                 $GroupIds = array();
                 
@@ -169,7 +168,6 @@
         <input type="text" id="eqdkp_user" value="<?php echo (defined("EQDKP_TABLE")) ? EQDKP_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="eqdkp_password"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="eqdkp_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
-        <br/>
         <input type="text" id="eqdkp_prefix" value="<?php echo (defined("EQDKP_TABLE_PREFIX")) ? EQDKP_TABLE_PREFIX : "eqdkp_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
     </div>
     
@@ -183,7 +181,6 @@
         <input type="text" id="vb3_user" value="<?php echo (defined("VB3_TABLE")) ? VB3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="vb3_password"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="vb3_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
-        <br/>
         <input type="text" id="vb3_prefix" value="<?php echo (defined("VB3_TABLE_PREFIX")) ? VB3_TABLE_PREFIX : "vb_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
     </div>
     
@@ -193,7 +190,7 @@
         <?php echo L("AutoMemberLogin"); ?><br/>
         <select id="vb3_member" multiple="multiple" style="width: 400px; height: 5.5em">
         <?php
-            if ( defined("VB3_DATABASE") )
+            if ( defined("VB3_BINDING") && VB3_BINDING )
             {
                 $GroupIds = array();
                 
@@ -211,7 +208,7 @@
         <?php echo L("AutoLeadLogin"); ?><br/>
         <select id="vb3_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
         <?php
-            if ( defined("VB3_DATABASE") )
+            if ( defined("VB3_BINDING") && VB3_BINDING )
             {
                 $GroupIds = array();
                 
@@ -230,12 +227,11 @@
 
 <div id="mybb" style="display: none">
     <div>
-        <h2><?php echo L("MYBBBinding"); ?></h2>
+        <h2><?php echo L("MyBBBinding"); ?></h2>
         <input type="text" id="mybb_database" value="<?php echo (defined("MYBB_DATABASE")) ? MYBB_DATABASE : "mybb" ?>"/> <?php echo L("MyBBDatabase"); ?><br/>
         <input type="text" id="mybb_user" value="<?php echo (defined("MYBB_TABLE")) ? MYBB_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="mybb_password"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="mybb_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
-        <br/>
         <input type="text" id="mybb_prefix" value="<?php echo (defined("MYBB_TABLE_PREFIX")) ? MYBB_TABLE_PREFIX : "mybb_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
     </div>
     
@@ -245,7 +241,7 @@
         <?php echo L("AutoMemberLogin"); ?><br/>
         <select id="mybb_member" multiple="multiple" style="width: 400px; height: 5.5em">
         <?php
-            if ( defined("MYBB_DATABASE") )
+            if ( defined("MYBB_BINDING") && MYBB_BINDING )
             {
                 $GroupIds = array();
                 
@@ -263,7 +259,7 @@
         <?php echo L("AutoLeadLogin"); ?><br/>
         <select id="mybb_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
         <?php
-            if ( defined("MYBB_DATABASE") )
+            if ( defined("MYBB_BINDING") && MYBB_BINDING )
             {
                 $GroupIds = array();
                 
@@ -287,7 +283,6 @@
         <input type="text" id="smf_user" value="<?php echo (defined("SMF_TABLE")) ? SMF_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="smf_password"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="smf_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
-        <br/>
         <input type="text" id="smf_prefix" value="<?php echo (defined("SMF_TABLE_PREFIX")) ? SMF_TABLE_PREFIX : "smf_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
     </div>
     
@@ -297,7 +292,7 @@
         <?php echo L("AutoMemberLogin"); ?><br/>
         <select id="smf_member" multiple="multiple" style="width: 400px; height: 5.5em">
         <?php
-            if ( defined("SMF_DATABASE") )
+            if ( defined("SMF_BINDING") && SMF_BINDING )
             {
                 $GroupIds = array();
                 
@@ -315,7 +310,7 @@
         <?php echo L("AutoLeadLogin"); ?><br/>
         <select id="smf_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
         <?php
-            if ( defined("SMF_DATABASE") )
+            if ( defined("SMF_BINDING") && SMF_BINDING )
             {
                 $GroupIds = array();
                 

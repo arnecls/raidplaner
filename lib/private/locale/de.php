@@ -251,6 +251,7 @@
         $g_Locale[ "StrayRoles" ]               = "Ung&uuml;ltige Rollen";
         $g_Locale[ "StrayCharacters" ]          = "Gel&ouml;schte Charaktere";
         $g_Locale[ "StrayUsers" ]               = "Gel&ouml;schte Benutzer";
+        $g_Locale[ "UseClearText" ]             = "&Uuml;bertragung von Klartext Passw&ouml;rtern (nicht empfohlen)";
                 
         $g_Locale[ "PHPBB3Binding" ]            = "PHPBB3 Anbindung";
         $g_Locale[ "PHPBB3ConfigFile" ]         = "PHPBB3 Konfigurationsdatei";

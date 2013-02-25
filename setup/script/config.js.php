@@ -80,7 +80,8 @@ function OnConfigSubmit( a_XMLData, a_NextPage )
             user      : $("#user").val(),
             password  : $("#password").val(),
             prefix    : $("#prefix").val(),
-            register  : $("#allow_registration:checked").val() == "on"
+            register  : $("#allow_registration:checked").val() == "on",
+            cleartext : $("#allow_cleartext:checked").val() == "on"
         };
         
         $.ajax({

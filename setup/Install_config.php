@@ -1,6 +1,7 @@
 <?php
     define( "LOCALE_SETUP", true );
     require_once(dirname(__FILE__)."/../lib/private/locale.php");
+    @include_once(dirname(__FILE__)."/../lib/config/config.php");
 ?>
 <?php include("layout/header.html"); ?>
 
@@ -37,6 +38,7 @@
     <input type="text" id="prefix" value="<?php echo (defined("RP_TABLE_PREFIX")) ? RP_TABLE_PREFIX : "raids_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
     <br/>
     <input type="checkbox" id="allow_registration"<?php echo (!defined("ALLOW_REGISTRATION") || ALLOW_REGISTRATION) ? " checked=\"checked\"" : "" ?>/> <?php echo L("AllowManualRegistration"); ?><br/>
+	<input type="checkbox" id="allow_cleartext"<?php echo (!defined("USE_CLEARTEXT_PASSWORDS") || USE_CLEARTEXT_PASSWORDS) ? " checked=\"checked\"" : "" ?>/> <?php echo L("UseClearText"); ?><br/>
     <br/>
     <button onclick="checkConfigForm(OnCheckConfigConnection)"><?php echo L("VerifySettings"); ?></button>
 </div>

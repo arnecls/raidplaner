@@ -251,6 +251,7 @@
         $g_Locale[ "StrayRoles" ]               = "Invalid roles";
         $g_Locale[ "StrayCharacters" ]          = "Deleted characters";
         $g_Locale[ "StrayUsers" ]               = "Deleted users";
+        $g_Locale[ "UseClearText" ]             = "Submit cleartext password (not recommended)";
         
         $g_Locale[ "PHPBB3Binding" ]            = "PHPBB3 binding";
         $g_Locale[ "PHPBB3ConfigFile" ]         = "PHPBB3 config file";
