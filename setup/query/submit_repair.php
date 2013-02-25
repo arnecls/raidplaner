@@ -97,7 +97,7 @@
                     
                     $UpdateChar->closeCursor();
                     
-                    $DeleteAttendance->$Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE CharacterId=:CharId AND Role!=:Role1 AND Role!=:Role2");
+                    $DeleteAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE CharacterId=:CharId AND Role!=:Role1 AND Role!=:Role2");
                     $DeleteAttendance->bindValue(":Role1", $Character["Role1"], PDO::PARAM_INT);
                     $DeleteAttendance->bindValue(":Role2", $Character["Role2"], PDO::PARAM_INT);
                     $DeleteAttendance->bindValue(":CharId", $Character["CharacterId"], PDO::PARAM_INT);
