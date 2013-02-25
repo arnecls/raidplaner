@@ -3,7 +3,7 @@
     // user information. These can easily be changed on the clients side and are
     // only meant for caching or display related logic
         
-    require_once(dirname(__FILE__)."/../private/users.php");
+    require_once(dirname(__FILE__)."/../private/userproxy.class.php");
     if (!defined("UNIFIED_SCRIPT")) header("Content-type: text/javascript");
     
     if ( ValidUser() )

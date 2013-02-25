@@ -13,7 +13,7 @@
         die( L("RaidplanerNotConfigured")."<br>".L("PleaseRunSetup") );
     }
     
-    require_once("lib/private/users.php");
+    require_once("lib/private/userproxy.class.php");
     require_once("lib/private/site.php");
     
     UserProxy::GetInstance(); // Init user

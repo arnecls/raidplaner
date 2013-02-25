@@ -1,5 +1,5 @@
 <?php
-    require_once(dirname(__FILE__)."/../private/users.php");
+    require_once(dirname(__FILE__)."/../private/userproxy.class.php");
     UserProxy::GetInstance(); // Init user
     
     // Scripts that are always loaded
