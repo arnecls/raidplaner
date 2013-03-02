@@ -141,7 +141,7 @@
                                 echo "<charid>0</charid>";
                                 echo "<name>".$Data["Comment"]."</name>";
                                 echo "<class>random</class>";
-                                echo "<mainchar>true</mainchar>";
+                                echo "<mainchar>false</mainchar>";
                                 echo "<role>".$Data["Role"]."</role>";
                                 echo "<role1>".$Data["Role"]."</role1>";
                                 echo "<role2>".$Data["Role"]."</role2>";
