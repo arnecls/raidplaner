@@ -146,8 +146,8 @@ function onChangeConfig()
         $("#newRaid")
             .css("width", SheetOverlayWidth);
             
-        $("#newraidsubmit")
-            .css("width", DescriptionFieldWidth);
+        $("#submit_options")
+            .css("width", DescriptionFieldWidth+4);
     }
 }
 

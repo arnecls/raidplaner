@@ -216,20 +216,18 @@ a:hover {
 }
 
 .login input.text {
-    margin-left: 0px;
-    margin-bottom: 4px;
-    margin-right: 0px;
-    margin-top: 0px;
+    display: block;
+    width: 196px;
+    height: 16px;
+    padding: 4px 2px 2px 2px;
+    margin: 0 0 4px 0;
+    
+    font-size: 16px;
+    line-height: 14px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    
     color: #c7c7c7;
     background-color: #ececec;
-    display: block;
-    font-size: 16px;
-    font-family: Helvetica, Verdana, Arial, sans-serif;
-    width: 196px;
-    height: 15px;
-    padding-top: 5px;
-    padding-left: 2px;
-    padding-right: 2px;
     
     border-left: 1px solid #aaaaaa;
     border-top: 1px solid #aaaaaa;
@@ -238,20 +236,18 @@ a:hover {
 }
 
 .login input.textactive {
-    margin-left: 0px;
-    margin-bottom: 4px;
-    margin-right: 0px;
-    margin-top: 0px;
-    color: black;
-    background-color: #ececec;
     display: block;
+    width: 196px;
+    height: 16px;
+    padding: 4px 2px 2px 2px;
+    margin: 0 0 4px 0;
+    
+    line-height: 14px;
     font-size: 16px;
     font-family: Helvetica, Verdana, Arial, sans-serif;
-    width: 196px;
-    height: 15px;
-    padding-top: 5px;
-    padding-left: 2px;
-    padding-right: 2px;
+    
+    color: black;
+    background-color: #ececec;
     
     border-left: 1px solid #aaaaaa;
     border-top: 1px solid #aaaaaa;
@@ -295,14 +291,14 @@ a:hover {
     width: 200px;
     height: 16px;
     background-color: #ccc;
-    text-align: left;                
+    text-align: left;  
+    margin-top: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #aaa;   
     -moz-border-radius: 4px; 
     -webkit-border-radius: 4px; 
     -khtml-border-radius: 4px; 
     border-radius: 4px;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    border: 1px solid #aaa;
 }
 
 #strength {
@@ -342,11 +338,10 @@ a:hover {
 }
 
 .pglabel {
-    display: inline-block;
     position: absolute;
+    display: inline-block;
     width: 200px;
-    height: 12px;
-    margin-top: 2px;
+    line-height: 16px;
     font-size: 10px;
     font-family: Helvetica, Verdana, Arial, sans-serif;
     color: #888;

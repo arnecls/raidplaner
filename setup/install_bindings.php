@@ -101,7 +101,7 @@
 <?php } ?>
 
 <div id="bindings">
-    <div style="margin: 0px; padding: 0 0 0 2px; border-bottom: 1px solid black">
+    <div class="tab_bg">
     <div id="button_phpbb3" class="tab_active" onclick="showConfig('phpbb3')"><input type="checkbox" id="allow_phpbb3"<?php echo (defined("PHPBB3_BINDING") && PHPBB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("PHPBB3Binding"); ?></div>
     <div id="button_eqdkp" class="tab_inactive" onclick="showConfig('eqdkp')"><input type="checkbox" id="allow_eqdkp"<?php echo (defined("EQDKP_BINDING") && EQDKP_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("EQDKPBinding"); ?></div>
     <div id="button_vbulletin" class="tab_inactive" onclick="showConfig('vbulletin')"><input type="checkbox" id="allow_vb3"<?php echo (defined("VB3_BINDING") && VB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("VBulletinBinding"); ?></div>

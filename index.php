@@ -226,8 +226,8 @@
                         <textarea id="descriptiondummy" class="textdummy description"><?php echo L("Description"); ?></textarea>
                         <textarea id="description" class="textinput description"></textarea>
                     </div>
-                    <div style="margin-top: 10px" id="newraidsubmit">
-                        <select id="selectmode" style="width: 180px; float: left">
+                    <div style="margin-top: 10px" id="submit_options">
+                        <select id="selectmode" style="width: 180px">
                             <option value="manual"><?php echo L("RaidModeManual"); ?></option>
                             <option value="attend"><?php echo L("RaidModeAttend"); ?></option>
                             <option value="all"><?php echo L("RaidModeAll"); ?></option>

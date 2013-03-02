@@ -171,6 +171,7 @@
     cursor: pointer;
     background-repeat: no-repeat;
     float: left;
+    position: relative;
 }
 
 #profile .charslot .mainrole {

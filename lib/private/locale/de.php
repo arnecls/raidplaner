@@ -22,7 +22,14 @@
         $g_Locale[ "Thursday" ]                 = "Donnerstag";
         $g_Locale[ "Friday" ]                   = "Freitag";
         $g_Locale[ "Saturday" ]                 = "Samstag";
-        $g_Locale[ "Sunday" ]                   = "Sonntag";    
+        $g_Locale[ "Sunday" ]                   = "Sonntag";          
+        $g_Locale[ "Mon" ]                      = "Mo";
+        $g_Locale[ "Tue" ]                      = "Di";
+        $g_Locale[ "Wed" ]                      = "Mi";
+        $g_Locale[ "Thu" ]                      = "Do";
+        $g_Locale[ "Fri" ]                      = "Fr";
+        $g_Locale[ "Sat" ]                      = "Sa";
+        $g_Locale[ "Sun" ]                      = "So";           
         $g_Locale[ "Absent" ]                   = "Abgemeldet";
         $g_Locale[ "Register" ]                 = "Registrieren";
         $g_Locale[ "Logout" ]                   = "Abmelden";

@@ -45,6 +45,7 @@ div.bottom_navigation {
     top: 160px;
     font-size: 32px;
     color: #000;
+    line-height: 32px;
 }
 
 .button_small {
@@ -191,6 +192,13 @@ div.bottom_navigation {
     border-bottom: 1px dotted #ccc;
 }
 
+.tab_bg {
+    height: 28px; 
+    margin: 0px; 
+    padding: 0 0 0 2px; 
+    border-bottom: 1px solid black;
+}
+
 .tab_active {
     margin: 0px 0px 0px 2px;
     padding: 2px 10px 2px 5px;
@@ -204,6 +212,8 @@ div.bottom_navigation {
     display: inline-block;
     cursor: pointer;
     z-index: 10;
+    float: left;
+    height: 22px; 
 }
 
 .tab_inactive {
@@ -215,6 +225,8 @@ div.bottom_navigation {
     top: 1px;
     display: inline-block;
     cursor: pointer;
+    float: left;
+    height: 22px; 
 }
 
 .binding_label {
@@ -257,8 +269,9 @@ div.bottom_navigation {
 
 .update_log {
     height: 430px;
-    overflow: scroll;
-    padding-right: 24px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-right: 20px;
 }
 
 .update_version {

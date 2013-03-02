@@ -2,19 +2,8 @@
     if ( defined("LOCALE_MAIN") )
     {
         $g_Locale[ "Login" ]                    = "Login";
-        $g_Locale[ "Register" ]                 = "Register";
-        $g_Locale[ "Logout" ]                   = "Logout";
-        $g_Locale[ "Calendar" ]                 = "Calendar";
-        $g_Locale[ "Raid" ]                     = "Raid";
-        $g_Locale[ "Profile" ]                  = "Profile";
-        $g_Locale[ "Settings" ]                 = "Settings";
         $g_Locale[ "Username" ]                 = "Username";
-        $g_Locale[ "Password" ]                 = "Password";
-        $g_Locale[ "RepeatPassword" ]           = "Repeat password";
-        $g_Locale[ "NewDungeon" ]               = "New dungeon";
-        $g_Locale[ "to" ]                       = "to";
-        $g_Locale[ "Description" ]              = "Description";
-        $g_Locale[ "CreateRaid" ]               = "Create raid";
+        $g_Locale[ "Password" ]                 = "Password";        
         $g_Locale[ "January" ]                  = "January";
         $g_Locale[ "February" ]                 = "February";
         $g_Locale[ "March" ]                    = "March";
@@ -33,7 +22,25 @@
         $g_Locale[ "Thursday" ]                 = "Thursday";
         $g_Locale[ "Friday" ]                   = "Friday";
         $g_Locale[ "Saturday" ]                 = "Saturday";
-        $g_Locale[ "Sunday" ]                   = "Sunday";
+        $g_Locale[ "Sunday" ]                   = "Sunday";          
+        $g_Locale[ "Mon" ]                      = "Mo";
+        $g_Locale[ "Tue" ]                      = "Tu";
+        $g_Locale[ "Wed" ]                      = "We";
+        $g_Locale[ "Thu" ]                      = "Th";
+        $g_Locale[ "Fri" ]                      = "Fr";
+        $g_Locale[ "Sat" ]                      = "Sa";
+        $g_Locale[ "Sun" ]                      = "Su";
+        $g_Locale[ "Register" ]                 = "Register";
+        $g_Locale[ "Logout" ]                   = "Logout";
+        $g_Locale[ "Calendar" ]                 = "Calendar";
+        $g_Locale[ "Raid" ]                     = "Raid";
+        $g_Locale[ "Profile" ]                  = "Profile";
+        $g_Locale[ "Settings" ]                 = "Settings";
+        $g_Locale[ "RepeatPassword" ]           = "Repeat password";
+        $g_Locale[ "NewDungeon" ]               = "New dungeon";
+        $g_Locale[ "to" ]                       = "to";
+        $g_Locale[ "Description" ]              = "Description";
+        $g_Locale[ "CreateRaid" ]               = "Create raid";
         $g_Locale[ "Deathknight" ]              = "Deathknight";
         $g_Locale[ "Druid" ]                    = "Druid";
         $g_Locale[ "Hunter" ]                   = "Hunter";
