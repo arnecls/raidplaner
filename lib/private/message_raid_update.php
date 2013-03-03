@@ -146,9 +146,16 @@ function msgRaidUpdate( $Request )
                     for ( $AttendIdx=0; $AttendIdx < sizeof($AttendsForRole); $AttendIdx += 3 )
                     {
                         $UpdateSlot = null;
-                        $SlotId     = $AttendsForRole[$AttendIdx]; // Semantic of id changes depending on player type
-                        $Status     = $AttendsForRole[$AttendIdx+1];
-                        $Name       = $AttendsForRole[$AttendIdx+2];
+                        $Id     = $AttendsForRole[$AttendIdx];
+                        $Status = $AttendsForRole[$AttendIdx+1];
+                        $Name   = $AttendsForRole[$AttendIdx+2];
+                        
+                        if ( $Status == "undecided" )
+                        {
+                            // $Id = UserId when undecided without comment
+                            // $Id = AttendanceId for all others
+                            continue; // ### continue, skip undecided ###
+                        }
 
                         if ( $SlotId < 0 )
                         {
@@ -170,18 +177,18 @@ function msgRaidUpdate( $Request )
                                                                "Status = :Status, Role = :Role, Comment = :Name ".
                                                                "WHERE RaidId = :RaidId AND AttendanceId = :AttendanceId LIMIT 1" );
 
-                            $UpdateSlot->bindValue( ":AttendanceId", $SlotId, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
                             $UpdateSlot->bindValue( ":Name",         $Name, PDO::PARAM_STR);
                         }
                         else
                         {
                             // Existing player, update
-
+                            
                             $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
                                                                "Status = :Status, Role = :Role ".
-                                                               "WHERE RaidId = :RaidId AND Status != 'unavailable' AND UserId = :UserId LIMIT 1" );
+                                                               "WHERE RaidId = :RaidId AND Status != 'unavailable' AND AttendanceId = :AttendanceId LIMIT 1" );
 
-                            $UpdateSlot->bindValue( ":UserId", $SlotId, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
                         }
 
                         $UpdateSlot->bindValue( ":Status", $Status, PDO::PARAM_STR);
