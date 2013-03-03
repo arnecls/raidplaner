@@ -1,7 +1,7 @@
 #sheetoverlay {
     border-spacing: 0px 0px;
-    left: 50%;
     top: 50%;
+    left: 50%;
     position: absolute;
     display: none;
     zoom: 1;

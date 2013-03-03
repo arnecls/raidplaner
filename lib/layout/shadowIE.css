@@ -10,8 +10,8 @@
 
 .shadow_gray_iefix {
     position: absolute;
-    left: 2px;
-    top: 2px;
+    left: 1px;
+    top: 1px;
 }
 
 .shadow_white {
@@ -21,8 +21,8 @@
 
 .shadow_white_iefix {
    position: absolute;
-    left: 0px;
-    top: 0px;
+    left: -1px;
+    top: -1px;
 }
 
 .shadow_inlay_hard {

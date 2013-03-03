@@ -43,6 +43,13 @@
 #calendar .calendarDay {
     height: 77px;
     max-height: 77px;
+}
+
+#calendar .day_overflow {
+    height: 77px;
+    max-height: 77px;
+    overflow-y: auto;
+    overflow-x: hidden;
     position: relative;
 }
 
