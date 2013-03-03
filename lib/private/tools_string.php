@@ -2,9 +2,11 @@
 
 function xmlSpecialChar( $character )
 {
-    $utf8 = mb_convert_encoding($character, "UTF-8");
-    $char = mb_convert_encoding($utf8, "UCS-4BE", "UTF-8");
+    $utf8 = (mb_check_encoding($character,"UTF-8"))
+        ? $character
+        : mb_convert_encoding($character,"UTF-8");
     
+    $char = mb_convert_encoding($utf8, "UCS-4BE", "UTF-8");    
     $val = unpack("N",$char);
     
     return "&#".$val[1].";";
