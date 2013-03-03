@@ -189,7 +189,8 @@
 #applyButton {
     position: absolute;
     top: 470px;
-    left: 820px;
+    right: 4px;
+    white-space: nowrap;
 }
 
 #settings .user {

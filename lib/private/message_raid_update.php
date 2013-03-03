@@ -157,12 +157,12 @@ function msgRaidUpdate( $Request )
                             continue; // ### continue, skip undecided ###
                         }
 
-                        if ( $SlotId < 0 )
+                        if ( $Id < 0 )
                         {
                             // New random player, insert
                             // Random players have one additional information set, so we need to
                             // move $AttendIdx here.
-
+                            
                             $UpdateSlot = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
                                                                "( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
                                                                "VALUES ( 0, 0, :RaidId, :Status, :Role, :Name )" );
