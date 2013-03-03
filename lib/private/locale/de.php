@@ -145,7 +145,7 @@
         $g_Locale[ "OlderBrowserFeatures" ]     = "&Auml;ltere Browser unterst&uuml;tzen nicht alle ben&ouml;tigten Funktionen oder stellen die Seite falsch dar.";
         $g_Locale[ "DownloadNewBrowser" ]       = "Du solltest deinen Browser aktualisieren oder einen der folgenden Browser herunterladen.";
         $g_Locale[ "RaidplanerNotConfigured" ]  = "Der Raidplaner ist noch nicht konfiguriert.";
-        $g_Locale[ "PleaseRunSetup" ]           = "Bitte f&uuml;hre den Setup aus oder befolge die Instruktionen f&uuml;r eine manuelle Installation.";
+        $g_Locale[ "PleaseRunSetup" ]           = "Bitte f&uuml;hre den <a href=\"setup\">Setup</a> aus oder befolge die Instruktionen f&uuml;r eine <a href=\"http://code.google.com/p/ppx-raidplaner/wiki/ManualSetup\">manuelle Installation</a>.";
         $g_Locale[ "Players" ]                  = "Spieler";
         $g_Locale[ "DatabaseError" ]            = "Fehler in einer Datenbank Anfrage";
         $g_Locale[ "RequiredForRole" ]          = "Ben&ouml;tigt f&uuml;r Rolle";

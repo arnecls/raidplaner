@@ -50,8 +50,8 @@
                 min-height: 600px;
                 text-align: center; 
                 font-family: Helvetica, Arial, sans-serif; 
-                font-size: 14px; l
-                ine-height: 1.8em;
+                font-size: 14px;
+                line-height: 1.8em;
                 padding: 0px;
                 margin: 0px;
                 height: 100%;

@@ -145,7 +145,7 @@
         $g_Locale[ "OlderBrowserFeatures" ]     = "Older browser do not support all required features or display the site incorrectly.";
         $g_Locale[ "DownloadNewBrowser" ]       = "You should update your browser or download one of the following Browsers.";
         $g_Locale[ "RaidplanerNotConfigured" ]  = "Raidplaner is not yet configured.";
-        $g_Locale[ "PleaseRunSetup" ]           = "Please run setup or follow the manual installation instructions.";
+        $g_Locale[ "PleaseRunSetup" ]           = "Please run <a href=\"setup\">setup</a> or follow the <a href=\"http://code.google.com/p/ppx-raidplaner/wiki/ManualSetup\">manual installation</a> instructions.";
         $g_Locale[ "Players" ]                  = "Players";
         $g_Locale[ "DatabaseError" ]            = "Database request error";
         $g_Locale[ "RequiredForRole" ]          = "Required for role";

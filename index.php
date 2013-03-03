@@ -10,7 +10,8 @@
     
     if ( !file_exists("lib/config/config.php") )
     {
-        die( L("RaidplanerNotConfigured")."<br>".L("PleaseRunSetup") );
+        include_once("runsetup.php");
+        die();
     }
     
     require_once("lib/private/userproxy.class.php");
@@ -26,6 +27,7 @@
     <head>
         <title>Raidplaner</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="keywords" content="raidplaner, ppx">
         
         <link rel="icon" href="favicon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="lib/layout/_layout.css.php?version=<?php echo $siteVersion; ?>"/>

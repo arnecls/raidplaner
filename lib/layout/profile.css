@@ -139,12 +139,14 @@
 
 #profile .charslot .name {    
     text-align: center;    
-    width: 121px;
+    width: 110px;
     height: 30px;
     display: block;
     position: relative;
     text-align: center;
     top: 20px;
+    overflow: hidden;
+    margin: 0 auto;
 }
 
 #profile .charslot .newname {    
