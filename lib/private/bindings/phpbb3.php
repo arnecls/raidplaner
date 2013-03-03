@@ -1,139 +1,213 @@
 <?php
-    require_once dirname(__FILE__)."/hash_phpbb3.php";
     @include_once dirname(__FILE__)."/../../config/config.phpbb3.php";
     
-    function BindPHPBB3User($User)
+    class PHPBB3Binding
     {
-        if ( isset($User["cleartext"]) && ($User["cleartext"] == true) )
+        public static $HashMethod_md5r = "phpbb3_md5r";
+        public static $HashMethod_md5  = "phpbb3_md5";
+        public static $Itoa64          = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        
+        public $BindingName = "phpbb3";
+        private $Connector = null;
+    
+        // -------------------------------------------------------------------------
+        
+        public function __construct( $Name )
         {
-            // Check if user already exists in local database
-            // Load config values from phpbb
+            $this->BindingName = $Name;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function IsActive()
+        {
+            return defined("PHPBB3_BINDING") && PHPBB3_BINDING;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        private function GetGroup( $UserId )
+        {
+            $DefaultGroup = "none";
+            $MemberGroups   = explode(",", PHPBB3_MEMBER_GROUPS );
+            $RaidleadGroups = explode(",", PHPBB3_RAIDLEAD_GROUPS );
             
-            global $phpbb_config;
-            $Connector = new Connector(SQL_HOST, PHPBB3_DATABASE, PHPBB3_USER, PHPBB3_PASS);        
+            $GroupSt = $this->Connector->prepare("SELECT group_id ".
+                                                 "FROM `".PHPBB3_TABLE_PREFIX."user_group` ".
+                                                 "WHERE user_id = :UserId");
             
-            $ConfigSt = $Connector->prepare( "SELECT config_value FROM `".PHPBB3_TABLE_PREFIX."config` WHERE config_name = \"rand_seed\"");
-            $ConfigSt->execute();
+            $GroupSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $GroupSt->execute();
             
-            $ConfigData = Array();
-                        
-            if ( !$ConfigData = $ConfigSt->fetch( PDO::FETCH_ASSOC ) )
+            while ($Group = $GroupSt->fetch(PDO::FETCH_ASSOC))
             {
-                // config data could not be loaded so, login failes because there is no seed
-                
-                $ConfigSt->closeCursor();
-                return false; // ### no seed ###
+                if ( in_array($Group["group_id"], $MemberGroups) )
+                {
+                    $DefaultGroup = "member";
+                }
+                   
+                if ( in_array($Group["group_id"], $RaidleadGroups) )
+                {
+                    return "raidlead"; // ### return, highest possible group ###
+                }
             }
+
+            return $DefaultGroup;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        private function GenerateInfo( $UserData )
+        {
+            $info = new UserInfo();
+            $info->UserId      = $UserData["user_id"];
+            $info->UserName    = $UserData["username_clean"];
+            $info->Password    = $UserData["user_password"];
+            $info->Salt        = self::ExtractSaltPart($UserData["user_password"]);
+            $info->Group       = $this->GetGroup($UserData["user_id"]);
+            $info->BindingName = $this->BindingName;
+            $info->PassBinding = $this->BindingName;
+        
+            return $info;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function GetUserInfoByName( $UserName )
+        {
+            if ($this->Connector == null)
+                $this->Connector = new Connector(SQL_HOST, PHPBB3_DATABASE, PHPBB3_USER, PHPBB3_PASS);
             
-            $ConfigSt->closeCursor();
-            
-            $phpbb_config["rand_seed"] = $ConfigData["config_value"];
-            
-            // Try login
-            
-            $passwordHash = phpbb_hash($User["Password"]);
-            
-            if ( UserProxy::TryLoginUser($User["Login"], $passwordHash, "phpbb3") )
-            {
-                // Check if the binding changed
-                
-                $UserSt = $Connector->prepare(    "SELECT username_clean, user_password ".
-                                                  "FROM `".PHPBB3_TABLE_PREFIX."users` ".
-                                                  "WHERE user_id = :UserId LIMIT 1");
+            $UserSt = $this->Connector->prepare("SELECT user_id, username_clean, user_password ".
+                                                "FROM `".PHPBB3_TABLE_PREFIX."users` ".
+                                                "WHERE username_clean = :Login LIMIT 1");
                                           
-                $UserSt->bindValue(":UserId", $_SESSION["User"]["ExternalId"], PDO::PARAM_INT);
-                $UserSt->execute();
-                
-                if ( $UserData = $UserSt->fetch( PDO::FETCH_ASSOC ) )
-                {
-                    // Password or login changed
-                    UserProxy::CheckForBindingUpdate( $_SESSION["User"]["ExternalId"], $UserData["username_clean"], $UserData["user_password"], "phpbb3", true );
-                }
-                else
-                {
-                    // No user found, so the user does not exist in phpbb anymore
-                    // In this case convert to local user
-                    UserProxy::ConvertCurrentUserToLocalBinding();
-                }
-                
-                $UserSt->closeCursor();
-        
-                return true; // ### valid, registered user ###
-            }            
+            $UserSt->BindValue( ":Login", strtolower($UserName), PDO::PARAM_STR );
             
-            // Login failed, or user not registered
-            // Check for the username in phpbb
-            
-            $UserSt = $Connector->prepare("SELECT user_id, user_password ".
-                                          "FROM `".PHPBB3_TABLE_PREFIX."users` ".
-                                          "WHERE username_clean = :Login LIMIT 1");
-            
-            $UserSt->bindValue(":Login", strtolower($User["Login"]), PDO::PARAM_STR);
-            $UserSt->execute();
-            
-            if ( $ExternalUserData = $UserSt->fetch( PDO::FETCH_ASSOC ) )
+            if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {
-                // Found user in phpbb
-                
+                $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
                 $UserSt->closeCursor();
-                        
-                if ( phpbb_check_hash($User["Password"], $ExternalUserData["user_password"]) )
-                {
-                    // password check validated
-                    // Check if username or password changed for an existing binding
-                    
-                    if ( UserProxy::CheckForBindingUpdate( $ExternalUserData["user_id"], strtolower($User["Login"]), $ExternalUserData["user_password"], "phpbb3", false ) )
-                    {
-                        UserProxy::TryLoginUser($User["Login"], $ExternalUserData["user_password"], "phpbb3");
-                        return true; // ### user changed password or was renamed ###
-                    }                    
-                    
-                    // User not yet registered
-                    // Get default group for the current user
-                    
-                    $DefaultGroup = "none";
-                    $NewUserSt = $Connector->prepare("SELECT group_id ".
-                                                       "FROM `".PHPBB3_TABLE_PREFIX."user_group` ".
-                                                       "WHERE user_id = :UserId");
-                                                  
-                    $NewUserSt->bindValue(":UserId", $ExternalUserData["user_id"], PDO::PARAM_INT);
-                    $NewUserSt->execute();
-                    
-                    $MemberGroups   = explode(",", PHPBB3_MEMBER_GROUPS );
-                    $RaidleadGroups = explode(",", PHPBB3_RAIDLEAD_GROUPS );
-                    
-                    while ($Group = $NewUserSt->fetch( PDO::FETCH_ASSOC ))
-                    {
-                        if ( in_array($Group["group_id"], $MemberGroups) )
-                        {
-                            $DefaultGroup = "member";
-                        }
-                           
-                        if ( in_array($Group["group_id"], $RaidleadGroups) )
-                        {
-                            $DefaultGroup = "raidlead";
-                            break;
-                        }
-                    }
+                
+                return $this->GenerateInfo($UserData);
+            }
         
-                    // Insert user into native table and login
+            $UserSt->closeCursor();
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function GetUserInfoById( $UserId )
+        {
+            if ($this->Connector == null)
+                $this->Connector = new Connector(SQL_HOST, PHPBB3_DATABASE, PHPBB3_USER, PHPBB3_PASS);
+            
+            $UserSt = $this->Connector->prepare("SELECT user_id, username_clean, user_password ".
+                                                "FROM `".PHPBB3_TABLE_PREFIX."users` ".
+                                                "WHERE user_id = :UserId LIMIT 1");
+                                          
+            $UserSt->BindValue( ":UserId", $UserId, PDO::PARAM_INT );
+        
+            if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+            {
+                $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                $UserSt->closeCursor();
                 
-                    $NewUserSt->closeCursor();
-                    
-                    UserProxy::CreateUser( $DefaultGroup, $ExternalUserData["user_id"], "phpbb3", $User["Login"], $ExternalUserData["user_password"] );
-                    UserProxy::TryLoginUser( $User["Login"], $ExternalUserData["user_password"], "phpbb3" );
+                return $this->GenerateInfo($UserData);
+            }
+        
+            $UserSt->closeCursor();
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        private static function ExtractSaltPart( $Password )
+        {
+            if (strlen($Password) == 34)
+            {
+                $Count = strpos(self::$Itoa64, $Password[3]);
+                $Salt = substr($Password, 4, 8);
                 
-                    return true; // ### new user ###
-                }
+                return $Count.":".$Salt;
             }
             
-            $UserSt->closeCursor();
-        }
-        else if ( UserProxy::TryLoginUser($User["Login"], $User["Password"], "phpbb3") )
-        {
-            return true; // ### valid user ###
+            return "";
         }
         
-        return false; // ### login failed ###
+        // -------------------------------------------------------------------------
+        
+        public function GetMethodFromPass( $Password )
+        {
+            if (strlen($Password) == 34)
+                return self::$HashMethod_md5r;
+                
+            return self::$HashMethod_md5;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        private static function Encode64( $input, $count )
+        {
+            $output = '';
+            $i = 0;
+            
+            do {
+                $value = ord($input[$i++]);
+                $output .= self::$Itoa64[$value & 0x3f];
+                
+                if ($i < $count)
+                {
+                   $value |= ord($input[$i]) << 8;
+                }
+                
+                $output .= self::$Itoa64[($value >> 6) & 0x3f];
+                
+                if ($i++ >= $count)
+                {
+                   break;
+                }
+                
+                if ($i < $count)
+                {
+                   $value |= ord($input[$i]) << 16;
+                }
+                
+                $output .= self::$Itoa64[($value >> 12) & 0x3f];
+                
+                if ($i++ >= $count)
+                {
+                   break;
+                }
+                
+                $output .= self::$Itoa64[($value >> 18) & 0x3f];
+            } while ($i < $count);
+            
+            return $output;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public static function Hash( $Password, $Salt, $Method )
+        {
+            if ($Method == self::$HashMethod_md5 )
+            {
+                return md5($Password);
+            }
+            
+            $Parts   = explode(":",$Salt);
+            $CountB2 = intval($Parts[0],10);
+            $Count   = 1 << $CountB2;
+            $Salt    = $Parts[1];
+            
+            $hash = md5($Salt.$Password, true);
+            
+            do {
+                $hash = md5($hash.$Password, true);
+            } while (--$Count);
+            
+            return '$H$'.self::$Itoa64[$CountB2].$Salt.self::Encode64($hash,16);
+        }
     }
 ?>

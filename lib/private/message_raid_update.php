@@ -109,11 +109,12 @@ function msgRaidUpdate( $Request )
         {
             $UpdateRaidSt->closeCursor();
 
-
             // Remove the attends marked for delete.
             // Only random player attends can be removed.
+            
+            $numRemoved = (isset($Request["removed"])) ? sizeof($Request["removed"]) : 0;
 
-            for ( $i=0; $i<sizeof($Request["removed"]); ++$i )
+            for ( $i=0; $i<$numRemoved; ++$i )
             {
                 $RemoveSlot = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` ".
                                                    "WHERE AttendanceId = :AttendanceId AND CharacterId = 0 AND UserId = 0" );
@@ -144,25 +145,24 @@ function msgRaidUpdate( $Request )
 
                     for ( $AttendIdx=0; $AttendIdx < sizeof($AttendsForRole); $AttendIdx += 3 )
                     {
-                        $UpdateSlot   = null;
-                        $AttendanceId = $AttendsForRole[$AttendIdx];
-                        $Status       = $AttendsForRole[$AttendIdx+1];
-                        $Name         = $AttendsForRole[$AttendIdx+2];
-
-                        /*if ( $Status == "ok" )
+                        $UpdateSlot = null;
+                        $Id     = $AttendsForRole[$AttendIdx];
+                        $Status = $AttendsForRole[$AttendIdx+1];
+                        $Name   = $AttendsForRole[$AttendIdx+2];
+                        
+                        if ( $Status == "undecided" )
                         {
-                            if ( $NumAttends < $SlotSizes[$RoleIdx] )
-                                ++$NumAttends;
-                            else
-                                $Status = "available";
-                        }*/
+                            // $Id = UserId when undecided without comment
+                            // $Id = AttendanceId for all others
+                            continue; // ### continue, skip undecided ###
+                        }
 
-                        if ( $AttendanceId < 0 )
+                        if ( $Id < 0 )
                         {
                             // New random player, insert
                             // Random players have one additional information set, so we need to
                             // move $AttendIdx here.
-
+                            
                             $UpdateSlot = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
                                                                "( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
                                                                "VALUES ( 0, 0, :RaidId, :Status, :Role, :Name )" );
@@ -175,20 +175,20 @@ function msgRaidUpdate( $Request )
 
                             $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
                                                                "Status = :Status, Role = :Role, Comment = :Name ".
-                                                               "WHERE RaidId = :RaidId AND Status != 'unavialable' AND AttendanceId = :AttendanceId LIMIT 1" );
+                                                               "WHERE RaidId = :RaidId AND AttendanceId = :AttendanceId LIMIT 1" );
 
-                            $UpdateSlot->bindValue( ":AttendanceId", $AttendanceId, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
                             $UpdateSlot->bindValue( ":Name",         $Name, PDO::PARAM_STR);
                         }
                         else
                         {
                             // Existing player, update
-
+                            
                             $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
                                                                "Status = :Status, Role = :Role ".
-                                                               "WHERE RaidId = :RaidId AND Status != 'unavialable' AND AttendanceId = :AttendanceId LIMIT 1" );
+                                                               "WHERE RaidId = :RaidId AND Status != 'unavailable' AND AttendanceId = :AttendanceId LIMIT 1" );
 
-                            $UpdateSlot->bindValue( ":AttendanceId", $AttendanceId, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
                         }
 
                         $UpdateSlot->bindValue( ":Status", $Status, PDO::PARAM_STR);
@@ -207,13 +207,13 @@ function msgRaidUpdate( $Request )
                     }
                 }
             }
-
+            
             // Assure mode constraints
 
             if ( $Request["mode"] == "all" )
             {
                 // Mode "all" means all players are either "ok" or "unavailable"
-
+                
                 $AttendenceSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET Status = \"ok\" ".
                                                     "WHERE RaidId = :RaidId AND Status = \"available\"" );
 
@@ -231,7 +231,7 @@ function msgRaidUpdate( $Request )
             }
             else
             {
-                // Assure there no more "ok" players than allowed by slot size
+                // Assure there not more "ok" players than allowed by slot size
 
                 for ( $RoleId=0; $RoleId<sizeof($SlotSizes); ++$RoleId )
                 {
@@ -264,7 +264,7 @@ function msgRaidUpdate( $Request )
                                 }
 
                                 // Fix the overhead
-
+                                
                                 $FixSt = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Status = \"available\" ".
                                                               "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
                                                               "AND AttendanceId > :FirstId" );

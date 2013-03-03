@@ -1,45 +1,88 @@
 <?php
-    define( "UNIFIED_SCRIPT", true );
-
-    require_once("../private/users.php");
+    require_once(dirname(__FILE__)."/../private/userproxy.class.php");
     UserProxy::GetInstance(); // Init user
     
-    header("Content-type: text/javascript");
-
-    include_once("jquery-1.8.2.min.js");
-    include_once("jquery-ui-1.8.23.custom.min.js");
-    include_once("jquery.ba-hashchange.min.js");
+    // Scripts that are always loaded
     
-    include_once("config.js.php");
-    include_once("messagehub.js");
-    include_once("mobile.js");
-    include_once("combobox.js");
-    include_once("tooltip.js");
-    include_once("sheet.js");
-    include_once("main.js");
-    
+    $loader_files_base = Array( 
+        "jquery-1.9.1.min.js",
+        "jquery-ui-1.10.0.custom.min.js",
+        "jquery.ba-hashchange.min.js",
+        "config.js.php",
+        "messagehub.js",
+        "mobile.js",
+        "tooltip.js",
+        "main.js",
+        "hash.js",
+        "crypto/md5.js",
+        "crypto/sha1.js",
+        "crypto/sha256.js",
+        "crypto/sha512.js",
+        "crypto/tripledes.js",
+        "crypto/bCrypt.js" );
+        
+    // Conditional scripts
+    // When using release mode, this script should be loaded with an additional,
+    // unused paramter so that the browser may correctly cache the two different
+    // versions.
+        
     if ( RegisteredUser() )
     {
-        if ( ValidAdmin() )
-        {
-            include_once("settings.js");
-        }
-        
-        include_once("calendar.js");
-        include_once("raid.js");
-        include_once("raidlist.js");
-        include_once("profile.js");
-        include_once("initmenu.js");        
+        $loader_files_opt = Array(
+            "sheet.js",
+            "calendar.js",
+            "raid.js",
+            "raidlist.js",
+            "profile.js",
+            "initmenu.js",
+            "combobox.js",
+            "settings.js" );
     }
     else
     {
-        include_once("login.js");
+        $loader_files_opt = Array(
+            "login.js",
+            "initlogin.js",
+            "register.js");
+    }
+            
+    $loader_files = array_merge( $loader_files_base, $loader_files_opt );
+    
+    // Load the files, depending on which mode is requested
+    
+    if ( defined("SCRIPT_DEBUG") )
+    {
+        // "Debug mode"
+        // Load each file separately for easier debugging.
         
-        if ( ALLOW_REGISTRATION )
+        foreach ( $loader_files as $file )
         {
-            include_once("register.js");
+            echo "<script type=\"text/javascript\" src=\"lib/script/".$file."?version=".$siteVersion."\"></script>\n";
         }
+    }
+    else
+    {
+        // "Release mode"
+        // One file to rule them all to speed up loading
         
-        include_once("initlogin.js");
+        header("Content-type: text/javascript");
+        define("UNIFIED_SCRIPT", true);
+        
+        foreach ( $loader_files as $loader_current_file )
+        {
+            // Only parse files with php content.
+            // If we parse all files, php might terminate execution.
+                
+            if ( strpos($loader_current_file, ".php") === false )
+            {
+                readfile($loader_current_file);
+            }
+            else
+            {                
+                require_once($loader_current_file);
+            }
+            
+            echo "\n";            
+        }
     }
 ?>

@@ -181,14 +181,16 @@
 #settings .groupTarget {
     background-color: #eeeeee;
     -moz-border-radius: 6px; 
-    -webkit-border-radius: 6px; 
+    -webkit-border-radius: 6px;  
+    -khtml-border-radius: 6px;
     border-radius: 6px;
 }
 
 #applyButton {
     position: absolute;
     top: 470px;
-    left: 820px;
+    right: 4px;
+    white-space: nowrap;
 }
 
 #settings .user {
@@ -529,7 +531,6 @@
     background-image: url(images/move_left.png);
     background-repeat: no-repeat;
     top: 65px;
-    z-index: 15;
 }
 
 .grp_move_right {
@@ -539,5 +540,4 @@
     background-image: url(images/move_right.png);
     background-repeat: no-repeat;
     top: 65px;
-    z-index: 15;
 }

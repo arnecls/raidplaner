@@ -11,7 +11,7 @@ var g_Locale = new Array();
     while ( list( $key, $value) = each($g_Locale) )
     {
         if ($value != null)
-            echo "g_Locale[\"".$key."\"] = \"".$value."\";\n";
+            echo "g_Locale[\"".$key."\"] = \"".str_replace("\"","\\\"", $value)."\";\n";
     }
 ?>
 

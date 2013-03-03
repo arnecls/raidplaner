@@ -15,12 +15,12 @@ function prepareRaidListRequest( $Month, $Year )
     $EndDate = getdate( $EndDateTime );
 
     $listRequest["StartDay"]     = $StartDate["mday"];
-    $listRequest["StartMonth"]     = $StartDate["mon"];
-    $listRequest["StartYear"]     = $StartDate["year"];
+    $listRequest["StartMonth"]   = $StartDate["mon"];
+    $listRequest["StartYear"]    = $StartDate["year"];
 
-    $listRequest["EndDay"]         = $EndDate["mday"];
+    $listRequest["EndDay"]       = $EndDate["mday"];
     $listRequest["EndMonth"]     = $EndDate["mon"];
-    $listRequest["EndYear"]           = $EndDate["year"];
+    $listRequest["EndYear"]      = $EndDate["year"];
 
     $listRequest["DisplayMonth"] = $Month-1;
     $listRequest["DisplayYear"]  = $Year;
@@ -79,7 +79,7 @@ function parseRaidQuery( $QueryResult, $Limit )
             // or it's the last entry
             // or the next entry is a different raid
 
-            $IsCorrectUser = $Data["UserId"] == intval($_SESSION["User"]["UserId"]);
+            $IsCorrectUser = $Data["UserId"] == UserProxy::GetInstance()->UserId;
 
             if ( ($IsCorrectUser) ||
                  ($Data["UserId"] == NULL) ||
@@ -146,17 +146,17 @@ function msgRaidCalendar( $Request )
     {
         $Connector = Connector::GetInstance();
 
-        $ListRaidSt = $Connector->prepare(    "Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.*, ".
+        $ListRaidSt = $Connector->prepare(  "Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.*, ".
                                             RP_TABLE_PREFIX."Attendance.CharacterId, ".RP_TABLE_PREFIX."Attendance.UserId, ".
                                              RP_TABLE_PREFIX."Attendance.Status, ".RP_TABLE_PREFIX."Attendance.Role, ".RP_TABLE_PREFIX."Attendance.Comment, ".
                                             "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.Start) AS StartUTC, ".
                                             "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.End) AS EndUTC ".
-                                              "FROM `".RP_TABLE_PREFIX."Raid` ".
-                                              "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
-                                              "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (RaidId) ".
-                                              "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING (CharacterId) ".
-                                              "WHERE ".RP_TABLE_PREFIX."Raid.Start >= FROM_UNIXTIME(:Start) AND ".RP_TABLE_PREFIX."Raid.Start <= FROM_UNIXTIME(:End) ".
-                                              "ORDER BY ".RP_TABLE_PREFIX."Raid.Start, ".RP_TABLE_PREFIX."Raid.RaidId" );
+                                            "FROM `".RP_TABLE_PREFIX."Raid` ".
+                                            "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
+                                            "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (RaidId) ".
+                                            "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING (CharacterId) ".
+                                            "WHERE ".RP_TABLE_PREFIX."Raid.Start >= FROM_UNIXTIME(:Start) AND ".RP_TABLE_PREFIX."Raid.Start <= FROM_UNIXTIME(:End) ".
+                                            "ORDER BY ".RP_TABLE_PREFIX."Raid.Start, ".RP_TABLE_PREFIX."Raid.RaidId" );
 
         $StartDateTime = mktime(0, 0, 0, $Request["StartMonth"], $Request["StartDay"], $Request["StartYear"]);
         $EndDateTime   = mktime(0, 0, 0, $Request["EndMonth"], $Request["EndDay"], $Request["EndYear"]);

@@ -4,11 +4,11 @@ function msgProfileUpdate( $Request )
 {
     if ( ValidUser() )
     {
-        $userId = intval( $_SESSION["User"]["UserId"] );
+        $userId = UserProxy::GetInstance()->UserId;
 
-        if ( ValidAdmin() && isset( $Request["userid"] ) )
+        if ( ValidAdmin() && isset( $Request["id"] ) )
         {
-            $userId = intval( $Request["userid"] );
+            $userId = intval( $Request["id"] );
         }
 
         $Connector = Connector::GetInstance();
@@ -123,22 +123,22 @@ function msgProfileUpdate( $Request )
 
             $IdsToRemove = array_diff( $ValidCharacterIds, $UpdatedCharacteIds );
 
-               foreach( $IdsToRemove as $CharId )
-               {
-                   // Remove character
-
-                   $DropChar = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Character` ".
+            foreach( $IdsToRemove as $CharId )
+            {
+               // Remove character
+            
+                $DropChar = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Character` ".
                                                 "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
-
+                
                 $DropAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` ".
                                                       "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
-
+                
                 $DropChar->bindValue( ":UserId", $userId, PDO::PARAM_INT );
                 $DropChar->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
-
+                
                 $DropAttendance->bindValue( ":UserId", $userId, PDO::PARAM_INT );
                 $DropAttendance->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
-
+                
                 if ( !$DropChar->execute() )
                 {
                     postErrorMessage( $DropChar );
@@ -146,7 +146,7 @@ function msgProfileUpdate( $Request )
                     $Connector->rollBack();
                     return;
                 }
-
+                
                 if ( !$DropAttendance->execute() )
                 {
                     postErrorMessage( $DropAttendance );
@@ -154,22 +154,17 @@ function msgProfileUpdate( $Request )
                     $Connector->rollBack();
                     return;
                 }
-
+                
                 $DropChar->closeCursor();
                 $DropAttendance->closeCursor();
-               }
-
-               $Connector->commit();
+            }
+            
+            $Connector->commit();
+            
+            UserProxy::GetInstance()->UpdateCharacters();
         }
 
-        if ( ValidAdmin() && isset( $Request["userid"] ) )
-        {
-            msgQuerySettings( $Request );
-        }
-        else
-        {
-            msgQueryProfile( $Request );
-        }
+        msgQueryProfile( $Request );
     }
     else
     {

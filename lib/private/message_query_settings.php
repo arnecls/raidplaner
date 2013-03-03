@@ -25,6 +25,7 @@ function msgQuerySettings( $Request )
                 echo "<user>";
                 echo "<id>".$Data["UserId"]."</id>";
                 echo "<login>".xmlentities( $Data["Login"], ENT_COMPAT, "UTF-8" )."</login>";
+                echo "<bindingActive>".$Data["BindingActive"]."</bindingActive>";
                 echo "<binding>".$Data["ExternalBinding"]."</binding>";
                 echo "<group>".$Data["Group"]."</group>";
                 echo "</user>";
@@ -133,7 +134,8 @@ function msgQuerySettings( $Request )
                     $MainCharName = $Data["Name"];
                 }
 
-                $StateCounts[$Data["Status"]] += $Data["Count"];
+                if ( $Data["Status"] != "undecided" )
+                    $StateCounts[$Data["Status"]] += $Data["Count"];
             }
 
             if ($UserId != 0)

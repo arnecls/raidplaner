@@ -84,13 +84,13 @@
 }
 
 #tooltip {
-    z-index: 100;
     border-spacing: 0px 0px;
     left: 10px;
     top: 10px;
     position: absolute;
     display: block;
     table-layout: auto;
+	z-index: 1;
 }
 
 /***************************************************

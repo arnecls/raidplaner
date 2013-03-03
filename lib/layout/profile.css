@@ -35,10 +35,15 @@
     vertical-align: top;
     width: 910px;
     height: 175px;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     white-space: nowrap;
     margin-top: 15px;
+}
+
+#charlist .charGroup {
+    display: hidden;
+    width: 910px;
+    height: 175px;
 }
 
 #profile .charslot {
@@ -53,12 +58,20 @@
 }
 
 #profile .newchar {
-    background: url(images/charslot_new.png);
-}
-
-#profile .charslot_add {
     vertical-align: top;
     background: url(images/charslot_add.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 123px;
+    height: 148px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+#profile .nextgroup {
+    vertical-align: top;
+    background: url(images/charslot_more.png);
     background-repeat: no-repeat;
     display: inline-block;
     width: 123px;
@@ -93,7 +106,6 @@
     position: relative;
     top: 15px;
     left: 29px;
-    z-index: 10;
 }
 
 #profile .charslot .newclass {
@@ -107,7 +119,6 @@
     position: relative;
     top: -18px;
     left: -28px;
-    z-index: 20;
 }
 
 #profile .charslot .class .mainchar {
@@ -128,34 +139,53 @@
 
 #profile .charslot .name {    
     text-align: center;    
-    width: 121px;
-    height: 32px;
+    width: 110px;
+    height: 30px;
     display: block;
     position: relative;
     text-align: center;
     top: 20px;
+    overflow: hidden;
+    margin: 0 auto;
 }
 
 #profile .charslot .newname {    
     text-align: center;    
-    width: 110px;
-    height: 10px;
+    width: 105px;
+    height: 14px;
     display: block;
     position: relative;
     text-align: center;
-    top: 20px;
-    left: 4px;
-    margin-bottom:16px;
+    top: 18px;
+    left: 8px;
+    margin-bottom:14px;
+    padding: 0px;
+    font-size: 12px;
+    border: 0px solid transparent;
+    border-bottom: 1px dotted #666;
+    background-color: transparent;
 }
 
 #profile .charslot .role {
     width: 32px;
     height: 32px;
     display: inline-block;
-    margin-left: 4px;
-    margin-right: 4px;
-    margin-top: 8px;
     cursor: pointer;
+    background-repeat: no-repeat;
+    float: left;
+    position: relative;
+}
+
+#profile .charslot .mainrole {
+    background: url(images/star.png);
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    cursor: pointer;
+    float: left;
+    position: relative;
+    top: 14px;
+    left: 13px;
 }
 
 #profile .button_profile {

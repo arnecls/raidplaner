@@ -120,8 +120,9 @@ function onChangeConfig()
             HTMLString += "<option value=\"" + i + "\">" + formatHourPrefixed(i) + "</option>";
 
         var HourFieldWidth        = (g_TimeFormat == 24) ? 48 : 64;
-        var LocationFieldWidth    = (g_TimeFormat == 24) ? 192 : 224;
-        var DescriptionFieldWidth = (g_TimeFormat == 24) ? 310 : 342;
+        var LocationFieldWidth    = (g_TimeFormat == 24) ? 181 : 213;
+        var DescriptionFieldWidth = (g_TimeFormat == 24) ? 302 : 334;
+        var SheetOverlayWidth     = (g_TimeFormat == 24) ? 550 : 580;
 
         $("#starthour")
             .css("width", HourFieldWidth)
@@ -141,6 +142,12 @@ function onChangeConfig()
         $("#description")
             .css("width", DescriptionFieldWidth)
             .css("max-width", DescriptionFieldWidth);
+            
+        $("#newRaid")
+            .css("width", SheetOverlayWidth);
+            
+        $("#submit_options")
+            .css("width", DescriptionFieldWidth+4);
     }
 }
 

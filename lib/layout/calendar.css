@@ -45,11 +45,18 @@
     max-height: 77px;
 }
 
+#calendar .day_overflow {
+    height: 77px;
+    max-height: 77px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
 #calendar .dayOfMonth {
     color: #d2d2d2;
     font-size: 24px;
     text-align: left;
-    zoom: 1;
 }
 
 #calendar .dayOfOther {

@@ -6,19 +6,18 @@ function msgQueryProfile( $Request )
 
     if ( ValidUser() )
     {
-        $userId = intval( $_SESSION["User"]["UserId"] );
+        $userId = UserProxy::GetInstance()->UserId;
 
         if ( ValidAdmin() && isset( $Request["id"] ) )
         {
             $userId = intval( $Request["id"] );
         }
 
-        $Created   = $_SESSION["User"]["Created"];
         $Connector = Connector::GetInstance();
 
         // Admintool relevant data
 
-        $Users = $Connector->prepare( "SELECT Login, Created, ExternalBinding FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
+        $Users = $Connector->prepare( "SELECT Login, Created, ExternalBinding, BindingActive FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
         $Users->bindValue( ":UserId", $userId, PDO::PARAM_INT );
 
         if ( !$Users->execute() )
@@ -31,40 +30,54 @@ function msgQueryProfile( $Request )
 
             echo "<userid>".$userId."</userid>";
             echo "<name>".$Data["Login"]."</name>";
+            echo "<bindingActive>".(($Data["BindingActive"] == "true") ? "true" : "false")."</bindingActive>";
             echo "<binding>".$Data["ExternalBinding"]."</binding>";
+            
+            $Created = $Data["Created"];
         }
 
         $Users->closeCursor();
 
         // Load characters
-
-        $Characters = $Connector->prepare(  "Select `".RP_TABLE_PREFIX."Character`.* ".
-                                            "FROM `".RP_TABLE_PREFIX."Character` ".
-                                            "WHERE UserId = :UserId ORDER BY Mainchar, Name");
-
-        $Characters->bindValue( ":UserId", $userId, PDO::PARAM_INT );
-
-        if ( !$Characters->execute() )
+        
+        if ( $userId == UserProxy::GetInstance()->UserId )
         {
-            postErrorMessage( $Characters );
-        }
-        else
-        {
-            while ( $Data = $Characters->fetch( PDO::FETCH_ASSOC ) )
+            foreach ( UserProxy::GetInstance()->Characters as $Data )
             {
                 echo "<character>";
-                echo "<id>".$Data["CharacterId"]."</id>";
-                echo "<name>".$Data["Name"]."</name>";
-                echo "<class>".$Data["Class"]."</class>";
-                echo "<mainchar>".$Data["Mainchar"]."</mainchar>";
-                echo "<role1>".$Data["Role1"]."</role1>";
-                echo "<role2>".$Data["Role2"]."</role2>";
+                echo "<id>".$Data->CharacterId."</id>";
+                echo "<name>".$Data->Name."</name>";
+                echo "<class>".$Data->ClassName."</class>";
+                echo "<mainchar>".(($Data->IsMainChar) ? "true" : "false")."</mainchar>";
+                echo "<role1>".$Data->Role1."</role1>";
+                echo "<role2>".$Data->Role2."</role2>";
                 echo "</character>";
             }
         }
+        else
+        {
+            $CharacterSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Character` ".
+                                                "WHERE UserId = :UserId ".
+                                                "ORDER BY Mainchar, Name" );
 
-        $Characters->closeCursor();
-
+            $CharacterSt->bindValue(":UserId", $userId, PDO::PARAM_INT);
+            $CharacterSt->execute();
+            
+            while ( $row = $CharacterSt->fetch( PDO::FETCH_ASSOC ) )
+            {
+                echo "<character>";
+                echo "<id>".$row["CharacterId"]."</id>";
+                echo "<name>".$row["Name"]."</name>";
+                echo "<class>".$row["Class"]."</class>";
+                echo "<mainchar>".(($row["IsMainchar"]) ? "true" : "false")."</mainchar>";
+                echo "<role1>".$row["Role1"]."</role1>";
+                echo "<role2>".$row["Role2"]."</role2>";
+                echo "</character>";
+            }
+            
+            $CharacterSt->closeCursor();
+        }
+        
         // Total raid count
 
         $NumRaids = 0;
@@ -120,7 +133,8 @@ function msgQueryProfile( $Request )
 
             while ( $Data = $Attendance->fetch( PDO::FETCH_ASSOC ) )
             {
-                $AttendanceData[ $Data["Status"] ] += $Data["Count"];
+                if ( $Data["Status"] != "undecided" )
+                    $AttendanceData[ $Data["Status"] ] += $Data["Count"];
 
                 if ( $Data["Status"] == "ok" )
                 {

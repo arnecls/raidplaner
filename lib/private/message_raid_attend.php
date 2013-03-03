@@ -8,7 +8,7 @@ function msgRaidAttend( $Request )
 
         $attendanceIdx = intval( $Request["attendanceIndex"] );
         $raidId = intval( $Request["raidId"] );
-        $userId = intval( $_SESSION["User"]["UserId"] );
+        $userId = intval( UserProxy::GetInstance()->UserId );
 
         // check user/character match
 
@@ -84,17 +84,35 @@ function msgRaidAttend( $Request )
                 else
                 {
                     $attendSt = null;
+                    $changeComment = isset($Request["comment"]) && ($Request["comment"] != "");
 
                     if ( $CheckSt->rowCount() > 0 )
                     {
-                        $attendSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                        "CharacterId = :CharacterId, Status = :Status, Role = :Role, Comment = :Comment ".
-                                                        "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
+                        if ( $changeComment  )
+                        {
+                            $attendSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
+                                                            "CharacterId = :CharacterId, Status = :Status, Role = :Role, Comment = :Comment ".
+                                                            "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
+                        }
+                        else
+                        {
+                            $attendSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
+                                                            "CharacterId = :CharacterId, Status = :Status, Role = :Role ".
+                                                            "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );                            
+                        }
                     }
                     else
                     {
-                        $attendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
-                                                        "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, :Comment )" );
+                        if ( $changeComment )
+                        {
+                            $attendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
+                                                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, :Comment )" );
+                        }
+                        else
+                        {
+                            $attendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role ) ".
+                                                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role )" );
+                        }
                     }
 
                     // Define the status and id to set
@@ -105,6 +123,7 @@ function msgRaidAttend( $Request )
                         $characterId = intval( $Request["fallback"] );
                     }
                     else
+                    
                     {
                         $characterId = $attendanceIdx;
 
@@ -156,19 +175,19 @@ function msgRaidAttend( $Request )
                         }
                     }
 
-                    // Define comment
+                    // Add comment when setting absent status
 
-                    $comment = "";
-
-                    if (isset($Request["comment"]))
+                    if ( $changeComment )
+                    {
                         $comment = xmlentities( $Request["comment"], ENT_COMPAT, "UTF-8" );
-
+                        $attendSt->bindValue(":Comment", $comment, PDO::PARAM_INT);
+                    }
+                    
                     $attendSt->bindValue(":CharacterId", $characterId, PDO::PARAM_INT);
                     $attendSt->bindValue(":RaidId",      $raidId,      PDO::PARAM_INT);
                     $attendSt->bindValue(":UserId",      $userId,      PDO::PARAM_INT);
                     $attendSt->bindValue(":Status",      $status,      PDO::PARAM_STR);
                     $attendSt->bindValue(":Role",        $role,        PDO::PARAM_INT);
-                    $attendSt->bindValue(":Comment",     $comment,     PDO::PARAM_STR);
 
                     if (!$attendSt->execute())
                     {

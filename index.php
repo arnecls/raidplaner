@@ -10,39 +10,32 @@
     
     if ( !file_exists("lib/config/config.php") )
     {
-        die( L("RaidplanerNotConfigured")."<br>".L("PleaseRunSetup") );
+        include_once("runsetup.php");
+        die();
     }
     
-    require_once("lib/private/users.php");
+    require_once("lib/private/userproxy.class.php");
     require_once("lib/private/site.php");
     
     UserProxy::GetInstance(); // Init user
     loadSiteSettings();
-    
-    $siteVersion = 96.1;
+		     
+    $siteVersion = 97;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
     <head>
         <title>Raidplaner</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="keywords" content="raidplaner, ppx">
         
         <link rel="icon" href="favicon.png" type="image/png">
         <link rel="stylesheet" type="text/css" href="lib/layout/_layout.css.php?version=<?php echo $siteVersion; ?>"/>
         
-        <!--
-        <link rel="stylesheet" type="text/css" href="lib/layout/jquery-ui-1.8.23.custom.css"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/default.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/combobox.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/calendar.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/raid.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/raidlist.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/profile.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/tooltip.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadow.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/sheet.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/settings.css?version=<?php echo $siteVersion; ?>"/>
-        -->
+        <?php
+            //define("STYLE_DEBUG", true);
+            //include_once("lib/layout/_layout.css.php");
+        ?>
         
         <!--[if IE 9]>
         <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
@@ -63,44 +56,22 @@
         
         <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>
         <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>"></script>
+        <script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>&r=<?php echo (RegisteredUser()) ? 1 : 0; ?>"></script>
         
-        <!--
-        <script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $siteVersion; ?>"></script>
+        <?php
+            //define("SCRIPT_DEBUG", true);
+            //include_once("lib/script/_scripts.js.php");
+        ?>
         
-        <script type="text/javascript" src="lib/script/jquery-1.8.2.min.js"></script>
-        <script type="text/javascript" src="lib/script/jquery-ui-1.8.23.custom.min.js"></script>
-        <script type="text/javascript" src="lib/script/jquery.ba-hashchange.min.js"></script>
+        <?php
+            if ( isset($_REQUEST["user"]) && 
+                 isset($_REQUEST["pass"]) && 
+                 !RegisteredUser() )
+            {
+                echo "<script type=\"text/javascript\">g_AfterInit = function() { notify(L(\"WrongPassword\")); };</script>";
+            }
+        ?>
         
-        <script type="text/javascript" src="lib/script/user.js.php?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/calendarsession.js.php?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/mobile.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/calendar.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/combobox.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/messagehub.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/sheet.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/tooltip.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/raid.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/raidlist.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/profile.js?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/main.js?version=<?php echo $siteVersion; ?>"></script>
-                
-        <?php if ( ValidAdmin() ) { ?>
-        <script type="text/javascript" src="lib/script/settings.js?version=<?php echo $siteVersion; ?>"></script>
-        <?php } ?>
-        
-        <?php if ( RegisteredUser() ) { ?>        
-        <script type="text/javascript" src="lib/script/initmenu.js?version=<?php echo $siteVersion; ?>"></script>
-        <?php } else { ?>
-        
-        <script type="text/javascript" src="lib/script/login.js?version=<?php echo $siteVersion; ?>"></script>
-            <?php if ( ALLOW_REGISTRATION ) { ?>    
-        <script type="text/javascript" src="lib/script/register.js?version=<?php echo $siteVersion; ?>"></script>
-            <?php } ?>            
-        <script type="text/javascript" src="lib/script/initlogin.js?version=<?php echo $siteVersion; ?>"></script>
-        
-        <?php } ?>
-        -->
     </head>
    
     <body style="background: <?php echo $g_Site["BGColor"] ?> <?php echo ($g_Site["Background"] == "none") ? "none" : "url(images/background/".$g_Site["Background"].")" ?> <?php echo $g_Site["BGRepeat"] ?>">
@@ -116,10 +87,10 @@
                 <?php if ( RegisteredUser() ) { ?>
                 
                 <span class="logout">
-                    <form method="post" action="index.php">
+                    <form id="logout" method="post" action="index.php">
                         <input type="hidden" name="nocheck"/>
                         <input type="hidden" name="logout"/>
-                        <button onclick="submit()" class="button_logout"><?php echo L("Logout"); ?></button>
+                        <button onclick="return onLogOut()" class="button_logout"><?php echo L("Logout"); ?></button>
                     </form>
                 </span>
                 <span id="button_calendar" class="menu_button"><?php echo L("Calendar"); ?></span>
@@ -127,7 +98,7 @@
                 <span id="button_profile" class="menu_button"><?php echo L("Profile"); ?></span>
                 
                     <?php if ( ValidAdmin() ) { ?>
-                <span id="button_settings" class="menu_button"><?php echo L("Settings"); ?></span>
+                <span id="button_settings_users" class="menu_button"><?php echo L("Settings"); ?></span>
                     <?php } ?>
                 
                 <?php } else { ?>
@@ -210,24 +181,18 @@
         <?php if ( ValidRaidlead() ) { ?>
         
         <div id="sheetNewRaid">
-            <div id="newRaid" style="width: 600px">
+            <div id="newRaid" style="width:580px">
                 <span style="display: inline-block; vertical-align: top; margin-right: 20px">
                     <div id="raiddatepicker"></div>
-                    <div style="margin-top: 24px">
-                        <select id="selectmode" style="width: 212px">
-                            <option value="manual"><?php echo L("RaidModeManual"); ?></option>
-                            <option value="attend"><?php echo L("RaidModeAttend"); ?></option>
-                            <option value="all"><?php echo L("RaidModeAll"); ?></option>
-                        </select>                        
-                    </div>
                 </span>  
                 <span style="display: inline-block; vertical-align: top">
-                    <span style="display: inline-block; margin-right: 5px" class="imagepicker" id="locationimagepicker"><div class="imagelist" id="locationimagelist"></div></span>
+                    <span style="display: inline-block; margin-right: 5px; float: left" class="imagepicker" id="locationimagepicker"><div class="imagelist" id="locationimagelist"></div></span>
                     <span style="display: inline-block; vertical-align: top">
                         <div style="margin-bottom: 10px">
                             <select id="selectlocation" onchange="onLocationChange(this)">
                                 <option value="0"><?php echo L("NewDungeon"); ?></option>
                             </select>
+                            <span style="display: inline-block; width: 3px;"></span>
                             <select id="selectsize" style="width: 48px">
                                 <?php
                                     while ( list($groupSize,$slots) = each($s_GroupSizes) )
@@ -237,20 +202,20 @@
                                 ?>
                             </select>                    
                         </div>
-                        <div style="margin-bottom: 10px">
+                        <div>
                             <select id="starthour">
                             </select>
-                            <span>:</span>
+                            <span style="display: inline-block; width: 4px; text-align:center; position: relative; top: -5px">:</span>
                             <select id="startminute" style="width: 48px">
                                 <option value="0">00</option>
                                 <option value="15">15</option>
                                 <option value="30">30</option>
                                 <option value="45">45</option>
                             </select>
-                            <span style="display: inline-block; width: 29px; text-align:center"><?php echo L("to"); ?></span>
+                            <span style="display: inline-block; width: 20px; text-align:center; position: relative; top: -5px"><?php echo L("to"); ?></span>
                             <select id="endhour">
                             </select>
-                            <span>:</span>
+                            <span style="display: inline-block; width: 4px; text-align:center; position: relative; top: -5px">:</span>
                             <select id="endminute" style="width: 48px">
                                 <option value="0">00</option>
                                 <option value="15">15</option>
@@ -259,11 +224,19 @@
                             </select>
                         </div>
                     </span>
-                    <div style="margin-bottom: 10px">
+                    <div style="margin-top: 20px; clear: left">
                         <textarea id="descriptiondummy" class="textdummy description"><?php echo L("Description"); ?></textarea>
                         <textarea id="description" class="textinput description"></textarea>
                     </div>
-                    <button id="newRaidSubmit"><?php echo L("CreateRaid"); ?></button>
+                    <div style="margin-top: 10px" id="submit_options">
+                        <select id="selectmode" style="width: 180px">
+                            <option value="manual"><?php echo L("RaidModeManual"); ?></option>
+                            <option value="attend"><?php echo L("RaidModeAttend"); ?></option>
+                            <option value="all"><?php echo L("RaidModeAll"); ?></option>
+                        </select>
+                        <button id="newRaidSubmit" style="float:right"><?php echo L("CreateRaid"); ?></button>                 
+                    </div>
+                    
                 </span>
             </div>            
         </div>    

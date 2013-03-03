@@ -9,7 +9,7 @@
 
             $UpdateRaidSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Raid` SET ".
                                                 "Stage = 'locked'".
-                                                "WHERE End < FROM_UNIXTIME(:Time) AND Stage = 'open'" );
+                                                "WHERE Start < FROM_UNIXTIME(:Time) AND Stage = 'open'" );
 
             $UpdateRaidSt->bindValue(":Time", time() + $Seconds, PDO::PARAM_INT);
 

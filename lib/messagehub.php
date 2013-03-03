@@ -1,7 +1,7 @@
 <?php
     define( "LOCALE_MAIN", true );
     require_once(dirname(__FILE__)."/private/locale.php");
-    require_once(dirname(__FILE__)."/private/users.php");
+    require_once(dirname(__FILE__)."/private/userproxy.class.php");
     require_once(dirname(__FILE__)."/private/tools_string.php");
     require_once(dirname(__FILE__)."/private/settings.class.php");
     require_once(dirname(__FILE__)."/private/gameconfig.php");
@@ -22,6 +22,8 @@
     include_once("private/message_comment_update.php");
     include_once("private/message_settings_update.php");
     include_once("private/message_change_password.php");
+    include_once("private/message_query_credentials.php");
+    include_once("private/message_user_create.php");
     
     $ValidUser = ValidUser();    
     
@@ -36,6 +38,14 @@
     {   
         switch ( strtolower($_REQUEST["Action"]) )
         {
+        case "query_credentials":
+            msgQueryCredentials( $_REQUEST );
+            break;
+            
+        case "query_credentials_id":
+            msgQueryCredentialsById( $_REQUEST );
+            break;
+            
         case "raid_attend":
             msgRaidAttend( $_REQUEST );
             break;
