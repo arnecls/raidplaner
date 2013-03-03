@@ -758,7 +758,7 @@
             
             $Connector = Connector::GetInstance();
             $UpdateSt  = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
-                                             "Password = :Password, Salt = :Salt, SessionKey = :Key ".
+                                             "ExternalBinding = 'none', Password = :Password, Salt = :Salt, SessionKey = :Key ".
                                              "WHERE UserId = :UserId AND (BindingActive='false' OR ExternalBinding='none') LIMIT 1");
                                             
             $UpdateSt->bindValue(":UserId",   $UserId,         PDO::PARAM_INT);

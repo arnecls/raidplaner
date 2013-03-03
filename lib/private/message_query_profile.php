@@ -30,7 +30,7 @@ function msgQueryProfile( $Request )
 
             echo "<userid>".$userId."</userid>";
             echo "<name>".$Data["Login"]."</name>";
-            echo "<bindingActive>".(($Data["BindingActive"]) ? "true" : "false")."</bindingActive>";
+            echo "<bindingActive>".(($Data["BindingActive"] == "true") ? "true" : "false")."</bindingActive>";
             echo "<binding>".$Data["ExternalBinding"]."</binding>";
             
             $Created = $Data["Created"];
