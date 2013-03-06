@@ -217,6 +217,8 @@
         $g_Locale[ "McryptNotFound" ]           = "PHP wurde nicht mit mcrypt konfiguriert";
         $g_Locale[ "PDOModule" ]                = "PDO Modul";
         $g_Locale[ "PDONotFound" ]              = "PHP wurde nicht mit PDO konfiguriert";
+        $g_Locale[ "PDOMySQLModule" ]           = "PDO MySQL Treiber";
+        $g_Locale[ "PDOMySQLNotFound" ]         = "PDO MySQL Treiber nicht gefunden";        
         $g_Locale[ "PHPRequirements" ]          = "Der Raidplaner ben&ouml;tigt eine PHP 5.2 Installation die mit der mcrypt und PDO Erweiterung Konfiguriert wurde.";
         $g_Locale[ "ConfigureDatabase" ]        = "Bitte gib die Konfigurationsdaten der Datenbank an in der die Raidplaner Daten abgelegt werden k&ouml;nnen.";
         $g_Locale[ "EnterPrefix" ]              = "Wenn die Datenank bereits von einer anderen Installation verwendet wird kann ein Pr&auml;fix angegeben werden um Namenskonflikte zu vermeiden.";

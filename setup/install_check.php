@@ -40,8 +40,9 @@
 
     echo "<br/><span class=\"check_field\">".L("PDOModule")."</span>";
     $extensions = get_loaded_extensions();
+    $PDOInstalled = in_array("PDO", $extensions);
     
-    if ( in_array("PDO", $extensions) )
+    if ( $PDOInstalled )
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
     }
@@ -49,6 +50,27 @@
     {
         ++$testsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("PDONotFound")."</span>";
+    }
+    
+    // PDO MySQL check
+
+    echo "<br/><span class=\"check_field\">".L("PDOMySQLModule")."</span>";
+    $PDODriverInstalled = false;
+    
+    if ( $PDOInstalled )
+    {
+        $drivers = PDO::getAvailableDrivers();
+        $PDODriverInstalled = in_array("mysql", $drivers);
+    }
+    
+    if ($PDODriverInstalled)
+    {
+        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
+    }
+    else
+    {
+        ++$testsFailed;
+        echo "<span class=\"check_result\" style=\"color: red\">".L("PDOMySQLNotFound")."</span>";
     }
     
     // MCrypt module check         
