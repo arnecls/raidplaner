@@ -9,6 +9,7 @@
         "Background" => "flower.png",
         "BGColor"    => "#898989",
         "BGRepeat"   => "repeat-xy",
+        "PortalMode" => false,
         "TimeFormat" => 24
     );
 
@@ -21,12 +22,15 @@
     
         if ( $Settings->execute() )
         {
-            $Site       = "";
-            $Banner     = "cataclysm.jpg";
-            $Background = "flower.png";
-            $BGColor    = "#898989";
-            $BGRepeat   = "repeat-xy";
-            $TimeFormat = 24;
+            $g_Site = Array(
+                "BannerLink" => "",
+                "Banner"     => "cataclysm.jpg",
+                "Background" => "flower.png",
+                "BGColor"    => "#898989",
+                "BGRepeat"   => "repeat-xy",
+                "PortalMode" => false,
+                "TimeFormat" => 24
+            );
     
             while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
             {
@@ -42,10 +46,11 @@
                     if ( file_exists($ThemeFile) )
                     {
                         $Theme = new SimpleXMLElement( file_get_contents($ThemeFile) );
-                        $g_Site["Banner"]     = $Theme->banner;
-                        $g_Site["Background"] = $Theme->bgimage;
-                        $g_Site["BGColor"]    = $Theme->bgcolor;
-                        $g_Site["BGRepeat"]   = $Theme->bgrepeat;
+                        $g_Site["Banner"]     = (string)$Theme->banner;
+                        $g_Site["Background"] = (string)$Theme->bgimage;
+                        $g_Site["BGColor"]    = (string)$Theme->bgcolor;
+                        $g_Site["BGRepeat"]   = (string)$Theme->bgrepeat;
+                        $g_Site["PortalMode"] = ((string)$Theme->portalmode) == "true";
                     }
                     break;
     

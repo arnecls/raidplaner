@@ -16,7 +16,7 @@
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(RaidId) ".
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(CharacterId) ".
-                                              "WHERE RaidId = :RaidId");
+                                              "WHERE RaidId = :RaidId ORDER BY `".RP_TABLE_PREFIX."Attendance`.AttendanceId");
 
             $ListRaidSt->bindValue( ":RaidId", $Request["id"], PDO::PARAM_INT );
 

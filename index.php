@@ -30,11 +30,14 @@
         <meta name="keywords" content="raidplaner, ppx">
         
         <link rel="icon" href="favicon.png" type="image/png">
-        <link rel="stylesheet" type="text/css" href="lib/layout/_layout.css.php?version=<?php echo $siteVersion; ?>"/>
         
         <?php
             //define("STYLE_DEBUG", true);
-            //include_once("lib/layout/_layout.css.php");
+            
+            if (defined("STYLE_DEBUG") && STYLE_DEBUG)
+                include_once("lib/layout/_layout.css.php");
+            else
+                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/_layout.css.php?version=".$siteVersion."\"/>";
         ?>
         
         <!--[if IE 9]>
@@ -56,11 +59,14 @@
         
         <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>
         <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/_scripts.js.php?version=<?php echo $siteVersion; ?>&r=<?php echo (RegisteredUser()) ? 1 : 0; ?>"></script>
         
         <?php
             //define("SCRIPT_DEBUG", true);
-            //include_once("lib/script/_scripts.js.php");
+            
+            if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
+                include_once("lib/script/_scripts.js.php");
+            else
+                echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$siteVersion.".&r=".((RegisteredUser()) ? 1 : 0)."\"></script>";
         ?>
         
         <?php
@@ -75,12 +81,19 @@
     </head>
    
     <body style="background: <?php echo $g_Site["BGColor"] ?> <?php echo ($g_Site["Background"] == "none") ? "none" : "url(images/background/".$g_Site["Background"].")" ?> <?php echo $g_Site["BGRepeat"] ?>">
-        <div id="appwindow">
-            <?php 
-                if ( $g_Site["BannerLink"] == "" )
-                    echo "<div id=\"logo\" style=\"background-image: url(images/banner/".$g_Site["Banner"].")\"></div>";
-                else
-                    echo "<a id=\"logo\" href=\"".$g_Site["BannerLink"]."\" style=\"background-image: url(images/banner/".$g_Site["Banner"].")\"></a>";
+        <div id="appwindow"<?php if ($g_Site["PortalMode"]) echo " class=\"portalmode\""; ?>>
+            <?php
+                if (strtolower($g_Site["Banner"]) != "disable")
+                { 
+                    $bannerImage = (strtolower($g_Site["Banner"]) != "none") 
+                        ? "url(images/banner/".$g_Site["Banner"].")"
+                        : "none";
+                        
+                    if ( $g_Site["BannerLink"] == "" )
+                        echo "<div id=\"logo\" style=\"background-image: ".$bannerImage."\"></div>";
+                    else
+                        echo "<a id=\"logo\" href=\"".$g_Site["BannerLink"]."\" style=\"background-image: ".$bannerImage.")\"></a>";
+                }
             ?>
             
             <div id="menu">

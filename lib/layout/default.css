@@ -6,7 +6,6 @@ body {
     padding: 0px;
     margin: 0px;
     background-repeat: repeat;
-    background-color: #898989;
     font-size: 12px;
     overflow: auto;
     min-width: 1024px;
@@ -45,6 +44,17 @@ a:hover {
     position: relative;
     top: 50%;
     margin: -390px auto 0 auto;    
+    display: block;
+    height: 768px;
+    width: 1024px;
+    overflow: visible;
+}
+
+.portalmode {
+    position: absolute!important;
+    top: 0px!important;
+    left: 0px!important;
+    margin: 0px!important;
     display: block;
     height: 768px;
     width: 1024px;
