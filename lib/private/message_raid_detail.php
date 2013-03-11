@@ -42,7 +42,7 @@
                 echo "<mode>".$Data["Mode"]."</mode>";
                 echo "<image>".$Data["LocationImage"]."</image>";
                 echo "<size>".$Data["Size"]."</size>";
-                echo "<startDate>".$StartDate["year"]."-".LeadingZero10($StartDate["mon"])."-".LeadingZero10($StartDate["mday"])."</startDate>";
+                echo "<startDate>".intval($StartDate["year"])."-".LeadingZero10($StartDate["mon"])."-".LeadingZero10($StartDate["mday"])."</startDate>";
                 echo "<start>".LeadingZero10($StartDate["hours"]).":".LeadingZero10($StartDate["minutes"])."</start>";
                 echo "<end>".LeadingZero10($EndDate["hours"]).":".LeadingZero10($EndDate["minutes"])."</end>";
                 echo "<description>".$Data["Description"]."</description>";

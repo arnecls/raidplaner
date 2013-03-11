@@ -50,10 +50,12 @@ function requestToXML( $string, $compat, $charset )
 
 function LeadingZero10( $Value )
 {
-    if ($Value < 10)
-        return "0".$Value;
+    $Number = intval($Value,10);
+    
+    if ($Number < 10)
+        return "0".$Number;
 
-    return $Value;
+    return $Number;
 }
 
 ?>

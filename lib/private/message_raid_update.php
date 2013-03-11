@@ -54,8 +54,8 @@ function msgRaidUpdate( $Request )
                                             "SlotsRole1 = :SlotsRole1, SlotsRole2 = :SlotsRole2, SlotsRole3 = :SlotsRole3, SlotsRole4 = :SlotsRole4, SlotsRole5 = :SlotsRole5 ".
                                             "WHERE RaidId = :RaidId" );
 
-        $StartDateTime = mktime($Request["startHour"], $Request["startMinute"], 0, $Request["month"], $Request["day"], $Request["year"] );
-        $EndDateTime   = mktime($Request["endHour"], $Request["endMinute"], 0, $Request["month"], $Request["day"], $Request["year"] );
+        $StartDateTime = mktime(intval($Request["startHour"]), intval($Request["startMinute"]), 0, intval($Request["month"]), intval($Request["day"]), intval($Request["year"]) );
+        $EndDateTime   = mktime(intval($Request["endHour"]), intval($Request["endMinute"]), 0, intval($Request["month"]), intval($Request["day"]), intval($Request["year"]) );
 
         if ( $EndDateTime < $StartDateTime )
             $EndDateTime += 60*60*24;
