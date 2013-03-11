@@ -269,6 +269,12 @@
     position: relative;
 }
 
+#raiddetail .attendance_count {
+    color: #999;
+    font-size: 0.8em;
+    vertical-align: text-top;   
+}
+
 #raiddetail .clip {    
     display: none;
     float: left;
