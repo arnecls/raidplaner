@@ -42,8 +42,7 @@ a:hover {
 
 #appwindow {
     position: relative;
-    top: 50%;
-    margin: -390px auto 0 auto;    
+    margin: 0 auto 0 auto;    
     display: block;
     height: 768px;
     width: 1024px;

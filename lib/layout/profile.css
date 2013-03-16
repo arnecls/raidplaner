@@ -24,7 +24,6 @@
     height: 20px;
     font-weight: bold;
     font-size: 16px;
-    vertical-align: center;
     color: #7d7d7d;
     padding: 0px;
 }
@@ -41,7 +40,7 @@
 }
 
 #charlist .charGroup {
-    display: hidden;
+    display: none;
     width: 910px;
     height: 175px;
 }
