@@ -144,7 +144,7 @@
         $g_Locale[ "UsingOldBrowser" ]          = "Du verwendest eine veraltete Version deines Browsers.";
         $g_Locale[ "OlderBrowserFeatures" ]     = "&Auml;ltere Browser unterst&uuml;tzen nicht alle ben&ouml;tigten Funktionen oder stellen die Seite falsch dar.";
         $g_Locale[ "DownloadNewBrowser" ]       = "Du solltest deinen Browser aktualisieren oder einen der folgenden Browser herunterladen.";
-        $g_Locale[ "RaidplanerNotConfigured" ]  = "Der Raidplaner ist noch nicht konfiguriert.";
+        $g_Locale[ "RaidplanerNotConfigured" ]  = "Der Raidplaner ist noch nicht konfiguriert oder ben&ouml;tigt ein Update.";
         $g_Locale[ "PleaseRunSetup" ]           = "Bitte f&uuml;hre den <a href=\"setup\">Setup</a> aus oder befolge die Instruktionen f&uuml;r eine <a href=\"http://code.google.com/p/ppx-raidplaner/wiki/ManualSetup\">manuelle Installation</a>.";
         $g_Locale[ "Players" ]                  = "Spieler";
         $g_Locale[ "DatabaseError" ]            = "Fehler in einer Datenbank Anfrage";
@@ -250,6 +250,8 @@
         $g_Locale[ "GameconfigProblems" ]       = "Durch Ver&auml;nderungen in der lib/gameconfig.php k&ouml;nnen ung&uuml;tige Datenbankeintr&auml;ge entstehen (z.B. Charaktere mit ung&uuml;tigen Rollen).";
         $g_Locale[ "RepairTheseProblems" ]      = "Dieses Script behebt diese Probleme so gut wie m&ouml;glich.";
         $g_Locale[ "RepairDone" ]               = "Reparatur abgeschlossen.";
+        $g_Locale[ "BrokenDatabase" ]           = "Die Datenbank scheint defekt zu sein";
+        $g_Locale[ "EnsureValidDatabase" ]      = "Korrektheit der Datenbank sicherstellen";
         
         $g_Locale[ "ItemsRepaired" ]            = "Eintr&auml;ge repariert";
         $g_Locale[ "ItemsToResolve" ]           = "Eintr&auml;ge m&uuml;ssen manuell aufgel&ouml;st werden";        

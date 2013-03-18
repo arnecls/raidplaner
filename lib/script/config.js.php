@@ -115,7 +115,7 @@ function onChangeConfig()
     // Update theme
 
     if ( g_Theme.background == "none" )
-        $("body").css("background", g_Theme.bgcolor + " none " + g_Theme.bgrepeat );
+        $("body").css("background", "none" );
     else
         $("body").css("background", g_Theme.bgcolor + " url(images/background/" + g_Theme.background + ") " + g_Theme.bgrepeat );
 

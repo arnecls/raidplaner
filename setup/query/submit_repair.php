@@ -2,6 +2,7 @@
     require_once(dirname(__FILE__)."/../../lib/private/connector.class.php");
     require_once(dirname(__FILE__)."/../../lib/config/config.php");
     require_once(dirname(__FILE__)."/../../lib/private/gameconfig.php");
+    require_once("tools_install.php");
     
     // globals
 
@@ -15,6 +16,18 @@
     }
     
     $Connector = Connector::GetInstance();
+    
+    // -------------------------------------------------------------------------
+    //  Database
+    // -------------------------------------------------------------------------
+    
+    echo "<div class=\"update_version\">".L("EnsureValidDatabase");
+    
+    InstallDB(RP_TABLE_PREFIX);
+    InstallDefaultSettings(RP_TABLE_PREFIX);
+    
+    echo "<div class=\"update_step_ok\">".L("Ok")."</div>";        
+    echo "</div>";
     
     // -------------------------------------------------------------------------
     //  Invalid characters
