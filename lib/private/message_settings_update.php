@@ -60,7 +60,7 @@ function generateQueryStringInt( $CurrentValues, &$BindValues, $ValueName, $NewV
     else
     {
         array_push( $BindValues, array(":".$ValueName, $NewValue, PDO::PARAM_INT) );
-        return "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`) VALUES ('".$ValueName."', :".$ValueName."); ";
+        return "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES ('".$ValueName."', :".$ValueName.", ''); ";
     }
 
     return "";
@@ -81,7 +81,7 @@ function generateQueryStringText( $CurrentValues, &$BindValues, $ValueName, $New
     else
     {
         array_push( $BindValues, array(":".$ValueName, $NewValue, PDO::PARAM_STR) );
-        return "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `TextValue`) VALUES ('".$ValueName."', :".$ValueName."); ";
+        return "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES ('".$ValueName."', 0, :".$ValueName."); ";
     }
 
     return "";
