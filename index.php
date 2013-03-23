@@ -4,7 +4,7 @@
     require_once("lib/private/tools_app.php");
     require_once("lib/private/gameconfig.php");
 		     
-    $siteVersion = 97.1;
+    $siteVersion = 97.2;
     
     if ( !isset($_REQUEST["nocheck"]) )
         include_once("oldbrowser.php");
