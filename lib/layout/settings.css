@@ -206,14 +206,14 @@
 #settings .user .userName {
     float: left;
     padding-top: 2px;
-    width: 110px;
+    width: 105px;
     margin-left: 8px;
 }
 
 #settings .user .userNameLocal {
     float: left;
     padding-top: 8px;
-    width: 110px;
+    width: 105px;
     margin-left: 8px;
 }
 
