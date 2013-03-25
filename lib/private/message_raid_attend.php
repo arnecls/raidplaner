@@ -110,8 +110,8 @@ function msgRaidAttend( $Request )
                         }
                         else
                         {
-                            $attendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role ) ".
-                                                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role )" );
+                            $attendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment) ".
+                                                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, '' )" );
                         }
                     }
 

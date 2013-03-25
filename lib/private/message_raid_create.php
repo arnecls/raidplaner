@@ -39,8 +39,8 @@ function msgRaidCreate( $Request )
                                              "VALUES (:LocationId, :Size, FROM_UNIXTIME(:Start), FROM_UNIXTIME(:End), :Mode, :Description, ".
                                              ":SlotsRole1, :SlotsRole2, :SlotsRole3, :SlotsRole4, :SlotsRole5)");
 
-            $StartDateTime = mktime($Request["startHour"], $Request["startMinute"], 0, $Request["month"], $Request["day"], $Request["year"]);
-            $EndDateTime   = mktime($Request["endHour"], $Request["endMinute"], 0, $Request["month"], $Request["day"], $Request["year"]);
+            $StartDateTime = mktime(intval($Request["startHour"]), intval($Request["startMinute"]), 0, intval($Request["month"]), intval($Request["day"]), intval($Request["year"]));
+            $EndDateTime   = mktime(intval($Request["endHour"]), intval($Request["endMinute"]), 0, intval($Request["month"]), intval($Request["day"]), intval($Request["year"]));
 
             $Mode = "manual"; // TODO: Read from parameter
 

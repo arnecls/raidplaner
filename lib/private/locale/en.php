@@ -18,7 +18,7 @@
         $g_Locale[ "December" ]                 = "December";    
         $g_Locale[ "Monday" ]                   = "Monday";
         $g_Locale[ "Tuesday" ]                  = "Tuesday";
-        $g_Locale[ "Wedensday" ]                = "Wedensday";
+        $g_Locale[ "Wedensday" ]                = "Wednesday";
         $g_Locale[ "Thursday" ]                 = "Thursday";
         $g_Locale[ "Friday" ]                   = "Friday";
         $g_Locale[ "Saturday" ]                 = "Saturday";
@@ -144,7 +144,7 @@
         $g_Locale[ "UsingOldBrowser" ]          = "You are using an out of date version of your browser.";
         $g_Locale[ "OlderBrowserFeatures" ]     = "Older browser do not support all required features or display the site incorrectly.";
         $g_Locale[ "DownloadNewBrowser" ]       = "You should update your browser or download one of the following Browsers.";
-        $g_Locale[ "RaidplanerNotConfigured" ]  = "Raidplaner is not yet configured.";
+        $g_Locale[ "RaidplanerNotConfigured" ]  = "Raidplaner is not configured yet or requires an update.";
         $g_Locale[ "PleaseRunSetup" ]           = "Please run <a href=\"setup\">setup</a> or follow the <a href=\"http://code.google.com/p/ppx-raidplaner/wiki/ManualSetup\">manual installation</a> instructions.";
         $g_Locale[ "Players" ]                  = "Players";
         $g_Locale[ "DatabaseError" ]            = "Database request error";
@@ -217,6 +217,8 @@
         $g_Locale[ "McryptNotFound" ]           = "Mcrypt not configured with PHP";
         $g_Locale[ "PDOModule" ]                = "PDO module";
         $g_Locale[ "PDONotFound" ]              = "PDO not configured with PHP";
+        $g_Locale[ "PDOMySQLModule" ]           = "PDO MySQL driver";
+        $g_Locale[ "PDOMySQLNotFound" ]         = "PDO MySQL driver not found";
         $g_Locale[ "PHPRequirements" ]          = "The raidplaner needs a PHP 5.2 installation configured with the mcrypt and PDO extensions.";
         $g_Locale[ "ConfigureDatabase" ]        = "Please configure the database the raidplaner will place it's data into.";
         $g_Locale[ "EnterPrefix" ]              = "If the database is already in use by another installation you can enter a prefix to avoid name conflicts.";
@@ -241,13 +243,15 @@
         $g_Locale[ "Retry" ]                    = "Retry";
         $g_Locale[ "DatabaseError" ]            = "Database error";
         $g_Locale[ "EditBindings" ]             = "Edit bindings";
-        $g_Locale[ "EditConfig" ]               = "Edit conifguration";
+        $g_Locale[ "EditConfig" ]               = "Edit configuration";
         $g_Locale[ "ResetPassword" ]            = "Set admin password";
-        $g_Locale[ "RepairDatabase" ]           = "Repair databse";
+        $g_Locale[ "RepairDatabase" ]           = "Repair database";
         $g_Locale[ "Repair" ]                   = "Repaire database inconsistencies";
         $g_Locale[ "GameconfigProblems" ]       = "By changing the lib/gameconfig.php inconsistent database entries can be created (e.g. characters with invalid roles).";
         $g_Locale[ "RepairTheseProblems" ]      = "This script fixes these problems as good as possible.";
         $g_Locale[ "RepairDone" ]               = "Repair done.";
+        $g_Locale[ "BrokenDatabase" ]           = "Database seems to be broken";
+        $g_Locale[ "EnsureValidDatabase" ]      = "Ensure a valid database";
         
         $g_Locale[ "ItemsRepaired" ]            = "Items repaired";
         $g_Locale[ "ItemsToResolve" ]           = "Items need to be resolved manually";

@@ -16,7 +16,8 @@ var g_Theme = {
     background : "<?php echo $g_Site["Background"]; ?>",
     banner     : "<?php echo $g_Site["Banner"]; ?>",
     bgrepeat   : "<?php echo $g_Site["BGRepeat"]; ?>",
-    bgcolor    : "<?php echo $g_Site["BGColor"]; ?>"
+    bgcolor    : "<?php echo $g_Site["BGColor"]; ?>",
+    portalmode : "<?php echo $g_Site["PortalMode"]; ?>"
 };
 
 var g_RoleNames  = Array(<?php echo sizeof($s_Roles); ?>);
@@ -91,18 +92,30 @@ function onChangeConfig()
 
     $("#logo").detach();
 
-    if ( g_BannerLink != "" )
-        $("#menu").before("<a id=\"logo\" href=\"" + g_BannerLink + "\"></a>");
-    else
-        $("#menu").before("<div id=\"logo\"></div>");
+    if ( g_Theme.banner.toLowerCase() != "disable"  )
+    {
+        if ( g_BannerLink != "" )
+            $("#menu").before("<a id=\"logo\" href=\"" + g_BannerLink + "\"></a>");
+        else
+            $("#menu").before("<div id=\"logo\"></div>");
+            
+        var bannerImage = (g_Theme.banner.toLowerCase() != "none")
+            ? "url(images/banner/" + g_Theme.banner + ")"
+            : "none";
 
+        $("#logo").css("background-image", bannerImage);
+    }
+    
+    // Update appwindow class
+    
+    $("#appwindow").removeClass("portalmode");
+    if (g_Theme.portalmode)
+        $("#appwindow").addClass("portalmode");
 
     // Update theme
 
-    $("#logo").css("background-image", "url(images/banner/" + g_Theme.banner + ")");
-    
     if ( g_Theme.background == "none" )
-        $("body").css("background", g_Theme.bgcolor + " none " + g_Theme.bgrepeat );
+        $("body").css("background", "none" );
     else
         $("body").css("background", g_Theme.bgcolor + " url(images/background/" + g_Theme.background + ") " + g_Theme.bgrepeat );
 

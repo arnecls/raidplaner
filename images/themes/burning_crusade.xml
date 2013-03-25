@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <theme>
+    <name>Burning Crusade</name>
     <banner>burning_crusade.jpg</banner>
     <bgimage>burning_crusade.jpg</bgimage>
     <bgrepeat>repeat-x</bgrepeat>

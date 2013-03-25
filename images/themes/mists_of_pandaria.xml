@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <theme>
+    <name>Mists of Pandaria (Monk)</name>
     <banner>mists_of_pandaria.jpg</banner>
     <bgimage>mists_of_pandaria.jpg</bgimage>
     <bgrepeat>repeat-x</bgrepeat>

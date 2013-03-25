@@ -68,7 +68,6 @@
     height: 20px;
     font-weight: bold;
     font-size: 16px;
-    vertical-align: center;
     color: #7d7d7d;
     padding: 0px;
 }
@@ -207,14 +206,14 @@
 #settings .user .userName {
     float: left;
     padding-top: 2px;
-    width: 110px;
+    width: 105px;
     margin-left: 8px;
 }
 
 #settings .user .userNameLocal {
     float: left;
     padding-top: 8px;
-    width: 110px;
+    width: 105px;
     margin-left: 8px;
 }
 

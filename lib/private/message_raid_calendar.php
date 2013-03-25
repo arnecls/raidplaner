@@ -2,7 +2,7 @@
 
 function prepareRaidListRequest( $Month, $Year )
 {
-    $StartDateTime = mktime(0, 0, 0, $Month, 1, $Year);
+    $StartDateTime = mktime(0, 0, 0, intval($Month), 1, intval($Year));
     $StartDate = getdate( $StartDateTime );
 
     if ( $StartDate["wday"] != 1 )
@@ -158,8 +158,8 @@ function msgRaidCalendar( $Request )
                                             "WHERE ".RP_TABLE_PREFIX."Raid.Start >= FROM_UNIXTIME(:Start) AND ".RP_TABLE_PREFIX."Raid.Start <= FROM_UNIXTIME(:End) ".
                                             "ORDER BY ".RP_TABLE_PREFIX."Raid.Start, ".RP_TABLE_PREFIX."Raid.RaidId" );
 
-        $StartDateTime = mktime(0, 0, 0, $Request["StartMonth"], $Request["StartDay"], $Request["StartYear"]);
-        $EndDateTime   = mktime(0, 0, 0, $Request["EndMonth"], $Request["EndDay"], $Request["EndYear"]);
+        $StartDateTime = mktime(0, 0, 0, intval($Request["StartMonth"]), intval($Request["StartDay"]), intval($Request["StartYear"]));
+        $EndDateTime   = mktime(0, 0, 0, intval($Request["EndMonth"]), intval($Request["EndDay"]), intval($Request["EndYear"]));
 
         $ListRaidSt->bindValue(":Start",  $StartDateTime, PDO::PARAM_INT);
         $ListRaidSt->bindValue(":End",    $EndDateTime,   PDO::PARAM_INT);

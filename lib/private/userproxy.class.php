@@ -603,17 +603,19 @@
                                
                 $UserSt->closeCursor();
                 $UserSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."User` ".
-                                              "(`Group`, ExternalId, ExternalBinding, BindingActive, Login, Password, Salt, Created) ".
-                                              "VALUES (:Group, :ExternalUserId, :Binding, :Active, :Login, :Password, :Salt, FROM_UNIXTIME(:Created))");
+                                              "(`Group`, ExternalId, ExternalBinding, BindingActive, Login, Password, Salt, Created, OneTimeKey, SessionKey) ".
+                                              "VALUES (:Group, :ExternalUserId, :Binding, :Active, :Login, :Password, :Salt, FROM_UNIXTIME(:Created), '', '')");
+											  
+				$Active = ($BindingName != "none") ? "true" : "false";
 
-                $UserSt->bindValue(":Group",          $Group,                 PDO::PARAM_STR);
-                $UserSt->bindValue(":ExternalUserId", $ExternalUserId,        PDO::PARAM_INT);
-                $UserSt->bindValue(":Binding",        $BindingName,           PDO::PARAM_STR);
-                $UserSt->bindValue(":Active",         $BindingName != "none", PDO::PARAM_STR);
-                $UserSt->bindValue(":Login",          strtolower($Login),     PDO::PARAM_STR);
-                $UserSt->bindValue(":Password",       $HashedPassword,        PDO::PARAM_STR);
-                $UserSt->bindValue(":Salt",           $Salt,                  PDO::PARAM_STR);
-                $UserSt->bindValue(":Created",        time(),                 PDO::PARAM_INT);
+                $UserSt->bindValue(":Group",          $Group,               PDO::PARAM_STR);
+                $UserSt->bindValue(":ExternalUserId", $ExternalUserId,      PDO::PARAM_INT);
+                $UserSt->bindValue(":Binding",        $BindingName,         PDO::PARAM_STR);
+                $UserSt->bindValue(":Active",         $Active, 				PDO::PARAM_STR);
+                $UserSt->bindValue(":Login",          strtolower($Login),   PDO::PARAM_STR);
+                $UserSt->bindValue(":Password",       $HashedPassword,      PDO::PARAM_STR);
+                $UserSt->bindValue(":Salt",           $Salt,                PDO::PARAM_STR);
+                $UserSt->bindValue(":Created",        time(),               PDO::PARAM_INT);
 
                 if (!$UserSt->execute())
                     postErrorMessage($UserSt);

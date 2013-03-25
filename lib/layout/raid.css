@@ -265,8 +265,17 @@
     overflow: visible;
 }
 
-#raiddetail .roleList h2 { 
+#raiddetail .roleList h2 {
+    margin-top: 15px;
+    margin-bottom: 10px;
     position: relative;
+    font-size: 20px;
+}
+
+#raiddetail .attendance_count {
+    color: #ccc;
+    font-size: 12px;
+    vertical-align: text-top;   
 }
 
 #raiddetail .clip {    

@@ -16,7 +16,7 @@
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(RaidId) ".
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(CharacterId) ".
-                                              "WHERE RaidId = :RaidId");
+                                              "WHERE RaidId = :RaidId ORDER BY `".RP_TABLE_PREFIX."Attendance`.AttendanceId");
 
             $ListRaidSt->bindValue( ":RaidId", $Request["id"], PDO::PARAM_INT );
 
@@ -42,7 +42,7 @@
                 echo "<mode>".$Data["Mode"]."</mode>";
                 echo "<image>".$Data["LocationImage"]."</image>";
                 echo "<size>".$Data["Size"]."</size>";
-                echo "<startDate>".$StartDate["year"]."-".LeadingZero10($StartDate["mon"])."-".LeadingZero10($StartDate["mday"])."</startDate>";
+                echo "<startDate>".intval($StartDate["year"])."-".LeadingZero10($StartDate["mon"])."-".LeadingZero10($StartDate["mday"])."</startDate>";
                 echo "<start>".LeadingZero10($StartDate["hours"]).":".LeadingZero10($StartDate["minutes"])."</start>";
                 echo "<end>".LeadingZero10($EndDate["hours"]).":".LeadingZero10($EndDate["minutes"])."</end>";
                 echo "<description>".$Data["Description"]."</description>";

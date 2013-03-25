@@ -14,6 +14,7 @@
 
 <script type="text/javascript">
     $(document).ready( function() {
+        $("#button_repair").click( function() { open("repair_done.php"); });
         $(".button_back").click( function() { open("index.php"); });
         $(".button_next").click( function() { open("update_done.php?version="+$("#version").val()); });
     });
@@ -47,8 +48,7 @@
 
         if ( !$GetVersion->execute() )
         {
-            postErrorMessage($GetVersion);
-            $Version = 93;
+            $Version = 0;
         }
         else
         {
@@ -69,10 +69,25 @@
             echo "<span class=\"check_result\" style=\"color: green\">".$Major.".".$Minor.".".$Patch."</span>";
             echo "<br/><div style=\"margin-top:30px; font-size: 20px; color: green\">".L("NoUpdateNecessary")."</div>";
         }
+        else if ($Version == 0)
+        {
+            echo "<span class=\"check_result\" style=\"color: red\">".L("BrokenDatabase")."</span><br/>";
+        }
         else
         {
             echo "<span class=\"check_result\" style=\"color: orange\">".$Major.".".$Minor.".".$Patch."</span><br/>";
         }
+        
+        if ($Version == 0)
+        {
+    ?>
+        <div style="margin-top:20px">
+            <button id="button_repair"><?php echo L("RepairDatabase"); ?></button>
+        </div>
+    <?php
+        }
+        else
+        {
     ?>
     
     <div style="margin-top:20px">
@@ -87,7 +102,9 @@
         </select>
         <span> <?php echo L("UpdateTo")." ".$CurrentMajor.".".$CurrentMinor.".".$CurrentPatch; ?></span>
     </div>
-<?php
+    
+    <?php
+        }
     }
     else
     {

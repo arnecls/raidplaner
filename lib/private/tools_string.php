@@ -2,8 +2,13 @@
 
 function xmlSpecialChar( $character )
 {
-    $char = mb_convert_encoding($character,"UCS-4BE", "UTF-8");
-    $val = unpack("N",$char);    
+    $utf8 = (mb_check_encoding($character,"UTF-8"))
+        ? $character
+        : mb_convert_encoding($character,"UTF-8");
+    
+    $char = mb_convert_encoding($utf8, "UCS-4BE", "UTF-8");    
+    $val = unpack("N",$char);
+    
     return "&#".$val[1].";";
 }
 
@@ -45,10 +50,12 @@ function requestToXML( $string, $compat, $charset )
 
 function LeadingZero10( $Value )
 {
-    if ($Value < 10)
-        return "0".$Value;
+    $Number = intval($Value,10);
+    
+    if ($Number < 10)
+        return "0".$Number;
 
-    return $Value;
+    return $Number;
 }
 
 ?>
