@@ -3,7 +3,7 @@
 
     require_once("../private/connector.class.php");
     require_once("../private/gameconfig.php");
-    require_once("../private/site.php");
+    require_once("../private/tools_site.php");
     
     loadSiteSettings();
 ?>
@@ -55,12 +55,13 @@ var g_GroupRoleSizes = Array(<?php echo sizeof($s_GroupSizes); ?>);
         echo "g_Classes[".$i."] = {";
         echo "ident : \"".$ClassIdent."\", ";
         echo "text : L(\"".$ClassConfig[0]."\"), ";
+        echo "default : \"".$ClassConfig[1]."\", ";
         echo "roles : Array(";
 
-        for ( $r=0; $r < sizeof($ClassConfig[1]); ++$r )
+        for ( $r=0; $r < sizeof($ClassConfig[2]); ++$r )
         {
             if ($r > 0) echo ",";
-            echo "\"".$ClassConfig[1][$r]."\"";
+            echo "\"".$ClassConfig[2][$r]."\"";
         }
 
         echo ")};\n";

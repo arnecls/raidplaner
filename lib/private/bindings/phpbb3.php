@@ -32,8 +32,10 @@
             $MemberGroups   = explode(",", PHPBB3_MEMBER_GROUPS );
             $RaidleadGroups = explode(",", PHPBB3_RAIDLEAD_GROUPS );
             
-            $GroupSt = $this->Connector->prepare("SELECT group_id ".
-                                                 "FROM `".PHPBB3_TABLE_PREFIX."user_group` ".
+            $GroupSt = $this->Connector->prepare("SELECT user_type, `".PHPBB3_TABLE_PREFIX."users`.group_id, ban_start, ban_end ".
+                                                 "FROM `".PHPBB3_TABLE_PREFIX."users` ".
+                                                 "LEFT JOIN `".PHPBB3_TABLE_PREFIX."user_group` USING(user_id) ".
+                                                 "LEFT JOIN `".PHPBB3_TABLE_PREFIX."banlist` ON user_id = ban_userid ".
                                                  "WHERE user_id = :UserId");
             
             $GroupSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
@@ -41,6 +43,24 @@
             
             while ($Group = $GroupSt->fetch(PDO::FETCH_ASSOC))
             {
+                if ( ($Group["user_type"] == 1) || 
+                     ($Group["user_type"] == 2) )
+                {
+                    // 1 equals "inactive"
+                    // 2 equals "ignore"
+                    return "none"; // ### return, disabled ###
+                }
+                
+                if ($Group["ban_start"] > 0)
+                {
+                    $currentTime = time();
+                    if ( ($Group["ban_start"] < $currentTime) &&
+                         (($Group["ban_end"] == 0) || ($Group["ban_end"] > $currentTime)) )
+                    {
+                        return "none"; // ### return, banned ###
+                    }
+                }
+            
                 if ( in_array($Group["group_id"], $MemberGroups) )
                 {
                     $DefaultGroup = "member";

@@ -60,7 +60,7 @@
             {            
                 $mainRoleOk = false;
                 $offRoleOk  = false;
-                $roles      = $s_Classes[$Character["Class"]][1];
+                $roles      = $s_Classes[$Character["Class"]][2];
                 
                 // Check if roles are allowed for the class
                 

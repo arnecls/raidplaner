@@ -656,11 +656,12 @@
                 // Local users may update externally, so sync the credentials
                          
                 $MirrorSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
-                                                "Login = :Login, Password = :Password, Salt = :Salt, OneTimeKey = :Key ".
+                                                "Login = :Login, Password = :Password, `Group` = :Group, Salt = :Salt, OneTimeKey = :Key ".
                                                 "WHERE ExternalBinding = :Binding AND ExternalId = :UserId LIMIT 1" );
             
                 $MirrorSt->bindValue( ":Login",    $UserInfo->UserName,    PDO::PARAM_STR );
                 $MirrorSt->bindValue( ":Password", $UserInfo->Password,    PDO::PARAM_STR );
+                $MirrorSt->bindValue( ":Group",    $UserInfo->Group,       PDO::PARAM_STR );
                 $MirrorSt->bindValue( ":Salt",     $UserInfo->Salt,        PDO::PARAM_STR );
                 $MirrorSt->bindValue( ":Key",      $Key,                   PDO::PARAM_STR );
                 $MirrorSt->bindValue( ":Binding",  $UserInfo->BindingName, PDO::PARAM_STR );

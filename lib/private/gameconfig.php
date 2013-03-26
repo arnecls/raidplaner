@@ -41,23 +41,23 @@ class Roles
     public static $hybrid        = Array("dmg","heal","tank");
 };
 
-// Class ident => Array( Localization string, Allowed roles array )
+// Class ident => Array( Localization string, Default role, Allowed roles array )
 // Class ident is also mapped to an image in images/classes[big|small]/<class ident>.png
 // The "empty" class must always be present and first in list
 
 $s_Classes = Array(
-    "empty"         => Array( "",            Roles::$damage ),
-    "deathknight"   => Array( "Deathknight", Roles::$offensiveTank ),
-    "druid"         => Array( "Druid",       Roles::$hybrid ),
-    "hunter"        => Array( "Hunter",      Roles::$damage ),
-    "mage"          => Array( "Mage",        Roles::$damage ),
-    "monk"          => Array( "Monk",        Roles::$hybrid ),
-    "paladin"       => Array( "Paladin",     Roles::$hybrid ),
-    "priest"        => Array( "Priest",      Roles::$offensiveHeal ),
-    "rogue"         => Array( "Rogue",       Roles::$damage ),
-    "shaman"        => Array( "Shaman",      Roles::$offensiveHeal ),
-    "warlock"       => Array( "Warlock",     Roles::$damage ),
-    "warrior"       => Array( "Warrior",     Roles::$offensiveTank )
+    "empty"         => Array( "",            "dmg",  Roles::$damage ),
+    "deathknight"   => Array( "Deathknight", "tank", Roles::$offensiveTank ),
+    "druid"         => Array( "Druid",       "heal", Roles::$hybrid ),
+    "hunter"        => Array( "Hunter",      "dmg",  Roles::$damage ),
+    "mage"          => Array( "Mage",        "dmg",  Roles::$damage ),
+    "monk"          => Array( "Monk",        "heal", Roles::$hybrid ),
+    "paladin"       => Array( "Paladin",     "heal", Roles::$hybrid ),
+    "priest"        => Array( "Priest",      "heal", Roles::$offensiveHeal ),
+    "rogue"         => Array( "Rogue",       "dmg",  Roles::$damage ),
+    "shaman"        => Array( "Shaman",      "dmg",  Roles::$offensiveHeal ),
+    "warlock"       => Array( "Warlock",     "dmg",  Roles::$damage ),
+    "warrior"       => Array( "Warrior",     "tank", Roles::$offensiveTank )
 );
 
 // Size => Array(Role1, Role2, ...)

@@ -1,7 +1,7 @@
 <?php
     define( "LOCALE_MAIN", true );
     require_once("lib/private/locale.php");
-    require_once("lib/private/tools_app.php");
+    require_once("lib/private/tools_site.php");
     require_once("lib/private/gameconfig.php");
 		     
     $siteVersion = 97.2;
@@ -16,7 +16,7 @@
     }
     
     require_once("lib/private/userproxy.class.php");
-    require_once("lib/private/site.php");
+    require_once("lib/private/tools_site.php");
     
     UserProxy::GetInstance(); // Init user
     loadSiteSettings();
@@ -31,7 +31,7 @@
         <link rel="icon" href="favicon.png" type="image/png">
         
         <?php
-            //define("STYLE_DEBUG", true);
+            define("STYLE_DEBUG", true);
             
             if (defined("STYLE_DEBUG") && STYLE_DEBUG)
                 include_once("lib/layout/_layout.css.php");
@@ -60,7 +60,7 @@
         <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $siteVersion; ?>"></script>
         
         <?php
-            //define("SCRIPT_DEBUG", true);
+            define("SCRIPT_DEBUG", true);
             
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
                 include_once("lib/script/_scripts.js.php");

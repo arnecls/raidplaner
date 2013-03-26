@@ -29,6 +29,16 @@
             $MemberGroups   = explode(",", VB3_MEMBER_GROUPS );
             $RaidleadGroups = explode(",", VB3_RAIDLEAD_GROUPS );
             
+            if ($UserData["bandate"] > 0)
+            {
+                $currentTime = time();
+                if ( ($UserData["bandate"] < $currentTime) &&
+                     (($UserData["liftdate"] == 0) || ($UserData["liftdate"] > $currentTime)) )
+                {
+                    return "none"; // ### return, banned ###
+                }
+            }
+            
             if ( in_array($UserData["usergroupid"], $RaidleadGroups) )
                 return "raidlead";
                 
@@ -61,8 +71,10 @@
             if ($this->Connector == null)
                 $this->Connector = new Connector(SQL_HOST, VB3_DATABASE, VB3_USER, VB3_PASS);
             
-            $UserSt = $this->Connector->prepare("SELECT userid, username, password, salt, usergroupid ".
+            $UserSt = $this->Connector->prepare("SELECT `".VB3_TABLE_PREFIX."user`.userid, `".VB3_TABLE_PREFIX."user`.usergroupid, ".
+                                                "username, password, salt, bandate, liftdate ".
                                                 "FROM `".VB3_TABLE_PREFIX."user` ".
+                                                "LEFT JOIN `".VB3_TABLE_PREFIX."userban` USING(userid) ".
                                                 "WHERE username = :Login LIMIT 1");
                                           
             $UserSt->BindValue( ":Login", strtolower($UserName), PDO::PARAM_STR );
@@ -86,12 +98,14 @@
             if ($this->Connector == null)
                 $this->Connector = new Connector(SQL_HOST, VB3_DATABASE, VB3_USER, VB3_PASS);
             
-            $UserSt = $this->Connector->prepare("SELECT userid, username, password, salt, usergroupid ".
+            $UserSt = $this->Connector->prepare("SELECT `".VB3_TABLE_PREFIX."user`.userid, `".VB3_TABLE_PREFIX."user`.usergroupid, ".
+                                                "username, password, salt, bandate, liftdate ".
                                                 "FROM `".VB3_TABLE_PREFIX."user` ".
+                                                "LEFT JOIN `".VB3_TABLE_PREFIX."userban` USING(userid) ".
                                                 "WHERE userid = :UserId LIMIT 1");
                                           
             $UserSt->BindValue( ":UserId", $UserId, PDO::PARAM_INT );
-        
+            
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {
                 $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );

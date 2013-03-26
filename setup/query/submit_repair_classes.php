@@ -40,7 +40,7 @@
         }
         else
         {
-            $defaultRole = $g_RoleToIdx[ $s_Classes[$class][1][0] ];
+            $defaultRole = $g_RoleToIdx[ $s_Classes[$class][2][0] ];
             
             $UpdateChar = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Character` SET Class=:Class, Role1=:Role, Role2=:Role WHERE CharacterId=:CharId;".
                                               "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Role=:Role WHERE  CharacterId=:CharId");

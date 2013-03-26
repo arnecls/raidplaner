@@ -3,27 +3,27 @@
     require_once(dirname(__FILE__)."/private/locale.php");
     require_once(dirname(__FILE__)."/private/userproxy.class.php");
     require_once(dirname(__FILE__)."/private/tools_string.php");
+    require_once(dirname(__FILE__)."/private/tools_site.php");
     require_once(dirname(__FILE__)."/private/settings.class.php");
     require_once(dirname(__FILE__)."/private/gameconfig.php");
     
-    include_once("private/raid_maintenance.php");
-    include_once("private/message_raid_detail.php");
     include_once("private/message_raid_calendar.php");
     include_once("private/message_raid_list.php");
     include_once("private/message_raid_attend.php");
     include_once("private/message_raid_create.php");
     include_once("private/message_raid_update.php");
     include_once("private/message_raid_delete.php");
+    include_once("private/message_query_raid.php");
     include_once("private/message_query_locations.php");
     include_once("private/message_query_newraid.php");
     include_once("private/message_query_profile.php");
     include_once("private/message_query_settings.php");
+    include_once("private/message_query_credentials.php");
     include_once("private/message_profile_update.php");
     include_once("private/message_comment_update.php");
     include_once("private/message_settings_update.php");
-    include_once("private/message_change_password.php");
-    include_once("private/message_query_credentials.php");
     include_once("private/message_user_create.php");
+    include_once("private/message_user_password.php");
     
     $ValidUser = ValidUser();    
     
