@@ -210,6 +210,28 @@
     margin-left: 8px;
 }
 
+#settings .user .userName .binding_active {
+    background-image: url(images/icon_link.png);
+    background-repeat: no-repeat;
+    background-position: 0 -2px;
+    padding-left: 20px;
+    height: 16px;
+    display: inline-block;
+    font-size: 10px; 
+    color: #148cdc;
+}
+
+#settings .user .userName .binding {
+    background-image: url(images/icon_nolink.png);
+    background-repeat: no-repeat;
+    background-position: 0 -2px;
+    padding-left: 20px;
+    height: 16px;
+    display: inline-block;
+    font-size: 10px; 
+    color: #999;
+}
+
 #settings .user .userNameLocal {
     float: left;
     padding-top: 8px;
@@ -227,6 +249,7 @@
 #settings .user .functionDelete {
     background-image: url(images/clear_off.png);
     background-repeat: no-repeat;
+    margin-top: 5px;
 }
 
 #settings .user .functionDelete:hover {
@@ -236,6 +259,7 @@
 #settings .user .functionEdit {
     background-image: url(images/edituser_off.png);
     background-repeat: no-repeat;
+    margin-top: 5px;
 }
 
 #settings .user .functionEdit:hover {
@@ -513,6 +537,13 @@
     cursor: pointer;
 }
 
+.removeLink {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    float: left;
+}
+
 .grpicon_off {
     width: 32px;
     height: 32px;
@@ -527,7 +558,6 @@
     position: absolute;
     width: 16px;
     height: 16px;
-    background-image: url(images/move_left.png);
     background-repeat: no-repeat;
     top: 65px;
 }
@@ -536,7 +566,6 @@
     position: absolute;
     width: 16px;
     height: 16px;
-    background-image: url(images/move_right.png);
     background-repeat: no-repeat;
     top: 65px;
 }

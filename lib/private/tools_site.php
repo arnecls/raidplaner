@@ -1,7 +1,7 @@
 <?php
     
-    require_once(dirname(__FILE__)."/../config/config.php");
-    require_once("connector.class.php");
+    @include_once(dirname(__FILE__)."/../config/config.php");
+    include_once(dirname(__FILE__)."/connector.class.php");
     
     $g_Site = Array(
         "BannerLink" => "",

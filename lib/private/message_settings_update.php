@@ -237,6 +237,7 @@ function msgSettingsUpdate( $Request )
         $RaidleadIds = (isset($Request["raidlead"])) ? $Request["raidlead"] : array();
         $AdminIds    = (isset($Request["admin"]))    ? $Request["admin"]    : array();
         $RemovedIds  = (isset($Request["removed"]))  ? $Request["removed"]  : array();
+        $UnlinkedIds = (isset($Request["unlinked"])) ? $Request["unlinked"]  : array();
 
         if ( !updateGroup( $Connector, "none", $BannedIds ) )
             return;
@@ -249,6 +250,25 @@ function msgSettingsUpdate( $Request )
 
         if ( !updateGroup( $Connector, "admin", $AdminIds ) )
             return;
+            
+        // Update unlinked users
+        
+        foreach ( $UnlinkedIds as $UserId )
+        {
+            $unlinkUser = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET `BindingActive` = 'false' WHERE UserId = :UserId LIMIT 1" );
+            $unlinkUser->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+    
+            if ( !$unlinkUser->execute() )
+            {
+                postErrorMessage( $unlinkUser );
+    
+                $unlinkUser->closeCursor();
+                $Connector->rollBack();
+                return;
+            }
+    
+            $unlinkUser->closeCursor();
+        }
 
         // Update removed users
 

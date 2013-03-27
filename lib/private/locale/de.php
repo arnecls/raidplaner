@@ -168,6 +168,7 @@
         $g_Locale[ "OldPasswordEmpty" ]         = "Das alte Passwort darf nicht leer sein.";
         $g_Locale[ "AdminPasswordEmpty" ]       = "Das Administrator Passwort darf nicht leer sein.";
         $g_Locale[ "PasswordChanged" ]          = "Das Passwort wurde ge&auml;ndert.";
+        $g_Locale[ "UnlinkUser" ]               = "Synchronisation beenden und in lokalen Nutzer konvertieren.";
     }
     
     if ( defined("LOCALE_SETUP") )
