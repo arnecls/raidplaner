@@ -390,18 +390,60 @@
         
         // --------------------------------------------------------------------------------------------
 
-        public function GetUserInfoById( $BindingName, $UserId )
+        public function GetUserCredentialsById( $UserId )
+        {
+            // Iterate all bindings and search for the given user
+            
+            foreach( self::$Bindings as $Binding )
+            {
+                if ( $Binding->IsActive() )
+                {                    
+                    $UserInfo    = $Binding->GetUserInfoById($UserId);
+                    $Credentials = $this->GetUserCredentialsFromInfo($UserInfo, $Binding);
+                    
+                    if ( $Credentials != null )
+                        return $Credentials;
+                }
+            }
+            
+            // User not found
+            
+            return null;
+        }
+        
+        // --------------------------------------------------------------------------------------------
+
+        public function GetUserInfoById( $BindingName, $ExternalId )
         {
             $Binding = self::$Bindings[$BindingName];
             
             if ( $Binding->IsActive() )
             {                    
-                return $Binding->GetUserInfoById($UserId);
+                return $Binding->GetUserInfoById($ExternalId);
             }
             
-            // Binding not active
-            
             return null;
+        }
+        
+        // --------------------------------------------------------------------------------------------
+
+        public function GetAllUserInfosById( $ExternalId )
+        {
+            $candidates = array();
+            
+            foreach( self::$Bindings as $Binding )
+            {
+                if ( $Binding->IsActive() )
+                {                    
+                    $info = $Binding->GetUserInfoById($ExternalId);
+                    if ( $info != null )
+                    {
+                        $candidates[$Binding->BindingName] = $info;
+                    }
+                }
+            }
+            
+            return $candidates;
         }
         
         // --------------------------------------------------------------------------------------------
