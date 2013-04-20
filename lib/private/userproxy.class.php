@@ -390,23 +390,16 @@
         
         // --------------------------------------------------------------------------------------------
 
-        public function GetUserCredentialsById( $UserId )
+        public function GetUserInfoById( $BindingName, $UserId )
         {
-            // Iterate all bindings and search for the given user
+            $Binding = self::$Bindings[$BindingName];
             
-            foreach( self::$Bindings as $Binding )
-            {
-                if ( $Binding->IsActive() )
-                {                    
-                    $UserInfo    = $Binding->GetUserInfoById($UserId);
-                    $Credentials = $this->GetUserCredentialsFromInfo($UserInfo,$Binding);
-                    
-                    if ( $Credentials != null )
-                        return $Credentials;
-                }
+            if ( $Binding->IsActive() )
+            {                    
+                return $Binding->GetUserInfoById($UserId);
             }
             
-            // User not found
+            // Binding not active
             
             return null;
         }

@@ -169,6 +169,8 @@
         $g_Locale[ "AdminPasswordEmpty" ]       = "The administrator password must not be empty.";
         $g_Locale[ "PasswordChanged" ]          = "The password has been changed.";
         $g_Locale[ "UnlinkUser" ]               = "Stop synchronisation and convert to local user.";
+        $g_Locale[ "LinkUser" ]                 = "Synchronize user";
+        $g_Locale[ "SyncFailed" ]               = "Failed to synchronize.</br>No fitting user found.";        
     }
     
     if ( defined("LOCALE_SETUP") )

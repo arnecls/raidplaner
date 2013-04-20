@@ -24,6 +24,7 @@
     include_once("private/message_settings_update.php");
     include_once("private/message_user_create.php");
     include_once("private/message_user_password.php");
+    include_once("private/message_user_link.php");
     
     $ValidUser = ValidUser();    
     
@@ -108,6 +109,10 @@
             
         case "user_create":
             msgUserCreate( $_REQUEST );
+            break;
+            
+        case "user_link":
+            msgUserLink( $_REQUEST );
             break;
             
         case "change_password":

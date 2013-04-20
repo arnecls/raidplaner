@@ -87,7 +87,7 @@ function msgQuerySettings( $Request )
 
         if ( !$Raids->execute() )
         {
-            postErrorMessage( $User );
+            postErrorMessage( $Raids );
         }
         else
         {
