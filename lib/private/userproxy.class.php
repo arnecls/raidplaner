@@ -447,6 +447,27 @@
         }
         
         // --------------------------------------------------------------------------------------------
+
+        public function GetAllUserInfosByName( $UserName )
+        {
+            $candidates = array();
+            
+            foreach( self::$Bindings as $Binding )
+            {
+                if ( $Binding->IsActive() )
+                {                    
+                    $info = $Binding->GetUserInfoByName($UserName);
+                    if ( $info != null )
+                    {
+                        $candidates[$Binding->BindingName] = $info;
+                    }
+                }
+            }
+            
+            return $candidates;
+        }
+        
+        // --------------------------------------------------------------------------------------------
         
         public function ValidateCredentials( $SignedPassword )
         {

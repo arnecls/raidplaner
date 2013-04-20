@@ -108,8 +108,41 @@ function msgUserLink( $Request )
                 }
             }
             
-            // TODO:
-            // Search for user
+            // All checks failed
+            // Search for user by name
+            
+            $candidates = UserProxy::GetInstance()->GetAllUserInfosByName($UserData["Login"]);
+                
+            // Use the first match.
+            // This may lead to the wrong user, but searching by name means that the user
+            // has no external id -> has never been an external user or has been deleted.
+            // So we're basically wild guessing anyway.
+                            
+            if ( sizeof($candidates) > 1 )
+            {
+                list($bindingName, $userInfo) = each($candidates); // first entry is "none"
+                list($bindingName, $userInfo) = each($candidates); // this is the first external binding
+                
+                $UpdateSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET BindingActive='true', ExternalBinding=:Binding, `Group`=:Group WHERE UserId=:UserId LIMIT 1");
+                
+                $UpdateSt->bindValue( ":Binding", $bindingName, PDO::PARAM_STR );                        
+                $UpdateSt->bindValue( ":Group",  $userInfo->Group, PDO::PARAM_STR );                        
+                $UpdateSt->bindValue( ":UserId", $Request["userId"], PDO::PARAM_INT );
+                
+                if ( !$UpdateSt->execute() )
+                {
+                    postErrorMessage( $UpdateSt );
+                }
+                else
+                {
+                    echo "<userid>".intval($Request["userId"])."</userid>";
+                    echo "<binding>".$bindingName."</binding>";
+                    echo "<group>".$userInfo->Group."</group>";
+                }
+                
+                $UpdateSt->closeCursor();
+                return; // ### return, success ###
+            }
         }
     }
     else
