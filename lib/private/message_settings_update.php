@@ -238,6 +238,7 @@ function msgSettingsUpdate( $Request )
         $AdminIds    = (isset($Request["admin"]))    ? $Request["admin"]    : array();
         $RemovedIds  = (isset($Request["removed"]))  ? $Request["removed"]  : array();
         $UnlinkedIds = (isset($Request["unlinked"])) ? $Request["unlinked"]  : array();
+        $RelinkedIds = (isset($Request["relinked"])) ? $Request["relinked"]  : array();
 
         if ( !updateGroup( $Connector, "none", $BannedIds ) )
             return;
@@ -268,6 +269,37 @@ function msgSettingsUpdate( $Request )
             }
     
             $unlinkUser->closeCursor();
+        }
+        
+        // Update relinked users
+        
+        foreach ( $RelinkedIds as $UserId )
+        {
+            $userInfo = tryGetUserLink($UserId);
+            
+            if ( $userInfo != null )
+            {
+                $updateSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
+                                                "Password = :Password, Salt = :Salt, `Group` = :Group, ExternalBinding = :Binding, BindingActive = 'true' ".
+                                                "WHERE UserId = :UserId LIMIT 1" );
+            
+                $updateSt->bindValue( ":Password", $userInfo->Password,    PDO::PARAM_STR );
+                $updateSt->bindValue( ":Group",    $userInfo->Group,       PDO::PARAM_STR );
+                $updateSt->bindValue( ":Salt",     $userInfo->Salt,        PDO::PARAM_STR );
+                $updateSt->bindValue( ":Binding",  $userInfo->BindingName, PDO::PARAM_STR );
+                $updateSt->bindValue( ":UserId",   $UserId,                PDO::PARAM_INT );
+                
+                if ( !$updateSt->execute() )
+                {
+                    postErrorMessage( $updateSt );
+        
+                    $updateSt->closeCursor();
+                    $Connector->rollBack();
+                    return;
+                }
+                
+                $updateSt->closeCursor();
+            }
         }
 
         // Update removed users

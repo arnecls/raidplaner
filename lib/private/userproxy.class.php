@@ -734,7 +734,7 @@
             $SessionKey = self::GenerateKey128();  
             $Connector = Connector::GetInstance();      
             
-            if ( $UserData["ExternalBinding"] == "none" )
+            if ( ($UserData["ExternalBinding"] == "none") || ($UserData["BindingActive"] == "false"))
             {
                 // Local user
                 // Just update the session key.

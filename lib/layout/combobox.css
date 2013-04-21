@@ -80,6 +80,15 @@
     color: #aaaaaa;
 }
 
+.combobox_list .separator {
+    color: white;
+    height: 7px;
+    opacity: 1.0;
+    filter:Alpha(opacity=100);
+    border-bottom: 1px dotted #aaa;
+    margin-bottom: 6px;
+}
+
 .combobox_list .selected {
     background-color: #333333;
     color: white;

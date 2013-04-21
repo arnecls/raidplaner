@@ -26,9 +26,6 @@
         
         private function GetGroup( $UserData )
         {
-            $MemberGroups   = explode(",", VB3_MEMBER_GROUPS );
-            $RaidleadGroups = explode(",", VB3_RAIDLEAD_GROUPS );
-            
             if ($UserData["bandate"] > 0)
             {
                 $currentTime = time();
@@ -38,6 +35,9 @@
                     return "none"; // ### return, banned ###
                 }
             }
+            
+            $MemberGroups   = explode(",", VB3_MEMBER_GROUPS );
+            $RaidleadGroups = explode(",", VB3_RAIDLEAD_GROUPS );
             
             if ( in_array($UserData["usergroupid"], $RaidleadGroups) )
                 return "raidlead";

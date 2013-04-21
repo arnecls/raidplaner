@@ -26,9 +26,19 @@
         
         private function GetGroup( $UserData )
         {
-            $DefaultGroup   = "none";
+            if ($UserData["ban_time"] > 0)
+            {
+                $currentTime = time();
+                if ( ($UserData["ban_time"] < $currentTime) &&
+                     (($UserData["expire_time"] == 0) || ($UserData["expire_time"] > $currentTime)) )
+                {
+                    return "none"; // ### return, banned ###
+                }
+            };
+            
             $MemberGroups   = explode(",", SMF_MEMBER_GROUPS );
             $RaidleadGroups = explode(",", SMF_RAIDLEAD_GROUPS );
+            $DefaultGroup   = "none";
             
             $Groups = explode(",", $UserData["additional_groups"]);
             array_push($Groups, $UserData["id_group"] );
@@ -68,8 +78,10 @@
             if ($this->Connector == null)
                 $this->Connector = new Connector(SQL_HOST, SMF_DATABASE, SMF_USER, SMF_PASS);
             
-            $UserSt = $this->Connector->prepare("SELECT id_member, member_name, passwd, id_group, additional_groups ".
+            $UserSt = $this->Connector->prepare("SELECT id_member, member_name, passwd, id_group, additional_groups, ban_time, expire_time ".
                                                 "FROM `".SMF_TABLE_PREFIX."members` ".
+                                                "LEFT JOIN `".SMF_TABLE_PREFIX."ban_items` USING(id_member) ".
+                                                "LEFT JOIN `".SMF_TABLE_PREFIX."ban_groups` USING(id_ban_group) ".
                                                 "WHERE member_name = :Login LIMIT 1");
                                           
             $UserSt->BindValue( ":Login", strtolower($UserName), PDO::PARAM_STR );

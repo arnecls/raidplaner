@@ -26,9 +26,19 @@
         
         private function GetGroup( $UserData )
         {
-            $DefaultGroup   = "none";
+            if ($UserData["dateline"] > 0)
+            {
+                $currentTime = time();
+                if ( ($UserData["dateline"] < $currentTime) &&
+                     (($UserData["lifted"] == 0) || ($UserData["lifted"] > $currentTime)) )
+                {
+                    return "none"; // ### return, banned ###
+                }
+            }
+            
             $MemberGroups   = explode(",", MYBB_MEMBER_GROUPS );
             $RaidleadGroups = explode(",", MYBB_RAIDLEAD_GROUPS );
+            $DefaultGroup   = "none";
             
             $Groups = explode(",", $UserData["additionalgroups"]);
             array_push($Groups, $UserData["usergroup"] );
@@ -68,8 +78,9 @@
             if ($this->Connector == null)
                 $this->Connector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS);
                 
-            $UserSt = $this->Connector->prepare("SELECT uid, username, password, salt, usergroup, additionalgroups ".
+            $UserSt = $this->Connector->prepare("SELECT uid, username, password, salt, usergroup, additionalgroups, dateline, lifted ".
                                                 "FROM `".MYBB_TABLE_PREFIX."users` ".
+                                                "LEFT JOIN `".MYBB_TABLE_PREFIX."banned` USING(uid) ".
                                                 "WHERE username = :Login LIMIT 1");
             
             $UserSt->BindValue( ":Login", strtolower($UserName), PDO::PARAM_STR );
