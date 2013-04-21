@@ -20,13 +20,14 @@ var g_Theme = {
     portalmode : "<?php echo $g_Site["PortalMode"]; ?>"
 };
 
-var g_RoleNames  = Array(<?php echo sizeof($s_Roles); ?>);
-var g_RoleIds    = Array(<?php echo sizeof($s_Roles); ?>);
-var g_RoleIdents = Array(<?php echo sizeof($s_Roles); ?>);
-var g_RoleImages = Array(<?php echo sizeof($s_Roles); ?>);
-var g_Classes    = Array(<?php echo sizeof($s_Classes); ?>);
-var g_ClassIdx   = Array(<?php echo sizeof($s_Classes); ?>);
-var g_GroupSizes = Array(<?php
+var g_RoleNames       = Array(<?php echo sizeof($s_Roles); ?>);
+var g_RoleIds         = Array(<?php echo sizeof($s_Roles); ?>);
+var g_RoleIdents      = Array(<?php echo sizeof($s_Roles); ?>);
+var g_RoleImages      = Array(<?php echo sizeof($s_Roles); ?>);
+var g_RoleColumnCount = Array(<?php echo sizeof($s_Roles); ?>);
+var g_Classes         = Array(<?php echo sizeof($s_Classes); ?>);
+var g_ClassIdx        = Array(<?php echo sizeof($s_Classes); ?>);
+var g_GroupSizes      = Array(<?php
     for ($i=0; list($Count,$RoleSizes) = each($s_GroupSizes); ++$i)
     {
         if ($i>0) echo ",";
@@ -34,7 +35,7 @@ var g_GroupSizes = Array(<?php
     }
     reset($s_GroupSizes);
 ?>);
-var g_GroupRoleSizes = Array(<?php echo sizeof($s_GroupSizes); ?>);
+var g_GroupRoleSizes  = Array(<?php echo sizeof($s_GroupSizes); ?>);
 
 <?php
     for ( $i=0; list($RoleIdent,$RoleName) = each($s_Roles); ++$i )
@@ -43,6 +44,7 @@ var g_GroupRoleSizes = Array(<?php echo sizeof($s_GroupSizes); ?>);
         echo "g_RoleIds[\"".$RoleIdent."\"] = ".$i.";\n";
         echo "g_RoleIdents[".$i."] = \"".$RoleIdent."\";\n";
         echo "g_RoleImages[".$i."] = \"".$s_RoleImages[$i]."\";\n";
+        echo "g_RoleColumnCount[".$i."] = \"".$s_RoleColumnCount[$i]."\";\n";
     }
     reset($s_Roles);
 ?>

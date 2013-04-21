@@ -60,6 +60,10 @@ $s_Classes = Array(
     "warrior"       => Array( "Warrior",     "tank", Roles::$offensiveTank )
 );
 
+// ColumnSize = Array(Role1,Role2,...)
+
+$s_RoleColumnCount = Array(1,1,4);
+
 // Size => Array(Role1, Role2, ...)
 // Sum(Roles) == Size MUST be given
 
@@ -70,7 +74,15 @@ $s_GroupSizes = Array(
     40 => Array(1,1,38)
 );
 
-// Check $s_GroupSizes for constraints not matched
+// Check for constraints not matched
+
+$columnSum = 0;
+foreach ( $s_RoleColumnCount as $columns )
+{
+	$columnSum += $columns;
+}
+
+assert( $columnSum == 6 ); // 6 columns, no more, no less.
 
 while ( list($Count,$RoleSizes) = each($s_GroupSizes) )
 {
@@ -78,7 +90,7 @@ while ( list($Count,$RoleSizes) = each($s_GroupSizes) )
     foreach ( $RoleSizes as $count )
         $slotSum += $count;
 
-    assert( $Count == $slotSum );
+    assert( $Count == $slotSum ); // Slots do not match raid size
 }
 
 reset($s_GroupSizes);
