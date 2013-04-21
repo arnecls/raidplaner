@@ -197,6 +197,7 @@
     padding: 4px;
     margin-left: 5px;
     white-space: nowrap;
+    height: 30px;
 }
 
 #settings .user .userImage {
