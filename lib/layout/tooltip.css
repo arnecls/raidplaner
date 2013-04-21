@@ -25,8 +25,17 @@
     white-space: nowrap;
 }
 
+#info_text a {
+    color: #ccc;
+    text-decoration: underline;
+}
+
+#info_text a:hover {
+    text-decoration: none;
+}
+
 .tooltip .textstatus {
-    color: #cccccc;
+    color: #ccc;
     display: inline;    
     font-size: 12px;
     white-space: nowrap;
