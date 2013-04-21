@@ -170,7 +170,8 @@
         $g_Locale[ "PasswordChanged" ]          = "The password has been changed.";
         $g_Locale[ "UnlinkUser" ]               = "Stop synchronisation and convert to local user.";
         $g_Locale[ "LinkUser" ]                 = "Synchronize user";
-        $g_Locale[ "SyncFailed" ]               = "Failed to synchronize.</br>No fitting user found.";        
+        $g_Locale[ "SyncFailed" ]               = "Failed to synchronize.</br>No fitting user found.";
+        $g_Locale[ "CharName" ]                 = "name";     
     }
     
     if ( defined("LOCALE_SETUP") )

@@ -151,18 +151,38 @@
 #profile .charslot .newname {    
     text-align: center;    
     width: 105px;
-    height: 14px;
+    height: 13px;
     display: block;
     position: relative;
     text-align: center;
-    top: 18px;
+    top: 20px;
     left: 8px;
-    margin-bottom:14px;
+    margin-bottom:15px;
     padding: 0px;
     font-size: 12px;
     border: 0px solid transparent;
-    border-bottom: 1px dotted #666;
+    border-bottom: 1px dotted #888;
     background-color: transparent;
+    display: none;
+    color: black;
+}
+
+#profile .charslot .newname_label {    
+    text-align: center;    
+    width: 105px;
+    height: 13px;
+    display: block;
+    position: relative;
+    text-align: center;
+    top: 20px;
+    left: 8px;
+    margin-bottom:15px;
+    padding: 0px;
+    font-size: 12px;
+    border: 0px solid transparent;
+    border-bottom: 1px dotted #888;
+    background-color: transparent;
+    color: #AAA;
 }
 
 #profile .charslot .role {

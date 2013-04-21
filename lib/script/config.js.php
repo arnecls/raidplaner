@@ -55,7 +55,7 @@ var g_GroupRoleSizes = Array(<?php echo sizeof($s_GroupSizes); ?>);
         echo "g_Classes[".$i."] = {";
         echo "ident : \"".$ClassIdent."\", ";
         echo "text : L(\"".$ClassConfig[0]."\"), ";
-        echo "default : \"".$ClassConfig[1]."\", ";
+        echo "defaultRole : \"".$ClassConfig[1]."\", ";
         echo "roles : Array(";
 
         for ( $r=0; $r < sizeof($ClassConfig[2]); ++$r )
