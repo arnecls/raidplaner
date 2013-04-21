@@ -128,6 +128,37 @@ function OnReloadSMF( a_XMLData )
 
 // ----------------------------------------------------------------------------
 
+function OnReloadVanilla( a_XMLData )
+{
+    var groups = $(a_XMLData).children("grouplist");
+    
+    if ( groups.children("error").size() > 0 )
+    {
+        var errorString = "";
+        
+        groups.children("error").each( function() {
+            errorString += $(this).text() + "\n";
+        });
+        
+        alert("<?php echo L("ReloadFailed"); ?>:\n\n" + errorString );
+        return;
+    }
+    
+    HTMLString = "";
+    
+    groups.children("group").each( function() {
+        var id = $(this).children("id").text();
+        var name = $(this).children("name").text();
+        
+        HTMLString += "<option value=\"" + id + "\">" + name + "</option>";
+    });
+    
+    $("#vanilla_member").empty().append( HTMLString );
+    $("#vanilla_raidlead").empty().append( HTMLString );
+}
+
+// ----------------------------------------------------------------------------
+
 function OnCheckEQDKP( a_XMLData )
 {
     var groups = $(a_XMLData).children("grouplist");
@@ -281,6 +312,39 @@ function ReloadSMFGroups()
 
 // ----------------------------------------------------------------------------
 
+function ReloadVanillaGroups() 
+{
+    if ( $("#vanilla_password").val().length == 0 )
+    {
+        alert("<?php echo L("VanillaPasswordEmpty"); ?>");
+        return;
+    }
+    
+    if ( $("#vanilla_password").val() != $("#vanilla_password_check").val() )
+    {
+        alert("<?php echo L("VanillaDBPasswordsMatch"); ?>");
+        return;
+    }
+    
+    var parameter = {
+        database : $("#vanilla_database").val(),
+        user     : $("#vanilla_user").val(),
+        password : $("#vanilla_password").val(),
+        prefix   : $("#vanilla_prefix").val()
+    };
+    
+    $.ajax({
+        type     : "POST",
+        url      : "query/groups_vanilla.php",
+        dataType : "xml",
+        async    : true,
+        data     : parameter,
+        success  : OnReloadVanilla
+    });
+}
+
+// ----------------------------------------------------------------------------
+
 function CheckEQDKP()
 {
     if ( $("#eqdkp_password").val().length == 0 )
@@ -321,6 +385,7 @@ function CheckBindingForm(a_Parameter)
     var useVBulletin = $("#allow_vb3:checked").val() == "on";
     var useMyBB = $("#allow_mybb:checked").val() == "on";
     var useSMF = $("#allow_smf:checked").val() == "on";
+    var useVanilla = $("#allow_vanilla:checked").val() == "on";
     
     if ( usePhpBB )
     {
@@ -396,6 +461,21 @@ function CheckBindingForm(a_Parameter)
             return;
         }
     }
+    
+    if ( useVanilla )
+    {    
+        if ( $("#vanilla_password").val().length == 0 )
+        {
+            alert("<?php echo L("VanillaPasswordEmpty"); ?>");
+            return;
+        }
+        
+        if ( $("#vanilla_password").val() != $("#smf_password_check").val() )
+        {
+            alert("<?php echo L("VanillaDBPasswordsMatch"); ?>");
+            return;
+        }
+    }
         
     var parameter = {
         phpbb3_check    : usePhpBB,
@@ -426,7 +506,13 @@ function CheckBindingForm(a_Parameter)
         smf_database : $("#smf_database").val(),
         smf_user     : $("#smf_user").val(),
         smf_password : $("#smf_password").val(),
-        smf_prefix   : $("#smf_prefix").val()
+        smf_prefix   : $("#smf_prefix").val(),
+    
+        vanilla_check    : useVanilla,
+        vanilla_database : $("#vanilla_database").val(),
+        vanilla_user     : $("#vanilla_user").val(),
+        vanilla_password : $("#vanilla_password").val(),
+        vanilla_prefix   : $("#vanilla_prefix").val()
     };
     
     $.ajax({
@@ -513,6 +599,20 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
         smf_raidLeadGroups.push( $(this).val() );
     });
     
+    // vanilla
+    
+    var vanilla_memberGroups = new Array();
+    
+    $("#vanilla_member option:selected").each( function() {
+        vanilla_memberGroups.push( $(this).val() );
+    });
+    
+    var vanilla_raidLeadGroups = new Array();
+    
+    $("#vanilla_raidlead option:selected").each( function() {
+        vanilla_raidLeadGroups.push( $(this).val() );
+    });
+    
     var parameter = {
         phpbb3_allow    : $("#allow_phpbb3:checked").val() == "on",
         phpbb3_database : $("#phpbb3_database").val(),
@@ -550,7 +650,15 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
         smf_password : $("#smf_password").val(),
         smf_prefix   : $("#smf_prefix").val(),
         smf_member   : smf_memberGroups,
-        smf_raidlead : smf_raidLeadGroups
+        smf_raidlead : smf_raidLeadGroups,
+
+        vanilla_allow    : $("#allow_vanilla:checked").val() == "on",
+        vanilla_database : $("#vanilla_database").val(),
+        vanilla_user     : $("#vanilla_user").val(),
+        vanilla_password : $("#vanilla_password").val(),
+        vanilla_prefix   : $("#vanilla_prefix").val(),
+        vanilla_member   : vanilla_memberGroups,
+        vanilla_raidlead : vanilla_raidLeadGroups
     };
     
     $.ajax({
@@ -572,6 +680,7 @@ function showConfig( a_Name )
     $("#vbulletin").hide();
     $("#mybb").hide();
     $("#smf").hide();
+    $("#vanilla").hide();
     
     $(".tab_active").removeClass("tab_active").addClass("tab_inactive");
     

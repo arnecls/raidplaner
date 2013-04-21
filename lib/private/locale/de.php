@@ -267,30 +267,35 @@
         $g_Locale[ "StrayUsers" ]               = "Gel&ouml;schte Benutzer";
         $g_Locale[ "UseClearText" ]             = "&Uuml;bertragung von Klartext Passw&ouml;rtern (nicht empfohlen)";
                 
-        $g_Locale[ "PHPBB3Binding" ]            = "PHPBB3 Anbindung";
+        $g_Locale[ "PHPBB3Binding" ]            = "PHPBB3";
         $g_Locale[ "PHPBB3ConfigFile" ]         = "PHPBB3 Konfigurationsdatei";
         $g_Locale[ "PHPBB3Database" ]           = "Name der PHPBB3 Datenbank";
         $g_Locale[ "PHPBBPasswordEmpty" ]       = "PHPBB Datenbank Passwort darf nicht leer sein";
         $g_Locale[ "PHPBBDBPasswordsMatch" ]    = "PHPBB Datenbank-Passwoerter stimmen nicht &uuml;berein";
-        $g_Locale[ "EQDKPBinding" ]             = "EQDKP Anbindung";
+        $g_Locale[ "EQDKPBinding" ]             = "EQDKP";
         $g_Locale[ "EQDKPConfigFile" ]          = "EQDKP Konfigurationsdatei";
         $g_Locale[ "EQDKPDatabase" ]            = "Name der EQDKP Datenbank";
         $g_Locale[ "EQDKPPasswordEmpty" ]       = "EQDKP Datenbank Passwort darf nicht leer sein";
         $g_Locale[ "EQDKPDBPasswordsMatch" ]    = "EQDKP Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein";
-        $g_Locale[ "VBulletinBinding" ]         = "vBulletin3 Anbindung";
+        $g_Locale[ "VBulletinBinding" ]         = "vBulletin3";
         $g_Locale[ "VBulletinConfigFile" ]      = "vBulletin Konfigurationsdatei";
         $g_Locale[ "VBulletinDatabase" ]        = "Name der vBulletin Datenbank";
         $g_Locale[ "VBulletinPasswordEmpty" ]   = "vBulletin Datenbank Passwort darf nicht leer sein";
         $g_Locale[ "VBulletinDBPasswordsMatch" ]= "vBulletin Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein";
-        $g_Locale[ "MyBBBinding" ]              = "MyBB Anbindung";
+        $g_Locale[ "MyBBBinding" ]              = "MyBB";
         $g_Locale[ "MyBBConfigFile" ]           = "MyBB Konfigurationsdatei";
         $g_Locale[ "MyBBDatabase" ]             = "Name der MyBB Datenbank";
         $g_Locale[ "MyBBPasswordEmpty" ]        = "MyBB Datenbank Passwort darf nicht leer sein.";
         $g_Locale[ "MyBBDBPasswordsMatch" ]     = "MyBB Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";        
-        $g_Locale[ "SMFBinding" ]               = "SMF Anbindung";
+        $g_Locale[ "SMFBinding" ]               = "SMF";
         $g_Locale[ "SMFConfigFile" ]            = "SMF Konfigurationsdatei";
         $g_Locale[ "SMFDatabase" ]              = "Name der SMF Datenbank";
         $g_Locale[ "SMFPasswordEmpty" ]         = "SMF Datenbank Passwort darf nicht leer sein.";
-        $g_Locale[ "SMFDBPasswordsMatch" ]      = "SMF Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";
+        $g_Locale[ "SMFDBPasswordsMatch" ]      = "SMF Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";        
+        $g_Locale[ "VanillaBinding" ]           = "Vanilla";
+        $g_Locale[ "VanillaConfigFile" ]        = "Vanilla Konfigurationsdatei";
+        $g_Locale[ "VanillaDatabase" ]          = "Name der Vanilla Datenbank";
+        $g_Locale[ "VanillaPasswordEmpty" ]     = "Vanilla Datenbank Passwort darf nicht leer sein.";
+        $g_Locale[ "VanillaDBPasswordsMatch" ]  = "Vanilla Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";
     }
 ?>

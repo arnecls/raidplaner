@@ -11,6 +11,8 @@
     $vb3_config = fopen( "../../lib/config/config.vb3.php", "w+" );
     $mybb_config = fopen( "../../lib/config/config.mybb.php", "w+" );
     $smf_config = fopen( "../../lib/config/config.smf.php", "w+" );
+    $vanilla_config = fopen( "../../lib/config/config.vanilla.php", "w+" );
+    
     
     // phpbb3
     
@@ -63,6 +65,9 @@
         fwrite( $vb3_config, "\tdefine(\"VB3_RAIDLEAD_GROUPS\", \"".implode( ",", $_REQUEST["vb3_raidlead"] )."\");\n");
     }
     
+    fwrite( $vb3_config, "?>");    
+    fclose( $vb3_config );
+    
     // myBB
     
     fwrite( $mybb_config, "<?php\n");
@@ -78,6 +83,9 @@
         fwrite( $mybb_config, "\tdefine(\"MYBB_MEMBER_GROUPS\", \"".implode( ",", $_REQUEST["mybb_member"] )."\");\n");
         fwrite( $mybb_config, "\tdefine(\"MYBB_RAIDLEAD_GROUPS\", \"".implode( ",", $_REQUEST["mybb_raidlead"] )."\");\n");
     }
+    
+    fwrite( $mybb_config, "?>");    
+    fclose( $mybb_config );
     
     // SMF
     
@@ -97,6 +105,25 @@
     
     fwrite( $smf_config, "?>");    
     fclose( $smf_config );
+    
+    // Vanilla
+    
+    fwrite( $vanilla_config, "<?php\n");
+    fwrite( $vanilla_config, "\tdefine(\"VANILLA_BINDING\", ".$_REQUEST["vanilla_allow"].");\n");
+    
+    if ( $_REQUEST["smf_allow"] )
+    {
+        fwrite( $vanilla_config, "\tdefine(\"VANILLA_DATABASE\", \"".$_REQUEST["vanilla_database"]."\");\n");
+        fwrite( $vanilla_config, "\tdefine(\"VANILLA_USER\", \"".$_REQUEST["vanilla_user"]."\");\n");
+        fwrite( $vanilla_config, "\tdefine(\"VANILLA_PASS\", \"".$_REQUEST["vanilla_password"]."\");\n");
+        fwrite( $vanilla_config, "\tdefine(\"VANILLA_TABLE_PREFIX\", \"".$_REQUEST["vanilla_prefix"]."\");\n");
+    
+        fwrite( $vanilla_config, "\tdefine(\"VANILLA_MEMBER_GROUPS\", \"".implode( ",", $_REQUEST["vanilla_member"] )."\");\n");
+        fwrite( $vanilla_config, "\tdefine(\"VANILLA_RAIDLEAD_GROUPS\", \"".implode( ",", $_REQUEST["vanilla_raidlead"] )."\");\n");
+    }
+    
+    fwrite( $vanilla_config, "?>");    
+    fclose( $vanilla_config );
     
     echo "</bindings>";    
 ?>

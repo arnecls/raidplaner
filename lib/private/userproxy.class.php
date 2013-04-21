@@ -8,6 +8,7 @@
     require_once dirname(__FILE__)."/bindings/vbulletin3.php";
     require_once dirname(__FILE__)."/bindings/mybb.php";
     require_once dirname(__FILE__)."/bindings/smf.php";
+    require_once dirname(__FILE__)."/bindings/vanilla.php";
     
     // Helper class for external bindings, so we don't have to use string
     // based associative arrays.
@@ -49,12 +50,13 @@
         public static function InitBindings()
         {
             self::$Bindings = array(
-                "none"   => new NativeBinding("none"), // native has to be first
-                "eqdkp"  => new EQDKPBinding("eqdkp"),
-                "phpbb3" => new PHPBB3Binding("phpbb3"),
-                "vb3"    => new VB3Binding("vb3"),
-                "smf"    => new SMFBinding("smf"),
-                "mybb"   => new MYBBBinding("mybb")
+                "none"    => new NativeBinding("none"), // native has to be first
+                "eqdkp"   => new EQDKPBinding("eqdkp"),
+                "phpbb3"  => new PHPBB3Binding("phpbb3"),
+                "vb3"     => new VB3Binding("vb3"),
+                "smf"     => new SMFBinding("smf"),
+                "mybb"    => new MYBBBinding("mybb"),
+                "vanilla" => new VanillaBinding("vanilla")
             );
         }
 

@@ -7,6 +7,7 @@
     @include_once(dirname(__FILE__)."/../lib/config/config.eqdkp.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.mybb.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.smf.php");
+    @include_once(dirname(__FILE__)."/../lib/config/config.vanilla.php");
     
     if ( defined("PHPBB3_BINDING") && PHPBB3_BINDING )
     {
@@ -81,6 +82,24 @@
         
         $Groups->closeCursor(); 
     }
+    
+    if ( defined("VANILLA_BINDING") && VANILLA_BINDING )
+    {
+        require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
+    
+        $Connector = new Connector(SQL_HOST, VANILLA_DATABASE, VANILLA_USER, VANILLA_PASS); 
+        $Groups = $Connector->prepare( "SELECT RoleID, Name FROM `".VANILLA_TABLE_PREFIX."Role` ORDER BY Name" );
+        
+        $Groups->execute();        
+        $VanillaGroups = Array();
+        
+        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        {
+            array_push( $VanillaGroups, $Group );
+        }
+        
+        $Groups->closeCursor(); 
+    }
 ?>
 <?php include("layout/header.html"); ?>
 
@@ -107,6 +126,7 @@
     <div id="button_vbulletin" class="tab_inactive" onclick="showConfig('vbulletin')"><input type="checkbox" id="allow_vb3"<?php echo (defined("VB3_BINDING") && VB3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("VBulletinBinding"); ?></div>
     <div id="button_mybb" class="tab_inactive" onclick="showConfig('mybb')"><input type="checkbox" id="allow_mybb"<?php echo (defined("MYBB_BINDING") && MYBB_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("MyBBBinding"); ?></div>
     <div id="button_smf" class="tab_inactive" onclick="showConfig('smf')"><input type="checkbox" id="allow_smf"<?php echo (defined("SMF_BINDING") && SMF_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("SMFBinding"); ?></div>
+    <div id="button_vanilla" class="tab_inactive" onclick="showConfig('vanilla')"><input type="checkbox" id="allow_vanilla"<?php echo (defined("VANILLA_BINDING") && VANILLA_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("VanillaBinding"); ?></div>
     </div>
 </div>
 
@@ -320,6 +340,57 @@
                 foreach( $SMFGroups as $Group )
                 {
                     echo "<option value=\"".$Group["id_group"]."\"".((in_array($Group["id_group"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["group_name"]."</option>";
+                }
+            }
+        ?>
+        </select>
+    </div>                    
+</div>
+
+<div id="vanilla" style="display: none">
+    <div>
+        <h2><?php echo L("VanillaBinding"); ?></h2>
+        <input type="text" id="vanilla_database" value="<?php echo (defined("VANILLA_DATABASE")) ? VANILLA_DATABASE : "vanilla" ?>"/> <?php echo L("VanillaDatabase"); ?><br/>
+        <input type="text" id="vanilla_user" value="<?php echo (defined("VANILLA_TABLE")) ? VANILLA_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="password" id="vanilla_password"/> <?php echo L("UserPassword"); ?><br/>
+        <input type="password" id="vanilla_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
+        <input type="text" id="vanilla_prefix" value="<?php echo (defined("VANILLA_TABLE_PREFIX")) ? VANILLA_TABLE_PREFIX : "GDN_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
+    </div>
+    
+    <div style="margin-top: 1em">
+        <button onclick="ReloadVanillaGroups()"><?php echo L("LoadGroups"); ?></button><br/><br/>
+        
+        <?php echo L("AutoMemberLogin"); ?><br/>
+        <select id="vanilla_member" multiple="multiple" style="width: 400px; height: 5.5em">
+        <?php
+            if ( defined("VANILLA_BINDING") && VANILLA_BINDING )
+            {
+                $GroupIds = array();
+                
+                if ( defined("VANILLA_MEMBER_GROUPS") )
+                    $GroupIds = explode( ",", VANILLA_MEMBER_GROUPS );
+                
+                foreach( $VanillaGroups as $Group )
+                {
+                    echo "<option value=\"".$Group["RoleID"]."\"".((in_array($Group["RoleID"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["Name"]."</option>";
+                }
+            }
+        ?>
+        </select>
+        <br/><br/>
+        <?php echo L("AutoLeadLogin"); ?><br/>
+        <select id="vanilla_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
+        <?php
+            if ( defined("VANILLA_BINDING") && VANILLA_BINDING )
+            {
+                $GroupIds = array();
+                
+                if ( defined("VANILLA_RAIDLEAD_GROUPS") )
+                    $GroupIds = explode( ",", VANILLA_RAIDLEAD_GROUPS );
+                
+                foreach( $VanillaGroups as $Group )
+                {
+                    echo "<option value=\"".$Group["RoleID"]."\"".((in_array($Group["RoleID"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["Name"]."</option>";
                 }
             }
         ?>

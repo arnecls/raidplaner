@@ -267,30 +267,35 @@
         $g_Locale[ "StrayUsers" ]               = "Deleted users";
         $g_Locale[ "UseClearText" ]             = "Submit cleartext password (not recommended)";
         
-        $g_Locale[ "PHPBB3Binding" ]            = "PHPBB3 binding";
+        $g_Locale[ "PHPBB3Binding" ]            = "PHPBB3";
         $g_Locale[ "PHPBB3ConfigFile" ]         = "PHPBB3 config file";
         $g_Locale[ "PHPBB3Database" ]           = "PHPBB3 database";
         $g_Locale[ "PHPBBPasswordEmpty" ]       = "PHPBB Database password must not be empty.";
         $g_Locale[ "PHPBBDBPasswordsMatch" ]    = "PHPBB Database passwords did not match.";
-        $g_Locale[ "EQDKPBinding" ]             = "EQDKP binding";
+        $g_Locale[ "EQDKPBinding" ]             = "EQDKP";
         $g_Locale[ "EQDKPConfigFile" ]          = "EQDKP config file";
         $g_Locale[ "EQDKPDatabase" ]            = "EQDKP database";
         $g_Locale[ "EQDKPPasswordEmpty" ]       = "EQDKP Database password must not be empty.";
         $g_Locale[ "EQDKPDBPasswordsMatch" ]    = "EQDKP Database passwords did not match.";
-        $g_Locale[ "VBulletinBinding" ]         = "vBulletin3 binding";
+        $g_Locale[ "VBulletinBinding" ]         = "vBulletin3";
         $g_Locale[ "VBulletinConfigFile" ]      = "vBulletin config file";
         $g_Locale[ "VBulletinDatabase" ]        = "vBulletin database";
         $g_Locale[ "VBulletinPasswordEmpty" ]   = "vBulletin Database password must not be empty.";
         $g_Locale[ "VBulletinDBPasswordsMatch" ]= "vBulletin Database passwords did not match.";
-        $g_Locale[ "MyBBBinding" ]              = "MyBB binding";
+        $g_Locale[ "MyBBBinding" ]              = "MyBB";
         $g_Locale[ "MyBBConfigFile" ]           = "MyBB config file";
         $g_Locale[ "MyBBDatabase" ]             = "MyBB database";
         $g_Locale[ "MyBBPasswordEmpty" ]        = "MyBB Database password must not be empty.";
         $g_Locale[ "MyBBDBPasswordsMatch" ]     = "MyBB Database passwords did not match.";
-        $g_Locale[ "SMFBinding" ]               = "SMF binding";
+        $g_Locale[ "SMFBinding" ]               = "SMF";
         $g_Locale[ "SMFConfigFile" ]            = "SMF config file";
         $g_Locale[ "SMFDatabase" ]              = "SMF database";
         $g_Locale[ "SMFPasswordEmpty" ]         = "SMF Database password must not be empty.";
         $g_Locale[ "SMFDBPasswordsMatch" ]      = "SMF Database passwords did not match.";
+        $g_Locale[ "VanillaBinding" ]           = "Vanilla";
+        $g_Locale[ "VanillaConfigFile" ]        = "Vanilla config file";
+        $g_Locale[ "VanillaDatabase" ]          = "Vanilla database";
+        $g_Locale[ "VanillaPasswordEmpty" ]     = "Vanilla Database password must not be empty.";
+        $g_Locale[ "VanillaDBPasswordsMatch" ]  = "Vanilla Database passwords did not match.";
     }
 ?>

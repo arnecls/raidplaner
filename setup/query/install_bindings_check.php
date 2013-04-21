@@ -38,5 +38,11 @@
         $TestConnectionSMF = new Connector( SQL_HOST, $_REQUEST["smf_database"], $_REQUEST["smf_user"], $_REQUEST["smf_password"] );
     }
     
+    if ( $_REQUEST["vanilla_check"] == "true" )
+    {
+        echo "<name>Vanilla</name>";
+        $TestConnectionVanilla = new Connector( SQL_HOST, $_REQUEST["vanilla_database"], $_REQUEST["vanilla_user"], $_REQUEST["vanilla_password"] );
+    }
+    
     echo "</test>";
 ?>
