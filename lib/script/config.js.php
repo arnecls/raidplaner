@@ -121,50 +121,6 @@ function onChangeConfig()
         $("body").css("background", "none" );
     else
         $("body").css("background", g_Theme.bgcolor + " url(images/background/" + g_Theme.background + ") " + g_Theme.bgrepeat );
-
-    // Update raid time fields
-
-    if ( (g_User != null) &&
-         (g_User.isAdmin || g_User.isRaidlead) )
-    {
-        var HTMLString = "";
-
-        for ( i=4; i>=0; --i )
-            HTMLString += "<option value=\"" + i + "\">" + formatHourPrefixed(i) + "</option>";
-
-        for ( i=23; i>4; --i )
-            HTMLString += "<option value=\"" + i + "\">" + formatHourPrefixed(i) + "</option>";
-
-        var HourFieldWidth        = (g_TimeFormat == 24) ? 48 : 64;
-        var LocationFieldWidth    = (g_TimeFormat == 24) ? 181 : 213;
-        var DescriptionFieldWidth = (g_TimeFormat == 24) ? 302 : 334;
-        var SheetOverlayWidth     = (g_TimeFormat == 24) ? 550 : 580;
-
-        $("#starthour")
-            .css("width", HourFieldWidth)
-            .empty().append(HTMLString);
-
-        $("#endhour")
-            .css("width", HourFieldWidth)
-            .empty().append(HTMLString);
-
-        $("#selectlocation")
-            .css("width", LocationFieldWidth);
-
-        $("#descriptiondummy")
-            .css("width", DescriptionFieldWidth)
-            .css("max-width", DescriptionFieldWidth);
-
-        $("#description")
-            .css("width", DescriptionFieldWidth)
-            .css("max-width", DescriptionFieldWidth);
-            
-        $("#newRaid")
-            .css("width", SheetOverlayWidth);
-            
-        $("#submit_options")
-            .css("width", DescriptionFieldWidth+4);
-    }
 }
 
 // -----------------------------------------------------------------------------

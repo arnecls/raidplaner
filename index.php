@@ -4,7 +4,7 @@
     require_once("lib/private/tools_site.php");
     require_once("lib/private/gameconfig.php");
 		     
-    $siteVersion = 97.2;
+    $siteVersion = 98;
     
     if ( !isset($_REQUEST["nocheck"]) )
         include_once("oldbrowser.php");
@@ -189,71 +189,7 @@
             </tr>
         </table>
         
-        <?php } ?>        
-        <?php if ( ValidRaidlead() ) { ?>
-        
-        <div id="sheetNewRaid">
-            <div id="newRaid" style="width:580px">
-                <span style="display: inline-block; vertical-align: top; margin-right: 20px">
-                    <div id="raiddatepicker"></div>
-                </span>  
-                <span style="display: inline-block; vertical-align: top">
-                    <span style="display: inline-block; margin-right: 5px; float: left" class="imagepicker" id="locationimagepicker"><div class="imagelist" id="locationimagelist"></div></span>
-                    <span style="display: inline-block; vertical-align: top">
-                        <div style="margin-bottom: 10px">
-                            <select id="selectlocation" onchange="onLocationChange(this)">
-                                <option value="0"><?php echo L("NewDungeon"); ?></option>
-                            </select>
-                            <span style="display: inline-block; width: 3px;"></span>
-                            <select id="selectsize" style="width: 48px">
-                                <?php
-                                    while ( list($groupSize,$slots) = each($s_GroupSizes) )
-                                    {
-                                        echo "<option value=\"".$groupSize."\">".$groupSize."</option>";
-                                    }
-                                ?>
-                            </select>                    
-                        </div>
-                        <div>
-                            <select id="starthour">
-                            </select>
-                            <span style="display: inline-block; width: 4px; text-align:center; position: relative; top: -5px">:</span>
-                            <select id="startminute" style="width: 48px">
-                                <option value="0">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                            <span style="display: inline-block; width: 20px; text-align:center; position: relative; top: -5px"><?php echo L("to"); ?></span>
-                            <select id="endhour">
-                            </select>
-                            <span style="display: inline-block; width: 4px; text-align:center; position: relative; top: -5px">:</span>
-                            <select id="endminute" style="width: 48px">
-                                <option value="0">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                    </span>
-                    <div style="margin-top: 20px; clear: left">
-                        <textarea id="descriptiondummy" class="textdummy description"><?php echo L("Description"); ?></textarea>
-                        <textarea id="description" class="textinput description"></textarea>
-                    </div>
-                    <div style="margin-top: 10px" id="submit_options">
-                        <select id="selectmode" style="width: 180px">
-                            <option value="manual"><?php echo L("RaidModeManual"); ?></option>
-                            <option value="attend"><?php echo L("RaidModeAttend"); ?></option>
-                            <option value="all"><?php echo L("RaidModeAll"); ?></option>
-                        </select>
-                        <button id="newRaidSubmit" style="float:right"><?php echo L("CreateRaid"); ?></button>                 
-                    </div>
-                    
-                </span>
-            </div>            
-        </div>    
-        <?php } ?>
-        <?php if ( !RegisteredUser() ) { ?>
+        <?php } else { ?>
         <div class="preload"><?php include("lib/private/resources.php"); ?></div>
         <?php } ?>
         

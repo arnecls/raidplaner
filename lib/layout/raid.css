@@ -284,6 +284,12 @@
     overflow: visible;
 }
 
+#raiddetail .clip .separator {    
+    width: 100%;
+    height: 10px;
+    clear:left;
+}
+
 #raiddetail .nobreak {
     float: left;
     margin-bottom: 4px;
