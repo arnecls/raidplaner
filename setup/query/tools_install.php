@@ -70,7 +70,7 @@
               `UserId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `Group` enum('admin','raidlead','member','none') NOT NULL,
               `ExternalId` int(10) unsigned NOT NULL,
-              `ExternalBinding` enum('none', 'phpbb3', 'eqdkp', 'vb3', 'mybb', 'smf', 'vanilla') NOT NULL,
+              `ExternalBinding` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
               `BindingActive` enum('true','false') NOT NULL DEFAULT 'true',
               `Login` varchar(255) NOT NULL,
               `Password` char(128) NOT NULL,
