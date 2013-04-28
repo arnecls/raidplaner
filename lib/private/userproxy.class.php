@@ -63,6 +63,7 @@
         // --------------------------------------------------------------------------------------------
 
         public $UserId     = 0;
+        public $UserName   = "";
         public $UserGroup  = "none";
         public $Characters = array();
 
@@ -170,6 +171,7 @@
         {
             $this->UserGroup  = "none";
             $this->UserId     = 0;
+            $this->UserName   = "";
             $this->Characters = array();
             
             unset($_SESSION["User"]);
@@ -296,6 +298,7 @@
                     $LoginData = self::DecryptData($UserData["SessionKey"], $CookieData["InitVector"], $CookieData["Data"]);
                     $this->UserGroup = $UserData["Group"];
                     $this->UserId    = $CookieData["UserId"];
+                    $this->UserName  = $UserData["Login"];
                     
                     if ($LoginData !== false)
                     {
@@ -586,6 +589,7 @@
                     $_SESSION["User"] = $cookieData;
                     $this->UserGroup  = $UserData["Group"];
                     $this->UserId     = $UserData["UserId"];
+                    $this->UserName   = $UserData["Login"];
                     
                     $this->UpdateCharacters();
                     

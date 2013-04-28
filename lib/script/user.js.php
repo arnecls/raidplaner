@@ -94,7 +94,8 @@ var g_User = {
     role2           : new Array( <?php echoRole2(); ?> ),
     isRaidlead      : <?php echo ValidRaidlead() ? "true" : "false"; ?>,
     isAdmin         : <?php echo ValidAdmin() ? "true" : "false"; ?>,
-    id              : <?php echo $CurrentUser->UserId; ?>
+    id              : <?php echo $CurrentUser->UserId; ?>,
+    name            : "<?php echo $CurrentUser->UserName; ?>"
 };
 
 <?php

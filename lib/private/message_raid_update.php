@@ -1,5 +1,15 @@
 <?php
 
+define("PlayerFlagModified", 1);
+define("PlayerFlagNew",      1 << 1);
+define("PlayerFlagCharId",   1 << 2);
+define("PlayerFlagUserId",   1 << 3);
+define("PlayerFlagName",     1 << 4);
+define("PlayerFlagComment",  1 << 5);
+
+
+define("PlayerFlagJustName", PlayerFlagName | PlayerFlagModified);
+
 function msgRaidUpdate( $Request )
 {
     global $s_Roles;
@@ -130,9 +140,9 @@ function msgRaidUpdate( $Request )
             }
 
             // Now iterate over all role lists and update the players in it
-            // Random player will be re-inserted, "real" players will be update if they
-            // did not change to "unavailable" while editing the raid.
-
+            // Random player will be converted to "real" player, i.e. they loose their
+            // negative pseudo-id.
+            
             for ( $RoleIdx=0; $RoleIdx < sizeof($s_Roles); ++$RoleIdx )
             {
                 if ( isset($Request["role".($RoleIdx+1)]) )
@@ -146,50 +156,127 @@ function msgRaidUpdate( $Request )
                     for ( $AttendIdx=0; $AttendIdx < sizeof($AttendsForRole); $AttendIdx += 3 )
                     {
                         $UpdateSlot = null;
-                        $Id     = $AttendsForRole[$AttendIdx];
+                        
+                        // $Id = UserId when not having an attendance record
+                        // $Id = AttendanceId for all others
+                        $Id     = intVal($AttendsForRole[$AttendIdx]);
                         $Status = $AttendsForRole[$AttendIdx+1];
-                        $Name   = $AttendsForRole[$AttendIdx+2];
+                        $Flags  = intVal($AttendsForRole[$AttendIdx+2]);
                         
                         if ( $Status == "undecided" )
-                        {
-                            // $Id = UserId when undecided without comment
-                            // $Id = AttendanceId for all others
                             continue; // ### continue, skip undecided ###
-                        }
-
-                        if ( $Id < 0 )
+                        
+                        // Get extra parameters
+                        
+                        if ( ($Flags & PlayerFlagCharId) != 0 )
                         {
-                            // New random player, insert
-                            // Random players have one additional information set, so we need to
-                            // move $AttendIdx here.
+                            $CharId = intVal($AttendsForRole[$AttendIdx+3]);
+                            ++$AttendIdx;
+                        }
+                        
+                        if ( ($Flags & PlayerFlagUserId) != 0 )
+                        {
+                            $UserId = intVal($AttendsForRole[$AttendIdx+3]);
+                            ++$AttendIdx;
+                        }
+                        
+                        if ( ($Flags & PlayerFlagName) != 0 )
+                        {
+                            $Name = $AttendsForRole[$AttendIdx+3];
+                            ++$AttendIdx;
+                        }
+                                                
+                        if ( ($Flags & PlayerFlagComment) != 0 )
+                        {
+                            $Comment = $AttendsForRole[$AttendIdx+3];
+                            ++$AttendIdx;
+                        }
+                        
+                        if ( ($Flags & PlayerFlagNew) != 0 )
+                        {
+                            // New entries
                             
-                            $UpdateSlot = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
-                                                               "( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
-                                                               "VALUES ( 0, 0, :RaidId, :Status, :Role, :Name )" );
-
-                            $UpdateSlot->bindValue( ":Name", $Name, PDO::PARAM_STR);
-                        }
-                        else if ( $Name != null )
-                        {
-                            // Random player, update name, too
-
-                            $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                               "Status = :Status, Role = :Role, Comment = :Name ".
-                                                               "WHERE RaidId = :RaidId AND AttendanceId = :AttendanceId LIMIT 1" );
-
-                            $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
-                            $UpdateSlot->bindValue( ":Name",         $Name, PDO::PARAM_STR);
+                            if ( (($Flags & PlayerFlagComment) != 0) &&
+                                 (($Flags & PlayerFlagUserId) != 0) &&
+                                 (($Flags & PlayerFlagCharId) != 0) )
+                            {
+                                // Undecided set-up
+                                
+                                $UpdateSlot = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
+                                                                   "( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
+                                                                   "VALUES ( :CharId, :UserId, :RaidId, :Status, :Role, :Comment )" );
+    
+                                $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
+                                $UpdateSlot->bindValue( ":UserId", $UserId, PDO::PARAM_INT);
+                                $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
+                                
+                            }
+                            else if ( ($Flags & PlayerFlagName) != 0 )
+                            {
+                                // Random player. Set name.
+                                                            
+                                $UpdateSlot = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
+                                                                   "( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
+                                                                   "VALUES ( 0, 0, :RaidId, :Status, :Role, :Name )" );
+    
+                                $UpdateSlot->bindValue( ":Name", $Name, PDO::PARAM_STR);
+                            }                            
+                            else
+                            {
+                                echo "<error>Invalid user flags</error>";
+                            }                           
                         }
                         else
                         {
-                            // Existing player, update
+                            // Update existing entries
                             
-                            $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                               "Status = :Status, Role = :Role ".
-                                                               "WHERE RaidId = :RaidId AND Status != 'unavailable' AND AttendanceId = :AttendanceId LIMIT 1" );
-
-                            $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
+                            if ( (($Flags & PlayerFlagComment) != 0) &&
+                                 (($Flags & PlayerFlagCharId) != 0) )
+                            {
+                                // Used when setting up an absent player
+                                
+                                $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
+                                                                   "Status = :Status, CharacterId = :CharId, Comment = :Comment, Role = :Role ".
+                                                                   "WHERE RaidId = :RaidId AND AttendanceId = :AttendanceId LIMIT 1" );
+    
+                                $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
+                                $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
+                                $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
+                            }
+                            else if ( (($Flags & PlayerFlagComment) != 0) )
+                            {
+                                // Used when setting a player to absent
+                                
+                                $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
+                                                                   "Status = :Status, Comment = :Comment, Role = :Role ".
+                                                                   "WHERE RaidId = :RaidId AND AttendanceId = :AttendanceId LIMIT 1" );
+    
+                                $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
+                                $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
+                            }
+                            else if ( ($Flags & PlayerFlagName) != 0 )
+                            {
+                                // Used when changing the name of a random player
+                            
+                                $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
+                                                                   "Status = :Status, Role = :Role, Comment = :Name ".
+                                                                   "WHERE RaidId = :RaidId AND AttendanceId = :AttendanceId LIMIT 1" );
+    
+                                $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
+                                $UpdateSlot->bindValue( ":Name",         $Name, PDO::PARAM_STR);
+                            }
+                            else
+                            {
+                                // Existing player, update
+                                
+                                $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
+                                                                   "Status = :Status, Role = :Role ".
+                                                                   "WHERE RaidId = :RaidId AND Status != 'unavailable' AND AttendanceId = :AttendanceId LIMIT 1" );
+    
+                                $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
+                            }
                         }
+                        
 
                         $UpdateSlot->bindValue( ":Status", $Status, PDO::PARAM_STR);
                         $UpdateSlot->bindValue( ":RaidId", $Request["id"], PDO::PARAM_INT);

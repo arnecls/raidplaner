@@ -171,7 +171,12 @@
         $g_Locale[ "UnlinkUser" ]               = "Stop synchronisation and convert to local user.";
         $g_Locale[ "LinkUser" ]                 = "Synchronize user";
         $g_Locale[ "SyncFailed" ]               = "Failed to synchronize.</br>No fitting user found.";
-        $g_Locale[ "CharName" ]                 = "name";     
+        $g_Locale[ "CharName" ]                 = "name";
+        $g_Locale[ "MakeAbsent" ]               = "Player will be absent";
+        $g_Locale[ "AbsentMessage" ]            = "Please enter the reason why the player will be absent.<br/>The message will be prefixed with your login name.";
+        $g_Locale[ "MarkAsAbesent" ]            = "Mark as absent";
+        $g_Locale[ "SetupPlayer" ]              = "Attend player";
+        $g_Locale[ "SetupBy" ]                  = "Attended by ";
     }
     
     if ( defined("LOCALE_SETUP") )

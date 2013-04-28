@@ -156,6 +156,15 @@
     height: 32px;
 }
 
+.playerTooltipRoleIcon .mainbadge {
+    background-image: url(images/star.png);
+    width: 18px;
+    height: 16px;
+    position: relative;
+    left: 12px;
+    top: 14px;
+}
+
 .playerTooltipIconLarge {
     width: 64px;
     height: 64px;
@@ -266,8 +275,8 @@
 }
 
 #raiddetail .roleList h2 {
-    margin-top: 15px;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
     position: relative;
     font-size: 20px;
 }
@@ -409,6 +418,29 @@
     left: -5px;
     top: 0px;
     display: inline-block;
+}
+
+#absent_drop {
+    display: none;
+    position: absolute;
+    left: 682px;
+    top: 14px;
+    width: 256px;
+    height: 27px;
+    padding-top: 13px;
+    border: 1px dashed rgb(230,180,180);
+    background-color: rgba(255,180,180,0.07);
+    color: rgb(230,180,180);
+    font-size: 14px;
+    font-weight: bold; 
+    border-radius: 6px;
+    text-align: center;
+}
+
+.absent_hover {
+    border: 1px dashed rgb(230,0,0)!important;
+    background-color: rgba(255,0,0,0.07)!important;
+    color: rgb(230,0,0)!important;
 }
 
 #raiddetail .slackerspanel {

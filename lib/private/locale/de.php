@@ -172,6 +172,11 @@
         $g_Locale[ "LinkUser" ]                 = "Synchronisiere Nutzer";
         $g_Locale[ "SyncFailed" ]               = "Synchronisation fehlgeschlagen.</br>Es konnte kein passender Benutzer gefunden werden.";
         $g_Locale[ "CharName" ]                 = "Name";
+        $g_Locale[ "MakeAbsent" ]               = "Spieler wird nicht anwesend sein";
+        $g_Locale[ "AbsentMessage" ]            = "Bitte gebe den Grund f&uuml;r die Abwesenheit an.<br/>Der Nachricht wird dein Login-Name vorangestellt.";
+        $g_Locale[ "MarkAsAbesent" ]            = "Als abwesend melden";
+        $g_Locale[ "SetupPlayer" ]              = "Spieler anmelden";
+        $g_Locale[ "SetupBy" ]                  = "Aufgestellt durch ";
     }
     
     if ( defined("LOCALE_SETUP") )

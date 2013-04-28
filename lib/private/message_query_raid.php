@@ -96,6 +96,7 @@
                                         echo "<attendee>";
 
                                         echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
+                                        echo "<hasId>true</hasId>";
                                         echo "<charid>".$CharData["CharacterId"]."</charid>";
                                         echo "<name>".$CharData["Name"]."</name>";
                                         echo "<mainchar>".$CharData["Mainchar"]."</mainchar>";
@@ -105,20 +106,24 @@
                                         echo "<role2>".$CharData["Role2"]."</role2>";
                                         echo "<status>".$Data["Status"]."</status>";
                                         echo "<comment>".$Data["Comment"]."</comment>";
-                                        echo "<twinks>";
+                                        echo "<chars>";
+                                        
+                                        $TwinkData = $CharData;
 
-                                        while ( $TwinkData = $CharSt->fetch( PDO::FETCH_ASSOC ) )
+                                        do 
                                         {
                                             echo "<character>";
                                             echo "<id>".$TwinkData["CharacterId"]."</id>";
                                             echo "<name>".$TwinkData["Name"]."</name>";
+                                            echo "<mainchar>".$TwinkData["Mainchar"]."</mainchar>";
                                             echo "<class>".$TwinkData["Class"]."</class>";
                                             echo "<role1>".$TwinkData["Role1"]."</role1>";
                                             echo "<role2>".$TwinkData["Role2"]."</role2>";
                                             echo "</character>";
                                         }
+                                        while ( $TwinkData = $CharSt->fetch( PDO::FETCH_ASSOC ) );
 
-                                        echo "</twinks>";
+                                        echo "</chars>";
                                         echo "</attendee>";
                                     }
                                     // else {
@@ -138,6 +143,7 @@
                                 echo "<attendee>";
 
                                 echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
+                                echo "<hasId>true</hasId>";
                                 echo "<charid>0</charid>";
                                 echo "<name>".$Data["Comment"]."</name>";
                                 echo "<class>random</class>";
@@ -147,7 +153,7 @@
                                 echo "<role2>".$Data["Role"]."</role2>";
                                 echo "<status>".$Data["Status"]."</status>";
                                 echo "<comment></comment>";
-                                echo "<twinks></twinks>";
+                                echo "<chars></chars>";
 
                                 echo "</attendee>";
                             }
@@ -159,6 +165,7 @@
                             echo "<attendee>";
 
                             echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
+                            echo "<hasId>true</hasId>";
                             echo "<charid>".$Data["CharacterId"]."</charid>";
                             echo "<name>".$Data["Name"]."</name>";
                             echo "<class>".$Data["Class"]."</class>";
@@ -168,15 +175,14 @@
                             echo "<role2>".$Data["Role2"]."</role2>";
                             echo "<status>".$Data["Status"]."</status>";
                             echo "<comment>".$Data["Comment"]."</comment>";
-                            echo "<twinks>";
+                            echo "<chars>";
 
-                            /*$CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
+                            $CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
                                                             "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
-                                                            "WHERE UserId = :UserId AND CharacterId != :CharacterId ORDER BY Mainchar, CharacterId ASC" );
+                                                            "WHERE UserId = :UserId ORDER BY Mainchar, CharacterId ASC" );
 
                             $CharSt->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
-                            $CharSt->bindValue( ":CharacterId", $Data["CharacterId"], PDO::PARAM_INT );
-
+                            
                             if (!$CharSt->execute())
                             {
                                 postErrorMessage( $ErrorInfo );
@@ -188,14 +194,15 @@
                                     echo "<character>";
                                     echo "<id>".$TwinkData["CharacterId"]."</id>";
                                     echo "<name>".$TwinkData["Name"]."</name>";
+                                    echo "<mainchar>".$TwinkData["Mainchar"]."</mainchar>";
                                     echo "<class>".$TwinkData["Class"]."</class>";
                                     echo "<role1>".$TwinkData["Role1"]."</role1>";
                                     echo "<role2>".$TwinkData["Role2"]."</role2>";
                                     echo "</character>";
                                 }
-                            }*/
+                            }
 
-                            echo "</twinks>";
+                            echo "</chars>";
                             echo "</attendee>";
                         }
                     }
@@ -236,6 +243,8 @@
                             echo "<attendee>";
 
                             echo "<id>".$MaxAttendanceId."</id>";
+                            echo "<userId>".$UserData["UserId"]."</userId>";
+                            echo "<hasId>false</hasId>";
                             echo "<charid>".$UserData["CharacterId"]."</charid>";
                             echo "<name>".$UserData["Name"]."</name>";
                             echo "<class>".$UserData["Class"]."</class>";
@@ -245,20 +254,24 @@
                             echo "<role2>".$UserData["Role2"]."</role2>";
                             echo "<status>undecided</status>";
                             echo "<comment></comment>";
-                            echo "<twinks>";
+                            echo "<chars>";
 
-                            while ( $TwinkData = $CharSt->fetch(PDO::FETCH_ASSOC) )
+                            $TwinkData = $UserData;
+                            
+                            do 
                             {
                                 echo "<character>";
                                 echo "<id>".$TwinkData["CharacterId"]."</id>";
                                 echo "<name>".$TwinkData["Name"]."</name>";
+                                echo "<mainchar>".$TwinkData["Mainchar"]."</mainchar>";
                                 echo "<class>".$TwinkData["Class"]."</class>";
                                 echo "<role1>".$TwinkData["Role1"]."</role1>";
                                 echo "<role2>".$TwinkData["Role2"]."</role2>";
                                 echo "</character>";
                             }
+                            while ( $TwinkData = $CharSt->fetch(PDO::FETCH_ASSOC) );
 
-                            echo "</twinks>";
+                            echo "</chars>";
                             echo "</attendee>";
                         }
 
