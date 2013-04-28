@@ -24,8 +24,10 @@ function msgCommentUpdate( $Request )
             if ( $CheckSt->rowCount() > 0 )
             {
                 $UpdateSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` ".
-                                                "SET comment = :Comment ".
+                                                "SET comment = :Comment, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
                                                 "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
+                
+                $UpdateSt->bindValue(":Timestamp", time(), PDO::PARAM_INT);
             }
             else
             {

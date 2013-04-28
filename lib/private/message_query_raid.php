@@ -8,7 +8,8 @@
             $Connector = Connector::GetInstance();
 
             $ListRaidSt = $Connector->prepare("Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.Name AS LocationName, ".RP_TABLE_PREFIX."Location.Image AS LocationImage, ".
-                                              RP_TABLE_PREFIX."Attendance.AttendanceId, ".RP_TABLE_PREFIX."Attendance.UserId, ".RP_TABLE_PREFIX."Attendance.CharacterId, ".RP_TABLE_PREFIX."Attendance.Status, ".RP_TABLE_PREFIX."Attendance.Role, ".RP_TABLE_PREFIX."Attendance.Comment, ".
+                                              RP_TABLE_PREFIX."Attendance.AttendanceId, ".RP_TABLE_PREFIX."Attendance.UserId, ".RP_TABLE_PREFIX."Attendance.CharacterId, ".
+                                              RP_TABLE_PREFIX."Attendance.Status, ".RP_TABLE_PREFIX."Attendance.Role, ".RP_TABLE_PREFIX."Attendance.Comment, UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Attendance.LastUpdate) AS LastUpdate, ".
                                               RP_TABLE_PREFIX."Character.Name, ".RP_TABLE_PREFIX."Character.Class, ".RP_TABLE_PREFIX."Character.Mainchar, ".RP_TABLE_PREFIX."Character.Role1, ".RP_TABLE_PREFIX."Character.Role2, ".
                                               "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.Start) AS StartUTC, ".
                                               "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.End) AS EndUTC ".
@@ -97,7 +98,9 @@
 
                                         echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
                                         echo "<hasId>true</hasId>";
+                                        echo "<userId>".$Data["UserId"]."</userId>";
                                         echo "<charid>".$CharData["CharacterId"]."</charid>";
+                                        echo "<timestamp>".$Data["LastUpdate"]."</timestamp>";
                                         echo "<name>".$CharData["Name"]."</name>";
                                         echo "<mainchar>".$CharData["Mainchar"]."</mainchar>";
                                         echo "<class>".$CharData["Class"]."</class>";
@@ -136,15 +139,14 @@
                             else
                             {
                                 // CharacterId and UserId set to 0 means "random player"
-                                // The id field will be initialized with -100<id>.
-                                // Newly added random players will get an id of -1 and counting
-                                // this way we're quite safe
-
+                                
                                 echo "<attendee>";
 
                                 echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
                                 echo "<hasId>true</hasId>";
+                                echo "<userId>0</userId>";
                                 echo "<charid>0</charid>";
+                                echo "<timestamp>".$Data["LastUpdate"]."</timestamp>";
                                 echo "<name>".$Data["Comment"]."</name>";
                                 echo "<class>random</class>";
                                 echo "<mainchar>false</mainchar>";
@@ -166,7 +168,9 @@
 
                             echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
                             echo "<hasId>true</hasId>";
+                            echo "<userId>".$Data["UserId"]."</userId>";
                             echo "<charid>".$Data["CharacterId"]."</charid>";
+                            echo "<timestamp>".$Data["LastUpdate"]."</timestamp>";
                             echo "<name>".$Data["Name"]."</name>";
                             echo "<class>".$Data["Class"]."</class>";
                             echo "<mainchar>".$Data["Mainchar"]."</mainchar>";
@@ -243,9 +247,10 @@
                             echo "<attendee>";
 
                             echo "<id>".$MaxAttendanceId."</id>";
-                            echo "<userId>".$UserData["UserId"]."</userId>";
                             echo "<hasId>false</hasId>";
+                            echo "<userId>".$UserData["UserId"]."</userId>";
                             echo "<charid>".$UserData["CharacterId"]."</charid>";
+                            echo "<timestamp>".time()."</timestamp>";
                             echo "<name>".$UserData["Name"]."</name>";
                             echo "<class>".$UserData["Class"]."</class>";
                             echo "<mainchar>".$UserData["Mainchar"]."</mainchar>";

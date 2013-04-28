@@ -10,6 +10,7 @@
               `CharacterId` int(10) unsigned NOT NULL,
               `UserId` int(11) unsigned NOT NULL,
               `RaidId` int(10) unsigned NOT NULL,
+              `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
               `Status` enum('ok','available','unavailable','undecided') NOT NULL,
               `Role` tinyint(1) unsigned NOT NULL,
               `Comment` text NOT NULL,

@@ -91,13 +91,13 @@ function msgRaidAttend( $Request )
                         if ( $changeComment  )
                         {
                             $attendSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                            "CharacterId = :CharacterId, Status = :Status, Role = :Role, Comment = :Comment ".
+                                                            "CharacterId = :CharacterId, Status = :Status, Role = :Role, Comment = :Comment, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
                                                             "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
                         }
                         else
                         {
                             $attendSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                            "CharacterId = :CharacterId, Status = :Status, Role = :Role ".
+                                                            "CharacterId = :CharacterId, Status = :Status, Role = :Role, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
                                                             "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );                            
                         }
                     }
@@ -188,6 +188,7 @@ function msgRaidAttend( $Request )
                     $attendSt->bindValue(":UserId",      $userId,      PDO::PARAM_INT);
                     $attendSt->bindValue(":Status",      $status,      PDO::PARAM_STR);
                     $attendSt->bindValue(":Role",        $role,        PDO::PARAM_INT);
+                    $attendSt->bindValue(":Timestamp",   time(),       PDO::PARAM_INT);
 
                     if (!$attendSt->execute())
                     {

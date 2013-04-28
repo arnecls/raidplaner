@@ -422,25 +422,27 @@
 
 #absent_drop {
     display: none;
-    position: absolute;
-    left: 682px;
-    top: 14px;
-    width: 256px;
+    float: right;
     height: 27px;
-    padding-top: 13px;
-    border: 1px dashed rgb(230,180,180);
-    background-color: rgba(255,180,180,0.07);
-    color: rgb(230,180,180);
+    padding:13px 15px 0px 15px;
+    margin-right: 6px;
+    margin-top: 10px;
+    background-color: #FEE;
+    color: #FCC;
     font-size: 14px;
     font-weight: bold; 
-    border-radius: 6px;
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px; 
+    -khtml-border-radius: 4px; 
+    border-radius: 4px;
     text-align: center;
+    box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.1);
 }
 
 .absent_hover {
-    border: 1px dashed rgb(230,0,0)!important;
-    background-color: rgba(255,0,0,0.07)!important;
-    color: rgb(230,0,0)!important;
+    background-color: #FCC!important;
+    color: #F00!important;
+    box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.5)!important;
 }
 
 #raiddetail .slackerspanel {

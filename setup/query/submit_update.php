@@ -303,7 +303,8 @@
     {
         echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.7 ".L("UpdateTo")." 0.9.8";
         
-        $updates = Array( "New bindings" => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `ExternalBinding` `ExternalBinding` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;" );                          
+        $updates = Array( "New bindings"              => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `ExternalBinding` `ExternalBinding` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
+                          "Timestamp for attendances" => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD `LastUpdate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `RaidId`;" );                          
                           
         doUpgrade( $updates );
         
