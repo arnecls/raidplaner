@@ -303,5 +303,10 @@
         $g_Locale[ "VanillaDatabase" ]          = "Vanilla database";
         $g_Locale[ "VanillaPasswordEmpty" ]     = "Vanilla Database password must not be empty.";
         $g_Locale[ "VanillaDBPasswordsMatch" ]  = "Vanilla Database passwords did not match.";
+        $g_Locale[ "JoomlaBinding" ]            = "Joomla3";
+        $g_Locale[ "JoomlaConfigFile" ]         = "Joomla3 config file";
+        $g_Locale[ "JoomlaDatabase" ]           = "Joomla3 database";
+        $g_Locale[ "JoomlaPasswordEmpty" ]      = "Joomla3 Database password must not be empty.";
+        $g_Locale[ "JoomlaDBPasswordsMatch" ]   = "Joomla3 Database passwords did not match.";
     }
 ?>

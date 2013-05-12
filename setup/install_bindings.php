@@ -8,6 +8,7 @@
     @include_once(dirname(__FILE__)."/../lib/config/config.mybb.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.smf.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.vanilla.php");
+    @include_once(dirname(__FILE__)."/../lib/config/config.joomla3.php");
     
     if ( defined("PHPBB3_BINDING") && PHPBB3_BINDING )
     {
@@ -100,6 +101,24 @@
         
         $Groups->closeCursor(); 
     }
+    
+    if ( defined("JML3_BINDING") && JML3_BINDING )
+    {
+        require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
+    
+        $Connector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS); 
+        $Groups = $Connector->prepare( "SELECT id, title FROM `".JML3_TABLE_PREFIX."usergroups` ORDER BY title" );
+        
+        $Groups->execute();        
+        $JoomlaGroups = Array();
+        
+        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        {
+            array_push( $JoomlaGroups, $Group );
+        }
+        
+        $Groups->closeCursor(); 
+    }
 ?>
 <?php include("layout/header.html"); ?>
 
@@ -127,10 +146,11 @@
     <div id="button_mybb" class="tab_inactive" onclick="showConfig('mybb')"><input type="checkbox" id="allow_mybb"<?php echo (defined("MYBB_BINDING") && MYBB_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("MyBBBinding"); ?></div>
     <div id="button_smf" class="tab_inactive" onclick="showConfig('smf')"><input type="checkbox" id="allow_smf"<?php echo (defined("SMF_BINDING") && SMF_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("SMFBinding"); ?></div>
     <div id="button_vanilla" class="tab_inactive" onclick="showConfig('vanilla')"><input type="checkbox" id="allow_vanilla"<?php echo (defined("VANILLA_BINDING") && VANILLA_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("VanillaBinding"); ?></div>
+    <div id="button_joomla" class="tab_inactive" onclick="showConfig('joomla')"><input type="checkbox" id="allow_joomla"<?php echo (defined("JML3_BINDING") && JML3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("JoomlaBinding"); ?></div>
     </div>
 </div>
 
-<div id="phpbb3">
+<div id="phpbb3" class="config">
     <div>
         <h2><?php echo L("PHPBB3Binding"); ?></h2>
         <input type="text" id="phpbb3_database" value="<?php echo (defined("PHPBB3_DATABASE")) ? PHPBB3_DATABASE : "phpbb" ?>"/> <?php echo L("PHPBB3Database"); ?><br/>
@@ -181,7 +201,7 @@
     </div>                    
 </div>
 
-<div id="eqdkp" style="display: none">
+<div id="eqdkp" style="display: none" class="config">
     <div>
         <h2><?php echo L("EQDKPBinding"); ?></h2>
         <input type="text" id="eqdkp_database" value="<?php echo (defined("EQDKP_DATABASE")) ? EQDKP_DATABASE : "eqdkp" ?>"/> <?php echo L("EQDKPDatabase"); ?><br/>
@@ -194,7 +214,7 @@
     <br/><br/><button onclick="CheckEQDKP()"><?php echo L("VerifySettings"); ?></button>                
 </div>
 
-<div id="vbulletin" style="display: none">
+<div id="vbulletin" style="display: none" class="config">
     <div>
         <h2><?php echo L("VBulletinBinding"); ?></h2>
         <input type="text" id="vb3_database" value="<?php echo (defined("VB3_DATABASE")) ? VB3_DATABASE : "vbulletin" ?>"/> <?php echo L("VBulletinDatabase"); ?><br/>
@@ -245,7 +265,7 @@
     </div>                    
 </div>
 
-<div id="mybb" style="display: none">
+<div id="mybb" style="display: none" class="config">
     <div>
         <h2><?php echo L("MyBBBinding"); ?></h2>
         <input type="text" id="mybb_database" value="<?php echo (defined("MYBB_DATABASE")) ? MYBB_DATABASE : "mybb" ?>"/> <?php echo L("MyBBDatabase"); ?><br/>
@@ -296,7 +316,7 @@
     </div>                    
 </div>
 
-<div id="smf" style="display: none">
+<div id="smf" style="display: none" class="config">
     <div>
         <h2><?php echo L("SMFBinding"); ?></h2>
         <input type="text" id="smf_database" value="<?php echo (defined("SMF_DATABASE")) ? SMF_DATABASE : "smf" ?>"/> <?php echo L("SMFDatabase"); ?><br/>
@@ -347,7 +367,7 @@
     </div>                    
 </div>
 
-<div id="vanilla" style="display: none">
+<div id="vanilla" style="display: none" class="config">
     <div>
         <h2><?php echo L("VanillaBinding"); ?></h2>
         <input type="text" id="vanilla_database" value="<?php echo (defined("VANILLA_DATABASE")) ? VANILLA_DATABASE : "vanilla" ?>"/> <?php echo L("VanillaDatabase"); ?><br/>
@@ -391,6 +411,57 @@
                 foreach( $VanillaGroups as $Group )
                 {
                     echo "<option value=\"".$Group["RoleID"]."\"".((in_array($Group["RoleID"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["Name"]."</option>";
+                }
+            }
+        ?>
+        </select>
+    </div>                    
+</div>
+
+<div id="joomla" style="display: none" class="config">
+    <div>
+        <h2><?php echo L("JoomlaBinding"); ?></h2>
+        <input type="text" id="joomla_database" value="<?php echo (defined("JML3_DATABASE")) ? JML3_DATABASE : "joomla" ?>"/> <?php echo L("JoomlaDatabase"); ?><br/>
+        <input type="text" id="joomla_user" value="<?php echo (defined("JML3_TABLE")) ? JML3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="password" id="joomla_password"/> <?php echo L("UserPassword"); ?><br/>
+        <input type="password" id="joomla_password_check"/> <?php echo L("RepeatPassword"); ?><br/>
+        <input type="text" id="joomla_prefix" value="<?php echo (defined("JML3_TABLE_PREFIX")) ? JML3_TABLE_PREFIX : "JML_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
+    </div>
+    
+    <div style="margin-top: 1em">
+        <button onclick="ReloadJoomlaGroups()"><?php echo L("LoadGroups"); ?></button><br/><br/>
+        
+        <?php echo L("AutoMemberLogin"); ?><br/>
+        <select id="joomla_member" multiple="multiple" style="width: 400px; height: 5.5em">
+        <?php
+            if ( defined("JML3_BINDING") && JML3_BINDING )
+            {
+                $GroupIds = array();
+                
+                if ( defined("JML3_MEMBER_GROUPS") )
+                    $GroupIds = explode( ",", JML3_MEMBER_GROUPS );
+                
+                foreach( $JoomlaGroups as $Group )
+                {
+                    echo "<option value=\"".$Group["id"]."\"".((in_array($Group["id"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["title"]."</option>";
+                }
+            }
+        ?>
+        </select>
+        <br/><br/>
+        <?php echo L("AutoLeadLogin"); ?><br/>
+        <select id="joomla_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
+        <?php
+            if ( defined("JML3_BINDING") && JML3_BINDING )
+            {
+                $GroupIds = array();
+                
+                if ( defined("JML3_RAIDLEAD_GROUPS") )
+                    $GroupIds = explode( ",", JML3_RAIDLEAD_GROUPS );
+                
+                foreach( $JoomlaGroups as $Group )
+                {
+                    echo "<option value=\"".$Group["id"]."\"".((in_array($Group["id"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["title"]."</option>";
                 }
             }
         ?>

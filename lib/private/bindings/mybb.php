@@ -1,6 +1,8 @@
 <?php
     @include_once dirname(__FILE__)."/../../config/config.mybb.php";
     
+    array_push(PluginRegistry::$Classes, "MYBBBinding");
+    
     class MYBBBinding
     {
         public static $HashMethod = "mybb_md5s";
@@ -8,13 +10,6 @@
         public $BindingName = "mybb";
         private $Connector = null;
     
-        // -------------------------------------------------------------------------
-        
-        public function __construct( $Name )
-        {
-            $this->BindingName = $Name;
-        }
-        
         // -------------------------------------------------------------------------
         
         public function IsActive()

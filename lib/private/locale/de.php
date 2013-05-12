@@ -302,6 +302,11 @@
         $g_Locale[ "VanillaConfigFile" ]        = "Vanilla Konfigurationsdatei";
         $g_Locale[ "VanillaDatabase" ]          = "Name der Vanilla Datenbank";
         $g_Locale[ "VanillaPasswordEmpty" ]     = "Vanilla Datenbank Passwort darf nicht leer sein.";
-        $g_Locale[ "VanillaDBPasswordsMatch" ]  = "Vanilla Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";
+        $g_Locale[ "VanillaDBPasswordsMatch" ]  = "Vanilla Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";       
+        $g_Locale[ "JoomlaBinding" ]            = "Joomla3";
+        $g_Locale[ "JoomlaConfigFile" ]         = "Joomla3 Konfigurationsdatei";
+        $g_Locale[ "JoomlaDatabase" ]           = "Name der Joomla3 Datenbank";
+        $g_Locale[ "JoomlaPasswordEmpty" ]      = "Joomla3 Datenbank Passwort darf nicht leer sein.";
+        $g_Locale[ "JoomlaDBPasswordsMatch" ]   = "Joomla3 Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";
     }
 ?>

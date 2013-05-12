@@ -159,6 +159,37 @@ function OnReloadVanilla( a_XMLData )
 
 // ----------------------------------------------------------------------------
 
+function OnReloadJoomla( a_XMLData )
+{
+    var groups = $(a_XMLData).children("grouplist");
+    
+    if ( groups.children("error").size() > 0 )
+    {
+        var errorString = "";
+        
+        groups.children("error").each( function() {
+            errorString += $(this).text() + "\n";
+        });
+        
+        alert("<?php echo L("ReloadFailed"); ?>:\n\n" + errorString );
+        return;
+    }
+    
+    HTMLString = "";
+    
+    groups.children("group").each( function() {
+        var id = $(this).children("id").text();
+        var name = $(this).children("name").text();
+        
+        HTMLString += "<option value=\"" + id + "\">" + name + "</option>";
+    });
+    
+    $("#joomla_member").empty().append( HTMLString );
+    $("#joomla_raidlead").empty().append( HTMLString );
+}
+
+// ----------------------------------------------------------------------------
+
 function OnCheckEQDKP( a_XMLData )
 {
     var groups = $(a_XMLData).children("grouplist");
@@ -345,6 +376,39 @@ function ReloadVanillaGroups()
 
 // ----------------------------------------------------------------------------
 
+function ReloadJoomlaGroups() 
+{
+    if ( $("#joomla_password").val().length == 0 )
+    {
+        alert("<?php echo L("JoomlaPasswordEmpty"); ?>");
+        return;
+    }
+    
+    if ( $("#joomla_password").val() != $("#joomla_password_check").val() )
+    {
+        alert("<?php echo L("JoomlaDBPasswordsMatch"); ?>");
+        return;
+    }
+    
+    var parameter = {
+        database : $("#joomla_database").val(),
+        user     : $("#joomla_user").val(),
+        password : $("#joomla_password").val(),
+        prefix   : $("#joomla_prefix").val()
+    };
+    
+    $.ajax({
+        type     : "POST",
+        url      : "query/groups_joomla.php",
+        dataType : "xml",
+        async    : true,
+        data     : parameter,
+        success  : OnReloadJoomla
+    });
+}
+
+// ----------------------------------------------------------------------------
+
 function CheckEQDKP()
 {
     if ( $("#eqdkp_password").val().length == 0 )
@@ -386,6 +450,7 @@ function CheckBindingForm(a_Parameter)
     var useMyBB = $("#allow_mybb:checked").val() == "on";
     var useSMF = $("#allow_smf:checked").val() == "on";
     var useVanilla = $("#allow_vanilla:checked").val() == "on";
+    var useJoomla = $("#allow_joomla:checked").val() == "on";
     
     if ( usePhpBB )
     {
@@ -470,9 +535,24 @@ function CheckBindingForm(a_Parameter)
             return;
         }
         
-        if ( $("#vanilla_password").val() != $("#smf_password_check").val() )
+        if ( $("#vanilla_password").val() != $("#vanilla_password_check").val() )
         {
             alert("<?php echo L("VanillaDBPasswordsMatch"); ?>");
+            return;
+        }
+    }
+    
+    if ( useJoomla )
+    {    
+        if ( $("#joomla_password").val().length == 0 )
+        {
+            alert("<?php echo L("JoomlaPasswordEmpty"); ?>");
+            return;
+        }
+        
+        if ( $("#joomla_password").val() != $("#joomla_password_check").val() )
+        {
+            alert("<?php echo L("JoomlaDBPasswordsMatch"); ?>");
             return;
         }
     }
@@ -512,7 +592,13 @@ function CheckBindingForm(a_Parameter)
         vanilla_database : $("#vanilla_database").val(),
         vanilla_user     : $("#vanilla_user").val(),
         vanilla_password : $("#vanilla_password").val(),
-        vanilla_prefix   : $("#vanilla_prefix").val()
+        vanilla_prefix   : $("#vanilla_prefix").val(),
+    
+        joomla_check    : useJoomla,
+        joomla_database : $("#joomla_database").val(),
+        joomla_user     : $("#joomla_user").val(),
+        joomla_password : $("#joomla_password").val(),
+        joomla_prefix   : $("#joomla_prefix").val()
     };
     
     $.ajax({
@@ -613,6 +699,20 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
         vanilla_raidLeadGroups.push( $(this).val() );
     });
     
+    // joomla
+    
+    var joomla_memberGroups = new Array();
+    
+    $("#joomla_member option:selected").each( function() {
+        joomla_memberGroups.push( $(this).val() );
+    });
+    
+    var joomla_raidLeadGroups = new Array();
+    
+    $("#joomla_raidlead option:selected").each( function() {
+        joomla_raidLeadGroups.push( $(this).val() );
+    });
+    
     var parameter = {
         phpbb3_allow    : $("#allow_phpbb3:checked").val() == "on",
         phpbb3_database : $("#phpbb3_database").val(),
@@ -658,7 +758,15 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
         vanilla_password : $("#vanilla_password").val(),
         vanilla_prefix   : $("#vanilla_prefix").val(),
         vanilla_member   : vanilla_memberGroups,
-        vanilla_raidlead : vanilla_raidLeadGroups
+        vanilla_raidlead : vanilla_raidLeadGroups,
+
+        joomla_allow    : $("#allow_joomla:checked").val() == "on",
+        joomla_database : $("#joomla_database").val(),
+        joomla_user     : $("#joomla_user").val(),
+        joomla_password : $("#joomla_password").val(),
+        joomla_prefix   : $("#joomla_prefix").val(),
+        joomla_member   : joomla_memberGroups,
+        joomla_raidlead : joomla_raidLeadGroups
     };
     
     $.ajax({
@@ -675,16 +783,9 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
 
 function showConfig( a_Name )
 {
-    $("#phpbb3").hide();
-    $("#eqdkp").hide();
-    $("#vbulletin").hide();
-    $("#mybb").hide();
-    $("#smf").hide();
-    $("#vanilla").hide();
-    
+    $(".config").hide();    
     $(".tab_active").removeClass("tab_active").addClass("tab_inactive");
     
-    $("#"+a_Name).show();
-    
+    $("#"+a_Name).show();    
     $("#button_"+a_Name).removeClass("tab_inactive").addClass("tab_active");
 }

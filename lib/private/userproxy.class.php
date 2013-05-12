@@ -1,14 +1,23 @@
 <?php
     require_once dirname(__FILE__)."/connector.class.php";
     require_once dirname(__FILE__)."/../config/config.php";
-    require_once dirname(__FILE__)."/bindings/native.php";
-
-    require_once dirname(__FILE__)."/bindings/phpbb3.php";
-    require_once dirname(__FILE__)."/bindings/eqdkp.php";
-    require_once dirname(__FILE__)."/bindings/vbulletin3.php";
-    require_once dirname(__FILE__)."/bindings/mybb.php";
-    require_once dirname(__FILE__)."/bindings/smf.php";
-    require_once dirname(__FILE__)."/bindings/vanilla.php";
+    
+    // Helper class for loaded plugins
+    class PluginRegistry
+    {
+        public static $Classes = array();
+    }
+    
+    // load files from the bindings folder
+    if ($folderHandle = opendir(dirname(__FILE__)."/bindings")) 
+    {
+        while (($pluginFile = readdir($folderHandle)) !== false) 
+        {
+            $fileParts = explode(".",$pluginFile);            
+            if (strtolower($fileParts[sizeof($fileParts)-1]) == "php")
+                require_once dirname(__FILE__)."/bindings/".$pluginFile;    
+        }
+    }
     
     // Helper class for external bindings, so we don't have to use string
     // based associative arrays.
@@ -50,14 +59,15 @@
         public static function InitBindings()
         {
             self::$Bindings = array(
-                "none"    => new NativeBinding("none"), // native has to be first
-                "eqdkp"   => new EQDKPBinding("eqdkp"),
-                "phpbb3"  => new PHPBB3Binding("phpbb3"),
-                "vb3"     => new VB3Binding("vb3"),
-                "smf"     => new SMFBinding("smf"),
-                "mybb"    => new MYBBBinding("mybb"),
-                "vanilla" => new VanillaBinding("vanilla")
+                "none" => new NativeBinding("none"), // native has to be first
             );
+            
+            foreach(PluginRegistry::$Classes as $PluginName)
+            {
+                $pluginDesc = new ReflectionClass($PluginName);
+                $plugin = $pluginDesc->newInstance();
+                self::$Bindings[$plugin->BindingName] = $plugin;
+            }
         }
 
         // --------------------------------------------------------------------------------------------

@@ -1,6 +1,8 @@
 <?php
     @include_once dirname(__FILE__)."/../../config/config.vb3.php";
     
+    array_push(PluginRegistry::$Classes, "VB3Binding");
+    
     class VB3Binding
     {
         public static $HashMethod = "vb3_md5s";
@@ -8,13 +10,6 @@
         public $BindingName = "vb3";
         private $Connector = null;
     
-        // -------------------------------------------------------------------------
-        
-        public function __construct( $Name )
-        {
-            $this->BindingName = $Name;
-        }
-        
         // -------------------------------------------------------------------------
         
         public function IsActive()

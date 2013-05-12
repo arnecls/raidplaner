@@ -1,6 +1,8 @@
 <?php
     @include_once dirname(__FILE__)."/../../config/config.eqdkp.php";
     
+    array_push(PluginRegistry::$Classes, "EQDKPBinding");
+    
     class EQDKPBinding
     {
         public static $HashMethod_sha512s = "eqdkp_sha512s";
@@ -13,13 +15,6 @@
         public $BindingName = "eqdkp";
         private $Connector = null;
     
-        // -------------------------------------------------------------------------
-        
-        public function __construct( $Name )
-        {
-            $this->BindingName = $Name;
-        }
-        
         // -------------------------------------------------------------------------
         
         public function IsActive()

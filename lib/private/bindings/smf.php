@@ -1,6 +1,8 @@
 <?php
     @include_once dirname(__FILE__)."/../../config/config.smf.php";
     
+    array_push(PluginRegistry::$Classes, "SMFBinding");
+    
     class SMFBinding
     {
         public static $HashMethod = "smf_sha1s";
@@ -8,13 +10,6 @@
         public $BindingName = "smf";
         private $Connector = null;
     
-        // -------------------------------------------------------------------------
-        
-        public function __construct( $Name )
-        {
-            $this->BindingName = $Name;
-        }
-        
         // -------------------------------------------------------------------------
         
         public function IsActive()
@@ -105,8 +100,10 @@
             if ($this->Connector == null)
                 $this->Connector = new Connector(SQL_HOST, SMF_DATABASE, SMF_USER, SMF_PASS);
             
-            $UserSt = $this->Connector->prepare("SELECT id_member, member_name, passwd, id_group, additional_groups ".
+            $UserSt = $this->Connector->prepare("SELECT id_member, member_name, passwd, id_group, additional_groups, ban_time, expire_time ".
                                                 "FROM `".SMF_TABLE_PREFIX."members` ".
+                                                "LEFT JOIN `".SMF_TABLE_PREFIX."ban_items` USING(id_member) ".
+                                                "LEFT JOIN `".SMF_TABLE_PREFIX."ban_groups` USING(id_ban_group) ".
                                                 "WHERE id_member = :UserId LIMIT 1");
                                           
             $UserSt->BindValue( ":UserId", $UserId, PDO::PARAM_INT );

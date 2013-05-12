@@ -12,6 +12,7 @@
     $mybb_config = fopen( "../../lib/config/config.mybb.php", "w+" );
     $smf_config = fopen( "../../lib/config/config.smf.php", "w+" );
     $vanilla_config = fopen( "../../lib/config/config.vanilla.php", "w+" );
+    $joomla_config = fopen( "../../lib/config/config.joomla3.php", "w+" );
     
     
     // phpbb3
@@ -124,6 +125,25 @@
     
     fwrite( $vanilla_config, "?>");    
     fclose( $vanilla_config );
+    
+    // Joomla
+    
+    fwrite( $joomla_config, "<?php\n");
+    fwrite( $joomla_config, "\tdefine(\"JML3_BINDING\", ".$_REQUEST["joomla_allow"].");\n");
+    
+    if ( $_REQUEST["smf_allow"] )
+    {
+        fwrite( $joomla_config, "\tdefine(\"JML3_DATABASE\", \"".$_REQUEST["joomla_database"]."\");\n");
+        fwrite( $joomla_config, "\tdefine(\"JML3_USER\", \"".$_REQUEST["joomla_user"]."\");\n");
+        fwrite( $joomla_config, "\tdefine(\"JML3_PASS\", \"".$_REQUEST["joomla_password"]."\");\n");
+        fwrite( $joomla_config, "\tdefine(\"JML3_TABLE_PREFIX\", \"".$_REQUEST["joomla_prefix"]."\");\n");
+    
+        fwrite( $joomla_config, "\tdefine(\"JML3_MEMBER_GROUPS\", \"".implode( ",", $_REQUEST["joomla_member"] )."\");\n");
+        fwrite( $joomla_config, "\tdefine(\"JML3_RAIDLEAD_GROUPS\", \"".implode( ",", $_REQUEST["joomla_raidlead"] )."\");\n");
+    }
+    
+    fwrite( $joomla_config, "?>");    
+    fclose( $joomla_config );
     
     echo "</bindings>";    
 ?>

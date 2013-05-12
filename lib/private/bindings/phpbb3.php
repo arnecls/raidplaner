@@ -1,6 +1,8 @@
 <?php
     @include_once dirname(__FILE__)."/../../config/config.phpbb3.php";
     
+    array_push(PluginRegistry::$Classes, "PHPBB3Binding");
+    
     class PHPBB3Binding
     {
         public static $HashMethod_md5r = "phpbb3_md5r";
@@ -10,13 +12,6 @@
         public $BindingName = "phpbb3";
         private $Connector = null;
     
-        // -------------------------------------------------------------------------
-        
-        public function __construct( $Name )
-        {
-            $this->BindingName = $Name;
-        }
-        
         // -------------------------------------------------------------------------
         
         public function IsActive()

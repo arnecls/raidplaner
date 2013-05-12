@@ -1,6 +1,8 @@
 <?php
     @include_once dirname(__FILE__)."/../../config/config.vanilla.php";
     
+    array_push(PluginRegistry::$Classes, "VanillaBinding");
+    
     class VanillaBinding
     {
         public static $HashMethod = "vanilla_md5r";
@@ -9,13 +11,6 @@
         public $BindingName = "vanilla";
         private $Connector = null;
     
-        // -------------------------------------------------------------------------
-        
-        public function __construct( $Name )
-        {
-            $this->BindingName = $Name;
-        }
-        
         // -------------------------------------------------------------------------
         
         public function IsActive()
