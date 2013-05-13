@@ -97,6 +97,11 @@
     width: 700px;
 }
 
+#settings .propStartOfWeek {
+    margin-bottom: 14px;
+    width: 700px;
+}
+
 #settings .propRaidStart {
     margin-bottom: 4px;
     width: 700px;

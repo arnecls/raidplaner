@@ -18,7 +18,7 @@ function msgQueryNewRaidData( $Request )
         {
             echo "<settings>";
 
-            $IntOfInterest = array( "RaidSize", "RaidStartHour", "RaidStartMinute", "RaidEndHour", "RaidEndMinute" );
+            $IntOfInterest = array( "RaidSize", "RaidStartHour", "RaidStartMinute", "RaidEndHour", "RaidEndMinute", "StartOfWeek" );
             $TextOfInterest = array( "RaidMode" );
 
             while ( $Data = $NewRaidSettings->fetch( PDO::FETCH_ASSOC ) )

@@ -18,7 +18,7 @@
         $g_Locale[ "December" ]                 = "Dezember";    
         $g_Locale[ "Monday" ]                   = "Montag";
         $g_Locale[ "Tuesday" ]                  = "Dienstag";
-        $g_Locale[ "Wedensday" ]                = "Mittwoch";
+        $g_Locale[ "Wednesday" ]                = "Mittwoch";
         $g_Locale[ "Thursday" ]                 = "Donnerstag";
         $g_Locale[ "Friday" ]                   = "Freitag";
         $g_Locale[ "Saturday" ]                 = "Samstag";
@@ -177,6 +177,7 @@
         $g_Locale[ "MarkAsAbesent" ]            = "Als abwesend melden";
         $g_Locale[ "SetupPlayer" ]              = "Spieler anmelden";
         $g_Locale[ "SetupBy" ]                  = "Aufgestellt durch ";
+        $g_Locale[ "StartOfWeek" ]              = "Die Woche beginnt am";
     }
     
     if ( defined("LOCALE_SETUP") )

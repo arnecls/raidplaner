@@ -105,13 +105,13 @@ function msgRaidAttend( $Request )
                     {
                         if ( $changeComment )
                         {
-                            $attendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
-                                                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, :Comment )" );
+                            $attendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment, LastUpdate ) ".
+                                                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, :Comment, FROM_UNIXTIME(:Timestamp) )" );
                         }
                         else
                         {
-                            $attendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment) ".
-                                                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, '' )" );
+                            $attendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment, LastUpdate) ".
+                                                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, '', FROM_UNIXTIME(:Timestamp) )" );
                         }
                     }
 
@@ -270,10 +270,10 @@ function msgRaidAttend( $Request )
 
         $RaidSt->closeCursor();
 
-        $showMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"]+1 : intval( substr( $RaidData["Start"], 5, 2 ) );
-        $showYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]    : intval( substr( $RaidData["Start"], 0, 4 ) );
+        $showMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : intval( substr( $RaidData["Start"], 5, 2 ) );
+        $showYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : intval( substr( $RaidData["Start"], 0, 4 ) );
 
-        msgRaidCalendar( prepareRaidListRequest( $showMonth, $showYear ) );
+        msgQueryCalendar( prepareCalRequest( $showMonth, $showYear ) );
     }
     else
     {

@@ -107,10 +107,10 @@ function msgRaidCreate( $Request )
 
             // reload calendar
 
-            $showMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"]+1 : $Request["month"];
-            $showYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]    : $Request["year"];
+            $showMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : $Request["month"];
+            $showYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : $Request["year"];
 
-            msgRaidCalendar( prepareRaidListRequest( $showMonth, $showYear ) );
+            msgQueryCalendar( prepareCalRequest( $showMonth, $showYear ) );
         }
     }
     else

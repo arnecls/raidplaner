@@ -7,7 +7,7 @@
     require_once(dirname(__FILE__)."/private/settings.class.php");
     require_once(dirname(__FILE__)."/private/gameconfig.php");
     
-    include_once("private/message_raid_calendar.php");
+    include_once("private/message_query_calendar.php");
     include_once("private/message_raid_list.php");
     include_once("private/message_raid_attend.php");
     include_once("private/message_raid_create.php");
@@ -55,10 +55,10 @@
             msgRaidCreate( $_REQUEST );
             break;
             
-        case "raid_calendar":
+        case "query_calendar":
             lockOldRaids( $Settings->Property["LockRaids"]["IntValue"] );
             purgeOldRaids( $Settings->Property["PurgeRaids"]["IntValue"] );
-            msgRaidCalendar( $_REQUEST );
+            msgQueryCalendar( $_REQUEST );
             break;
           
         case "raid_list":

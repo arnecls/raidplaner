@@ -136,6 +136,9 @@
         if ( !in_array("TimeFormat", $existingSettings) )
             $connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('TimeFormat', 24, '');" );
         
+        if ( !in_array("StartOfWeek", $existingSettings) )
+            $connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('StartOfWeek', 1, '');" );
+            
         if ( !in_array("Version", $existingSettings) )
             $connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 97, '');" );    
         

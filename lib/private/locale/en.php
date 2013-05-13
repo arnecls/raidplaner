@@ -18,7 +18,7 @@
         $g_Locale[ "December" ]                 = "December";    
         $g_Locale[ "Monday" ]                   = "Monday";
         $g_Locale[ "Tuesday" ]                  = "Tuesday";
-        $g_Locale[ "Wedensday" ]                = "Wednesday";
+        $g_Locale[ "Wednesday" ]                = "Wednesday";
         $g_Locale[ "Thursday" ]                 = "Thursday";
         $g_Locale[ "Friday" ]                   = "Friday";
         $g_Locale[ "Saturday" ]                 = "Saturday";
@@ -177,6 +177,7 @@
         $g_Locale[ "MarkAsAbesent" ]            = "Mark as absent";
         $g_Locale[ "SetupPlayer" ]              = "Attend player";
         $g_Locale[ "SetupBy" ]                  = "Attended by ";
+        $g_Locale[ "StartOfWeek" ]              = "Week starts on";
     }
     
     if ( defined("LOCALE_SETUP") )

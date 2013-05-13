@@ -15,12 +15,8 @@
 function loadDefaultCalendar()
 {
     <?php if ( isset( $_SESSION["Calendar"] ) ) { ?>
-
-    loadCalendar( <?php echo $_SESSION["Calendar"]["month"] ?>, <?php echo $_SESSION["Calendar"]["year"] ?>, 0 );
-
+    loadCalendar( <?php echo $_SESSION["Calendar"]["month"]-1 ?>, <?php echo $_SESSION["Calendar"]["year"] ?>, 0 );
     <?php } else { ?>
-
     loadCalendarForToday();
-
-    <?php } ?>
+    <?php } ?> 
 }

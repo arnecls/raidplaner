@@ -121,6 +121,7 @@ function msgSettingsUpdate( $Request )
         $queryString .= generateQueryStringInt( $currentValues, $bindValues, "PurgeRaids", $Request["purgeTime"] );
         $queryString .= generateQueryStringInt( $currentValues, $bindValues, "LockRaids", $Request["lockTime"] );
         $queryString .= generateQueryStringInt( $currentValues, $bindValues, "TimeFormat", $Request["timeFormat"] );
+        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "StartOfWeek", $Request["startOfWeek"] );
         $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidStartHour", $Request["raidStartHour"] );
         $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidStartMinute", $Request["raidStartMinute"] );
         $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidEndHour", $Request["raidEndHour"] );
