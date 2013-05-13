@@ -3,7 +3,7 @@
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
     require_once("lib/private/gameconfig.php");
-		     
+             
     $gSiteVersion = 98;
     
     if ( !isset($_REQUEST["nocheck"]) )

@@ -180,7 +180,7 @@
                                                                 "ALTER TABLE `".RP_TABLE_PREFIX."User` ADD `BindingActive` ENUM('true', 'false') NOT NULL DEFAULT 'true' AFTER `ExternalBinding`;");
         
         doUpgrade( $Updates );
-		$Connector = Connector::getInstance();
+        $Connector = Connector::getInstance();
         
         // vBulletin user hash change
         

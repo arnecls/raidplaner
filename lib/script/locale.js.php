@@ -5,7 +5,7 @@
     require_once(dirname(__FILE__)."/../private/locale.php");
 ?>
 
-var g_Locale = new Array();
+var g_Locale = [];
 
 <?php
     while ( list( $Key, $Value) = each($gLocale) )

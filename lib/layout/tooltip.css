@@ -1,7 +1,7 @@
 .tooltip {
-	width: auto;
-	height: auto;
-	display: inline-block;
+    width: auto;
+    height: auto;
+    display: inline-block;
 }
 
 .tooltip .textstatusok {
@@ -69,8 +69,8 @@
 .tooltip .description {
     margin-top: 10px;
     margin-bottom: 15px;
-	display: block;
-	width: 200px;
+    display: block;
+    width: 200px;
 }
 
 .tooltip .functions {
@@ -99,7 +99,7 @@
     position: absolute;
     display: block;
     table-layout: auto;
-	z-index: 1;
+    z-index: 1;
 }
 
 /***************************************************

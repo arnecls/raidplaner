@@ -674,13 +674,13 @@
                 $UserSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."User` ".
                                               "(`Group`, ExternalId, ExternalBinding, BindingActive, Login, Password, Salt, Created, OneTimeKey, SessionKey) ".
                                               "VALUES (:Group, :ExternalUserId, :Binding, :Active, :Login, :Password, :Salt, FROM_UNIXTIME(:Created), '', '')");
-											  
-				$Active = ($aBindingName != "none") ? "true" : "false";
+                                              
+                $Active = ($aBindingName != "none") ? "true" : "false";
 
                 $UserSt->bindValue(":Group",          $aGroup,               PDO::PARAM_STR);
                 $UserSt->bindValue(":ExternalUserId", $aExternalUserId,      PDO::PARAM_INT);
                 $UserSt->bindValue(":Binding",        $aBindingName,         PDO::PARAM_STR);
-                $UserSt->bindValue(":Active",         $Active, 				PDO::PARAM_STR);
+                $UserSt->bindValue(":Active",         $Active,                 PDO::PARAM_STR);
                 $UserSt->bindValue(":Login",          strtolower($aLogin),   PDO::PARAM_STR);
                 $UserSt->bindValue(":Password",       $aHashedPassword,      PDO::PARAM_STR);
                 $UserSt->bindValue(":Salt",           $aSalt,                PDO::PARAM_STR);

@@ -154,7 +154,7 @@
                 return $Parts[1];
             }
             
-    		return "";
+            return "";
         }
         
         // -------------------------------------------------------------------------
@@ -175,7 +175,7 @@
             if ($Length == 128) 
                 return self::$HashMethod_sha512s;
     
-    		return self::$HashMethod_md5;
+            return self::$HashMethod_md5;
         }
         
         // -------------------------------------------------------------------------

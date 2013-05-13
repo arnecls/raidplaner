@@ -631,13 +631,13 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
     
     // phpbb
     
-    var phpbb3_memberGroups = new Array();
+    var phpbb3_memberGroups = [];
     
     $("#phpbb3_member option:selected").each( function() {
         phpbb3_memberGroups.push( $(this).val() );
     });
     
-    var phpbb3_raidLeadGroups = new Array();
+    var phpbb3_raidLeadGroups = [];
     
     $("#phpbb3_raidlead option:selected").each( function() {
         phpbb3_raidLeadGroups.push( $(this).val() );
@@ -645,13 +645,13 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
     
     // vbulletin
     
-    var vb3_memberGroups = new Array();
+    var vb3_memberGroups = [];
     
     $("#vb3_member option:selected").each( function() {
         vb3_memberGroups.push( $(this).val() );
     });
     
-    var vb3_raidLeadGroups = new Array();
+    var vb3_raidLeadGroups = [];
     
     $("#vb3_raidlead option:selected").each( function() {
         vb3_raidLeadGroups.push( $(this).val() );
@@ -659,13 +659,13 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
     
     // mybb
     
-    var mybb_memberGroups = new Array();
+    var mybb_memberGroups = [];
     
     $("#mybb_member option:selected").each( function() {
         mybb_memberGroups.push( $(this).val() );
     });
     
-    var mybb_raidLeadGroups = new Array();
+    var mybb_raidLeadGroups = [];
     
     $("#mybb_raidlead option:selected").each( function() {
         mybb_raidLeadGroups.push( $(this).val() );
@@ -673,13 +673,13 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
     
     // smf
     
-    var smf_memberGroups = new Array();
+    var smf_memberGroups = [];
     
     $("#smf_member option:selected").each( function() {
         smf_memberGroups.push( $(this).val() );
     });
     
-    var smf_raidLeadGroups = new Array();
+    var smf_raidLeadGroups = [];
     
     $("#smf_raidlead option:selected").each( function() {
         smf_raidLeadGroups.push( $(this).val() );
@@ -687,13 +687,13 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
     
     // vanilla
     
-    var vanilla_memberGroups = new Array();
+    var vanilla_memberGroups = [];
     
     $("#vanilla_member option:selected").each( function() {
         vanilla_memberGroups.push( $(this).val() );
     });
     
-    var vanilla_raidLeadGroups = new Array();
+    var vanilla_raidLeadGroups = [];
     
     $("#vanilla_raidlead option:selected").each( function() {
         vanilla_raidLeadGroups.push( $(this).val() );
@@ -701,13 +701,13 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
     
     // joomla
     
-    var joomla_memberGroups = new Array();
+    var joomla_memberGroups = [];
     
     $("#joomla_member option:selected").each( function() {
         joomla_memberGroups.push( $(this).val() );
     });
     
-    var joomla_raidLeadGroups = new Array();
+    var joomla_raidLeadGroups = [];
     
     $("#joomla_raidlead option:selected").each( function() {
         joomla_raidLeadGroups.push( $(this).val() );

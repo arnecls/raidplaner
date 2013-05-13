@@ -79,7 +79,7 @@ $gGroupSizes = Array(
 $ColSum = 0;
 foreach ( $gRoleColumnCount as $Cols )
 {
-	$ColSum += $Cols;
+    $ColSum += $Cols;
 }
 
 assert( $ColSum == 6 ); // 6 columns, no more, no less.

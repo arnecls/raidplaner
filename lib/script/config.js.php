@@ -97,7 +97,7 @@ function onChangeConfig()
 
     if ( g_Theme.banner.toLowerCase() != "disable"  )
     {
-        if ( g_BannerLink != "" )
+        if ( g_BannerLink !== "" )
             $("#menu").before("<a id=\"logo\" href=\"" + g_BannerLink + "\"></a>");
         else
             $("#menu").before("<div id=\"logo\"></div>");

@@ -177,24 +177,24 @@
         private static function encode64( $aInput, $aCount )
         {
             $Output = '';
-    		$i = 0;
-    		do {
-    			$Value = ord($aInput[$i++]);
-    			$Output .= $this->Itoa64[$Value & 0x3f];
-    			if ($i < $aCount)
-    				$Value |= ord($aInput[$i]) << 8;
-    			$Output .= $this->Itoa64[($Value >> 6) & 0x3f];
-    			if ($i++ >= $aCount)
-    				break;
-    			if ($i < $aCount)
-    				$Value |= ord($aInput[$i]) << 16;
-    			$Output .= $this->Itoa64[($Value >> 12) & 0x3f];
-    			if ($i++ >= $aCount)
-    				break;
-    			$Output .= $this->Itoa64[($Value >> 18) & 0x3f];
-    		} while ($i < $aCount);
+            $i = 0;
+            do {
+                $Value = ord($aInput[$i++]);
+                $Output .= $this->Itoa64[$Value & 0x3f];
+                if ($i < $aCount)
+                    $Value |= ord($aInput[$i]) << 8;
+                $Output .= $this->Itoa64[($Value >> 6) & 0x3f];
+                if ($i++ >= $aCount)
+                    break;
+                if ($i < $aCount)
+                    $Value |= ord($aInput[$i]) << 16;
+                $Output .= $this->Itoa64[($Value >> 12) & 0x3f];
+                if ($i++ >= $aCount)
+                    break;
+                $Output .= $this->Itoa64[($Value >> 18) & 0x3f];
+            } while ($i < $aCount);
     
-    		return $Output;
+            return $Output;
         }
     }
 ?>
