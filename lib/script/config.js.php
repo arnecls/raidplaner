@@ -20,14 +20,14 @@ var g_Theme = {
     portalmode : "<?php echo $gSite["PortalMode"]; ?>"
 };
 
-var g_RoleNames       = Array(<?php echo sizeof($gRoles); ?>);
-var g_RoleIds         = Array(<?php echo sizeof($gRoles); ?>);
-var g_RoleIdents      = Array(<?php echo sizeof($gRoles); ?>);
-var g_RoleImages      = Array(<?php echo sizeof($gRoles); ?>);
-var g_RoleColumnCount = Array(<?php echo sizeof($gRoles); ?>);
-var g_Classes         = Array(<?php echo sizeof($gClasses); ?>);
-var g_ClassIdx        = Array(<?php echo sizeof($gClasses); ?>);
-var g_GroupSizes      = Array(<?php
+var g_RoleNames       = new Array(<?php echo sizeof($gRoles); ?>);
+var g_RoleIds         = new Array(<?php echo sizeof($gRoles); ?>);
+var g_RoleIdents      = new Array(<?php echo sizeof($gRoles); ?>);
+var g_RoleImages      = new Array(<?php echo sizeof($gRoles); ?>);
+var g_RoleColumnCount = new Array(<?php echo sizeof($gRoles); ?>);
+var g_Classes         = new Array(<?php echo sizeof($gClasses); ?>);
+var g_ClassIdx        = new Array(<?php echo sizeof($gClasses); ?>);
+var g_GroupSizes      = new Array(<?php
     for ($i=0; list($Count,$RoleSizes) = each($gGroupSizes); ++$i)
     {
         if ($i>0) echo ",";
@@ -35,7 +35,7 @@ var g_GroupSizes      = Array(<?php
     }
     reset($gGroupSizes);
 ?>);
-var g_GroupRoleSizes  = Array(<?php echo sizeof($gGroupSizes); ?>);
+var g_GroupRoleSizes  = new Array(<?php echo sizeof($gGroupSizes); ?>);
 
 <?php
     for ( $i=0; list($RoleIdent,$RoleName) = each($gRoles); ++$i )
@@ -138,7 +138,7 @@ function formatTime(a_Hour, a_Minute)
             numericHour -= 12;
 
 
-        if ( numericHour == 0 )
+        if ( numericHour === 0 )
             return "12:" + a_Minute + postFix;
 
         return numericHour + ":" + a_Minute + postFix;
@@ -165,7 +165,7 @@ function formatHourPrefixed( a_Hour )
 {
     if ( g_TimeFormat == 12 )
     {
-        var numericHour = parseInt(a_Hour);
+        var numericHour = parseInt(a_Hour, 10);
         var preFix = "pm ";
 
         if ( numericHour < 12 )
@@ -174,7 +174,7 @@ function formatHourPrefixed( a_Hour )
             numericHour -= 12;
 
 
-        if ( numericHour == 0 )
+        if ( numericHour === 0 )
             return preFix + "12";
 
         return preFix + numericHour;

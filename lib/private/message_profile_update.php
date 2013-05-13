@@ -99,7 +99,7 @@ function msgProfileupdate( $aRequest )
 
                     array_push( $UpdatedCharacteIds, $CharId );
 
-                    $UpdateChar = $Connector->prepare(    "UPDATE `".RP_TABLE_PREFIX."Character` ".
+                    $UpdateChar = $Connector->prepare(  "UPDATE `".RP_TABLE_PREFIX."Character` ".
                                                         "SET Mainchar = :Mainchar, Role1 = :Role1, Role2 = :Role2 ".
                                                         "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
 
