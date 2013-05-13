@@ -2,24 +2,24 @@
 
     function dumpImages( $Folder )
     {
-        global $siteVersion;
-        $folderHandle = opendir( realpath( dirname(__FILE__)."/../../".$Folder ) );
+        global $gSiteVersion;
+        $FolderHandle = opendir( realpath( dirname(__FILE__)."/../../".$Folder ) );
 
-        while ( ($fileName = readdir( $folderHandle )) !== false )
+        while ( ($FileName = readdir( $FolderHandle )) !== false )
         {
-            $filePath = realpath( dirname(__FILE__)."/../../".$Folder."/".$fileName );
+            $FilePath = realpath( dirname(__FILE__)."/../../".$Folder."/".$FileName );
 
-            if ( !is_dir( $filePath ) )
+            if ( !is_dir( $FilePath ) )
             {
-                $extension = substr( $fileName, strrpos( $fileName, "." ) + 1 );
+                $Extension = substr( $FileName, strrpos( $FileName, "." ) + 1 );
 
-                switch ( strtolower($extension) )
+                switch ( strtolower($Extension) )
                 {
                 case "jpg":
                 case "jpeg":
                 case "png":
                 case "gif":
-                    echo "<img src=\"".$Folder."/".$fileName."\"/>";
+                    echo "<img src=\"".$Folder."/".$FileName."\"/>";
                     break;
 
                 default:

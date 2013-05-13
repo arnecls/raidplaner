@@ -1,24 +1,24 @@
 <?php
 
-function msgQueryProfile( $Request )
+function msgQueryProfile( $aRequest )
 {
-    global $s_Roles;
+    global $gRoles;
 
-    if ( ValidUser() )
+    if ( validUser() )
     {
-        $userId = UserProxy::GetInstance()->UserId;
+        $UserId = UserProxy::getInstance()->UserId;
 
-        if ( ValidAdmin() && isset( $Request["id"] ) )
+        if ( validAdmin() && isset( $aRequest["id"] ) )
         {
-            $userId = intval( $Request["id"] );
+            $UserId = intval( $aRequest["id"] );
         }
 
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
         // Admintool relevant data
 
         $Users = $Connector->prepare( "SELECT Login, Created, ExternalBinding, BindingActive FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
-        $Users->bindValue( ":UserId", $userId, PDO::PARAM_INT );
+        $Users->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
 
         if ( !$Users->execute() )
         {
@@ -28,7 +28,7 @@ function msgQueryProfile( $Request )
         {
             $Data = $Users->fetch( PDO::FETCH_ASSOC );
 
-            echo "<userid>".$userId."</userid>";
+            echo "<userid>".$UserId."</userid>";
             echo "<name>".$Data["Login"]."</name>";
             echo "<bindingActive>".(($Data["BindingActive"] == "true") ? "true" : "false")."</bindingActive>";
             echo "<binding>".$Data["ExternalBinding"]."</binding>";
@@ -40,9 +40,9 @@ function msgQueryProfile( $Request )
 
         // Load characters
         
-        if ( $userId == UserProxy::GetInstance()->UserId )
+        if ( $UserId == UserProxy::getInstance()->UserId )
         {
-            foreach ( UserProxy::GetInstance()->Characters as $Data )
+            foreach ( UserProxy::getInstance()->Characters as $Data )
             {
                 echo "<character>";
                 echo "<id>".$Data->CharacterId."</id>";
@@ -60,18 +60,18 @@ function msgQueryProfile( $Request )
                                                 "WHERE UserId = :UserId ".
                                                 "ORDER BY Mainchar, Name" );
 
-            $CharacterSt->bindValue(":UserId", $userId, PDO::PARAM_INT);
+            $CharacterSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
             $CharacterSt->execute();
             
-            while ( $row = $CharacterSt->fetch( PDO::FETCH_ASSOC ) )
+            while ( $Row = $CharacterSt->fetch( PDO::FETCH_ASSOC ) )
             {
                 echo "<character>";
-                echo "<id>".$row["CharacterId"]."</id>";
-                echo "<name>".$row["Name"]."</name>";
-                echo "<class>".$row["Class"]."</class>";
-                echo "<mainchar>".(($row["IsMainchar"]) ? "true" : "false")."</mainchar>";
-                echo "<role1>".$row["Role1"]."</role1>";
-                echo "<role2>".$row["Role2"]."</role2>";
+                echo "<id>".$Row["CharacterId"]."</id>";
+                echo "<name>".$Row["Name"]."</name>";
+                echo "<class>".$Row["Class"]."</class>";
+                echo "<mainchar>".(($Row["Mainchar"]) ? "true" : "false")."</mainchar>";
+                echo "<role1>".$Row["Role1"]."</role1>";
+                echo "<role2>".$Row["Role2"]."</role2>";
                 echo "</character>";
             }
             
@@ -105,7 +105,7 @@ function msgQueryProfile( $Request )
                                             "WHERE UserId = :UserId AND Start > :Registered AND Start < FROM_UNIXTIME(:Now) ".
                                             "GROUP BY `Status`, `Role` ORDER BY Status" );
 
-        $Attendance->bindValue( ":UserId", $userId, PDO::PARAM_INT );
+        $Attendance->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
         $Attendance->bindValue( ":Registered", $Created, PDO::PARAM_STR );
         $Attendance->bindValue( ":Now", time(), PDO::PARAM_INT );
 
@@ -122,7 +122,7 @@ function msgQueryProfile( $Request )
 
             // Initialize roles
 
-            $RoleKeys = array_keys($s_Roles);
+            $RoleKeys = array_keys($gRoles);
 
             foreach ( $RoleKeys as $RoleKey )
             {
@@ -138,11 +138,11 @@ function msgQueryProfile( $Request )
 
                 if ( $Data["Status"] == "ok" )
                 {
-                    $roleIdx = intval($Data["Role"]);
-                    if ( $roleIdx < sizeof($RoleKeys) )
+                    $RoleIdx = intval($Data["Role"]);
+                    if ( $RoleIdx < sizeof($RoleKeys) )
                     {
-                        $resolvedRole = $RoleKeys[ $roleIdx ];
-                        $AttendanceData[ $resolvedRole ] += $Data["Count"];
+                        $ResolvedRole = $RoleKeys[ $RoleIdx ];
+                        $AttendanceData[ $ResolvedRole ] += $Data["Count"];
                     }
                 }
             }

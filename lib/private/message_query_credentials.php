@@ -1,35 +1,36 @@
 <?php
 
-function msgQueryCredentials( $Request )
+function msgQueryCredentials( $aRequest )
 {
-    $credentials = UserProxy::GetInstance()->GetUserCredentials($Request["Login"]);
+    $Credentials = UserProxy::getInstance()->getUserCredentials($aRequest["Login"]);
 
-    if ($credentials == null )
+    if ($Credentials == null )
     {
         echo "<error>".L("NoSuchUser")."</error>";
     }
     else
     {    
-        echo "<salt>".$credentials["salt"]."</salt>";
-        echo "<pubkey>".$credentials["key"]."</pubkey>";
-        echo "<method>".$credentials["method"]."</method>";
+        echo "<salt>".$Credentials["salt"]."</salt>";
+        echo "<pubkey>".$Credentials["key"]."</pubkey>";
+        echo "<method>".$Credentials["method"]."</method>";
     }
 }
 
+// -----------------------------------------------------------------------------
 
-function msgQueryCredentialsById( $Request )
+function msgQueryCredentialsById( $aRequest )
 {
-    $credentials = UserProxy::GetInstance()->GetUserCredentialsById($Request["UserId"]);
+    $Credentials = UserProxy::getInstance()->getUserCredentialsById($aRequest["UserId"]);
 
-    if ($credentials == null )
+    if ($Credentials == null )
     {
         echo "<error>".L("NoSuchUser")."</error>";
     }
     else
     {    
-        echo "<salt>".$credentials["salt"]."</salt>";
-        echo "<pubkey>".$credentials["key"]."</pubkey>";
-        echo "<method>".$credentials["method"]."</method>";
+        echo "<salt>".$Credentials["salt"]."</salt>";
+        echo "<pubkey>".$Credentials["key"]."</pubkey>";
+        echo "<method>".$Credentials["method"]."</method>";
     }
 }
 

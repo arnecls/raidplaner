@@ -9,20 +9,20 @@
         public static $Itoa64     = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         
         public $BindingName = "vanilla";
-        private $Connector = null;
+        private $mConnector = null;
     
         // -------------------------------------------------------------------------
         
-        public function IsActive()
+        public function isActive()
         {
             return defined("VANILLA_BINDING") && MYBB_BINDING;
         }
         
         // -------------------------------------------------------------------------
         
-        private function GetGroup( $UserData )
+        private function getGroup( $aUserData )
         {
-            if ($UserData["Banned"] > 0)
+            if ($aUserData["Banned"] > 0)
             {
                 return "none"; // ### return, banned ###
             }
@@ -31,7 +31,7 @@
             $RaidleadGroups = explode(",", VANILLA_RAIDLEAD_GROUPS );
             $DefaultGroup   = "none";
             
-            foreach( $UserData["Roles"] as $RoleId )
+            foreach( $aUserData["Roles"] as $RoleId )
             {
                 if ( in_array($RoleId, $MemberGroups) )
                 {
@@ -49,61 +49,61 @@
         
         // -------------------------------------------------------------------------
         
-        private function GenerateInfo( $UserData )
+        private function generateInfo( $aUserData )
         {
-            $info = new UserInfo();
-            $info->UserId      = $UserData["UserID"];
-            $info->UserName    = $UserData["Name"];
-            $info->Password    = $UserData["Password"];
-            $info->Salt        = self::ExtractSaltPart($UserData["Password"]);
-            $info->Group       = $this->GetGroup($UserData);
-            $info->BindingName = $this->BindingName;
-            $info->PassBinding = $this->BindingName;
+            $Info = new UserInfo();
+            $Info->UserId      = $aUserData["UserID"];
+            $Info->UserName    = $aUserData["Name"];
+            $Info->Password    = $aUserData["Password"];
+            $Info->Salt        = self::extractSaltPart($aUserData["Password"]);
+            $Info->Group       = $this->getGroup($aUserData);
+            $Info->BindingName = $this->BindingName;
+            $Info->PassBinding = $this->BindingName;
         
-            return $info;
+            return $Info;
         }
         
         // -------------------------------------------------------------------------
         
-        private static function ExtractSaltPart( $Password )
+        private static function extractSaltPart( $aPassword )
         {            
-            $Count = strpos(self::$Itoa64, $Password[3]);
-            $Salt = substr($Password, 4, 8);
+            $Count = strpos(self::$Itoa64, $aPassword[3]);
+            $Salt = substr($aPassword, 4, 8);
             
             return $Count.":".$Salt;
         }
         
         // -------------------------------------------------------------------------
         
-        public function GetUserInfoByName( $UserName )
+        public function getUserInfoByName( $aUserName )
         {
-            if ($this->Connector == null)
-                $this->Connector = new Connector(SQL_HOST, VANILLA_DATABASE, VANILLA_USER, VANILLA_PASS);
+            if ($this->mConnector == null)
+                $this->mConnector = new Connector(SQL_HOST, VANILLA_DATABASE, VANILLA_USER, VANILLA_PASS);
                 
-            $UserSt = $this->Connector->prepare("SELECT UserID, `".VANILLA_TABLE_PREFIX."User`.Name, Password, Banned, `".VANILLA_TABLE_PREFIX."Role`.RoleID ".
+            $UserSt = $this->mConnector->prepare("SELECT UserID, `".VANILLA_TABLE_PREFIX."User`.Name, Password, Banned, `".VANILLA_TABLE_PREFIX."Role`.RoleID ".
                                                 "FROM `".VANILLA_TABLE_PREFIX."User` ".
                                                 "LEFT JOIN `".VANILLA_TABLE_PREFIX."UserRole` USING(UserID) ".
                                                 "LEFT JOIN `".VANILLA_TABLE_PREFIX."Role` USING(RoleID) ".
                                                 "WHERE `".VANILLA_TABLE_PREFIX."User`.Name = :Login");
             
-            $UserSt->BindValue( ":Login", strtolower($UserName), PDO::PARAM_STR );
+            $UserSt->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
             
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {
                 $UserData = null;                               
-                while ( $row = $UserSt->fetch(PDO::FETCH_ASSOC) )
+                while ( $Row = $UserSt->fetch(PDO::FETCH_ASSOC) )
                 {
                     if ($UserData == null)
                     {
-                        $UserData = $row;
+                        $UserData = $Row;
                         $UserData["Roles"] = array();
                     }
                     
-                    array_push($UserData["Roles"], $row["RoleID"]);
+                    array_push($UserData["Roles"], $Row["RoleID"]);
                 }
                 
                 $UserSt->closeCursor();                
-                return $this->GenerateInfo($UserData);
+                return $this->generateInfo($UserData);
             }
         
             $UserSt->closeCursor();
@@ -112,35 +112,35 @@
         
         // -------------------------------------------------------------------------
         
-        public function GetUserInfoById( $UserId )
+        public function getUserInfoById( $aUserId )
         {
-            if ($this->Connector == null)
-                $this->Connector = new Connector(SQL_HOST, VANILLA_DATABASE, VANILLA_USER, VANILLA_PASS);
+            if ($this->mConnector == null)
+                $this->mConnector = new Connector(SQL_HOST, VANILLA_DATABASE, VANILLA_USER, VANILLA_PASS);
                 
-            $UserSt = $this->Connector->prepare("SELECT UserID, `".VANILLA_TABLE_PREFIX."User`.Name, Password, Banned, `".VANILLA_TABLE_PREFIX."Role`.RoleID ".
+            $UserSt = $this->mConnector->prepare("SELECT UserID, `".VANILLA_TABLE_PREFIX."User`.Name, Password, Banned, `".VANILLA_TABLE_PREFIX."Role`.RoleID ".
                                                 "FROM `".VANILLA_TABLE_PREFIX."User` ".
                                                 "LEFT JOIN `".VANILLA_TABLE_PREFIX."UserRole` USING(UserID) ".
                                                 "LEFT JOIN `".VANILLA_TABLE_PREFIX."Role` USING(RoleID) ".
                                                 "WHERE `".VANILLA_TABLE_PREFIX."User`.UserID = :UserId");
         
-            $UserSt->BindValue( ":UserId", $UserId, PDO::PARAM_INT );
+            $UserSt->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
         
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {
                 $UserData = null;                               
-                while ( $row = $UserSt->fetch(PDO::FETCH_ASSOC) )
+                while ( $Row = $UserSt->fetch(PDO::FETCH_ASSOC) )
                 {
                     if ($UserData == null)
                     {
-                        $UserData = $row;
+                        $UserData = $Row;
                         $UserData["Roles"] = array();
                     }
                     
-                    array_push($UserData["Roles"], $row["RoleID"]);
+                    array_push($UserData["Roles"], $Row["RoleID"]);
                 }
                 
                 $UserSt->closeCursor();
-                return $this->GenerateInfo($UserData);
+                return $this->generateInfo($UserData);
             }
         
             $UserSt->closeCursor();
@@ -149,52 +149,52 @@
         
         // -------------------------------------------------------------------------
         
-        public function GetMethodFromPass( $Password )
+        public function getMethodFromPass( $aPassword )
         {
             return self::$HashMethod;
         }
         
         // -------------------------------------------------------------------------
         
-        public static function Hash( $Password, $Salt, $Method )
+        public static function hash( $aPassword, $aSalt, $aMethod )
         {
-            $Parts   = explode(":",$Salt);
+            $Parts   = explode(":",$aSalt);
             $CountB2 = intval($Parts[0],10);
             $Count   = 1 << $CountB2;
             $Salt    = $Parts[1];
             
-            $hash = md5($Salt.$Password, true);
+            $Hash = md5($Salt.$Password, true);
             
             do {
-                $hash = md5($hash.$Password, true);
+                $Hash = md5($Hash.$aPassword, true);
             } while (--$Count);
             
-            return '$P$'.self::$Itoa64[$CountB2].$Salt.self::Encode64($hash,16);
+            return '$P$'.self::$Itoa64[$CountB2].$Salt.self::encode64($Hash,16);
         }
         
         // -------------------------------------------------------------------------
         
-        private static function Encode64( $input, $count )
+        private static function encode64( $aInput, $aCount )
         {
-            $output = '';
+            $Output = '';
     		$i = 0;
     		do {
-    			$value = ord($input[$i++]);
-    			$output .= $this->Itoa64[$value & 0x3f];
-    			if ($i < $count)
-    				$value |= ord($input[$i]) << 8;
-    			$output .= $this->Itoa64[($value >> 6) & 0x3f];
-    			if ($i++ >= $count)
+    			$Value = ord($aInput[$i++]);
+    			$Output .= $this->Itoa64[$Value & 0x3f];
+    			if ($i < $aCount)
+    				$Value |= ord($aInput[$i]) << 8;
+    			$Output .= $this->Itoa64[($Value >> 6) & 0x3f];
+    			if ($i++ >= $aCount)
     				break;
-    			if ($i < $count)
-    				$value |= ord($input[$i]) << 16;
-    			$output .= $this->Itoa64[($value >> 12) & 0x3f];
-    			if ($i++ >= $count)
+    			if ($i < $aCount)
+    				$Value |= ord($aInput[$i]) << 16;
+    			$Output .= $this->Itoa64[($Value >> 12) & 0x3f];
+    			if ($i++ >= $aCount)
     				break;
-    			$output .= $this->Itoa64[($value >> 18) & 0x3f];
-    		} while ($i < $count);
+    			$Output .= $this->Itoa64[($Value >> 18) & 0x3f];
+    		} while ($i < $aCount);
     
-    		return $output;
+    		return $Output;
         }
     }
 ?>

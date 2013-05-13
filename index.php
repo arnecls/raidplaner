@@ -4,12 +4,12 @@
     require_once("lib/private/tools_site.php");
     require_once("lib/private/gameconfig.php");
 		     
-    $siteVersion = 98;
+    $gSiteVersion = 98;
     
     if ( !isset($_REQUEST["nocheck"]) )
         include_once("oldbrowser.php");
     
-    if ( !file_exists("lib/config/config.php") || !CheckVersion($siteVersion) )
+    if ( !file_exists("lib/config/config.php") || !checkVersion($gSiteVersion) )
     {
         include_once("runsetup.php");
         die();
@@ -18,7 +18,7 @@
     require_once("lib/private/userproxy.class.php");
     require_once("lib/private/tools_site.php");
     
-    UserProxy::GetInstance(); // Init user
+    UserProxy::getInstance(); // Init user
     loadSiteSettings();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -36,28 +36,28 @@
             if (defined("STYLE_DEBUG") && STYLE_DEBUG)
                 include_once("lib/layout/_layout.css.php");
             else
-                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/_layout.css.php?version=".$siteVersion."\"/>";
+                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/_layout.css.php?version=".$gSiteVersion."\"/>";
         ?>
         
         <!--[if IE 9]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSiteVersion; ?>"/>
         <![endif]-->
         
         <!--[if IE 8]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $siteVersion; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $gSiteVersion; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSiteVersion; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $gSiteVersion; ?>"/>
         <![endif]-->
         
         <!--[if IE 7]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $siteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $siteVersion; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $gSiteVersion; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSiteVersion; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $gSiteVersion; ?>"/>
         <![endif]-->
         
         
-        <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $siteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $siteVersion; ?>"></script>
+        <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $gSiteVersion; ?>"></script>
+        <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $gSiteVersion; ?>"></script>
         
         <?php
             define("SCRIPT_DEBUG", true);
@@ -65,13 +65,13 @@
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
                 include_once("lib/script/_scripts.js.php");
             else
-                echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$siteVersion.".&r=".((RegisteredUser()) ? 1 : 0)."\"></script>";
+                echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSiteVersion.".&r=".((registeredUser()) ? 1 : 0)."\"></script>";
         ?>
         
         <?php
             if ( isset($_REQUEST["user"]) && 
                  isset($_REQUEST["pass"]) && 
-                 !RegisteredUser() )
+                 !registeredUser() )
             {
                 echo "<script type=\"text/javascript\">g_AfterInit = function() { notify(L(\"WrongPassword\")); };</script>";
             }
@@ -79,24 +79,24 @@
         
     </head>
    
-    <body style="background: <?php echo $g_Site["BGColor"] ?> <?php echo ($g_Site["Background"] == "none") ? "none" : "url(images/background/".$g_Site["Background"].")" ?> <?php echo $g_Site["BGRepeat"] ?>">
-        <div id="appwindow"<?php if ($g_Site["PortalMode"]) echo " class=\"portalmode\""; ?>>
+    <body style="background: <?php echo $gSite["BGColor"] ?> <?php echo ($gSite["Background"] == "none") ? "none" : "url(images/background/".$gSite["Background"].")" ?> <?php echo $gSite["BGRepeat"] ?>">
+        <div id="appwindow"<?php if ($gSite["PortalMode"]) echo " class=\"portalmode\""; ?>>
             <?php
-                if (strtolower($g_Site["Banner"]) != "disable")
+                if (strtolower($gSite["Banner"]) != "disable")
                 {
-                    $bannerImage = (strtolower($g_Site["Banner"]) != "none") 
-                        ? "url(images/banner/".$g_Site["Banner"].")"
+                    $BannerImage = (strtolower($gSite["Banner"]) != "none") 
+                        ? "url(images/banner/".$gSite["Banner"].")"
                         : "none";
                         
-                    if ( $g_Site["BannerLink"] == "" )
-                        echo "<div id=\"logo\" style=\"background-image: ".$bannerImage."\"></div>";
+                    if ( $gSite["BannerLink"] == "" )
+                        echo "<div id=\"logo\" style=\"background-image: ".$BannerImage."\"></div>";
                     else
-                        echo "<a id=\"logo\" href=\"".$g_Site["BannerLink"]."\" style=\"background-image: ".$bannerImage.")\"></a>";
+                        echo "<a id=\"logo\" href=\"".$gSite["BannerLink"]."\" style=\"background-image: ".$BannerImage.")\"></a>";
                 }
             ?>
             
             <div id="menu">
-                <?php if ( RegisteredUser() ) { ?>
+                <?php if ( registeredUser() ) { ?>
                 
                 <span class="logout">
                     <form id="logout" method="post" action="index.php">
@@ -109,7 +109,7 @@
                 <span id="button_raid" class="menu_button"><?php echo L("Raid"); ?></span>
                 <span id="button_profile" class="menu_button"><?php echo L("Profile"); ?></span>
                 
-                    <?php if ( ValidAdmin() ) { ?>
+                    <?php if ( validAdmin() ) { ?>
                 <span id="button_settings_users" class="menu_button"><?php echo L("Settings"); ?></span>
                     <?php } ?>
                 
@@ -124,7 +124,7 @@
             </div>
             <div id="body">
                 <?php 
-                    if ( !ValidUser() && RegisteredUser() )
+                    if ( !validUser() && registeredUser() )
                     {
                         echo "<div id=\"lockMessage\">";
                         echo L("AccountIsLocked")."<br/>";
@@ -133,7 +133,7 @@
                     }
                 ?>
             </div>
-            <span id="version"><?php echo "version ".intVal($siteVersion / 100).".".intVal(($siteVersion % 100) / 10).".".intVal($siteVersion % 10); ?></span>
+            <span id="version"><?php echo "version ".intVal($gSiteVersion / 100).".".intVal(($gSiteVersion % 100) / 10).".".intVal($gSiteVersion % 10); ?></span>
         </div>
         
         <div id="eventblocker"></div>
@@ -145,7 +145,7 @@
             </div>
         </div>
         
-        <?php if ( RegisteredUser() ) { ?>
+        <?php if ( registeredUser() ) { ?>
         
         <table id="tooltip" cellspacing="0" border="0">
             <tr class="top">

@@ -31,15 +31,15 @@
     echo "<span class=\"check_field\">".L("DatabaseConnection")."</span>";
     try
     {
-        $Connector  = Connector::GetInstance(true);
-        $databaseOk = true;
+        $Connector  = Connector::getInstance(true);
+        $DatabaseOk = true;
     }
     catch (PDOException $Exception)
     {
-        $databaseOk = false;
+        $DatabaseOk = false;
     }
 
-    if ( $databaseOk )
+    if ( $DatabaseOk )
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span><br/>";
         echo "<span class=\"check_field\">".L("DetectedVersion")."</span>";
@@ -108,7 +108,7 @@
     }
     else
     {
-        ++$testsFailed;
+        ++$TestsFailed;
         echo "<span style=\"color: red\">".L("Database settings are not correct")."</span>";
     }
 ?>

@@ -26,14 +26,14 @@
     include_once("private/message_user_password.php");
     include_once("private/message_user_link.php");
     
-    $ValidUser = ValidUser();    
+    $ValidUser = validUser();    
     
     header("Content-type: text/xml");
     
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
     echo "<messagehub>";
     
-    $Settings = Settings::GetInstance();
+    $Settings = Settings::getInstance();
     
     if ( isset($_REQUEST["Action"]) )
     {   
@@ -72,7 +72,7 @@
             break;
             
         case "raid_update":
-            msgRaidUpdate( $_REQUEST );
+            msgRaidupdate( $_REQUEST );
             break;
             
         case "query_newraiddata":
@@ -92,11 +92,11 @@
             break;
             
         case "profile_update":
-            msgProfileUpdate( $_REQUEST );
+            msgProfileupdate( $_REQUEST );
             break;
             
         case "comment_update":
-            msgCommentUpdate( $_REQUEST );
+            msgCommentupdate( $_REQUEST );
             break;
             
         case "raid_delete":
@@ -104,7 +104,7 @@
             break;
             
         case "settings_update":
-            msgSettingsUpdate( $_REQUEST );
+            msgSettingsupdate( $_REQUEST );
             break;
             
         case "user_create":
@@ -116,7 +116,7 @@
             break;
             
         case "change_password":
-            msgChangePassword( $_REQUEST );
+            msgchangePassword( $_REQUEST );
             break;
             
         default:

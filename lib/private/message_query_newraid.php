@@ -1,10 +1,10 @@
 <?php
 
-function msgQueryNewRaidData( $Request )
+function msgQueryNewRaidData( $aRequest )
 {
-    if ( ValidRaidlead() )
+    if ( validRaidlead() )
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
         // Settings
 
@@ -41,7 +41,7 @@ function msgQueryNewRaidData( $Request )
 
         // Locations
 
-        msgQueryLocations($Request);
+        msgQueryLocations($aRequest);
     }
     else
     {

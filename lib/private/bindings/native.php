@@ -9,53 +9,53 @@
     
         // -------------------------------------------------------------------------
         
-        public function IsActive()
+        public function isActive()
         {
             return true;
         }
         
         // -------------------------------------------------------------------------
         
-        private function GenerateInfo( $UserData )
+        private function generateInfo( $aUserData )
         {
-            $info = new UserInfo();
-            $info->UserName    = $UserData["Login"];
-            $info->Password    = $UserData["Password"];
-            $info->Salt        = $UserData["Salt"];
-            $info->Group       = $UserData["Group"];
-            $info->PassBinding = $UserData["ExternalBinding"];
+            $Info = new UserInfo();
+            $Info->UserName    = $aUserData["Login"];
+            $Info->Password    = $aUserData["Password"];
+            $Info->Salt        = $aUserData["Salt"];
+            $Info->Group       = $aUserData["Group"];
+            $Info->PassBinding = $aUserData["ExternalBinding"];
             
-            if (($UserData["ExternalBinding"] != "none") && 
-                ($UserData["BindingActive"] == "true")) 
+            if (($aUserData["ExternalBinding"] != "none") && 
+                ($aUserData["BindingActive"] == "true")) 
             {
-                $info->UserId      = $UserData["ExternalId"];
-                $info->BindingName = $UserData["ExternalBinding"];
+                $Info->UserId      = $aUserData["ExternalId"];
+                $Info->BindingName = $aUserData["ExternalBinding"];
             }
             else
             {
-                $info->UserId      = $UserData["UserId"];
-                $info->BindingName = $this->BindingName;
+                $Info->UserId      = $aUserData["UserId"];
+                $Info->BindingName = $this->BindingName;
             }
             
-            return $info;
+            return $Info;
         }
         
         // -------------------------------------------------------------------------
         
-        public function GetUserInfoByName( $UserName )
+        public function getUserInfoByName( $aUserName )
         {
-            $Connector = Connector::GetInstance();
+            $Connector = Connector::getInstance();
             $UserSt = $Connector->prepare("SELECT * FROM ".RP_TABLE_PREFIX."User ".
                                           "WHERE Login = :Login LIMIT 1");
                                           
-            $UserSt->BindValue( ":Login", strtolower($UserName), PDO::PARAM_STR );
+            $UserSt->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
         
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {
                 $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
                 $UserSt->closeCursor();
                 
-                return $this->GenerateInfo($UserData);
+                return $this->generateInfo($UserData);
             }
         
             $UserSt->closeCursor();
@@ -64,20 +64,20 @@
         
         // -------------------------------------------------------------------------
         
-        public function GetUserInfoById( $UserId )
+        public function getUserInfoById( $aUserId )
         {
-            $Connector = Connector::GetInstance();
+            $Connector = Connector::getInstance();
             $UserSt = $Connector->prepare("SELECT * FROM ".RP_TABLE_PREFIX."User ".
                                           "WHERE UserId = :UserId LIMIT 1");
                                           
-            $UserSt->BindValue( ":UserId", $UserId, PDO::PARAM_INT );
+            $UserSt->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
         
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {
                 $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
                 $UserSt->closeCursor();
                 
-                return $this->GenerateInfo($UserData);
+                return $this->generateInfo($UserData);
             }
         
             $UserSt->closeCursor();
@@ -86,16 +86,16 @@
         
         // -------------------------------------------------------------------------
         
-        public function GetMethodFromPass( $Password )
+        public function getMethodFromPass( $aPassword )
         {
             return self::$HashMethod;
         }
         
         // -------------------------------------------------------------------------
         
-        public static function Hash( $Password, $Salt, $Method )
+        public static function hash( $aPassword, $aSalt, $aMethod )
         {
-            return hash("sha256", sha1($Password).$Salt);
+            return hash("sha256", sha1($aPassword).$aSalt);
         }
     }
 ?>

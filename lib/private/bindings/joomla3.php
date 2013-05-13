@@ -8,18 +8,18 @@
         public static $HashMethod = "jml_md5s";
         
         public $BindingName = "jml3";
-        private $Connector = null;
+        private $mConnector = null;
     
         // -------------------------------------------------------------------------
         
-        public function IsActive()
+        public function isActive()
         {
             return defined("JML3_BINDING") && JML3_BINDING;
         }
         
         // -------------------------------------------------------------------------
         
-        private function GetGroup( $UserData )
+        private function getGroup( $aUserData )
         {
             // TODO: Banning?
             
@@ -27,7 +27,7 @@
             $RaidleadGroups = explode(",", JML3_RAIDLEAD_GROUPS );
             $DefaultGroup   = "none";
             
-            foreach( $UserData["Groups"] as $Group )
+            foreach( $aUserData["Groups"] as $Group )
             {
                 if ( in_array($Group, $MemberGroups) )
                     $DefaultGroup = "member";
@@ -41,48 +41,48 @@
         
         // -------------------------------------------------------------------------
         
-        private function GenerateInfo( $UserData )
+        private function generateInfo( $aUserData )
         {
-            $parts = explode(":", $UserData["password"]);
-            $password = $parts[0];
-            $salt = $parts[1];
+            $Parts = explode(":", $aUserData["password"]);
+            $Password = $Parts[0];
+            $Salt = $Parts[1];
 
-            $info = new UserInfo();
-            $info->UserId      = $UserData["user_id"];
-            $info->UserName    = $UserData["username"];
-            $info->Password    = $password;
-            $info->Salt        = $salt;
-            $info->Group       = $this->GetGroup($UserData);
-            $info->BindingName = $this->BindingName;
-            $info->PassBinding = $this->BindingName;
+            $Info = new UserInfo();
+            $Info->UserId      = $aUserData["user_id"];
+            $Info->UserName    = $aUserData["username"];
+            $Info->Password    = $Password;
+            $Info->Salt        = $Salt;
+            $Info->Group       = $this->getGroup($aUserData);
+            $Info->BindingName = $this->BindingName;
+            $Info->PassBinding = $this->BindingName;
         
-            return $info;
+            return $Info;
         }
         
         // -------------------------------------------------------------------------
         
-        public function GetUserInfoByName( $UserName )
+        public function getUserInfoByName( $aUserName )
         {
-            if ($this->Connector == null)
-                $this->Connector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS);
+            if ($this->mConnector == null)
+                $this->mConnector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS);
             
-            $UserSt = $this->Connector->prepare("SELECT user_id, group_id, username, password, activation ".
+            $UserSt = $this->mConnector->prepare("SELECT user_id, group_id, username, password, activation ".
                                                 "FROM `".JML3_TABLE_PREFIX."users` ".
                                                 "LEFT JOIN `".JML3_TABLE_PREFIX."user_usergroup_map` ON id=user_id ".
                                                 "WHERE username = :Login");
                                           
-            $UserSt->BindValue( ":Login", $UserName, PDO::PARAM_STR );
+            $UserSt->BindValue( ":Login", $aUserName, PDO::PARAM_STR );
         
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {                
                 $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
                 $UserData["Groups"] = array($UserData["group_id"]);
                 
-                while ($row = $UserSt->fetch(PDO::FETCH_ASSOC))
-                    array_push($UserData["Groups"], $row["group_id"]);
+                while ($Row = $UserSt->fetch(PDO::FETCH_ASSOC))
+                    array_push($UserData["Groups"], $Row["group_id"]);
                 
                 $UserSt->closeCursor();
-                return $this->GenerateInfo($UserData);
+                return $this->generateInfo($UserData);
             }
         
             $UserSt->closeCursor();
@@ -91,28 +91,28 @@
         
         // -------------------------------------------------------------------------
         
-        public function GetUserInfoById( $UserId )
+        public function getUserInfoById( $aUserId )
         {
-            if ($this->Connector == null)
-                $this->Connector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS);
+            if ($this->mConnector == null)
+                $this->mConnector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS);
             
-            $UserSt = $this->Connector->prepare("SELECT user_id, group_id, username, password, activation ".
+            $UserSt = $this->mConnector->prepare("SELECT user_id, group_id, username, password, activation ".
                                                 "FROM `".JML3_TABLE_PREFIX."users` ".
                                                 "LEFT JOIN `".JML3_TABLE_PREFIX."user_usergroup_map` ON id=user_id ".
                                                 "WHERE id = :UserId");
                                           
-            $UserSt->BindValue( ":UserId", $UserId, PDO::PARAM_INT );
+            $UserSt->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
         
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {
                 $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
                 $UserData["Groups"] = array($UserData["group_id"]);
                 
-                while ($row = $UserSt->fetch(PDO::FETCH_ASSOC))
-                    array_push($UserData["Groups"], $row["group_id"]);
+                while ($Row = $UserSt->fetch(PDO::FETCH_ASSOC))
+                    array_push($UserData["Groups"], $Row["group_id"]);
                                
                 $UserSt->closeCursor();
-                return $this->GenerateInfo($UserData);
+                return $this->generateInfo($UserData);
             }
         
             $UserSt->closeCursor();
@@ -121,16 +121,16 @@
         
         // -------------------------------------------------------------------------
         
-        public function GetMethodFromPass( $Password )
+        public function getMethodFromPass( $aPassword )
         {
             return self::$HashMethod;
         }
         
         // -------------------------------------------------------------------------
         
-        public static function Hash( $Password, $Salt, $Method )
+        public static function hash( $aPassword, $aSalt, $aMethod )
         {
-            return md5($Password.$Salt);
+            return md5($aPassword.$aSalt);
         }
     }
 ?>

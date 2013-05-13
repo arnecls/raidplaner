@@ -8,24 +8,24 @@
         public static $HashMethod = "mybb_md5s";
         
         public $BindingName = "mybb";
-        private $Connector = null;
+        private $mConnector = null;
     
         // -------------------------------------------------------------------------
         
-        public function IsActive()
+        public function isActive()
         {
             return defined("MYBB_BINDING") && MYBB_BINDING;
         }
         
         // -------------------------------------------------------------------------
         
-        private function GetGroup( $UserData )
+        private function getGroup( $aUserData )
         {
-            if ($UserData["dateline"] > 0)
+            if ($aUserData["dateline"] > 0)
             {
-                $currentTime = time();
-                if ( ($UserData["dateline"] < $currentTime) &&
-                     (($UserData["lifted"] == 0) || ($UserData["lifted"] > $currentTime)) )
+                $CurrentTime = time();
+                if ( ($aUserData["dateline"] < $CurrentTime) &&
+                     (($aUserData["lifted"] == 0) || ($aUserData["lifted"] > $CurrentTime)) )
                 {
                     return "none"; // ### return, banned ###
                 }
@@ -35,8 +35,8 @@
             $RaidleadGroups = explode(",", MYBB_RAIDLEAD_GROUPS );
             $DefaultGroup   = "none";
             
-            $Groups = explode(",", $UserData["additionalgroups"]);
-            array_push($Groups, $UserData["usergroup"] );
+            $Groups = explode(",", $aUserData["additionalgroups"]);
+            array_push($Groups, $aUserData["usergroup"] );
             
             foreach( $Groups as $Group )
             {
@@ -52,40 +52,40 @@
         
         // -------------------------------------------------------------------------
         
-        private function GenerateInfo( $UserData )
+        private function generateInfo( $aUserData )
         {
-            $info = new UserInfo();
-            $info->UserId      = $UserData["uid"];
-            $info->UserName    = $UserData["username"];
-            $info->Password    = $UserData["password"];
-            $info->Salt        = $UserData["salt"];
-            $info->Group       = $this->GetGroup($UserData);
-            $info->BindingName = $this->BindingName;
-            $info->PassBinding = $this->BindingName;
+            $Info = new UserInfo();
+            $Info->UserId      = $aUserData["uid"];
+            $Info->UserName    = $aUserData["username"];
+            $Info->Password    = $aUserData["password"];
+            $Info->Salt        = $aUserData["salt"];
+            $Info->Group       = $this->getGroup($aUserData);
+            $Info->BindingName = $this->BindingName;
+            $Info->PassBinding = $this->BindingName;
         
-            return $info;
+            return $Info;
         }
         
         // -------------------------------------------------------------------------
         
-        public function GetUserInfoByName( $UserName )
+        public function getUserInfoByName( $aUserName )
         {
-            if ($this->Connector == null)
-                $this->Connector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS);
+            if ($this->mConnector == null)
+                $this->mConnector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS);
                 
-            $UserSt = $this->Connector->prepare("SELECT uid, username, password, salt, usergroup, additionalgroups, dateline, lifted ".
+            $UserSt = $this->mConnector->prepare("SELECT uid, username, password, salt, usergroup, additionalgroups, dateline, lifted ".
                                                 "FROM `".MYBB_TABLE_PREFIX."users` ".
                                                 "LEFT JOIN `".MYBB_TABLE_PREFIX."banned` USING(uid) ".
                                                 "WHERE username = :Login LIMIT 1");
             
-            $UserSt->BindValue( ":Login", strtolower($UserName), PDO::PARAM_STR );
+            $UserSt->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
         
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {
                 $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
                 $UserSt->closeCursor();
                 
-                return $this->GenerateInfo($UserData);
+                return $this->generateInfo($UserData);
             }
         
             $UserSt->closeCursor();
@@ -94,23 +94,23 @@
         
         // -------------------------------------------------------------------------
         
-        public function GetUserInfoById( $UserId )
+        public function getUserInfoById( $aUserId )
         {
-            if ($this->Connector == null)
-                $this->Connector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS);
+            if ($this->mConnector == null)
+                $this->mConnector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS);
             
-            $UserSt = $this->Connector->prepare("SELECT uid, username, password, salt, usergroup, additionalgroups ".
+            $UserSt = $this->mConnector->prepare("SELECT uid, username, password, salt, usergroup, additionalgroups ".
                                                 "FROM `".MYBB_TABLE_PREFIX."users` ".
                                                 "WHERE uid = :UserId LIMIT 1");
         
-            $UserSt->BindValue( ":UserId", $UserId, PDO::PARAM_INT );
+            $UserSt->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
         
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {
                 $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
                 $UserSt->closeCursor();
                 
-                return $this->GenerateInfo($UserData);
+                return $this->generateInfo($UserData);
             }
         
             $UserSt->closeCursor();
@@ -119,16 +119,16 @@
         
         // -------------------------------------------------------------------------
         
-        public function GetMethodFromPass( $Password )
+        public function getMethodFromPass( $aPassword )
         {
             return self::$HashMethod;
         }
         
         // -------------------------------------------------------------------------
         
-        public static function Hash( $Password, $Salt, $Method )
+        public static function hash( $aPassword, $aSalt, $aMethod )
         {
-            return md5(md5($Salt).md5($Password));
+            return md5(md5($aSalt).md5($aPassword));
         }
     }
 ?>

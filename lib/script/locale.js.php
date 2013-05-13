@@ -8,10 +8,10 @@
 var g_Locale = new Array();
 
 <?php
-    while ( list( $key, $value) = each($g_Locale) )
+    while ( list( $Key, $Value) = each($gLocale) )
     {
-        if ($value != null)
-            echo "g_Locale[\"".$key."\"] = \"".str_replace("\"","\\\"", $value)."\";\n";
+        if ($Value != null)
+            echo "g_Locale[\"".$Key."\"] = \"".str_replace("\"","\\\"", $Value)."\";\n";
     }
 ?>
 

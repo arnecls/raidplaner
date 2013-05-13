@@ -1,18 +1,18 @@
 <?php
 
-function prepareCalRequest( $Month, $Year )
+function prepareCalRequest( $aMonth, $aYear )
 {
-    $calRequest["Month"] = $Month;
-    $calRequest["Year"]  = $Year;
+    $CalRequest["Month"] = $aMonth;
+    $CalRequest["Year"]  = $aYear;
 
-    return $calRequest;
+    return $CalRequest;
 }
 
 // -----------------------------------------------------------------------------
 
 function getCalStartDay()
 {
-    $Connector = Connector::GetInstance();
+    $Connector = Connector::getInstance();
     $SettingsSt = $Connector->prepare( "Select IntValue FROM ".RP_TABLE_PREFIX."Setting WHERE Name = \"StartOfWeek\" LIMIT 1" );
     
     $FirstDay = 1;
@@ -29,11 +29,11 @@ function getCalStartDay()
 
 // -----------------------------------------------------------------------------
 
-function msgQueryCalendar( $Request )
+function msgQueryCalendar( $aRequest )
 {
-    if (ValidUser())
+    if (validUser())
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
         $ListRaidSt = $Connector->prepare(  "Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.*, ".
                                             RP_TABLE_PREFIX."Attendance.CharacterId, ".RP_TABLE_PREFIX."Attendance.UserId, ".
@@ -49,23 +49,23 @@ function msgQueryCalendar( $Request )
         
         // Calculate the correct start end end times
         
-        $startDay = getCalStartDay();
-        $startUTC = mktime(0, 0, 0, $Request["Month"], 1, $Request["Year"]);
-        $startDate = getdate($startUTC);
+        $StartDay = getCalStartDay();
+        $StartUTC = mktime(0, 0, 0, $aRequest["Month"], 1, $aRequest["Year"]);
+        $StartDate = getdate($StartUTC);
         
-        if ( $startDate["wday"] != $startDay )
+        if ( $StartDate["wday"] != $StartDay )
         {
-            $dayArray  = Array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
-            $startUTC  = strtotime("previous ".$dayArray[$startDay], $startUTC);
-            $startDate = getdate($startUTC);
+            $DayArray  = Array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
+            $StartUTC  = strtotime("previous ".$DayArray[$StartDay], $StartUTC);
+            $StartDate = getdate($StartUTC);
         }
         
-        $endUTC = strtotime("+6 weeks", $startUTC);
+        $EndUTC = strtotime("+6 weeks", $StartUTC);
         
         // Query and return
         
-        $ListRaidSt->bindValue(":Start", $startUTC, PDO::PARAM_INT);
-        $ListRaidSt->bindValue(":End",   $endUTC,   PDO::PARAM_INT);
+        $ListRaidSt->bindValue(":Start", $StartUTC, PDO::PARAM_INT);
+        $ListRaidSt->bindValue(":End",   $EndUTC,   PDO::PARAM_INT);
 
         if (!$ListRaidSt->execute())
         {
@@ -73,15 +73,15 @@ function msgQueryCalendar( $Request )
         }
         else
         {
-            $_SESSION["Calendar"]["month"] = intval($Request["Month"]);
-            $_SESSION["Calendar"]["year"]  = intval($Request["Year"]);
+            $_SESSION["Calendar"]["month"] = intval($aRequest["Month"]);
+            $_SESSION["Calendar"]["year"]  = intval($aRequest["Year"]);
 
-            echo "<startDay>".$startDate["mday"]."</startDay>";
-            echo "<startMonth>".$startDate["mon"]."</startMonth>";
-            echo "<startYear>".$startDate["year"]."</startYear>";
-            echo "<startOfWeek>".$startDay."</startOfWeek>";
-            echo "<displayMonth>".$Request["Month"]."</displayMonth>";
-            echo "<displayYear>".$Request["Year"]."</displayYear>";
+            echo "<startDay>".$StartDate["mday"]."</startDay>";
+            echo "<startMonth>".$StartDate["mon"]."</startMonth>";
+            echo "<startYear>".$StartDate["year"]."</startYear>";
+            echo "<startOfWeek>".$StartDay."</startOfWeek>";
+            echo "<displayMonth>".$aRequest["Month"]."</displayMonth>";
+            echo "<displayYear>".$aRequest["Year"]."</displayYear>";
             
             parseRaidQuery( $ListRaidSt, 0 );
         }
@@ -98,7 +98,7 @@ function msgQueryCalendar( $Request )
 
 function parseRaidQuery( $QueryResult, $Limit )
 {
-    global $s_Roles;
+    global $gRoles;
     echo "<raids>";
 
     $RaidData = Array();
@@ -112,7 +112,7 @@ function parseRaidQuery( $QueryResult, $Limit )
 
         if ( !isset($RaidInfo[$Data["RaidId"]]) )
         {
-            for ( $i=0; $i < sizeof($s_Roles); ++$i )
+            for ( $i=0; $i < sizeof($gRoles); ++$i )
             {
                 $RaidInfo[$Data["RaidId"]]["role".$i] = 0;
             }
@@ -145,24 +145,24 @@ function parseRaidQuery( $QueryResult, $Limit )
             // or it's the last entry
             // or the next entry is a different raid
 
-            $IsCorrectUser = $Data["UserId"] == UserProxy::GetInstance()->UserId;
+            $IsCorrectUser = $Data["UserId"] == UserProxy::getInstance()->UserId;
 
             if ( ($IsCorrectUser) ||
                  ($Data["UserId"] == NULL) ||
                  ($DataIdx+1 == $RaidDataCount) ||
                  ($RaidData[$DataIdx+1]["RaidId"] != $Data["RaidId"]) )
             {
-                $status = "notset";
-                $attendanceIndex = 0;
-                $role = "";
-                $comment = "";
+                $Status = "notset";
+                $AttendanceIndex = 0;
+                $Role = "";
+                $Comment = "";
 
                 if ( $IsCorrectUser )
                 {
-                    $status = $Data["Status"];
-                    $attendanceIndex = ($status == "unavailable") ? -1 : intval($Data["CharacterId"]);
-                    $role = $Data["Role"];
-                    $comment = $Data["Comment"];
+                    $Status = $Data["Status"];
+                    $AttendanceIndex = ($Status == "unavailable") ? -1 : intval($Data["CharacterId"]);
+                    $Role = $Data["Role"];
+                    $Comment = $Data["Comment"];
                 }
 
                 $StartDate = getdate($Data["StartUTC"]);
@@ -174,17 +174,17 @@ function parseRaidQuery( $QueryResult, $Limit )
                 echo "<location>".$Data["Name"]."</location>";
                 echo "<stage>".$Data["Stage"]."</stage>";
                 echo "<size>".$Data["Size"]."</size>";
-                echo "<startDate>".$StartDate["year"]."-".LeadingZero10($StartDate["mon"])."-".LeadingZero10($StartDate["mday"])."</startDate>";
-                echo "<start>".LeadingZero10($StartDate["hours"]).":".LeadingZero10($StartDate["minutes"])."</start>";
-                echo "<end>".LeadingZero10($EndDate["hours"]).":".LeadingZero10($EndDate["minutes"])."</end>";
+                echo "<startDate>".$StartDate["year"]."-".leadingZero10($StartDate["mon"])."-".leadingZero10($StartDate["mday"])."</startDate>";
+                echo "<start>".leadingZero10($StartDate["hours"]).":".leadingZero10($StartDate["minutes"])."</start>";
+                echo "<end>".leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"])."</end>";
                 echo "<image>".$Data["Image"]."</image>";
                 echo "<description>".$Data["Description"]."</description>";
-                echo "<status>".$status."</status>";
-                echo "<attendanceIndex>".$attendanceIndex."</attendanceIndex>";
-                echo "<comment>".$comment."</comment>";
-                echo "<role>".$role."</role>";
+                echo "<status>".$Status."</status>";
+                echo "<attendanceIndex>".$AttendanceIndex."</attendanceIndex>";
+                echo "<comment>".$Comment."</comment>";
+                echo "<role>".$Role."</role>";
 
-                for ( $i=0; $i < sizeof($s_Roles); ++$i )
+                for ( $i=0; $i < sizeof($gRoles); ++$i )
                 {
                     echo "<role".$i."Slots>".$Data["SlotsRole".($i+1)]."</role".$i."Slots>";
                     echo "<role".$i.">".$RaidInfo[$Data["RaidId"]]["role".$i]."</role".$i.">";

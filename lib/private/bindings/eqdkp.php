@@ -13,26 +13,26 @@
         public static $Itoa64             = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         
         public $BindingName = "eqdkp";
-        private $Connector = null;
+        private $mConnector = null;
     
         // -------------------------------------------------------------------------
         
-        public function IsActive()
+        public function isActive()
         {
             return defined("EQDKP_BINDING") && EQDKP_BINDING;
         }
         
         // -------------------------------------------------------------------------
         
-        private function GetGroup( $UserId )
+        private function getGroup( $aUserId )
         {
-            $UserRightsSt = $this->Connector->prepare("SELECT ".EQDKP_TABLE_PREFIX."users.user_active, ".EQDKP_TABLE_PREFIX."auth_users.auth_setting,  ".EQDKP_TABLE_PREFIX."auth_options.auth_value ".
+            $UserRightsSt = $this->mConnector->prepare("SELECT ".EQDKP_TABLE_PREFIX."users.user_active, ".EQDKP_TABLE_PREFIX."auth_users.auth_setting,  ".EQDKP_TABLE_PREFIX."auth_options.auth_value ".
                                                       "FROM `".EQDKP_TABLE_PREFIX."users` ".
                                                       "LEFT JOIN `".EQDKP_TABLE_PREFIX."auth_users` USING(user_id) ".
                                                       "LEFT JOIN `".EQDKP_TABLE_PREFIX."auth_options` USING(auth_id) ".
                                                       "WHERE user_id = :UserId");
                                           
-            $UserRightsSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $UserRightsSt->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
             $UserRightsSt->execute();
             
             while ( $Right = $UserRightsSt->fetch(PDO::FETCH_ASSOC) )
@@ -54,32 +54,32 @@
         
         // -------------------------------------------------------------------------
         
-        private function GenerateInfo( $UserData )
+        private function generateInfo( $aUserData )
         {
-            $info = new UserInfo();
-            $info->UserId      = $UserData["user_id"];
-            $info->UserName    = $UserData["username"];
-            $info->Password    = $UserData["user_password"];
-            $info->Salt        = self::ExtractSaltPart($UserData["user_password"]);
-            $info->Group       = $this->GetGroup($UserData["user_id"]);
-            $info->BindingName = $this->BindingName;
-            $info->PassBinding = $this->BindingName;
+            $Info = new UserInfo();
+            $Info->UserId      = $aUserData["user_id"];
+            $Info->UserName    = $aUserData["username"];
+            $Info->Password    = $aUserData["user_password"];
+            $Info->Salt        = self::extractSaltPart($aUserData["user_password"]);
+            $Info->Group       = $this->getGroup($aUserData["user_id"]);
+            $Info->BindingName = $this->BindingName;
+            $Info->PassBinding = $this->BindingName;
             
-            return $info;
+            return $Info;
         }
         
         // -------------------------------------------------------------------------
         
-        public function GetUserInfoByName( $UserName )
+        public function getUserInfoByName( $aUserName )
         {
-            if ($this->Connector == null)
-                $this->Connector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
+            if ($this->mConnector == null)
+                $this->mConnector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
             
-            $UserSt = $this->Connector->prepare("SELECT user_id, username, user_password ".
+            $UserSt = $this->mConnector->prepare("SELECT user_id, username, user_password ".
                                                 "FROM `".EQDKP_TABLE_PREFIX."users` ".
                                                 "WHERE username = :Login LIMIT 1");
                                               
-            $UserSt->bindValue(":Login", $UserName, PDO::PARAM_STR);
+            $UserSt->bindValue(":Login", $aUserName, PDO::PARAM_STR);
             $UserSt->execute();
             
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
@@ -87,7 +87,7 @@
                 $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
                 $UserSt->closeCursor();
                 
-                return $this->GenerateInfo( $UserData );
+                return $this->generateInfo( $UserData );
             }
         
             $UserSt->closeCursor();
@@ -96,16 +96,16 @@
         
         // -------------------------------------------------------------------------
         
-        public function GetUserInfoById( $UserId )
+        public function getUserInfoById( $aUserId )
         {
-            if ($this->Connector == null)
-                $this->Connector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
+            if ($this->mConnector == null)
+                $this->mConnector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
             
-            $UserSt = $this->Connector->prepare("SELECT user_id, username, user_password ".
+            $UserSt = $this->mConnector->prepare("SELECT user_id, username, user_password ".
                                                 "FROM `".EQDKP_TABLE_PREFIX."users` ".
                                                 "WHERE user_id = :UserId LIMIT 1");
                                               
-            $UserSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $UserSt->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
             $UserSt->execute();
             
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
@@ -113,7 +113,7 @@
                 $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
                 $UserSt->closeCursor();
                 
-                return $this->GenerateInfo( $UserData );
+                return $this->generateInfo( $UserData );
             }
         
             $UserSt->closeCursor();
@@ -122,35 +122,35 @@
         
         // -------------------------------------------------------------------------
         
-        private static function ExtractSaltPart( $Password )
+        private static function extractSaltPart( $aPassword )
         {
-            $length = strlen(substr($Password, 0, strpos($Password, ":")));
+            $Length = strlen(substr($aPassword, 0, strpos($aPassword, ":")));
         
-            if ((substr($Password, 0, 4) == '$2a$') && ($length == 60))
+            if ((substr($aPassword, 0, 4) == '$2a$') && ($Length == 60))
             {
-                $Parts = explode(":", $Password);
+                $Parts = explode(":", $aPassword);
                 
                 return substr($Parts[0],0,29).":".$Parts[1];
             }
             
-            if (($Password[0] == '_') && ($length == 20))
+            if (($aPassword[0] == '_') && ($Length == 20))
             {
-                $Parts = explode(":", $Password);
+                $Parts = explode(":", $aPassword);
                 return substr($Parts[0],0,9).":".$Parts[1];
             }
             
-            if ((substr($Password, 0, 3) == '$S$') && ($length == 98))
+            if ((substr($aPassword, 0, 3) == '$S$') && ($Length == 98))
             {
-                $Count = strpos(self::$Itoa64, $Password[3]);
-                $Salt2 = substr($Password, 4, 8);
-                $Salt  = substr($Password, strpos($Password,":")+1);
+                $Count = strpos(self::$Itoa64, $aPassword[3]);
+                $Salt2 = substr($aPassword, 4, 8);
+                $Salt  = substr($aPassword, strpos($aPassword,":")+1);
                 
                 return $Count.":".$Salt.":".$Salt2;
             }
                 
-            if ($length == 128)
+            if ($Length == 128)
             {
-                $Parts = explode(":", $Password);
+                $Parts = explode(":", $aPassword);
                 return $Parts[1];
             }
             
@@ -159,20 +159,20 @@
         
         // -------------------------------------------------------------------------
         
-        public function GetMethodFromPass( $Password )
+        public function getMethodFromPass( $aPassword )
         {
-            $length = strlen(substr($Password, 0, strpos($Password, ":")));
+            $Length = strlen(substr($aPassword, 0, strpos($aPassword, ":")));
             
-            if ((substr($Password, 0, 4) == '$2a$') && ($length == 60))
+            if ((substr($aPassword, 0, 4) == '$2a$') && ($Length == 60))
                 return self::$HashMethod_sha512b;
             
-            if (($length > 0) && ($Password[0] == "_") && ($length == 20))
+            if (($Length > 0) && ($aPassword[0] == "_") && ($Length == 20))
                 return self::$HashMethod_sha512d;
             
-            if ((substr($Password, 0, 3) == '$S$') && ($length == 98)) 
+            if ((substr($aPassword, 0, 3) == '$S$') && ($Length == 98)) 
                 return self::$HashMethod_sha512r;
                 
-            if ($length == 128) 
+            if ($Length == 128) 
                 return self::$HashMethod_sha512s;
     
     		return self::$HashMethod_md5;
@@ -180,84 +180,76 @@
         
         // -------------------------------------------------------------------------
         
-        private static function Encode64( $input, $count )
+        private static function encode64( $aInput, $aCount )
         {
-            $output = '';
+            $Output = '';
             $i = 0;
             
             do {
-                $value = ord($input[$i++]);
-                $output .= self::$Itoa64[$value & 0x3f];
+                $Value = ord($aInput[$i++]);
+                $Output .= self::$Itoa64[$Value & 0x3f];
                 
-                if ($i < $count)
-                {
-                   $value |= ord($input[$i]) << 8;
-                }
+                if ($i < $Count)
+                   $Value |= ord($aInput[$i]) << 8;
                 
-                $output .= self::$Itoa64[($value >> 6) & 0x3f];
+                $Output .= self::$Itoa64[($Value >> 6) & 0x3f];
                 
-                if ($i++ >= $count)
-                {
+                if ($i++ >= $Count)
                    break;
-                }
                 
-                if ($i < $count)
-                {
-                   $value |= ord($input[$i]) << 16;
-                }
+                if ($i < $Count)
+                   $Value |= ord($aInput[$i]) << 16;
                 
-                $output .= self::$Itoa64[($value >> 12) & 0x3f];
+                $Output .= self::$Itoa64[($Value >> 12) & 0x3f];
                 
-                if ($i++ >= $count)
-                {
+                if ($i++ >= $aCount)
                    break;
-                }
                 
-                $output .= self::$Itoa64[($value >> 18) & 0x3f];
-            } while ($i < $count);
+                $Output .= self::$Itoa64[($Value >> 18) & 0x3f];
+            } while ($i < $aCount);
             
-            return $output;
+            return $Output;
         }
         
         // -------------------------------------------------------------------------
         
-        public static function Hash( $Password, $Salt, $Method )
+        public static function hash( $aPassword, $aSalt, $aMethod )
         {
-            if ( ($Method == self::$HashMethod_sha512b) ||
-                 ($Method == self::$HashMethod_sha512d) )
+            if ( ($aMethod == self::$HashMethod_sha512b) ||
+                 ($aMethod == self::$HashMethod_sha512d) )
             {
-                $parts  = explode(":",$Salt);
-                $config = $parts[0];
-                $salt   = $parts[1];
+                $Parts  = explode(":",$aSalt);
+                $Config = $Parts[0];
+                $Salt   = $Parts[1];
                 
-                $preHash = hash('sha512', $salt.$Password);                
-                return crypt($preHash, $config).":".$salt;
+                $PreHash = hash('sha512', $Salt.$aPassword);                
+                return crypt($PreHash, $Config).":".$Salt;
             }
             
-            if ( $Method == self::$HashMethod_sha512r )
+            if ( $aMethod == self::$HashMethod_sha512r )
             {
-                $parts   = explode(":",$Salt);
-                $countB2 = intval($parts[0], 10);
-                $count   = 1 << $countB2;
-                $salt    = $parts[1];
-                $salt2   = $parts[2];
+                $Parts   = explode(":",$aSalt);
+                $CountB2 = intval($Parts[0], 10);
+                $Count   = 1 << $CountB2;
+                $Salt    = $Parts[1];
+                $Salt2   = $Parts[2];
                 
-                $preHash = hash("sha512", $salt.$Password);
-                $hash    = hash("sha512", $salt2.$preHash, true);
+                $PreHash = hash("sha512", $Salt.$aPassword);
+                $Hash    = hash("sha512", $Salt2.$PreHash, true);
                 
                 do {
-                    $hash = hash("sha512", $hash.$preHash, true);
-                } while(--$count);
+                    $Hash = hash("sha512", $Hash.$PreHash, true);
+                } while(--$Count);
                 
-                return '$S$'.self::$Itoa64[$countB2].$salt2.self::Encode64($hash,strlen($hash)).":".$salt;
+                return '$S$'.self::$Itoa64[$CountB2].$Salt2.self::encode64($Hash,strlen($Hash)).":".$Salt;
             }
             
-            if ( $Method == self::$HashMethod_sha512s )
+            if ( $aMethod == self::$HashMethod_sha512s )
             {
-                return hash("sha512", $Salt.$Password);
+                return hash("sha512", $aSalt.$aPassword);
             }
             
-            return md5($Password);
+            return md5($aPassword);
         }
     }
 ?>

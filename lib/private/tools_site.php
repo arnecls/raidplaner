@@ -3,7 +3,7 @@
     @include_once(dirname(__FILE__)."/../config/config.php");
     include_once(dirname(__FILE__)."/connector.class.php");
     
-    $g_Site = Array(
+    $gSite = Array(
         "BannerLink" => "",
         "Banner"     => "cataclysm.jpg",
         "Background" => "flower.png",
@@ -17,14 +17,14 @@
 
     function loadSiteSettings()
     {
-        global $g_Site;
+        global $gSite;
         
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
         $Settings = $Connector->prepare("Select `Name`, `TextValue`, `IntValue` FROM `".RP_TABLE_PREFIX."Setting`");
     
         if ( $Settings->execute() )
         {
-            $g_Site = Array(
+            $gSite = Array(
                 "BannerLink" => "",
                 "Banner"     => "cataclysm.jpg",
                 "Background" => "flower.png",
@@ -39,7 +39,7 @@
                 switch( $Data["Name"] )
                 {
                 case "Site":
-                    $g_Site["BannerLink"] = $Data["TextValue"];
+                    $gSite["BannerLink"] = $Data["TextValue"];
                     break;
     
                 case "Theme":
@@ -48,16 +48,16 @@
                     if ( file_exists($ThemeFile) )
                     {
                         $Theme = new SimpleXMLElement( file_get_contents($ThemeFile) );
-                        $g_Site["Banner"]     = (string)$Theme->banner;
-                        $g_Site["Background"] = (string)$Theme->bgimage;
-                        $g_Site["BGColor"]    = (string)$Theme->bgcolor;
-                        $g_Site["BGRepeat"]   = (string)$Theme->bgrepeat;
-                        $g_Site["PortalMode"] = ((string)$Theme->portalmode) == "true";
+                        $gSite["Banner"]     = (string)$Theme->banner;
+                        $gSite["Background"] = (string)$Theme->bgimage;
+                        $gSite["BGColor"]    = (string)$Theme->bgcolor;
+                        $gSite["BGRepeat"]   = (string)$Theme->bgrepeat;
+                        $gSite["PortalMode"] = ((string)$Theme->portalmode) == "true";
                     }
                     break;
     
                 case "TimeFormat":
-                    $g_Site["TimeFormat"] = $Data["IntValue"];
+                    $gSite["TimeFormat"] = $Data["IntValue"];
                     break;
     
                 default:
@@ -71,22 +71,22 @@
     
     // ---------------------------------------------------------------
     
-    function CheckVersion($siteVersion)
+    function checkVersion($aSiteVersion)
     {
         try
         {
-            $Connector = Connector::GetInstance(true);
-            $versionSt = $Connector->prepare("SELECT IntValue FROM `".RP_TABLE_PREFIX."Setting` WHERE Name = 'Version' LIMIT 1" );
+            $Connector = Connector::getInstance(true);
+            $VersionSt = $Connector->prepare("SELECT IntValue FROM `".RP_TABLE_PREFIX."Setting` WHERE Name = 'Version' LIMIT 1" );
             
-            if ($versionSt->execute())
+            if ($VersionSt->execute())
             {
-                $result = $versionSt->fetch( PDO::FETCH_ASSOC ); 
-                $versionSt->closeCursor();
+                $Result = $VersionSt->fetch( PDO::FETCH_ASSOC ); 
+                $VersionSt->closeCursor();
                 
-                return intval($siteVersion) == intval($result["IntValue"]);
+                return intval($aSiteVersion) == intval($Result["IntValue"]);
             }
             
-            $versionSt->closeCursor();
+            $VersionSt->closeCursor();
         }
         catch(PDOException $Exception)
         {
@@ -97,18 +97,18 @@
     
     // ---------------------------------------------------------------
     
-    function lockOldRaids( $Seconds )
+    function lockOldRaids( $aSeconds )
     {
-        if ( ValidUser() )
+        if ( validUser() )
         {
-            $Connector = Connector::GetInstance();
+            $Connector = Connector::getInstance();
 
 
             $UpdateRaidSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Raid` SET ".
                                                 "Stage = 'locked'".
                                                 "WHERE Start < FROM_UNIXTIME(:Time) AND Stage = 'open'" );
 
-            $UpdateRaidSt->bindValue(":Time", time() + $Seconds, PDO::PARAM_INT);
+            $UpdateRaidSt->bindValue(":Time", time() + $aSeconds, PDO::PARAM_INT);
 
             if ( !$UpdateRaidSt->execute() )
             {
@@ -121,9 +121,9 @@
     
     // ---------------------------------------------------------------
 
-    function purgeOldRaids( $Seconds )
+    function purgeOldRaids( $aSeconds )
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
 
         $DropRaidSt = $Connector->prepare( "DELETE `".RP_TABLE_PREFIX."Raid`, `".RP_TABLE_PREFIX."Attendance` ".
@@ -131,7 +131,7 @@
                                            "WHERE ".RP_TABLE_PREFIX."Raid.End < FROM_UNIXTIME(:Time)" );
 
 
-        $Timestamp = time() - $Seconds;
+        $Timestamp = time() - $aSeconds;
         $DropRaidSt->bindValue( ":Time", $Timestamp, PDO::PARAM_INT );
 
         if ( !$DropRaidSt->execute() )

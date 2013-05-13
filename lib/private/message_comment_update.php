@@ -1,17 +1,17 @@
 <?php
 
-function msgCommentUpdate( $Request )
+function msgCommentupdate( $aRequest )
 {
-    if ( ValidUser() )
+    if ( validUser() )
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
-        $raidId = intval( $Request["raidId"] );
-        $userId = UserProxy::GetInstance()->UserId;
+        $RaidId = intval( $aRequest["raidId"] );
+        $UserId = UserProxy::getInstance()->UserId;
 
         $CheckSt = $Connector->prepare("SELECT UserId FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId AND RaidId = :RaidId LIMIT 1");
-        $CheckSt->bindValue(":UserId", $userId, PDO::PARAM_INT);
-        $CheckSt->bindValue(":RaidId", $raidId, PDO::PARAM_INT);
+        $CheckSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+        $CheckSt->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
 
         if ( !$CheckSt->execute() )
         {
@@ -39,9 +39,9 @@ function msgCommentUpdate( $Request )
                 $UpdateSt->bindValue(":Status",      "undecided", PDO::PARAM_STR);
             }
 
-            $UpdateSt->bindValue(":RaidId",  $raidId, PDO::PARAM_INT);
-            $UpdateSt->bindValue(":UserId",  $userId, PDO::PARAM_INT);
-            $UpdateSt->bindValue(":Comment", requestToXML( $Request["comment"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
+            $UpdateSt->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
+            $UpdateSt->bindValue(":UserId",  $UserId, PDO::PARAM_INT);
+            $UpdateSt->bindValue(":Comment", requestToXML( $aRequest["comment"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
     
             if ( !$UpdateSt->execute() )
             {
@@ -56,17 +56,17 @@ function msgCommentUpdate( $Request )
         // reload calendar
 
         $RaidSt = $Connector->prepare("SELECT Start FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
-        $RaidSt->bindValue(":RaidId",  $raidId, PDO::PARAM_INT);
+        $RaidSt->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
         $RaidSt->execute();
 
         $RaidData = $RaidSt->fetch( PDO::FETCH_ASSOC );
 
         $RaidSt->closeCursor();
 
-        $showMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : intval( substr( $RaidData["Start"], 5, 2 ) );
-        $showYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : intval( substr( $RaidData["Start"], 0, 4 ) );
+        $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : intval( substr( $RaidData["Start"], 5, 2 ) );
+        $ShowYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : intval( substr( $RaidData["Start"], 0, 4 ) );
 
-        msgQueryCalendar( prepareCalRequest( $showMonth, $showYear ) );
+        msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
     }
     else
     {

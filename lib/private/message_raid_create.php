@@ -1,21 +1,21 @@
 <?php
 
-function msgRaidCreate( $Request )
+function msgRaidCreate( $aRequest )
 {
-    if ( ValidRaidlead() )
+    if ( validRaidlead() )
     {
-        global $s_GroupSizes;
-        $Connector = Connector::GetInstance();
+        global $gGroupSizes;
+        $Connector = Connector::getInstance();
 
-        $locationId = $Request["locationId"];
+        $LocationId = $aRequest["locationId"];
 
-        if ( $locationId == 0 )
+        if ( $LocationId == 0 )
         {
             $NewLocationSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Location`".
                                                  "(Name, Image) VALUES (:Name, :Image)");
 
-            $NewLocationSt->bindValue(":Name", requestToXML( $Request["locationName"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
-            $NewLocationSt->bindValue(":Image", $Request["raidImage"], PDO::PARAM_STR );
+            $NewLocationSt->bindValue(":Name", requestToXML( $aRequest["locationName"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
+            $NewLocationSt->bindValue(":Image", $aRequest["raidImage"], PDO::PARAM_STR );
 
             if (!$NewLocationSt->execute())
             {
@@ -25,13 +25,13 @@ function msgRaidCreate( $Request )
             }
             else
             {
-                $locationId = $Connector->lastInsertId();
+                $LocationId = $Connector->lastInsertId();
             }
 
             $NewLocationSt->closeCursor();
         }
 
-        if ( $locationId != 0 )
+        if ( $LocationId != 0 )
         {
 
             $NewRaidSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Raid` ".
@@ -39,50 +39,50 @@ function msgRaidCreate( $Request )
                                              "VALUES (:LocationId, :Size, FROM_UNIXTIME(:Start), FROM_UNIXTIME(:End), :Mode, :Description, ".
                                              ":SlotsRole1, :SlotsRole2, :SlotsRole3, :SlotsRole4, :SlotsRole5)");
 
-            $StartDateTime = mktime(intval($Request["startHour"]), intval($Request["startMinute"]), 0, intval($Request["month"]), intval($Request["day"]), intval($Request["year"]));
-            $EndDateTime   = mktime(intval($Request["endHour"]), intval($Request["endMinute"]), 0, intval($Request["month"]), intval($Request["day"]), intval($Request["year"]));
+            $StartDateTime = mktime(intval($aRequest["startHour"]), intval($aRequest["startMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]));
+            $EndDateTime   = mktime(intval($aRequest["endHour"]), intval($aRequest["endMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]));
 
             $Mode = "manual"; // TODO: Read from parameter
 
             if ( $EndDateTime < $StartDateTime )
                $EndDateTime += 60*60*24;
 
-            $NewRaidSt->bindValue(":LocationId",  $locationId, PDO::PARAM_INT);
-            $NewRaidSt->bindValue(":Size",        $Request["locationSize"], PDO::PARAM_INT);
+            $NewRaidSt->bindValue(":LocationId",  $LocationId, PDO::PARAM_INT);
+            $NewRaidSt->bindValue(":Size",        $aRequest["locationSize"], PDO::PARAM_INT);
             $NewRaidSt->bindValue(":Start",       $StartDateTime, PDO::PARAM_INT);
             $NewRaidSt->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
-            $NewRaidSt->bindValue(":Mode",        $Request["mode"], PDO::PARAM_STR);
-            $NewRaidSt->bindValue(":Description", requestToXML( $Request["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
+            $NewRaidSt->bindValue(":Mode",        $aRequest["mode"], PDO::PARAM_STR);
+            $NewRaidSt->bindValue(":Description", requestToXML( $aRequest["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
 
-            while ( list($groupSize,$slots) = each($s_GroupSizes) )
+            while ( list($GroupSize,$Slots) = each($gGroupSizes) )
             {
-                echo "<option value=\"".$groupSize."\">".$groupSize."</option>";
+                echo "<option value=\"".$GroupSize."\">".$GroupSize."</option>";
             }
 
             // Get the default sizes
 
-            if ( isset($s_GroupSizes[$Request["locationSize"]]) )
+            if ( isset($gGroupSizes[$aRequest["locationSize"]]) )
             {
                 // Sizes are defined in gameconfig
-                $DefaultSizes = $s_GroupSizes[$Request["locationSize"]];
+                $DefaultSizes = $gGroupSizes[$aRequest["locationSize"]];
             }
             else
             {
                 // Sizes are not defined in gameconfig
                 // Equally distribute, last role gets remaining slots
 
-                $numRoles = sizeof($s_Roles);
+                $NumRoles = sizeof($gRoles);
                 $DefaultSizes = Array();
-                $slotsUsed = 0;
-                $RaidSize = intval($Request["locationSize"]);
+                $SlotsUsed = 0;
+                $RaidSize = intval($aRequest["locationSize"]);
 
-                for ($i=0; $i<$numRoles-1; ++$i)
+                for ($i=0; $i<$NumRoles-1; ++$i)
                 {
-                    $DefaultSizes[$i] = intval($RaidSize / $numRoles);
-                    $slotsUsed += $DefaultSizes[$i];
+                    $DefaultSizes[$i] = intval($RaidSize / $NumRoles);
+                    $SlotsUsed += $DefaultSizes[$i];
                 }
 
-                $DefaultSizes[$numRoles-1] = $RaidSize - $slotsUsed;
+                $DefaultSizes[$NumRoles-1] = $RaidSize - $SlotsUsed;
             }
 
             // Assure array contains entries for all 5 roles
@@ -107,10 +107,10 @@ function msgRaidCreate( $Request )
 
             // reload calendar
 
-            $showMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : $Request["month"];
-            $showYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : $Request["year"];
+            $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : $aRequest["month"];
+            $ShowYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : $aRequest["year"];
 
-            msgQueryCalendar( prepareCalRequest( $showMonth, $showYear ) );
+            msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
         }
     }
     else

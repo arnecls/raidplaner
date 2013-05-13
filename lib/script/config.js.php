@@ -9,49 +9,49 @@
 ?>
 
 var g_SiteVersion = <?php echo floatval($_REQUEST["version"]) ?>;
-var g_BannerLink = "<?php echo $g_Site["BannerLink"]; ?>";
-var g_TimeFormat = <?php echo $g_Site["TimeFormat"]; ?>;
+var g_BannerLink = "<?php echo $gSite["BannerLink"]; ?>";
+var g_TimeFormat = <?php echo $gSite["TimeFormat"]; ?>;
 
 var g_Theme = {
-    background : "<?php echo $g_Site["Background"]; ?>",
-    banner     : "<?php echo $g_Site["Banner"]; ?>",
-    bgrepeat   : "<?php echo $g_Site["BGRepeat"]; ?>",
-    bgcolor    : "<?php echo $g_Site["BGColor"]; ?>",
-    portalmode : "<?php echo $g_Site["PortalMode"]; ?>"
+    background : "<?php echo $gSite["Background"]; ?>",
+    banner     : "<?php echo $gSite["Banner"]; ?>",
+    bgrepeat   : "<?php echo $gSite["BGRepeat"]; ?>",
+    bgcolor    : "<?php echo $gSite["BGColor"]; ?>",
+    portalmode : "<?php echo $gSite["PortalMode"]; ?>"
 };
 
-var g_RoleNames       = Array(<?php echo sizeof($s_Roles); ?>);
-var g_RoleIds         = Array(<?php echo sizeof($s_Roles); ?>);
-var g_RoleIdents      = Array(<?php echo sizeof($s_Roles); ?>);
-var g_RoleImages      = Array(<?php echo sizeof($s_Roles); ?>);
-var g_RoleColumnCount = Array(<?php echo sizeof($s_Roles); ?>);
-var g_Classes         = Array(<?php echo sizeof($s_Classes); ?>);
-var g_ClassIdx        = Array(<?php echo sizeof($s_Classes); ?>);
+var g_RoleNames       = Array(<?php echo sizeof($gRoles); ?>);
+var g_RoleIds         = Array(<?php echo sizeof($gRoles); ?>);
+var g_RoleIdents      = Array(<?php echo sizeof($gRoles); ?>);
+var g_RoleImages      = Array(<?php echo sizeof($gRoles); ?>);
+var g_RoleColumnCount = Array(<?php echo sizeof($gRoles); ?>);
+var g_Classes         = Array(<?php echo sizeof($gClasses); ?>);
+var g_ClassIdx        = Array(<?php echo sizeof($gClasses); ?>);
 var g_GroupSizes      = Array(<?php
-    for ($i=0; list($Count,$RoleSizes) = each($s_GroupSizes); ++$i)
+    for ($i=0; list($Count,$RoleSizes) = each($gGroupSizes); ++$i)
     {
         if ($i>0) echo ",";
         echo $Count;
     }
-    reset($s_GroupSizes);
+    reset($gGroupSizes);
 ?>);
-var g_GroupRoleSizes  = Array(<?php echo sizeof($s_GroupSizes); ?>);
+var g_GroupRoleSizes  = Array(<?php echo sizeof($gGroupSizes); ?>);
 
 <?php
-    for ( $i=0; list($RoleIdent,$RoleName) = each($s_Roles); ++$i )
+    for ( $i=0; list($RoleIdent,$RoleName) = each($gRoles); ++$i )
     {
         echo "g_RoleNames[\"".$RoleIdent."\"] = L(\"".$RoleName."\");\n";
         echo "g_RoleIds[\"".$RoleIdent."\"] = ".$i.";\n";
         echo "g_RoleIdents[".$i."] = \"".$RoleIdent."\";\n";
-        echo "g_RoleImages[".$i."] = \"".$s_RoleImages[$i]."\";\n";
-        echo "g_RoleColumnCount[".$i."] = \"".$s_RoleColumnCount[$i]."\";\n";
+        echo "g_RoleImages[".$i."] = \"".$gRoleImages[$i]."\";\n";
+        echo "g_RoleColumnCount[".$i."] = \"".$gRoleColumnCount[$i]."\";\n";
     }
-    reset($s_Roles);
+    reset($gRoles);
 ?>
 
 <?php
 
-    for ( $i=0; list($ClassIdent,$ClassConfig) = each($s_Classes); ++$i )
+    for ( $i=0; list($ClassIdent,$ClassConfig) = each($gClasses); ++$i )
     {
         echo "g_ClassIdx[\"".$ClassIdent."\"] = ".$i."; ";
         echo "g_Classes[".$i."] = {";
@@ -68,11 +68,11 @@ var g_GroupRoleSizes  = Array(<?php echo sizeof($s_GroupSizes); ?>);
 
         echo ")};\n";
     }
-    reset($s_Classes);
+    reset($gClasses);
 ?>
 
 <?php
-    while ( list($Count,$RoleSizes) = each($s_GroupSizes) )
+    while ( list($Count,$RoleSizes) = each($gGroupSizes) )
     {
         
         echo "g_GroupRoleSizes[".$Count."] = [";
@@ -84,7 +84,7 @@ var g_GroupRoleSizes  = Array(<?php echo sizeof($s_GroupSizes); ?>);
         }
         echo "];\n";
     }
-    reset($s_GroupSizes);
+    reset($gGroupSizes);
 ?>
 
 // -----------------------------------------------------------------------------

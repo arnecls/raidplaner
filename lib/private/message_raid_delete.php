@@ -1,10 +1,10 @@
 <?php
 
-function msgRaidDelete( $Request )
+function msgRaidDelete( $aRequest )
 {
-    if ( ValidRaidlead() )
+    if ( validRaidlead() )
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
         // Delete raid
 
@@ -12,7 +12,7 @@ function msgRaidDelete( $Request )
 
         $DeleteRaidSt = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1" );
 
-        $DeleteRaidSt->bindValue(":RaidId", $Request["id"], PDO::PARAM_INT);
+        $DeleteRaidSt->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
 
         if (!$DeleteRaidSt->execute())
         {
@@ -27,7 +27,7 @@ function msgRaidDelete( $Request )
 
         $DeleteAttendanceSt = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE RaidId = :RaidId" );
 
-        $DeleteAttendanceSt->bindValue(":RaidId", $Request["id"], PDO::PARAM_INT);
+        $DeleteAttendanceSt->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
 
         if (!$DeleteAttendanceSt->execute())
         {
@@ -39,10 +39,10 @@ function msgRaidDelete( $Request )
         $DeleteAttendanceSt->closeCursor();
         $Connector->commit();
 
-        $showMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : $Request["month"];
-        $showYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : $Request["year"];
+        $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : $aRequest["month"];
+        $ShowYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : $aRequest["year"];
 
-        msgQueryCalendar( prepareCalRequest( $showMonth, $showYear ) );
+        msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
     }
     else
     {

@@ -6,21 +6,21 @@
     require_once(dirname(__FILE__)."/../private/userproxy.class.php");
     if (!defined("UNIFIED_SCRIPT")) header("Content-type: text/javascript");
     
-    if ( ValidUser() )
+    if ( validUser() )
     {
-        $CurrentUser = UserProxy::GetInstance();
+        $CurrentUser = UserProxy::getInstance();
         
         function echoCharacterIds()
         {
             global $CurrentUser;
-            $first = true;
+            $First = true;
             
             foreach ( $CurrentUser->Characters as $Character )
             {
-                if ($first)
+                if ($First)
                 {
                     echo "\"".intval( $Character->CharacterId )."\"";
-                    $first = false;
+                    $First = false;
                 }
                 else
                 {
@@ -32,14 +32,14 @@
         function echoCharacterNames()
         {
             global $CurrentUser;
-            $first = true;
+            $First = true;
             
             foreach ( $CurrentUser->Characters as $Character )
             {
-                if ($first)
+                if ($First)
                 {
                     echo "\"".$Character->Name."\"";
-                    $first = false;
+                    $First = false;
                 }
                 else
                 {
@@ -51,14 +51,14 @@
         function echoRole1()
         {
             global $CurrentUser;
-            $first = true;
+            $First = true;
             
             foreach ( $CurrentUser->Characters as $Character )
             {
-                if ($first)
+                if ($First)
                 {
                     echo "\"".$Character->Role1."\"";
-                    $first = false;
+                    $First = false;
                 }
                 else
                 {
@@ -70,14 +70,14 @@
         function echoRole2()
         {
             global $CurrentUser;
-            $first = true;
+            $First = true;
             
             foreach ( $CurrentUser->Characters as $Character )
             {
-                if ($first)
+                if ($First)
                 {
                     echo "\"".$Character->Role2."\"";
-                    $first = false;
+                    $First = false;
                 }
                 else
                 {
@@ -87,13 +87,13 @@
         }
 ?>
 
-var g_User = {
+var gUser = {
     characterIds    : new Array( <?php echoCharacterIds(); ?> ),
     characterNames  : new Array( <?php echoCharacterNames(); ?> ),
     role1           : new Array( <?php echoRole1(); ?> ),
     role2           : new Array( <?php echoRole2(); ?> ),
-    isRaidlead      : <?php echo ValidRaidlead() ? "true" : "false"; ?>,
-    isAdmin         : <?php echo ValidAdmin() ? "true" : "false"; ?>,
+    isRaidlead      : <?php echo validRaidlead() ? "true" : "false"; ?>,
+    isAdmin         : <?php echo validAdmin() ? "true" : "false"; ?>,
     id              : <?php echo $CurrentUser->UserId; ?>,
     name            : "<?php echo $CurrentUser->UserName; ?>"
 };
@@ -104,6 +104,6 @@ var g_User = {
     {
 ?>
     
-var g_User = null;
+var gUser = null;
 
 <?php } ?>

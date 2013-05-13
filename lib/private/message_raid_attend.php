@@ -1,25 +1,25 @@
 <?php
 
-function msgRaidAttend( $Request )
+function msgRaidAttend( $aRequest )
 {
-    if (ValidUser())
+    if (validUser())
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
-        $attendanceIdx = intval( $Request["attendanceIndex"] );
-        $raidId = intval( $Request["raidId"] );
-        $userId = intval( UserProxy::GetInstance()->UserId );
+        $AttendanceIdx = intval( $aRequest["attendanceIndex"] );
+        $RaidId = intval( $aRequest["raidId"] );
+        $UserId = intval( UserProxy::getInstance()->UserId );
 
         // check user/character match
 
-        $changeAllowed = true;
-        $raidInfo = Array();
-        $role = 0;
+        $ChangeAllowed = true;
+        $RaidInfo = Array();
+        $Role = 0;
 
         // Check if locked
 
         $LockCheckSt = $Connector->prepare("SELECT Stage,Mode,SlotsRole1,SlotsRole2,SlotsRole3,SlotsRole4,SlotsRole5 FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
-        $LockCheckSt->bindValue(":RaidId", $raidId, PDO::PARAM_INT);
+        $LockCheckSt->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
 
         if ( !$LockCheckSt->execute() )
         {
@@ -30,20 +30,20 @@ function msgRaidAttend( $Request )
 
         if ( $LockCheckSt->rowCount() > 0 )
         {
-            $raidInfo = $LockCheckSt->fetch( PDO::FETCH_ASSOC );
-            $changeAllowed = $raidInfo["Stage"] == "open";
+            $RaidInfo = $LockCheckSt->fetch( PDO::FETCH_ASSOC );
+            $ChangeAllowed = $RaidInfo["Stage"] == "open";
         }
 
         $LockCheckSt->closeCursor();
 
-        if ( $changeAllowed )
+        if ( $ChangeAllowed )
         {
             // Check if character matches user
 
-            if ( $attendanceIdx > 0)
+            if ( $AttendanceIdx > 0)
             {
                 $CheckSt = $Connector->prepare("SELECT UserId, Role1 FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharacterId LIMIT 1");
-                $CheckSt->bindValue(":CharacterId", $attendanceIdx, PDO::PARAM_INT);
+                $CheckSt->bindValue(":CharacterId", $AttendanceIdx, PDO::PARAM_INT);
 
                 if ( !$CheckSt->execute() )
                 {
@@ -53,14 +53,14 @@ function msgRaidAttend( $Request )
                 {
                     if ( $CheckSt->rowCount() > 0 )
                     {
-                        $characterInfo = $CheckSt->fetch( PDO::FETCH_ASSOC );
+                        $CharacterInfo = $CheckSt->fetch( PDO::FETCH_ASSOC );
 
-                        $changeAllowed &= ($characterInfo["UserId"] == $userId );
-                        $role = $characterInfo["Role1"];
+                        $ChangeAllowed &= ($CharacterInfo["UserId"] == $UserId );
+                        $Role = $CharacterInfo["Role1"];
                     }
                     else
                     {
-                        $changeAllowed = false;
+                        $ChangeAllowed = false;
                     }
                 }
 
@@ -69,13 +69,13 @@ function msgRaidAttend( $Request )
 
             // update/insert new attendance data
 
-            if ( $changeAllowed )
+            if ( $ChangeAllowed )
             {
-                $MaxSlotCount = $raidInfo["SlotsRole".($role+1)];
+                $MaxSlotCount = $RaidInfo["SlotsRole".($Role+1)];
 
                 $CheckSt = $Connector->prepare("SELECT UserId FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId AND RaidId = :RaidId LIMIT 1");
-                $CheckSt->bindValue(":UserId", $userId, PDO::PARAM_INT);
-                $CheckSt->bindValue(":RaidId", $raidId, PDO::PARAM_INT);
+                $CheckSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                $CheckSt->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
 
                 if ( !$CheckSt->execute() )
                 {
@@ -83,85 +83,85 @@ function msgRaidAttend( $Request )
                 }
                 else
                 {
-                    $attendSt = null;
-                    $changeComment = isset($Request["comment"]) && ($Request["comment"] != "");
+                    $AttendSt = null;
+                    $ChangeComment = isset($aRequest["comment"]) && ($aRequest["comment"] != "");
 
                     if ( $CheckSt->rowCount() > 0 )
                     {
-                        if ( $changeComment  )
+                        if ( $ChangeComment  )
                         {
-                            $attendSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
+                            $AttendSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
                                                             "CharacterId = :CharacterId, Status = :Status, Role = :Role, Comment = :Comment, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
                                                             "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
                         }
                         else
                         {
-                            $attendSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
+                            $AttendSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
                                                             "CharacterId = :CharacterId, Status = :Status, Role = :Role, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
                                                             "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );                            
                         }
                     }
                     else
                     {
-                        if ( $changeComment )
+                        if ( $ChangeComment )
                         {
-                            $attendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment, LastUpdate ) ".
+                            $AttendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment, LastUpdate ) ".
                                                             "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, :Comment, FROM_UNIXTIME(:Timestamp) )" );
                         }
                         else
                         {
-                            $attendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment, LastUpdate) ".
+                            $AttendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment, LastUpdate) ".
                                                             "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, '', FROM_UNIXTIME(:Timestamp) )" );
                         }
                     }
 
                     // Define the status and id to set
 
-                    if ( $attendanceIdx == -1 )
+                    if ( $AttendanceIdx == -1 )
                     {
-                        $status = "unavailable";
-                        $characterId = intval( $Request["fallback"] );
+                        $Status = "unavailable";
+                        $CharacterId = intval( $aRequest["fallback"] );
                     }
                     else
                     
                     {
-                        $characterId = $attendanceIdx;
+                        $CharacterId = $AttendanceIdx;
 
-                        switch ( $raidInfo["Mode"] )
+                        switch ( $RaidInfo["Mode"] )
                         {
                         case "all":
-                            $status = "ok";
+                            $Status = "ok";
                             break;
 
                         case "attend":
-                            $status = "ok";
+                            $Status = "ok";
                             // Gather slot usage
 
                             /*$AttendanceSt = $Connector->prepare("SELECT COUNT(Role) AS Count FROM `".RP_TABLE_PREFIX."Attendance` ".
                                                                 "WHERE RaidId = :RaidId AND Role = :RoleId ".
                                                                 "GROUP BY Role");
 
-                            $AttendanceSt->bindValue(":RaidId", $raidId, PDO::PARAM_INT);
-                            $AttendanceSt->bindValue(":RoleId", $role, PDO::PARAM_INT);
+                            $AttendanceSt->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+                            $AttendanceSt->bindValue(":RoleId", $Role, PDO::PARAM_INT);
 
                             if ( !$AttendanceSt->execute() )
                             {
                                 postErrorMessage( $AttendanceSt );
                                 $AttendanceSt->closeCursor();
-                                $status = "available";
+                                $Status = "available";
                             }
                             else
                             {
                                 if ( $Data = $AttendanceSt->fetch(PDO::FETCH_ASSOC) )
                                 {
                                     if ( ($Data["Count"] == null) || $Data["Count"] < $MaxSlotCount )
-                                        $status = "ok";
+                                        $Status = "ok";
                                     else
-                                        $status = "available";
+                                        $Status = "available";
                                 }
                                 else
                                 {
-                                    $status = "ok";
+                                    $Status = "ok";
                                 }
 
                                 $AttendanceSt->closeCursor();
@@ -170,31 +170,31 @@ function msgRaidAttend( $Request )
 
                         default:
                         case "manual":
-                            $status = "available";
+                            $Status = "available";
                             break;
                         }
                     }
 
                     // Add comment when setting absent status
 
-                    if ( $changeComment )
+                    if ( $ChangeComment )
                     {
-                        $comment = xmlentities( $Request["comment"], ENT_COMPAT, "UTF-8" );
-                        $attendSt->bindValue(":Comment", $comment, PDO::PARAM_INT);
+                        $Comment = xmlentities( $aRequest["comment"], ENT_COMPAT, "UTF-8" );
+                        $AttendSt->bindValue(":Comment", $Comment, PDO::PARAM_INT);
                     }
                     
-                    $attendSt->bindValue(":CharacterId", $characterId, PDO::PARAM_INT);
-                    $attendSt->bindValue(":RaidId",      $raidId,      PDO::PARAM_INT);
-                    $attendSt->bindValue(":UserId",      $userId,      PDO::PARAM_INT);
-                    $attendSt->bindValue(":Status",      $status,      PDO::PARAM_STR);
-                    $attendSt->bindValue(":Role",        $role,        PDO::PARAM_INT);
-                    $attendSt->bindValue(":Timestamp",   time(),       PDO::PARAM_INT);
+                    $AttendSt->bindValue(":CharacterId", $CharacterId, PDO::PARAM_INT);
+                    $AttendSt->bindValue(":RaidId",      $RaidId,      PDO::PARAM_INT);
+                    $AttendSt->bindValue(":UserId",      $UserId,      PDO::PARAM_INT);
+                    $AttendSt->bindValue(":Status",      $Status,      PDO::PARAM_STR);
+                    $AttendSt->bindValue(":Role",        $Role,        PDO::PARAM_INT);
+                    $AttendSt->bindValue(":Timestamp",   time(),       PDO::PARAM_INT);
 
-                    if (!$attendSt->execute())
+                    if (!$AttendSt->execute())
                     {
-                        postErrorMessage( $attendSt );
+                        postErrorMessage( $AttendSt );
                     }
-                    else if ( ($raidInfo["Mode"] == "attend") && ($status == "ok") )
+                    else if ( ($RaidInfo["Mode"] == "attend") && ($Status == "ok") )
                     {
                         // Check constraints for auto-attend
                         // This fixes a rare race condition where two (or more) players attend
@@ -205,8 +205,8 @@ function msgRaidAttend( $Request )
                                                             "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
                                                             "ORDER BY AttendanceId" );
 
-                        $AttendenceSt->bindValue(":RaidId", $raidId, PDO::PARAM_INT);
-                        $AttendenceSt->bindValue(":RoleId", $role, PDO::PARAM_INT);
+                        $AttendenceSt->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+                        $AttendenceSt->bindValue(":RoleId", $Role, PDO::PARAM_INT);
 
                         if (!$AttendenceSt->execute())
                         {
@@ -227,8 +227,8 @@ function msgRaidAttend( $Request )
                                                           "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
                                                           "AND AttendanceId > :FirstId" );
 
-                            $FixSt->bindValue(":RaidId", $raidId, PDO::PARAM_INT);
-                            $FixSt->bindValue(":RoleId", $role, PDO::PARAM_INT);
+                            $FixSt->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+                            $FixSt->bindValue(":RoleId", $Role, PDO::PARAM_INT);
                             $FixSt->bindValue(":FirstId", $Data["AttendanceId"], PDO::PARAM_INT);
 
                             if (!$FixSt->execute())
@@ -245,7 +245,7 @@ function msgRaidAttend( $Request )
                         $AttendenceSt->closeCursor();
                     }
 
-                    $attendSt->closeCursor();
+                    $AttendSt->closeCursor();
                 }
 
                 $CheckSt->closeCursor();
@@ -263,17 +263,17 @@ function msgRaidAttend( $Request )
         // reload calendar
 
         $RaidSt = $Connector->prepare("SELECT Start FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
-        $RaidSt->bindValue(":RaidId",  $raidId, PDO::PARAM_INT);
+        $RaidSt->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
         $RaidSt->execute();
 
         $RaidData = $RaidSt->fetch( PDO::FETCH_ASSOC );
 
         $RaidSt->closeCursor();
 
-        $showMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : intval( substr( $RaidData["Start"], 5, 2 ) );
-        $showYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : intval( substr( $RaidData["Start"], 0, 4 ) );
+        $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : intval( substr( $RaidData["Start"], 5, 2 ) );
+        $ShowYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : intval( substr( $RaidData["Start"], 0, 4 ) );
 
-        msgQueryCalendar( prepareCalRequest( $showMonth, $showYear ) );
+        msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
     }
     else
     {
