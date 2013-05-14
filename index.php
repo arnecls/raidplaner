@@ -73,7 +73,7 @@
                  isset($_REQUEST["pass"]) && 
                  !registeredUser() )
             {
-                echo "<script type=\"text/javascript\">g_AfterInit = function() { notify(L(\"WrongPassword\")); };</script>";
+                echo "<script type=\"text/javascript\">gAfterInit = function() { notify(L(\"WrongPassword\")); };</script>";
             }
         ?>
         
