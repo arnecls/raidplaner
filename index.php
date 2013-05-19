@@ -56,7 +56,6 @@
         <![endif]-->
         
         
-        <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $gSiteVersion; ?>"></script>
         <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $gSiteVersion; ?>"></script>
         
         <?php

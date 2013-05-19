@@ -20,4 +20,4 @@ function L( a_Key ) {
         return "LOCA_MISSING_"+a_Key;
 
     return g_Locale[a_Key];
-};
+}

@@ -8,18 +8,19 @@
         "jquery-1.9.1.min.js",
         "jquery-ui-1.10.0.custom.min.js",
         "jquery.ba-hashchange.min.js",
-        "config.js.php",
-        "messagehub.js",
-        "mobile.js",
-        "tooltip.js",
-        "main.js",
-        "hash.js",
         "crypto/md5.js",
         "crypto/sha1.js",
         "crypto/sha256.js",
         "crypto/sha512.js",
         "crypto/tripledes.js",
-        "crypto/bCrypt.js" );
+        "crypto/bCrypt.js",
+        "locale.js.php",        
+        "config.js.php",
+        "messagehub.js",
+        "mobile.js",
+        "tooltip.js",
+        "main.js",
+        "hash.js" );
         
     // Conditional scripts
     // When using release mode, this script should be loaded with an additional,
@@ -29,8 +30,8 @@
     if ( registeredUser() )
     {
         $Loader_files_opt = Array(
-            "sheet.js",
             "calendar.js",
+            "sheet.js",
             "raid.js",
             "raidlist.js",
             "profile.js",
