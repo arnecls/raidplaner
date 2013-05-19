@@ -183,11 +183,6 @@
     padding-top: 1px;
 }
 
-.secondaryAlpha {
-    opacity: 0.6;
-    filter:Alpha(opacity=60);
-}
-
 .playerTooltipText {
     float: left;
     margin-left: 10px;
@@ -440,7 +435,7 @@
     text-align: center;
 }
 
-.absent_hover {
+#absent_drop.absent_hover {
     background-color: rgb(200,160,160)!important;
     color: rgb(200,64,64)!important;
     box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.5)!important;

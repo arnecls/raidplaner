@@ -82,60 +82,15 @@
     display: inline-block;
 }
 
-#settings .propDeleteRaid {
+#settings .propLine {
     margin-bottom: 4px;
     width: 700px;
 }
 
-#settings .propLockRaid {
+#settings .propLineLast {
     margin-bottom: 14px;
     width: 700px;
 }
-
-#settings .propTimeFormat {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propStartOfWeek {
-    margin-bottom: 14px;
-    width: 700px;
-}
-
-#settings .propRaidStart {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propRaidEnd {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propRaidSize {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propRaidMode {
-    margin-bottom: 14px;
-    width: 700px;
-}
-
-#settings .propSite {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propBanner {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propBackground {
-    margin-bottom: 4px;
-    width: 700px;
-}    
 
 #settings .timeField {
     width: 32px;
@@ -188,13 +143,6 @@
     -webkit-border-radius: 6px;  
     -khtml-border-radius: 6px;
     border-radius: 6px;
-}
-
-#applyButton {
-    position: absolute;
-    top: 470px;
-    right: 4px;
-    white-space: nowrap;
 }
 
 #settings .user {
@@ -534,44 +482,9 @@
     margin-left: 0px;
 }
 
-.grpicon {
-    width: 32px;
-    height: 32px;
-    margin-left: 2px;
-    margin-right: 2px;
-    margin-top: 6px;
-    cursor: pointer;
-}
-
 .removeLink {
     width: 32px;
     height: 32px;
     margin-right: 8px;
     float: left;
-}
-
-.grpicon_off {
-    width: 32px;
-    height: 32px;
-    margin-left: 2px;
-    margin-right: 2px;
-    margin-top: 6px;    
-    opacity: 0.3;
-    filter:Alpha(opacity=30);
-}
-
-.grp_move_left {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background-repeat: no-repeat;
-    top: 65px;
-}
-
-.grp_move_right {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background-repeat: no-repeat;
-    top: 65px;
 }

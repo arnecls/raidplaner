@@ -428,3 +428,10 @@ a:hover {
     top: -26px;
     right: 26px;
 }
+
+#applyButton {
+    position: absolute;
+    top: 470px;
+    right: 4px;
+    white-space: nowrap;
+}
