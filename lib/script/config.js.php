@@ -8,9 +8,9 @@
     loadSiteSettings();
 ?>
 
-var g_SiteVersion = <?php echo floatval($_REQUEST["version"]) ?>;
+var gSiteVersion = <?php echo floatval($_REQUEST["version"]) ?>;
 var g_BannerLink = "<?php echo $gSite["BannerLink"]; ?>";
-var g_TimeFormat = <?php echo $gSite["TimeFormat"]; ?>;
+var gTimeFormat = <?php echo $gSite["TimeFormat"]; ?>;
 
 var g_Theme = {
     background : "<?php echo $gSite["Background"]; ?>",
@@ -110,7 +110,7 @@ function onChangeConfig()
 
 function formatTime(a_Hour, a_Minute)
 {
-    if ( g_TimeFormat == 12 )
+    if ( gTimeFormat == 12 )
     {
         var numericHour = parseInt(a_Hour, 10);
         var postFix = " pm";
@@ -146,7 +146,7 @@ function formatTimeString( a_String )
 
 function formatHourPrefixed( a_Hour )
 {
-    if ( g_TimeFormat == 12 )
+    if ( gTimeFormat == 12 )
     {
         var numericHour = parseInt(a_Hour, 10);
         var preFix = "pm ";
