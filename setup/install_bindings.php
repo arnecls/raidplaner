@@ -9,6 +9,7 @@
     @include_once(dirname(__FILE__)."/../lib/config/config.smf.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.vanilla.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.joomla3.php");
+    @include_once(dirname(__FILE__)."/../lib/config/config.drupal.php");
     
     if ( defined("PHPBB3_BINDING") && PHPBB3_BINDING )
     {
@@ -119,6 +120,24 @@
         
         $Groups->closeCursor(); 
     }
+    
+    if ( defined("DRUPAL_BINDING") && DRUPAL_BINDING )
+    {
+        require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
+    
+        $Connector = new Connector(SQL_HOST, DRUPAL_DATABASE, DRUPAL_USER, DRUPAL_PASS); 
+        $Groups = $Connector->prepare( "SELECT rid, name FROM `".DRUPAL_TABLE_PREFIX."role` ORDER BY name" );
+        
+        $Groups->execute();        
+        $DrupalGroups = Array();
+        
+        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        {
+            array_push( $DrupalGroups, $Group );
+        }
+        
+        $Groups->closeCursor(); 
+    }
 ?>
 <?php include("layout/header.html"); ?>
 
@@ -147,6 +166,7 @@
     <div id="button_smf" class="tab_inactive" onclick="showConfig('smf')"><input type="checkbox" id="allow_smf"<?php echo (defined("SMF_BINDING") && SMF_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("SMFBinding"); ?></div>
     <div id="button_vanilla" class="tab_inactive" onclick="showConfig('vanilla')"><input type="checkbox" id="allow_vanilla"<?php echo (defined("VANILLA_BINDING") && VANILLA_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("VanillaBinding"); ?></div>
     <div id="button_joomla" class="tab_inactive" onclick="showConfig('joomla')"><input type="checkbox" id="allow_joomla"<?php echo (defined("JML3_BINDING") && JML3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("JoomlaBinding"); ?></div>
+    <div id="button_drupal" class="tab_inactive" onclick="showConfig('drupal')"><input type="checkbox" id="allow_drupal"<?php echo (defined("DRUPAL_BINDING") && DRUPAL_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("DrupalBinding"); ?></div>
     </div>
 </div>
 
@@ -462,6 +482,57 @@
                 foreach( $JoomlaGroups as $Group )
                 {
                     echo "<option value=\"".$Group["id"]."\"".((in_array($Group["id"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["title"]."</option>";
+                }
+            }
+        ?>
+        </select>
+    </div>                    
+</div>
+
+<div id="drupal" style="display: none" class="config">
+    <div>
+        <h2><?php echo L("DrupalBinding"); ?></h2>
+        <input type="text" id="drupal_database" value="<?php echo (defined("DRUPAL_DATABASE")) ? DRUPAL_DATABASE : "drupal" ?>"/> <?php echo L("DrupalDatabase"); ?><br/>
+        <input type="text" id="drupal_user" value="<?php echo (defined("DRUPAL_TABLE")) ? DRUPAL_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="password" id="drupal_password" value="<?php echo (defined("DRUPAL_PASS")) ? DRUPAL_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
+        <input type="password" id="drupal_password_check" value="<?php echo (defined("DRUPAL_PASS")) ? DRUPAL_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
+        <input type="text" id="drupal_prefix" value="<?php echo (defined("DRUPAL_TABLE_PREFIX")) ? DRUPAL_TABLE_PREFIX : "JML_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
+    </div>
+    
+    <div style="margin-top: 1em">
+        <button onclick="ReloadDrupalGroups()"><?php echo L("LoadGroups"); ?></button><br/><br/>
+        
+        <?php echo L("AutoMemberLogin"); ?><br/>
+        <select id="drupal_member" multiple="multiple" style="width: 400px; height: 5.5em">
+        <?php
+            if ( defined("DRUPAL_BINDING") && DRUPAL_BINDING )
+            {
+                $GroupIds = array();
+                
+                if ( defined("DRUPAL_MEMBER_GROUPS") )
+                    $GroupIds = explode( ",", DRUPAL_MEMBER_GROUPS );
+                
+                foreach( $DrupalGroups as $Group )
+                {
+                    echo "<option value=\"".$Group["rid"]."\"".((in_array($Group["rid"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["name"]."</option>";
+                }
+            }
+        ?>
+        </select>
+        <br/><br/>
+        <?php echo L("AutoLeadLogin"); ?><br/>
+        <select id="drupal_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
+        <?php
+            if ( defined("DRUPAL_BINDING") && DRUPAL_BINDING )
+            {
+                $GroupIds = array();
+                
+                if ( defined("DRUPAL_RAIDLEAD_GROUPS") )
+                    $GroupIds = explode( ",", DRUPAL_RAIDLEAD_GROUPS );
+                
+                foreach( $DrupalGroups as $Group )
+                {
+                    echo "<option value=\"".$Group["rid"]."\"".((in_array($Group["rid"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["name"]."</option>";
                 }
             }
         ?>

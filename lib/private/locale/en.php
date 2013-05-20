@@ -347,5 +347,12 @@
         $gLocale[ "JoomlaDatabase" ]           = "Joomla3 database";
         $gLocale[ "JoomlaPasswordEmpty" ]      = "Joomla3 Database password must not be empty.";
         $gLocale[ "JoomlaDBPasswordsMatch" ]   = "Joomla3 Database passwords did not match.";
+        
+        // Drupal
+        $gLocale[ "DrupalBinding" ]            = "Drupal";
+        $gLocale[ "DrupalConfigFile" ]         = "Drupal config file";
+        $gLocale[ "DrupalDatabase" ]           = "Drupal database";
+        $gLocale[ "DrupalPasswordEmpty" ]      = "Drupal Database password must not be empty.";
+        $gLocale[ "DrupalDBPasswordsMatch" ]   = "Drupal Database passwords did not match.";
     }
 ?>

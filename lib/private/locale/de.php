@@ -345,6 +345,13 @@
         $gLocale[ "JoomlaConfigFile" ]         = "Joomla3 Konfigurationsdatei";
         $gLocale[ "JoomlaDatabase" ]           = "Name der Joomla3 Datenbank";
         $gLocale[ "JoomlaPasswordEmpty" ]      = "Joomla3 Datenbank Passwort darf nicht leer sein.";
-        $gLocale[ "JoomlaDBPasswordsMatch" ]   = "Joomla3 Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";
+        $gLocale[ "JoomlaDBPasswordsMatch" ]   = "Joomla3 Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";      
+        
+        // Drupal
+        $gLocale[ "DrupalBinding" ]            = "Drupal";
+        $gLocale[ "DrupalConfigFile" ]         = "Drupal Konfigurationsdatei";
+        $gLocale[ "DrupalDatabase" ]           = "Name der Drupal Datenbank";
+        $gLocale[ "DrupalPasswordEmpty" ]      = "Drupal Datenbank Passwort darf nicht leer sein.";
+        $gLocale[ "DrupalDBPasswordsMatch" ]   = "Drupal Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";
     }
 ?>

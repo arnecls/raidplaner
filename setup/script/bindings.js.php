@@ -190,6 +190,37 @@ function OnReloadJoomla( a_XMLData )
 
 // ----------------------------------------------------------------------------
 
+function OnReloadDrupal( a_XMLData )
+{
+    var groups = $(a_XMLData).children("grouplist");
+    
+    if ( groups.children("error").size() > 0 )
+    {
+        var errorString = "";
+        
+        groups.children("error").each( function() {
+            errorString += $(this).text() + "\n";
+        });
+        
+        alert("<?php echo L("ReloadFailed"); ?>:\n\n" + errorString );
+        return;
+    }
+    
+    HTMLString = "";
+    
+    groups.children("group").each( function() {
+        var id = $(this).children("id").text();
+        var name = $(this).children("name").text();
+        
+        HTMLString += "<option value=\"" + id + "\">" + name + "</option>";
+    });
+    
+    $("#drupal_member").empty().append( HTMLString );
+    $("#drupal_raidlead").empty().append( HTMLString );
+}
+
+// ----------------------------------------------------------------------------
+
 function OnCheckEQDKP( a_XMLData )
 {
     var groups = $(a_XMLData).children("grouplist");
@@ -409,6 +440,39 @@ function ReloadJoomlaGroups()
 
 // ----------------------------------------------------------------------------
 
+function ReloadDrupalGroups() 
+{
+    if ( $("#drupal_password").val().length == 0 )
+    {
+        alert("<?php echo L("DrupalPasswordEmpty"); ?>");
+        return;
+    }
+    
+    if ( $("#drupal_password").val() != $("#drupal_password_check").val() )
+    {
+        alert("<?php echo L("DrupalDBPasswordsMatch"); ?>");
+        return;
+    }
+    
+    var parameter = {
+        database : $("#drupal_database").val(),
+        user     : $("#drupal_user").val(),
+        password : $("#drupal_password").val(),
+        prefix   : $("#drupal_prefix").val()
+    };
+    
+    $.ajax({
+        type     : "POST",
+        url      : "query/groups_drupal.php",
+        dataType : "xml",
+        async    : true,
+        data     : parameter,
+        success  : OnReloadDrupal
+    });
+}
+
+// ----------------------------------------------------------------------------
+
 function CheckEQDKP()
 {
     if ( $("#eqdkp_password").val().length == 0 )
@@ -451,6 +515,7 @@ function CheckBindingForm(a_Parameter)
     var useSMF = $("#allow_smf:checked").val() == "on";
     var useVanilla = $("#allow_vanilla:checked").val() == "on";
     var useJoomla = $("#allow_joomla:checked").val() == "on";
+    var useDrupal = $("#allow_drupal:checked").val() == "on";
     
     if ( usePhpBB )
     {
@@ -556,6 +621,21 @@ function CheckBindingForm(a_Parameter)
             return;
         }
     }
+    
+    if ( useDrupal )
+    {    
+        if ( $("#drupal_password").val().length == 0 )
+        {
+            alert("<?php echo L("DrupalPasswordEmpty"); ?>");
+            return;
+        }
+        
+        if ( $("#drupal_password").val() != $("#drupal_password_check").val() )
+        {
+            alert("<?php echo L("DrupalDBPasswordsMatch"); ?>");
+            return;
+        }
+    }
         
     var parameter = {
         phpbb3_check    : usePhpBB,
@@ -598,7 +678,13 @@ function CheckBindingForm(a_Parameter)
         joomla_database : $("#joomla_database").val(),
         joomla_user     : $("#joomla_user").val(),
         joomla_password : $("#joomla_password").val(),
-        joomla_prefix   : $("#joomla_prefix").val()
+        joomla_prefix   : $("#joomla_prefix").val(),
+    
+        drupal_check    : useDrupal,
+        drupal_database : $("#drupal_database").val(),
+        drupal_user     : $("#drupal_user").val(),
+        drupal_password : $("#drupal_password").val(),
+        drupal_prefix   : $("#drupal_prefix").val()
     };
     
     $.ajax({
@@ -713,6 +799,20 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
         joomla_raidLeadGroups.push( $(this).val() );
     });
     
+    // dupal
+    
+    var drupal_memberGroups = [];
+    
+    $("#drupal_member option:selected").each( function() {
+        drupal_memberGroups.push( $(this).val() );
+    });
+    
+    var drupal_raidLeadGroups = [];
+    
+    $("#drupal_raidlead option:selected").each( function() {
+        drupal_raidLeadGroups.push( $(this).val() );
+    });
+    
     var parameter = {
         phpbb3_allow    : $("#allow_phpbb3:checked").val() == "on",
         phpbb3_database : $("#phpbb3_database").val(),
@@ -766,7 +866,15 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
         joomla_password : $("#joomla_password").val(),
         joomla_prefix   : $("#joomla_prefix").val(),
         joomla_member   : joomla_memberGroups,
-        joomla_raidlead : joomla_raidLeadGroups
+        joomla_raidlead : joomla_raidLeadGroups,
+
+        drupal_allow    : $("#allow_drupal:checked").val() == "on",
+        drupal_database : $("#drupal_database").val(),
+        drupal_user     : $("#drupal_user").val(),
+        drupal_password : $("#drupal_password").val(),
+        drupal_prefix   : $("#drupal_prefix").val(),
+        drupal_member   : drupal_memberGroups,
+        drupal_raidlead : drupal_raidLeadGroups
     };
     
     $.ajax({

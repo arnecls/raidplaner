@@ -13,6 +13,7 @@
     $Smf_config = fopen( "../../lib/config/config.smf.php", "w+" );
     $Vanilla_config = fopen( "../../lib/config/config.vanilla.php", "w+" );
     $Joomla_config = fopen( "../../lib/config/config.joomla3.php", "w+" );
+    $Drupal_config = fopen( "../../lib/config/config.drupal.php", "w+" );
     
     
     // phpbb3
@@ -144,6 +145,25 @@
     
     fwrite( $Joomla_config, "?>");    
     fclose( $Joomla_config );
+    
+    // Drupal
+    
+    fwrite( $Drupal_config, "<?php\n");
+    fwrite( $Drupal_config, "\tdefine(\"DRUPAL_BINDING\", ".$_REQUEST["drupal_allow"].");\n");
+    
+    if ( $_REQUEST["smf_allow"] )
+    {
+        fwrite( $Drupal_config, "\tdefine(\"DRUPAL_DATABASE\", \"".$_REQUEST["drupal_database"]."\");\n");
+        fwrite( $Drupal_config, "\tdefine(\"DRUPAL_USER\", \"".$_REQUEST["drupal_user"]."\");\n");
+        fwrite( $Drupal_config, "\tdefine(\"DRUPAL_PASS\", \"".$_REQUEST["drupal_password"]."\");\n");
+        fwrite( $Drupal_config, "\tdefine(\"DRUPAL_TABLE_PREFIX\", \"".$_REQUEST["drupal_prefix"]."\");\n");
+    
+        fwrite( $Drupal_config, "\tdefine(\"DRUPAL_MEMBER_GROUPS\", \"".implode( ",", $_REQUEST["drupal_member"] )."\");\n");
+        fwrite( $Drupal_config, "\tdefine(\"DRUPAL_RAIDLEAD_GROUPS\", \"".implode( ",", $_REQUEST["drupal_raidlead"] )."\");\n");
+    }
+    
+    fwrite( $Drupal_config, "?>");    
+    fclose( $Drupal_config );
     
     echo "</bindings>";    
 ?>
