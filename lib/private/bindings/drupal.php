@@ -174,15 +174,15 @@
                 $Value = ord($aInput[$i++]);
                 $Output .= self::$Itoa64[$Value & 0x3f];
                 
-                if ($i < $Count)
+                if ($i < $aCount)
                    $Value |= ord($aInput[$i]) << 8;
                 
                 $Output .= self::$Itoa64[($Value >> 6) & 0x3f];
                 
-                if ($i++ >= $Count)
+                if ($i++ >= $aCount)
                    break;
                 
-                if ($i < $Count)
+                if ($i < $aCount)
                    $Value |= ord($aInput[$i]) << 16;
                 
                 $Output .= self::$Itoa64[($Value >> 12) & 0x3f];
@@ -201,9 +201,9 @@
         public static function hash( $aPassword, $aSalt, $aMethod )
         {
             $Password = $aPassword;
-            $Prefix = "";
+            $Prefix = '';
             
-            switch($aSalt)
+            switch($aMethod)
             {
             case self::$HashMethod_sha512:
                 $Prefix = '$S$';
@@ -211,7 +211,7 @@
             
             case self::$HashMethod_usha512:
                 $Password = md5($Password);
-                $Prefix = 'U$S$';
+                $Prefix = '$S$';
                 break;
             
             case self::$HashMethod_uhmd5:
@@ -223,7 +223,7 @@
                 $Prefix = '$H$';
                 break;
             
-            case self::$HashMethod_uphmd5:
+            case self::$HashMethod_upmd5:
                 $Password = md5($Password);
                 $Prefix = 'U$P$';
                 break;
@@ -249,7 +249,7 @@
                 
                 do {
                     $Hash = hash("sha512", $Hash.$Password, TRUE);
-                } while (--$count);
+                } while (--$Count);
                 
                 $Hash = self::encode64($Hash,64);
             }
@@ -263,8 +263,8 @@
                 
                 $Hash = self::encode64($Hash,16);
             }
-                
-            return $Prefix.self::$Itoa64[$CountB2].$Salt.$Hash;
+            
+            return substr($Prefix.self::$Itoa64[$CountB2].$Salt.$Hash, 0, 55);
         }
     }
 ?>

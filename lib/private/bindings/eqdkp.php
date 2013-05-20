@@ -189,15 +189,15 @@
                 $Value = ord($aInput[$i++]);
                 $Output .= self::$Itoa64[$Value & 0x3f];
                 
-                if ($i < $Count)
+                if ($i < $aCount)
                    $Value |= ord($aInput[$i]) << 8;
                 
                 $Output .= self::$Itoa64[($Value >> 6) & 0x3f];
                 
-                if ($i++ >= $Count)
+                if ($i++ >= $aCount)
                    break;
                 
-                if ($i < $Count)
+                if ($i < $aCount)
                    $Value |= ord($aInput[$i]) << 16;
                 
                 $Output .= self::$Itoa64[($Value >> 12) & 0x3f];
