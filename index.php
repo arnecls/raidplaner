@@ -25,10 +25,11 @@
 <html>
     <head>
         <title>Raidplaner</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-        <meta name="keywords" content="raidplaner, ppx">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta name="keywords" content="raidplaner, ppx"/>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
         
-        <link rel="icon" href="favicon.png" type="image/png">
+        <link rel="icon" href="favicon.png" type="image/png"/>
         
         <?php
             define("STYLE_DEBUG", true);
