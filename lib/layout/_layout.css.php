@@ -1,6 +1,6 @@
 <?php
     $LoaderFiles = Array(        
-        "jquery-ui-1.10.0.custom.min.css",
+        "jquery-ui-1.10.3.custom.min.css",
         "default.css",
         "combobox.css",
         "calendar.css",

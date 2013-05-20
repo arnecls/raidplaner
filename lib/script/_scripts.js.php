@@ -6,7 +6,7 @@
     
     $Loader_files_base = Array( 
         "jquery-1.9.1.min.js",
-        "jquery-ui-1.10.0.custom.min.js",
+        "jquery-ui-1.10.3.custom.min.js",
         "jquery.ba-hashchange.min.js",
         "crypto/md5.js",
         "crypto/sha1.js",
