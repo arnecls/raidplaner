@@ -178,11 +178,11 @@ function parseRaidQuery( $QueryResult, $Limit )
                 echo "<start>".leadingZero10($StartDate["hours"]).":".leadingZero10($StartDate["minutes"])."</start>";
                 echo "<end>".leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"])."</end>";
                 echo "<image>".$Data["Image"]."</image>";
-                echo "<description>".$Data["Description"]."</description>\n";
-                echo "<status>".$Status."</status>\n";
-                echo "<attendanceIndex>".$AttendanceIndex."</attendanceIndex>\n";
-                echo "<comment>".$Comment."</comment>\n";
-                echo "<role>".$Role."</role>\n";
+                echo "<description>".$Data["Description"]."</description>";
+                echo "<status>".$Status."</status>";
+                echo "<attendanceIndex>".$AttendanceIndex."</attendanceIndex>";
+                echo "<comment>".$Comment."</comment>";
+                echo "<role>".$Role."</role>";
 
                 for ( $i=0; $i < sizeof($gRoles); ++$i )
                 {
