@@ -294,8 +294,8 @@
         
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Lade Gruppen mit den angegebenen Verbindungsdaten";
-        $gLocale[ "AutoMemberLogin" ]          = "Benutzer der folgenden Gruppe bekommen automatisch \"Mitglieder\" Rechte beim ersten login"; 
-        $gLocale[ "AutoLeadLogin" ]            = "Benutzer der folgenden Gruppe bekommen automatisch \"Raidleiter\" Rechte beim ersten login";
+        $gLocale[ "AutoMemberLogin" ]          = "Benutzer der folgenden, ausgew&auml;lten Gruppe(n) werden als \"Mitglieder\" angemeldet:"; 
+        $gLocale[ "AutoLeadLogin" ]            = "Benutzer der folgenden, ausgew&auml;lten Gruppe(n) werden als \"Raidleiter\" angemeldet:";
         $gLocale[ "ReloadFailed" ]             = "Ladevorgang fehlgeschlagen";
         
         // PHPBB3 

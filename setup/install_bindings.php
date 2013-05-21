@@ -14,129 +14,172 @@
     if ( defined("PHPBB3_BINDING") && PHPBB3_BINDING )
     {
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
-    
-        $Connector = new Connector(SQL_HOST, PHPBB3_DATABASE, PHPBB3_USER, PHPBB3_PASS); 
-        $Groups = $Connector->prepare( "SELECT group_id, group_name FROM `".PHPBB3_TABLE_PREFIX."groups` ORDER BY group_name" );
-        
-        $Groups->execute();        
         $PHPBB3Groups = Array();
         
-        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        try
         {
-            array_push( $PHPBB3Groups, $Group );
+            $Connector = new Connector(SQL_HOST, PHPBB3_DATABASE, PHPBB3_USER, PHPBB3_PASS, true); 
+            $Groups = $Connector->prepare( "SELECT group_id, group_name FROM `".PHPBB3_TABLE_PREFIX."groups` ORDER BY group_name" );
+            
+            $Groups->execute();        
+            
+            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            {
+                array_push( $PHPBB3Groups, $Group );
+            }
+            
+            $Groups->closeCursor(); 
         }
-        
-        $Groups->closeCursor();     
+        catch(PDOException $Exception)
+        {
+        }
     }
     
     if ( defined("VB3_BINDING") && VB3_BINDING )
     {
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
-    
-        $Connector = new Connector(SQL_HOST, VB3_DATABASE, VB3_USER, VB3_PASS); 
-        $Groups = $Connector->prepare( "SELECT usergroupid, title FROM `".VB3_TABLE_PREFIX."usergroup` ORDER BY title" );
-        
-        $Groups->execute();        
         $VB3Groups = Array();
         
-        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        try
         {
-            array_push( $VB3Groups, $Group );
+            $Connector = new Connector(SQL_HOST, VB3_DATABASE, VB3_USER, VB3_PASS, true); 
+            $Groups = $Connector->prepare( "SELECT usergroupid, title FROM `".VB3_TABLE_PREFIX."usergroup` ORDER BY title" );
+            
+            $Groups->execute();        
+            
+            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            {
+                array_push( $VB3Groups, $Group );
+            }
+            
+            $Groups->closeCursor();
         }
-        
-        $Groups->closeCursor(); 
+        catch(PDOException $Exception)
+        {
+        }
     }
     
     if ( defined("MYBB_BINDING") && MYBB_BINDING )
     {
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
-    
-        $Connector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS); 
-        $Groups = $Connector->prepare( "SELECT gid, title FROM `".MYBB_TABLE_PREFIX."usergroups` ORDER BY title" );
-        
-        $Groups->execute();        
         $MyBBGroups = Array();
         
-        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        try
         {
-            array_push( $MyBBGroups, $Group );
+            $Connector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS, true); 
+            $Groups = $Connector->prepare( "SELECT gid, title FROM `".MYBB_TABLE_PREFIX."usergroups` ORDER BY title" );
+            
+            $Groups->execute();        
+            
+            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            {
+                array_push( $MyBBGroups, $Group );
+            }
+            
+            $Groups->closeCursor(); 
         }
-        
-        $Groups->closeCursor(); 
+        catch(PDOException $Exception)
+        {
+        }
     }
     
     if ( defined("SMF_BINDING") && SMF_BINDING )
     {
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
-    
-        $Connector = new Connector(SQL_HOST, SMF_DATABASE, SMF_USER, SMF_PASS); 
-        $Groups = $Connector->prepare( "SELECT id_group, group_name FROM `".SMF_TABLE_PREFIX."membergroups` ORDER BY group_name" );
-        
-        $Groups->execute();        
         $SMFGroups = Array();
         
-        array_push( $SMFGroups, Array("id_group" => 0, "group_name" => "Board default") );
-        
-        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        try
         {
-            array_push( $SMFGroups, $Group );
+            $Connector = new Connector(SQL_HOST, SMF_DATABASE, SMF_USER, SMF_PASS, true); 
+            $Groups = $Connector->prepare( "SELECT id_group, group_name FROM `".SMF_TABLE_PREFIX."membergroups` ORDER BY group_name" );
+            
+            $Groups->execute();        
+            
+            array_push( $SMFGroups, Array("id_group" => 0, "group_name" => "Board default") );
+            
+            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            {
+                array_push( $SMFGroups, $Group );
+            }
+            
+            $Groups->closeCursor(); 
         }
-        
-        $Groups->closeCursor(); 
+        catch(PDOException $Exception)
+        {
+        }
     }
     
     if ( defined("VANILLA_BINDING") && VANILLA_BINDING )
     {
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
-    
-        $Connector = new Connector(SQL_HOST, VANILLA_DATABASE, VANILLA_USER, VANILLA_PASS); 
-        $Groups = $Connector->prepare( "SELECT RoleID, Name FROM `".VANILLA_TABLE_PREFIX."Role` ORDER BY Name" );
-        
-        $Groups->execute();        
         $VanillaGroups = Array();
         
-        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        try
         {
-            array_push( $VanillaGroups, $Group );
+            $Connector = new Connector(SQL_HOST, VANILLA_DATABASE, VANILLA_USER, VANILLA_PASS, true); 
+            $Groups = $Connector->prepare( "SELECT RoleID, Name FROM `".VANILLA_TABLE_PREFIX."Role` ORDER BY Name" );
+            
+            $Groups->execute();        
+            
+            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            {
+                array_push( $VanillaGroups, $Group );
+            }
+            
+            $Groups->closeCursor(); 
         }
-        
-        $Groups->closeCursor(); 
+        catch(PDOException $Exception)
+        {
+        }
     }
     
     if ( defined("JML3_BINDING") && JML3_BINDING )
     {
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
-    
-        $Connector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS); 
-        $Groups = $Connector->prepare( "SELECT id, title FROM `".JML3_TABLE_PREFIX."usergroups` ORDER BY title" );
-        
-        $Groups->execute();        
         $JoomlaGroups = Array();
         
-        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        try
         {
-            array_push( $JoomlaGroups, $Group );
+            $Connector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS, true); 
+            $Groups = $Connector->prepare( "SELECT id, title FROM `".JML3_TABLE_PREFIX."usergroups` ORDER BY title" );
+            
+            $Groups->execute();        
+            
+            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            {
+                array_push( $JoomlaGroups, $Group );
+            }
+            
+            $Groups->closeCursor();
+         
         }
-        
-        $Groups->closeCursor(); 
+        catch(PDOException $Exception)
+        {
+        }
     }
     
     if ( defined("DRUPAL_BINDING") && DRUPAL_BINDING )
     {
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
-    
-        $Connector = new Connector(SQL_HOST, DRUPAL_DATABASE, DRUPAL_USER, DRUPAL_PASS); 
-        $Groups = $Connector->prepare( "SELECT rid, name FROM `".DRUPAL_TABLE_PREFIX."role` ORDER BY name" );
-        
-        $Groups->execute();        
         $DrupalGroups = Array();
         
-        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        try
         {
-            array_push( $DrupalGroups, $Group );
+            $Connector = new Connector(SQL_HOST, DRUPAL_DATABASE, DRUPAL_USER, DRUPAL_PASS, true); 
+            $Groups = $Connector->prepare( "SELECT rid, name FROM `".DRUPAL_TABLE_PREFIX."role` ORDER BY name" );
+            
+            $Groups->execute();        
+            
+            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            {
+                array_push( $DrupalGroups, $Group );
+            }
+            
+            $Groups->closeCursor(); 
         }
-        
-        $Groups->closeCursor(); 
+        catch(PDOException $Exception)
+        {
+        }
     }
 ?>
 <?php include("layout/header.html"); ?>
@@ -496,7 +539,7 @@
         <input type="text" id="drupal_user" value="<?php echo (defined("DRUPAL_TABLE")) ? DRUPAL_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="drupal_password" value="<?php echo (defined("DRUPAL_PASS")) ? DRUPAL_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="drupal_password_check" value="<?php echo (defined("DRUPAL_PASS")) ? DRUPAL_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
-        <input type="text" id="drupal_prefix" value="<?php echo (defined("DRUPAL_TABLE_PREFIX")) ? DRUPAL_TABLE_PREFIX : "JML_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
+        <input type="text" id="drupal_prefix" value="<?php echo (defined("DRUPAL_TABLE_PREFIX")) ? DRUPAL_TABLE_PREFIX : "" ?>"/> <?php echo L("TablePrefix"); ?><br/>
     </div>
     
     <div style="margin-top: 1em">

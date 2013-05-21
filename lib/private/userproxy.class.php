@@ -52,6 +52,7 @@
         private static $mStickyCookieName = "ppx_raidplaner_sticky";
         private static $mCryptName = "rijndael-256";
         private static $mBindings;
+        private static $mBindingsByName;
     
         public $UserId     = 0;
         public $UserName   = "";
@@ -62,15 +63,20 @@
 
         public static function initBindings()
         {
+            $NativeBinding = new NativeBinding();
             self::$mBindings = array(
-                "none" => new NativeBinding("none"), // native has to be first
+                $NativeBinding // native has to be first
             );
+            
+            self::$mBindingsByName[$NativeBinding->BindingName] = $NativeBinding;
             
             foreach(PluginRegistry::$Classes as $PluginName)
             {
-                $PluginDesc = new ReflectionClass($PluginName);
-                $Plugin = $PluginDesc->newInstance();
-                self::$mBindings[$Plugin->BindingName] = $Plugin;
+                $Plugin = new ReflectionClass($PluginName);
+                $PluginInstance = $Plugin->newInstance();
+                array_push(self::$mBindings, $PluginInstance);
+                
+                self::$mBindingsByName[$PluginInstance->BindingName] = $PluginInstance;
             }
         }
 
@@ -237,7 +243,7 @@
 
         private function validateCleartextPassword( $aPassword, $aUserId, $aBindingName )
         {
-            $Binding  = self::$mBindings[$aBindingName];
+            $Binding  = self::$mBindingsByName[$aBindingName];
             $UserInfo = $Binding->getUserInfoById($aUserId);
             
             if ($UserInfo == null)
@@ -365,7 +371,7 @@
                 if (defined("USE_CLEARTEXT_PASSWORDS") && USE_CLEARTEXT_PASSWORDS)
                     $HashMethod = "cleartext";
                 else
-                    $HashMethod = self::$mBindings[$aUserInfo->PassBinding]->getMethodFromPass($aUserInfo->Password);
+                    $HashMethod = self::$mBindingsByName[$aUserInfo->PassBinding]->getMethodFromPass($aUserInfo->Password);
                 
                 return Array( "salt"   => $aUserInfo->Salt, 
                               "key"    => $OneTimeKey, 
@@ -427,7 +433,7 @@
 
         public function getUserInfoById( $aBindingName, $aExternalId )
         {
-            $Binding = self::$mBindings[$aBindingName];
+            $Binding = self::$mBindingsByName[$aBindingName];
             
             if ( $Binding->isActive() )
             {                    
@@ -717,7 +723,7 @@
             {
                 if ( $aIsStoredLocally )
                 {
-                    $ExternalInfo = self::$mBindings[$UserInfo->PassBinding]->getUserInfoById($UserInfo->UserId);
+                    $ExternalInfo = self::$mBindingsByName[$UserInfo->PassBinding]->getUserInfoById($UserInfo->UserId);
                     if ( $ExternalInfo != null )
                         $UserInfo = $ExternalInfo;
                 }
@@ -766,7 +772,7 @@
             }
             else
             {
-                $ExternalUserInfo = self::$mBindings[$UserData["ExternalBinding"]]->getUserInfoById($UserData["ExternalId"]);
+                $ExternalUserInfo = self::$mBindingsByName[$UserData["ExternalBinding"]]->getUserInfoById($UserData["ExternalId"]);
             
                 if ($ExternalUserInfo == null)
                 {

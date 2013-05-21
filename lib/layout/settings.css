@@ -155,6 +155,16 @@
 
 #settings .user .userImage {
     float: left;
+    width: 32px;
+    height: 32px;
+}
+
+#settings .user .overlayLocked {
+    background-image: url(images/raid_locked_small.png);
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
+    float: left;
 }
 
 #settings .user .userName {

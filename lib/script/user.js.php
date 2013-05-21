@@ -19,12 +19,12 @@
             {
                 if ($First)
                 {
-                    echo intval( $Character->CharacterId );
+                    echo "\"".intval( $Character->CharacterId )."\"";
                     $First = false;
                 }
                 else
                 {
-                    echo ", ".intval( $Character->CharacterId );
+                    echo ", \"".intval( $Character->CharacterId )."\"";
                 }
             }
         }
@@ -57,12 +57,12 @@
             {
                 if ($First)
                 {
-                    echo $Character->Role1;
+                    echo "\"".$Character->Role1."\"";
                     $First = false;
                 }
                 else
                 {
-                    echo ", ".$Character->Role1;
+                    echo ", \"".$Character->Role1."\"";
                 }
             }
         }
@@ -76,12 +76,12 @@
             {
                 if ($First)
                 {
-                    echo $Character->Role2;
+                    echo "\"".$Character->Role2."\"";
                     $First = false;
                 }
                 else
                 {
-                    echo ", ".$Character->Role2;
+                    echo ", \"".$Character->Role2."\"";
                 }
             }
         }

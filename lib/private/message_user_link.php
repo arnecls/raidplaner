@@ -43,7 +43,7 @@ function tryGetUserLink( $UserId )
             
             $Filtered = array();
             
-            while( list($BindingName, $UserInfo) = each($Candidate) )
+            while( list($BindingName, $UserInfo) = each($Candidates) )
             {
                 if ( $UserInfo->UserName == $UserData["Login"] )
                 {

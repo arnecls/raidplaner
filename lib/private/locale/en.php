@@ -294,8 +294,8 @@
         
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Load groups using these settings";
-        $gLocale[ "AutoMemberLogin" ]          = "Users of the following groups gain \"member\" rights upon first login";
-        $gLocale[ "AutoLeadLogin" ]            = "Users of the following groups gain \"raidlead\" rights upon first login";
+        $gLocale[ "AutoMemberLogin" ]          = "Users of the following, selected group(s) log in as \"members\":";
+        $gLocale[ "AutoLeadLogin" ]            = "Users of the following, selected group(s) log in as \"raidleads\":";
         $gLocale[ "ReloadFailed" ]             = "Reload failed";
         
         
