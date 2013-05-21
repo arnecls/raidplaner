@@ -196,6 +196,38 @@
         ++$TestsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
     }
+    
+    // Joomla config file check
+
+    echo "<br/><span class=\"check_field\">".L("JoomlaConfigFile")."</span>";
+    $JmlConfigFileState = (!file_exists("../lib/config/config.joomla3.php") && $ConfigFolderState) || 
+                            is_writable("../lib/config/config.joomla3.php");
+                        
+    if ( $JmlConfigFileState )
+    {
+        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
+    }
+    else
+    {
+        ++$TestsFailed;
+        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
+    }
+    
+    // Drupal config file check
+
+    echo "<br/><span class=\"check_field\">".L("DrupalConfigFile")."</span>";
+    $DrupalConfigFileState = (!file_exists("../lib/config/config.drupal.php") && $ConfigFolderState) || 
+                               is_writable("../lib/config/config.drupal.php");
+                        
+    if ( $DrupalConfigFileState )
+    {
+        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
+    }
+    else
+    {
+        ++$TestsFailed;
+        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
+    }
 ?>
 </div>
 <div class="bottom_navigation">
