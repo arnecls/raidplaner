@@ -10,7 +10,8 @@
         public static $HashMethod_sha512d = "eqdkp_sha512sd";
         public static $HashMethod_sha512r = "eqdkp_sha512r";
         public static $HashMethod_md5     = "eqdkp_md5";
-        public static $Itoa64             = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        
+        private static $Itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         
         public $BindingName = "eqdkp";
         private $mConnector = null;

@@ -6,7 +6,8 @@
     class VanillaBinding
     {
         public static $HashMethod = "vanilla_md5r";
-        public static $Itoa64     = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        
+        private static $Itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         
         public $BindingName = "vanilla";
         private $mConnector = null;

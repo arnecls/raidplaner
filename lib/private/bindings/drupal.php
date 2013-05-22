@@ -11,7 +11,9 @@
         public static $HashMethod_hmd5    = "drupal_hmd5";
         public static $HashMethod_upmd5   = "drupal_upmd5";
         public static $HashMethod_uhmd5   = "drupal_uhmd5";
-        public static $Itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        
+        private static $AuthenticatedGroupId = 2;
+        private static $Itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         
         public $BindingName = "drupal";
         private $mConnector = null;
@@ -33,23 +35,33 @@
             
             $GroupSt = $this->mConnector->prepare("SELECT status, rid ".
                                                   "FROM `".DRUPAL_TABLE_PREFIX."users` ".
-                                                  "LEFT JOIN `".DRUPAL_TABLE_PREFIX."users_roles` USING(uid) ".
+                                                  "LEFT OUTER JOIN `".DRUPAL_TABLE_PREFIX."users_roles` USING(uid) ".
                                                   "WHERE uid = :UserId");
             
             $GroupSt->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
             $GroupSt->execute();
             
-            while ($Group = $GroupSt->fetch(PDO::FETCH_ASSOC))
+            $Group = $GroupSt->fetch(PDO::FETCH_ASSOC);
+            
+            if ( $Group["status"] == 0 )
+                return "none"; // ### return, blocked ###
+                
+            // Authenticated users don't gain the corresponding role, so we need to
+            // fake the assigment check. "If the user is not blocked, he/she is
+            // authenticated".
+            
+            if ( in_array(self::$AuthenticatedGroupId, $MemberGroups) )
+                $DefaultGroup = "member";
+              
+            do
             {
-                if ( $Group["status"] == 1 )
-                    return "none"; // ### return, blocked ###
-                    
                 if ( in_array($Group["rid"], $MemberGroups) )
                     $DefaultGroup = "member";
             
                 if ( in_array($Group["rid"], $RaidleadGroups) )
                     return "raidlead"; // ### return, highest possible group ###
             }
+            while ($Group = $GroupSt->fetch(PDO::FETCH_ASSOC));
 
             return $DefaultGroup;
         }
