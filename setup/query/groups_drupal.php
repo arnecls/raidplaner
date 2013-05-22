@@ -7,22 +7,26 @@
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
     echo "<grouplist>";
     
-    $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]); 
-    $Groups = $Connector->prepare( "SELECT rid, name FROM `".$_REQUEST["prefix"]."role` ORDER BY name" );
+    $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]);
     
-    if ( $Groups->execute() )
-    {
-        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+    if ($Connector != null)
+    { 
+        $Groups = $Connector->prepare( "SELECT rid, name FROM `".$_REQUEST["prefix"]."role` ORDER BY name" );
+        
+        if ( $Groups->execute() )
         {
-            echo "<group>";
-            echo "<id>".$Group["rid"]."</id>";
-            echo "<name>".$Group["name"]."</name>";
-            echo "</group>";
+            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            {
+                echo "<group>";
+                echo "<id>".$Group["rid"]."</id>";
+                echo "<name>".$Group["name"]."</name>";
+                echo "</group>";
+            }
         }
-    }
-    else
-    {
-        postErrorMessage( $Groups );
+        else
+        {
+            postErrorMessage( $Groups );
+        }
     }
         
     echo "</grouplist>";
