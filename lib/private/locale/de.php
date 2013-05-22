@@ -259,7 +259,7 @@
         $gLocale[ "SetupComplete" ]            = "Installation abgeschlossen";
         $gLocale[ "UpdateComplete" ]           = "Update abgeschlossen";
         $gLocale[ "RaidplanerSetupDone" ]      = "Der Raidplaner ist jetzt erfolgreich konfiguriert.";
-        $gLocale[ "DeleteSetupFolder" ]        = "Du solltest nun den setup Ordner l&ouml;schen und die folgenden Ordner absichern:";
+        $gLocale[ "DeleteSetupFolder" ]        = "Du solltest nun den \"setup\" Ordner l&ouml;schen und die folgenden Ordner (durch z.B. htaccess) sch&uuml;tzen:";
         $gLocale[ "ThankYou" ]                 = "Danke das du den packedpixel Raidplaner verwendest.";
         $gLocale[ "VisitBugtracker" ]          = "Bei Fehlern oder Ideen f&uuml;r neue Features besuche bitte unseren Bugtracker unter ";
         $gLocale[ "VersionDetection" ]         = "Versionserkennung und Update";

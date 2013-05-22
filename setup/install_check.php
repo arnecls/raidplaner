@@ -20,7 +20,7 @@
 
     // Version check    
     
-    echo "<br/><span class=\"check_field\">".L("PHPVersion")."</span>";
+    echo "<br/><span class=\"check_field\">".L("PHPVersion")." (>= 5.2)</span>";
     $Version = explode('.', phpversion());
     $TestsFailed = 0;
     
@@ -34,7 +34,7 @@
         echo "<span class=\"check_result\" style=\"color: red\">".L("OutdatedPHP");
     }
         
-    echo " (".phpversion().", min 5.2)</span>";
+    echo " (".phpversion().")</span>";
 
     // PDO check
 
