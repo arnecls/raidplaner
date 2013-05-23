@@ -52,16 +52,19 @@
             
             if ( in_array(self::$AuthenticatedGroupId, $MemberGroups) )
                 $DefaultGroup = "member";
-              
-            do
+                
+            if ( $Group["rid"] != NULL )
             {
-                if ( in_array($Group["rid"], $MemberGroups) )
-                    $DefaultGroup = "member";
-            
-                if ( in_array($Group["rid"], $RaidleadGroups) )
-                    return "raidlead"; // ### return, highest possible group ###
+                do
+                {
+                    if ( in_array($Group["rid"], $MemberGroups) )
+                        $DefaultGroup = "member";
+                
+                    if ( in_array($Group["rid"], $RaidleadGroups) )
+                        return "raidlead"; // ### return, highest possible group ###
+                }
+                while ($Group = $GroupSt->fetch(PDO::FETCH_ASSOC));
             }
-            while ($Group = $GroupSt->fetch(PDO::FETCH_ASSOC));
 
             return $DefaultGroup;
         }

@@ -488,7 +488,7 @@
         <input type="text" id="joomla_user" value="<?php echo (defined("JML3_TABLE")) ? JML3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="joomla_password" value="<?php echo (defined("JML3_PASS")) ? JML3_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="joomla_password_check" value="<?php echo (defined("JML3_PASS")) ? JML3_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
-        <input type="text" id="joomla_prefix" value="<?php echo (defined("JML3_TABLE_PREFIX")) ? JML3_TABLE_PREFIX : "JML_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
+        <input type="text" id="joomla_prefix" value="<?php echo (defined("JML3_TABLE_PREFIX")) ? JML3_TABLE_PREFIX : "jml_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
     </div>
     
     <div style="margin-top: 1em">
