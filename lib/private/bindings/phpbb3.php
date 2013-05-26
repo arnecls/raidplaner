@@ -28,12 +28,12 @@
             $MemberGroups   = explode(",", PHPBB3_MEMBER_GROUPS );
             $RaidleadGroups = explode(",", PHPBB3_RAIDLEAD_GROUPS );
             
-            $GroupSt = $this->mConnector->prepare("SELECT user_type, `".PHPBB3_TABLE_PREFIX."users`.group_id, ban_start, ban_end ".
+            $GroupSt = $this->mConnector->prepare("SELECT user_type, `".PHPBB3_TABLE_PREFIX."user_group`.group_id, ban_start, ban_end ".
                                                  "FROM `".PHPBB3_TABLE_PREFIX."users` ".
                                                  "LEFT JOIN `".PHPBB3_TABLE_PREFIX."user_group` USING(user_id) ".
                                                  "LEFT JOIN `".PHPBB3_TABLE_PREFIX."banlist` ON user_id = ban_userid ".
                                                  "WHERE user_id = :UserId");
-            
+                                                 
             $GroupSt->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
             $GroupSt->execute();
             

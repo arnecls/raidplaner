@@ -217,7 +217,7 @@
     <div>
         <h2><?php echo L("PHPBB3Binding"); ?></h2>
         <input type="text" id="phpbb3_database" value="<?php echo (defined("PHPBB3_DATABASE")) ? PHPBB3_DATABASE : "phpbb" ?>"/> <?php echo L("PHPBB3Database"); ?><br/>
-        <input type="text" id="phpbb3_user" value="<?php echo (defined("PHPBB3_TABLE")) ? PHPBB3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="text" id="phpbb3_user" value="<?php echo (defined("PHPBB3_USER")) ? PHPBB3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="phpbb3_password" value="<?php echo (defined("PHPBB3_PASS")) ? PHPBB3_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="phpbb3_password_check" value="<?php echo (defined("PHPBB3_PASS")) ? PHPBB3_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
         <input type="text" id="phpbb3_prefix" value="<?php echo (defined("PHPBB3_TABLE_PREFIX")) ? PHPBB3_TABLE_PREFIX : "phpbb_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
@@ -268,7 +268,7 @@
     <div>
         <h2><?php echo L("EQDKPBinding"); ?></h2>
         <input type="text" id="eqdkp_database" value="<?php echo (defined("EQDKP_DATABASE")) ? EQDKP_DATABASE : "eqdkp" ?>"/> <?php echo L("EQDKPDatabase"); ?><br/>
-        <input type="text" id="eqdkp_user" value="<?php echo (defined("EQDKP_TABLE")) ? EQDKP_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="text" id="eqdkp_user" value="<?php echo (defined("EQDKP_USER")) ? EQDKP_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="eqdkp_password" value="<?php echo (defined("EQDKP_PASS")) ? EQDKP_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="eqdkp_password_check" value="<?php echo (defined("EQDKP_PASS")) ? EQDKP_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
         <input type="text" id="eqdkp_prefix" value="<?php echo (defined("EQDKP_TABLE_PREFIX")) ? EQDKP_TABLE_PREFIX : "eqdkp_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
@@ -281,7 +281,7 @@
     <div>
         <h2><?php echo L("VBulletinBinding"); ?></h2>
         <input type="text" id="vb3_database" value="<?php echo (defined("VB3_DATABASE")) ? VB3_DATABASE : "vbulletin" ?>"/> <?php echo L("VBulletinDatabase"); ?><br/>
-        <input type="text" id="vb3_user" value="<?php echo (defined("VB3_TABLE")) ? VB3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="text" id="vb3_user" value="<?php echo (defined("VB3_USER")) ? VB3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="vb3_password" value="<?php echo (defined("VB3_PASS")) ? VB3_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="vb3_password_check" value="<?php echo (defined("VB3_PASS")) ? VB3_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
         <input type="text" id="vb3_prefix" value="<?php echo (defined("VB3_TABLE_PREFIX")) ? VB3_TABLE_PREFIX : "vb_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
@@ -332,7 +332,7 @@
     <div>
         <h2><?php echo L("MyBBBinding"); ?></h2>
         <input type="text" id="mybb_database" value="<?php echo (defined("MYBB_DATABASE")) ? MYBB_DATABASE : "mybb" ?>"/> <?php echo L("MyBBDatabase"); ?><br/>
-        <input type="text" id="mybb_user" value="<?php echo (defined("MYBB_TABLE")) ? MYBB_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="text" id="mybb_user" value="<?php echo (defined("MYBB_USER")) ? MYBB_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="mybb_password" value="<?php echo (defined("MYBB_PASS")) ? MYBB_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="mybb_password_check" value="<?php echo (defined("MYBB_PASS")) ? MYBB_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
         <input type="text" id="mybb_prefix" value="<?php echo (defined("MYBB_TABLE_PREFIX")) ? MYBB_TABLE_PREFIX : "mybb_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
@@ -383,7 +383,7 @@
     <div>
         <h2><?php echo L("SMFBinding"); ?></h2>
         <input type="text" id="smf_database" value="<?php echo (defined("SMF_DATABASE")) ? SMF_DATABASE : "smf" ?>"/> <?php echo L("SMFDatabase"); ?><br/>
-        <input type="text" id="smf_user" value="<?php echo (defined("SMF_TABLE")) ? SMF_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="text" id="smf_user" value="<?php echo (defined("SMF_USER")) ? SMF_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="smf_password" value="<?php echo (defined("SMF_PASS")) ? SMF_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="smf_password_check" value="<?php echo (defined("SMF_PASS")) ? SMF_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
         <input type="text" id="smf_prefix" value="<?php echo (defined("SMF_TABLE_PREFIX")) ? SMF_TABLE_PREFIX : "smf_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
@@ -434,7 +434,7 @@
     <div>
         <h2><?php echo L("VanillaBinding"); ?></h2>
         <input type="text" id="vanilla_database" value="<?php echo (defined("VANILLA_DATABASE")) ? VANILLA_DATABASE : "vanilla" ?>"/> <?php echo L("VanillaDatabase"); ?><br/>
-        <input type="text" id="vanilla_user" value="<?php echo (defined("VANILLA_TABLE")) ? VANILLA_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="text" id="vanilla_user" value="<?php echo (defined("VANILLA_USER")) ? VANILLA_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="vanilla_password" value="<?php echo (defined("VANILLA_PASS")) ? VANILLA_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="vanilla_password_check" value="<?php echo (defined("VANILLA_PASS")) ? VANILLA_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
         <input type="text" id="vanilla_prefix" value="<?php echo (defined("VANILLA_TABLE_PREFIX")) ? VANILLA_TABLE_PREFIX : "GDN_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
@@ -485,7 +485,7 @@
     <div>
         <h2><?php echo L("JoomlaBinding"); ?></h2>
         <input type="text" id="joomla_database" value="<?php echo (defined("JML3_DATABASE")) ? JML3_DATABASE : "joomla" ?>"/> <?php echo L("JoomlaDatabase"); ?><br/>
-        <input type="text" id="joomla_user" value="<?php echo (defined("JML3_TABLE")) ? JML3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="text" id="joomla_user" value="<?php echo (defined("JML3_USER")) ? JML3_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="joomla_password" value="<?php echo (defined("JML3_PASS")) ? JML3_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="joomla_password_check" value="<?php echo (defined("JML3_PASS")) ? JML3_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
         <input type="text" id="joomla_prefix" value="<?php echo (defined("JML3_TABLE_PREFIX")) ? JML3_TABLE_PREFIX : "jml_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
@@ -536,7 +536,7 @@
     <div>
         <h2><?php echo L("DrupalBinding"); ?></h2>
         <input type="text" id="drupal_database" value="<?php echo (defined("DRUPAL_DATABASE")) ? DRUPAL_DATABASE : "drupal" ?>"/> <?php echo L("DrupalDatabase"); ?><br/>
-        <input type="text" id="drupal_user" value="<?php echo (defined("DRUPAL_TABLE")) ? DRUPAL_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="text" id="drupal_user" value="<?php echo (defined("DRUPAL_USER")) ? DRUPAL_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="drupal_password" value="<?php echo (defined("DRUPAL_PASS")) ? DRUPAL_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="drupal_password_check" value="<?php echo (defined("DRUPAL_PASS")) ? DRUPAL_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
         <input type="text" id="drupal_prefix" value="<?php echo (defined("DRUPAL_TABLE_PREFIX")) ? DRUPAL_TABLE_PREFIX : "" ?>"/> <?php echo L("TablePrefix"); ?><br/>
