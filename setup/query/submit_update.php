@@ -305,7 +305,8 @@
         
         $Updates = Array( "New bindings"              => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `ExternalBinding` `ExternalBinding` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
                           "Timestamp for attendances" => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD `LastUpdate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `RaidId`;",
-                          "StartOfWeek setting"       => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`SettingId`, `Name`, `IntValue`, `TextValue`) VALUES (NULL, 'StartOfWeek', '1', '');" );                          
+                          "StartOfWeek setting"       => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`SettingId`, `Name`, `IntValue`, `TextValue`) VALUES (NULL, 'StartOfWeek', '1', '');",
+                          "Unbind admin users"        => "UPDATE `".RP_TABLE_PREFIX."User` SET BindingActive='false' WHERE `Group`='admin';" );                          
                           
         doUpgrade( $Updates );
         
