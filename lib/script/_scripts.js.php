@@ -13,7 +13,7 @@
         "crypto/sha256.js",
         "crypto/sha512.js",
         "crypto/tripledes.js",
-        "crypto/bCrypt.js",
+        "crypto/bcrypt.js",
         "messagehub.js",
         "mobile.js",
         "tooltip.js",
