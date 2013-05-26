@@ -9,10 +9,10 @@
 ?>
 
 var gSiteVersion = <?php echo floatval($_REQUEST["version"]) ?>;
-var g_BannerLink = "<?php echo $gSite["BannerLink"]; ?>";
+var gBannerLink = "<?php echo $gSite["BannerLink"]; ?>";
 var gTimeFormat = <?php echo $gSite["TimeFormat"]; ?>;
 
-var g_Theme = {
+var gTheme = {
     background : "<?php echo $gSite["Background"]; ?>",
     banner     : "<?php echo $gSite["Banner"]; ?>",
     bgrepeat   : "<?php echo $gSite["BGRepeat"]; ?>",
@@ -78,15 +78,15 @@ function onChangeConfig()
 
     $("#logo").detach();
 
-    if ( g_Theme.banner.toLowerCase() != "disable"  )
+    if ( gTheme.banner.toLowerCase() != "disable"  )
     {
-        if ( g_BannerLink !== "" )
-            $("#menu").before("<a id=\"logo\" href=\"" + g_BannerLink + "\"></a>");
+        if ( gBannerLink !== "" )
+            $("#menu").before("<a id=\"logo\" href=\"" + gBannerLink + "\"></a>");
         else
             $("#menu").before("<div id=\"logo\"></div>");
             
-        var bannerImage = (g_Theme.banner.toLowerCase() != "none")
-            ? "url(images/banner/" + g_Theme.banner + ")"
+        var bannerImage = (gTheme.banner.toLowerCase() != "none")
+            ? "url(images/banner/" + gTheme.banner + ")"
             : "none";
 
         $("#logo").css("background-image", bannerImage);
@@ -95,15 +95,15 @@ function onChangeConfig()
     // Update appwindow class
     
     $("#appwindow").removeClass("portalmode");
-    if (g_Theme.portalmode)
+    if (gTheme.portalmode)
         $("#appwindow").addClass("portalmode");
 
     // Update theme
 
-    if ( g_Theme.background == "none" )
+    if ( gTheme.background == "none" )
         $("body").css("background", "none" );
     else
-        $("body").css("background", g_Theme.bgcolor + " url(images/background/" + g_Theme.background + ") " + g_Theme.bgrepeat );
+        $("body").css("background", gTheme.bgcolor + " url(images/background/" + gTheme.background + ") " + gTheme.bgrepeat );
 }
 
 // -----------------------------------------------------------------------------

@@ -305,8 +305,7 @@ a:hover {
     margin-bottom: 5px;
     border: 1px solid #aaa;   
     -moz-border-radius: 4px; 
-    -webkit-border-radius: 4px; 
-    -khtml-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     border-radius: 4px;
 }
 
@@ -317,7 +316,6 @@ a:hover {
     width: 0%;    
     -moz-border-radius: 4px; 
     -webkit-border-radius: 4px; 
-    -khtml-border-radius: 4px; 
     border-radius: 4px;
 }
 
@@ -330,8 +328,7 @@ a:hover {
     background-color: #ccc;
     text-align: left;                
     -moz-border-radius: 4px; 
-    -webkit-border-radius: 4px; 
-    -khtml-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     border-radius: 4px;
 }
 
@@ -341,8 +338,7 @@ a:hover {
     background-color: #666;
     width: 0%;    
     -moz-border-radius: 4px; 
-    -webkit-border-radius: 4px; 
-    -khtml-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     border-radius: 4px;
 }
 

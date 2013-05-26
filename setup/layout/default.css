@@ -244,8 +244,7 @@ div.bottom_navigation {
     overflow-y: scroll;
     
     -moz-border-radius: 4px; 
-    -webkit-border-radius: 4px; 
-    -khtml-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     border-radius: 4px;
 }
 
