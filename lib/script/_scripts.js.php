@@ -14,8 +14,6 @@
         "crypto/sha512.js",
         "crypto/tripledes.js",
         "crypto/bCrypt.js",
-        "locale.js.php",        
-        "config.js.php",
         "messagehub.js",
         "mobile.js",
         "tooltip.js",

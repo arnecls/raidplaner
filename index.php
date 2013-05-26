@@ -32,7 +32,7 @@
         <link rel="icon" href="favicon.png" type="image/png"/>
         
         <?php
-            define("STYLE_DEBUG", true);
+            //define("STYLE_DEBUG", true);
             
             if (defined("STYLE_DEBUG") && STYLE_DEBUG)
                 include_once("lib/layout/_layout.css.php");
@@ -56,11 +56,12 @@
         <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $gSiteVersion; ?>"/>
         <![endif]-->
         
-        
+        <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $gSiteVersion; ?>"></script>
         <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $gSiteVersion; ?>"></script>
-        
+        <script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $gSiteVersion; ?>"></script>
+                
         <?php
-            define("SCRIPT_DEBUG", true);
+            //define("SCRIPT_DEBUG", true);
             
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
                 include_once("lib/script/_scripts.js.php");
@@ -133,7 +134,8 @@
                     }
                 ?>
             </div>
-            <span id="version"><?php echo "version ".intVal($gSiteVersion / 100).".".intVal(($gSiteVersion % 100) / 10).".".intVal($gSiteVersion % 10); ?></span>
+            
+            <span id="version"><?php echo "version ".intVal($gSiteVersion / 100).".".intVal(($gSiteVersion % 100) / 10).".".intVal($gSiteVersion % 10).(($gSiteVersion - intval($gSiteVersion) > 0) ? chr(round(($gSiteVersion - intval($gSiteVersion)) * 10) + ord("a")-1) : ""); ?></span>
         </div>
         
         <div id="eventblocker"></div>
