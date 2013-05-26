@@ -8,21 +8,25 @@
     echo "<grouplist>";
     
     $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]); 
-    $Groups = $Connector->prepare( "SELECT usergroupid, title FROM `".$_REQUEST["prefix"]."usergroup` ORDER BY title" );
     
-    if ( $Groups->execute() )
+    if ($Connector != null)
     {
-        while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+        $Groups = $Connector->prepare( "SELECT usergroupid, title FROM `".$_REQUEST["prefix"]."usergroup` ORDER BY title" );
+        
+        if ( $Groups->execute() )
         {
-            echo "<group>";
-            echo "<id>".$Group["usergroupid"]."</id>";
-            echo "<name>".$Group["title"]."</name>";
-            echo "</group>";
+            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            {
+                echo "<group>";
+                echo "<id>".$Group["usergroupid"]."</id>";
+                echo "<name>".$Group["title"]."</name>";
+                echo "</group>";
+            }
         }
-    }
-    else
-    {
-        postErrorMessage( $Groups );
+        else
+        {
+            postErrorMessage( $Groups );
+        }
     }
         
     echo "</grouplist>";

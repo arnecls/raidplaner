@@ -1,10 +1,10 @@
 <?php
 
-function msgQueryLocations( $Request )
+function msgQueryLocations( $aRequest )
 {
-    if ( ValidRaidlead() )
+    if ( validRaidlead() )
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
         // Locations
 
@@ -31,13 +31,13 @@ function msgQueryLocations( $Request )
 
         // Images
 
-        $images = scandir("../images/raidsmall");
+        $Images = scandir("../images/raidsmall");
 
-        foreach ( $images as $image )
+        foreach ( $Images as $Image )
         {
-            if ( strripos( $image, ".png" ) !== false )
+            if ( strripos( $Image, ".png" ) !== false )
             {
-                echo "<locationimage>".$image."</locationimage>";
+                echo "<locationimage>".$Image."</locationimage>";
             }
         }
     }

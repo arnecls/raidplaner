@@ -1,10 +1,10 @@
 <?php
 
-    function msgRaidList( $Request )
+    function msgRaidList( $aRequest )
     {
-        if (ValidUser())
+        if (validUser())
         {
-            $Connector = Connector::GetInstance();
+            $Connector = Connector::getInstance();
 
             // Get next 6 raids
 
@@ -41,7 +41,7 @@
                                               "FROM `".RP_TABLE_PREFIX."Raid` ".
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
                                               "WHERE ".RP_TABLE_PREFIX."Raid.Start < FROM_UNIXTIME(:Start)".
-                                              "ORDER BY Start DESC LIMIT ".intval($Request["offset"]).", ".intval($Request["count"]) );
+                                              "ORDER BY Start DESC LIMIT ".intval($aRequest["offset"]).", ".intval($aRequest["count"]) );
 
             $ListRaidSt->bindValue( ":Start", mktime(0,0,0), PDO::PARAM_INT );
 
@@ -64,9 +64,9 @@
                     echo "<stage>".$Data["Stage"]."</stage>";
                     echo "<image>".$Data["Image"]."</image>";
                     echo "<size>".$Data["Size"]."</size>";
-                    echo "<startDate>".$StartDate["year"]."-".LeadingZero10($StartDate["mon"])."-".LeadingZero10($StartDate["mday"])."</startDate>";
-                    echo "<start>".LeadingZero10($StartDate["hours"]).":".LeadingZero10($StartDate["minutes"])."</start>";
-                    echo "<end>".LeadingZero10($EndDate["hours"]).":".LeadingZero10($EndDate["minutes"])."</end>";
+                    echo "<startDate>".$StartDate["year"]."-".leadingZero10($StartDate["mon"])."-".leadingZero10($StartDate["mday"])."</startDate>";
+                    echo "<start>".leadingZero10($StartDate["hours"]).":".leadingZero10($StartDate["minutes"])."</start>";
+                    echo "<end>".leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"])."</end>";
                     echo "</raid>";
                 }
 

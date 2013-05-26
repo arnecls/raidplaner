@@ -38,5 +38,23 @@
         $TestConnectionSMF = new Connector( SQL_HOST, $_REQUEST["smf_database"], $_REQUEST["smf_user"], $_REQUEST["smf_password"] );
     }
     
+    if ( $_REQUEST["vanilla_check"] == "true" )
+    {
+        echo "<name>Vanilla</name>";
+        $TestConnectionVanilla = new Connector( SQL_HOST, $_REQUEST["vanilla_database"], $_REQUEST["vanilla_user"], $_REQUEST["vanilla_password"] );
+    }
+    
+    if ( $_REQUEST["joomla_check"] == "true" )
+    {
+        echo "<name>Joomla</name>";
+        $TestConnectionJoomla = new Connector( SQL_HOST, $_REQUEST["joomla_database"], $_REQUEST["joomla_user"], $_REQUEST["joomla_password"] );
+    }
+    
+    if ( $_REQUEST["drupal_check"] == "true" )
+    {
+        echo "<name>Drupal</name>";
+        $TestConnectionDrupal = new Connector( SQL_HOST, $_REQUEST["drupal_database"], $_REQUEST["drupal_user"], $_REQUEST["drupal_password"] );
+    }
+    
     echo "</test>";
 ?>

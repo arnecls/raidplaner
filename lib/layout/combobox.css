@@ -14,9 +14,17 @@
     padding-left: 6px;
     margin-right: 0px;
     cursor: pointer;
+    vertical-align: middle;
+}
+
+.combobox_value_dark {
     opacity: 0.4;
     filter: alpha(opacity=40);
-    vertical-align: middle;
+}
+
+.combobox_value_bright {
+    opacity: 0.6;
+    filter: alpha(opacity=60);
 }
 
 .combobox_edit {
@@ -70,6 +78,15 @@
     opacity: 1.0;
     filter:Alpha(opacity=100);
     color: #aaaaaa;
+}
+
+.combobox_list .separator {
+    color: white;
+    height: 7px;
+    opacity: 1.0;
+    filter:Alpha(opacity=100);
+    border-bottom: 1px dotted #aaa;
+    margin-bottom: 6px;
 }
 
 .combobox_list .selected {

@@ -2,11 +2,11 @@
     define( "LOCALE_SETUP", true );
     require_once(dirname(__FILE__)."/../lib/private/locale.php");
     
-    $configFolderState = is_writable("../lib/config");
-    $configFileState = (file_exists("../lib/config/config.php") && $configFolderState) || 
+    $ConfigFolderState = is_writable("../lib/config");
+    $ConfigFileState = (file_exists("../lib/config/config.php") && $ConfigFolderState) || 
                        is_writable("../lib/config/config.php");
                        
-    $updateMode = $configFolderState && $configFileState;
+    $UpdateMode = $ConfigFolderState && $ConfigFileState;
 ?>
 <?php include("layout/header.html"); ?>
                 
@@ -16,7 +16,7 @@
             $(".button_text").empty();
         });
         
-        <?php if ($updateMode) { ?>
+        <?php if ($UpdateMode) { ?>
         $(".icon_update")  .mouseover( function() { $(".button_text").append("<?php echo L("Update");?>"); });
         $(".icon_bindings").mouseover( function() { $(".button_text").append("<?php echo L("EditBindings");?>"); });
         $(".icon_repair")  .mouseover( function() { $(".button_text").append("<?php echo L("RepairDatabase");?>"); });
@@ -35,7 +35,7 @@
     });
 </script>
 
-<?php if ($updateMode) { ?>
+<?php if ($UpdateMode) { ?>
 <div class="button_text"></div>
 <div class="buttongrid">
     <div class="button_large icon_update" style="float:left"></div>

@@ -1,10 +1,10 @@
 <?php
 
-function msgQueryNewRaidData( $Request )
+function msgQueryNewRaidData( $aRequest )
 {
-    if ( ValidRaidlead() )
+    if ( validRaidlead() )
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
         // Settings
 
@@ -18,7 +18,7 @@ function msgQueryNewRaidData( $Request )
         {
             echo "<settings>";
 
-            $IntOfInterest = array( "RaidSize", "RaidStartHour", "RaidStartMinute", "RaidEndHour", "RaidEndMinute" );
+            $IntOfInterest = array( "RaidSize", "RaidStartHour", "RaidStartMinute", "RaidEndHour", "RaidEndMinute", "StartOfWeek" );
             $TextOfInterest = array( "RaidMode" );
 
             while ( $Data = $NewRaidSettings->fetch( PDO::FETCH_ASSOC ) )
@@ -41,7 +41,7 @@ function msgQueryNewRaidData( $Request )
 
         // Locations
 
-        msgQueryLocations($Request);
+        msgQueryLocations($aRequest);
     }
     else
     {

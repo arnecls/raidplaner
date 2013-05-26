@@ -1,56 +1,62 @@
 <?php
 
-function xmlSpecialChar( $character )
+function xmlSpecialChar( $aChar )
 {
-    $utf8 = (mb_check_encoding($character,"UTF-8"))
-        ? $character
-        : mb_convert_encoding($character,"UTF-8");
+    $Utf8 = (mb_check_encoding($aChar,"UTF-8"))
+        ? $aChar
+        : mb_convert_encoding($aChar,"UTF-8");
     
-    $char = mb_convert_encoding($utf8, "UCS-4BE", "UTF-8");    
-    $val = unpack("N",$char);
+    $Char = mb_convert_encoding($Utf8, "UCS-4BE", "UTF-8");    
+    $Val = unpack("N",$Char);
     
-    return "&#".$val[1].";";
+    return "&#".$Val[1].";";
 }
 
-function xmlentities( $string, $compat, $charset )
+// -----------------------------------------------------------------------------
+
+function xmlentities( $aString, $aCompat, $aCharset )
 {
-    $validString = htmlentities($string, $compat, $charset);
+    $ValidString = htmlentities($aString, $aCompat, $aCharset);
     
     // if the given charset did not work use fallback
 
-    if ( $validString == "" )
-        $validString = htmlentities( $string, $compat | ENT_IGNORE, "ISO8859-15" );
+    if ( $ValidString == "" )
+        $ValidString = htmlentities( $aString, $aCompat | ENT_IGNORE, "ISO8859-15" );
 
-    $htmlTranslationTable = get_html_translation_table( HTML_ENTITIES, $compat );
+    $HtmlTranslationTable = get_html_translation_table( HTML_ENTITIES, $aCompat );
 
-    $translationTable = array();
+    $TranslationTable = array();
 
-    $translationTable["@"] = xmlSpecialChar("@");
-    $translationTable["["] = xmlSpecialChar("[");
-    $translationTable["]"] = xmlSpecialChar("]");
-    $translationTable["'"] = xmlSpecialChar("'");
+    $TranslationTable["@"] = xmlSpecialChar("@");
+    $TranslationTable["["] = xmlSpecialChar("[");
+    $TranslationTable["]"] = xmlSpecialChar("]");
+    $TranslationTable["'"] = xmlSpecialChar("'");
 
-    while ( list($key,$value) = each($htmlTranslationTable) )
+    while ( list($Key,$Value) = each($HtmlTranslationTable) )
     {
-         $translationTable[$value] = xmlSpecialChar($key);
+         $TranslationTable[$Value] = xmlSpecialChar($Key);
     }
     
-    $translated = strtr( $validString, $translationTable );
+    $Translated = strtr( $ValidString, $TranslationTable );
 
-    if ($translated === false)
-        return $validString;
+    if ($Translated === false)
+        return $ValidString;
 
-    return $translated;
+    return $Translated;
 }
 
-function requestToXML( $string, $compat, $charset )
+// -----------------------------------------------------------------------------
+
+function requestToXML( $aString, $aCompat, $aCharset )
 {
-    return xmlentities( stripcslashes(urldecode($string)), $compat, $charset );
+    return xmlentities( stripcslashes(urldecode($aString)), $aCompat, $aCharset );
 }
 
-function LeadingZero10( $Value )
+// -----------------------------------------------------------------------------
+
+function leadingZero10( $aValue )
 {
-    $Number = intval($Value,10);
+    $Number = intval($aValue,10);
     
     if ($Number < 10)
         return "0".$Number;

@@ -5,31 +5,31 @@
     
     // globals
 
-    $roleKeys = array_keys($s_Roles);
+    $RoleKeys = array_keys($gRoles);
     $g_RoleToIdx = array();
-    $roleIdx = 0;
+    $RoleIdx = 0;
     
-    foreach($roleKeys as $key)
+    foreach($RoleKeys as $Key)
     {
-        $g_RoleToIdx[$key] = $roleIdx++;
+        $g_RoleToIdx[$Key] = $RoleIdx++;
     }    
     
-    $Connector = Connector::GetInstance();
-    $fixCount = sizeof($_REQUEST["ids"]);
+    $Connector = Connector::getInstance();
+    $FixCount = sizeof($_REQUEST["ids"]);
     
-    for ( $i=0; $i<$fixCount; ++$i )
+    for ( $i=0; $i<$FixCount; ++$i )
     {
-        $charId = $_REQUEST["ids"][$i];
-        $class  = $_REQUEST["classes"][$i];
+        $CharId = $_REQUEST["ids"][$i];
+        $Class  = $_REQUEST["classes"][$i];
         
-        if ($class == "_delete")
+        if ($Class == "_delete")
         {
             // Remove character
             
             $DeleteAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId=:CharId;".
                                                     "DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE CharacterId=:CharId;");
             
-            $DeleteAttendance->bindValue(":CharId", $charId, PDO::PARAM_INT);
+            $DeleteAttendance->bindValue(":CharId", $CharId, PDO::PARAM_INT);
             
             if (!$DeleteAttendance->execute())
             {
@@ -40,14 +40,14 @@
         }
         else
         {
-            $defaultRole = $g_RoleToIdx[ $s_Classes[$class][1][0] ];
+            $DefaultRole = $g_RoleToIdx[ $gClasses[$Class][2][0] ];
             
             $UpdateChar = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Character` SET Class=:Class, Role1=:Role, Role2=:Role WHERE CharacterId=:CharId;".
                                               "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Role=:Role WHERE  CharacterId=:CharId");
                                               
-            $UpdateChar->bindValue(":Class", $class, PDO::PARAM_STR);
-            $UpdateChar->bindValue(":Role", $defaultRole, PDO::PARAM_INT);
-            $UpdateChar->bindValue(":CharId", $charId, PDO::PARAM_INT);
+            $UpdateChar->bindValue(":Class", $Class, PDO::PARAM_STR);
+            $UpdateChar->bindValue(":Role", $DefaultRole, PDO::PARAM_INT);
+            $UpdateChar->bindValue(":CharId", $CharId, PDO::PARAM_INT);
             
             if (!$UpdateChar->execute())
             {

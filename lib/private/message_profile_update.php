@@ -1,21 +1,21 @@
 <?php
 
-function msgProfileUpdate( $Request )
+function msgProfileupdate( $aRequest )
 {
-    if ( ValidUser() )
+    if ( validUser() )
     {
-        $userId = UserProxy::GetInstance()->UserId;
+        $UserId = UserProxy::getInstance()->UserId;
 
-        if ( ValidAdmin() && isset( $Request["id"] ) )
+        if ( validAdmin() && isset( $aRequest["id"] ) )
         {
-            $userId = intval( $Request["id"] );
+            $UserId = intval( $aRequest["id"] );
         }
 
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
         $Characters = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId ORDER BY Name");
 
-        $Characters->bindValue(":UserId", $userId, PDO::PARAM_INT);
+        $Characters->bindValue(":UserId", $UserId, PDO::PARAM_INT);
 
         $ValidCharacterIds = array();
         $UpdatedCharacteIds = array();
@@ -34,30 +34,30 @@ function msgProfileUpdate( $Request )
 
             $Characters->closeCursor();
 
-            $NumCharacters = is_array( $Request["charId"] ) ? sizeof($Request["charId"]) : 0;
+            $NumCharacters = is_array( $aRequest["charId"] ) ? sizeof($aRequest["charId"]) : 0;
 
             // Sanity check mainchar
 
-            $foundMainChar = false;
+            $FoundMainChar = false;
 
             for ( $CharIndex=0; $CharIndex < $NumCharacters; ++$CharIndex )
             {
-                if ( $Request["mainChar"][$CharIndex] == "true" )
+                if ( $aRequest["mainChar"][$CharIndex] == "true" )
                 {
-                    if ( $foundMainChar )
+                    if ( $FoundMainChar )
                     {
-                        $Request["mainChar"][$CharIndex] = "false";
+                        $aRequest["mainChar"][$CharIndex] = "false";
                     }
                     else
                     {
-                        $foundMainChar = true;
+                        $FoundMainChar = true;
                     }
                 }
             }
 
-            if ( !$foundMainChar && $NumCharacters > 0 )
+            if ( !$FoundMainChar && $NumCharacters > 0 )
             {
-                $Request["mainChar"][0] = "true";
+                $aRequest["mainChar"][0] = "true";
             }
 
             // Update/insert chars
@@ -66,7 +66,7 @@ function msgProfileUpdate( $Request )
 
             for ( $CharIndex=0; $CharIndex < $NumCharacters; ++$CharIndex )
             {
-                $CharId = $Request["charId"][$CharIndex];
+                $CharId = $aRequest["charId"][$CharIndex];
 
                 if ( $CharId == 0 )
                 {
@@ -76,12 +76,12 @@ function msgProfileUpdate( $Request )
                                                         "( UserId, Name, Class, Mainchar, Role1, Role2 ) ".
                                                         "VALUES ( :UserId, :Name, :Class, :Mainchar, :Role1, :Role2 )" );
 
-                    $InsertChar->bindValue( ":UserId", $userId, PDO::PARAM_INT );
-                    $InsertChar->bindValue( ":Name", requestToXML( $Request["name"][$CharIndex], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
-                    $InsertChar->bindValue( ":Class", $Request["charClass"][$CharIndex], PDO::PARAM_STR );
-                    $InsertChar->bindValue( ":Mainchar", $Request["mainChar"][$CharIndex], PDO::PARAM_STR );
-                    $InsertChar->bindValue( ":Role1", $Request["role1"][$CharIndex], PDO::PARAM_STR );
-                    $InsertChar->bindValue( ":Role2", $Request["role2"][$CharIndex], PDO::PARAM_STR );
+                    $InsertChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+                    $InsertChar->bindValue( ":Name", requestToXML( $aRequest["name"][$CharIndex], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
+                    $InsertChar->bindValue( ":Class", $aRequest["charClass"][$CharIndex], PDO::PARAM_STR );
+                    $InsertChar->bindValue( ":Mainchar", $aRequest["mainChar"][$CharIndex], PDO::PARAM_STR );
+                    $InsertChar->bindValue( ":Role1", $aRequest["role1"][$CharIndex], PDO::PARAM_STR );
+                    $InsertChar->bindValue( ":Role2", $aRequest["role2"][$CharIndex], PDO::PARAM_STR );
 
                     if ( !$InsertChar->execute() )
                     {
@@ -99,15 +99,15 @@ function msgProfileUpdate( $Request )
 
                     array_push( $UpdatedCharacteIds, $CharId );
 
-                    $UpdateChar = $Connector->prepare(    "UPDATE `".RP_TABLE_PREFIX."Character` ".
+                    $UpdateChar = $Connector->prepare(  "UPDATE `".RP_TABLE_PREFIX."Character` ".
                                                         "SET Mainchar = :Mainchar, Role1 = :Role1, Role2 = :Role2 ".
                                                         "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
 
-                    $UpdateChar->bindValue( ":UserId", $userId, PDO::PARAM_INT );
+                    $UpdateChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
                     $UpdateChar->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
-                    $UpdateChar->bindValue( ":Mainchar", $Request["mainChar"][$CharIndex], PDO::PARAM_STR );
-                    $UpdateChar->bindValue( ":Role1", $Request["role1"][$CharIndex], PDO::PARAM_STR );
-                    $UpdateChar->bindValue( ":Role2", $Request["role2"][$CharIndex], PDO::PARAM_STR );
+                    $UpdateChar->bindValue( ":Mainchar", $aRequest["mainChar"][$CharIndex], PDO::PARAM_STR );
+                    $UpdateChar->bindValue( ":Role1", $aRequest["role1"][$CharIndex], PDO::PARAM_STR );
+                    $UpdateChar->bindValue( ":Role2", $aRequest["role2"][$CharIndex], PDO::PARAM_STR );
 
                     if ( !$UpdateChar->execute() )
                     {
@@ -133,10 +133,10 @@ function msgProfileUpdate( $Request )
                 $DropAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` ".
                                                       "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
                 
-                $DropChar->bindValue( ":UserId", $userId, PDO::PARAM_INT );
+                $DropChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
                 $DropChar->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
                 
-                $DropAttendance->bindValue( ":UserId", $userId, PDO::PARAM_INT );
+                $DropAttendance->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
                 $DropAttendance->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
                 
                 if ( !$DropChar->execute() )
@@ -161,10 +161,10 @@ function msgProfileUpdate( $Request )
             
             $Connector->commit();
             
-            UserProxy::GetInstance()->UpdateCharacters();
+            UserProxy::getInstance()->updateCharacters();
         }
 
-        msgQueryProfile( $Request );
+        msgQueryProfile( $aRequest );
     }
     else
     {

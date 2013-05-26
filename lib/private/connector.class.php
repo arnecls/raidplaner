@@ -7,23 +7,23 @@
     {
         private static $Instance = NULL;
 
-        private $Host;
-        private $Database;
+        private $mHost;
+        private $mDatabase;
 
         // --------------------------------------------------------------------------------------------
 
-        public function __construct($_Host, $_Database, $_User, $_Pass, $_Rethrow = false)
+        public function __construct($aHost, $aDatabase, $aUser, $aPass, $aRethrow = false)
         {
             try
             {
-                $this->Host  = $_Host;
-                $this->Database = $_Database;
-                parent::__construct("mysql:dbname=".$_Database.";host=".$_Host, $_User, $_Pass,
+                $this->mHost  = $aHost;
+                $this->mDatabase = $aDatabase;
+                parent::__construct("mysql:dbname=".$aDatabase.";host=".$aHost, $aUser, $aPass,
                     array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
             }
             catch (PDOException $Exception)
             {
-                if ( $_Rethrow )
+                if ( $aRethrow )
                 {
                     throw $Exception;
                 }
@@ -37,27 +37,27 @@
 
         // --------------------------------------------------------------------------------------------
 
-        public static function GetInstance( $_Rethrow = false )
+        public static function getInstance( $aRethrow = false )
         {
             require_once(dirname(__FILE__)."/../config/config.php");
-            return self::GetExternInstance(SQL_HOST, RP_DATABASE, RP_USER, RP_PASS, false);
+            return self::getExternInstance(SQL_HOST, RP_DATABASE, RP_USER, RP_PASS, $aRethrow);
         }
 
         // --------------------------------------------------------------------------------------------
 
-        public static function GetExternInstance($_Host, $_Database, $_User, $_Pass, $_Rethrow = false)
+        public static function getExternInstance($aHost, $aDatabase, $aUser, $aPass, $aRethrow = false)
         {
             if (self::$Instance == NULL)
             {
-                self::$Instance = new Connector($_Host, $_Database, $_User, $_Pass, $_Rethrow);
+                self::$Instance = new Connector($aHost, $aDatabase, $aUser, $aPass, $aRethrow);
             }
             else
             {
-                if ((self::$Instance->Host != $_Host) ||
-                    (self::$Instance->Database != $_Database))
+                if ((self::$Instance->mHost != $aHost) ||
+                    (self::$Instance->mDatabase != $aDatabase))
                 {
                     self::$Instance = NULL;
-                    self::$Instance = new Connector($_Host, $_Database, $_User, $_Pass, $_Rethrow);
+                    self::$Instance = new Connector($aHost, $aDatabase, $aUser, $aPass, $aRethrow);
                 }
             }
 
@@ -66,9 +66,9 @@
 
         // --------------------------------------------------------------------------------------------
 
-        public function prepare($Statement, $driver_options=array())
+        public function prepare($aStatement, $aDriverOptions=array())
         {
-            $StatementObj = parent::prepare($Statement, $driver_options);
+            $StatementObj = parent::prepare($aStatement, $aDriverOptions);
 
             if ($StatementObj === false)
             {
@@ -77,7 +77,7 @@
                     echo $ErrorLine."<br/>\n";
                 }
 
-                die($Statement);
+                die($aStatement);
             }
 
             return $StatementObj;
@@ -86,9 +86,9 @@
     
     // --------------------------------------------------------------------------------------------
 
-    function postErrorMessage( $Statement )
+    function postErrorMessage( $aStatement )
     {
-        $ErrorInfo = $Statement->errorInfo();
+        $ErrorInfo = $aStatement->errorInfo();
         echo "<error>".L("DatabaseError")."</error>";
         echo "<error>".$ErrorInfo[0]."</error>";
         echo "<error>".$ErrorInfo[2]."</error>";
@@ -96,9 +96,9 @@
     
     // --------------------------------------------------------------------------------------------
 
-    function postHTMLErrorMessage( $Statement )
+    function postHTMLErrorMessage( $aStatement )
     {
-        $ErrorInfo = $Statement->errorInfo();
+        $ErrorInfo = $aStatement->errorInfo();
         echo "<div class=\"database_error\">";
         echo "<div class=\"error_head\">".L("DatabaseError")."</div>";
         echo "<div class=\"error_line error_line1\">".$ErrorInfo[0]."</div>";

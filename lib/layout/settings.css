@@ -82,55 +82,15 @@
     display: inline-block;
 }
 
-#settings .propDeleteRaid {
+#settings .propLine {
     margin-bottom: 4px;
     width: 700px;
 }
 
-#settings .propLockRaid {
+#settings .propLineLast {
     margin-bottom: 14px;
     width: 700px;
 }
-
-#settings .propTimeFormat {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propRaidStart {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propRaidEnd {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propRaidSize {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propRaidMode {
-    margin-bottom: 14px;
-    width: 700px;
-}
-
-#settings .propSite {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propBanner {
-    margin-bottom: 4px;
-    width: 700px;
-}
-
-#settings .propBackground {
-    margin-bottom: 4px;
-    width: 700px;
-}    
 
 #settings .timeField {
     width: 32px;
@@ -180,16 +140,8 @@
 #settings .groupTarget {
     background-color: #eeeeee;
     -moz-border-radius: 6px; 
-    -webkit-border-radius: 6px;  
-    -khtml-border-radius: 6px;
+    -webkit-border-radius: 6px;
     border-radius: 6px;
-}
-
-#applyButton {
-    position: absolute;
-    top: 470px;
-    right: 4px;
-    white-space: nowrap;
 }
 
 #settings .user {
@@ -197,9 +149,20 @@
     padding: 4px;
     margin-left: 5px;
     white-space: nowrap;
+    height: 30px;
 }
 
 #settings .user .userImage {
+    float: left;
+    width: 32px;
+    height: 32px;
+}
+
+#settings .user .overlayLocked {
+    background-image: url(images/raid_locked_small.png);
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
     float: left;
 }
 
@@ -208,6 +171,28 @@
     padding-top: 2px;
     width: 105px;
     margin-left: 8px;
+}
+
+#settings .user .userName .binding_active {
+    background-image: url(images/icon_link.png);
+    background-repeat: no-repeat;
+    background-position: 0 -2px;
+    padding-left: 20px;
+    height: 16px;
+    display: inline-block;
+    font-size: 10px; 
+    color: #148cdc;
+}
+
+#settings .user .userName .binding {
+    background-image: url(images/icon_nolink.png);
+    background-repeat: no-repeat;
+    background-position: 0 -2px;
+    padding-left: 20px;
+    height: 16px;
+    display: inline-block;
+    font-size: 10px; 
+    color: #999;
 }
 
 #settings .user .userNameLocal {
@@ -227,6 +212,7 @@
 #settings .user .functionDelete {
     background-image: url(images/clear_off.png);
     background-repeat: no-repeat;
+    margin-top: 5px;
 }
 
 #settings .user .functionDelete:hover {
@@ -236,6 +222,7 @@
 #settings .user .functionEdit {
     background-image: url(images/edituser_off.png);
     background-repeat: no-repeat;
+    margin-top: 5px;
 }
 
 #settings .user .functionEdit:hover {
@@ -504,39 +491,9 @@
     margin-left: 0px;
 }
 
-.grpicon {
+.removeLink {
     width: 32px;
     height: 32px;
-    margin-left: 2px;
-    margin-right: 2px;
-    margin-top: 6px;
-    cursor: pointer;
-}
-
-.grpicon_off {
-    width: 32px;
-    height: 32px;
-    margin-left: 2px;
-    margin-right: 2px;
-    margin-top: 6px;    
-    opacity: 0.3;
-    filter:Alpha(opacity=30);
-}
-
-.grp_move_left {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background-image: url(images/move_left.png);
-    background-repeat: no-repeat;
-    top: 65px;
-}
-
-.grp_move_right {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background-image: url(images/move_right.png);
-    background-repeat: no-repeat;
-    top: 65px;
+    margin-right: 8px;
+    float: left;
 }

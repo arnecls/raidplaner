@@ -5,14 +5,14 @@
     
     function doUpgrade( $a_Statement)
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
         $Connector->beginTransaction();
         
-        while ( list($name, $query) = each($a_Statement) )
+        while ( list($Name, $Query) = each($a_Statement) )
         {
-            echo "<div class=\"update_step\">".$name;
+            echo "<div class=\"update_step\">".$Name;
             
-            $Action = $Connector->prepare( $query );
+            $Action = $Connector->prepare( $Query );
             if ( !$Action->execute() )
             {
                 postHTMLErrorMessage( $Action );
@@ -34,9 +34,9 @@
     {
        echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.2 ".L("UpdateTo")." 0.9.3";
        
-       $queries = Array( "External binding" => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `ExternalBinding` `ExternalBinding` ENUM('none',  'phpbb3',  'eqdkp',  'vb3') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;" );
+       $Queries = Array( "External binding" => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `ExternalBinding` `ExternalBinding` ENUM('none',  'phpbb3',  'eqdkp',  'vb3') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;" );
        
-       doUpgrade( $queries );
+       doUpgrade( $Queries );
        echo "</div>";
     }
     
@@ -46,18 +46,18 @@
     {
         echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.3 ".L("UpdateTo")." 0.9.4";
        
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
         
         // Check for exisiting unique index
         
-        $queries1 = Array();
+        $Queries1 = Array();
         
         $IndexStatement = $Connector->prepare( "SHOW INDEXES FROM `".RP_TABLE_PREFIX."Setting` WHERE Key_Name='Unique_Name'" );
         if ( $IndexStatement->execute() )
         {
             if ( !$IndexStatement->fetch(PDO::FETCH_ASSOC) )
             {
-                $queries1["Unique setting names"] = "ALTER TABLE  `".RP_TABLE_PREFIX."Setting` ADD CONSTRAINT `Unique_Name` UNIQUE (`Name`);";
+                $Queries1["Unique setting names"] = "ALTER TABLE  `".RP_TABLE_PREFIX."Setting` ADD CONSTRAINT `Unique_Name` UNIQUE (`Name`);";
             }
         }
         
@@ -65,7 +65,7 @@
         
         // Static updates
         
-        $queries2 = Array( "Creation date field"  => "ALTER TABLE `".RP_TABLE_PREFIX."User` ADD  `Created` DATETIME NOT NULL;",
+        $Queries2 = Array( "Creation date field"  => "ALTER TABLE `".RP_TABLE_PREFIX."User` ADD  `Created` DATETIME NOT NULL;",
                            "User creation date"   => "UPDATE `".RP_TABLE_PREFIX."User` SET Created = NOW();",
                            "Raid start hour"      => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`SettingId`, `Name`, `IntValue`, `TextValue`) VALUES (NULL, 'RaidStartHour', '19', '');",
                            "Raid start minute"    => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`SettingId`, `Name`, `IntValue`, `TextValue`) VALUES (NULL, 'RaidStartMinute', '30', '');",
@@ -76,7 +76,7 @@
                            "Banner"               => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`SettingId`, `Name`, `IntValue`, `TextValue`) VALUES (NULL, 'Banner', '0', 'cata');",
                            "Current version"      => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`SettingId`, `Name`, `IntValue`, `TextValue`) VALUES (NULL, 'Version', '94', '');" );
         
-        doUpgrade( array_merge($queries1, $queries2) );
+        doUpgrade( array_merge($Queries1, $Queries2) );
         
         // Update user creation dates
         
@@ -124,12 +124,12 @@
     {
         echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.4 ".L("UpdateTo")." 0.9.5";
         
-        $updates = Array( "Timestamp setting"      => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('TimeFormat', 24, '');",
+        $Updates = Array( "Timestamp setting"      => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('TimeFormat', 24, '');",
                           "Remove banner setting"  => "DELETE FROM `".RP_TABLE_PREFIX."Setting` WHERE Name = 'Banner' LIMIT 1;",
                           "Theme setting"          => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Theme', '', 'cataclysm');",
                           "Configurable classes"   => "ALTER TABLE  `".RP_TABLE_PREFIX."Character` CHANGE `Class` `Class` CHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;");
         
-        doUpgrade( $updates );
+        doUpgrade( $Updates );
         
         echo "</div>";
     }
@@ -140,7 +140,7 @@
     {
         echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.5 ".L("UpdateTo")." 0.9.6";
         
-        $updates = Array( "Primary key attendance"   => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` ADD  `AttendanceId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;",
+        $Updates = Array( "Primary key attendance"   => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` ADD  `AttendanceId` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;",
                           "Rename role fields"       => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE  `TankSlots` `SlotsRole1` TINYINT(2) UNSIGNED NOT NULL,".
                                                         "CHANGE `HealSlots` `SlotsRole2` TINYINT(2) UNSIGNED NOT NULL,".
                                                         "CHANGE `DmgSlots` `SlotsRole3` TINYINT(2) UNSIGNED NOT NULL;",
@@ -161,7 +161,7 @@
                           "raid modes"               => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `Mode` ENUM('manual', 'attend', 'all') NOT NULL AFTER `End`;",                          
                           "raid mode setting"        => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidMode', '0', 'manual');" );                          
                           
-        doUpgrade( $updates );
+        doUpgrade( $Updates );
         
         echo "</div>";
     }
@@ -172,15 +172,15 @@
     {
         echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.6 ".L("UpdateTo")." 0.9.7";
         
-        $updates = Array( "Undecided comments"               => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CHANGE `Status` `Status` ENUM('ok', 'available', 'unavailable', 'undecided') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
+        $Updates = Array( "Undecided comments"               => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CHANGE `Status` `Status` ENUM('ok', 'available', 'unavailable', 'undecided') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
                           "New bindings"                     => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `ExternalBinding` `ExternalBinding` ENUM('none', 'phpbb3', 'eqdkp', 'vb3', 'mybb', 'smf') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
                           "Support for long EQDKP passwords" => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `Password` `Password` CHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
                           "HMAC support fields"              => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `Hash` `Salt` CHAR(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;".
                                                                 "ALTER TABLE `".RP_TABLE_PREFIX."User` ADD `OneTimeKey` CHAR(32) NOT NULL AFTER `Salt`, ADD `SessionKey` CHAR(32) NOT NULL AFTER `OneTimeKey`;".
                                                                 "ALTER TABLE `".RP_TABLE_PREFIX."User` ADD `BindingActive` ENUM('true', 'false') NOT NULL DEFAULT 'true' AFTER `ExternalBinding`;");
         
-        doUpgrade( $updates );
-		$Connector = Connector::GetInstance();
+        doUpgrade( $Updates );
+        $Connector = Connector::getInstance();
         
         // vBulletin user hash change
         
@@ -207,30 +207,30 @@
                 }
                 else
                 {
-                    $error = false;
+                    $Error = false;
                     
                     // Gather all vbulletin users
                     
-                    $vbUserSalt = array();
+                    $VbUserSalt = array();
                     while ( $UserData = $VbUserQuery->fetch(PDO::FETCH_ASSOC) )
                     {
-                        $vbUserSalt[$UserData["userid"]] = $UserData["salt"];
+                        $VbUserSalt[$UserData["userid"]] = $UserData["salt"];
                     }
                     
                     // Update salt per user
                 
                     while ( $UserData = $UserQuery->fetch(PDO::FETCH_ASSOC) )
                     {
-                        if ( isset($vbUserSalt[$UserData["ExternalId"]]) )
+                        if ( isset($VbUserSalt[$UserData["ExternalId"]]) )
                         {
                             $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Salt = :Salt WHERE UserId = :UserId LIMIT 1");
                             
                             $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
-                            $UpdateUser->bindValue(":Salt", $vbUserSalt[$UserData["ExternalId"]], PDO::PARAM_STR);
+                            $UpdateUser->bindValue(":Salt", $VbUserSalt[$UserData["ExternalId"]], PDO::PARAM_STR);
                             
                             if ( !$UpdateUser->execute() )
                             {
-                                $error = true;
+                                $Error = true;
                                 postHTMLErrorMessage( $UpdateUser );
                             }
                             
@@ -241,7 +241,7 @@
                 
                 $VbUserQuery->closeCursor();
                 
-                if (!$error)
+                if (!$Error)
                     echo "<div class=\"update_step_ok\">OK</div>";
             }
             
@@ -262,7 +262,7 @@
         }
         else
         {
-            $error = false;
+            $Error = false;
             
             while ( $UserData = $NativeUserQuery->fetch(PDO::FETCH_ASSOC) )
             {
@@ -279,7 +279,7 @@
                     
                     if ( !$UpdateUser->execute() )
                     {
-                        $error = true;
+                        $Error = true;
                         postHTMLErrorMessage( $UpdateUser );
                     }
                     
@@ -287,7 +287,7 @@
                 }
             }
             
-            if (!$error)
+            if (!$Error)
                 echo "<div class=\"update_step_ok\">OK</div>";                   
         }
         
@@ -299,9 +299,25 @@
     
     // ----------------------------------------------------------------------------
     
+    function upgrade_097()
+    {
+        echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.7 ".L("UpdateTo")." 0.9.8";
+        
+        $Updates = Array( "New bindings"              => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE `ExternalBinding` `ExternalBinding` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
+                          "Timestamp for attendances" => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD `LastUpdate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `RaidId`;",
+                          "StartOfWeek setting"       => "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`SettingId`, `Name`, `IntValue`, `TextValue`) VALUES (NULL, 'StartOfWeek', '1', '');",
+                          "Unbind admin users"        => "UPDATE `".RP_TABLE_PREFIX."User` SET BindingActive='false' WHERE `Group`='admin';" );                          
+                          
+        doUpgrade( $Updates );
+        
+        echo "</div>";
+    }
+    
+    // ----------------------------------------------------------------------------
+    
     function setVersion( $a_Version )
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
         $Connector->exec( "UPDATE `".RP_TABLE_PREFIX."Setting` SET IntValue=".intval($a_Version)." WHERE Name='Version';" );
     }
     
@@ -321,8 +337,10 @@
             upgrade_095();
         case 96:
             upgrade_096();
+        case 97:
+            upgrade_097();
         default:
-            setVersion(97);
+            setVersion(98);
             break;
         }
     }

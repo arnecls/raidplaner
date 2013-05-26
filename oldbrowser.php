@@ -4,28 +4,28 @@
 
     function isSupportedVersion()
     {
-        $browserInfo = new Browser();
+        $BrowserInfo = new Browser();
     
-        switch ( $browserInfo->getBrowser() )
+        switch ( $BrowserInfo->getBrowser() )
         {
         case Browser::BROWSER_SAFARI:
-            return $browserInfo->getVersion() >= 4;
+            return $BrowserInfo->getVersion() >= 4;
             break;
             
         case Browser::BROWSER_FIREFOX:
-            return $browserInfo->getVersion() >= 3;
+            return $BrowserInfo->getVersion() >= 3;
             break;
             
         case Browser::BROWSER_IE:
-            return $browserInfo->getVersion() >= 7;
+            return $BrowserInfo->getVersion() >= 7;
             break;
             
         case Browser::BROWSER_CHROME:
-            return $browserInfo->getVersion() >= 4;
+            return $BrowserInfo->getVersion() >= 4;
             break;
             
         case Browser::BROWSER_OPERA:
-            return intval($browserInfo->getVersion()) >= 11;
+            return intval($BrowserInfo->getVersion()) >= 11;
             break;
         }
         

@@ -1,6 +1,6 @@
 <?php
-    $loader_files = Array(        
-        "jquery-ui-1.10.0.custom.min.css",
+    $LoaderFiles = Array(        
+        "jquery-ui-1.10.3.custom.min.css",
         "default.css",
         "combobox.css",
         "calendar.css",
@@ -17,9 +17,9 @@
         // "Debug mode"
         // Load each file separately for easier debugging.
         
-        foreach ( $loader_files as $file )
+        foreach ( $LoaderFiles as $File )
         {
-            echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/".$file."\"/>\n";
+            echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/".$File."\"/>\n";
         }
     }
     else
@@ -29,9 +29,9 @@
         
         header("Content-type: text/css");
         
-        foreach ( $loader_files as $loader_current_file )
+        foreach ( $LoaderFiles as $LoaderCurrentFile )
         {
-            readfile($loader_current_file);
+            readfile($LoaderCurrentFile);
             echo "\n";            
         }
     }

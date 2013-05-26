@@ -6,16 +6,16 @@
     
     // globals
 
-    $roleKeys = array_keys($s_Roles);
+    $RoleKeys = array_keys($gRoles);
     $g_RoleToIdx = array();
-    $roleIdx = 0;
+    $RoleIdx = 0;
     
-    foreach($roleKeys as $key)
+    foreach($RoleKeys as $Key)
     {
-        $g_RoleToIdx[$key] = $roleIdx++;
+        $g_RoleToIdx[$Key] = $RoleIdx++;
     }
     
-    $Connector = Connector::GetInstance();
+    $Connector = Connector::getInstance();
     
     // -------------------------------------------------------------------------
     //  Database
@@ -35,60 +35,60 @@
     
     echo "<div class=\"update_version\">".L("InvalidCharacters");
     
-    $charStatement = $Connector->prepare("SELECT CharacterId, Name, Class, Role1, Role2 FROM `".RP_TABLE_PREFIX."Character`");
-    $fixCount = 0;
-    $resolveCount = 0;
+    $CharStatement = $Connector->prepare("SELECT CharacterId, Name, Class, Role1, Role2 FROM `".RP_TABLE_PREFIX."Character`");
+    $FixCount = 0;
+    $ResolveCount = 0;
         
-    if (!$charStatement->execute())
+    if (!$CharStatement->execute())
     {
-        postHTMLErrorMessage( $charStatement );
+        postHTMLErrorMessage( $CharStatement );
     }
     else
     {
-        $invalidCharacters = array();
+        $InvalidCharacters = array();
         
-        while ( $Character = $charStatement->fetch(PDO::FETCH_ASSOC) )
+        while ( $Character = $CharStatement->fetch(PDO::FETCH_ASSOC) )
         {
             $CharId = intval($Character["CharacterId"]);
-            $submitNewRole = false;
+            $SubmitNewRole = false;
             
-            if ( !array_key_exists($Character["Class"], $s_Classes) )
+            if ( !array_key_exists($Character["Class"], $gClasses) )
             {
-                array_push( $invalidCharacters, $Character );
+                array_push( $InvalidCharacters, $Character );
             }
             else
             {            
-                $mainRoleOk = false;
-                $offRoleOk  = false;
-                $roles      = $s_Classes[$Character["Class"]][1];
+                $MainRoleOk = false;
+                $OffRoleOk  = false;
+                $Roles      = $gClasses[$Character["Class"]][2];
                 
                 // Check if roles are allowed for the class
                 
-                foreach ( $roles as $role )
+                foreach ( $Roles as $Role )
                 {
-                    $mainRoleOk = $mainRoleOk || ($g_RoleToIdx[$role] == intval($Character["Role1"]));
-                    $offRoleOk  = $offRoleOk  || ($g_RoleToIdx[$role] == intval($Character["Role2"]));
+                    $MainRoleOk = $MainRoleOk || ($g_RoleToIdx[$Role] == intval($Character["Role1"]));
+                    $OffRoleOk  = $OffRoleOk  || ($g_RoleToIdx[$Role] == intval($Character["Role2"]));
                 }
                 
                 // Fix main role if necessary
                 
-                if ( !$mainRoleOk )
+                if ( !$MainRoleOk )
                 {
-                    $Character["Role1"] = ($offRoleOk) 
+                    $Character["Role1"] = ($OffRoleOk) 
                         ? $Character["Role2"]
-                        : $g_RoleToIdx[ $roles[0] ];
+                        : $g_RoleToIdx[ $Roles[0] ];
                 }
                 
                 // Fix off role if necessary
                 
-                if ( !$offRoleOk )
+                if ( !$OffRoleOk )
                 {
-                    $Character["Role2"] = ($mainRoleOk) 
+                    $Character["Role2"] = ($MainRoleOk) 
                         ? $Character["Role1"]
-                        : $g_RoleToIdx[ $roles[0] ];
+                        : $g_RoleToIdx[ $Roles[0] ];
                 }
                 
-                if ( !$mainRoleOk || !$offRoleOk )
+                if ( !$MainRoleOk || !$OffRoleOk )
                 {
                     // Update roles
                 
@@ -103,7 +103,7 @@
                     }
                     else
                     {
-                        ++$fixCount;
+                        ++$FixCount;
                     }
                     
                     // Delete attendances with invalid roles
@@ -125,23 +125,23 @@
             }
         }
         
-        $resolveCount = sizeof($invalidCharacters);
+        $ResolveCount = sizeof($InvalidCharacters);
         
-        foreach( $invalidCharacters as $character )
+        foreach( $InvalidCharacters as $Character )
         {
-            echo "<div class=\"update_step_warning classResolve\">".$character["Name"];
+            echo "<div class=\"update_step_warning classResolve\">".$Character["Name"];
             echo "<div class=\"resolve_options\">";
-            echo "<span class=\"resolve_type\">".$character["Class"]."</span>";
-            echo "<select id=\"char".$character["CharacterId"]."\" class=\"change_class\">";
+            echo "<span class=\"resolve_type\">".$Character["Class"]."</span>";
+            echo "<select id=\"char".$Character["CharacterId"]."\" class=\"change_class\">";
             echo "<option value=\"_delete\">".L("Delete")."</option>";
             
-            while(list($class,$info) = each($s_Classes))
+            while(list($Class,$Info) = each($gClasses))
             {
-                if ( $class != "empty" )
-                    echo "<option value=\"".$class."\">".$info[0]."</option>";
+                if ( $Class != "empty" )
+                    echo "<option value=\"".$Class."\">".$Info[0]."</option>";
             }
             
-            reset($s_Classes);
+            reset($gClasses);
             
             echo "</select>";
             echo "</div>";
@@ -149,9 +149,9 @@
         }
     }
     
-    if ($resolveCount > 0)
+    if ($ResolveCount > 0)
     {
-        echo "<div class=\"update_step_warning classResolve\">".$resolveCount." ".L("ItemsToResolve");
+        echo "<div class=\"update_step_warning classResolve\">".$ResolveCount." ".L("ItemsToResolve");
         echo "<div class=\"resolve_options\">";
         echo "<button id=\"resolveClasses\" onclick=\"resolveClasses()\">".L("Resolve")."</button>";
         echo "</div>";
@@ -159,15 +159,15 @@
     }
     else
     {
-        echo "<div class=\"update_step_ok\">".$resolveCount." ".L("ItemsToResolve")."</div>";
+        echo "<div class=\"update_step_ok\">".$ResolveCount." ".L("ItemsToResolve")."</div>";
     }
     
-    if ($fixCount > 0)
-        echo "<div class=\"update_step_warning\">".$fixCount." ".L("ItemsRepaired")."</div>";
+    if ($FixCount > 0)
+        echo "<div class=\"update_step_warning\">".$FixCount." ".L("ItemsRepaired")."</div>";
     else
-        echo "<div class=\"update_step_ok\">".$fixCount." ".L("ItemsRepaired")."</div>";
+        echo "<div class=\"update_step_ok\">".$FixCount." ".L("ItemsRepaired")."</div>";
         
-    $charStatement->closeCursor();
+    $CharStatement->closeCursor();
     echo "</div>";
     
     // -------------------------------------------------------------------------
@@ -179,7 +179,7 @@
     // Delete attended roles that are out of range
     
     $DeleteAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE Role>:MaxRole");
-    $DeleteAttendance->bindValue(":MaxRole", sizeof($s_Roles), PDO::PARAM_INT);
+    $DeleteAttendance->bindValue(":MaxRole", sizeof($gRoles), PDO::PARAM_INT);
     
     if (!$DeleteAttendance->execute())
     {

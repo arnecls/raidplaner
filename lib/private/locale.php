@@ -1,34 +1,34 @@
 <?php
-    $g_Locale = Array();
+    $gLocale = Array();
 
     if ( !isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) )
     {
-        global $g_Locale;
+        global $gLocale;
         include_once( dirname(__FILE__)."/locale/en.php" );
     }
     else
     {
-        $languageString = strtolower( substr( $_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2 ) );
+        $LanguageString = strtolower( substr( $_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2 ) );
 
-        if ( file_exists( dirname(__FILE__)."/locale/".$languageString.".php" ) )
+        if ( file_exists( dirname(__FILE__)."/locale/".$LanguageString.".php" ) )
         {
-            global $g_Locale;
-            include_once( dirname(__FILE__)."/locale/".$languageString.".php" );
+            global $gLocale;
+            include_once( dirname(__FILE__)."/locale/".$LanguageString.".php" );
         }
         else
         {
-            global $g_Locale;
+            global $gLocale;
             include_once( dirname(__FILE__)."/locale/en.php" );
         }
     }
 
-    function L( $a_Key )
+    function L( $aKey )
     {
-        global $g_Locale;
+        global $gLocale;
 
-        if ( !isset($g_Locale[$a_Key]) || ($g_Locale[$a_Key] == null) )
-            return "LOCA_MISSING_".$a_Key;
+        if ( !isset($gLocale[$aKey]) || ($gLocale[$aKey] == null) )
+            return "LOCA_MISSING_".$aKey;
 
-        return $g_Locale[$a_Key];
+        return $gLocale[$aKey];
     }
 ?>

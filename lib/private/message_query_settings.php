@@ -1,14 +1,14 @@
 <?php
 
-function msgQuerySettings( $Request )
+function msgQuerySettings( $aRequest )
 {
-    if ( ValidAdmin() )
+    if ( validAdmin() )
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
         // Pass through parameter
 
-        echo "<show>".$Request["showPanel"]."</show>";
+        echo "<show>".$aRequest["showPanel"]."</show>";
 
         // Load users
 
@@ -87,7 +87,7 @@ function msgQuerySettings( $Request )
 
         if ( !$Raids->execute() )
         {
-            postErrorMessage( $User );
+            postErrorMessage( $Raids );
         }
         else
         {
@@ -163,7 +163,7 @@ function msgQuerySettings( $Request )
 
         // Locations
 
-        msgQueryLocations( $Request );
+        msgQueryLocations( $aRequest );
     }
     else
     {

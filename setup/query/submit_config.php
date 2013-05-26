@@ -9,20 +9,20 @@
         
     // Write config file
     
-    $configFile = fopen( "../../lib/config/config.php", "w+" );
+    $ConfigFile = fopen( "../../lib/config/config.php", "w+" );
     
-    fwrite( $configFile, "<?php\n");
+    fwrite( $ConfigFile, "<?php\n");
     
-    fwrite( $configFile, "\tdefine(\"SQL_HOST\", \"".$_REQUEST["host"]."\");\n");    
-    fwrite( $configFile, "\tdefine(\"RP_DATABASE\", \"".$_REQUEST["database"]."\");\n");
-    fwrite( $configFile, "\tdefine(\"RP_USER\", \"".$_REQUEST["user"]."\");\n");
-    fwrite( $configFile, "\tdefine(\"RP_PASS\", \"".$_REQUEST["password"]."\");\n");
-    fwrite( $configFile, "\tdefine(\"RP_TABLE_PREFIX\", \"".$_REQUEST["prefix"]."\");\n");    
-    fwrite( $configFile, "\tdefine(\"ALLOW_REGISTRATION\", ".$_REQUEST["register"].");\n");   
-    fwrite( $configFile, "\tdefine(\"USE_CLEARTEXT_PASSWORDS\", ".$_REQUEST["cleartext"].");\n");
+    fwrite( $ConfigFile, "\tdefine(\"SQL_HOST\", \"".$_REQUEST["host"]."\");\n");    
+    fwrite( $ConfigFile, "\tdefine(\"RP_DATABASE\", \"".$_REQUEST["database"]."\");\n");
+    fwrite( $ConfigFile, "\tdefine(\"RP_USER\", \"".$_REQUEST["user"]."\");\n");
+    fwrite( $ConfigFile, "\tdefine(\"RP_PASS\", \"".$_REQUEST["password"]."\");\n");
+    fwrite( $ConfigFile, "\tdefine(\"RP_TABLE_PREFIX\", \"".$_REQUEST["prefix"]."\");\n");    
+    fwrite( $ConfigFile, "\tdefine(\"ALLOW_REGISTRATION\", ".$_REQUEST["register"].");\n");   
+    fwrite( $ConfigFile, "\tdefine(\"USE_CLEARTEXT_PASSWORDS\", ".$_REQUEST["cleartext"].");\n");
     
-    fwrite( $configFile, "?>");    
-    fclose( $configFile );
+    fwrite( $ConfigFile, "?>");    
+    fclose( $ConfigFile );
     
     require_once("../../lib/config/config.php");
     

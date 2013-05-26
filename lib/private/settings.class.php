@@ -4,40 +4,40 @@ require_once(dirname(__FILE__)."/connector.class.php");
 
 class Settings
 {
-    private static $Instance = NULL;
+    private static $mInstance = NULL;
     public $Property = Array();
 
     // --------------------------------------------------------------------------------------------
 
     public function __construct()
     {
-        $this->Update();
+        $this->update();
     }
 
     // --------------------------------------------------------------------------------------------
 
-    public static function GetInstance()
+    public static function getInstance()
     {
-        if (self::$Instance == NULL)
+        if (self::$mInstance == NULL)
         {
-            self::$Instance = new Settings();
+            self::$mInstance = new Settings();
         }
 
-        return self::$Instance;
+        return self::$mInstance;
     }
 
     // --------------------------------------------------------------------------------------------
 
-    public function Update()
+    public function update()
     {
-        $Connector = Connector::GetInstance();
-        $query = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Setting` ORDER BY Name" );
+        $Connector = Connector::getInstance();
+        $Query = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Setting` ORDER BY Name" );
 
         $this->Property = Array();
 
-        if ( $query->execute() )
+        if ( $Query->execute() )
         {
-            while ( $Data = $query->fetch( PDO::FETCH_ASSOC ) )
+            while ( $Data = $Query->fetch( PDO::FETCH_ASSOC ) )
             {
                 $this->Property[$Data["Name"]] = Array(
                     "IntValue"  => intval($Data["IntValue"]),
@@ -46,7 +46,7 @@ class Settings
             }
         }
 
-        $query->closeCursor();
+        $Query->closeCursor();
     }
 }
 

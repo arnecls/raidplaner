@@ -2,44 +2,44 @@
 
 function updateGroup( $Connector, $GroupName, $IdArray )
 {
-    $userGroup = $Connector->prepare( "SELECT UserId FROM `".RP_TABLE_PREFIX."User` WHERE `Group` = :GroupName" );
-    $userGroup->bindValue(":GroupName", $GroupName, PDO::PARAM_STR );
+    $UserGroup = $Connector->prepare( "SELECT UserId FROM `".RP_TABLE_PREFIX."User` WHERE `Group` = :GroupName" );
+    $UserGroup->bindValue(":GroupName", $GroupName, PDO::PARAM_STR );
 
-    if ( !$userGroup->execute() )
+    if ( !$UserGroup->execute() )
     {
-        postErrorMessage( $userGroup );
+        postErrorMessage( $UserGroup );
 
-        $userGroup->closeCursor();
+        $UserGroup->closeCursor();
         $Connector->rollBack();
         return false;
     }
 
     $CurrentGroupIds = Array();
 
-    while ( $User = $userGroup->fetch( PDO::FETCH_ASSOC ) )
+    while ( $User = $UserGroup->fetch( PDO::FETCH_ASSOC ) )
     {
         array_push( $CurrentGroupIds, intval($User["UserId"]) );
     }
 
-    $userGroup->closeCursor();
+    $UserGroup->closeCursor();
     $ChangedIds = array_diff( $IdArray, $CurrentGroupIds ); // new ids
 
     foreach ( $ChangedIds as $UserId )
     {
-        $changeUser = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET `Group` = :GroupName WHERE UserId = :UserId " );
-        $changeUser->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-        $changeUser->bindValue(":GroupName", $GroupName, PDO::PARAM_STR );
+        $ChangeUser = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET `Group` = :GroupName WHERE UserId = :UserId " );
+        $ChangeUser->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+        $ChangeUser->bindValue(":GroupName", $GroupName, PDO::PARAM_STR );
 
-        if ( !$changeUser->execute() )
+        if ( !$ChangeUser->execute() )
         {
-            postErrorMessage( $changeUser );
+            postErrorMessage( $ChangeUser );
 
-            $changeUser->closeCursor();
+            $ChangeUser->closeCursor();
             $Connector->rollBack();
             return false;
         }
 
-        $changeUser->closeCursor();
+        $ChangeUser->closeCursor();
     }
 
     return true;
@@ -89,60 +89,61 @@ function generateQueryStringText( $CurrentValues, &$BindValues, $ValueName, $New
 
 // -----------------------------------------------------------------------------
 
-function msgSettingsUpdate( $Request )
+function msgSettingsupdate( $aRequest )
 {
-    if ( ValidAdmin() )
+    if ( validAdmin() )
     {
-        $Connector = Connector::GetInstance();
+        $Connector = Connector::getInstance();
 
         // Update settings
 
-        $existingSettings = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Setting`" );
-        $currentValues = array();
+        $ExistingSettings = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Setting`" );
+        $CurrentValues = array();
 
-        if ( !$existingSettings->execute() )
+        if ( !$ExistingSettings->execute() )
         {
-            postErrorMessage( $existingSettings );
+            postErrorMessage( $ExistingSettings );
         }
         else
         {
-            while ( $Data = $existingSettings->fetch( PDO::FETCH_ASSOC ) )
+            while ( $Data = $ExistingSettings->fetch( PDO::FETCH_ASSOC ) )
             {
-                $currentValues[$Data["Name"]] = array( "number" => $Data["IntValue"], "text" => $Data["TextValue"] );
+                $CurrentValues[$Data["Name"]] = array( "number" => $Data["IntValue"], "text" => $Data["TextValue"] );
             }
         }
 
-        $existingSettings->closeCursor();
-        $queryString = "";
-        $bindValues = array();
+        $ExistingSettings->closeCursor();
+        $QueryString = "";
+        $BindValues = array();
 
         // Generate settings update query
 
-        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "PurgeRaids", $Request["purgeTime"] );
-        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "LockRaids", $Request["lockTime"] );
-        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "TimeFormat", $Request["timeFormat"] );
-        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidStartHour", $Request["raidStartHour"] );
-        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidStartMinute", $Request["raidStartMinute"] );
-        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidEndHour", $Request["raidEndHour"] );
-        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidEndMinute", $Request["raidEndMinute"] );
-        $queryString .= generateQueryStringInt( $currentValues, $bindValues, "RaidSize", $Request["raidSize"] );
-        $queryString .= generateQueryStringText( $currentValues, $bindValues, "RaidMode", $Request["raidMode"] );
-        $queryString .= generateQueryStringText( $currentValues, $bindValues, "Site", $Request["site"] );
-        $queryString .= generateQueryStringText( $currentValues, $bindValues, "Theme", $Request["theme"] );
+        $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "PurgeRaids", $aRequest["purgeTime"] );
+        $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "LockRaids", $aRequest["lockTime"] );
+        $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "TimeFormat", $aRequest["timeFormat"] );
+        $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "StartOfWeek", $aRequest["startOfWeek"] );
+        $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "RaidStartHour", $aRequest["raidStartHour"] );
+        $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "RaidStartMinute", $aRequest["raidStartMinute"] );
+        $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "RaidEndHour", $aRequest["raidEndHour"] );
+        $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "RaidEndMinute", $aRequest["raidEndMinute"] );
+        $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "RaidSize", $aRequest["raidSize"] );
+        $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "RaidMode", $aRequest["raidMode"] );
+        $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "Site", $aRequest["site"] );
+        $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "Theme", $aRequest["theme"] );
 
-        if ( $queryString != "" )
+        if ( $QueryString != "" )
            {
-               $settingsUpdate = $Connector->prepare( $queryString );
+               $SettingsUpdate = $Connector->prepare( $QueryString );
 
-            foreach( $bindValues as $bindData )
+            foreach( $BindValues as $BindData )
             {
-                $settingsUpdate->bindValue( $bindData[0], $bindData[1], $bindData[2] );
+                $SettingsUpdate->bindValue( $BindData[0], $BindData[1], $BindData[2] );
             }
 
             $Connector->beginTransaction();
-            if ( !$settingsUpdate->execute() )
+            if ( !$SettingsUpdate->execute() )
             {
-                postErrorMessage( $settingsUpdate );
+                postErrorMessage( $SettingsUpdate );
                 $Connector->rollBack();
             }
             else
@@ -150,74 +151,74 @@ function msgSettingsUpdate( $Request )
                 $Connector->commit();
             }
 
-            $settingsUpdate->closeCursor();
+            $SettingsUpdate->closeCursor();
         }
 
         // Update locations
 
-        $existingLocations = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Location`" );
-        $currentValues = array();
+        $ExistingLocations = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Location`" );
+        $CurrentValues = array();
 
-        if ( !$existingLocations->execute() )
+        if ( !$ExistingLocations->execute() )
         {
-            postErrorMessage( $existingLocations );
+            postErrorMessage( $ExistingLocations );
         }
         else
         {
-            while ( $Data = $existingLocations->fetch( PDO::FETCH_ASSOC ) )
+            while ( $Data = $ExistingLocations->fetch( PDO::FETCH_ASSOC ) )
             {
-                $currentValues[$Data["LocationId"]] = array( "Name" => $Data["Name"], "Image" => $Data["Image"] );
+                $CurrentValues[$Data["LocationId"]] = array( "Name" => $Data["Name"], "Image" => $Data["Image"] );
             }
         }
 
-        $existingLocations->closeCursor();
-        $queryString = "";
-        $bindValues = array();
+        $ExistingLocations->closeCursor();
+        $QueryString = "";
+        $BindValues = array();
 
         // Build location query
 
-        for ( $i=0; $i < sizeof($Request["locationIds"]); ++$i )
+        for ( $i=0; $i < sizeof($aRequest["locationIds"]); ++$i )
         {
-            $locationId      = intval($Request["locationIds"][$i]);
-            $currentLocation = $currentValues[$locationId];
-            $locationName    = requestToXML( $Request["locationNames"][$i], ENT_COMPAT, "UTF-8" );
-            $locationImage   = ( isset($Request["locationImages"]) && isset($Request["locationImages"][$i]) && ($Request["locationImages"][$i] != "undefined") )
-                ? $Request["locationImages"][$i]
-                : $currentLocation["Image"];
+            $LocationId      = intval($aRequest["locationIds"][$i]);
+            $CurrentLocation = $CurrentValues[$LocationId];
+            $LocationName    = requestToXML( $aRequest["locationNames"][$i], ENT_COMPAT, "UTF-8" );
+            $LocationImage   = ( isset($aRequest["locationImages"]) && isset($aRequest["locationImages"][$i]) && ($aRequest["locationImages"][$i] != "undefined") )
+                ? $aRequest["locationImages"][$i]
+                : $CurrentLocation["Image"];
 
-            if ( ($locationName != $currentLocation["Name"]) || ($locationImage != $currentLocation["Image"]) )
+            if ( ($LocationName != $CurrentLocation["Name"]) || ($LocationImage != $CurrentLocation["Image"]) )
             {
-                array_push( $bindValues, array(":Name".$locationId, $locationName, PDO::PARAM_STR) );
-                array_push( $bindValues, array(":Image".$locationId, $locationImage, PDO::PARAM_STR) );
-                $queryString .= "UPDATE `".RP_TABLE_PREFIX."Location` SET Name = :Name".$locationId.", Image = :Image".$locationId." WHERE LocationId=".$locationId."; ";
+                array_push( $BindValues, array(":Name".$LocationId, $LocationName, PDO::PARAM_STR) );
+                array_push( $BindValues, array(":Image".$LocationId, $LocationImage, PDO::PARAM_STR) );
+                $QueryString .= "UPDATE `".RP_TABLE_PREFIX."Location` SET Name = :Name".$LocationId.", Image = :Image".$LocationId." WHERE LocationId=".$LocationId."; ";
             }
         }
 
-        if ( isset($Request["locationRemoved"]) )
+        if ( isset($aRequest["locationRemoved"]) )
         {
-            foreach( $Request["locationRemoved"] as $locationId )
+            foreach( $aRequest["locationRemoved"] as $LocationId )
                {
-                $queryString .= "DELETE `".RP_TABLE_PREFIX."Location`, `".RP_TABLE_PREFIX."Raid`, `".RP_TABLE_PREFIX."Attendance` FROM `".RP_TABLE_PREFIX."Location` ".
+                $QueryString .= "DELETE `".RP_TABLE_PREFIX."Location`, `".RP_TABLE_PREFIX."Raid`, `".RP_TABLE_PREFIX."Attendance` FROM `".RP_TABLE_PREFIX."Location` ".
                                 "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(LocationId) ".
                                 "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(RaidId) ".
-                                " WHERE LocationId=".intval($locationId)."; ";
+                                " WHERE LocationId=".intval($LocationId)."; ";
             }
         }
 
-        if ( $queryString != "" )
+        if ( $QueryString != "" )
            {
-               $locationUpdate = $Connector->prepare( $queryString );
+               $LocationUpdate = $Connector->prepare( $QueryString );
 
-            foreach( $bindValues as $bindData )
+            foreach( $BindValues as $BindData )
             {
-                $locationUpdate->bindValue( $bindData[0], $bindData[1], $bindData[2] );
+                $LocationUpdate->bindValue( $BindData[0], $BindData[1], $BindData[2] );
             }
 
             $Connector->beginTransaction();
 
-            if ( !$locationUpdate->execute() )
+            if ( !$LocationUpdate->execute() )
             {
-                postErrorMessage( $locationUpdate );
+                postErrorMessage( $LocationUpdate );
                 $Connector->rollBack();
             }
             else
@@ -225,18 +226,20 @@ function msgSettingsUpdate( $Request )
                 $Connector->commit();
             }
 
-            $locationUpdate->closeCursor();
+            $LocationUpdate->closeCursor();
         }
 
         // Update users and groups
 
         $Connector->beginTransaction();
 
-        $BannedIds   = (isset($Request["banned"]))   ? $Request["banned"]   : array();
-        $MemberIds   = (isset($Request["member"]))   ? $Request["member"]   : array();
-        $RaidleadIds = (isset($Request["raidlead"])) ? $Request["raidlead"] : array();
-        $AdminIds    = (isset($Request["admin"]))    ? $Request["admin"]    : array();
-        $RemovedIds  = (isset($Request["removed"]))  ? $Request["removed"]  : array();
+        $BannedIds   = (isset($aRequest["banned"]))   ? $aRequest["banned"]   : array();
+        $MemberIds   = (isset($aRequest["member"]))   ? $aRequest["member"]   : array();
+        $RaidleadIds = (isset($aRequest["raidlead"])) ? $aRequest["raidlead"] : array();
+        $AdminIds    = (isset($aRequest["admin"]))    ? $aRequest["admin"]    : array();
+        $RemovedIds  = (isset($aRequest["removed"]))  ? $aRequest["removed"]  : array();
+        $UnlinkedIds = (isset($aRequest["unlinked"])) ? $aRequest["unlinked"]  : array();
+        $RelinkedIds = (isset($aRequest["relinked"])) ? $aRequest["relinked"]  : array();
 
         if ( !updateGroup( $Connector, "none", $BannedIds ) )
             return;
@@ -249,6 +252,56 @@ function msgSettingsUpdate( $Request )
 
         if ( !updateGroup( $Connector, "admin", $AdminIds ) )
             return;
+            
+        // Update unlinked users
+        
+        foreach ( $UnlinkedIds as $UserId )
+        {
+            $UnlinkUser = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET `BindingActive` = 'false' WHERE UserId = :UserId LIMIT 1" );
+            $UnlinkUser->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+    
+            if ( !$UnlinkUser->execute() )
+            {
+                postErrorMessage( $UnlinkUser );
+    
+                $UnlinkUser->closeCursor();
+                $Connector->rollBack();
+                return;
+            }
+    
+            $UnlinkUser->closeCursor();
+        }
+        
+        // Update relinked users
+        
+        foreach ( $RelinkedIds as $UserId )
+        {
+            $UserInfo = tryGetUserLink($UserId);
+            
+            if ( $UserInfo != null )
+            {
+                $UpdateSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
+                                                "Password = :Password, Salt = :Salt, `Group` = :Group, ExternalBinding = :Binding, BindingActive = 'true' ".
+                                                "WHERE UserId = :UserId LIMIT 1" );
+            
+                $UpdateSt->bindValue( ":Password", $UserInfo->Password,    PDO::PARAM_STR );
+                $UpdateSt->bindValue( ":Group",    $UserInfo->Group,       PDO::PARAM_STR );
+                $UpdateSt->bindValue( ":Salt",     $UserInfo->Salt,        PDO::PARAM_STR );
+                $UpdateSt->bindValue( ":Binding",  $UserInfo->BindingName, PDO::PARAM_STR );
+                $UpdateSt->bindValue( ":UserId",   $UserId,                PDO::PARAM_INT );
+                
+                if ( !$UpdateSt->execute() )
+                {
+                    postErrorMessage( $UpdateSt );
+        
+                    $UpdateSt->closeCursor();
+                    $Connector->rollBack();
+                    return;
+                }
+                
+                $UpdateSt->closeCursor();
+            }
+        }
 
         // Update removed users
 
@@ -256,72 +309,72 @@ function msgSettingsUpdate( $Request )
         {
             // Get characters of user
 
-            $characters = $Connector->prepare( "SELECT CharacterId FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId" );
-            $characters->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $Characters = $Connector->prepare( "SELECT CharacterId FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId" );
+            $Characters->bindValue(":UserId", $UserId, PDO::PARAM_INT);
 
-            if ( !$characters->execute() )
+            if ( !$Characters->execute() )
             {
-                postErrorMessage( $characters );
+                postErrorMessage( $Characters );
 
-                $characters->closeCursor();
+                $Characters->closeCursor();
                 $Connector->rollBack();
                 return;
             }
 
             // remove characters and attendances
 
-            while ( $Data = $characters->fetch( PDO::FETCH_ASSOC ) )
+            while ( $Data = $Characters->fetch( PDO::FETCH_ASSOC ) )
             {
-                $dropCharacter  = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharacterId LIMIT 1" );
-                $dropAttendance = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE CharacterId = :CharacterId" );
+                $DropCharacter  = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharacterId LIMIT 1" );
+                $DropAttendance = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE CharacterId = :CharacterId" );
 
-                $dropCharacter->bindValue(":CharacterId", $Data["CharacterId"], PDO::PARAM_INT);
-                $dropAttendance->bindValue(":CharacterId", $Data["CharacterId"], PDO::PARAM_INT);
+                $DropCharacter->bindValue(":CharacterId", $Data["CharacterId"], PDO::PARAM_INT);
+                $DropAttendance->bindValue(":CharacterId", $Data["CharacterId"], PDO::PARAM_INT);
 
-                if ( !$dropCharacter->execute() )
+                if ( !$DropCharacter->execute() )
                 {
-                    postErrorMessage( $dropCharacter );
+                    postErrorMessage( $DropCharacter );
 
-                    $dropCharacter->closeCursor();
+                    $DropCharacter->closeCursor();
                     $Connector->rollBack();
                     return;
                 }
 
-                if ( !$dropAttendance->execute() )
+                if ( !$DropAttendance->execute() )
                 {
-                    postErrorMessage( $dropAttendance );
+                    postErrorMessage( $DropAttendance );
 
-                    $dropAttendance->closeCursor();
+                    $DropAttendance->closeCursor();
                     $Connector->rollBack();
                     return;
                 }
 
-                $dropCharacter->closeCursor();
-                $dropAttendance->closeCursor();
+                $DropCharacter->closeCursor();
+                $DropAttendance->closeCursor();
             }
 
-            $characters->closeCursor();
+            $Characters->closeCursor();
 
             // remove user
 
-            $dropUser = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
-            $dropUser->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $DropUser = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
+            $DropUser->bindValue(":UserId", $UserId, PDO::PARAM_INT);
 
-            if ( !$dropUser->execute() )
+            if ( !$DropUser->execute() )
             {
-                postErrorMessage( $dropUser );
+                postErrorMessage( $DropUser );
 
-                $dropUser->closeCursor();
+                $DropUser->closeCursor();
                 $Connector->rollBack();
                 return false;
             }
 
-            $dropUser->closeCursor();
+            $DropUser->closeCursor();
         }
 
         $Connector->commit();
 
-        msgQuerySettings( $Request );
+        msgQuerySettings( $aRequest );
     }
     else
     {
