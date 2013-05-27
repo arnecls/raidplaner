@@ -55,12 +55,19 @@ function msgQueryCalendar( $aRequest )
         
         if ( $StartDate["wday"] != $StartDay )
         {
-            $DayArray  = Array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
-            $StartUTC  = strtotime("previous ".$DayArray[$StartDay], $StartUTC);
+            // Calculate the first day displayed in the calendar
+            
+            $Offset = ($StartDate["wday"] < $StartDay) 
+                ? 7 - ($StartDay - $StartDate["wday"]) 
+                : ($StartDate["wday"] - $StartDay);
+            
+            $StartUTC -= 60 * 60 * 24 * $Offset;
             $StartDate = getdate($StartUTC);
         }
         
-        $EndUTC = strtotime("+6 weeks", $StartUTC);
+        // Calculate the last day displayed in the calendar
+        
+        $EndUTC = $StartUTC + 60 * 60 * 24 * 7 * 6; // + 6 weeks
         
         // Query and return
         
