@@ -141,7 +141,8 @@
         <div id="eventblocker"></div>
         <div id="dialog"></div>
         <div id="ajaxblocker">
-            <div class="background ui-corner-all">
+            <div class="background"></div>
+            <div class="notification ui-corner-all">
                 <img src="lib/layout/images/busy.gif"/><br/><br/>
                 <?php echo L("Busy"); ?>
             </div>

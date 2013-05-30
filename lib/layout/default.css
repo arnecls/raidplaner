@@ -367,6 +367,30 @@ a:hover {
 }
 
 #ajaxblocker {
+    position: fixed;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+#ajaxblocker .notification {
+    font-size: 16px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    text-align: center;
+    color: black;
+    position: fixed; 
+    left: 50%; 
+    top: 50%; 
+    width: 200px; 
+    margin-left: -100px;
+    margin-top: -50px; 
+    background-color: white;
+    opacity: 1.0;
+    filter: Alpha(opacity=100);
+    padding: 20px;
+}
+
+#ajaxblocker .background {
     background-color: black;
     left: 0px;
     top: 0px;
@@ -376,22 +400,6 @@ a:hover {
     width: 100%;
     opacity: 0.75;
     filter: Alpha(opacity=75);
-    text-align: center;
-    padding: 20px;
-}
-
-#ajaxblocker .background {
-    font-size: 16px;
-    font-family: Helvetica, Verdana, Arial, sans-serif;
-    color: black;
-    position: fixed; 
-    left: 50%; 
-    top: 50%; 
-    width: 200px; 
-    margin-left: -100px;
-    margin-top: -50px; 
-    background-color: white;
-    padding: 20px;
 }
 
 #dialog {
