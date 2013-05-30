@@ -290,11 +290,12 @@
 
             $ListRaidSt->closeCursor();
 
-            echo "<locations>";
-
-            msgQueryLocations( $aRequest );
-
-            echo "</locations>";
+            if ( validRaidlead() )
+            {
+                echo "<locations>";
+                msgQueryLocations( $aRequest );
+                echo "</locations>";
+            }
         }
         else
         {
