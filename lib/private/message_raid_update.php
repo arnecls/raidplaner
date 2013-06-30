@@ -67,6 +67,11 @@ function msgRaidupdate( $aRequest )
         $StartDateTime = mktime(intval($aRequest["startHour"]), intval($aRequest["startMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]) );
         $EndDateTime   = mktime(intval($aRequest["endHour"]), intval($aRequest["endMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]) );
 
+        // Adjust dates (timezone and "ending the next day")
+            
+        $StartDateTime -= $aRequest["timeOffset"] * 60;
+        $EndDateTime   -= $aRequest["timeOffset"] * 60; 
+            
         if ( $EndDateTime < $StartDateTime )
             $EndDateTime += 60*60*24;
 

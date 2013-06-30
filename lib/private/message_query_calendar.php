@@ -1,9 +1,10 @@
 <?php
 
-function prepareCalRequest( $aMonth, $aYear )
+function prepareCalRequest( $aMonth, $aYear, $aTimeZoneOffset )
 {
     $CalRequest["Month"] = $aMonth;
     $CalRequest["Year"]  = $aYear;
+    $CalRequest["timeOffset"] = $aTimeZoneOffset;
 
     return $CalRequest;
 }
@@ -90,7 +91,7 @@ function msgQueryCalendar( $aRequest )
             echo "<displayMonth>".$aRequest["Month"]."</displayMonth>";
             echo "<displayYear>".$aRequest["Year"]."</displayYear>";
             
-            parseRaidQuery( $ListRaidSt, 0 );
+            parseRaidQuery( $aRequest, $ListRaidSt, 0 );
         }
 
         $ListRaidSt->closeCursor();
@@ -103,7 +104,7 @@ function msgQueryCalendar( $aRequest )
 
 // -----------------------------------------------------------------------------
 
-function parseRaidQuery( $QueryResult, $Limit )
+function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
 {
     global $gRoles;
     echo "<raids>";
@@ -111,7 +112,7 @@ function parseRaidQuery( $QueryResult, $Limit )
     $RaidData = Array();
     $RaidInfo = Array();
 
-    while ($Data = $QueryResult->fetch( PDO::FETCH_ASSOC ))
+    while ($Data = $aQueryResult->fetch( PDO::FETCH_ASSOC ))
     {
         array_push($RaidData, $Data);
 
@@ -172,8 +173,8 @@ function parseRaidQuery( $QueryResult, $Limit )
                     $Comment = $Data["Comment"];
                 }
 
-                $StartDate = getdate($Data["StartUTC"]);
-                $EndDate   = getdate($Data["EndUTC"]);
+                $StartDate = getdate($Data["StartUTC"] + $aRequest["timeOffset"] * 60);
+                $EndDate   = getdate($Data["EndUTC"] + $aRequest["timeOffset"] * 60);
 
                 echo "<raid>";
 
@@ -202,7 +203,7 @@ function parseRaidQuery( $QueryResult, $Limit )
                 $LastRaidId = $Data["RaidId"];
                 ++$NumRaids;
 
-                if ( ($Limit > 0) && ($NumRaids == $Limit) )
+                if ( ($aLimit > 0) && ($NumRaids == $aLimit) )
                     break;
             }
         }

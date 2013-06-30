@@ -33,8 +33,8 @@
 
                 $Participants = Array();
 
-                $StartDate = getdate($Data["StartUTC"]);
-                $EndDate   = getdate($Data["EndUTC"]);
+                $StartDate = getdate($Data["StartUTC"] + $aRequest["timeOffset"] * 60);
+                $EndDate   = getdate($Data["EndUTC"] + $aRequest["timeOffset"] * 60);
 
                 echo "<raidId>".$Data["RaidId"]."</raidId>";
                 echo "<locationId>".$Data["LocationId"]."</locationId>";

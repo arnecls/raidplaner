@@ -42,7 +42,7 @@ function msgRaidDelete( $aRequest )
         $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : $aRequest["month"];
         $ShowYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : $aRequest["year"];
 
-        msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
+        msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear, $aRequest["timeOffset"] ) );
     }
     else
     {

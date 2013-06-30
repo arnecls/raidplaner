@@ -8,17 +8,17 @@
 
             // Get next 6 raids
 
-            $NextRaidSt = $Connector->prepare(    "Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.*, ".
-                                                RP_TABLE_PREFIX."Attendance.CharacterId, ".RP_TABLE_PREFIX."Attendance.UserId, ".
-                                                 RP_TABLE_PREFIX."Attendance.Status, ".RP_TABLE_PREFIX."Attendance.Role, ".RP_TABLE_PREFIX."Attendance.Comment, ".
-                                                "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.Start) AS StartUTC, ".
-                                                "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.End) AS EndUTC ".
-                                                "FROM `".RP_TABLE_PREFIX."Raid` ".
-                                                  "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
-                                                  "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(RaidId) ".
-                                                  "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING (CharacterId) ".
-                                                  "WHERE ".RP_TABLE_PREFIX."Raid.Start >= FROM_UNIXTIME(:Start) ".
-                                                  "ORDER BY ".RP_TABLE_PREFIX."Raid.Start, ".RP_TABLE_PREFIX."Raid.RaidId" );
+            $NextRaidSt = $Connector->prepare("Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.*, ".
+                                              RP_TABLE_PREFIX."Attendance.CharacterId, ".RP_TABLE_PREFIX."Attendance.UserId, ".
+                                              RP_TABLE_PREFIX."Attendance.Status, ".RP_TABLE_PREFIX."Attendance.Role, ".RP_TABLE_PREFIX."Attendance.Comment, ".
+                                              "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.Start) AS StartUTC, ".
+                                              "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.End) AS EndUTC ".
+                                              "FROM `".RP_TABLE_PREFIX."Raid` ".
+                                              "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
+                                              "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(RaidId) ".
+                                              "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING (CharacterId) ".
+                                              "WHERE ".RP_TABLE_PREFIX."Raid.Start >= FROM_UNIXTIME(:Start) ".
+                                              "ORDER BY ".RP_TABLE_PREFIX."Raid.Start, ".RP_TABLE_PREFIX."Raid.RaidId" );
 
             $NextRaidSt->bindValue( ":Start", mktime(0,0,0), PDO::PARAM_INT );
 
@@ -28,7 +28,7 @@
             }
             else
             {
-                parseRaidQuery( $NextRaidSt, 6 );
+                parseRaidQuery( $aRequest, $NextRaidSt, 6 );
             }
 
             $NextRaidSt->closeCursor();
@@ -55,8 +55,8 @@
 
                 while ( $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC ) )
                 {
-                    $StartDate = getdate($Data["StartUTC"]);
-                    $EndDate   = getdate($Data["EndUTC"]);
+                    $StartDate = getdate($Data["StartUTC"] + $aRequest["timeOffset"] * 1000 * 60);
+                    $EndDate   = getdate($Data["EndUTC"] + $aRequest["timeOffset"] * 1000 * 60);
 
                     echo "<raid>";
                     echo "<id>".$Data["RaidId"]."</id>";
