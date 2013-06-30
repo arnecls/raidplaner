@@ -108,6 +108,22 @@
     font-size: 10px;
 }
 
+#raiddetail .raidcomment {
+    height: 64px;
+    width: 300px;
+    top: 0px;
+    right: 36px;
+    position: absolute;
+    font-size: 11px;
+    color: #666;
+    overflow-y: auto;
+    padding-left: 32px;
+    padding-top: 4px;
+    padding-top: 4px;
+    background-image: url(images/comment.png);
+    background-repeat: no-repeat;
+}
+
 #raiddetail .datetime {
     font-size: 10px;
 }

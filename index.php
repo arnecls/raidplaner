@@ -61,7 +61,7 @@
         <script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $gSiteVersion; ?>"></script>
                 
         <?php
-            //define("SCRIPT_DEBUG", true);
+            define("SCRIPT_DEBUG", true);
             
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
                 include_once("lib/script/_scripts.js.php");

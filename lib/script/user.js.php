@@ -48,6 +48,25 @@
             }
         }
         
+        function echoClassName()
+        {
+            global $CurrentUser;
+            $First = true;
+            
+            foreach ( $CurrentUser->Characters as $Character )
+            {
+                if ($First)
+                {
+                    echo "\"".$Character->ClassName."\"";
+                    $First = false;
+                }
+                else
+                {
+                    echo ", \"".$Character->ClassName."\"";
+                }
+            }
+        }
+        
         function echoRole1()
         {
             global $CurrentUser;
@@ -90,6 +109,7 @@
 var gUser = {
     characterIds    : new Array( <?php echoCharacterIds(); ?> ),
     characterNames  : new Array( <?php echoCharacterNames(); ?> ),
+    characterClass  : new Array( <?php echoClassName(); ?> ),
     role1           : new Array( <?php echoRole1(); ?> ),
     role2           : new Array( <?php echoRole2(); ?> ),
     isRaidlead      : <?php echo validRaidlead() ? "true" : "false"; ?>,
