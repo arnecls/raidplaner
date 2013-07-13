@@ -69,9 +69,9 @@
             $UserSt = $this->mConnector->prepare("SELECT user_id, group_id, username, password, activation ".
                                                 "FROM `".JML3_TABLE_PREFIX."users` ".
                                                 "LEFT JOIN `".JML3_TABLE_PREFIX."user_usergroup_map` ON id=user_id ".
-                                                "WHERE username = :Login");
+                                                "WHERE LOWER(username) = :Login");
                                           
-            $UserSt->BindValue( ":Login", $aUserName, PDO::PARAM_STR );
+            $UserSt->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
         
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {                

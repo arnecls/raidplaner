@@ -70,7 +70,7 @@
                                                 "username, password, salt, bandate, liftdate ".
                                                 "FROM `".VB3_TABLE_PREFIX."user` ".
                                                 "LEFT JOIN `".VB3_TABLE_PREFIX."userban` USING(userid) ".
-                                                "WHERE username = :Login LIMIT 1");
+                                                "WHERE LOWER(username) = :Login LIMIT 1");
                                           
             $UserSt->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
         
