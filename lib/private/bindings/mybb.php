@@ -76,7 +76,7 @@
             $UserSt = $this->mConnector->prepare("SELECT uid, username, password, salt, usergroup, additionalgroups, dateline, lifted ".
                                                 "FROM `".MYBB_TABLE_PREFIX."users` ".
                                                 "LEFT JOIN `".MYBB_TABLE_PREFIX."banned` USING(uid) ".
-                                                "WHERE username = :Login LIMIT 1");
+                                                "WHERE LOWER(username) = :Login LIMIT 1");
             
             $UserSt->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
         

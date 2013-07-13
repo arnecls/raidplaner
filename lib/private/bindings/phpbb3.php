@@ -96,7 +96,7 @@
             
             $UserSt = $this->mConnector->prepare("SELECT user_id, username_clean, user_password ".
                                                  "FROM `".PHPBB3_TABLE_PREFIX."users` ".
-                                                 "WHERE username_clean = :Login LIMIT 1");
+                                                 "WHERE LOWER(username_clean) = :Login LIMIT 1");
                                           
             $UserSt->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
             

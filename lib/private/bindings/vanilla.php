@@ -16,7 +16,7 @@
         
         public function isActive()
         {
-            return defined("VANILLA_BINDING") && MYBB_BINDING;
+            return defined("VANILLA_BINDING") && VANILLA_BINDING;
         }
         
         // -------------------------------------------------------------------------
@@ -80,17 +80,18 @@
         {
             if ($this->mConnector == null)
                 $this->mConnector = new Connector(SQL_HOST, VANILLA_DATABASE, VANILLA_USER, VANILLA_PASS);
-                
+            
             $UserSt = $this->mConnector->prepare("SELECT UserID, `".VANILLA_TABLE_PREFIX."User`.Name, Password, Banned, `".VANILLA_TABLE_PREFIX."Role`.RoleID ".
                                                 "FROM `".VANILLA_TABLE_PREFIX."User` ".
                                                 "LEFT JOIN `".VANILLA_TABLE_PREFIX."UserRole` USING(UserID) ".
                                                 "LEFT JOIN `".VANILLA_TABLE_PREFIX."Role` USING(RoleID) ".
-                                                "WHERE `".VANILLA_TABLE_PREFIX."User`.Name = :Login");
+                                                "WHERE LOWER(`".VANILLA_TABLE_PREFIX."User`.Name) = :Login");
             
             $UserSt->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
             
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {
+                
                 $UserData = null;                               
                 while ( $Row = $UserSt->fetch(PDO::FETCH_ASSOC) )
                 {

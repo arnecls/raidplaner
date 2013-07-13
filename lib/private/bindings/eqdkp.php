@@ -78,9 +78,9 @@
             
             $UserSt = $this->mConnector->prepare("SELECT user_id, username, user_password ".
                                                 "FROM `".EQDKP_TABLE_PREFIX."users` ".
-                                                "WHERE username = :Login LIMIT 1");
+                                                "WHERE LOWER(username) = :Login LIMIT 1");
                                               
-            $UserSt->bindValue(":Login", $aUserName, PDO::PARAM_STR);
+            $UserSt->bindValue(":Login", strtolower($aUserName), PDO::PARAM_STR);
             $UserSt->execute();
             
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )

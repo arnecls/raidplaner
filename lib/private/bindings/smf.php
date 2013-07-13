@@ -77,7 +77,7 @@
                                                 "FROM `".SMF_TABLE_PREFIX."members` ".
                                                 "LEFT JOIN `".SMF_TABLE_PREFIX."ban_items` USING(id_member) ".
                                                 "LEFT JOIN `".SMF_TABLE_PREFIX."ban_groups` USING(id_ban_group) ".
-                                                "WHERE member_name = :Login LIMIT 1");
+                                                "WHERE LOWER(member_name) = :Login LIMIT 1");
                                           
             $UserSt->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
         

@@ -94,9 +94,9 @@
             
             $UserSt = $this->mConnector->prepare("SELECT uid, name, pass ".
                                                  "FROM `".DRUPAL_TABLE_PREFIX."users` ".
-                                                 "WHERE name = :Login LIMIT 1");
+                                                 "WHERE LOWER(name) = :Login LIMIT 1");
                                               
-            $UserSt->bindValue(":Login", $aUserName, PDO::PARAM_STR);
+            $UserSt->bindValue(":Login", strtolower($aUserName), PDO::PARAM_STR);
             $UserSt->execute();
             
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
