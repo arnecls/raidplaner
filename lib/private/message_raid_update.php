@@ -64,14 +64,11 @@ function msgRaidupdate( $aRequest )
                                             "SlotsRole1 = :SlotsRole1, SlotsRole2 = :SlotsRole2, SlotsRole3 = :SlotsRole3, SlotsRole4 = :SlotsRole4, SlotsRole5 = :SlotsRole5 ".
                                             "WHERE RaidId = :RaidId" );
 
-        $StartDateTime = mktime(intval($aRequest["startHour"]), intval($aRequest["startMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]) );
-        $EndDateTime   = mktime(intval($aRequest["endHour"]), intval($aRequest["endMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]) );
+        $StartDateTime = mktime(intval($aRequest["startHour"]), intval($aRequest["startMinute"]), 0, intval($aRequest["startMonth"]), intval($aRequest["startDay"]), intval($aRequest["startYear"]) );
+        $EndDateTime   = mktime(intval($aRequest["endHour"]), intval($aRequest["endMinute"]), 0, intval($aRequest["endMonth"]), intval($aRequest["endDay"]), intval($aRequest["endYear"]) );
 
-        // Adjust dates (timezone and "ending the next day")
+        // Convert to UTC
 
-        if ( $EndDateTime < $StartDateTime )
-            $EndDateTime += 60*60*24;
-    
         $StartDateTime += $aRequest["startOffset"] * 60;
         $EndDateTime   += $aRequest["endOffset"] * 60; 
         
