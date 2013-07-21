@@ -68,13 +68,13 @@ function msgRaidupdate( $aRequest )
         $EndDateTime   = mktime(intval($aRequest["endHour"]), intval($aRequest["endMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]) );
 
         // Adjust dates (timezone and "ending the next day")
-            
-        $StartDateTime -= $aRequest["timeOffset"] * 60;
-        $EndDateTime   -= $aRequest["timeOffset"] * 60; 
-            
+
         if ( $EndDateTime < $StartDateTime )
             $EndDateTime += 60*60*24;
-
+    
+        $StartDateTime += $aRequest["startOffset"] * 60;
+        $EndDateTime   += $aRequest["endOffset"] * 60; 
+        
         $UpdateRaidSt->bindValue(":RaidId",      $aRequest["id"], PDO::PARAM_INT);
         $UpdateRaidSt->bindValue(":LocationId",  $LocationId, PDO::PARAM_INT);
         $UpdateRaidSt->bindValue(":Stage",       $aRequest["stage"], PDO::PARAM_STR);

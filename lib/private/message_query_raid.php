@@ -33,8 +33,8 @@
 
                 $Participants = Array();
 
-                $StartDate = getdate($Data["StartUTC"] + $aRequest["timeOffset"] * 60);
-                $EndDate   = getdate($Data["EndUTC"] + $aRequest["timeOffset"] * 60);
+                $StartDate = getdate($Data["StartUTC"]);
+                $EndDate   = getdate($Data["EndUTC"]);
 
                 echo "<raidId>".$Data["RaidId"]."</raidId>";
                 echo "<locationId>".$Data["LocationId"]."</locationId>";
@@ -45,6 +45,7 @@
                 echo "<size>".$Data["Size"]."</size>";
                 echo "<startDate>".intval($StartDate["year"])."-".leadingZero10($StartDate["mon"])."-".leadingZero10($StartDate["mday"])."</startDate>";
                 echo "<start>".leadingZero10($StartDate["hours"]).":".leadingZero10($StartDate["minutes"])."</start>";
+                echo "<endDate>".intval($EndDate["year"])."-".leadingZero10($EndDate["mon"])."-".leadingZero10($EndDate["mday"])."</endDate>";
                 echo "<end>".leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"])."</end>";
                 echo "<description>".$Data["Description"]."</description>";
                 echo "<slots>";

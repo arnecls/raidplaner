@@ -14,6 +14,7 @@
         "crypto/sha512.js",
         "crypto/tripledes.js",
         "crypto/bcrypt.js",
+        "time.js",
         "messagehub.js",
         "mobile.js",
         "tooltip.js",

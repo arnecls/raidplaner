@@ -43,12 +43,12 @@ function msgRaidCreate( $aRequest )
             $EndDateTime   = mktime(intval($aRequest["endHour"]), intval($aRequest["endMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]));
             
             // Adjust dates (timezone and "ending the next day")
-            
-            $StartDateTime -= $aRequest["timeOffset"] * 60;
-            $EndDateTime   -= $aRequest["timeOffset"] * 60; 
 
             if ( $EndDateTime < $StartDateTime )
                $EndDateTime += 60*60*24;
+
+            $StartDateTime += $aRequest["startOffset"] * 60;
+            $EndDateTime   += $aRequest["endOffset"] * 60; 
 
             $NewRaidSt->bindValue(":LocationId",  $LocationId, PDO::PARAM_INT);
             $NewRaidSt->bindValue(":Size",        $aRequest["locationSize"], PDO::PARAM_INT);
@@ -113,7 +113,7 @@ function msgRaidCreate( $aRequest )
             $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : $aRequest["month"];
             $ShowYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : $aRequest["year"];
 
-            msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear, $aRequest["timeOffset"] ) );
+            msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
         }
     }
     else

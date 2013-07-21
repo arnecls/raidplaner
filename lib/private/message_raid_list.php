@@ -55,8 +55,8 @@
 
                 while ( $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC ) )
                 {
-                    $StartDate = getdate($Data["StartUTC"] + $aRequest["timeOffset"] * 1000 * 60);
-                    $EndDate   = getdate($Data["EndUTC"] + $aRequest["timeOffset"] * 1000 * 60);
+                    $StartDate = getdate($Data["StartUTC"]);
+                    $EndDate   = getdate($Data["EndUTC"]);
 
                     echo "<raid>";
                     echo "<id>".$Data["RaidId"]."</id>";
@@ -66,6 +66,7 @@
                     echo "<size>".$Data["Size"]."</size>";
                     echo "<startDate>".$StartDate["year"]."-".leadingZero10($StartDate["mon"])."-".leadingZero10($StartDate["mday"])."</startDate>";
                     echo "<start>".leadingZero10($StartDate["hours"]).":".leadingZero10($StartDate["minutes"])."</start>";
+                    echo "<endDate>".$EndDate["year"]."-".leadingZero10($EndDate["mon"])."-".leadingZero10($EndDate["mday"])."</endDate>";
                     echo "<end>".leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"])."</end>";
                     echo "</raid>";
                 }

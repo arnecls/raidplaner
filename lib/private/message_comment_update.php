@@ -66,7 +66,7 @@ function msgCommentupdate( $aRequest )
         $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : intval( substr( $RaidData["Start"], 5, 2 ) );
         $ShowYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : intval( substr( $RaidData["Start"], 0, 4 ) );
 
-        msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear, $aRequest["timeOffset"] ) );
+        msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
     }
     else
     {
