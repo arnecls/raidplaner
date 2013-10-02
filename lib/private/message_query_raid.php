@@ -99,7 +99,7 @@
                                             "name"      => $CharData["Name"],
                                             "mainchar"  => $CharData["Mainchar"],
                                             "classname" => $CharData["Class"],
-                                            "role"      => $CharData["Role"],
+                                            "role"      => $CharData["Role1"],
                                             "role1"     => $CharData["Role1"],
                                             "role2"     => $CharData["Role2"],
                                             "status"    => $Data["Status"],

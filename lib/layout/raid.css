@@ -84,6 +84,21 @@
     filter:Alpha(opacity=100);
 }
 
+#slackers_badge {
+    position: relative;
+    height: 12px;
+    font-size: 10px;
+    line-height: 11px;
+    padding: 0px 2px 0px 1px;
+    margin: 0px 2px 0px 2px;
+    background-color: #000;
+    color: #aaa;
+    position: relative;
+    top: 18px;
+    left: 0px;
+    text-align: center;
+}
+
 #raiddetail .raidinfo {
     height: 64px;
     margin-bottom: 5px;
