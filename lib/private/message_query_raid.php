@@ -1,9 +1,11 @@
 <?php
     function msgRaidDetail( $aRequest )
     {
+        $Out = Out::getInstance();
+            
         if (validUser())
         {
-            echo "<show>".$aRequest["showPanel"]."</show>";
+            $Out->pushValue("show", $aRequest["showPanel"]);
 
             $Connector = Connector::getInstance();
 
@@ -27,34 +29,27 @@
             }
             else
             {
-                echo "<raid>";
-
                 $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC );
 
                 $Participants = Array();
 
                 $StartDate = getdate($Data["StartUTC"]);
                 $EndDate   = getdate($Data["EndUTC"]);
-
-                echo "<raidId>".$Data["RaidId"]."</raidId>";
-                echo "<locationId>".$Data["LocationId"]."</locationId>";
-                echo "<location>".$Data["LocationName"]."</location>";
-                echo "<stage>".$Data["Stage"]."</stage>";
-                echo "<mode>".$Data["Mode"]."</mode>";
-                echo "<image>".$Data["LocationImage"]."</image>";
-                echo "<size>".$Data["Size"]."</size>";
-                echo "<startDate>".intval($StartDate["year"])."-".leadingZero10($StartDate["mon"])."-".leadingZero10($StartDate["mday"])."</startDate>";
-                echo "<start>".leadingZero10($StartDate["hours"]).":".leadingZero10($StartDate["minutes"])."</start>";
-                echo "<endDate>".intval($EndDate["year"])."-".leadingZero10($EndDate["mon"])."-".leadingZero10($EndDate["mday"])."</endDate>";
-                echo "<end>".leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"])."</end>";
-                echo "<description>".$Data["Description"]."</description>";
-                echo "<slots>";
-                echo "<required>".$Data["SlotsRole1"]."</required>";
-                echo "<required>".$Data["SlotsRole2"]."</required>";
-                echo "<required>".$Data["SlotsRole3"]."</required>";
-                echo "<required>".$Data["SlotsRole4"]."</required>";
-                echo "<required>".$Data["SlotsRole5"]."</required>";
-                echo "</slots>";
+                
+                $Out->pushValue("raidId", $Data["RaidId"]);
+                $Out->pushValue("locationid", $Data["LocationId"]);
+                $Out->pushValue("locationname", $Data["LocationName"]);
+                $Out->pushValue("stage", $Data["Stage"]);
+                $Out->pushValue("mode", $Data["Mode"]);
+                $Out->pushValue("image", $Data["LocationImage"]);
+                $Out->pushValue("size", $Data["Size"]);
+                $Out->pushValue("startDate", intval($StartDate["year"])."-".leadingZero10($StartDate["mon"])."-".leadingZero10($StartDate["mday"]));
+                $Out->pushValue("start", leadingZero10($StartDate["hours"]).":".leadingZero10($StartDate["minutes"]));
+                $Out->pushValue("endDate", intval($EndDate["year"])."-".leadingZero10($EndDate["mon"])."-".leadingZero10($EndDate["mday"]));
+                $Out->pushValue("end", leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"]));
+                $Out->pushValue("description", $Data["Description"]);
+                $Out->pushValue("slots", Array($Data["SlotsRole1"], $Data["SlotsRole2"], $Data["SlotsRole3"], $Data["SlotsRole4"], $Data["SlotsRole5"]));
+                $Attendees = Array();
                 
                 $MaxAttendanceId = 1;
 
@@ -95,40 +90,39 @@
 
                                     if ( $CharData["CharacterId"] != NULL )
                                     {
-                                        echo "<attendee>";
-
-                                        echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
-                                        echo "<hasId>true</hasId>";
-                                        echo "<userId>".$Data["UserId"]."</userId>";
-                                        echo "<charid>".$CharData["CharacterId"]."</charid>";
-                                        echo "<timestamp>".$Data["LastUpdate"]."</timestamp>";
-                                        echo "<name>".$CharData["Name"]."</name>";
-                                        echo "<mainchar>".$CharData["Mainchar"]."</mainchar>";
-                                        echo "<class>".$CharData["Class"]."</class>";
-                                        echo "<role>".$CharData["Role1"]."</role>";
-                                        echo "<role1>".$CharData["Role1"]."</role1>";
-                                        echo "<role2>".$CharData["Role2"]."</role2>";
-                                        echo "<status>".$Data["Status"]."</status>";
-                                        echo "<comment>".$Data["Comment"]."</comment>";
-                                        echo "<chars>";
+                                        $AttendeeData = Array(
+                                            "id"        => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
+                                            "hasId"     => true,
+                                            "userId"    => $Data["UserId"],
+                                            "timestamp" => $Data["LastUpdate"],
+                                            "charid"    => $CharData["CharacterId"],
+                                            "name"      => $CharData["Name"],
+                                            "mainchar"  => $CharData["Mainchar"],
+                                            "classname" => $CharData["Class"],
+                                            "role"      => $CharData["Role"],
+                                            "role1"     => $CharData["Role1"],
+                                            "role2"     => $CharData["Role2"],
+                                            "status"    => $Data["Status"],
+                                            "comment"   => $Data["Comment"],
+                                            "character" => Array()
+                                        );
                                         
-                                        $TwinkData = $CharData;
-
                                         do 
                                         {
-                                            echo "<character>";
-                                            echo "<id>".$TwinkData["CharacterId"]."</id>";
-                                            echo "<name>".$TwinkData["Name"]."</name>";
-                                            echo "<mainchar>".$TwinkData["Mainchar"]."</mainchar>";
-                                            echo "<class>".$TwinkData["Class"]."</class>";
-                                            echo "<role1>".$TwinkData["Role1"]."</role1>";
-                                            echo "<role2>".$TwinkData["Role2"]."</role2>";
-                                            echo "</character>";
+                                            $Character = Array(
+                                                "id"        => $CharData["CharacterId"],
+                                                "name"      => $CharData["Name"],
+                                                "mainchar"  => $CharData["Mainchar"],
+                                                "classname" => $CharData["Class"],
+                                                "role1"     => $CharData["Role1"],
+                                                "role2"     => $CharData["Role2"]
+                                            );
+                                            
+                                            array_push($AttendeeData["character"], $Character);
                                         }
-                                        while ( $TwinkData = $CharSt->fetch( PDO::FETCH_ASSOC ) );
+                                        while ( $CharData = $CharSt->fetch( PDO::FETCH_ASSOC ) );
 
-                                        echo "</chars>";
-                                        echo "</attendee>";
+                                        array_push($Attendees, $AttendeeData);
                                     }
                                     // else {
                                     // Character has been deleted or player has no character.
@@ -141,46 +135,46 @@
                             {
                                 // CharacterId and UserId set to 0 means "random player"
                                 
-                                echo "<attendee>";
+                                $AttendeeData = Array(
+                                    "id"        => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
+                                    "hasId"     => true,
+                                    "userId"    => 0,
+                                    "timestamp" => $Data["LastUpdate"],
+                                    "charid"    => 0,
+                                    "name"      => $Data["Comment"],
+                                    "mainchar"  => false,
+                                    "classname" => "random",
+                                    "role"      => $Data["Role"],
+                                    "role1"     => $Data["Role"],
+                                    "role2"     => $Data["Role"],
+                                    "status"    => $Data["Status"],
+                                    "comment"   => "",
+                                    "character" => Array()
+                                );
 
-                                echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
-                                echo "<hasId>true</hasId>";
-                                echo "<userId>0</userId>";
-                                echo "<charid>0</charid>";
-                                echo "<timestamp>".$Data["LastUpdate"]."</timestamp>";
-                                echo "<name>".$Data["Comment"]."</name>";
-                                echo "<class>random</class>";
-                                echo "<mainchar>false</mainchar>";
-                                echo "<role>".$Data["Role"]."</role>";
-                                echo "<role1>".$Data["Role"]."</role1>";
-                                echo "<role2>".$Data["Role"]."</role2>";
-                                echo "<status>".$Data["Status"]."</status>";
-                                echo "<comment></comment>";
-                                echo "<chars></chars>";
-
-                                echo "</attendee>";
+                                array_push($Attendees, $AttendeeData);
                             }
                         }
                         else
                         {
                             // CharacterId is set
 
-                            echo "<attendee>";
-
-                            echo "<id>".$Data["AttendanceId"]."</id>"; // AttendanceId to support random players (userId 0)
-                            echo "<hasId>true</hasId>";
-                            echo "<userId>".$Data["UserId"]."</userId>";
-                            echo "<charid>".$Data["CharacterId"]."</charid>";
-                            echo "<timestamp>".$Data["LastUpdate"]."</timestamp>";
-                            echo "<name>".$Data["Name"]."</name>";
-                            echo "<class>".$Data["Class"]."</class>";
-                            echo "<mainchar>".$Data["Mainchar"]."</mainchar>";
-                            echo "<role>".$Data["Role"]."</role>";
-                            echo "<role1>".$Data["Role1"]."</role1>";
-                            echo "<role2>".$Data["Role2"]."</role2>";
-                            echo "<status>".$Data["Status"]."</status>";
-                            echo "<comment>".$Data["Comment"]."</comment>";
-                            echo "<chars>";
+                            $AttendeeData = Array(
+                                "id"        => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
+                                "hasId"     => true,
+                                "userId"    => $Data["UserId"],
+                                "timestamp" => $Data["LastUpdate"],
+                                "charid"    => $Data["CharacterId"],
+                                "name"      => $Data["Name"],
+                                "mainchar"  => $Data["Mainchar"],
+                                "classname" => $Data["Class"],
+                                "role"      => $Data["Role"],
+                                "role1"     => $Data["Role1"],
+                                "role2"     => $Data["Role2"],
+                                "status"    => $Data["Status"],
+                                "comment"   => $Data["Comment"],
+                                "character" => Array()
+                            );
 
                             $CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
                                                             "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
@@ -194,21 +188,22 @@
                             }
                             else
                             {
-                                while ( $TwinkData = $CharSt->fetch( PDO::FETCH_ASSOC ) )
+                                while ( $CharData = $CharSt->fetch( PDO::FETCH_ASSOC ) )
                                 {
-                                    echo "<character>";
-                                    echo "<id>".$TwinkData["CharacterId"]."</id>";
-                                    echo "<name>".$TwinkData["Name"]."</name>";
-                                    echo "<mainchar>".$TwinkData["Mainchar"]."</mainchar>";
-                                    echo "<class>".$TwinkData["Class"]."</class>";
-                                    echo "<role1>".$TwinkData["Role1"]."</role1>";
-                                    echo "<role2>".$TwinkData["Role2"]."</role2>";
-                                    echo "</character>";
+                                    $Character = Array(
+                                        "id"        => $CharData["CharacterId"],
+                                        "name"      => $CharData["Name"],
+                                        "mainchar"  => $CharData["Mainchar"],
+                                        "classname" => $CharData["Class"],
+                                        "role1"     => $CharData["Role1"],
+                                        "role2"     => $CharData["Role2"]
+                                    );
+                                    
+                                    array_push($AttendeeData["character"], $Character);
                                 }
                             }
 
-                            echo "</chars>";
-                            echo "</attendee>";
+                            array_push($Attendees, $AttendeeData);
                         }
                     }
                     while ( $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC ) );
@@ -245,40 +240,40 @@
                             // that is not in use (for this raid).
                             
                             ++$MaxAttendanceId;
-                            echo "<attendee>";
+                                                        
+                            $AttendeeData = Array(
+                                "id"        => $MaxAttendanceId,
+                                "hasId"     => false,
+                                "userId"    => $UserData["UserId"],
+                                "timestamp" => time(),
+                                "charid"    => $UserData["CharacterId"],
+                                "name"      => $UserData["Name"],
+                                "mainchar"  => $UserData["Mainchar"],
+                                "classname" => $UserData["Class"],
+                                "role"      => $UserData["Role1"],
+                                "role1"     => $UserData["Role1"],
+                                "role2"     => $UserData["Role2"],
+                                "status"    => "undecided",
+                                "comment"   => "",
+                                "character" => Array()
+                            );
 
-                            echo "<id>".$MaxAttendanceId."</id>";
-                            echo "<hasId>false</hasId>";
-                            echo "<userId>".$UserData["UserId"]."</userId>";
-                            echo "<charid>".$UserData["CharacterId"]."</charid>";
-                            echo "<timestamp>".time()."</timestamp>";
-                            echo "<name>".$UserData["Name"]."</name>";
-                            echo "<class>".$UserData["Class"]."</class>";
-                            echo "<mainchar>".$UserData["Mainchar"]."</mainchar>";
-                            echo "<role>".$UserData["Role1"]."</role>";
-                            echo "<role1>".$UserData["Role1"]."</role1>";
-                            echo "<role2>".$UserData["Role2"]."</role2>";
-                            echo "<status>undecided</status>";
-                            echo "<comment></comment>";
-                            echo "<chars>";
-
-                            $TwinkData = $UserData;
-                            
                             do 
                             {
-                                echo "<character>";
-                                echo "<id>".$TwinkData["CharacterId"]."</id>";
-                                echo "<name>".$TwinkData["Name"]."</name>";
-                                echo "<mainchar>".$TwinkData["Mainchar"]."</mainchar>";
-                                echo "<class>".$TwinkData["Class"]."</class>";
-                                echo "<role1>".$TwinkData["Role1"]."</role1>";
-                                echo "<role2>".$TwinkData["Role2"]."</role2>";
-                                echo "</character>";
+                                $Character = Array(
+                                    "id"        => $UserData["CharacterId"],
+                                    "name"      => $UserData["Name"],
+                                    "mainchar"  => $UserData["Mainchar"],
+                                    "classname" => $UserData["Class"],
+                                    "role1"     => $UserData["Role1"],
+                                    "role2"     => $UserData["Role2"]
+                                );
+                                
+                                array_push($AttendeeData["character"], $Character);
                             }
-                            while ( $TwinkData = $CharSt->fetch(PDO::FETCH_ASSOC) );
+                            while ( $UserData = $CharSt->fetch(PDO::FETCH_ASSOC) );
 
-                            echo "</chars>";
-                            echo "</attendee>";
+                            array_push($Attendees, $AttendeeData);
                         }
 
                         $CharSt->closeCursor();
@@ -286,21 +281,20 @@
                 }
 
                 $AllUsersSt->closeCursor();
-                echo "</raid>";
+                
+                $Out->pushValue("attendee", $Attendees);
             }
 
             $ListRaidSt->closeCursor();
 
             if ( validRaidlead() )
             {
-                echo "<locations>";
                 msgQueryLocations( $aRequest );
-                echo "</locations>";
             }
         }
         else
         {
-            echo "<error>".L("AccessDenied")."</error>";
+            $Out->pushError(L("AccessDenied"));
         }
     }
 ?>

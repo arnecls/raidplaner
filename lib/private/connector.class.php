@@ -2,6 +2,7 @@
 
     require_once(dirname(__FILE__)."/tools_string.php");
     require_once(dirname(__FILE__)."/locale.php");
+    require_once(dirname(__FILE__)."/out.class.php");
 
     class Connector extends PDO
     {
@@ -29,8 +30,9 @@
                 }
                 else
                 {
-                    echo "<error>Database connection error</error>";
-                    echo "<error>".xmlentities( $Exception->getMessage(), ENT_COMPAT, "UTF-8" )."</error>";
+                    $Out = Out::getInstance();
+                    $Out->pushError("Database connection error");
+                    $Out->pushError($Exception->getMessage());                    
                 }
             }
         }
@@ -72,11 +74,14 @@
 
             if ($StatementObj === false)
             {
+                $Out = Out::getInstance();
+                
                 foreach (parent::errorInfo() as $ErrorLine)
                 {
-                    echo $ErrorLine."<br/>\n";
+                    $Out->pushError($ErrorLine);
                 }
 
+                $Out->writeJSON();
                 die($aStatement);
             }
 
@@ -88,10 +93,15 @@
 
     function postErrorMessage( $aStatement )
     {
+        $Out = Out::getInstance();
+        $Out->pushError(L("DatabaseError"));
+        
         $ErrorInfo = $aStatement->errorInfo();
-        echo "<error>".L("DatabaseError")."</error>";
-        echo "<error>".$ErrorInfo[0]."</error>";
-        echo "<error>".$ErrorInfo[2]."</error>";
+        
+        foreach($ErrorInfo as $Info)
+        {
+            $Out->pushError($Info);
+        }
     }
     
     // --------------------------------------------------------------------------------------------

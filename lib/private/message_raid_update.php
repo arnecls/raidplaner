@@ -214,7 +214,8 @@ function msgRaidupdate( $aRequest )
                             }                            
                             else
                             {
-                                echo "<error>Invalid user flags</error>";
+                                $Out = Out::getInstance();
+                                $Out->pushError("Invalid user flags");
                             }                           
                         }
                         else
@@ -376,7 +377,8 @@ function msgRaidupdate( $aRequest )
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out = Out::getInstance();
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

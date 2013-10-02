@@ -15,19 +15,22 @@ function msgchangePassword( $aRequest )
         
             if ( !UserProxy::changePassword($_REQUEST["id"], $HashedPassword, $Salt) )
             {
-                echo "<error>".L("PasswordLocked")."</error>";
+                $Out = Out::getInstance();
+                $Out->pushError(L("PasswordLocked"));
             }
             
             msgQueryProfile( $_REQUEST );
         }
         else
         {
-            echo "<error>".L("WrongPassword")."</error>";
+            $Out = Out::getInstance();
+            $Out->pushError(L("WrongPassword"));
         }
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out = Out::getInstance();
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

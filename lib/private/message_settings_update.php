@@ -378,7 +378,8 @@ function msgSettingsupdate( $aRequest )
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out = Out::getInstance();
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

@@ -2,6 +2,8 @@
 
 function msgQueryNewRaidData( $aRequest )
 {
+    $Out = Out::getInstance();
+    
     if ( validRaidlead() )
     {
         $Connector = Connector::getInstance();
@@ -16,25 +18,31 @@ function msgQueryNewRaidData( $aRequest )
         }
         else
         {
-            echo "<settings>";
-
-            $IntOfInterest = array( "RaidSize", "RaidStartHour", "RaidStartMinute", "RaidEndHour", "RaidEndMinute", "StartOfWeek" );
-            $TextOfInterest = array( "RaidMode" );
+            $IntOfInterest = Array( "RaidSize", "RaidStartHour", "RaidStartMinute", "RaidEndHour", "RaidEndMinute", "StartOfWeek" );
+            $TextOfInterest = Array( "RaidMode" );
+            
+            $Settings = Array();
 
             while ( $Data = $NewRaidSettings->fetch( PDO::FETCH_ASSOC ) )
             {
+                $KeyValue = Array(
+                    "name"  => $Data["Name"],
+                    "value" => null
+                );
+                
                 if ( in_array($Data["Name"], $IntOfInterest) )
                 {
-                    echo "<".$Data["Name"].">".$Data["IntValue"]."</".$Data["Name"].">";
+                    $KeyValue["value"] = $Data["IntValue"];
                 }
-
-                if ( in_array($Data["Name"], $TextOfInterest) )
+                elseif ( in_array($Data["Name"], $TextOfInterest) )
                 {
-                    echo "<".$Data["Name"].">".$Data["TextValue"]."</".$Data["Name"].">";
+                    $KeyValue["value"] = $Data["TextValue"];
                 }
+                
+                array_push($Settings, $KeyValue);
             }
 
-            echo "</settings>";
+            $Out->pushValue("setting", $Settings);
         }
 
         $NewRaidSettings->closeCursor();
@@ -45,7 +53,7 @@ function msgQueryNewRaidData( $aRequest )
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

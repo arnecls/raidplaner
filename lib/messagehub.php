@@ -6,6 +6,7 @@
     require_once(dirname(__FILE__)."/private/tools_site.php");
     require_once(dirname(__FILE__)."/private/settings.class.php");
     require_once(dirname(__FILE__)."/private/gameconfig.php");
+    require_once(dirname(__FILE__)."/private/out.class.php");
     
     include_once("private/message_query_calendar.php");
     include_once("private/message_raid_list.php");
@@ -26,12 +27,15 @@
     include_once("private/message_user_password.php");
     include_once("private/message_user_link.php");
     
-    $ValidUser = validUser();    
+    $ValidUser = validUser();
+    $Out = Out::getInstance();  
     
+    /*
     header("Content-type: text/xml");
-    
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-    echo "<messagehub>";
+    */
+    
+    header("Content-type: application/json");
     
     $Settings = Settings::getInstance();
     
@@ -126,8 +130,8 @@
     }
     else
     {
-        echo "<error>".L("InvalidRequest")."</error>";
+        $Out->pushError(L("InvalidRequest"));
     }
     
-    echo "</messagehub>";
+    $Out->flushJSON();
 ?>

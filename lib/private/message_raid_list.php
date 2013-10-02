@@ -2,6 +2,8 @@
 
     function msgRaidList( $aRequest )
     {
+        $Out = Out::getInstance();
+            
         if (validUser())
         {
             $Connector = Connector::getInstance();
@@ -51,34 +53,36 @@
             }
             else
             {
-                echo "<raidList>";
+                $RaidList = Array();
 
                 while ( $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC ) )
                 {
                     $StartDate = getdate($Data["StartUTC"]);
                     $EndDate   = getdate($Data["EndUTC"]);
 
-                    echo "<raid>";
-                    echo "<id>".$Data["RaidId"]."</id>";
-                    echo "<location>".$Data["Name"]."</location>";
-                    echo "<stage>".$Data["Stage"]."</stage>";
-                    echo "<image>".$Data["Image"]."</image>";
-                    echo "<size>".$Data["Size"]."</size>";
-                    echo "<startDate>".$StartDate["year"]."-".leadingZero10($StartDate["mon"])."-".leadingZero10($StartDate["mday"])."</startDate>";
-                    echo "<start>".leadingZero10($StartDate["hours"]).":".leadingZero10($StartDate["minutes"])."</start>";
-                    echo "<endDate>".$EndDate["year"]."-".leadingZero10($EndDate["mon"])."-".leadingZero10($EndDate["mday"])."</endDate>";
-                    echo "<end>".leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"])."</end>";
-                    echo "</raid>";
+                    $Raid = Array(
+                        "id"        => $Data["RaidId"],
+                        "location"  => $Data["Name"],
+                        "stage"     => $Data["Stage"],
+                        "image"     => $Data["Image"],
+                        "size"      => $Data["Size"],
+                        "startDate" => $StartDate["year"]."-".leadingZero10($StartDate["mon"])."-".leadingZero10($StartDate["mday"]),
+                        "start"     => leadingZero10($StartDate["hours"]).":".leadingZero10($StartDate["minutes"]),
+                        "endDate"   => $EndDate["year"]."-".leadingZero10($EndDate["mon"])."-".leadingZero10($EndDate["mday"]),
+                        "end"       => leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"])
+                    );
+                    
+                    array_push($RaidList, $Raid);                    
                 }
-
-                echo "</raidList>";
+                
+                $Out->pushValue("raid", $RaidList);
             }
 
             $ListRaidSt->closeCursor();
         }
         else
         {
-            echo "<error>".L("AccessDenied")."</error>";
+            $Out->pushError(L("AccessDenied"));
         }
     }
 ?>

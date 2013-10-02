@@ -9,12 +9,14 @@ function msgUserCreate( $aRequest )
         
         if ( !UserProxy::createUser("none", 0, "none", $aRequest["name"], $HashedPassword, $Salt) )
         {
-            echo "<error>".L("NameInUse")."</error>";
+            $Out = Out::getInstance();
+            $Out->pushError(L("NameInUse"));
         }
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out = Out::getInstance();
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

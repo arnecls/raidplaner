@@ -3,6 +3,7 @@
 function msgQueryProfile( $aRequest )
 {
     global $gRoles;
+    $Out = Out::getInstance();
 
     if ( validUser() )
     {
@@ -27,11 +28,11 @@ function msgQueryProfile( $aRequest )
         else
         {
             $Data = $Users->fetch( PDO::FETCH_ASSOC );
-
-            echo "<userid>".$UserId."</userid>";
-            echo "<name>".$Data["Login"]."</name>";
-            echo "<bindingActive>".(($Data["BindingActive"] == "true") ? "true" : "false")."</bindingActive>";
-            echo "<binding>".$Data["ExternalBinding"]."</binding>";
+            
+            $Out->pushValue("userid", $UserId);
+            $Out->pushValue("name", $Data["Login"]);
+            $Out->pushValue("bindingActive", $Data["BindingActive"] == "true");
+            $Out->pushValue("binding", $Data["ExternalBinding"]);
             
             $Created = $Data["Created"];
         }
@@ -40,18 +41,22 @@ function msgQueryProfile( $aRequest )
 
         // Load characters
         
+        $Characters = Array();
+        
         if ( $UserId == UserProxy::getInstance()->UserId )
         {
             foreach ( UserProxy::getInstance()->Characters as $Data )
             {
-                echo "<character>";
-                echo "<id>".$Data->CharacterId."</id>";
-                echo "<name>".$Data->Name."</name>";
-                echo "<class>".$Data->ClassName."</class>";
-                echo "<mainchar>".(($Data->IsMainChar) ? "true" : "false")."</mainchar>";
-                echo "<role1>".$Data->Role1."</role1>";
-                echo "<role2>".$Data->Role2."</role2>";
-                echo "</character>";
+                $Character = Array(
+                    "id"        => $Data->CharacterId,
+                    "name"      => $Data->Name,
+                    "classname" => $Data->ClassName,
+                    "mainchar"  => $Data->IsMainChar,
+                    "role1"     => $Data->Role1,
+                    "role2"     => $Data->Role2
+                );
+                
+                array_push($Characters, $Character);
             }
         }
         else
@@ -65,18 +70,22 @@ function msgQueryProfile( $aRequest )
             
             while ( $Row = $CharacterSt->fetch( PDO::FETCH_ASSOC ) )
             {
-                echo "<character>";
-                echo "<id>".$Row["CharacterId"]."</id>";
-                echo "<name>".$Row["Name"]."</name>";
-                echo "<class>".$Row["Class"]."</class>";
-                echo "<mainchar>".(($Row["Mainchar"]) ? "true" : "false")."</mainchar>";
-                echo "<role1>".$Row["Role1"]."</role1>";
-                echo "<role2>".$Row["Role2"]."</role2>";
-                echo "</character>";
+                $Character = Array(
+                    "id"        => $Row["CharacterId"],
+                    "name"      => $Row["Name"],
+                    "classname" => $Row["Class"],
+                    "mainchar"  => $Row["Mainchar"] == "true",
+                    "role1"     => $Row["Role1"],
+                    "role2"     => $Row["Role2"]
+                );
+                
+                array_push($Characters, $Character);
             }
             
             $CharacterSt->closeCursor();
         }
+                
+        $Out->pushValue("character", $Characters);
         
         // Total raid count
 
@@ -116,6 +125,7 @@ function msgQueryProfile( $aRequest )
         else
         {
             $AttendanceData = array(
+                "raids"       => $NumRaids,
                 "available"   => 0,
                 "unavailable" => 0,
                 "ok"          => 0 );
@@ -146,23 +156,15 @@ function msgQueryProfile( $aRequest )
                     }
                 }
             }
-
-            echo "<attendance>";
-            echo "<raids>".$NumRaids."</raids>";
-
-            while( list($Name, $Count) = each($AttendanceData) )
-            {
-                echo "<".$Name.">".$Count."</".$Name.">";
-            }
-
-            echo "</attendance>";
+            
+            $Out->pushValue("attendance", $AttendanceData);
         }
 
         $Attendance->closeCursor();
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

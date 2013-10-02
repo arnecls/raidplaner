@@ -2,63 +2,78 @@
 
 function msgQuerySettings( $aRequest )
 {
+    $Out = Out::getInstance();
+        
     if ( validAdmin() )
     {
         $Connector = Connector::getInstance();
 
         // Pass through parameter
 
-        echo "<show>".$aRequest["showPanel"]."</show>";
+        $Out->pushValue("show", $aRequest["showPanel"]);
 
         // Load users
 
-        $Users = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` ORDER BY Login, `Group`");
+        $UserSt = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` ORDER BY Login, `Group`");
 
-        if ( !$Users->execute() )
+        if ( !$UserSt->execute() )
         {
-            postErrorMessage( $Users );
+            postErrorMessage( $UserSt );
         }
         else
         {
-            while ( $Data = $Users->fetch( PDO::FETCH_ASSOC ) )
+            $Users = Array();
+            
+            while ( $Data = $UserSt->fetch( PDO::FETCH_ASSOC ) )
             {
-                echo "<user>";
-                echo "<id>".$Data["UserId"]."</id>";
-                echo "<login>".xmlentities( $Data["Login"], ENT_COMPAT, "UTF-8" )."</login>";
-                echo "<bindingActive>".$Data["BindingActive"]."</bindingActive>";
-                echo "<binding>".$Data["ExternalBinding"]."</binding>";
-                echo "<group>".$Data["Group"]."</group>";
-                echo "</user>";
+                $UserData = Array(
+                    "id"            => $Data["UserId"],
+                    "login"         => xmlentities( $Data["Login"], ENT_COMPAT, "UTF-8" ),
+                    "bindingActive" => $Data["BindingActive"],
+                    "binding"       => $Data["ExternalBinding"],
+                    "group"         => $Data["Group"]
+                );
+                
+                array_push($Users, $UserData);
             }
+            
+            $Out->pushValue("user", $Users);
         }
 
-        $Users->closeCursor();
+        $UserSt->closeCursor();
 
         // Load settings
 
-        $Settings = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Setting` ORDER BY Name");
+        $SettingSt = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Setting` ORDER BY Name");
 
-        if ( !$Settings->execute() )
+        if ( !$SettingSt->execute() )
         {
-            postErrorMessage( $Settings );
+            postErrorMessage( $SettingSt );
         }
         else
         {
-            while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
+            $Settings = Array();
+            
+            while ( $Data = $SettingSt->fetch( PDO::FETCH_ASSOC ) )
             {
-                echo "<setting>";
-                echo "<name>".$Data["Name"]."</name>";
-                echo "<intValue>".$Data["IntValue"]."</intValue>";
-                echo "<textValue>".$Data["TextValue"]."</textValue>";
-                echo "</setting>";
+                $SettingData = Array(
+                    "name"      => $Data["Name"],
+                    "intValue"  => $Data["IntValue"],
+                    "textValue" => $Data["TextValue"]
+                );
+                
+                array_push($Settings, $SettingData);
             }
+            
+            $Out->pushValue("setting", $Settings);
         }
 
-        $Settings->closeCursor();
+        $SettingSt->closeCursor();
 
         // Load themes
 
         $ThemeFiles = scandir( "../images/themes" );
+        $Themes = Array();
 
         foreach ( $ThemeFiles as $ThemeFileName )
         {
@@ -72,12 +87,14 @@ function msgQuerySettings( $aRequest )
                 else
                     $ThemeName = str_replace("_", " ", $SimpleThemeFileName);
     
-                echo "<theme>";
-                echo "<name>".$ThemeName."</name>";
-                echo "<file>".$SimpleThemeFileName."</file>";
-                echo "</theme>";
+                array_push($Themes, Array(
+                    "name" => $ThemeName,
+                    "file" => $SimpleThemeFileName
+                ));
             }
         }
+        
+        $Out->pushValue("theme", $Themes);
 
         // Query number of raids
 
@@ -96,8 +113,7 @@ function msgQuerySettings( $aRequest )
         }
 
         $Raids->closeCursor();
-
-        echo "<numRaids>".$NumRaids."</numRaids>";
+        $Out->pushValue("numRaids", $NumRaids);
 
         // Query attendance
 
@@ -118,6 +134,8 @@ function msgQuerySettings( $aRequest )
             $UserId = 0;
             $MainCharName = "";
             $StateCounts = array( "available" => 0, "unavailable" => 0, "ok" => 0 );
+            
+            $Attendances = Array();
 
             while ( $Data = $Attendance->fetch( PDO::FETCH_ASSOC ) )
             {
@@ -128,14 +146,16 @@ function msgQuerySettings( $aRequest )
                 }
                 else if ( $UserId != $Data["UserId"] )
                 {
-                    echo "<attendance>";
-                    echo "<id>".$UserId."</id>";
-                    echo "<name>".$MainCharName."</name>";
-                    echo "<ok>".$StateCounts["ok"]."</ok>";
-                    echo "<available>".$StateCounts["available"]."</available>";
-                    echo "<unavailable>".$StateCounts["unavailable"]."</unavailable>";
-                    echo "</attendance>";
-
+                    $AttendanceData = Array(
+                        "id"          => $UserId,
+                        "name"        => $MainCharName,
+                        "ok"          => $StateCounts["ok"],
+                        "available"   => $StateCounts["available"],
+                        "unavailable" => $StateCounts["unavailable"],
+                    );
+                    
+                    array_push($Attendances, $AttendanceData);
+                    
                     $StateCounts["ok"] = 0;
                     $StateCounts["available"] = 0;
                     $StateCounts["unavailable"] = 0;
@@ -149,14 +169,18 @@ function msgQuerySettings( $aRequest )
 
             if ($UserId != 0)
             {
-                echo "<attendance>";
-                echo "<id>".$UserId."</id>";
-                echo "<name>".$MainCharName."</name>";
-                echo "<ok>".$StateCounts["ok"]."</ok>";
-                echo "<available>".$StateCounts["available"]."</available>";
-                echo "<unavailable>".$StateCounts["unavailable"]."</unavailable>";
-                echo "</attendance>";
+                $AttendanceData = Array(
+                    "id"          => $UserId,
+                    "name"        => $MainCharName,
+                    "ok"          => $StateCounts["ok"],
+                    "available"   => $StateCounts["available"],
+                    "unavailable" => $StateCounts["unavailable"]
+                );
+                
+                array_push($Attendances, $AttendanceData);
             }
+            
+            $Out->pushValue("attendance", $Attendances);
         }
 
         $Attendance->closeCursor();
@@ -167,7 +191,7 @@ function msgQuerySettings( $aRequest )
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

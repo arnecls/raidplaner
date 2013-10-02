@@ -54,10 +54,10 @@ function msgRaidCreate( $aRequest )
             $NewRaidSt->bindValue(":Mode",        $aRequest["mode"], PDO::PARAM_STR);
             $NewRaidSt->bindValue(":Description", requestToXML( $aRequest["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
 
-            while ( list($GroupSize,$Slots) = each($gGroupSizes) )
-            {
-                echo "<option value=\"".$GroupSize."\">".$GroupSize."</option>";
-            }
+            //while ( list($GroupSize,$Slots) = each($gGroupSizes) )
+            //{
+            //    echo "<option value=\"".$GroupSize."\">".$GroupSize."</option>";
+            //}
 
             // Get the default sizes
 
@@ -115,7 +115,8 @@ function msgRaidCreate( $aRequest )
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out = Out::getInstance();
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

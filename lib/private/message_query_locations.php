@@ -2,6 +2,8 @@
 
 function msgQueryLocations( $aRequest )
 {
+    $Out = Out::getInstance();
+    
     if ( validRaidlead() )
     {
         $Connector = Connector::getInstance();
@@ -17,14 +19,20 @@ function msgQueryLocations( $aRequest )
         }
         else
         {
+            $Locations = Array();
+            
             while ( $Data = $ListLocations->fetch( PDO::FETCH_ASSOC ) )
             {
-                echo "<location>";
-                echo "<id>".$Data["LocationId"]."</id>";
-                echo "<name>".$Data["Name"]."</name>";
-                echo "<image>".$Data["Image"]."</image>";
-                echo "</location>";
+                $LocationData = Array(
+                    "id"    => $Data["LocationId"],
+                    "name"  => $Data["Name"],
+                    "image" => $Data["Image"],
+                );
+                
+                array_push($Locations, $LocationData);
             }
+            
+            $Out->pushValue("location", $Locations);
         }
 
         $ListLocations->closeCursor();
@@ -37,13 +45,13 @@ function msgQueryLocations( $aRequest )
         {
             if ( strripos( $Image, ".png" ) !== false )
             {
-                echo "<locationimage>".$Image."</locationimage>";
+                $Out->pushValue("locationimage", $Image);
             }
         }
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

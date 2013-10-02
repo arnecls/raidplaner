@@ -31,6 +31,8 @@ function getCalStartDay()
 
 function msgQueryCalendar( $aRequest )
 {
+    $Out = Out::getInstance();
+        
     if (validUser())
     {
         $Connector = Connector::getInstance();
@@ -82,13 +84,13 @@ function msgQueryCalendar( $aRequest )
         {
             $_SESSION["Calendar"]["month"] = intval($aRequest["Month"]);
             $_SESSION["Calendar"]["year"]  = intval($aRequest["Year"]);
-
-            echo "<startDay>".$StartDate["mday"]."</startDay>";
-            echo "<startMonth>".$StartDate["mon"]."</startMonth>";
-            echo "<startYear>".$StartDate["year"]."</startYear>";
-            echo "<startOfWeek>".$StartDay."</startOfWeek>";
-            echo "<displayMonth>".$aRequest["Month"]."</displayMonth>";
-            echo "<displayYear>".$aRequest["Year"]."</displayYear>";
+            
+            $Out->pushValue("startDay", $StartDate["mday"]);
+            $Out->pushValue("startMonth", $StartDate["mon"]);
+            $Out->pushValue("startYear", $StartDate["year"]);
+            $Out->pushValue("startOfWeek", $StartDay);
+            $Out->pushValue("displayMonth", $aRequest["Month"]);
+            $Out->pushValue("displayYear", $aRequest["Year"]);
             
             parseRaidQuery( $aRequest, $ListRaidSt, 0 );
         }
@@ -97,7 +99,7 @@ function msgQueryCalendar( $aRequest )
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out->pushError(L("AccessDenied"));
     }
 }
 
@@ -106,7 +108,7 @@ function msgQueryCalendar( $aRequest )
 function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
 {
     global $gRoles;
-    echo "<raids>";
+    $Out = Out::getInstance();
 
     $RaidData = Array();
     $RaidInfo = Array();
@@ -140,6 +142,7 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
     $RaidDataCount = sizeof($RaidData);
 
     $NumRaids = 0;
+    $Raids = Array();
 
     for ( $DataIdx=0; $DataIdx < $RaidDataCount; ++$DataIdx )
     {
@@ -175,30 +178,30 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
                 $StartDate = getdate($Data["StartUTC"]);
                 $EndDate   = getdate($Data["EndUTC"]);
 
-                echo "<raid>";
-
-                echo "<id>".$Data["RaidId"]."</id>";
-                echo "<location>".$Data["Name"]."</location>";
-                echo "<stage>".$Data["Stage"]."</stage>";
-                echo "<size>".$Data["Size"]."</size>";
-                echo "<startDate>".$StartDate["year"]."-".leadingZero10($StartDate["mon"])."-".leadingZero10($StartDate["mday"])."</startDate>";
-                echo "<start>".leadingZero10($StartDate["hours"]).":".leadingZero10($StartDate["minutes"])."</start>";
-                echo "<endDate>".$EndDate["year"]."-".leadingZero10($EndDate["mon"])."-".leadingZero10($EndDate["mday"])."</endDate>";
-                echo "<end>".leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"])."</end>";
-                echo "<image>".$Data["Image"]."</image>";
-                echo "<description>".$Data["Description"]."</description>";
-                echo "<status>".$Status."</status>";
-                echo "<attendanceIndex>".$AttendanceIndex."</attendanceIndex>";
-                echo "<comment>".$Comment."</comment>";
-                echo "<role>".$Role."</role>";
-
+                $Raid = Array(
+                    "id"              => $Data["RaidId"],
+                    "location"        => $Data["Name"],
+                    "stage"           => $Data["Stage"],
+                    "size"            => $Data["Size"],
+                    "startDate"       => $StartDate["year"]."-".leadingZero10($StartDate["mon"])."-".leadingZero10($StartDate["mday"]),
+                    "start"           => leadingZero10($StartDate["hours"]).":".leadingZero10($StartDate["minutes"]),
+                    "endDate"         => $EndDate["year"]."-".leadingZero10($EndDate["mon"])."-".leadingZero10($EndDate["mday"]),
+                    "end"             => leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"]),
+                    "image"           => $Data["Image"],
+                    "description"     => $Data["Description"],
+                    "status"          => $Status,
+                    "attendanceIndex" => $AttendanceIndex,
+                    "comment"         => $Comment,
+                    "role"            => $Role,
+                );
+                
                 for ( $i=0; $i < sizeof($gRoles); ++$i )
                 {
-                    echo "<role".$i."Slots>".$Data["SlotsRole".($i+1)]."</role".$i."Slots>";
-                    echo "<role".$i.">".$RaidInfo[$Data["RaidId"]]["role".$i]."</role".$i.">";
+                    $Raid["role".$i."Slots"] = $Data["SlotsRole".($i+1)];
+                    $Raid["role".$i]         = $RaidInfo[$Data["RaidId"]]["role".$i];
                 }
-
-                echo "</raid>";
+                
+                array_push($Raids, $Raid);
 
                 $LastRaidId = $Data["RaidId"];
                 ++$NumRaids;
@@ -209,6 +212,6 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
         }
     }
 
-    echo "</raids>";
+    $Out->pushValue("raid", $Raids);
 }
 ?>
