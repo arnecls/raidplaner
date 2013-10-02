@@ -253,6 +253,8 @@
         $gLocale[ "DatabasePasswordNoMatch" ]  = "Database passwords do not match.";
         $gLocale[ "DatabasePasswordEmpty" ]    = "Database password must not be empty.";
         $gLocale[ "AllowManualRegistration" ]  = "Allow users to register manually";
+        $gLocale[ "AllowGroupSync" ]           = "Synchronize groups of external users";
+        $gLocale[ "AllowPublicMode" ]          = "Register new users as members (not recommended)";
         $gLocale[ "UseClearText" ]             = "Submit cleartext password (not recommended)";
         
         // Install/Update

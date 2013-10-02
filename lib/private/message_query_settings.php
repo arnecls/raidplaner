@@ -11,6 +11,7 @@ function msgQuerySettings( $aRequest )
         // Pass through parameter
 
         $Out->pushValue("show", $aRequest["showPanel"]);
+        $Out->pushValue("syncActive", defined("ALLOW_GROUP_SYNC") && ALLOW_GROUP_SYNC);
 
         // Load users
 

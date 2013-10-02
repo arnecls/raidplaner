@@ -253,6 +253,8 @@
         $gLocale[ "DatabasePasswordNoMatch" ]  = "Datanebnk-Passw&ouml;rter stimmen nicht &uuml;berein";
         $gLocale[ "DatabasePasswordEmpty" ]    = "Datenbank-Passwort darf nicht leer sein";
         $gLocale[ "AllowManualRegistration" ]  = "Erlaube es Nutzern sich manuell zu registrieren";
+        $gLocale[ "AllowGroupSync" ]           = "Gruppen externer Nutzer synchronisieren";
+        $gLocale[ "AllowPublicMode" ]          = "Neue Benutzer als Mitglieder registrieren (nicht empfohlen)";
         $gLocale[ "UseClearText" ]             = "&Uuml;bertragung von Klartext Passw&ouml;rtern (nicht empfohlen)";
         
         // Install/Update

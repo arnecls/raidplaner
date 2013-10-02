@@ -2,20 +2,26 @@
 
 function msgUserCreate( $aRequest )
 {
+    require_once dirname(__FILE__)."/../config/config.php";
+    $Out = Out::getInstance();
+
     if ( ALLOW_REGISTRATION )
     {
         $Salt = UserProxy::generateKey128();
         $HashedPassword = NativeBinding::hash( $aRequest["pass"], $Salt, "none" );
         
-        if ( !UserProxy::createUser("none", 0, "none", $aRequest["name"], $HashedPassword, $Salt) )
+        $PublicMode = defined("PUBLIC_MODE") && PUBLIC_MODE;
+        $DefaultGroup = ($PublicMode) ? "member" : "none";
+        
+        $Out->pushValue("publicmode", $PublicMode);
+        
+        if ( !UserProxy::createUser($DefaultGroup, 0, "none", $aRequest["name"], $HashedPassword, $Salt) )
         {
-            $Out = Out::getInstance();
             $Out->pushError(L("NameInUse"));
         }
     }
     else
     {
-        $Out = Out::getInstance();
         $Out->pushError(L("AccessDenied"));
     }
 }

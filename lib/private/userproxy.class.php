@@ -356,7 +356,7 @@
                     // the local database. Create a new local hook for that user.
                     
                     if ( self::createUser($aUserInfo->Group, $aUserInfo->UserId, $aUserInfo->BindingName, 
-                                          $UserName, $aUserInfo->Password, $aUserInfo->Salt) === false )
+                                          $aUserInfo->UserName, $aUserInfo->Password, $aUserInfo->Salt) === false )
                     {
                         return null; // ### return, user could not be created ###
                     }
@@ -683,14 +683,14 @@
                                               
                 $Active = ($aBindingName != "none") ? "true" : "false";
 
-                $UserSt->bindValue(":Group",          $aGroup,               PDO::PARAM_STR);
-                $UserSt->bindValue(":ExternalUserId", $aExternalUserId,      PDO::PARAM_INT);
-                $UserSt->bindValue(":Binding",        $aBindingName,         PDO::PARAM_STR);
-                $UserSt->bindValue(":Active",         $Active,                 PDO::PARAM_STR);
-                $UserSt->bindValue(":Login",          strtolower($aLogin),   PDO::PARAM_STR);
-                $UserSt->bindValue(":Password",       $aHashedPassword,      PDO::PARAM_STR);
-                $UserSt->bindValue(":Salt",           $aSalt,                PDO::PARAM_STR);
-                $UserSt->bindValue(":Created",        time(),               PDO::PARAM_INT);
+                $UserSt->bindValue(":Group",          $aGroup,             PDO::PARAM_STR);
+                $UserSt->bindValue(":ExternalUserId", $aExternalUserId,    PDO::PARAM_INT);
+                $UserSt->bindValue(":Binding",        $aBindingName,       PDO::PARAM_STR);
+                $UserSt->bindValue(":Active",         $Active,             PDO::PARAM_STR);
+                $UserSt->bindValue(":Login",          strtolower($aLogin), PDO::PARAM_STR);
+                $UserSt->bindValue(":Password",       $aHashedPassword,    PDO::PARAM_STR);
+                $UserSt->bindValue(":Salt",           $aSalt,              PDO::PARAM_STR);
+                $UserSt->bindValue(":Created",        time(),              PDO::PARAM_INT);
 
                 if (!$UserSt->execute())
                     postErrorMessage($UserSt);
@@ -729,18 +729,23 @@
                 }
                 
                 // Local users may update externally, so sync the credentials
-                         
+                
+                $SyncGroup = defined("ALLOW_GROUP_SYNC") && ALLOW_GROUP_SYNC;
+                
                 $MirrorSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
-                                                "Login = :Login, Password = :Password, `Group` = :Group, Salt = :Salt, OneTimeKey = :Key ".
+                                                "Login = :Login, Password = :Password, Salt = :Salt, OneTimeKey = :Key".
+                                                (($SyncGroup) ? ", `Group` = :Group " : " ").
                                                 "WHERE ExternalBinding = :Binding AND ExternalId = :UserId LIMIT 1" );
-            
-                $MirrorSt->bindValue( ":Login",    $UserInfo->UserName,    PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":Password", $UserInfo->Password,    PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":Group",    $UserInfo->Group,       PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":Salt",     $UserInfo->Salt,        PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":Key",      $aKey,                  PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":Binding",  $UserInfo->BindingName, PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":UserId",   $UserInfo->UserId,      PDO::PARAM_INT );
+                
+                $MirrorSt->bindValue( ":Login",     $UserInfo->UserName,    PDO::PARAM_STR );
+                $MirrorSt->bindValue( ":Password",  $UserInfo->Password,    PDO::PARAM_STR );
+                $MirrorSt->bindValue( ":Salt",      $UserInfo->Salt,        PDO::PARAM_STR );
+                $MirrorSt->bindValue( ":Key",       $aKey,                  PDO::PARAM_STR );
+                $MirrorSt->bindValue( ":Binding",   $UserInfo->BindingName, PDO::PARAM_STR );
+                $MirrorSt->bindValue( ":UserId",    $UserInfo->UserId,      PDO::PARAM_INT );
+                
+                if ($SyncGroup) 
+                    $MirrorSt->bindValue( ":Group", $UserInfo->Group,       PDO::PARAM_STR );
             }                     
             
             return $MirrorSt;
