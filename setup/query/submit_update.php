@@ -315,6 +315,20 @@
     
     // ----------------------------------------------------------------------------
     
+    function upgrade_098()
+    {
+        echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.8 ".L("UpdateTo")." 1.0.0";
+        
+        $UTCOffset = intval($_REQUEST["utcoffset"]) * 60;        
+        $Updates = Array( "Timezone fix (moving all raids by ".$_REQUEST["utcoffset"]." minutes for a proper UTC offset)" => "UPDATE `".RP_TABLE_PREFIX."Raid` SET Start = FROM_UNIXTIME(UNIX_TIMESTAMP(Start) + ".$UTCOffset."), End = FROM_UNIXTIME(UNIX_TIMESTAMP(End) + ".$UTCOffset.");" );                          
+                          
+        doUpgrade( $Updates );
+        
+        echo "</div>";
+    }
+    
+    // ----------------------------------------------------------------------------
+    
     function setVersion( $a_Version )
     {
         $Connector = Connector::getInstance();
@@ -339,8 +353,10 @@
             upgrade_096();
         case 97:
             upgrade_097();
+        case 98:
+            upgrade_098();
         default:
-            setVersion(98);
+            setVersion(100);
             break;
         }
     }
