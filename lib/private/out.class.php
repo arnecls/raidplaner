@@ -88,8 +88,9 @@
                     echo 'false';
                 }
                 else
-                {                    
-                    echo '"'.str_replace("\"", "\\\"", $Value).'"';
+                {
+                    $sanitized = str_replace("\n", "</br>", str_replace("\"", "\\\"", $Value));                    
+                    echo '"'.$sanitized.'"';
                 }
                 
                 ++$i;
