@@ -234,6 +234,16 @@ function msgRaidupdate( $aRequest )
                                 $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
                                 $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
                             }
+                            else if ( ($Flags & PlayerFlagCharId) != 0 )
+                            {
+                                // Used when changing a character
+                                
+                                $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
+                                                                   "Status = :Status, CharacterId = :CharId, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
+                                                                   "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
+    
+                                $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
+                            }
                             else if ( (($Flags & PlayerFlagComment) != 0) )
                             {
                                 // Used when setting a player to absent

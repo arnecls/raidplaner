@@ -106,6 +106,7 @@
         $gLocale[ "MakeAbsent" ]               = "Spieler wird nicht anwesend sein";
         $gLocale[ "AbsentMessage" ]            = "Bitte gebe den Grund f&uuml;r die Abwesenheit an.<br/>Der Nachricht wird dein Login-Name vorangestellt.";
         $gLocale[ "SetupBy" ]                  = "Aufgestellt";
+        $gLocale[ "SwitchChar" ]               = "Character gewechselt";
         
         // Classes
         $gLocale[ "Deathknight" ]              = "Todesritter";
