@@ -320,7 +320,8 @@
         echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.8 ".L("UpdateTo")." 1.0.0";
         
         $UTCOffset = intval($_REQUEST["utcoffset"]) * 60;        
-        $Updates = Array( "Timezone fix (moving all raids by ".$_REQUEST["utcoffset"]." minutes for a proper UTC offset)" => "UPDATE `".RP_TABLE_PREFIX."Raid` SET Start = FROM_UNIXTIME(UNIX_TIMESTAMP(Start) + ".$UTCOffset."), End = FROM_UNIXTIME(UNIX_TIMESTAMP(End) + ".$UTCOffset.");" );                          
+        $Updates = Array( "Timezone fix (moving all raids by ".$_REQUEST["utcoffset"]." minutes for a proper UTC offset)" => "UPDATE `".RP_TABLE_PREFIX."Raid` SET Start = FROM_UNIXTIME(UNIX_TIMESTAMP(Start) + ".$UTCOffset."), End = FROM_UNIXTIME(UNIX_TIMESTAMP(End) + ".$UTCOffset.");",
+                          "Overbooking mode" => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE  `Mode`  `Mode` ENUM('manual', 'overbook', 'attend', 'all') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;" );                          
                           
         doUpgrade( $Updates );
         

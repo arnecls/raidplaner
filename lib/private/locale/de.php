@@ -183,8 +183,9 @@
         $gLocale[ "DefaultRaidSize" ]          = "Voreingestellte Raidgr&ouml;&szlig;e";
         $gLocale[ "BannerPage" ]               = "Link f&uuml;r Seitenbanner";
         $gLocale[ "Theme" ]                    = "Thema";
-        $gLocale[ "RaidSetupStyle" ]           = "Anmeldeform";        
+        $gLocale[ "RaidSetupStyle" ]           = "Anmeldeform";
         $gLocale[ "RaidModeManual" ]           = "Aufstellung durch Raidleiter";
+        $gLocale[ "RaidModeOverbook" ]         = "Durch Raidleiter mit &Uuml;berbuchen";
         $gLocale[ "RaidModeAttend" ]           = "Aufstellung nach Anmeldung";
         $gLocale[ "RaidModeAll" ]              = "Nur Liste";        
         $gLocale[ "UpdateCheck" ]              = "Suche nach Updates";

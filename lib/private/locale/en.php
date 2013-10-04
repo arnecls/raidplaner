@@ -185,6 +185,7 @@
         $gLocale[ "Theme" ]                    = "Theme";
         $gLocale[ "RaidSetupStyle" ]           = "Attendance style";        
         $gLocale[ "RaidModeManual" ]           = "Setup by raidlead";
+        $gLocale[ "RaidModeOverbook" ]         = "By raidlead with overbooking";
         $gLocale[ "RaidModeAttend" ]           = "Setup by attend";
         $gLocale[ "RaidModeAll" ]              = "Just list";                    
         $gLocale[ "UpdateCheck" ]              = "Check for updates";

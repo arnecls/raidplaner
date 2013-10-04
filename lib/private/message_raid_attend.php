@@ -170,6 +170,7 @@ function msgRaidAttend( $aRequest )
 
                         default:
                         case "manual":
+                        case "overbook":
                             $Status = "available";
                             break;
                         }

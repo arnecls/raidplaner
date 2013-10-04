@@ -317,7 +317,7 @@ function msgRaidupdate( $aRequest )
 
                 $AttendenceSt->closeCursor();
             }
-            else
+            else if ( $aRequest["mode"] != "overbook" )
             {
                 // Assure there not more "ok" players than allowed by slot size
 
