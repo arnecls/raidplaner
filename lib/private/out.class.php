@@ -79,11 +79,11 @@
                 {
                     echo $Value;
                 }
-                else if ($Value === true)
+                else if (($Value === true) || ($Value == "true"))
                 {
                     echo 'true';
                 }
-                else if ($Value === false)
+                else if (($Value === false) || ($Value == "false"))
                 {
                     echo 'false';
                 }
