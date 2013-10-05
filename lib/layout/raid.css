@@ -255,7 +255,7 @@
     width: 76px!important;
 }
 
-.spilledComment .playerName {
+.spilledSlotComment .playerName {
     padding-left: 4px;
     width: 76px!important;
 }
@@ -289,7 +289,7 @@
     width: 88px!important;
 }
 
-.spilledComment .editableName {
+.spilledSlotComment .editableName {
     margin-left: 4px;
     width: 88px!important;
 }
