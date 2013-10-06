@@ -195,6 +195,21 @@ a:hover {
     cursor: pointer;
 }
 
+#help {
+    position: relative;
+    display: inline-block;
+    padding: 0px;
+    margin-right: 10px;
+    margin-top: 10px;
+    height: 40px;
+    float: right;
+}
+
+#help .button_help {
+    height: 24px;
+    width: 28px;
+}
+
 .logout {
     position: relative;
     display: inline-block;

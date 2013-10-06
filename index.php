@@ -106,6 +106,11 @@
                         <button onclick="return onLogOut()" class="button_logout"><?php echo L("Logout"); ?></button>
                     </form>
                 </span>
+                <?php if ($gSite["HelpLink"] != "") { ?>
+                <span id="help">
+                    <button onclick="openLink('<?php echo $gSite["HelpLink"] ?>')" class="button_help"></button>
+                </span>
+                <?php } ?>
                 <span id="button_calendar" class="menu_button"><?php echo L("Calendar"); ?></span>
                 <span id="button_raid" class="menu_button"><?php echo L("Raid"); ?></span>
                 <span id="button_profile" class="menu_button"><?php echo L("Profile"); ?></span>

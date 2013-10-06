@@ -182,6 +182,7 @@
         $gLocale[ "DefaultEndTime" ]           = "Voreingestelltes Raidende";
         $gLocale[ "DefaultRaidSize" ]          = "Voreingestellte Raidgr&ouml;&szlig;e";
         $gLocale[ "BannerPage" ]               = "Link f&uuml;r Seitenbanner";
+        $gLocale[ "HelpPage" ]                 = "Link f&uuml;r Hilfe";
         $gLocale[ "Theme" ]                    = "Thema";
         $gLocale[ "RaidSetupStyle" ]           = "Anmeldeform";
         $gLocale[ "RaidModeManual" ]           = "Aufstellung durch Raidleiter";

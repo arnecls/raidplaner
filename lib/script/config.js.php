@@ -10,6 +10,7 @@
 
 var gSiteVersion = <?php echo floatval($_REQUEST["version"]) ?>;
 var gBannerLink = "<?php echo $gSite["BannerLink"]; ?>";
+var gHelpLink = "<?php echo $gSite["HelpLink"]; ?>";
 var gTimeFormat = <?php echo $gSite["TimeFormat"]; ?>;
 
 var gTheme = {
@@ -90,6 +91,22 @@ function onChangeConfig()
             : "none";
 
         $("#logo").css("background-image", bannerImage);
+    }
+    
+    // Update help button
+    
+    $("#help").detach();
+    
+    if ( gHelpLink != "" )
+    {
+        var HTMLString = "<span id=\"help\">";
+        HTMLString    += "<button onclick=\"openLink('"+gHelpLink+"')\" class=\"button_help\"></button>";
+        HTMLString    += "</span>";
+        
+        $(".logout").after(HTMLString);
+        $(".button_help").button({
+            icons: { secondary: "ui-icon-help" }
+        }).css( "font-size", 11 );
     }
     
     // Update appwindow class
