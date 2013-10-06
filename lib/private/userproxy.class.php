@@ -58,6 +58,7 @@
         public $UserName   = "";
         public $UserGroup  = "none";
         public $Characters = array();
+        public $Settings   = array();
     
         // --------------------------------------------------------------------------------------------
 
@@ -111,6 +112,7 @@
                 if ( $this->checkSessionCookie() )
                 {
                     $this->updateCharacters();
+                    $this->updateSettings();
                     return; // ### return, valid user ###
                 }
             }
@@ -186,6 +188,7 @@
             $this->UserId     = 0;
             $this->UserName   = "";
             $this->Characters = array();
+            $this->Settings   = array();
             
             unset($_SESSION["User"]);
             unset($_SESSION["Calendar"]);
@@ -605,6 +608,7 @@
                     $this->UserName   = $UserData["Login"];
                     
                     $this->updateCharacters();
+                    $this->updateSettings();
                     
                     // Process sticky cookie
                     // The sticky cookie stores the encrypted "credentials" part of the session
@@ -654,6 +658,30 @@
                 }
                 
                 $CharacterSt->closeCursor();
+            }
+        }
+        
+        // --------------------------------------------------------------------------------------------
+
+        public function updateSettings()
+        {
+            if ( $this->UserGroup != "none" )
+            {
+                $Connector = Connector::getInstance();
+                $SettingSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."UserSetting` ".
+                                                  "WHERE UserId = :UserId" );
+
+                $SettingSt->bindValue(":UserId", $this->UserId, PDO::PARAM_INT);
+                $SettingSt->execute();
+                
+                $this->Settings = array();
+
+                while ( $Row = $SettingSt->fetch( PDO::FETCH_ASSOC ) )
+                {
+                    $this->Settings[$Row["Name"]] = array("number" => $Row["IntValue"], "text" => $Row["TextValue"]);
+                }
+                
+                $SettingSt->closeCursor();
             }
         }
 

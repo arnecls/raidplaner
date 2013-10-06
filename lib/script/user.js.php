@@ -48,6 +48,18 @@
             }
         }
         
+        function echoSettings()
+        {
+            global $CurrentUser;
+            $First = true;
+            
+            while ( list($Name, $Value) = each($CurrentUser->Settings) )
+            {                
+                if ($First) $First = false; else echo ", ";
+                echo $Name.": {number: ".$Value["number"].", text: \"".$Value["text"]."\"}";
+            }
+        }
+        
         function echoClassName()
         {
             global $CurrentUser;
@@ -115,7 +127,8 @@ var gUser = {
     isRaidlead      : <?php echo validRaidlead() ? "true" : "false"; ?>,
     isAdmin         : <?php echo validAdmin() ? "true" : "false"; ?>,
     id              : <?php echo $CurrentUser->UserId; ?>,
-    name            : "<?php echo $CurrentUser->UserName; ?>"
+    name            : "<?php echo $CurrentUser->UserName; ?>",
+    settings        : { <?php echoSettings(); ?> }
 };
 
 <?php

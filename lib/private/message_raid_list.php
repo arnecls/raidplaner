@@ -75,7 +75,7 @@
                     array_push($RaidList, $Raid);                    
                 }
                 
-                $Out->pushValue("raid", $RaidList);
+                $Out->pushValue("history", $RaidList);
             }
 
             $ListRaidSt->closeCursor();

@@ -82,6 +82,18 @@
               PRIMARY KEY (`UserId`),
               KEY `ExternalId` (`ExternalId`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
+            
+        $Connector->exec( "CREATE TABLE `".$Prefix."UserSetting` (
+              `UserSettingId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+              `UserId` int(10) unsigned NOT NULL,
+              `Name` varchar(64) NOT NULL,
+              `IntValue` int(11) NOT NULL,
+              `TextValue` varchar(255) NOT NULL,
+              PRIMARY KEY (`UserSettingId`),
+              UNIQUE KEY `Unique_Name` (`Name`),
+              KEY `UserId` (`UserId`),
+              FULLTEXT KEY `Name` (`Name`)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
     }
     
     // ------------------------------------------------------------------------
