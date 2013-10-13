@@ -99,7 +99,7 @@
             if ($this->mConnector == null)
                 $this->mConnector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS);
             
-            $UserSt = $this->mConnector->prepare("SELECT uid, username, password, salt, usergroup, additionalgroups ".
+            $UserSt = $this->mConnector->prepare("SELECT uid, username, password, salt, usergroup, dateline, additionalgroups ".
                                                 "FROM `".MYBB_TABLE_PREFIX."users` ".
                                                 "WHERE uid = :UserId LIMIT 1");
         

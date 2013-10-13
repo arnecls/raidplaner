@@ -751,9 +751,19 @@
             {
                 if ( $aIsStoredLocally )
                 {
-                    $ExternalInfo = self::$mBindingsByName[$UserInfo->PassBinding]->getUserInfoById($UserInfo->UserId);
-                    if ( $ExternalInfo != null )
-                        $UserInfo = $ExternalInfo;
+                    $Binding = self::$mBindingsByName[$UserInfo->PassBinding];
+                    
+                    if ($Binding->isActive())
+                    {
+                        $ExternalInfo = $Binding->getUserInfoById($UserInfo->UserId);
+                        if ( $ExternalInfo != null )
+                            $UserInfo = $ExternalInfo;
+                    
+                    }
+                    else
+                    {
+                        Out::getInstance()->pushError($UserInfo->PassBinding." binding has been disabled.");
+                    }
                 }
                 
                 // Local users may update externally, so sync the credentials
