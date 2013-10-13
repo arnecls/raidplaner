@@ -101,6 +101,10 @@
     filter: inherit;
 }
 
+#slackers_badge:empty {
+    display: none;
+}
+
 #raiddetail .raidinfo {
     height: 64px;
     margin-bottom: 5px;
