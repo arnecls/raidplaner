@@ -18,6 +18,10 @@ a {
     text-decoration: none;
 }
 
+textarea {
+    resize: none;
+}
+
 a:visited {
     color: #666666;
     text-decoration: none;
