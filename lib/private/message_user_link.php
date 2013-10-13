@@ -101,7 +101,7 @@ function msgUserLink( $aRequest )
         
         if ( $UserInfo != null )
         {
-            $Out->pushValue("syncActive", defined("ALLOW_GROUP_SYNC") && ALLOW_GROUP_SYNC);            
+            $Out->pushValue("syncActive", !defined("ALLOW_GROUP_SYNC") || ALLOW_GROUP_SYNC);            
             $Out->pushValue("userid",     $aRequest["userId"]);
             $Out->pushValue("binding",    $UserInfo->BindingName);
             $Out->pushValue("group",      $UserInfo->Group);

@@ -758,7 +758,7 @@
                 
                 // Local users may update externally, so sync the credentials
                 
-                $SyncGroup = defined("ALLOW_GROUP_SYNC") && ALLOW_GROUP_SYNC;
+                $SyncGroup = !defined("ALLOW_GROUP_SYNC") || ALLOW_GROUP_SYNC;
                 
                 $MirrorSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
                                                 "Login = :Login, Password = :Password, Salt = :Salt, OneTimeKey = :Key".
