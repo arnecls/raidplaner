@@ -152,7 +152,7 @@
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('StartOfWeek', 1, '');" );
             
         if ( !in_array("Version", $ExistingSettings) )
-            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 98, '');" );    
+            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 100s, '');" );    
         
         $TestSt->closeCursor();
     }
