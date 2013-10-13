@@ -22,6 +22,7 @@
     height: 32px;
     margin-left: 2px;
     margin-top: 5px;
+    position: relative;
 }
 
 #raiddetail .setup {
@@ -97,6 +98,7 @@
     top: 18px;
     left: 0px;
     text-align: center;
+    filter: inherit;
 }
 
 #raiddetail .raidinfo {

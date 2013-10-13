@@ -178,27 +178,30 @@ function msgSettingsupdate( $aRequest )
 
         // Build location query
 
-        for ( $i=0; $i < sizeof($aRequest["locationIds"]); ++$i )
-        {
-            $LocationId      = intval($aRequest["locationIds"][$i]);
-            $CurrentLocation = $CurrentValues[$LocationId];
-            $LocationName    = requestToXML( $aRequest["locationNames"][$i], ENT_COMPAT, "UTF-8" );
-            $LocationImage   = ( isset($aRequest["locationImages"]) && isset($aRequest["locationImages"][$i]) && ($aRequest["locationImages"][$i] != "undefined") )
-                ? $aRequest["locationImages"][$i]
-                : $CurrentLocation["Image"];
-
-            if ( ($LocationName != $CurrentLocation["Name"]) || ($LocationImage != $CurrentLocation["Image"]) )
+		if (isset($aRequest["locationIds"]))
+		{
+            for ( $i=0; $i < sizeof($aRequest["locationIds"]); ++$i )
             {
-                array_push( $BindValues, array(":Name".$LocationId, $LocationName, PDO::PARAM_STR) );
-                array_push( $BindValues, array(":Image".$LocationId, $LocationImage, PDO::PARAM_STR) );
-                $QueryString .= "UPDATE `".RP_TABLE_PREFIX."Location` SET Name = :Name".$LocationId.", Image = :Image".$LocationId." WHERE LocationId=".$LocationId."; ";
+                $LocationId      = intval($aRequest["locationIds"][$i]);
+                $CurrentLocation = $CurrentValues[$LocationId];
+                $LocationName    = requestToXML( $aRequest["locationNames"][$i], ENT_COMPAT, "UTF-8" );
+                $LocationImage   = ( isset($aRequest["locationImages"]) && isset($aRequest["locationImages"][$i]) && ($aRequest["locationImages"][$i] != "undefined") )
+                    ? $aRequest["locationImages"][$i]
+                    : $CurrentLocation["Image"];
+
+                if ( ($LocationName != $CurrentLocation["Name"]) || ($LocationImage != $CurrentLocation["Image"]) )
+                {
+                    array_push( $BindValues, array(":Name".$LocationId, $LocationName, PDO::PARAM_STR) );
+                    array_push( $BindValues, array(":Image".$LocationId, $LocationImage, PDO::PARAM_STR) );
+                    $QueryString .= "UPDATE `".RP_TABLE_PREFIX."Location` SET Name = :Name".$LocationId.", Image = :Image".$LocationId." WHERE LocationId=".$LocationId."; ";
+                }
             }
-        }
+		}
 
         if ( isset($aRequest["locationRemoved"]) )
         {
             foreach( $aRequest["locationRemoved"] as $LocationId )
-               {
+            {
                 $QueryString .= "DELETE `".RP_TABLE_PREFIX."Location`, `".RP_TABLE_PREFIX."Raid`, `".RP_TABLE_PREFIX."Attendance` FROM `".RP_TABLE_PREFIX."Location` ".
                                 "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(LocationId) ".
                                 "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(RaidId) ".
@@ -207,8 +210,8 @@ function msgSettingsupdate( $aRequest )
         }
 
         if ( $QueryString != "" )
-           {
-               $LocationUpdate = $Connector->prepare( $QueryString );
+	    {
+		   $LocationUpdate = $Connector->prepare( $QueryString );
 
             foreach( $BindValues as $BindData )
             {
