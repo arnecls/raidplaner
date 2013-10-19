@@ -101,6 +101,7 @@
             
             $UserSt = $this->mConnector->prepare("SELECT uid, username, password, salt, usergroup, dateline, additionalgroups ".
                                                 "FROM `".MYBB_TABLE_PREFIX."users` ".
+                                                "LEFT JOIN `".MYBB_TABLE_PREFIX."banned` USING(uid) ".
                                                 "WHERE uid = :UserId LIMIT 1");
         
             $UserSt->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
