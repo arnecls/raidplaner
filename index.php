@@ -64,9 +64,14 @@
             //define("SCRIPT_DEBUG", true);
             
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
+            {
+            	unset($_REQUEST["m"]);
                 include_once("lib/script/_scripts.js.php");
+            }
             else
-                echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSiteVersion.".&r=".((registeredUser()) ? 1 : 0)."\"></script>";
+            {
+                echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSiteVersion.".&m=1&r=".((registeredUser()) ? 1 : 0)."\"></script>";
+        	}
         ?>
         
         <?php
@@ -76,8 +81,7 @@
             {
                 echo "<script type=\"text/javascript\">gAfterInit = function() { notify(L(\"WrongPassword\")); };</script>";
             }
-        ?>
-        
+        ?>        
     </head>
    
     <body style="background: <?php echo $gSite["BGColor"] ?> <?php echo ($gSite["Background"] == "none") ? "none" : "url(images/background/".$gSite["Background"].")" ?> <?php echo $gSite["BGRepeat"] ?>">
