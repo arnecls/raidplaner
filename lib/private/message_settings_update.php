@@ -311,53 +311,34 @@ function msgSettingsupdate( $aRequest )
 
         foreach ( $RemovedIds as $UserId )
         {
-            // Get characters of user
+            // remove characters and attendances
 
-            $Characters = $Connector->prepare( "SELECT CharacterId FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId" );
-            $Characters->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $DropCharacter  = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId LIMIT 1" );
+            $DropAttendance = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId" );
 
-            if ( !$Characters->execute() )
+            $DropCharacter->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $DropAttendance->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+
+            if ( !$DropCharacter->execute() )
             {
-                postErrorMessage( $Characters );
+                postErrorMessage( $DropCharacter );
 
-                $Characters->closeCursor();
+                $DropCharacter->closeCursor();
                 $Connector->rollBack();
                 return;
             }
 
-            // remove characters and attendances
-
-            while ( $Data = $Characters->fetch( PDO::FETCH_ASSOC ) )
+            if ( !$DropAttendance->execute() )
             {
-                $DropCharacter  = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharacterId LIMIT 1" );
-                $DropAttendance = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE CharacterId = :CharacterId" );
+                postErrorMessage( $DropAttendance );
 
-                $DropCharacter->bindValue(":CharacterId", $Data["CharacterId"], PDO::PARAM_INT);
-                $DropAttendance->bindValue(":CharacterId", $Data["CharacterId"], PDO::PARAM_INT);
-
-                if ( !$DropCharacter->execute() )
-                {
-                    postErrorMessage( $DropCharacter );
-
-                    $DropCharacter->closeCursor();
-                    $Connector->rollBack();
-                    return;
-                }
-
-                if ( !$DropAttendance->execute() )
-                {
-                    postErrorMessage( $DropAttendance );
-
-                    $DropAttendance->closeCursor();
-                    $Connector->rollBack();
-                    return;
-                }
-
-                $DropCharacter->closeCursor();
                 $DropAttendance->closeCursor();
+                $Connector->rollBack();
+                return;
             }
 
-            $Characters->closeCursor();
+            $DropCharacter->closeCursor();
+            $DropAttendance->closeCursor();
 
             // remove user
 
