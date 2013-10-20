@@ -99,8 +99,9 @@
             if ($this->mConnector == null)
                 $this->mConnector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS);
             
-            $UserSt = $this->mConnector->prepare("SELECT uid, username, password, salt, usergroup, additionalgroups ".
+            $UserSt = $this->mConnector->prepare("SELECT uid, username, password, salt, usergroup, dateline, additionalgroups ".
                                                 "FROM `".MYBB_TABLE_PREFIX."users` ".
+                                                "LEFT JOIN `".MYBB_TABLE_PREFIX."banned` USING(uid) ".
                                                 "WHERE uid = :UserId LIMIT 1");
         
             $UserSt->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );

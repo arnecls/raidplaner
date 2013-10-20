@@ -15,6 +15,8 @@
     margin-right: 0px;
     cursor: pointer;
     vertical-align: middle;
+    padding-top: 1px;
+    overflow: hidden;
 }
 
 .combobox_value_dark {
@@ -34,11 +36,22 @@
     color: white;
     cursor: text!important;
     font-size: 11px!important;
+    height: 14px;
+    margin-top: -1px;
 }
 
 .combobox_valuetext {
     display: inline-block;
     font-size: 11px!important;
+    line-height: 16px;
+}
+
+.combobox_valueimg {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    margin: 0px 8px 0px 0px;
+    float: left;
 }
 
 .combobox_open {
@@ -72,12 +85,25 @@
     padding-top: 2px;
     padding-bottom: 2px;
     color: white;
-    height: 14px;
+    height: 16px;
     font-size: 10px;
     vertical-align: middle;
     opacity: 1.0;
     filter:Alpha(opacity=100);
     color: #aaaaaa;
+}
+
+.combobox_list .option img {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    margin: 0px 8px 0px 0px;
+    float: left;
+}
+
+.combobox_list .option .text {
+    line-height: 16px;
+    display: inline-block;
 }
 
 .combobox_list .separator {

@@ -3,16 +3,17 @@
 function msgQueryCredentials( $aRequest )
 {
     $Credentials = UserProxy::getInstance()->getUserCredentials($aRequest["Login"]);
-
+    $Out = Out::getInstance();
+        
     if ($Credentials == null )
     {
-        echo "<error>".L("NoSuchUser")."</error>";
+        $Out->pushError(L("NoSuchUser"));
     }
     else
-    {    
-        echo "<salt>".$Credentials["salt"]."</salt>";
-        echo "<pubkey>".$Credentials["key"]."</pubkey>";
-        echo "<method>".$Credentials["method"]."</method>";
+    {
+        $Out->pushValue("salt", $Credentials["salt"]);
+        $Out->pushValue("pubkey", $Credentials["key"]);
+        $Out->pushValue("method", $Credentials["method"]);
     }
 }
 
@@ -21,16 +22,17 @@ function msgQueryCredentials( $aRequest )
 function msgQueryCredentialsById( $aRequest )
 {
     $Credentials = UserProxy::getInstance()->getUserCredentialsById($aRequest["UserId"]);
-
+    $Out = Out::getInstance();
+        
     if ($Credentials == null )
     {
-        echo "<error>".L("NoSuchUser")."</error>";
+        $Out->pushError(L("NoSuchUser"));
     }
     else
-    {    
-        echo "<salt>".$Credentials["salt"]."</salt>";
-        echo "<pubkey>".$Credentials["key"]."</pubkey>";
-        echo "<method>".$Credentials["method"]."</method>";
+    {
+        $Out->pushValue("salt", $Credentials["salt"]);
+        $Out->pushValue("pubkey", $Credentials["key"]);
+        $Out->pushValue("method", $Credentials["method"]);
     }
 }
 

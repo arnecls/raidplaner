@@ -39,13 +39,13 @@ function msgRaidCreate( $aRequest )
                                              "VALUES (:LocationId, :Size, FROM_UNIXTIME(:Start), FROM_UNIXTIME(:End), :Mode, :Description, ".
                                              ":SlotsRole1, :SlotsRole2, :SlotsRole3, :SlotsRole4, :SlotsRole5)");
 
-            $StartDateTime = mktime(intval($aRequest["startHour"]), intval($aRequest["startMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]));
-            $EndDateTime   = mktime(intval($aRequest["endHour"]), intval($aRequest["endMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]));
+            $StartDateTime = mktime(intval($aRequest["startHour"]), intval($aRequest["startMinute"]), 0, intval($aRequest["startMonth"]), intval($aRequest["startDay"]), intval($aRequest["startYear"]));
+            $EndDateTime   = mktime(intval($aRequest["endHour"]), intval($aRequest["endMinute"]), 0, intval($aRequest["endMonth"]), intval($aRequest["endDay"]), intval($aRequest["endYear"]));
+            
+            // Convert to UTC
 
-            $Mode = "manual"; // TODO: Read from parameter
-
-            if ( $EndDateTime < $StartDateTime )
-               $EndDateTime += 60*60*24;
+            $StartDateTime += $aRequest["startOffset"] * 60;
+            $EndDateTime   += $aRequest["endOffset"] * 60;
 
             $NewRaidSt->bindValue(":LocationId",  $LocationId, PDO::PARAM_INT);
             $NewRaidSt->bindValue(":Size",        $aRequest["locationSize"], PDO::PARAM_INT);
@@ -54,10 +54,10 @@ function msgRaidCreate( $aRequest )
             $NewRaidSt->bindValue(":Mode",        $aRequest["mode"], PDO::PARAM_STR);
             $NewRaidSt->bindValue(":Description", requestToXML( $aRequest["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
 
-            while ( list($GroupSize,$Slots) = each($gGroupSizes) )
-            {
-                echo "<option value=\"".$GroupSize."\">".$GroupSize."</option>";
-            }
+            //while ( list($GroupSize,$Slots) = each($gGroupSizes) )
+            //{
+            //    echo "<option value=\"".$GroupSize."\">".$GroupSize."</option>";
+            //}
 
             // Get the default sizes
 
@@ -115,7 +115,8 @@ function msgRaidCreate( $aRequest )
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out = Out::getInstance();
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

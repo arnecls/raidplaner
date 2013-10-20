@@ -1,10 +1,13 @@
 <?php
-    define( "LOCALE_MAIN", true );
+    define("LOCALE_MAIN", true);
+    define("STYLE_DEBUG", false);
+    define("SCRIPT_DEBUG", false);
+                 
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
     require_once("lib/private/gameconfig.php");
              
-    $gSiteVersion = 98.1;
+    $gSiteVersion = 100.0;
     
     if ( !isset($_REQUEST["nocheck"]) )
         include_once("oldbrowser.php");
@@ -27,13 +30,10 @@
         <title>Raidplaner</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
         <meta name="keywords" content="raidplaner, ppx"/>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-        
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>        
         <link rel="icon" href="favicon.png" type="image/png"/>
         
-        <?php
-            //define("STYLE_DEBUG", true);
-            
+        <?php            
             if (defined("STYLE_DEBUG") && STYLE_DEBUG)
                 include_once("lib/layout/_layout.css.php");
             else
@@ -61,12 +61,16 @@
         <script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $gSiteVersion; ?>"></script>
                 
         <?php
-            //define("SCRIPT_DEBUG", true);
-            
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
-                include_once("lib/script/_scripts.js.php");
+            {
+            	include_once("lib/script/_scripts.js.php");
+            }
             else
-                echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSiteVersion.".&r=".((registeredUser()) ? 1 : 0)."\"></script>";
+            {
+                $Minified = (registeredUser()) ? "min.registered.js" : "min.login.js";
+                echo "<script type=\"text/javascript\" src=\"lib/script/".$Minified."?version=".$gSiteVersion."\"></script>";
+                //echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSiteVersion."&r=".((registeredUser()) ? 1 : 0)."\"></script>";
+        	}
         ?>
         
         <?php
@@ -76,8 +80,7 @@
             {
                 echo "<script type=\"text/javascript\">gAfterInit = function() { notify(L(\"WrongPassword\")); };</script>";
             }
-        ?>
-        
+        ?>        
     </head>
    
     <body style="background: <?php echo $gSite["BGColor"] ?> <?php echo ($gSite["Background"] == "none") ? "none" : "url(images/background/".$gSite["Background"].")" ?> <?php echo $gSite["BGRepeat"] ?>">
@@ -106,6 +109,11 @@
                         <button onclick="return onLogOut()" class="button_logout"><?php echo L("Logout"); ?></button>
                     </form>
                 </span>
+                <?php if ($gSite["HelpLink"] != "") { ?>
+                <span id="help">
+                    <button onclick="openLink('<?php echo $gSite["HelpLink"] ?>')" class="button_help"></button>
+                </span>
+                <?php } ?>
                 <span id="button_calendar" class="menu_button"><?php echo L("Calendar"); ?></span>
                 <span id="button_raid" class="menu_button"><?php echo L("Raid"); ?></span>
                 <span id="button_profile" class="menu_button"><?php echo L("Profile"); ?></span>

@@ -28,6 +28,7 @@
         // One file to rule them all to speed up loading
         
         header("Content-type: text/css");
+		header("Cache-Control: public");
         
         foreach ( $LoaderFiles as $LoaderCurrentFile )
         {

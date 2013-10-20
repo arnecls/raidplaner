@@ -4,7 +4,7 @@
     @include_once(dirname(__FILE__)."/../lib/config/config.php");
     require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
     
-    $CurrentVersion = 98;
+    $CurrentVersion = 100;
     $CurrentPatch = $CurrentVersion % 10;
     $CurrentMinor = ($CurrentVersion / 10) % 10;
     $CurrentMajor = ($CurrentVersion / 100) % 10;
@@ -14,9 +14,12 @@
 
 <script type="text/javascript">
     $(document).ready( function() {
+        var Now = new Date();
+        var UTCOffset = Now.getTimezoneOffset()
+    
         $("#button_repair").click( function() { open("repair_done.php"); });
         $(".button_back").click( function() { open("index.php"); });
-        $(".button_next").click( function() { open("update_done.php?version="+$("#version").val()); });
+        $(".button_next").click( function() { open("update_done.php?version="+$("#version").val()+"&utcoffset="+UTCOffset); });
     });
 </script>
 
@@ -99,6 +102,7 @@
             <option value="95"<?php if ($Version==95) echo " selected"; ?>>0.9.5</option>
             <option value="96"<?php if ($Version==96) echo " selected"; ?>>0.9.6</option>
             <option value="97"<?php if ($Version==97) echo " selected"; ?>>0.9.7</option>
+            <option value="98"<?php if ($Version==98) echo " selected"; ?>>0.9.8</option>
         </select>
         <span> <?php echo L("UpdateTo")." ".$CurrentMajor.".".$CurrentMinor.".".$CurrentPatch; ?></span>
     </div>

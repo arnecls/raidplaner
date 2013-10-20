@@ -58,6 +58,7 @@
         public $UserName   = "";
         public $UserGroup  = "none";
         public $Characters = array();
+        public $Settings   = array();
     
         // --------------------------------------------------------------------------------------------
 
@@ -111,6 +112,7 @@
                 if ( $this->checkSessionCookie() )
                 {
                     $this->updateCharacters();
+                    $this->updateSettings();
                     return; // ### return, valid user ###
                 }
             }
@@ -186,6 +188,7 @@
             $this->UserId     = 0;
             $this->UserName   = "";
             $this->Characters = array();
+            $this->Settings   = array();
             
             unset($_SESSION["User"]);
             unset($_SESSION["Calendar"]);
@@ -356,7 +359,7 @@
                     // the local database. Create a new local hook for that user.
                     
                     if ( self::createUser($aUserInfo->Group, $aUserInfo->UserId, $aUserInfo->BindingName, 
-                                          $UserName, $aUserInfo->Password, $aUserInfo->Salt) === false )
+                                          $aUserInfo->UserName, $aUserInfo->Password, $aUserInfo->Salt) === false )
                     {
                         return null; // ### return, user could not be created ###
                     }
@@ -605,6 +608,7 @@
                     $this->UserName   = $UserData["Login"];
                     
                     $this->updateCharacters();
+                    $this->updateSettings();
                     
                     // Process sticky cookie
                     // The sticky cookie stores the encrypted "credentials" part of the session
@@ -656,6 +660,30 @@
                 $CharacterSt->closeCursor();
             }
         }
+        
+        // --------------------------------------------------------------------------------------------
+
+        public function updateSettings()
+        {
+            if ( $this->UserGroup != "none" )
+            {
+                $Connector = Connector::getInstance();
+                $SettingSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."UserSetting` ".
+                                                  "WHERE UserId = :UserId" );
+
+                $SettingSt->bindValue(":UserId", $this->UserId, PDO::PARAM_INT);
+                $SettingSt->execute();
+                
+                $this->Settings = array();
+
+                while ( $Row = $SettingSt->fetch( PDO::FETCH_ASSOC ) )
+                {
+                    $this->Settings[$Row["Name"]] = array("number" => $Row["IntValue"], "text" => $Row["TextValue"]);
+                }
+                
+                $SettingSt->closeCursor();
+            }
+        }
 
         // --------------------------------------------------------------------------------------------
 
@@ -683,14 +711,14 @@
                                               
                 $Active = ($aBindingName != "none") ? "true" : "false";
 
-                $UserSt->bindValue(":Group",          $aGroup,               PDO::PARAM_STR);
-                $UserSt->bindValue(":ExternalUserId", $aExternalUserId,      PDO::PARAM_INT);
-                $UserSt->bindValue(":Binding",        $aBindingName,         PDO::PARAM_STR);
-                $UserSt->bindValue(":Active",         $Active,                 PDO::PARAM_STR);
-                $UserSt->bindValue(":Login",          strtolower($aLogin),   PDO::PARAM_STR);
-                $UserSt->bindValue(":Password",       $aHashedPassword,      PDO::PARAM_STR);
-                $UserSt->bindValue(":Salt",           $aSalt,                PDO::PARAM_STR);
-                $UserSt->bindValue(":Created",        time(),               PDO::PARAM_INT);
+                $UserSt->bindValue(":Group",          $aGroup,             PDO::PARAM_STR);
+                $UserSt->bindValue(":ExternalUserId", $aExternalUserId,    PDO::PARAM_INT);
+                $UserSt->bindValue(":Binding",        $aBindingName,       PDO::PARAM_STR);
+                $UserSt->bindValue(":Active",         $Active,             PDO::PARAM_STR);
+                $UserSt->bindValue(":Login",          strtolower($aLogin), PDO::PARAM_STR);
+                $UserSt->bindValue(":Password",       $aHashedPassword,    PDO::PARAM_STR);
+                $UserSt->bindValue(":Salt",           $aSalt,              PDO::PARAM_STR);
+                $UserSt->bindValue(":Created",        time(),              PDO::PARAM_INT);
 
                 if (!$UserSt->execute())
                     postErrorMessage($UserSt);
@@ -723,24 +751,39 @@
             {
                 if ( $aIsStoredLocally )
                 {
-                    $ExternalInfo = self::$mBindingsByName[$UserInfo->PassBinding]->getUserInfoById($UserInfo->UserId);
-                    if ( $ExternalInfo != null )
-                        $UserInfo = $ExternalInfo;
+                    $Binding = self::$mBindingsByName[$UserInfo->PassBinding];
+                    
+                    if ($Binding->isActive())
+                    {
+                        $ExternalInfo = $Binding->getUserInfoById($UserInfo->UserId);
+                        if ( $ExternalInfo != null )
+                            $UserInfo = $ExternalInfo;
+                    
+                    }
+                    else
+                    {
+                        Out::getInstance()->pushError($UserInfo->PassBinding." binding has been disabled.");
+                    }
                 }
                 
                 // Local users may update externally, so sync the credentials
-                         
+                
+                $SyncGroup = !defined("ALLOW_GROUP_SYNC") || ALLOW_GROUP_SYNC;
+                
                 $MirrorSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
-                                                "Login = :Login, Password = :Password, `Group` = :Group, Salt = :Salt, OneTimeKey = :Key ".
+                                                "Login = :Login, Password = :Password, Salt = :Salt, OneTimeKey = :Key".
+                                                (($SyncGroup) ? ", `Group` = :Group " : " ").
                                                 "WHERE ExternalBinding = :Binding AND ExternalId = :UserId LIMIT 1" );
-            
-                $MirrorSt->bindValue( ":Login",    $UserInfo->UserName,    PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":Password", $UserInfo->Password,    PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":Group",    $UserInfo->Group,       PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":Salt",     $UserInfo->Salt,        PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":Key",      $aKey,                  PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":Binding",  $UserInfo->BindingName, PDO::PARAM_STR );
-                $MirrorSt->bindValue( ":UserId",   $UserInfo->UserId,      PDO::PARAM_INT );
+                
+                $MirrorSt->bindValue( ":Login",     $UserInfo->UserName,    PDO::PARAM_STR );
+                $MirrorSt->bindValue( ":Password",  $UserInfo->Password,    PDO::PARAM_STR );
+                $MirrorSt->bindValue( ":Salt",      $UserInfo->Salt,        PDO::PARAM_STR );
+                $MirrorSt->bindValue( ":Key",       $aKey,                  PDO::PARAM_STR );
+                $MirrorSt->bindValue( ":Binding",   $UserInfo->BindingName, PDO::PARAM_STR );
+                $MirrorSt->bindValue( ":UserId",    $UserInfo->UserId,      PDO::PARAM_INT );
+                
+                if ($SyncGroup) 
+                    $MirrorSt->bindValue( ":Group", $UserInfo->Group,       PDO::PARAM_STR );
             }                     
             
             return $MirrorSt;

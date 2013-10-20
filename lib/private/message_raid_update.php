@@ -64,12 +64,14 @@ function msgRaidupdate( $aRequest )
                                             "SlotsRole1 = :SlotsRole1, SlotsRole2 = :SlotsRole2, SlotsRole3 = :SlotsRole3, SlotsRole4 = :SlotsRole4, SlotsRole5 = :SlotsRole5 ".
                                             "WHERE RaidId = :RaidId" );
 
-        $StartDateTime = mktime(intval($aRequest["startHour"]), intval($aRequest["startMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]) );
-        $EndDateTime   = mktime(intval($aRequest["endHour"]), intval($aRequest["endMinute"]), 0, intval($aRequest["month"]), intval($aRequest["day"]), intval($aRequest["year"]) );
+        $StartDateTime = mktime(intval($aRequest["startHour"]), intval($aRequest["startMinute"]), 0, intval($aRequest["startMonth"]), intval($aRequest["startDay"]), intval($aRequest["startYear"]) );
+        $EndDateTime   = mktime(intval($aRequest["endHour"]), intval($aRequest["endMinute"]), 0, intval($aRequest["endMonth"]), intval($aRequest["endDay"]), intval($aRequest["endYear"]) );
 
-        if ( $EndDateTime < $StartDateTime )
-            $EndDateTime += 60*60*24;
+        // Convert to UTC
 
+        $StartDateTime += $aRequest["startOffset"] * 60;
+        $EndDateTime   += $aRequest["endOffset"] * 60; 
+        
         $UpdateRaidSt->bindValue(":RaidId",      $aRequest["id"], PDO::PARAM_INT);
         $UpdateRaidSt->bindValue(":LocationId",  $LocationId, PDO::PARAM_INT);
         $UpdateRaidSt->bindValue(":Stage",       $aRequest["stage"], PDO::PARAM_STR);
@@ -212,7 +214,8 @@ function msgRaidupdate( $aRequest )
                             }                            
                             else
                             {
-                                echo "<error>Invalid user flags</error>";
+                                $Out = Out::getInstance();
+                                $Out->pushError("Invalid user flags");
                             }                           
                         }
                         else
@@ -229,6 +232,16 @@ function msgRaidupdate( $aRequest )
                                                                    "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
     
                                 $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
+                                $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
+                            }
+                            else if ( ($Flags & PlayerFlagCharId) != 0 )
+                            {
+                                // Used when changing a character
+                                
+                                $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
+                                                                   "Status = :Status, CharacterId = :CharId, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
+                                                                   "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
+    
                                 $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
                             }
                             else if ( (($Flags & PlayerFlagComment) != 0) )
@@ -304,7 +317,7 @@ function msgRaidupdate( $aRequest )
 
                 $AttendenceSt->closeCursor();
             }
-            else
+            else if ( $aRequest["mode"] != "overbook" )
             {
                 // Assure there not more "ok" players than allowed by slot size
 
@@ -374,7 +387,8 @@ function msgRaidupdate( $aRequest )
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out = Out::getInstance();
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

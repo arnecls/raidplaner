@@ -170,6 +170,7 @@ function msgRaidAttend( $aRequest )
 
                         default:
                         case "manual":
+                        case "overbook":
                             $Status = "available";
                             break;
                         }
@@ -252,12 +253,14 @@ function msgRaidAttend( $aRequest )
             }
             else
             {
-                echo "<error>".L("ForeignCharacter").". ".L("AccessDenied")."</error>";
+                $Out = Out::getInstance();
+                $Out->pushError(L("AccessDenied"));
             }
         }
         else
         {
-            echo "<error>".L("RaidLocked")."</error>";
+            $Out = Out::getInstance();
+            $Out->pushError(L("RaidLocked"));
         }
 
         // reload calendar
@@ -277,7 +280,8 @@ function msgRaidAttend( $aRequest )
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out = Out::getInstance();
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

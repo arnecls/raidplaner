@@ -58,10 +58,9 @@ function leadingZero10( $aValue )
 {
     $Number = intval($aValue,10);
     
-    if ($Number < 10)
-        return "0".$Number;
-
-    return $Number;
+    return ($Number < 10)
+        ? "0".$Number
+        : $Number;
 }
 
 ?>

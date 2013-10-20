@@ -130,6 +130,7 @@ function msgSettingsupdate( $aRequest )
         $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "RaidMode", $aRequest["raidMode"] );
         $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "Site", $aRequest["site"] );
         $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "Theme", $aRequest["theme"] );
+        $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "HelpPage", $aRequest["helpPage"] );
 
         if ( $QueryString != "" )
            {
@@ -177,27 +178,30 @@ function msgSettingsupdate( $aRequest )
 
         // Build location query
 
-        for ( $i=0; $i < sizeof($aRequest["locationIds"]); ++$i )
-        {
-            $LocationId      = intval($aRequest["locationIds"][$i]);
-            $CurrentLocation = $CurrentValues[$LocationId];
-            $LocationName    = requestToXML( $aRequest["locationNames"][$i], ENT_COMPAT, "UTF-8" );
-            $LocationImage   = ( isset($aRequest["locationImages"]) && isset($aRequest["locationImages"][$i]) && ($aRequest["locationImages"][$i] != "undefined") )
-                ? $aRequest["locationImages"][$i]
-                : $CurrentLocation["Image"];
-
-            if ( ($LocationName != $CurrentLocation["Name"]) || ($LocationImage != $CurrentLocation["Image"]) )
+		if (isset($aRequest["locationIds"]))
+		{
+            for ( $i=0; $i < sizeof($aRequest["locationIds"]); ++$i )
             {
-                array_push( $BindValues, array(":Name".$LocationId, $LocationName, PDO::PARAM_STR) );
-                array_push( $BindValues, array(":Image".$LocationId, $LocationImage, PDO::PARAM_STR) );
-                $QueryString .= "UPDATE `".RP_TABLE_PREFIX."Location` SET Name = :Name".$LocationId.", Image = :Image".$LocationId." WHERE LocationId=".$LocationId."; ";
+                $LocationId      = intval($aRequest["locationIds"][$i]);
+                $CurrentLocation = $CurrentValues[$LocationId];
+                $LocationName    = requestToXML( $aRequest["locationNames"][$i], ENT_COMPAT, "UTF-8" );
+                $LocationImage   = ( isset($aRequest["locationImages"]) && isset($aRequest["locationImages"][$i]) && ($aRequest["locationImages"][$i] != "undefined") )
+                    ? $aRequest["locationImages"][$i]
+                    : $CurrentLocation["Image"];
+
+                if ( ($LocationName != $CurrentLocation["Name"]) || ($LocationImage != $CurrentLocation["Image"]) )
+                {
+                    array_push( $BindValues, array(":Name".$LocationId, $LocationName, PDO::PARAM_STR) );
+                    array_push( $BindValues, array(":Image".$LocationId, $LocationImage, PDO::PARAM_STR) );
+                    $QueryString .= "UPDATE `".RP_TABLE_PREFIX."Location` SET Name = :Name".$LocationId.", Image = :Image".$LocationId." WHERE LocationId=".$LocationId."; ";
+                }
             }
-        }
+		}
 
         if ( isset($aRequest["locationRemoved"]) )
         {
             foreach( $aRequest["locationRemoved"] as $LocationId )
-               {
+            {
                 $QueryString .= "DELETE `".RP_TABLE_PREFIX."Location`, `".RP_TABLE_PREFIX."Raid`, `".RP_TABLE_PREFIX."Attendance` FROM `".RP_TABLE_PREFIX."Location` ".
                                 "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(LocationId) ".
                                 "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(RaidId) ".
@@ -206,8 +210,8 @@ function msgSettingsupdate( $aRequest )
         }
 
         if ( $QueryString != "" )
-           {
-               $LocationUpdate = $Connector->prepare( $QueryString );
+	    {
+		   $LocationUpdate = $Connector->prepare( $QueryString );
 
             foreach( $BindValues as $BindData )
             {
@@ -307,53 +311,34 @@ function msgSettingsupdate( $aRequest )
 
         foreach ( $RemovedIds as $UserId )
         {
-            // Get characters of user
+            // remove characters and attendances
 
-            $Characters = $Connector->prepare( "SELECT CharacterId FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId" );
-            $Characters->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $DropCharacter  = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId LIMIT 1" );
+            $DropAttendance = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId" );
 
-            if ( !$Characters->execute() )
+            $DropCharacter->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $DropAttendance->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+
+            if ( !$DropCharacter->execute() )
             {
-                postErrorMessage( $Characters );
+                postErrorMessage( $DropCharacter );
 
-                $Characters->closeCursor();
+                $DropCharacter->closeCursor();
                 $Connector->rollBack();
                 return;
             }
 
-            // remove characters and attendances
-
-            while ( $Data = $Characters->fetch( PDO::FETCH_ASSOC ) )
+            if ( !$DropAttendance->execute() )
             {
-                $DropCharacter  = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharacterId LIMIT 1" );
-                $DropAttendance = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE CharacterId = :CharacterId" );
+                postErrorMessage( $DropAttendance );
 
-                $DropCharacter->bindValue(":CharacterId", $Data["CharacterId"], PDO::PARAM_INT);
-                $DropAttendance->bindValue(":CharacterId", $Data["CharacterId"], PDO::PARAM_INT);
-
-                if ( !$DropCharacter->execute() )
-                {
-                    postErrorMessage( $DropCharacter );
-
-                    $DropCharacter->closeCursor();
-                    $Connector->rollBack();
-                    return;
-                }
-
-                if ( !$DropAttendance->execute() )
-                {
-                    postErrorMessage( $DropAttendance );
-
-                    $DropAttendance->closeCursor();
-                    $Connector->rollBack();
-                    return;
-                }
-
-                $DropCharacter->closeCursor();
                 $DropAttendance->closeCursor();
+                $Connector->rollBack();
+                return;
             }
 
-            $Characters->closeCursor();
+            $DropCharacter->closeCursor();
+            $DropAttendance->closeCursor();
 
             // remove user
 
@@ -378,7 +363,8 @@ function msgSettingsupdate( $aRequest )
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out = Out::getInstance();
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

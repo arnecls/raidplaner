@@ -105,7 +105,8 @@
         $gLocale[ "MarkAsAbesent" ]            = "Als abwesend melden";
         $gLocale[ "MakeAbsent" ]               = "Spieler wird nicht anwesend sein";
         $gLocale[ "AbsentMessage" ]            = "Bitte gebe den Grund f&uuml;r die Abwesenheit an.<br/>Der Nachricht wird dein Login-Name vorangestellt.";
-        $gLocale[ "SetupBy" ]                  = "Aufgestellt durch ";
+        $gLocale[ "SetupBy" ]                  = "Aufgestellt";
+        $gLocale[ "SwitchChar" ]               = "Character gewechselt";
         
         // Classes
         $gLocale[ "Deathknight" ]              = "Todesritter";
@@ -181,9 +182,11 @@
         $gLocale[ "DefaultEndTime" ]           = "Voreingestelltes Raidende";
         $gLocale[ "DefaultRaidSize" ]          = "Voreingestellte Raidgr&ouml;&szlig;e";
         $gLocale[ "BannerPage" ]               = "Link f&uuml;r Seitenbanner";
+        $gLocale[ "HelpPage" ]                 = "Link f&uuml;r Hilfe";
         $gLocale[ "Theme" ]                    = "Thema";
-        $gLocale[ "RaidSetupStyle" ]           = "Anmeldeform";        
+        $gLocale[ "RaidSetupStyle" ]           = "Anmeldeform";
         $gLocale[ "RaidModeManual" ]           = "Aufstellung durch Raidleiter";
+        $gLocale[ "RaidModeOverbook" ]         = "Durch Raidleiter mit &Uuml;berbuchen";
         $gLocale[ "RaidModeAttend" ]           = "Aufstellung nach Anmeldung";
         $gLocale[ "RaidModeAll" ]              = "Nur Liste";        
         $gLocale[ "UpdateCheck" ]              = "Suche nach Updates";
@@ -253,6 +256,8 @@
         $gLocale[ "DatabasePasswordNoMatch" ]  = "Datanebnk-Passw&ouml;rter stimmen nicht &uuml;berein";
         $gLocale[ "DatabasePasswordEmpty" ]    = "Datenbank-Passwort darf nicht leer sein";
         $gLocale[ "AllowManualRegistration" ]  = "Erlaube es Nutzern sich manuell zu registrieren";
+        $gLocale[ "AllowGroupSync" ]           = "Gruppen externer Nutzer synchronisieren";
+        $gLocale[ "AllowPublicMode" ]          = "Neue Benutzer als Mitglieder registrieren (nicht empfohlen)";
         $gLocale[ "UseClearText" ]             = "&Uuml;bertragung von Klartext Passw&ouml;rtern (nicht empfohlen)";
         
         // Install/Update

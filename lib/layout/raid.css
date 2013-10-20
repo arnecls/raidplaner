@@ -22,6 +22,7 @@
     height: 32px;
     margin-left: 2px;
     margin-top: 5px;
+    position: relative;
 }
 
 #raiddetail .setup {
@@ -84,6 +85,26 @@
     filter:Alpha(opacity=100);
 }
 
+#slackers_badge {
+    position: relative;
+    height: 12px;
+    font-size: 10px;
+    line-height: 11px;
+    padding: 0px 2px 0px 1px;
+    margin: 0px 2px 0px 2px;
+    background-color: #000;
+    color: #aaa;
+    position: relative;
+    top: 18px;
+    left: 0px;
+    text-align: center;
+    filter: inherit;
+}
+
+#slackers_badge:empty {
+    display: none;
+}
+
 #raiddetail .raidinfo {
     height: 64px;
     margin-bottom: 5px;
@@ -106,6 +127,23 @@
 
 #raiddetail .raidsize {
     font-size: 10px;
+}
+
+#raiddetail .raidcomment {
+    height: 64px;
+    width: 300px;
+    top: 0px;
+    right: 36px;
+    position: absolute;
+    font-size: 11px;
+    color: #666;
+    overflow-y: auto;
+    padding-left: 32px;
+    padding-top: 4px;
+    padding-top: 4px;
+    background-image: url(images/comment.png);
+    background-repeat: no-repeat;
+    background-position: 0 8px;
 }
 
 #raiddetail .datetime {
@@ -132,7 +170,7 @@
     left: 4px;
 }
 
-.spilledComment .playerIcon {
+.spilledSlotComment .playerIcon {
     left: 4px;
 }
 
@@ -223,7 +261,7 @@
     width: 76px!important;
 }
 
-.spilledComment .playerName {
+.spilledSlotComment .playerName {
     padding-left: 4px;
     width: 76px!important;
 }
@@ -257,7 +295,7 @@
     width: 88px!important;
 }
 
-.spilledComment .editableName {
+.spilledSlotComment .editableName {
     margin-left: 4px;
     width: 88px!important;
 }

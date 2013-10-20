@@ -5,6 +5,7 @@
     
     $gSite = Array(
         "BannerLink" => "",
+        "HelpLink"   => "",
         "Banner"     => "cataclysm.jpg",
         "Background" => "flower.png",
         "BGColor"    => "#898989",
@@ -26,6 +27,7 @@
         {
             $gSite = Array(
                 "BannerLink" => "",
+                "HelpLink"   => "",
                 "Banner"     => "cataclysm.jpg",
                 "Background" => "flower.png",
                 "BGColor"    => "#898989",
@@ -40,6 +42,10 @@
                 {
                 case "Site":
                     $gSite["BannerLink"] = $Data["TextValue"];
+                    break;
+                    
+                case "HelpPage":
+                    $gSite["HelpLink"] = $Data["TextValue"];
                     break;
     
                 case "Theme":
@@ -83,7 +89,7 @@
                 $Result = $VersionSt->fetch( PDO::FETCH_ASSOC ); 
                 $VersionSt->closeCursor();
                 
-                return intval($aSiteVersion) == intval($Result["IntValue"]);
+                return intval(intval($aSiteVersion) / 10) == intval(intval($Result["IntValue"]) / 10);
             }
             
             $VersionSt->closeCursor();

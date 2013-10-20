@@ -1,6 +1,10 @@
 <?php
-    if (!defined("UNIFIED_SCRIPT")) header("Content-type: text/javascript");
-
+    if (!defined("UNIFIED_SCRIPT")) 
+    {
+        header("Content-type: text/javascript");
+        header("Cache-Control: public");
+    }
+    
     require_once("../private/connector.class.php");
     require_once("../private/gameconfig.php");
     require_once("../private/tools_site.php");
@@ -10,6 +14,7 @@
 
 var gSiteVersion = <?php echo floatval($_REQUEST["version"]) ?>;
 var gBannerLink = "<?php echo $gSite["BannerLink"]; ?>";
+var gHelpLink = "<?php echo $gSite["HelpLink"]; ?>";
 var gTimeFormat = <?php echo $gSite["TimeFormat"]; ?>;
 
 var gTheme = {
@@ -92,6 +97,22 @@ function onChangeConfig()
         $("#logo").css("background-image", bannerImage);
     }
     
+    // Update help button
+    
+    $("#help").detach();
+    
+    if ( gHelpLink != "" )
+    {
+        var HTMLString = "<span id=\"help\">";
+        HTMLString    += "<button onclick=\"openLink('"+gHelpLink+"')\" class=\"button_help\"></button>";
+        HTMLString    += "</span>";
+        
+        $(".logout").after(HTMLString);
+        $(".button_help").button({
+            icons: { secondary: "ui-icon-help" }
+        }).css( "font-size", 11 );
+    }
+    
     // Update appwindow class
     
     $("#appwindow").removeClass("portalmode");
@@ -104,64 +125,4 @@ function onChangeConfig()
         $("body").css("background", "none" );
     else
         $("body").css("background", gTheme.bgcolor + " url(images/background/" + gTheme.background + ") " + gTheme.bgrepeat );
-}
-
-// -----------------------------------------------------------------------------
-
-function formatTime(a_Hour, a_Minute)
-{
-    if ( gTimeFormat == 12 )
-    {
-        var numericHour = parseInt(a_Hour, 10);
-        var postFix = " pm";
-
-        if ( numericHour < 12 )
-            postFix = " am";
-        else
-            numericHour -= 12;
-
-
-        if ( numericHour === 0 )
-            return "12:" + a_Minute + postFix;
-
-        return numericHour + ":" + a_Minute + postFix;
-    }
-
-    return a_Hour + ":" + a_Minute;
-}
-
-// -----------------------------------------------------------------------------
-
-function formatTimeString( a_String )
-{
-     var separatorIndex = a_String.indexOf(":");
-
-    var hour   = a_String.substr( 0, separatorIndex );
-    var minute = a_String.substr( separatorIndex+1 );
-
-    return formatTime( hour, minute );
-}
-
-// -----------------------------------------------------------------------------
-
-function formatHourPrefixed( a_Hour )
-{
-    if ( gTimeFormat == 12 )
-    {
-        var numericHour = parseInt(a_Hour, 10);
-        var preFix = "pm ";
-
-        if ( numericHour < 12 )
-            preFix = "am ";
-        else
-            numericHour -= 12;
-
-
-        if ( numericHour === 0 )
-            return preFix + "12";
-
-        return preFix + numericHour;
-    }
-
-    return a_Hour;
 }

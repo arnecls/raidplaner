@@ -93,20 +93,23 @@ function tryGetUserLink( $UserId )
 
 function msgUserLink( $aRequest )
 {
+    $Out = Out::getInstance();
+        
     if ( validAdmin() )
     {
         $UserInfo = tryGetUserLink($aRequest["userId"]);
         
         if ( $UserInfo != null )
-        {   
-            echo "<userid>".$aRequest["userId"]."</userid>";
-            echo "<binding>".$UserInfo->BindingName."</binding>";
-            echo "<group>".$UserInfo->Group."</group>";
+        {
+            $Out->pushValue("syncActive", !defined("ALLOW_GROUP_SYNC") || ALLOW_GROUP_SYNC);            
+            $Out->pushValue("userid",     $aRequest["userId"]);
+            $Out->pushValue("binding",    $UserInfo->BindingName);
+            $Out->pushValue("group",      $UserInfo->Group);
         }
     }
     else
     {
-        echo "<error>".L("AccessDenied")."</error>";
+        $Out->pushError(L("AccessDenied"));
     }
 }
 

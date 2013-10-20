@@ -105,7 +105,8 @@
         $gLocale[ "MarkAsAbesent" ]            = "Mark as absent";
         $gLocale[ "MakeAbsent" ]               = "Player will be absent";
         $gLocale[ "AbsentMessage" ]            = "Please enter the reason why the player will be absent.<br/>The message will be prefixed with your login name.";
-        $gLocale[ "SetupBy" ]                  = "Attended by ";
+        $gLocale[ "SetupBy" ]                  = "Attended";
+        $gLocale[ "SwitchChar" ]               = "Switched character";
         
         // Classes
         $gLocale[ "Deathknight" ]              = "Deathknight";
@@ -181,9 +182,11 @@
         $gLocale[ "DefaultEndTime" ]           = "Default raid end time";
         $gLocale[ "DefaultRaidSize" ]          = "Default raid size";
         $gLocale[ "BannerPage" ]               = "Page banner link";
+        $gLocale[ "HelpPage" ]                 = "Help link";
         $gLocale[ "Theme" ]                    = "Theme";
         $gLocale[ "RaidSetupStyle" ]           = "Attendance style";        
         $gLocale[ "RaidModeManual" ]           = "Setup by raidlead";
+        $gLocale[ "RaidModeOverbook" ]         = "By raidlead with overbooking";
         $gLocale[ "RaidModeAttend" ]           = "Setup by attend";
         $gLocale[ "RaidModeAll" ]              = "Just list";                    
         $gLocale[ "UpdateCheck" ]              = "Check for updates";
@@ -253,6 +256,8 @@
         $gLocale[ "DatabasePasswordNoMatch" ]  = "Database passwords do not match.";
         $gLocale[ "DatabasePasswordEmpty" ]    = "Database password must not be empty.";
         $gLocale[ "AllowManualRegistration" ]  = "Allow users to register manually";
+        $gLocale[ "AllowGroupSync" ]           = "Synchronize groups of external users";
+        $gLocale[ "AllowPublicMode" ]          = "Register new users as members (not recommended)";
         $gLocale[ "UseClearText" ]             = "Submit cleartext password (not recommended)";
         
         // Install/Update

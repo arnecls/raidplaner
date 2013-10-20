@@ -313,7 +313,6 @@
     filter:Alpha(opacity=20);
 }
 
-
 #settings .icon_users_off:hover {
     background-image: url(images/icon_users_off.png);
     opacity: 1.0;
