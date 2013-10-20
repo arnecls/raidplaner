@@ -106,6 +106,7 @@
         $gLocale[ "MakeAbsent" ]               = "Le joueur sera absent";
         $gLocale[ "AbsentMessage" ]            = "Merci de saisir la raison pour laquelle le joueur sera absent.<br/>Le message aura votre nom d'utilisateur comme préfixe.";
         $gLocale[ "SetupBy" ]                  = "Validé par ";
+        $gLocale[ "SwitchChar" ]               = "Changé de personnage";
         
         // Classes
         $gLocale[ "Deathknight" ]              = "DK";
@@ -180,10 +181,12 @@
         $gLocale[ "DefaultStartTime" ]         = "Heure de début du raid par défaut";
         $gLocale[ "DefaultEndTime" ]           = "Heure de fin du raid par défaut";
         $gLocale[ "DefaultRaidSize" ]          = "Format du raid par défaut";
-        $gLocale[ "BannerPage" ]               = "Page banner link";
+        $gLocale[ "BannerPage" ]               = "Lien de la bannière de page";
+        $gLocale[ "HelpPage" ]                 = "Lien de la page de l'Aide";
         $gLocale[ "Theme" ]                    = "Theme";
         $gLocale[ "RaidSetupStyle" ]           = "Type de validation";        
         $gLocale[ "RaidModeManual" ]           = "par le raidlead";
+        $gLocale[ "RaidModeOverbook" ]         = "Par raidlead avec surréservation";
         $gLocale[ "RaidModeAttend" ]           = "par l'inscription";
         $gLocale[ "RaidModeAll" ]              = "juste une liste";                    
         $gLocale[ "UpdateCheck" ]              = "Vérifier les mises à jour";
@@ -253,6 +256,8 @@
         $gLocale[ "DatabasePasswordNoMatch" ]  = "Les mots de passe de la base de données ne correspondent pas.";
         $gLocale[ "DatabasePasswordEmpty" ]    = "Le mot de passe de la base de données ne peut pas être vide.";
         $gLocale[ "AllowManualRegistration" ]  = "Autoriser les utilisateurs à s'inscrire";
+        $gLocale[ "AllowGroupSync" ]           = "Synchroniser les groupes d'utilisateurs externes";
+        $gLocale[ "AllowPublicMode" ]          = "Enregistrer de nouveaux utilisateurs comme membres (non recommandé)";
         $gLocale[ "UseClearText" ]             = "Soumettre le mot de passe en texte clair (non recommandé)";
         
         // Install/Update
