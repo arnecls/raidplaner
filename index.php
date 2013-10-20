@@ -1,5 +1,8 @@
 <?php
-    define( "LOCALE_MAIN", true );
+    define("LOCALE_MAIN", true);
+    define("STYLE_DEBUG", false);
+    define("SCRIPT_DEBUG", false);
+                 
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
     require_once("lib/private/gameconfig.php");
@@ -27,13 +30,10 @@
         <title>Raidplaner</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
         <meta name="keywords" content="raidplaner, ppx"/>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-        
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>        
         <link rel="icon" href="favicon.png" type="image/png"/>
         
-        <?php
-            //define("STYLE_DEBUG", true);
-            
+        <?php            
             if (defined("STYLE_DEBUG") && STYLE_DEBUG)
                 include_once("lib/layout/_layout.css.php");
             else
@@ -61,16 +61,15 @@
         <script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $gSiteVersion; ?>"></script>
                 
         <?php
-            //define("SCRIPT_DEBUG", true);
-            
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
             {
-            	unset($_REQUEST["m"]);
-                include_once("lib/script/_scripts.js.php");
+            	include_once("lib/script/_scripts.js.php");
             }
             else
             {
-                echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSiteVersion.".&m=1&r=".((registeredUser()) ? 1 : 0)."\"></script>";
+                $Minified = (registeredUser()) ? "min.registered.js" : "min.login.js";
+                echo "<script type=\"text/javascript\" src=\"lib/script/".$Minified."?version=".$gSiteVersion."\"></script>";
+                //echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSiteVersion."&r=".((registeredUser()) ? 1 : 0)."\"></script>";
         	}
         ?>
         

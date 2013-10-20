@@ -4,7 +4,11 @@
     // only meant for caching or display related logic
         
     require_once(dirname(__FILE__)."/../private/userproxy.class.php");
-    if (!defined("UNIFIED_SCRIPT")) header("Content-type: text/javascript");
+    if (!defined("UNIFIED_SCRIPT")) 
+    {
+        header("Content-type: text/javascript");
+        header("Cache-Control: no-cache, max-age=0, s-maxage=0");
+    }
     
     if ( validUser() )
     {

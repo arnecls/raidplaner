@@ -29,13 +29,9 @@
     
     $ValidUser = validUser();
     $Out = Out::getInstance();  
-    
-    /*
-    header("Content-type: text/xml");
-    echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-    */
-    
+        
     header("Content-type: application/json");
+    header("Cache-Control: no-cache, max-age=0, s-maxage=0");
     
     $Settings = Settings::getInstance();
     

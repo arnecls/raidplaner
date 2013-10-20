@@ -9,6 +9,7 @@
         session_start();
 
         header("Content-type: text/javascript");
+        header("Cache-Control: no-cache, max-age=0, s-maxage=0");
     }
 ?>
 

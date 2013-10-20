@@ -1,6 +1,10 @@
 <?php
-    if (!defined("UNIFIED_SCRIPT")) header("Content-type: text/javascript");
-
+    if (!defined("UNIFIED_SCRIPT")) 
+    {
+        header("Content-type: text/javascript");
+        header("Cache-Control: public");
+    }
+    
     require_once("../private/connector.class.php");
     require_once("../private/gameconfig.php");
     require_once("../private/tools_site.php");
