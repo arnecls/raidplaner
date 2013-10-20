@@ -106,7 +106,7 @@
         $gLocale[ "MakeAbsent" ]               = "Le joueur sera absent";
         $gLocale[ "AbsentMessage" ]            = "Merci de saisir la raison pour laquelle le joueur sera absent.<br/>Le message aura votre nom d'utilisateur comme préfixe.";
         $gLocale[ "SetupBy" ]                  = "Validé par ";
-        $gLocale[ "SwitchChar" ]               = "Personnage changé"; // Please check
+        $gLocale[ "SwitchChar" ]               = "Changé de personnage"; // Please check
         
         // Classes
         $gLocale[ "Deathknight" ]              = "DK";
@@ -181,8 +181,8 @@
         $gLocale[ "DefaultStartTime" ]         = "Heure de début du raid par défaut";
         $gLocale[ "DefaultEndTime" ]           = "Heure de fin du raid par défaut";
         $gLocale[ "DefaultRaidSize" ]          = "Format du raid par défaut";
-        $gLocale[ "BannerPage" ]               = "Page banner link"; // Please check
-        $gLocale[ "HelpPage" ]                 = "Help link"; // Please check
+        $gLocale[ "BannerPage" ]               = "Lien de la bannière"; // Please check
+        $gLocale[ "HelpPage" ]                 = "Lien de la page Aide"; // Please check
         $gLocale[ "Theme" ]                    = "Theme";
         $gLocale[ "RaidSetupStyle" ]           = "Type de validation";        
         $gLocale[ "RaidModeManual" ]           = "par le raidlead";
