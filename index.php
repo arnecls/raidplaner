@@ -64,12 +64,12 @@
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
             {
             	include_once("lib/script/_scripts.js.php");
+            	//echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSiteVersion."&r=".((registeredUser()) ? 1 : 0)."\"></script>";
             }
             else
             {
                 $Minified = (registeredUser()) ? "min.registered.js" : "min.login.js";
                 echo "<script type=\"text/javascript\" src=\"lib/script/".$Minified."?version=".$gSiteVersion."\"></script>";
-                //echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSiteVersion."&r=".((registeredUser()) ? 1 : 0)."\"></script>";
         	}
         ?>
         
