@@ -89,7 +89,7 @@
                 $Result = $VersionSt->fetch( PDO::FETCH_ASSOC ); 
                 $VersionSt->closeCursor();
                 
-                return intval($aSiteVersion) == intval($Result["IntValue"]);
+                return intval(intval($aSiteVersion) / 10) == intval(intval($Result["IntValue"]) / 10);
             }
             
             $VersionSt->closeCursor();
