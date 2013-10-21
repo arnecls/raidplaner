@@ -66,5 +66,12 @@
         $Out->FlushXML("");
     }
     
+    if ( $_REQUEST["wp_check"] == "true" )
+    {
+        echo "<name>Wordpress</name>";
+        $TestConnectionWp = new Connector( SQL_HOST, $_REQUEST["wp_database"], $_REQUEST["wp_user"], $_REQUEST["wp_password"] );
+        $Out->FlushXML("");
+    }
+    
     echo "</test>";
 ?>

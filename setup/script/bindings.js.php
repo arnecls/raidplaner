@@ -221,6 +221,37 @@ function OnReloadDrupal( a_XMLData )
 
 // ----------------------------------------------------------------------------
 
+function OnReloadWp( a_XMLData )
+{
+    var groups = $(a_XMLData).children("grouplist");
+    
+    if ( groups.children("error").size() > 0 )
+    {
+        var errorString = "";
+        
+        groups.children("error").each( function() {
+            errorString += $(this).text() + "\n";
+        });
+        
+        alert("<?php echo L("ReloadFailed"); ?>:\n\n" + errorString );
+        return;
+    }    
+    
+    HTMLString = "";
+    
+    groups.children("group").each( function() {
+        var id = $(this).children("id").text();
+        var name = $(this).children("name").text();
+        
+        HTMLString += "<option value=\"" + id + "\">" + name + "</option>";
+    });
+    
+    $("#wp_member").empty().append( HTMLString );
+    $("#wp_raidlead").empty().append( HTMLString );
+}
+
+// ----------------------------------------------------------------------------
+
 function OnCheckEQDKP( a_XMLData )
 {
     var groups = $(a_XMLData).children("grouplist");
@@ -473,6 +504,39 @@ function ReloadDrupalGroups()
 
 // ----------------------------------------------------------------------------
 
+function ReloadWpGroups() 
+{
+    if ( $("#wp_password").val().length == 0 )
+    {
+        alert("<?php echo L("WpPasswordEmpty"); ?>");
+        return;
+    }
+    
+    if ( $("#wp_password").val() != $("#wp_password_check").val() )
+    {
+        alert("<?php echo L("WpDBPasswordsMatch"); ?>");
+        return;
+    }
+    
+    var parameter = {
+        database : $("#wp_database").val(),
+        user     : $("#wp_user").val(),
+        password : $("#wp_password").val(),
+        prefix   : $("#wp_prefix").val()
+    };
+    
+    $.ajax({
+        type     : "POST",
+        url      : "query/groups_wp.php",
+        dataType : "xml",
+        async    : true,
+        data     : parameter,
+        success  : OnReloadWp
+    });
+}
+
+// ----------------------------------------------------------------------------
+
 function CheckEQDKP()
 {
     if ( $("#eqdkp_password").val().length == 0 )
@@ -516,6 +580,7 @@ function CheckBindingForm(a_Parameter)
     var useVanilla = $("#allow_vanilla:checked").val() == "on";
     var useJoomla = $("#allow_joomla:checked").val() == "on";
     var useDrupal = $("#allow_drupal:checked").val() == "on";
+    var useWp = $("#allow_wp:checked").val() == "on";
     
     if ( usePhpBB )
     {
@@ -636,6 +701,21 @@ function CheckBindingForm(a_Parameter)
             return;
         }
     }
+    
+    if ( useWp )
+    {
+        if ( $("#wp_password").val().length == 0 )
+        {
+            alert("<?php echo L("WpPasswordEmpty"); ?>");
+            return;
+        }
+        
+        if ( $("#wp_password").val() != $("#wp_password_check").val() )
+        {
+            alert("<?php echo L("WpDBPasswordsMatch"); ?>");
+            return;
+        }
+    }
         
     var parameter = {
         phpbb3_check    : usePhpBB,
@@ -684,7 +764,13 @@ function CheckBindingForm(a_Parameter)
         drupal_database : $("#drupal_database").val(),
         drupal_user     : $("#drupal_user").val(),
         drupal_password : $("#drupal_password").val(),
-        drupal_prefix   : $("#drupal_prefix").val()
+        drupal_prefix   : $("#drupal_prefix").val(),
+        
+        wp_check    : useWp,
+        wp_database : $("#wp_database").val(),
+        wp_user     : $("#wp_user").val(),
+        wp_password : $("#wp_password").val(),
+        wp_prefix   : $("#wp_prefix").val(),
     };
     
     $.ajax({
@@ -813,6 +899,20 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
         drupal_raidLeadGroups.push( $(this).val() );
     });
     
+    // wordpress
+    
+    var wp_memberGroups = [];
+    
+    $("#wp_member option:selected").each( function() {
+        wp_memberGroups.push( $(this).val() );
+    });
+    
+    var wp_raidLeadGroups = [];
+    
+    $("#wp_raidlead option:selected").each( function() {
+        wp_raidLeadGroups.push( $(this).val() );
+    });
+    
     var parameter = {
         phpbb3_allow    : $("#allow_phpbb3:checked").val() == "on",
         phpbb3_database : $("#phpbb3_database").val(),
@@ -874,7 +974,15 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
         drupal_password : $("#drupal_password").val(),
         drupal_prefix   : $("#drupal_prefix").val(),
         drupal_member   : drupal_memberGroups,
-        drupal_raidlead : drupal_raidLeadGroups
+        drupal_raidlead : drupal_raidLeadGroups,
+
+        wp_allow    : $("#allow_wp:checked").val() == "on",
+        wp_database : $("#wp_database").val(),
+        wp_user     : $("#wp_user").val(),
+        wp_password : $("#wp_password").val(),
+        wp_prefix   : $("#wp_prefix").val(),
+        wp_member   : wp_memberGroups,
+        wp_raidlead : wp_raidLeadGroups
     };
     
     $.ajax({

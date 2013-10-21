@@ -1,7 +1,9 @@
 <?php
     define( "LOCALE_SETUP", true );
     require_once(dirname(__FILE__)."/../../lib/private/connector.class.php");
+    require_once(dirname(__FILE__)."/../../lib/private/userproxy.class.php");
     require_once(dirname(__FILE__)."/../../lib/config/config.php");
+    require_once(dirname(__FILE__)."/../../lib/private/bindings/wp.php");
 
     header("Content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
@@ -12,15 +14,20 @@
     
     if ($Connector != null)
     {
-        $Groups = $Connector->prepare( "SELECT gid, title FROM `".$_REQUEST["prefix"]."usergroups` ORDER BY title" );
-        
-        if ( $Groups->execute() )
+        $Options = $Connector->prepare( "SELECT option_value FROM `".WP_TABLE_PREFIX."options` WHERE option_name = \"wp_user_roles\" LIMIT 1" );
+            
+        if ( $Options->execute() )
         {
-            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            $Option = $Options->fetch(PDO::FETCH_ASSOC);
+            $Roles = null;
+            
+            WPBinding::readWpObj($Option["option_value"], $Roles, 0);
+            
+            for ($i=0; $i<sizeof($Roles); $i+=2)
             {
                 echo "<group>";
-                echo "<id>".$Group["gid"]."</id>";
-                echo "<name>".$Group["title"]."</name>";
+                echo "<id>".strtolower($Roles[$i])."</id>";
+                echo "<name>".$Roles[$i]."</name>";
                 echo "</group>";
             }
         }
@@ -30,6 +37,6 @@
         }
     }
     
-    $Out->flushXML("");        
+    $Out->flushXML("");     
     echo "</grouplist>";
 ?>

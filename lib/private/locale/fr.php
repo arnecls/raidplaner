@@ -359,5 +359,12 @@
         $gLocale[ "DrupalDatabase" ]           = "Drupal Base de données";
         $gLocale[ "DrupalPasswordEmpty" ]      = "Drupal Mot de passe de la base de données ne peut pas être vide.";
         $gLocale[ "DrupalDBPasswordsMatch" ]   = "Drupal Les mots de passe de la base de données ne correspondent pas.";
+        
+        // Wordpress
+        $gLocale[ "WpBinding" ]                = "Wordpress";
+        $gLocale[ "WpConfigFile" ]             = "Wordpress Fichier de configuration";
+        $gLocale[ "WpDatabase" ]               = "Wordpress Base de données";
+        $gLocale[ "WpPasswordEmpty" ]          = "Wordpress Mot de passe de la base de données ne peut pas être vide.";
+        $gLocale[ "WpDBPasswordsMatch" ]       = "Wordpress Les mots de passe de la base de données ne correspondent pas.";
     }
 ?>

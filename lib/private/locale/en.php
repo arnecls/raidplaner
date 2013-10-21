@@ -359,5 +359,12 @@
         $gLocale[ "DrupalDatabase" ]           = "Drupal database";
         $gLocale[ "DrupalPasswordEmpty" ]      = "Drupal Database password must not be empty.";
         $gLocale[ "DrupalDBPasswordsMatch" ]   = "Drupal Database passwords did not match.";
+        
+        // Wordpress
+        $gLocale[ "WpBinding" ]                = "Wordpress";
+        $gLocale[ "WpConfigFile" ]             = "Wordpress config file";
+        $gLocale[ "WpDatabase" ]               = "Wordpress database";
+        $gLocale[ "WpPasswordEmpty" ]          = "Wordpress Database password must not be empty.";
+        $gLocale[ "WpDBPasswordsMatch" ]       = "Wordpress Database passwords did not match.";
     }
 ?>

@@ -10,6 +10,7 @@
     @include_once(dirname(__FILE__)."/../lib/config/config.vanilla.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.joomla3.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.drupal.php");
+    @include_once(dirname(__FILE__)."/../lib/config/config.wp.php");
     
     if ( defined("PHPBB3_BINDING") && PHPBB3_BINDING )
     {
@@ -181,6 +182,37 @@
         {
         }
     }
+    
+    if ( defined("WP_BINDING") && WP_BINDING )
+    {
+        require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
+        require_once(dirname(__FILE__)."/../lib/private/userproxy.class.php");
+        require_once(dirname(__FILE__)."/../lib/private/bindings/wp.php");
+        $DrupalGroups = Array();
+        
+        try
+        {
+            $Connector = new Connector(SQL_HOST, WP_DATABASE, WP_USER, WP_PASS, true); 
+            $Options = $Connector->prepare( "SELECT option_value FROM `".WP_TABLE_PREFIX."options` WHERE option_name = \"wp_user_roles\" LIMIT 1" );
+            
+            $Options->execute();        
+            $Option = $Options->fetch(PDO::FETCH_ASSOC);
+                        
+            $Roles = null;
+            $WpGroups = Array();
+            WPBinding::readWpObj($Option["option_value"], $Roles, 0);
+            
+            for ($i=0; $i<sizeof($Roles); $i+=2)
+            {
+                array_push($WpGroups, $Roles[$i]);
+            }
+            
+            $Options->closeCursor(); 
+        }
+        catch(PDOException $Exception)
+        {
+        }
+    }
 ?>
 <?php include("layout/header.html"); ?>
 
@@ -210,6 +242,7 @@
     <div id="button_vanilla" class="tab_inactive" onclick="showConfig('vanilla')"><input type="checkbox" id="allow_vanilla"<?php echo (defined("VANILLA_BINDING") && VANILLA_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("VanillaBinding"); ?></div>
     <div id="button_joomla" class="tab_inactive" onclick="showConfig('joomla')"><input type="checkbox" id="allow_joomla"<?php echo (defined("JML3_BINDING") && JML3_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("JoomlaBinding"); ?></div>
     <div id="button_drupal" class="tab_inactive" onclick="showConfig('drupal')"><input type="checkbox" id="allow_drupal"<?php echo (defined("DRUPAL_BINDING") && DRUPAL_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("DrupalBinding"); ?></div>
+    <div id="button_wp" class="tab_inactive" onclick="showConfig('wp')"><input type="checkbox" id="allow_wp"<?php echo (defined("WP_BINDING") && WP_BINDING) ? " checked=\"checked\"": "" ?>/> <?php echo L("WpBinding"); ?></div>
     </div>
 </div>
 
@@ -576,6 +609,57 @@
                 foreach( $DrupalGroups as $Group )
                 {
                     echo "<option value=\"".$Group["rid"]."\"".((in_array($Group["rid"], $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group["name"]."</option>";
+                }
+            }
+        ?>
+        </select>
+    </div>                    
+</div>
+
+<div id="wp" class="config">
+    <div>
+        <h2><?php echo L("WpBinding"); ?></h2>
+        <input type="text" id="wp_database" value="<?php echo (defined("WP_DATABASE")) ? WP_DATABASE : "wp" ?>"/> <?php echo L("PHPBB3Database"); ?><br/>
+        <input type="text" id="wp_user" value="<?php echo (defined("WP_USER")) ? WP_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
+        <input type="password" id="wp_password" value="<?php echo (defined("WP_PASS")) ? WP_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
+        <input type="password" id="wp_password_check" value="<?php echo (defined("WP_PASS")) ? WP_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>
+        <input type="text" id="wp_prefix" value="<?php echo (defined("WP_TABLE_PREFIX")) ? WP_TABLE_PREFIX : "wp_" ?>"/> <?php echo L("TablePrefix"); ?><br/>
+    </div>
+    
+    <div style="margin-top: 1em">
+        <button onclick="ReloadWpGroups()"><?php echo L("LoadGroups"); ?></button><br/><br/>
+        
+        <?php echo L("AutoMemberLogin"); ?><br/>
+        <select id="wp_member" multiple="multiple" style="width: 400px; height: 5.5em">
+        <?php
+            if ( defined("WP_BINDING") && WP_BINDING )
+            {
+                $GroupIds = array();
+                
+                if ( defined("WP_MEMBER_GROUPS") )
+                    $GroupIds = explode( ",", WP_MEMBER_GROUPS );
+                
+                foreach( $WpGroups as $Group )
+                {
+                    echo "<option value=\"".$Group."\"".((in_array($Group, $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group."</option>";
+                }
+            }
+        ?>
+        </select>
+        <br/><br/>
+        <?php echo L("AutoLeadLogin"); ?><br/>
+        <select id="wp_raidlead" multiple="multiple" style="width: 400px; height: 5.5em">
+        <?php
+            if ( defined("WP_BINDING") && WP_BINDING )
+            {
+                $GroupIds = array();
+                
+                if ( defined("WP_RAIDLEAD_GROUPS") )
+                    $GroupIds = explode( ",", WP_RAIDLEAD_GROUPS );
+                
+                foreach( $WpGroups as $Group )
+                {
+                    echo "<option value=\"".strtolower($Group)."\"".((in_array(strtolower($Group), $GroupIds)) ? " selected=\"selected\"" : "" ).">".$Group."</option>";
                 }
             }
         ?>

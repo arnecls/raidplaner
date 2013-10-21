@@ -7,6 +7,7 @@
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
     echo "<grouplist>";
     
+    $Out = Out::getInstance();
     $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]);
     
     if ($Connector != null)
@@ -28,6 +29,7 @@
             postErrorMessage( $Groups );
         }
     }
-        
+           
+    $Out->flushXML(""); 
     echo "</grouplist>";
 ?>

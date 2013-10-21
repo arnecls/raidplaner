@@ -14,6 +14,7 @@
     $Vanilla_config = fopen( "../../lib/config/config.vanilla.php", "w+" );
     $Joomla_config = fopen( "../../lib/config/config.joomla3.php", "w+" );
     $Drupal_config = fopen( "../../lib/config/config.drupal.php", "w+" );
+    $Wp_config = fopen( "../../lib/config/config.wp.php", "w+" );
     
     
     // phpbb3
@@ -164,6 +165,25 @@
     
     fwrite( $Drupal_config, "?>");    
     fclose( $Drupal_config );
+    
+    // wordpress
+    
+    fwrite( $Wp_config, "<?php\n");
+    fwrite( $Wp_config, "\tdefine(\"WP_BINDING\", ".$_REQUEST["wp_allow"].");\n");
+    
+    if ( $_REQUEST["wp_allow"] )
+    {
+        fwrite( $Wp_config, "\tdefine(\"WP_DATABASE\", \"".$_REQUEST["wp_database"]."\");\n");
+        fwrite( $Wp_config, "\tdefine(\"WP_USER\", \"".$_REQUEST["wp_user"]."\");\n");
+        fwrite( $Wp_config, "\tdefine(\"WP_PASS\", \"".$_REQUEST["wp_password"]."\");\n");
+        fwrite( $Wp_config, "\tdefine(\"WP_TABLE_PREFIX\", \"".$_REQUEST["wp_prefix"]."\");\n");
+    
+        fwrite( $Wp_config, "\tdefine(\"WP_MEMBER_GROUPS\", \"".implode( ",", $_REQUEST["wp_member"] )."\");\n");
+        fwrite( $Wp_config, "\tdefine(\"WP_RAIDLEAD_GROUPS\", \"".implode( ",", $_REQUEST["wp_raidlead"] )."\");\n");
+    }
+    
+    fwrite( $Wp_config, "?>");    
+    fclose( $Wp_config );
     
     echo "</bindings>";    
 ?>

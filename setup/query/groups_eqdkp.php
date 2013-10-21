@@ -7,7 +7,9 @@
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
     echo "<grouplist>";
     
+    $Out = Out::getInstance();
     $TestConnectionEQDKP = new Connector( SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"] );
-        
+    
+    $Out->flushXML("");
     echo "</grouplist>";
 ?>
