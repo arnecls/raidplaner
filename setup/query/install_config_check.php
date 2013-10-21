@@ -4,8 +4,9 @@
     
     define( "LOCALE_SETUP", true );
     require_once("../../lib/private/connector.class.php");
+    require_once("../../lib/private/out.class.php");
     
-    echo "<test>";
+    $Out = Out::getInstance();
     $TestConnection = new Connector( $_REQUEST["host"], $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"] );
-    echo "</test>";
+    $Out->writeXML("test");
 ?>

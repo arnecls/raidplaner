@@ -1,5 +1,7 @@
 <?php
     define( "LOCALE_MAIN", true );
+    date_default_timezone_set('UTC');
+    
     require_once(dirname(__FILE__)."/private/locale.php");
     require_once(dirname(__FILE__)."/private/userproxy.class.php");
     require_once(dirname(__FILE__)."/private/tools_string.php");
