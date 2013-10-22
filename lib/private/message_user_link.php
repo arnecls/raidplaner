@@ -34,7 +34,7 @@ function tryGetUserLink( $UserId )
     
     if ( $UserData["ExternalId"] != 0 )
     {
-        $Candidates = $UserProxy->getAllUserInfosById($UserData["ExternalId"]);
+        $Candidates = UserProxy::getAllUserInfosById($UserData["ExternalId"]);
         
         if ( sizeof($Candidates) > 1 )
         {

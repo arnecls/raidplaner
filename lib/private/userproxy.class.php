@@ -449,7 +449,7 @@
         
         // --------------------------------------------------------------------------------------------
 
-        public function getAllUserInfosById( $aExternalId )
+        public static function getAllUserInfosById( $aExternalId )
         {
             $Candidates = array();
             

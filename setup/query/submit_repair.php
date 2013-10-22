@@ -228,20 +228,67 @@
     
     // Convert users with a cleared binding to local users
     
-    $FixBindings = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` ".
-                                            "SET ExternalBinding = 'none', BindingActive = 'false' ".
-                                            "WHERE ExternalBinding = '' OR ExternalBinding = NULL");
-    
-    if (!$FixBindings->execute())
     {
-        postHTMLErrorMessage( $FixBindings );
+        require_once(dirname(__FILE__)."/../../lib/private/userproxy.class.php");
+        
+        $UserSt = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding = '' OR ExternalBinding = NULL");
+        
+        if (!$UserSt->execute())
+        {
+            postHTMLErrorMessage( $UserSt );
+        }
+        else
+        {
+            while($UserData = $UserSt->fetch(PDO::FETCH_ASSOC))
+            {                
+                $BindingName = "none";
+                
+                if ($UserData["ExternalId"] != 0)
+                {
+                    $Candidates = UserProxy::getAllUserInfosById($UserData["ExternalId"]);
+            
+                    if ( sizeof($Candidates) > 1 )
+                    {
+                        // More than one binding, check the username and
+                        // reduce the array to username matches
+                        
+                        $Filtered = array();
+                        
+                        while( list($BindingName, $UserInfo) = each($Candidates) )
+                        {
+                            if ( $UserInfo->UserName == $UserData["Login"] )
+                            {
+                                $Filtered[$BindingName] = $UserInfo;
+                            }
+                        }
+                        
+                        // If filtering was successfull, switch arrays
+                        
+                        if ( sizeof($Filtered) > 0 )
+                            $Candidates = $Filtered;
+                        else
+                            reset($Candidates);
+                    }
+                    
+                    if ( sizeof($Candidates) > 0 )
+                        list($BindingName, $UserInfo) = each($Candidates); // fetch the first entry
+                }
+                
+                $UpdateSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ExternalBinding=:Binding WHERE UserId=:UserId LIMIT 1");
+                $UpdateSt->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
+                $UpdateSt->bindValue(":Binding",$BindingName, PDO::PARAM_STR);
+                
+                if (!$UpdateSt->execute())
+                    postHTMLErrorMessage($UpdateSt);
+                    
+                $UpdateSt->closeCursor();
+            }
+            
+            echo "<div class=\"update_step_ok\">".$UserSt->rowCount()." ".L("ItemsRepaired")." (".L("StrayBindings").")</div>";
+        }
+        
+        $UserSt->closeCursor();
     }
-    else
-    {
-        echo "<div class=\"update_step_ok\">".$FixBindings->rowCount()." ".L("ItemsRepaired")." (".L("StrayBindings").")</div>";
-    }
-    
-    $FixBindings->closeCursor();
                     
     echo "</div>";
 
