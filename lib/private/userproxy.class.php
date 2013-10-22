@@ -735,6 +735,7 @@
         
         public function updateUserMirror( &$UserInfo, $aIsStoredLocally, $aKey )
         {   
+            $Out = Out::getInstance();
             $Connector = Connector::getInstance();
                  
             if ($UserInfo->BindingName == "none")
@@ -751,18 +752,25 @@
             {
                 if ( $aIsStoredLocally )
                 {
-                    $Binding = self::$mBindingsByName[$UserInfo->PassBinding];
-                    
-                    if ($Binding->isActive())
+                    if (!isset(self::$mBindingsByName[$UserInfo->PassBinding]))
                     {
-                        $ExternalInfo = $Binding->getUserInfoById($UserInfo->UserId);
-                        if ( $ExternalInfo != null )
-                            $UserInfo = $ExternalInfo;
-                    
+                        $Out->pushError($UserInfo->PassBinding." binding did not register correctly.");
                     }
                     else
                     {
-                        Out::getInstance()->pushError($UserInfo->PassBinding." binding has been disabled.");
+                        $Binding = self::$mBindingsByName[$UserInfo->PassBinding];
+                        
+                        if ($Binding->isActive())
+                        {
+                            $ExternalInfo = $Binding->getUserInfoById($UserInfo->UserId);
+                            if ( $ExternalInfo != null )
+                                $UserInfo = $ExternalInfo;
+                        
+                        }
+                        else
+                        {
+                            $Out->pushError($UserInfo->PassBinding." binding has been disabled.");
+                        }
                     }
                 }
                 
