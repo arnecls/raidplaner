@@ -46,7 +46,7 @@
             break;
             
         case "query_credentials_id":
-            msgQueryCredentialsById( $_REQUEST );
+            msgQueryLocalCredentialsById( $_REQUEST );
             break;
             
         case "raid_attend":

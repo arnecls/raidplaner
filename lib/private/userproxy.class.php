@@ -411,12 +411,13 @@
         
         // --------------------------------------------------------------------------------------------
 
-        public function getUserCredentialsById( $aUserId )
+        public function getUserCredentialsById( $aUserId, $aBindingName )
         {
             // Iterate all bindings and search for the given user
             
-            foreach( self::$mBindings as $Binding )
+            if (isset(self::$mBindingsByName[$aBindingName]))
             {
+                $Binding = self::$mBindingsByName[$aBindingName];
                 if ( $Binding->isActive() )
                 {                    
                     $UserInfo    = $Binding->getUserInfoById($aUserId);
