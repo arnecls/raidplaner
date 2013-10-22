@@ -225,6 +225,23 @@
     }
     
     $DeleteAttendance->closeCursor();
+    
+    // Convert users with a cleared binding to local users
+    
+    $FixBindings = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` ".
+                                            "SET ExternalBinding = 'none', BindingActive = 'false' ".
+                                            "WHERE ExternalBinding = '' OR ExternalBinding = NULL");
+    
+    if (!$FixBindings->execute())
+    {
+        postHTMLErrorMessage( $FixBindings );
+    }
+    else
+    {
+        echo "<div class=\"update_step_ok\">".$FixBindings->rowCount()." ".L("ItemsRepaired")." (".L("StrayBindings").")</div>";
+    }
+    
+    $FixBindings->closeCursor();
                     
     echo "</div>";
 

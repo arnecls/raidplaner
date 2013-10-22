@@ -296,6 +296,7 @@
         $gLocale[ "StrayRoles" ]               = "Invalid roles";
         $gLocale[ "StrayCharacters" ]          = "Deleted characters";
         $gLocale[ "StrayUsers" ]               = "Deleted users";
+        $gLocale[ "StrayBindings" ]            = "Invalid users";
         
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Load groups using these settings";

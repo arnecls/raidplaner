@@ -296,6 +296,7 @@
         $gLocale[ "StrayRoles" ]               = "Ung&uuml;ltige Rollen";
         $gLocale[ "StrayCharacters" ]          = "Gel&ouml;schte Charaktere";
         $gLocale[ "StrayUsers" ]               = "Gel&ouml;schte Benutzer";
+        $gLocale[ "StrayBindings" ]            = "Ung&uuml;tige Benutzer";
         
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Lade Gruppen mit den angegebenen Verbindungsdaten";
