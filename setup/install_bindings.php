@@ -616,10 +616,10 @@
     </div>                    
 </div>
 
-<div id="wp" class="config">
+<div id="wp" style="display: none" class="config">
     <div>
         <h2><?php echo L("WpBinding"); ?></h2>
-        <input type="text" id="wp_database" value="<?php echo (defined("WP_DATABASE")) ? WP_DATABASE : "wp" ?>"/> <?php echo L("PHPBB3Database"); ?><br/>
+        <input type="text" id="wp_database" value="<?php echo (defined("WP_DATABASE")) ? WP_DATABASE : "wordpress" ?>"/> <?php echo L("WpDatabase"); ?><br/>
         <input type="text" id="wp_user" value="<?php echo (defined("WP_USER")) ? WP_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
         <input type="password" id="wp_password" value="<?php echo (defined("WP_PASS")) ? WP_PASS : "" ?>"/> <?php echo L("UserPassword"); ?><br/>
         <input type="password" id="wp_password_check" value="<?php echo (defined("WP_PASS")) ? WP_PASS : "" ?>"/> <?php echo L("RepeatPassword"); ?><br/>

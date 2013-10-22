@@ -14,7 +14,7 @@
     
     if ($Connector != null)
     {
-        $Options = $Connector->prepare( "SELECT option_value FROM `".WP_TABLE_PREFIX."options` WHERE option_name = \"wp_user_roles\" LIMIT 1" );
+        $Options = $Connector->prepare( "SELECT option_value FROM `".$_REQUEST["prefix"]."options` WHERE option_name = \"wp_user_roles\" LIMIT 1" );
             
         if ( $Options->execute() )
         {
