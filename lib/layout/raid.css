@@ -87,15 +87,15 @@
 
 #slackers_badge {
     position: relative;
-    height: 12px;
-    font-size: 10px;
-    line-height: 11px;
+    height: 14px;
+    font-size: 12px;
+    line-height: 12px;
     padding: 0px 2px 0px 1px;
     margin: 0px 2px 0px 2px;
     background-color: #000;
     color: #aaa;
     position: relative;
-    top: 18px;
+    top: 17px;
     left: 0px;
     text-align: center;
     filter: inherit;
