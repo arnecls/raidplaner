@@ -83,7 +83,7 @@
               KEY `ExternalId` (`ExternalId`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
             
-        $Connector->exec( "CREATE TABLE `".$Prefix."UserSetting` (
+        $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."UserSetting` (
               `UserSettingId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `UserId` int(10) unsigned NOT NULL,
               `Name` varchar(64) NOT NULL,
@@ -141,6 +141,9 @@
         
         if ( !in_array("Site", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Site', 0, '');" );
+        
+        if ( !in_array("HelpPage", $ExistingSettings) )
+            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('HelpPage', 0, '');" );
         
         if ( !in_array("Theme", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Theme', 0, 'cataclysm');" );
