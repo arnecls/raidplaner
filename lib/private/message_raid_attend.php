@@ -180,7 +180,7 @@ function msgRaidAttend( $aRequest )
 
                     if ( $ChangeComment )
                     {
-                        $Comment = xmlentities( $aRequest["comment"], ENT_COMPAT, "UTF-8" );
+                        $Comment = requestToXML( $aRequest["comment"], ENT_COMPAT, "UTF-8" );
                         $AttendSt->bindValue(":Comment", $Comment, PDO::PARAM_INT);
                     }
                     
