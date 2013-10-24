@@ -228,6 +228,22 @@
         ++$TestsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
     }
+    
+    // Wordpress config file check
+
+    echo "<br/><span class=\"check_field\">".L("WpConfigFile")."</span>";
+    $WpConfigFileState = (!file_exists("../lib/config/config.wp.php") && $ConfigFolderState) || 
+                           is_writable("../lib/config/config.wp.php");
+                        
+    if ( $WpConfigFileState )
+    {
+        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
+    }
+    else
+    {
+        ++$TestsFailed;
+        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
+    }
 ?>
 </div>
 <div class="bottom_navigation">
