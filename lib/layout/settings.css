@@ -380,7 +380,7 @@
 }
 
 #statistics .name {
-    width: 140px;
+    width: 135px;
     line-height: 32px;
     vertical-align: bottom;
     float: left;
@@ -404,17 +404,28 @@
     background: url("images/progress_start.png");
     width: 7px;
     height: 26px;
-    position: absolute;
+    position: relative;
     float: left;
+    left: 7px;
+    margin-left: -7px;
 }
 
 #statistics .end {
     background: url("images/progress_end.png");
     width: 7px;
     height: 26px;
-    position: absolute;
-    margin-left: -7px;
-    float: left;
+    position: relative;
+    float: right;
+    right: 7px;
+}
+
+#statistics .box .end {
+    background: url("images/progress_end.png");
+    width: 7px;
+    height: 26px;
+    position: relative;
+    float: right;
+    right: 0px;
 }
 
 #statistics .ok {
