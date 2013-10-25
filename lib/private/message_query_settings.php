@@ -78,20 +78,27 @@ function msgQuerySettings( $aRequest )
 
         foreach ( $ThemeFiles as $ThemeFileName )
         {
-            if (strpos($ThemeFileName,".") > 0)
+            try
             {
-                $Theme = new SimpleXMLElement( file_get_contents("../images/themes/".$ThemeFileName) );
-                $SimpleThemeFileName = substr($ThemeFileName, 0, strrpos($ThemeFileName, "."));
-                
-                if ($Theme->name != "")
-                    $ThemeName = $Theme->name;
-                else
-                    $ThemeName = str_replace("_", " ", $SimpleThemeFileName);
-    
-                array_push($Themes, Array(
-                    "name" => $ThemeName,
-                    "file" => $SimpleThemeFileName
-                ));
+                if (strpos($ThemeFileName,".") > 0)
+                {
+                    $Theme = @new SimpleXMLElement( file_get_contents("../images/themes/".$ThemeFileName) );
+                    $SimpleThemeFileName = substr($ThemeFileName, 0, strrpos($ThemeFileName, "."));
+                    
+                    if ($Theme->name != "")
+                        $ThemeName = $Theme->name;
+                    else
+                        $ThemeName = str_replace("_", " ", $SimpleThemeFileName);
+        
+                    array_push($Themes, Array(
+                        "name" => $ThemeName,
+                        "file" => $SimpleThemeFileName
+                    ));
+                }
+            }
+            catch (Exception $e)
+            {
+                $Out->pushError("Error parsing themefile ".$ThemeFileName.": ".$e->getMessage());
             }
         }
         

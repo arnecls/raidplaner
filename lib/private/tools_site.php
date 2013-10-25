@@ -20,6 +20,7 @@
     {
         global $gSite;
         
+        $Out = Out::getInstance();
         $Connector = Connector::getInstance();
         $Settings = $Connector->prepare("Select `Name`, `TextValue`, `IntValue` FROM `".RP_TABLE_PREFIX."Setting`");
     
@@ -53,12 +54,19 @@
     
                     if ( file_exists($ThemeFile) )
                     {
-                        $Theme = new SimpleXMLElement( file_get_contents($ThemeFile) );
-                        $gSite["Banner"]     = (string)$Theme->banner;
-                        $gSite["Background"] = (string)$Theme->bgimage;
-                        $gSite["BGColor"]    = (string)$Theme->bgcolor;
-                        $gSite["BGRepeat"]   = (string)$Theme->bgrepeat;
-                        $gSite["PortalMode"] = ((string)$Theme->portalmode) == "true";
+                        try
+                        {
+                            $Theme = @new SimpleXMLElement( file_get_contents($ThemeFile) );
+                            $gSite["Banner"]     = (string)$Theme->banner;
+                            $gSite["Background"] = (string)$Theme->bgimage;
+                            $gSite["BGColor"]    = (string)$Theme->bgcolor;
+                            $gSite["BGRepeat"]   = (string)$Theme->bgrepeat;
+                            $gSite["PortalMode"] = ((string)$Theme->portalmode) == "true";
+                        }
+                        catch(Exception $e)
+                        {
+                            $Out->pushError("Error parsing themefile ".$Data["TextValue"].": ".$e->getMessage());
+                        }
                     }
                     break;
     
