@@ -58,7 +58,7 @@
             if ( $Data = $GetVersion->fetch(PDO::FETCH_ASSOC) )
                $Version = intval($Data["IntValue"]);
             else
-               $Version = 93;
+               $Version = 92;
         }
         
         $GetVersion->closeCursor();
@@ -89,7 +89,7 @@
         </div>
     <?php
         }
-        else
+        else if ($Version != $CurrentVersion)
         {
     ?>
     
@@ -119,7 +119,8 @@
 </div>
 <div class="bottom_navigation">
     <div class="button_back" style="background-image: url(layout/install_white.png)"><?php echo L("Back"); ?></div>
+    <?php if ($Version != $CurrentVersion) { ?>
     <div class="button_next" style="background-image: url(layout/update_white.png)"><?php echo L("Continue"); ?></div>
-
+    <?php } ?>
 
 <?php include("layout/footer.html"); ?>
