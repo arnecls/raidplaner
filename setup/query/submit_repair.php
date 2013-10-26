@@ -15,6 +15,7 @@
         $g_RoleToIdx[$Key] = $RoleIdx++;
     }
     
+    $Out = Out::getInstance();
     $Connector = Connector::getInstance();
     
     // -------------------------------------------------------------------------
@@ -25,6 +26,8 @@
     
     InstallDB(RP_TABLE_PREFIX);
     InstallDefaultSettings(RP_TABLE_PREFIX);
+    
+    $Out->clear(); // TODO: Transform to HTML
     
     echo "<div class=\"update_step_ok\">".L("Ok")."</div>";        
     echo "</div>";
