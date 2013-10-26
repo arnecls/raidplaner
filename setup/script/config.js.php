@@ -58,6 +58,26 @@ function OnCheckConfigConnection( a_XMLData )
 
 // ----------------------------------------------------------------------------
 
+function ShowDBErrors(a_XMLData)
+{
+    var result = $(a_XMLData).children("database");
+    var errors = result.children("error");
+    
+    if (errors.size() > 0)
+    {
+        var Message = "";
+        errors.each(function() {
+            Message += "\n" + $(this).text();
+        });
+        
+        return confirm(Message);
+    }
+    
+    return true;
+}
+
+// ----------------------------------------------------------------------------
+
 function OnConfigSubmit( a_XMLData, a_NextPage )
 {
     var testResult = $(a_XMLData).children("test");
@@ -92,7 +112,7 @@ function OnConfigSubmit( a_XMLData, a_NextPage )
             dataType : "xml",
             async    : true,
             data     : parameter,
-            success  : function() { open(a_NextPage); }
+            success  : function(aXHR) { if (ShowDBErrors(aXHR)) open(a_NextPage); }
         });
     }
 }

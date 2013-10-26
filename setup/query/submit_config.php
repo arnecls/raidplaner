@@ -28,6 +28,8 @@
     
     require_once("../../lib/config/config.php");
     
+    $Out = Out::getInstance();
+    
     // Create tables if necessary
     
     InstallDB($_REQUEST["prefix"]);
@@ -35,6 +37,8 @@
     // Add default values for settings table
         
     InstallDefaultSettings($_REQUEST["prefix"]);
+    $Out->flushXML("");
+    
     
     echo "</database>";
 ?>

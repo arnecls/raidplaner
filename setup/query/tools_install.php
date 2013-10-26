@@ -3,6 +3,7 @@
     
     function InstallDB($Prefix) 
     {
+        $Out = Out::getInstance();
         $Connector = Connector::getInstance();
     
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."Attendance` (
@@ -104,7 +105,7 @@
         
         // Add default values for settings table
             
-        $TestSt = $Connector->prepare( "SELECT * FROM `".$Prefix."Setting` LIMIT 1" );
+        $TestSt = $Connector->prepare( "SELECT * FROM `".$Prefix."Setting`" );
         $ExistingSettings = array();
         
         if ($TestSt->execute())

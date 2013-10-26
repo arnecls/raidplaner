@@ -81,11 +81,28 @@
                     $Out->pushError($ErrorLine);
                 }
 
-                $Out->writeJSON();
-                die($aStatement);
+                $Out->writeJSONandStop();
             }
 
             return $StatementObj;
+        }
+        
+        // --------------------------------------------------------------------------------------------
+        
+        public function exec($aStatement)
+        {
+            if (parent::exec($aStatement) === false)
+            {
+                $Out = Out::getInstance();
+                $Out->pushError(L("DatabaseError"));
+                
+                $ErrorInfo = $this->errorInfo();
+        
+                foreach($ErrorInfo as $Info)
+                {
+                    $Out->pushError($Info);
+                }
+            }
         }
     }
     
