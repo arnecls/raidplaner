@@ -30,7 +30,8 @@ function checkConfigForm( a_OnSuccess, a_Parameter )
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : function(a_XMLData) { a_OnSuccess(a_XMLData,a_Parameter); }
+        success  : function(a_XMLData) { a_OnSuccess(a_XMLData,a_Parameter); },
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -112,7 +113,8 @@ function OnConfigSubmit( a_XMLData, a_NextPage )
             dataType : "xml",
             async    : true,
             data     : parameter,
-            success  : function(aXHR) { if (ShowDBErrors(aXHR)) open(a_NextPage); }
+            success  : function(aXHR) { if (ShowDBErrors(aXHR)) open(a_NextPage); },
+            error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
         });
     }
 }

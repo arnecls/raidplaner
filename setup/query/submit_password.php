@@ -7,24 +7,32 @@
     require_once("../../lib/private/connector.class.php");
     require_once("../../lib/config/config.php");
 
+    $Out = Out::getInstance();
     $Connector = Connector::getInstance();
     
     $TestSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE UserId=1 LIMIT 1" );
-    $TestSt->execute();
     
-    $Salt = md5(mcrypt_create_iv(2048, MCRYPT_RAND));
-    $HashedPassword = hash("sha256", sha1($_REQUEST["password"]).$Salt);
-            
-    if ( $TestSt->rowCount() == 0 )
+    if (!$TestSt->execute())
     {
-        $Connector->exec( "INSERT INTO `".RP_TABLE_PREFIX."User` VALUES(1, 'admin', 0, 'none', 'true', 'admin', '".$HashedPassword."', '".$Salt."', '', '', FROM_UNIXTIME(".time()."));" );
-    }   
+        postErrorMessage($TestSt);
+    }
     else
-    {
-        $Connector->exec( "UPDATE `".RP_TABLE_PREFIX."User` SET `Password`='".$HashedPassword."', `Salt`='".$Salt."' WHERE UserId=1 LIMIT 1;" );        
+    {    
+        $Salt = md5(mcrypt_create_iv(2048, MCRYPT_RAND));
+        $HashedPassword = hash("sha256", sha1($_REQUEST["password"]).$Salt);
+                
+        if ( $TestSt->rowCount() == 0 )
+        {
+            $Connector->exec( "INSERT INTO `".RP_TABLE_PREFIX."User` VALUES(1, 'admin', 0, 'none', 'true', 'admin', '".$HashedPassword."', '".$Salt."', '', '', FROM_UNIXTIME(".time()."));" );
+        }   
+        else
+        {
+            $Connector->exec( "UPDATE `".RP_TABLE_PREFIX."User` SET `Password`='".$HashedPassword."', `Salt`='".$Salt."' WHERE UserId=1 LIMIT 1;" );        
+        }
     }
     
     $TestSt->closeCursor();
+    $Out->flushXML("");
     
     echo "</database>";
 ?>

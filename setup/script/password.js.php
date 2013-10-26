@@ -4,7 +4,7 @@
     require_once(dirname(__FILE__)."/../../lib/private/locale.php");
 ?>
 
-function checkPasswordForm( a_Parameter ) 
+function checkPasswordForm( a_NextPage ) 
 {
     if ( $("#password").val().length == 0 )
     {
@@ -15,6 +15,7 @@ function checkPasswordForm( a_Parameter )
     if ( $("#password").val() != $("#password_check").val() )
     {
         alert("<?php echo L("AdminPasswordNoMatch"); ?>");
+        return;
     }
     
     var parameter = {
@@ -27,7 +28,8 @@ function checkPasswordForm( a_Parameter )
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : function(a_XMLData) { OnPasswordSubmit(a_XMLData,a_Parameter); }
+        success  : function(a_XMLData) { OnPasswordSubmit(a_XMLData, a_NextPage); },
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -35,7 +37,7 @@ function checkPasswordForm( a_Parameter )
 
 function OnPasswordSubmit( a_XMLData, a_NextPage )
 {
-    var testResult = $(a_XMLData).children("test");
+    var testResult = $(a_XMLData).children("database");
     
     if ( testResult.children("error").size() > 0 )
     {

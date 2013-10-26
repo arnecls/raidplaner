@@ -300,7 +300,8 @@ function ReloadPHPBB3Groups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : OnReloadPHPBB3
+        success  : OnReloadPHPBB3,
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -333,7 +334,8 @@ function ReloadVB3Groups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : OnReloadVB3
+        success  : OnReloadVB3,
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -366,7 +368,8 @@ function ReloadMyBBGroups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : OnReloadMyBB
+        success  : OnReloadMyBB,
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -399,7 +402,8 @@ function ReloadSMFGroups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : OnReloadSMF
+        success  : OnReloadSMF,
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -432,7 +436,8 @@ function ReloadVanillaGroups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : OnReloadVanilla
+        success  : OnReloadVanilla,
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -465,7 +470,8 @@ function ReloadJoomlaGroups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : OnReloadJoomla
+        success  : OnReloadJoomla,
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -498,7 +504,8 @@ function ReloadDrupalGroups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : OnReloadDrupal
+        success  : OnReloadDrupal,
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -531,7 +538,8 @@ function ReloadWpGroups()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : OnReloadWp
+        success  : OnReloadWp,
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -564,7 +572,8 @@ function CheckEQDKP()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : OnCheckEQDKP
+        success  : OnCheckEQDKP,
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -779,7 +788,8 @@ function CheckBindingForm(a_Parameter)
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : function(a_XMLData) { OnDbCheckDone(a_XMLData, a_Parameter); }
+        success  : function(a_XMLData) { OnDbCheckDone(a_XMLData, a_Parameter); },
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 
@@ -991,7 +1001,8 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : function() { open(a_NextPage); }
+        success  : function() { open(a_NextPage); },
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
 

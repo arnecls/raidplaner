@@ -28,6 +28,7 @@ function resolveClasses()
         dataType : "xml",
         async    : true,
         data     : parameter,
-        success  : onClassesResolved
+        success  : onClassesResolved,
+        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
     });
 }
