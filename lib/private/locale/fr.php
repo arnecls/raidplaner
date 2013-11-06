@@ -1,6 +1,24 @@
 <?php
     if ( defined("LOCALE_MAIN") )
-    {
+    {        
+        // Classes
+        $gLocale[ "Deathknight" ]              = "DK";
+        $gLocale[ "Druid" ]                    = "Druide";
+        $gLocale[ "Hunter" ]                   = "Chasseur";
+        $gLocale[ "Mage" ]                     = "Mage";
+        $gLocale[ "Monk" ]                     = "Moine";
+        $gLocale[ "Paladin" ]                  = "Paladin";
+        $gLocale[ "Priest" ]                   = "Prêtre";
+        $gLocale[ "Rogue" ]                    = "Voleur";
+        $gLocale[ "Shaman" ]                   = "chaman";
+        $gLocale[ "Warlock" ]                  = "Démoniste";
+        $gLocale[ "Warrior" ]                  = "Guerrier";
+        
+        // Roles
+        $gLocale[ "Tank" ]                     = "Tank";
+        $gLocale[ "Healer" ]                   = "Heal";
+        $gLocale[ "Damage" ]                   = "Dps";
+        
         // Pre-loading checks
         $gLocale[ "ContinueNoUpdate" ]         = "Poursuivre sans mettre à jour";
         $gLocale[ "UpdateBrowser" ]            = "Merci de mettre votre navigateur à jour";
@@ -107,24 +125,6 @@
         $gLocale[ "AbsentMessage" ]            = "Merci de saisir la raison pour laquelle le joueur sera absent.<br/>Le message aura votre nom d'utilisateur comme préfixe.";
         $gLocale[ "SetupBy" ]                  = "Validé par ";
         $gLocale[ "SwitchChar" ]               = "Changé de personnage";
-        
-        // Classes
-        $gLocale[ "Deathknight" ]              = "DK";
-        $gLocale[ "Druid" ]                    = "Druide";
-        $gLocale[ "Hunter" ]                   = "Chasseur";
-        $gLocale[ "Mage" ]                     = "Mage";
-        $gLocale[ "Monk" ]                     = "Moine";
-        $gLocale[ "Paladin" ]                  = "Paladin";
-        $gLocale[ "Priest" ]                   = "Prêtre";
-        $gLocale[ "Rogue" ]                    = "Voleur";
-        $gLocale[ "Shaman" ]                   = "chaman";
-        $gLocale[ "Warlock" ]                  = "Démoniste";
-        $gLocale[ "Warrior" ]                  = "Guerrier";
-        
-        // Roles
-        $gLocale[ "Tank" ]                     = "Tank";
-        $gLocale[ "Healer" ]                   = "Heal";
-        $gLocale[ "Damage" ]                   = "Dps";
         
         // Profile        
         $gLocale[ "Profile" ]                  = "Profil";
