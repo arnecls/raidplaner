@@ -277,13 +277,13 @@ function ReloadPHPBB3Groups()
 {
     if ( $("#phpbb3_password").val().length == 0 )
     {
-        alert("<?php echo L("PHPBBPasswordEmpty"); ?>");
+        alert("<?php echo L("PHPBB3PasswordEmpty"); ?>");
         return;
     }
     
     if ( $("#phpbb3_password").val() != $("#phpbb3_password_check").val() )
     {
-        alert("<?php echo L("PHPBBDBPasswordsMatch"); ?>");
+        alert("<?php echo L("PHPBB3DBPasswordsMatch"); ?>");
         return;
     }
     
@@ -593,21 +593,33 @@ function CheckBindingForm(a_Parameter)
     
     if ( usePhpBB )
     {
+        if ( $("#phpbb3_database").val().length == 0 )
+        {
+            alert("<?php echo L("PHPBB3DatabaseEmpty"); ?>");
+            return;
+        }
+        
         if ( $("#phpbb3_password").val().length == 0 )
         {
-            alert("<?php echo L("PHPBBPasswordEmpty"); ?>");
+            alert("<?php echo L("PHPBB3PasswordEmpty"); ?>");
             return;
         }
         
         if ( $("#phpbb3_password").val() != $("#phpbb3_password_check").val() )
         {
-            alert("<?php echo L("PHPBBDBPasswordsMatch"); ?>");
+            alert("<?php echo L("PHPBB3DBPasswordsMatch"); ?>");
             return;
         }
     }
         
     if ( useEQDKP )
-    {    
+    {
+        if ( $("#eqdkp_database").val().length == 0 )
+        {
+            alert("<?php echo L("EQDKPDatabaseEmpty"); ?>");
+            return;
+        }
+        
         if ( $("#eqdkp_password").val().length == 0 )
         {
             alert("<?php echo L("EQDKPPasswordEmpty"); ?>");
@@ -622,7 +634,13 @@ function CheckBindingForm(a_Parameter)
     }
     
     if ( useVBulletin )
-    {    
+    {  
+        if ( $("#vb3_database").val().length == 0 )
+        {
+            alert("<?php echo L("VBulletinDatabaseEmpty"); ?>");
+            return;
+        }
+          
         if ( $("#vb3_password").val().length == 0 )
         {
             alert("<?php echo L("VBulletinPasswordEmpty"); ?>");
@@ -637,7 +655,13 @@ function CheckBindingForm(a_Parameter)
     }
     
     if ( useMyBB )
-    {    
+    {
+        if ( $("#mybb_database").val().length == 0 )
+        {
+            alert("<?php echo L("MyBBDatabaseEmpty"); ?>");
+            return;
+        }
+        
         if ( $("#mybb_password").val().length == 0 )
         {
             alert("<?php echo L("MyBBPasswordEmpty"); ?>");
@@ -652,7 +676,13 @@ function CheckBindingForm(a_Parameter)
     }
     
     if ( useSMF )
-    {    
+    {
+        if ( $("#smf_database").val().length == 0 )
+        {
+            alert("<?php echo L("SMFDatabaseEmpty"); ?>");
+            return;
+        }
+        
         if ( $("#smf_password").val().length == 0 )
         {
             alert("<?php echo L("SMFPasswordEmpty"); ?>");
@@ -667,7 +697,13 @@ function CheckBindingForm(a_Parameter)
     }
     
     if ( useVanilla )
-    {    
+    {   
+        if ( $("#vanilla_database").val().length == 0 )
+        {
+            alert("<?php echo L("VanillaDatabaseEmpty"); ?>");
+            return;
+        }
+         
         if ( $("#vanilla_password").val().length == 0 )
         {
             alert("<?php echo L("VanillaPasswordEmpty"); ?>");
@@ -683,6 +719,12 @@ function CheckBindingForm(a_Parameter)
     
     if ( useJoomla )
     {    
+        if ( $("#joomla_database").val().length == 0 )
+        {
+            alert("<?php echo L("JoomlaDatabaseEmpty"); ?>");
+            return;
+        }
+        
         if ( $("#joomla_password").val().length == 0 )
         {
             alert("<?php echo L("JoomlaPasswordEmpty"); ?>");
@@ -697,7 +739,13 @@ function CheckBindingForm(a_Parameter)
     }
     
     if ( useDrupal )
-    {    
+    { 
+        if ( $("#drupal_database").val().length == 0 )
+        {
+            alert("<?php echo L("DrupalDatabaseEmpty"); ?>");
+            return;
+        }
+        
         if ( $("#drupal_password").val().length == 0 )
         {
             alert("<?php echo L("DrupalPasswordEmpty"); ?>");
@@ -713,6 +761,13 @@ function CheckBindingForm(a_Parameter)
     
     if ( useWp )
     {
+     
+        if ( $("#wp_database").val().length == 0 )
+        {
+            alert("<?php echo L("WpDatabaseEmpty"); ?>");
+            return;
+        }
+        
         if ( $("#wp_password").val().length == 0 )
         {
             alert("<?php echo L("WpPasswordEmpty"); ?>");

@@ -8,26 +8,43 @@
     echo "<grouplist>";
     
     $Out = Out::getInstance();
-    $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]); 
     
-    if ($Connector != null)
+    if ($_REQUEST["database"] == "")
     {
-        $Groups = $Connector->prepare( "SELECT usergroupid, title FROM `".$_REQUEST["prefix"]."usergroup` ORDER BY title" );
+        echo "<error>".L("VBulletinDatabaseEmpty")."</error>";
+    }
+    else if ($_REQUEST["user"] == "")
+    {
+        echo "<error>".L("VBulletinUserEmpty")."</error>";        
+    }
+    else if ($_REQUEST["password"] == "")
+    {
+        echo "<error>".L("VBulletinPasswordEmpty")."</error>";        
+    }
+    else
+    {
+        $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]); 
         
-        if ( $Groups->execute() )
+        if ($Connector != null)
         {
-            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            $Groups = $Connector->prepare( "SELECT usergroupid, title FROM `".$_REQUEST["prefix"]."usergroup` ORDER BY title" );
+            
+            if ( $Groups->execute() )
             {
-                echo "<group>";
-                echo "<id>".$Group["usergroupid"]."</id>";
-                echo "<name>".$Group["title"]."</name>";
-                echo "</group>";
+                while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+                {
+                    echo "<group>";
+                    echo "<id>".$Group["usergroupid"]."</id>";
+                    echo "<name>".$Group["title"]."</name>";
+                    echo "</group>";
+                }
+            }
+            else
+            {
+                postErrorMessage( $Groups );
             }
         }
-        else
-        {
-            postErrorMessage( $Groups );
-        }
+        
     }
     
     $Out->flushXML("");        

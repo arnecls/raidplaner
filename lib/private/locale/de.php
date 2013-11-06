@@ -309,13 +309,17 @@
         $gLocale[ "PHPBB3Binding" ]            = "PHPBB3";
         $gLocale[ "PHPBB3ConfigFile" ]         = "PHPBB3 Konfigurationsdatei";
         $gLocale[ "PHPBB3Database" ]           = "Name der PHPBB3 Datenbank";
-        $gLocale[ "PHPBBPasswordEmpty" ]       = "PHPBB Datenbank Passwort darf nicht leer sein";
-        $gLocale[ "PHPBBDBPasswordsMatch" ]    = "PHPBB Datenbank-Passwoerter stimmen nicht &uuml;berein";
+        $gLocale[ "PHPBB3DatabaseEmpty" ]      = "Name der PHPBB3 Datenbank darf nicht leer sein";
+        $gLocale[ "PHPBB3UserEmpty" ]          = "PHPBB3 Benutzer darf nicht leer sein";
+        $gLocale[ "PHPBB3PasswordEmpty" ]      = "PHPBB3 Datenbank Passwort darf nicht leer sein";
+        $gLocale[ "PHPBB3DBPasswordsMatch" ]   = "PHPBB3 Datenbank-Passwoerter stimmen nicht &uuml;berein";
         
         // EQDKP
         $gLocale[ "EQDKPBinding" ]             = "EQDKP";
         $gLocale[ "EQDKPConfigFile" ]          = "EQDKP Konfigurationsdatei";
         $gLocale[ "EQDKPDatabase" ]            = "Name der EQDKP Datenbank";
+        $gLocale[ "EQDKPDatabaseEmpty" ]       = "Name der EQDKP Datenbank darf nicht leer sein";
+        $gLocale[ "EQDKPUserEmpty" ]           = "EQDKP Benutzer darf nicht leer sein";
         $gLocale[ "EQDKPPasswordEmpty" ]       = "EQDKP Datenbank Passwort darf nicht leer sein";
         $gLocale[ "EQDKPDBPasswordsMatch" ]    = "EQDKP Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein";
         
@@ -323,6 +327,8 @@
         $gLocale[ "VBulletinBinding" ]         = "vBulletin3";
         $gLocale[ "VBulletinConfigFile" ]      = "vBulletin Konfigurationsdatei";
         $gLocale[ "VBulletinDatabase" ]        = "Name der vBulletin Datenbank";
+        $gLocale[ "VBulletinDatabaseEmpty" ]   = "Name der vBulletin Datenbank darf nicht leer sein";
+        $gLocale[ "VBulletinUserEmpty" ]       = "vBulletin Benutzer darf nicht leer sein";
         $gLocale[ "VBulletinPasswordEmpty" ]   = "vBulletin Datenbank Passwort darf nicht leer sein";
         $gLocale[ "VBulletinDBPasswordsMatch" ]= "vBulletin Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein";
         
@@ -330,6 +336,8 @@
         $gLocale[ "MyBBBinding" ]              = "MyBB";
         $gLocale[ "MyBBConfigFile" ]           = "MyBB Konfigurationsdatei";
         $gLocale[ "MyBBDatabase" ]             = "Name der MyBB Datenbank";
+        $gLocale[ "MyBBDatabaseEmpty" ]        = "Name der MyBB Datenbank darf nicht leer sein";
+        $gLocale[ "MyBBUserEmpty" ]            = "MyBB Benutzer darf nicht leer sein";
         $gLocale[ "MyBBPasswordEmpty" ]        = "MyBB Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "MyBBDBPasswordsMatch" ]     = "MyBB Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";        
         
@@ -337,6 +345,8 @@
         $gLocale[ "SMFBinding" ]               = "SMF";
         $gLocale[ "SMFConfigFile" ]            = "SMF Konfigurationsdatei";
         $gLocale[ "SMFDatabase" ]              = "Name der SMF Datenbank";
+        $gLocale[ "SMFDatabaseEmpty" ]         = "Name der SMF Datenbank darf nicht leer sein";
+        $gLocale[ "SMFUserEmpty" ]             = "SMF Benutzer darf nicht leer sein";
         $gLocale[ "SMFPasswordEmpty" ]         = "SMF Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "SMFDBPasswordsMatch" ]      = "SMF Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";        
         
@@ -344,6 +354,8 @@
         $gLocale[ "VanillaBinding" ]           = "Vanilla";
         $gLocale[ "VanillaConfigFile" ]        = "Vanilla Konfigurationsdatei";
         $gLocale[ "VanillaDatabase" ]          = "Name der Vanilla Datenbank";
+        $gLocale[ "VanillaDatabaseEmpty" ]     = "Name der Vanilla Datenbank darf nicht leer sein";
+        $gLocale[ "VanillaUserEmpty" ]         = "Vanilla Benutzer darf nicht leer sein";
         $gLocale[ "VanillaPasswordEmpty" ]     = "Vanilla Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "VanillaDBPasswordsMatch" ]  = "Vanilla Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";       
         
@@ -351,6 +363,8 @@
         $gLocale[ "JoomlaBinding" ]            = "Joomla3";
         $gLocale[ "JoomlaConfigFile" ]         = "Joomla3 Konfigurationsdatei";
         $gLocale[ "JoomlaDatabase" ]           = "Name der Joomla3 Datenbank";
+        $gLocale[ "JoomlaDatabaseEmpty" ]      = "Name der Joomla3 Datenbank darf nicht leer sein";
+        $gLocale[ "JoomlaUserEmpty" ]          = "Joomla3 Benutzer darf nicht leer sein";
         $gLocale[ "JoomlaPasswordEmpty" ]      = "Joomla3 Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "JoomlaDBPasswordsMatch" ]   = "Joomla3 Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";      
         
@@ -358,6 +372,8 @@
         $gLocale[ "DrupalBinding" ]            = "Drupal";
         $gLocale[ "DrupalConfigFile" ]         = "Drupal Konfigurationsdatei";
         $gLocale[ "DrupalDatabase" ]           = "Name der Drupal Datenbank";
+        $gLocale[ "DrupalDatabaseEmpty" ]      = "Name der Drupal Datenbank darf nicht leer sein";
+        $gLocale[ "DrupalUserEmpty" ]          = "Drupal Benutzer darf nicht leer sein";
         $gLocale[ "DrupalPasswordEmpty" ]      = "Drupal Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "DrupalDBPasswordsMatch" ]   = "Drupal Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";      
         
@@ -365,6 +381,8 @@
         $gLocale[ "WpBinding" ]                = "Wordpress";
         $gLocale[ "WpConfigFile" ]             = "Wordpress Konfigurationsdatei";
         $gLocale[ "WpDatabase" ]               = "Name der Wordpress Datenbank";
+        $gLocale[ "WpDatabaseEmpty" ]          = "Name der Wordpress Datenbank darf nicht leer sein";
+        $gLocale[ "WpUserEmpty" ]              = "Wordpress Benutzer darf nicht leer sein";
         $gLocale[ "WpPasswordEmpty" ]          = "Wordpress Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "WpDBPasswordsMatch" ]       = "Wordpress Datenbank-Passw&ouml;rter stimmen nicht &uuml;berein.";
     }

@@ -8,25 +8,41 @@
     echo "<grouplist>";
     
     $Out = Out::getInstance();
-    $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]); 
     
-    if ($Connector != null)
+    if ($_REQUEST["database"] == "")
     {
-        $Groups = $Connector->prepare( "SELECT id, title FROM `".$_REQUEST["prefix"]."usergroups` ORDER BY title" );
+        echo "<error>".L("JoomlaDatabaseEmpty")."</error>";
+    }
+    else if ($_REQUEST["user"] == "")
+    {
+        echo "<error>".L("JoomlaUserEmpty")."</error>";        
+    }
+    else if ($_REQUEST["password"] == "")
+    {
+        echo "<error>".L("JoomlaPasswordEmpty")."</error>";        
+    }
+    else
+    {    
+        $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]); 
         
-        if ( $Groups->execute() )
+        if ($Connector != null)
         {
-            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            $Groups = $Connector->prepare( "SELECT id, title FROM `".$_REQUEST["prefix"]."usergroups` ORDER BY title" );
+            
+            if ( $Groups->execute() )
             {
-                echo "<group>";
-                echo "<id>".$Group["id"]."</id>";
-                echo "<name>".$Group["title"]."</name>";
-                echo "</group>";
+                while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+                {
+                    echo "<group>";
+                    echo "<id>".$Group["id"]."</id>";
+                    echo "<name>".$Group["title"]."</name>";
+                    echo "</group>";
+                }
             }
-        }
-        else
-        {
-            postErrorMessage( $Groups );
+            else
+            {
+                postErrorMessage( $Groups );
+            }
         }
     }
     

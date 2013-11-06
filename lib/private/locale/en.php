@@ -309,20 +309,26 @@
         $gLocale[ "PHPBB3Binding" ]            = "PHPBB3";
         $gLocale[ "PHPBB3ConfigFile" ]         = "PHPBB3 config file";
         $gLocale[ "PHPBB3Database" ]           = "PHPBB3 database";
-        $gLocale[ "PHPBBPasswordEmpty" ]       = "PHPBB Database password must not be empty.";
-        $gLocale[ "PHPBBDBPasswordsMatch" ]    = "PHPBB Database passwords did not match.";
+        $gLocale[ "PHPBB3DatabaseEmpty" ]      = "PHPBB3 database name must not be empty.";
+        $gLocale[ "PHPBB3UserEmpty" ]          = "PHPBB3 user must not be empty";
+        $gLocale[ "PHPBB3PasswordEmpty" ]      = "PHPBB3 database password must not be empty.";
+        $gLocale[ "PHPBB3DBPasswordsMatch" ]   = "PHPBB3 database passwords did not match.";
         
         // EQDKP
         $gLocale[ "EQDKPBinding" ]             = "EQDKP";
         $gLocale[ "EQDKPConfigFile" ]          = "EQDKP config file";
         $gLocale[ "EQDKPDatabase" ]            = "EQDKP database";
-        $gLocale[ "EQDKPPasswordEmpty" ]       = "EQDKP Database password must not be empty.";
-        $gLocale[ "EQDKPDBPasswordsMatch" ]    = "EQDKP Database passwords did not match.";
+        $gLocale[ "EQDKPDatabaseEmpty" ]       = "EQDKP database name must not be empty.";
+        $gLocale[ "EQDKPUserEmpty" ]           = "EQDKP user must not be empty";
+        $gLocale[ "EQDKPPasswordEmpty" ]       = "EQDKP database password must not be empty.";
+        $gLocale[ "EQDKPDBPasswordsMatch" ]    = "EQDKP database passwords did not match.";
         
         // vBulletin
         $gLocale[ "VBulletinBinding" ]         = "vBulletin3";
         $gLocale[ "VBulletinConfigFile" ]      = "vBulletin config file";
         $gLocale[ "VBulletinDatabase" ]        = "vBulletin database";
+        $gLocale[ "VBulletinDatabaseEmpty" ]   = "vBulletin database name must not be empty.";
+        $gLocale[ "VBulletinUserEmpty" ]       = "vBulletin user must not be empty";
         $gLocale[ "VBulletinPasswordEmpty" ]   = "vBulletin Database password must not be empty.";
         $gLocale[ "VBulletinDBPasswordsMatch" ]= "vBulletin Database passwords did not match.";
         
@@ -330,6 +336,8 @@
         $gLocale[ "MyBBBinding" ]              = "MyBB";
         $gLocale[ "MyBBConfigFile" ]           = "MyBB config file";
         $gLocale[ "MyBBDatabase" ]             = "MyBB database";
+        $gLocale[ "MyBBDatabaseEmpty" ]        = "MyBB database name must not be empty.";
+        $gLocale[ "MyBBUserEmpty" ]            = "MyBB user must not be empty";
         $gLocale[ "MyBBPasswordEmpty" ]        = "MyBB Database password must not be empty.";
         $gLocale[ "MyBBDBPasswordsMatch" ]     = "MyBB Database passwords did not match.";
         
@@ -337,6 +345,8 @@
         $gLocale[ "SMFBinding" ]               = "SMF";
         $gLocale[ "SMFConfigFile" ]            = "SMF config file";
         $gLocale[ "SMFDatabase" ]              = "SMF database";
+        $gLocale[ "SMFDatabaseEmpty" ]         = "SMF database name must not be empty.";
+        $gLocale[ "SMFUserEmpty" ]             = "SMF user must not be empty";
         $gLocale[ "SMFPasswordEmpty" ]         = "SMF Database password must not be empty.";
         $gLocale[ "SMFDBPasswordsMatch" ]      = "SMF Database passwords did not match.";
         
@@ -344,6 +354,8 @@
         $gLocale[ "VanillaBinding" ]           = "Vanilla";
         $gLocale[ "VanillaConfigFile" ]        = "Vanilla config file";
         $gLocale[ "VanillaDatabase" ]          = "Vanilla database";
+        $gLocale[ "VanillaDatabaseEmpty" ]     = "Vanilla database name must not be empty.";
+        $gLocale[ "VanillaUserEmpty" ]         = "Vanilla user must not be empty";
         $gLocale[ "VanillaPasswordEmpty" ]     = "Vanilla Database password must not be empty.";
         $gLocale[ "VanillaDBPasswordsMatch" ]  = "Vanilla Database passwords did not match.";
         
@@ -351,6 +363,8 @@
         $gLocale[ "JoomlaBinding" ]            = "Joomla3";
         $gLocale[ "JoomlaConfigFile" ]         = "Joomla3 config file";
         $gLocale[ "JoomlaDatabase" ]           = "Joomla3 database";
+        $gLocale[ "JoomlaDatabaseEmpty" ]      = "Joomla3 database name must not be empty.";
+        $gLocale[ "JoomlaUserEmpty" ]          = "Joomla3 user must not be empty";
         $gLocale[ "JoomlaPasswordEmpty" ]      = "Joomla3 Database password must not be empty.";
         $gLocale[ "JoomlaDBPasswordsMatch" ]   = "Joomla3 Database passwords did not match.";
         
@@ -358,6 +372,8 @@
         $gLocale[ "DrupalBinding" ]            = "Drupal";
         $gLocale[ "DrupalConfigFile" ]         = "Drupal config file";
         $gLocale[ "DrupalDatabase" ]           = "Drupal database";
+        $gLocale[ "DrupalDatabaseEmpty" ]      = "Drupal database name must not be empty.";
+        $gLocale[ "DrupalUserEmpty" ]          = "Drupal user must not be empty";
         $gLocale[ "DrupalPasswordEmpty" ]      = "Drupal Database password must not be empty.";
         $gLocale[ "DrupalDBPasswordsMatch" ]   = "Drupal Database passwords did not match.";
         
@@ -365,6 +381,8 @@
         $gLocale[ "WpBinding" ]                = "Wordpress";
         $gLocale[ "WpConfigFile" ]             = "Wordpress config file";
         $gLocale[ "WpDatabase" ]               = "Wordpress database";
+        $gLocale[ "WpDatabaseEmpty" ]          = "Wordpress database name must not be empty.";
+        $gLocale[ "WpUserEmpty" ]              = "Wordpress user must not be empty";
         $gLocale[ "WpPasswordEmpty" ]          = "Wordpress Database password must not be empty.";
         $gLocale[ "WpDBPasswordsMatch" ]       = "Wordpress Database passwords did not match.";
     }

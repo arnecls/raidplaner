@@ -8,25 +8,41 @@
     echo "<grouplist>";
     
     $Out = Out::getInstance();
-    $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]);
-    
-    if ($Connector != null)
-    { 
-        $Groups = $Connector->prepare( "SELECT rid, name FROM `".$_REQUEST["prefix"]."role` ORDER BY name" );
         
-        if ( $Groups->execute() )
-        {
-            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+    if ($_REQUEST["database"] == "")
+    {
+        echo "<error>".L("DrupalDatabaseEmpty")."</error>";
+    }
+    else if ($_REQUEST["user"] == "")
+    {
+        echo "<error>".L("DrupalUserEmpty")."</error>";        
+    }
+    else if ($_REQUEST["password"] == "")
+    {
+        echo "<error>".L("DrupalPasswordEmpty")."</error>";        
+    }
+    else
+    { 
+        $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]);
+        
+        if ($Connector != null)
+        { 
+            $Groups = $Connector->prepare( "SELECT rid, name FROM `".$_REQUEST["prefix"]."role` ORDER BY name" );
+            
+            if ( $Groups->execute() )
             {
-                echo "<group>";
-                echo "<id>".$Group["rid"]."</id>";
-                echo "<name>".$Group["name"]."</name>";
-                echo "</group>";
+                while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+                {
+                    echo "<group>";
+                    echo "<id>".$Group["rid"]."</id>";
+                    echo "<name>".$Group["name"]."</name>";
+                    echo "</group>";
+                }
             }
-        }
-        else
-        {
-            postErrorMessage( $Groups );
+            else
+            {
+                postErrorMessage( $Groups );
+            }
         }
     }
            

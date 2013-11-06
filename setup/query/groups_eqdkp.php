@@ -8,7 +8,23 @@
     echo "<grouplist>";
     
     $Out = Out::getInstance();
-    $TestConnectionEQDKP = new Connector( SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"] );
+    
+    if ($_REQUEST["database"] == "")
+    {
+        echo "<error>".L("EQDKPDatabaseEmpty")."</error>";
+    }
+    else if ($_REQUEST["user"] == "")
+    {
+        echo "<error>".L("EQDKPUserEmpty")."</error>";        
+    }
+    else if ($_REQUEST["password"] == "")
+    {
+        echo "<error>".L("EQDKPPasswordEmpty")."</error>";        
+    }
+    else
+    {
+        $TestConnectionEQDKP = new Connector( SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"] );
+    }
     
     $Out->flushXML("");
     echo "</grouplist>";

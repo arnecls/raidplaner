@@ -8,25 +8,41 @@
     echo "<grouplist>";
     
     $Out = Out::getInstance();
-    $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]); 
     
-    if ($Connector != null)
+    if ($_REQUEST["database"] == "")
     {
-        $Groups = $Connector->prepare( "SELECT group_id, group_name FROM `".$_REQUEST["prefix"]."groups` ORDER BY group_name" );
+        echo "<error>".L("PHPBB3DatabaseEmpty")."</error>";
+    }
+    else if ($_REQUEST["user"] == "")
+    {
+        echo "<error>".L("PHPBB3UserEmpty")."</error>";        
+    }
+    else if ($_REQUEST["password"] == "")
+    {
+        echo "<error>".L("PHPBB3PasswordEmpty")."</error>";        
+    }
+    else
+    {    
+        $Connector = new Connector(SQL_HOST, $_REQUEST["database"], $_REQUEST["user"], $_REQUEST["password"]); 
         
-        if ( $Groups->execute() )
+        if ($Connector != null)
         {
-            while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+            $Groups = $Connector->prepare( "SELECT group_id, group_name FROM `".$_REQUEST["prefix"]."groups` ORDER BY group_name" );
+            
+            if ( $Groups->execute() )
             {
-                echo "<group>";
-                echo "<id>".$Group["group_id"]."</id>";
-                echo "<name>".$Group["group_name"]."</name>";
-                echo "</group>";
+                while ( $Group = $Groups->fetch( PDO::FETCH_ASSOC ) )
+                {
+                    echo "<group>";
+                    echo "<id>".$Group["group_id"]."</id>";
+                    echo "<name>".$Group["group_name"]."</name>";
+                    echo "</group>";
+                }
             }
-        }
-        else
-        {
-            postErrorMessage( $Groups );
+            else
+            {
+                postErrorMessage( $Groups );
+            }
         }
     }
     
