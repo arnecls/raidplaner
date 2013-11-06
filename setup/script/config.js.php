@@ -15,6 +15,7 @@ function checkConfigForm( a_OnSuccess, a_Parameter )
     if ( $("#password").val() != $("#password_check").val() )
     {
         alert("<?php echo L("DatabasePasswordNoMatch"); ?>");
+        return;
     }
     
     var parameter = {
