@@ -76,9 +76,11 @@
 
                                 $CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
                                                                 "FROM `".RP_TABLE_PREFIX."Character` LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
-                                                                "WHERE UserId = :UserId ORDER BY Mainchar, CharacterId ASC" );
+                                                                "WHERE UserId = :UserId ".
+                                                                "ORDER BY Mainchar, CharacterId ASC" );
 
                                 $CharSt->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
+
 
                                 if (!$CharSt->execute())
                                 {
@@ -178,7 +180,8 @@
 
                             $CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
                                                             "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
-                                                            "WHERE UserId = :UserId ORDER BY Mainchar, CharacterId ASC" );
+                                                            "WHERE UserId = :UserId ".
+                                                            "ORDER BY Mainchar, CharacterId ASC" );
 
                             $CharSt->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
                             
@@ -226,9 +229,11 @@
 
                         $CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
                                                         "FROM `".RP_TABLE_PREFIX."Character` LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
-                                                        "WHERE UserId = :UserId ORDER BY Mainchar, CharacterId ASC" );
+                                                        "WHERE UserId = :UserId AND Created < FROM_UNIXTIME(:RaidEnd) ".
+                                                        "ORDER BY Mainchar, CharacterId ASC" );
 
                         $CharSt->bindValue( ":UserId", $User["UserId"], PDO::PARAM_INT );
+                        $CharSt->bindValue( ":RaidEnd", $Data["EndUTC"], PDO::PARAM_INT );
 
                         if (!$CharSt->execute())
                         {

@@ -1,4 +1,9 @@
 <?php
+    /*
+     * Translation by Magali
+     * Contains some unchecked extensions
+     */
+
     if ( defined("LOCALE_MAIN") )
     {        
         // Classes
@@ -123,7 +128,8 @@
         $gLocale[ "MarkAsAbesent" ]            = "Noter comment absent";
         $gLocale[ "MakeAbsent" ]               = "Le joueur sera absent";
         $gLocale[ "AbsentMessage" ]            = "Merci de saisir la raison pour laquelle le joueur sera absent.<br/>Le message aura votre nom d'utilisateur comme préfixe.";
-        $gLocale[ "SetupBy" ]                  = "Validé par ";
+        $gLocale[ "SetupBy" ]                  = "Validé";
+        $gLocale[ "AbsentBy" ]                 = "Annuler";
         $gLocale[ "SwitchChar" ]               = "Changé de personnage";
         
         // Profile        

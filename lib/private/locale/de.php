@@ -125,6 +125,7 @@
         $gLocale[ "MakeAbsent" ]               = "Spieler wird nicht anwesend sein";
         $gLocale[ "AbsentMessage" ]            = "Bitte gebe den Grund für die Abwesenheit an.<br/>Der Nachricht wird dein Login-Name vorangestellt.";
         $gLocale[ "SetupBy" ]                  = "Aufgestellt";
+        $gLocale[ "AbsentBy" ]                 = "Abgemeldet";
         $gLocale[ "SwitchChar" ]               = "Character gewechselt";
         
         // Profile
