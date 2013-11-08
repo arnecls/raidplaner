@@ -104,32 +104,17 @@ function msgQuerySettings( $aRequest )
         
         $Out->pushValue("theme", $Themes);
 
-        // Query number of raids
-
-        $NumRaids = 0;
-        $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` WHERE Start < FROM_UNIXTIME(:Now)" );
-        $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
-
-        if ( !$Raids->execute() )
-        {
-            postErrorMessage( $Raids );
-        }
-        else
-        {
-            $Data = $Raids->fetch( PDO::FETCH_ASSOC );
-            $NumRaids = $Data["NumberOfRaids"];
-        }
-
-        $Raids->closeCursor();
-        $Out->pushValue("numRaids", $NumRaids);
-
         // Query attendance
 
-        $Attendance = $Connector->prepare("SELECT `".RP_TABLE_PREFIX."Character`.Name, `".RP_TABLE_PREFIX."Attendance`.Status, `".RP_TABLE_PREFIX."User`.UserId, COUNT(*) AS Count ".
+        $Attendance = $Connector->prepare( "SELECT `".RP_TABLE_PREFIX."Character`.Name, `".RP_TABLE_PREFIX."Attendance`.Status, ".
+                                           "`".RP_TABLE_PREFIX."User`.UserId, UNIX_TIMESTAMP(`".RP_TABLE_PREFIX."User`.Created) AS CreatedUTC, ".
+                                           "COUNT(*) AS Count ".
                                            "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(UserId) ".
                                            "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
-                                           "WHERE `".RP_TABLE_PREFIX."Character`.Mainchar = 'true' AND `".RP_TABLE_PREFIX."Raid`.Start > `".RP_TABLE_PREFIX."User`.Created AND `".RP_TABLE_PREFIX."Raid`.Start < FROM_UNIXTIME(:Now) ".
-                                           "GROUP BY UserId, Status ORDER BY Name" );
+                                           "WHERE `".RP_TABLE_PREFIX."Character`.Mainchar = 'true' ".
+                                           "AND `".RP_TABLE_PREFIX."Raid`.Start > `".RP_TABLE_PREFIX."User`.Created ".
+                                           "AND `".RP_TABLE_PREFIX."Raid`.Start < FROM_UNIXTIME(:Now) ".
+                                           "GROUP BY UserId, `Status` ORDER BY Name" );
 
         $Attendance->bindValue( ":Now", time(), PDO::PARAM_INT );
 
@@ -140,39 +125,64 @@ function msgQuerySettings( $aRequest )
         else
         {
             $UserId = 0;
+            $NumRaidsRemain = 0;
             $MainCharName = "";
-            $StateCounts = array( "available" => 0, "unavailable" => 0, "ok" => 0 );
+            $StateCounts = array( "undecided" => 0, "available" => 0, "unavailable" => 0, "ok" => 0 );
             
             $Attendances = Array();
 
             while ( $Data = $Attendance->fetch( PDO::FETCH_ASSOC ) )
             {
-                if ( $UserId == 0 )
+                if ( $UserId != $Data["UserId"] )
                 {
-                    $UserId = $Data["UserId"];
-                    $MainCharName = $Data["Name"];
-                }
-                else if ( $UserId != $Data["UserId"] )
-                {
-                    $AttendanceData = Array(
-                        "id"          => $UserId,
-                        "name"        => $MainCharName,
-                        "ok"          => $StateCounts["ok"],
-                        "available"   => $StateCounts["available"],
-                        "unavailable" => $StateCounts["unavailable"],
-                    );
+                    if ( $UserId > 0 )
+                    {
+                        $AttendanceData = Array(
+                            "id"          => $UserId,
+                            "name"        => $MainCharName,
+                            "ok"          => $StateCounts["ok"],
+                            "available"   => $StateCounts["available"],
+                            "unavailable" => $StateCounts["unavailable"],
+                            "undecided"   => $StateCounts["undecided"] + $NumRaidsRemain
+                        );
+                        
+                        array_push($Attendances, $AttendanceData);
+                    }
                     
-                    array_push($Attendances, $AttendanceData);
+                    // Clear cache
                     
                     $StateCounts["ok"] = 0;
                     $StateCounts["available"] = 0;
                     $StateCounts["unavailable"] = 0;
+                    $StateCounts["undecided"] = 0;
+                    $NumRaidsRemain = 0;
+                    
                     $UserId = $Data["UserId"];
                     $MainCharName = $Data["Name"];
+                    
+                    // Fetch number of attendable raids
+                    
+                    $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
+                                                  "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now)" );
+                        
+                    $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
+                    $Raids->bindValue( ":Created", $Data["CreatedUTC"], PDO::PARAM_INT );
+            
+                    if ( !$Raids->execute() )
+                    {
+                        postErrorMessage($Raids);
+                    }
+                    else
+                    {
+                        $RaidCountData = $Raids->fetch( PDO::FETCH_ASSOC );
+                        $NumRaidsRemain = $RaidCountData["NumberOfRaids"];
+                    }
+            
+                    $Raids->closeCursor();
                 }
 
-                if ( $Data["Status"] != "undecided" )
-                    $StateCounts[$Data["Status"]] += $Data["Count"];
+                $StateCounts[$Data["Status"]] += $Data["Count"];
+                --$NumRaidsRemain;
             }
 
             if ($UserId != 0)
@@ -182,7 +192,8 @@ function msgQuerySettings( $aRequest )
                     "name"        => $MainCharName,
                     "ok"          => $StateCounts["ok"],
                     "available"   => $StateCounts["available"],
-                    "unavailable" => $StateCounts["unavailable"]
+                    "unavailable" => $StateCounts["unavailable"],
+                    "undecided"   => $StateCounts["undecided"] + $NumRaidsRemain,
                 );
                 
                 array_push($Attendances, $AttendanceData);

@@ -33,8 +33,9 @@
 
                 $Participants = Array();
 
-                $StartDate = getdate($Data["StartUTC"]);
-                $EndDate   = getdate($Data["EndUTC"]);
+                $StartDate    = getdate($Data["StartUTC"]);
+                $EndDate      = getdate($Data["EndUTC"]);
+                $EndTimestamp = $Data["EndUTC"];
                 
                 $Out->pushValue("raidId", $Data["RaidId"]);
                 $Out->pushValue("locationid", $Data["LocationId"]);
@@ -231,9 +232,9 @@
                                                         "FROM `".RP_TABLE_PREFIX."Character` LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
                                                         "WHERE UserId = :UserId AND Created < FROM_UNIXTIME(:RaidEnd) ".
                                                         "ORDER BY Mainchar, CharacterId ASC" );
-
+                                                        
                         $CharSt->bindValue( ":UserId", $User["UserId"], PDO::PARAM_INT );
-                        $CharSt->bindValue( ":RaidEnd", $Data["EndUTC"], PDO::PARAM_INT );
+                        $CharSt->bindValue( ":RaidEnd", $EndTimestamp, PDO::PARAM_INT );
 
                         if (!$CharSt->execute())
                         {
