@@ -2,7 +2,7 @@
     define( "LOCALE_SETUP", true );
     require_once(dirname(__FILE__)."/../lib/private/locale.php");
 ?>
-<?php include("layout/header.html"); ?>
+<?php readfile("layout/header.html"); ?>
 
 <script type="text/javascript">
     $(document).ready( function() {
@@ -30,4 +30,4 @@
     <div class="button_next" style="background-image: url(layout/install_white.png)"><?php echo L("Continue"); ?></div>
 
 
-<?php include("layout/footer.html"); ?>
+<?php readfile("layout/footer.html"); ?>

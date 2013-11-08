@@ -10,7 +10,7 @@
     $CurrentMajor = ($CurrentVersion / 100) % 10;
     
 ?>
-<?php include("layout/header.html"); ?>
+<?php readfile("layout/header.html"); ?>
 
 <script type="text/javascript">
     $(document).ready( function() {
@@ -123,4 +123,4 @@
     <div class="button_next" style="background-image: url(layout/update_white.png)"><?php echo L("Continue"); ?></div>
     <?php } ?>
 
-<?php include("layout/footer.html"); ?>
+<?php readfile("layout/footer.html"); ?>

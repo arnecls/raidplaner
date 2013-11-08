@@ -336,7 +336,7 @@
     function setVersion( $a_Version )
     {
         $Connector = Connector::getInstance();
-        $Connector->exec( "UPDATE `".RP_TABLE_PREFIX."Setting` SET IntValue=".intval($a_Version)." WHERE Name='Version';" );
+        $Connector->exec( "UPDATE `".RP_TABLE_PREFIX."Setting` SET IntValue=".intval($a_Version)." WHERE Name='Version' LIMIT 1;" );
     }
     
     // ----------------------------------------------------------------------------

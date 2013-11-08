@@ -214,7 +214,7 @@
         }
     }
 ?>
-<?php include("layout/header.html"); ?>
+<?php readfile("layout/header.html"); ?>
 
 <?php if (isset($_REQUEST["single"])) { ?>
 <script type="text/javascript">
@@ -677,4 +677,4 @@
     <div class="button_next" style="background-image: url(layout/install_white.png)"><?php echo L("Continue"); ?></div>
 <?php } ?>
 
-<?php include("layout/footer.html"); ?>
+<?php readfile("layout/footer.html"); ?>

@@ -3,7 +3,7 @@
     require_once(dirname(__FILE__)."/../lib/private/locale.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.php");
 ?>
-<?php include("layout/header.html"); ?>
+<?php readfile("layout/header.html"); ?>
 
 <?php if (isset($_REQUEST["single"])) { ?>
 <script type="text/javascript">
@@ -56,5 +56,5 @@
 <?php } ?>
 
 
-<?php include("layout/footer.html"); ?>
+<?php readfile("layout/footer.html"); ?>
 

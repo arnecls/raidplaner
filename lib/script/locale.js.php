@@ -15,7 +15,10 @@ var g_Locale = [];
     while ( list( $Key, $Value) = each($gLocale) )
     {
         if ($Value != null)
-            echo "g_Locale[\"".$Key."\"] = \"".str_replace("\"","\\\"", $Value)."\";\n";
+        {
+            $Encoded = htmlentities(str_replace("\"","\\\"", $Value));
+            echo "g_Locale[\"".$Key."\"] = \"".$Encoded."\";\n";
+        }
     }
 ?>
 

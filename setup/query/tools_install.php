@@ -156,7 +156,9 @@
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('StartOfWeek', 1, '');" );
             
         if ( !in_array("Version", $ExistingSettings) )
-            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 100, '');" );    
+            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 100, '');" );
+        else   
+            $Connector->exec( "UPDATE `".$Prefix."Setting` SET IntValue=100 WHERE Name='Version' LIMIT 1" );
         
         $TestSt->closeCursor();
     }

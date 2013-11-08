@@ -1,4 +1,6 @@
 <?php
+    require_once(dirname(__FILE__)."/tools_string.php");
+
     $gLocale = Array();
 
     if ( !isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) )

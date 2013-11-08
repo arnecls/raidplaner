@@ -34,12 +34,14 @@
 
     if ( !isSupportedVersion() )
     {
+        echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
     <head>
         <title><?php echo L("UpdateBrowser"); ?></title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>        
         <style type="text/css" media="screen">
             html {
                 height: 100%;

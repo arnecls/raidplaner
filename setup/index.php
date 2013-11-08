@@ -8,7 +8,7 @@
                        
     $UpdateMode = $ConfigFolderState && $ConfigFileState;
 ?>
-<?php include("layout/header.html"); ?>
+<?php readfile("layout/header.html"); ?>
                 
 <script type="text/javascript">
     $(document).ready( function() {
@@ -61,4 +61,4 @@
 </div>
 <?php } ?>
 
-<?php include("layout/footer.html"); ?>
+<?php readfile("layout/footer.html"); ?>
