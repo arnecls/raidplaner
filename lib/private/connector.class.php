@@ -20,7 +20,8 @@
                 $this->mHost  = $aHost;
                 $this->mDatabase = $aDatabase;
                 parent::__construct("mysql:dbname=".$aDatabase.";host=".$aHost, $aUser, $aPass,
-                    array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8', time_zone = '+00:00'"));
+                	array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+                    //array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8', time_zone = '+00:00'"));
             }
             catch (PDOException $Exception)
             {
