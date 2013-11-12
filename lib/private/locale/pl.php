@@ -1,7 +1,6 @@
 <?php
     /*
      * Translation by Damian Osipiuk
-     * Contains some unchecked extensions
      */
      
     if ( defined("LOCALE_MAIN") )
@@ -129,7 +128,7 @@
         $gLocale[ "MakeAbsent" ]               = "Gracz będzie nieobecny";
         $gLocale[ "AbsentMessage" ]            = "Podaj powód dlaczego gracz będzie nieobecny.<br/>Wiadomość będzie poprzedzona twoim loginem.";
         $gLocale[ "SetupBy" ]                  = "Obecny";
-        $gLocale[ "AbsentBy" ]                 = "Nieobecni";
+        $gLocale[ "AbsentBy" ]                 = "Nieobecny";
         $gLocale[ "SwitchChar" ]               = "Zmieniono postać";
         
         // Profile        
@@ -302,7 +301,7 @@
         $gLocale[ "StrayRoles" ]               = "Nieprawidłowe role";
         $gLocale[ "StrayCharacters" ]          = "Usunięte postacie";
         $gLocale[ "StrayUsers" ]               = "Usunięci użytkownicy";
-		$gLocale[ "StrayBindings" ]            = "Nieprawidłowe powiązania";
+        $gLocale[ "StrayBindings" ]            = "Nieprawidłowe powiązania";
         
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Wczytaj grupy używając powyższych ustawień";
@@ -315,8 +314,8 @@
         $gLocale[ "PHPBB3Binding" ]            = "PHPBB3";
         $gLocale[ "PHPBB3ConfigFile" ]         = "Plik konfiguracyjny PHPBB";
         $gLocale[ "PHPBB3Database" ]           = "Baza danych PHPBB";
-        $gLocale[ "PHPBB3DatabaseEmpty" ]      = "Nazwa bazy danych PHPBB nie może być puste.";
-        $gLocale[ "PHPBB3UserEmpty" ]          = "Nazwa użytkownika PHPBB nie może być puste.";
+        $gLocale[ "PHPBB3DatabaseEmpty" ]      = "Nazwa bazy danych PHPBB nie może być pusta.";
+        $gLocale[ "PHPBB3UserEmpty" ]          = "Nazwa użytkownika PHPBB nie może być pusta.";
         $gLocale[ "PHPBB3PasswordEmpty" ]      = "Hasło bazy danych PHPBB nie powinno być puste.";
         $gLocale[ "PHPBB3DBPasswordsMatch" ]   = "Hasło bazy danych PHPBB zostało powtórzone niepoprawnie.";
         
@@ -324,8 +323,8 @@
         $gLocale[ "EQDKPBinding" ]             = "EQDKP";
         $gLocale[ "EQDKPConfigFile" ]          = "Plik konfiguracyjny EQDKP";
         $gLocale[ "EQDKPDatabase" ]            = "Baza danych EQDKP";
-        $gLocale[ "EQDKPDatabaseEmpty" ]       = "Nazwa bazy danych EQDKP nie może być puste.";
-        $gLocale[ "EQDKPUserEmpty" ]           = "Nazwa użytkownika EQDKP nie może być puste.";
+        $gLocale[ "EQDKPDatabaseEmpty" ]       = "Nazwa bazy danych EQDKP nie może być pusta.";
+        $gLocale[ "EQDKPUserEmpty" ]           = "Nazwa użytkownika EQDKP nie może być pusta.";
         $gLocale[ "EQDKPPasswordEmpty" ]       = "Hasło bazy danych EQDKP nie powinno być puste.";
         $gLocale[ "EQDKPDBPasswordsMatch" ]    = "Hasło bazy danych EQDKP zostało powtórzone niepoprawnie.";
         
@@ -333,8 +332,8 @@
         $gLocale[ "VBulletinBinding" ]         = "vBulletin3";
         $gLocale[ "VBulletinConfigFile" ]      = "Plik konfiguracyjny vBulletin";
         $gLocale[ "VBulletinDatabase" ]        = "Baza danych vBulletin";
-        $gLocale[ "VBulletinDatabaseEmpty" ]   = "Nazwa bazy danych vBulletin nie może być puste.";
-        $gLocale[ "VBulletinUserEmpty" ]       = "Nazwa użytkownika vBulletin nie może być puste.";
+        $gLocale[ "VBulletinDatabaseEmpty" ]   = "Nazwa bazy danych vBulletin nie może być pusta.";
+        $gLocale[ "VBulletinUserEmpty" ]       = "Nazwa użytkownika vBulletin nie może być pusta.";
         $gLocale[ "VBulletinPasswordEmpty" ]   = "Hasło bazy danych vBulletin nie powinno być puste.";
         $gLocale[ "VBulletinDBPasswordsMatch" ]= "Hasło bazy danych vBulletin zostało powtórzone niepoprawnie.";
         
@@ -342,8 +341,8 @@
         $gLocale[ "MyBBBinding" ]              = "MyBB";
         $gLocale[ "MyBBConfigFile" ]           = "Plik konfiguracyjny MyBB";
         $gLocale[ "MyBBDatabase" ]             = "Baza danych MyBB";
-        $gLocale[ "MyBBDatabaseEmpty" ]        = "Nazwa bazy danych MyBB nie może być puste.";
-        $gLocale[ "MyBBUserEmpty" ]            = "Nazwa użytkownika MyBB nie może być puste.";
+        $gLocale[ "MyBBDatabaseEmpty" ]        = "Nazwa bazy danych MyBB nie może być pusta.";
+        $gLocale[ "MyBBUserEmpty" ]            = "Nazwa użytkownika MyBB nie może być pusta.";
         $gLocale[ "MyBBPasswordEmpty" ]        = "Hasło bazy danych MyBB nie powinno być puste.";
         $gLocale[ "MyBBDBPasswordsMatch" ]     = "Hasło bazy danych MyBB zostało powtórzone niepoprawnie.";
         
@@ -351,8 +350,8 @@
         $gLocale[ "SMFBinding" ]               = "SMF";
         $gLocale[ "SMFConfigFile" ]            = "Plik konfiguracyjny SMF";
         $gLocale[ "SMFDatabase" ]              = "Baza danych SMF";
-        $gLocale[ "SMFDatabaseEmpty" ]         = "Nazwa bazy danych SMF nie może być puste.";
-        $gLocale[ "SMFUserEmpty" ]             = "Nazwa użytkownika SMF nie może być puste.";
+        $gLocale[ "SMFDatabaseEmpty" ]         = "Nazwa bazy danych SMF nie może być pusta.";
+        $gLocale[ "SMFUserEmpty" ]             = "Nazwa użytkownika SMF nie może być pusta.";
         $gLocale[ "SMFPasswordEmpty" ]         = "Hasło bazy danych SMF nie powinno być puste.";
         $gLocale[ "SMFDBPasswordsMatch" ]      = "Hasło bazy danych SMF zostało powtórzone niepoprawnie.";
         
@@ -360,8 +359,8 @@
         $gLocale[ "VanillaBinding" ]           = "Vanilla";
         $gLocale[ "VanillaConfigFile" ]        = "Plik konfiguracyjny Vanilla";
         $gLocale[ "VanillaDatabase" ]          = "Baza danych Vanilla";
-        $gLocale[ "VanillaDatabaseEmpty" ]     = "Nazwa bazy danych Vanilla nie może być puste.";
-        $gLocale[ "VanillaUserEmpty" ]         = "Nazwa użytkownika Vanilla nie może być puste.";
+        $gLocale[ "VanillaDatabaseEmpty" ]     = "Nazwa bazy danych Vanilla nie może być pusta.";
+        $gLocale[ "VanillaUserEmpty" ]         = "Nazwa użytkownika Vanilla nie może być pusta.";
         $gLocale[ "VanillaPasswordEmpty" ]     = "Hasło bazy danych Vanilla nie powinno być puste.";
         $gLocale[ "VanillaDBPasswordsMatch" ]  = "Hasło bazy danych Vanilla zostało powtórzone niepoprawnie.";
         
@@ -369,8 +368,8 @@
         $gLocale[ "JoomlaBinding" ]            = "Joomla3";
         $gLocale[ "JoomlaConfigFile" ]         = "Plik konfiguracyjny Joomla";
         $gLocale[ "JoomlaDatabase" ]           = "Baza danych Joomla";
-        $gLocale[ "JoomlaDatabaseEmpty" ]      = "Nazwa bazy danych Joomla nie może być puste.";
-        $gLocale[ "JoomlaUserEmpty" ]          = "Nazwa użytkownika Joomla nie może być puste.";
+        $gLocale[ "JoomlaDatabaseEmpty" ]      = "Nazwa bazy danych Joomla nie może być pusta.";
+        $gLocale[ "JoomlaUserEmpty" ]          = "Nazwa użytkownika Joomla nie może być pusta.";
         $gLocale[ "JoomlaPasswordEmpty" ]      = "Hasło bazy danych Joomla nie powinno być puste.";
         $gLocale[ "JoomlaDBPasswordsMatch" ]   = "Hasło bazy danych Joomla zostało powtórzone niepoprawnie.";
         
@@ -378,17 +377,17 @@
         $gLocale[ "DrupalBinding" ]            = "Drupal";
         $gLocale[ "DrupalConfigFile" ]         = "Plik konfiguracyjny Drupal";
         $gLocale[ "DrupalDatabase" ]           = "Baza danych Drupal";
-        $gLocale[ "DrupalDatabaseEmpty" ]      = "Nazwa bazy danych Drupal nie może być puste.";
-        $gLocale[ "DrupalUserEmpty" ]          = "Nazwa użytkownika Drupal nie może być puste.";
+        $gLocale[ "DrupalDatabaseEmpty" ]      = "Nazwa bazy danych Drupal nie może być pusta.";
+        $gLocale[ "DrupalUserEmpty" ]          = "Nazwa użytkownika Drupal nie może być pusta.";
         $gLocale[ "DrupalPasswordEmpty" ]      = "Hasło bazy danych Drupal nie powinno być puste.";
         $gLocale[ "DrupalDBPasswordsMatch" ]   = "Hasło bazy danych Drupal zostało powtórzone niepoprawnie.";
 		
-		// Wordpress
+        // Wordpress
         $gLocale[ "WpBinding" ]                = "Wordpress";
         $gLocale[ "WpConfigFile" ]             = "Plik konfiguracyjny Wordpress";
         $gLocale[ "WpDatabase" ]               = "Baza danych Wordpress";
-        $gLocale[ "WpDatabaseEmpty" ]          = "Nazwa bazy danych Wordpress nie może być puste.";
-        $gLocale[ "WpUserEmpty" ]              = "Nazwa użytkownika Wordpress nie może być puste.";
+        $gLocale[ "WpDatabaseEmpty" ]          = "Nazwa bazy danych Wordpress nie może być pusta.";
+        $gLocale[ "WpUserEmpty" ]              = "Nazwa użytkownika Wordpress nie może być pusta.";
         $gLocale[ "WpPasswordEmpty" ]          = "Hasło bazy danych Wordpress nie powinno być puste.";
         $gLocale[ "WpDBPasswordsMatch" ]       = "Hasło bazy danych Wordpress zostało powtórzone niepoprawnie.";
     }

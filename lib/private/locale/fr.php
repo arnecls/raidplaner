@@ -1,7 +1,6 @@
 <?php
     /*
      * Translation by Magali
-     * Contains some unchecked extensions
      */
 
     if ( defined("LOCALE_MAIN") )
@@ -38,7 +37,7 @@
         $gLocale[ "Error" ]                    = "Erreur";
         $gLocale[ "Apply" ]                    = "Appliquer les modifications";
         $gLocale[ "AccessDenied" ]             = "Accès refusé";
-        $gLocale[ "ForeignCharacter" ]         = "Pas votre personnage";
+        $gLocale[ "ForeignCharacter" ]         = "Ce n'est pas votre personnage";
         $gLocale[ "DatabaseError" ]            = "Erreur de la base de données";
         $gLocale[ "Cancel" ]                   = "Annuler";
         $gLocale[ "Notification" ]             = "Notification";
@@ -47,9 +46,9 @@
         $gLocale[ "UnknownRequest" ]           = "Requête inconnue";
         $gLocale[ "InvalidRequest" ]           = "Requête invalide";
         $gLocale[ "InputRequired" ]            = "Saisie requise";        
-        $gLocale[ "UnappliedChanges" ]         = "Voulez vous annuler les modifications non sauvegardées?";
+        $gLocale[ "UnappliedChanges" ]         = "Voulez-vous annuler les modifications non sauvegardées?";
         $gLocale[ "DiscardChanges" ]           = "Oui annuler";
-        $gLocale[ "to" ]                       = "vers";
+        $gLocale[ "to" ]                       = "à";
         
         // Login und user registration
         $gLocale[ "Login" ]                    = "Connexion";
@@ -65,7 +64,7 @@
         $gLocale[ "RegistrationDone" ]         = "Inscription terminée.";
         $gLocale[ "AccountIsLocked" ]          = "Votre compte est actuellement verouillé.";
         $gLocale[ "ContactAdminToUnlock" ]     = "Merci de contacter un administrateur pour dévérouiller votre compte.";
-        $gLocale[ "NoSuchUser" ]               = "Cet utilisateur ne peut pas être trouvé.";
+        $gLocale[ "NoSuchUser" ]               = "Utilisateur introuvable.";
         $gLocale[ "HashingInProgress" ]        = "Hashing du mot de passe";
         $gLocale[ "PassStrength"]              = "Complexité du mot de passe";
         
@@ -76,7 +75,7 @@
         $gLocale[ "March" ]                    = "Mars";
         $gLocale[ "April" ]                    = "Avril";
         $gLocale[ "May" ]                      = "Mai";
-        $gLocale[ "June" ]                     = "Juie";
+        $gLocale[ "June" ]                     = "Juin";
         $gLocale[ "July" ]                     = "Juillet";
         $gLocale[ "August" ]                   = "Août";
         $gLocale[ "September" ]                = "Septembre";
@@ -118,7 +117,7 @@
         $gLocale[ "RaidLocked" ]               = "Raid verouillé";
         $gLocale[ "RaidCanceled" ]             = "Raid annulé";
         $gLocale[ "DeleteRaid" ]               = "Supprimer ce raid";
-        $gLocale[ "ConfirmRaidDelete" ]        = "Voulez vous vraiment supprimer ce raid?";
+        $gLocale[ "ConfirmRaidDelete" ]        = "Voulez-vous vraiment supprimer ce raid?";
         $gLocale[ "Players" ]                  = "Joueurs";
         $gLocale[ "RequiredForRole" ]          = "Places pour le role";
         $gLocale[ "AbsentPlayers" ]            = "Joueurs absents";
@@ -129,18 +128,18 @@
         $gLocale[ "MakeAbsent" ]               = "Le joueur sera absent";
         $gLocale[ "AbsentMessage" ]            = "Merci de saisir la raison pour laquelle le joueur sera absent.<br/>Le message aura votre nom d'utilisateur comme préfixe.";
         $gLocale[ "SetupBy" ]                  = "Validé";
-        $gLocale[ "AbsentBy" ]                 = "Annuler";
+        $gLocale[ "AbsentBy" ]                 = "Noté Absent";
         $gLocale[ "SwitchChar" ]               = "Changé de personnage";
         
         // Profile        
         $gLocale[ "Profile" ]                  = "Profil";
         $gLocale[ "History" ]                  = "Historique des raids";
         $gLocale[ "Characters" ]               = "Vos personnages";
-        $gLocale[ "CharName" ]                 = "nom";
+        $gLocale[ "CharName" ]                 = "Nom";
         $gLocale[ "NoName" ]                   = "Un nouveau personnage n'a pas de nom défini.";
         $gLocale[ "NoClass" ]                  = "Un nouveau personnage n'a pas de classe définie.";
         $gLocale[ "DeleteCharacter" ]          = "Effacer le personnage";
-        $gLocale[ "ConfirmDeleteCharacter" ]   = "Voulez vous vraiment effacer ce personnage?";
+        $gLocale[ "ConfirmDeleteCharacter" ]   = "Voulez-vous vraiment effacer ce personnage?";
         $gLocale[ "AttendancesRemoved" ]       = "Toutes les inscriptions en cours seront également supprimées.";
         $gLocale[ "RaidAttendance" ]           = "Inscription raid";
         $gLocale[ "RolesInRaids" ]             = "Roles dans les raids avec inscription";            
@@ -162,14 +161,14 @@
         $gLocale[ "Members" ]                  = "Membres";
         $gLocale[ "Raidleads" ]                = "Raidleads";
         $gLocale[ "Administrators" ]           = "Administrateurs";
-        $gLocale[ "ConfirmDeleteUser" ]        = "Voulez vous vraiment supprimer cet utilisateur?";
+        $gLocale[ "ConfirmDeleteUser" ]        = "Voulez-vous vraiment supprimer cet utilisateur?";
         $gLocale[ "DeleteUser" ]               = "Effacer l'utilisateur";
         $gLocale[ "MoveUser" ]                 = "Déplacer l'utilisateur vers le groupe";
         $gLocale[ "UnlinkUser" ]               = "Arrêter la synchronisation et convertir en utilisateur local.";
         $gLocale[ "LinkUser" ]                 = "Synchroniser l'utilisateur";
         $gLocale[ "SyncFailed" ]               = "Echec de la synchronisation.</br>Aucun utilisateur correspondant trouvé.";
         $gLocale[ "EditForeignCharacters" ]    = "Editer les personnages pour :";
-        $gLocale[ "ConfirmDeleteLocation" ]    = "Voulez vous vraiment effacer ce modèle de raid?";
+        $gLocale[ "ConfirmDeleteLocation" ]    = "Voulez-vous vraiment effacer ce modèle de raid?";
         $gLocale[ "NoteDeleteRaidsToo" ]       = "Cela effacera également tous les raids de ce modèle.";
         $gLocale[ "DeleteRaids" ]              = "Effacer les raids";
         $gLocale[ "DeleteLocationRaids" ]      = "Effacer le modèle et les raids";
@@ -198,7 +197,7 @@
         $gLocale[ "UpdateCheck" ]              = "Vérifier les mises à jour";
         $gLocale[ "UpToDate" ]                 = "Ce raidplanner est à jour.";
         $gLocale[ "NewVersionAvailable" ]      = "Il y a une nouvelle version disponible:";
-        $gLocale[ "VisitProjectPage" ]         = "Visit la page du projet";
+        $gLocale[ "VisitProjectPage" ]         = "Visiter la page du projet";
     }
     
     if ( defined("LOCALE_SETUP") )
