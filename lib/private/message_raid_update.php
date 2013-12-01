@@ -88,7 +88,7 @@ function msgRaidupdate( $aRequest )
 
         // sanity check, at least one slot per role
 
-        $NumRoles = sizeof($gRoles);
+        /*$NumRoles = sizeof($gRoles);
         $RaidSize = intval($aRequest["locationSize"]);
 
         for ( $i=0; $i<$NumRoles; ++$i )
@@ -101,7 +101,7 @@ function msgRaidupdate( $aRequest )
             }
 
             $RaidSize -= $SlotSizes[$i];
-        }
+        }*/
 
         // upload slot sizes
 
