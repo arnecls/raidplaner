@@ -1,5 +1,6 @@
 <?php
     require_once dirname(__FILE__)."/connector.class.php";
+    require_once dirname(__FILE__)."/tools_site.php";
     require_once dirname(__FILE__)."/../config/config.php";
     
     // Helper class for loaded plugins
@@ -87,13 +88,8 @@
         {
             assert(self::$mInstance == NULL);
 
-            session_name("ppx_raidplaner");
-
-            ini_set("session.cookie_httponly", true);
-            ini_set("session.hash_function", 1);
-
-            session_start();
-
+            beginSession();
+            
             if (isset($_REQUEST["logout"]))
             {
                 // explicit "logout"
