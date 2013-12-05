@@ -126,7 +126,7 @@
         $gLocale[ "AbsentMessage" ]            = "Bitte gebe den Grund für die Abwesenheit an.<br/>Der Nachricht wird dein Login-Name vorangestellt.";
         $gLocale[ "SetupBy" ]                  = "Aufgestellt";
         $gLocale[ "AbsentBy" ]                 = "Abgemeldet";
-        $gLocale[ "SwitchChar" ]               = "Character gewechselt";
+        $gLocale[ "SwitchChar" ]               = "Charakter gewechselt";
         
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
