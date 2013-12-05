@@ -34,8 +34,7 @@
                 "BGColor"    => "#898989",
                 "BGRepeat"   => "repeat-xy",
                 "PortalMode" => false,
-                "TimeFormat" => 24,
-                "CookieId"   => dechex(crc32(dirname(__FILE__)))
+                "TimeFormat" => 24
             );
             
             while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
@@ -74,10 +73,6 @@
                 case "TimeFormat":
                     $gSite["TimeFormat"] = $Data["IntValue"];
                     break;
-                    
-                case "CookieId":
-                    $gSite["CookieId"] = $Data["TextValue"];
-                    break;
     
                 default:
                     break;
@@ -93,7 +88,6 @@
     function beginSession()
     {
         global $gSite;
-        loadSiteSettings();
         
         ini_set("session.use_trans_sid",    0);
         ini_set("session.use_cookies",      1);
@@ -101,8 +95,10 @@
         ini_set("session.cookie_httponly",  1);
         ini_set("session.hash_function",    1);
         ini_set("session.bug_compat_42",    0);
+        
+        $InstallId = dechex(crc32(dirname(__FILE__)));
 
-        session_name("ppx_raidplaner_".$gSite["CookieId"]);
+        session_name("ppx_raidplaner_".$InstallId);
         session_start();
     }
     
