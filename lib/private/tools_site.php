@@ -96,9 +96,9 @@
         ini_set("session.hash_function",    1);
         ini_set("session.bug_compat_42",    0);
         
-        $InstallId = dechex(crc32(dirname(__FILE__)));
+        $SiteId = dechex(crc32(dirname(__FILE__)));
 
-        session_name("ppx_raidplaner_".$InstallId);
+        session_name("ppx_raidplaner_".$SiteId);
         session_start();
     }
     

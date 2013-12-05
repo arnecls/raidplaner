@@ -50,7 +50,7 @@
     {
         private static $mInstance = null;
         private static $mStickyLifeTime = 604800; // 60 * 60 * 24 * 7; // 1 week
-        private static $mStickyCookieName = "ppx_raidplaner_sticky";
+        private static $mStickyCookieName = "ppx_raidplaner_sticky_";
         private static $mCryptName = "rijndael-256";
         private static $mBindings;
         private static $mBindingsByName;
@@ -60,7 +60,8 @@
         public $UserGroup  = "none";
         public $Characters = array();
         public $Settings   = array();
-    
+        private $SiteId    = "";
+            
         // --------------------------------------------------------------------------------------------
 
         public static function initBindings()
@@ -89,6 +90,7 @@
             assert(self::$mInstance == NULL);
 
             beginSession();
+            $this->SiteId = dechex(crc32(dirname(__FILE__)));                
             
             if (isset($_REQUEST["logout"]))
             {
@@ -127,13 +129,13 @@
                                     "Password" => $_REQUEST["pass"],
                                     "Cookie"   => false );
             }
-            else if ( isset($_COOKIE[self::$mStickyCookieName]) )
+            else if ( isset($_COOKIE[self::$mStickyCookieName.$this->SiteId]) )
             {
                 // Login via cookie
                 // Reconstruct login data from cookie + database hash
                 
                 $Connector  = Connector::getInstance();
-                $CookieData = $this->getSessionCookieData( $_COOKIE[self::$mStickyCookieName] );
+                $CookieData = $this->getSessionCookieData( $_COOKIE[self::$mStickyCookieName.$this->SiteId] );
                                
                 $UserSt = $Connector->prepare( "SELECT SessionKey FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
                 
@@ -264,11 +266,11 @@
             
             if ( $aData == null )
             {
-                setcookie( self::$mStickyCookieName, null, 0, $ServerPath, $ServerName, $ServerUsesHttps, true );
+                setcookie( self::$mStickyCookieName.$this->SiteId, null, 0, $ServerPath, $ServerName, $ServerUsesHttps, true );
             }
             else
             {
-                setcookie( self::$mStickyCookieName, $aData, time()+self::$mStickyLifeTime, $ServerPath, $ServerName, $ServerUsesHttps, true );
+                setcookie( self::$mStickyCookieName.$this->SiteId, $aData, time()+self::$mStickyLifeTime, $ServerPath, $ServerName, $ServerUsesHttps, true );
             }
         }
         
@@ -609,9 +611,9 @@
                     
                     // Process sticky cookie
                     // The sticky cookie stores the encrypted "credentials" part of the session
-    
+                    
                     if ( (isset($_REQUEST["sticky"]) && ($_REQUEST["sticky"] == "true")) ||
-                         (isset($_COOKIE[self::$mStickyCookieName])) )
+                         (isset($_COOKIE[self::$mStickyCookieName.$this->SiteId])) )
                     {
                         $this->setSessionCookie($CookieData);
                     }
@@ -914,10 +916,9 @@
                                "Remote"   => $_SERVER["REMOTE_ADDR"] );
 
                 $CookieData = intval($aUserId).",".implode(",",self::encryptData($SessionKey, $Data));
-                
                 $_SESSION["User"] = $CookieData;
                     
-                if ( isset($_COOKIE[self::$mStickyCookieName]) )
+                if ( isset($_COOKIE[self::$mStickyCookieName.$this->SiteId]) )
                     $this->setSessionCookie($CookieData);
             }
 
