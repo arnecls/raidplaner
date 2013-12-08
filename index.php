@@ -1,7 +1,7 @@
 <?php
     define("LOCALE_MAIN", true);
     define("STYLE_DEBUG", false);
-    define("SCRIPT_DEBUG", false);
+    define("SCRIPT_DEBUG", true);
                  
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
@@ -38,7 +38,7 @@
             if (defined("STYLE_DEBUG") && STYLE_DEBUG)
                 include_once("lib/layout/_layout.css.php");
             else
-                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/_layout.css.php?version=".$gSite["Version"]."\"/>";
+                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/allstyles.php?version=".$gSite["Version"]."\"/>";
         ?>
         
         <!--[if IE 9]>

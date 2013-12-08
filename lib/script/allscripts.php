@@ -1,12 +1,7 @@
 <?php
-    require_once(dirname(__FILE__)."/../private/userproxy.class.php");
     require_once(dirname(__FILE__)."/../private/tools_site.php");
     
-    UserProxy::getInstance(); // Init user
-    
-	// Scripts that are always loaded
-
-	$Loader_files = Array( 
+    $Loader_files = Array( 
 		"jquery-1.10.2.min.js",
 		"jquery-ui-1.10.3.custom.min.js",
 		"jquery.ba-hashchange.min.js",
@@ -33,8 +28,6 @@
 		"login.js",
 		"register.js" );
 		
-	// Load the files, depending on which mode is requested
-
 	if ( defined("SCRIPT_DEBUG") && SCRIPT_DEBUG )
 	{
 		// "Debug mode"
