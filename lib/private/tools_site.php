@@ -4,7 +4,7 @@
     include_once(dirname(__FILE__)."/connector.class.php");
     
     $gSite = Array(
-        "Version"    => 104.0,
+        "Version"    => 109.0,
         "BannerLink" => "",
         "HelpLink"   => "",
         "Banner"     => "cataclysm.jpg",
