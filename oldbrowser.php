@@ -13,11 +13,11 @@
             break;
             
         case Browser::BROWSER_FIREFOX:
-            return $BrowserInfo->getVersion() >= 3;
+            return $BrowserInfo->getVersion() >= 4;
             break;
             
         case Browser::BROWSER_IE:
-            return $BrowserInfo->getVersion() >= 7;
+            return $BrowserInfo->getVersion() >= 9;
             break;
             
         case Browser::BROWSER_CHROME:
@@ -25,7 +25,7 @@
             break;
             
         case Browser::BROWSER_OPERA:
-            return intval($BrowserInfo->getVersion()) >= 11;
+            return intval($BrowserInfo->getVersion()) >= 13;
             break;
         }
         

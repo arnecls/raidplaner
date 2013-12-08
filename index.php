@@ -45,18 +45,6 @@
         <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSite["Version"]; ?>"/>
         <![endif]-->
         
-        <!--[if IE 8]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $gSite["Version"]; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSite["Version"]; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $gSite["Version"]; ?>"/>
-        <![endif]-->
-        
-        <!--[if IE 7]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $gSite["Version"]; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSite["Version"]; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $gSite["Version"]; ?>"/>
-        <![endif]-->
-        
         <?php
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
             {
