@@ -9,8 +9,12 @@
     
     loadSiteSettings();
     
+    // Old browser check
+    
     if ( !isset($_REQUEST["nocheck"]) )
         include_once("oldbrowser.php");
+    
+    // Update or setup required check
     
     if ( !file_exists("lib/config/config.php") || !checkVersion($gSite["Version"]) )
     {
@@ -18,10 +22,12 @@
         die();
     }
     
-    require_once("lib/private/userproxy.class.php");
-    require_once("lib/private/tools_site.php");
+    // Init user and start session
     
-    UserProxy::getInstance(); // Init user
+    require_once("lib/private/userproxy.class.php");
+    UserProxy::getInstance();
+    
+    // Site framework
     
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 ?>
@@ -34,18 +40,24 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>        
         <link rel="icon" href="favicon.png" type="image/png"/>
         
-        <?php            
+        <?php // Load Styles
+                    
             if (defined("STYLE_DEBUG") && STYLE_DEBUG)
+            {
                 include_once("lib/layout/_layout.css.php");
+            }
             else
+            {
                 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/allstyles.php?version=".$gSite["Version"]."\"/>";
+            }
         ?>
         
         <!--[if IE 9]>
         <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSite["Version"]; ?>"/>
         <![endif]-->
         
-        <?php
+        <?php // Load scripts
+        
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
             {
             	include_once("lib/script/allscripts.php");
@@ -57,10 +69,9 @@
         	}
         ?>
         
-        <?php
-            if ( isset($_REQUEST["user"]) && 
-                 isset($_REQUEST["pass"]) && 
-                 !registeredUser() )
+        <?php // Notify of failed login 
+            
+            if ( isset($_REQUEST["user"]) && isset($_REQUEST["pass"]) && !registeredUser() )
             {
                 echo "<script type=\"text/javascript\">gAfterInit = function() { notify(L(\"WrongPassword\")); };</script>";
             }
@@ -84,8 +95,7 @@
             ?>
             
             <div id="menu">
-                <?php if ( registeredUser() ) { ?>
-                
+                <?php if ( registeredUser() ) { ?>                
                 <span class="logout">
                     <form id="logout" method="post" action="index.php">
                         <input type="hidden" name="nocheck"/>
@@ -115,6 +125,7 @@
                 
                 <?php } ?>
             </div>
+            
             <div id="body">
                 <?php 
                     if ( !validUser() && registeredUser() )
