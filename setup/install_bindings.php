@@ -186,8 +186,6 @@
     if ( defined("WP_BINDING") && WP_BINDING )
     {
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
-        require_once(dirname(__FILE__)."/../lib/private/userproxy.class.php");
-        require_once(dirname(__FILE__)."/../lib/private/bindings/wp.php");
         $DrupalGroups = Array();
         
         try
@@ -198,13 +196,12 @@
             $Options->execute();        
             $Option = $Options->fetch(PDO::FETCH_ASSOC);
                         
-            $Roles = null;
             $WpGroups = Array();
-            WPBinding::readWpObj($Option["option_value"], $Roles, 0);
-            
-            for ($i=0; $i<sizeof($Roles); $i+=2)
+            $Roles = unserialize($Option["option_value"]);
+                
+            while (list($Role,$Options) = each($Roles))
             {
-                array_push($WpGroups, $Roles[$i]);
+                array_push($WpGroups, $Role);
             }
             
             $Options->closeCursor(); 
