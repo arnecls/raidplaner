@@ -2,7 +2,8 @@
     require_once(dirname(__FILE__)."/../private/tools_site.php");
     
     $Loader_files = Array( 
-		"jquery-1.10.2.min.js",
+		//"jquery-1.10.2.min.js",
+		"jquery-2.0.3.min.js",
 		"jquery-ui-1.10.3.custom.min.js",
 		"jquery.ba-hashchange.min.js",
 		"crypto/md5.js",
