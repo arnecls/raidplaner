@@ -1,13 +1,13 @@
 <?php
     define("LOCALE_MAIN", true);
     define("STYLE_DEBUG", false);
-    define("SCRIPT_DEBUG", false);
+    define("SCRIPT_DEBUG", true);
                  
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
     require_once("lib/private/gameconfig.php");
              
-    $gSiteVersion = 102.0;
+    $gSiteVersion = 103.0;
     
     if ( !isset($_REQUEST["nocheck"]) )
         include_once("oldbrowser.php");

@@ -36,7 +36,7 @@
                 "PortalMode" => false,
                 "TimeFormat" => 24
             );
-    
+            
             while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
             {
                 switch( $Data["Name"] )
@@ -82,6 +82,25 @@
     
         $Settings->closeCursor();
     } 
+    
+    // ---------------------------------------------------------------
+    
+    function beginSession()
+    {
+        global $gSite;
+        
+        ini_set("session.use_trans_sid",    0);
+        ini_set("session.use_cookies",      1);
+        ini_set("session.use_only_cookies", 1);
+        ini_set("session.cookie_httponly",  1);
+        ini_set("session.hash_function",    1);
+        ini_set("session.bug_compat_42",    0);
+        
+        $SiteId = dechex(crc32(dirname(__FILE__)));
+
+        session_name("ppx_raidplaner_".$SiteId);
+        session_start();
+    }
     
     // ---------------------------------------------------------------
     

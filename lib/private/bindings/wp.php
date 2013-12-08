@@ -18,50 +18,7 @@
         {
             return defined("WP_BINDING") && WP_BINDING;
         }
-        
-        // -------------------------------------------------------------------------
-        
-        public static function readWpObj( $aString, &$aResult, $aOffset )
-        {
-            $Idx = $aOffset;
-            $MaxIdx = strlen($aString);
-            $Key = "";
-            
-            while ($Idx < $MaxIdx)
-            {
-                switch ($aString[$Idx])
-                {
-                case 'a':
-                    $Obj = array();
-                    $Idx = self::readWpObj($aString, $Obj, strpos($aString, '{', $Idx)+1);
-                    
-                    if ($aResult == null)
-                        $aResult = $Obj;
-                    else
-                        array_push($aResult, $Obj);
-                    break;
-                    
-                case 's':
-                    $StartIdx = strpos($aString, '"', $Idx)+1;
-                    $EndIdx = strpos($aString, '"', $StartIdx);
-                    array_push($aResult, substr($aString, $StartIdx, $EndIdx-$StartIdx));
-                    $Idx = $EndIdx+1;
-                    break;
-                    
-                case '}':
-                    return $Idx;
-                    
-                default:
-                    $Idx = strpos($aString, ';', $Idx);
-                    break;
-                }
                 
-                ++$Idx;
-            }
-            
-            return $Idx;
-        }
-        
         // -------------------------------------------------------------------------
         
         private function getGroup( $aUserId )
@@ -78,16 +35,16 @@
             
             while ($MetaData = $MetaSt->fetch(PDO::FETCH_ASSOC))
             {
-                $Capabilities = null;
-                self::readWpObj($MetaData["meta_value"], $Capabilities, 0);
+                $Roles = array_keys(unserialize($MetaData["meta_value"]));
                 
-                $Group = strtolower($Capabilities[0]);
-                                
-                if (in_array($Group, $RaidleadGroups))
-                    return "raidlead";
-                    
-                if (in_array($Group, $MemberGroups))
-                    return "member";
+                foreach($Roles as $Role)
+                {
+                    if (in_array($Role, $RaidleadGroups))
+                        return "raidlead";
+                        
+                    if (in_array($Role, $MemberGroups))
+                        return "member";
+                }
             }
             
             return "none";

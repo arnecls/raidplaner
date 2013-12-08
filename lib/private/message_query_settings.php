@@ -182,7 +182,7 @@ function msgQuerySettings( $aRequest )
                 }
 
                 $StateCounts[$Data["Status"]] += $Data["Count"];
-                --$NumRaidsRemain;
+                $NumRaidsRemain -= $Data["Count"];
             }
 
             if ($UserId != 0)

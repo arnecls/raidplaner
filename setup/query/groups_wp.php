@@ -34,15 +34,13 @@
             if ( $Options->execute() )
             {
                 $Option = $Options->fetch(PDO::FETCH_ASSOC);
-                $Roles = null;
+                $Roles = unserialize($Option["option_value"]);
                 
-                WPBinding::readWpObj($Option["option_value"], $Roles, 0);
-                
-                for ($i=0; $i<sizeof($Roles); $i+=2)
+                while (list($Role,$Options) = each($Roles))
                 {
                     echo "<group>";
-                    echo "<id>".strtolower($Roles[$i])."</id>";
-                    echo "<name>".$Roles[$i]."</name>";
+                    echo "<id>".strtolower($Role)."</id>";
+                    echo "<name>".$Role."</name>";
                     echo "</group>";
                 }
             }

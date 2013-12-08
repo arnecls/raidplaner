@@ -18,7 +18,7 @@ function msgQueryProfile( $aRequest )
 
         // Admintool relevant data
 
-        $Users = $Connector->prepare( "SELECT Login, Created, ExternalBinding, BindingActive FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
+        $Users = $Connector->prepare( "SELECT Login, UNIX_TIMESTAMP(Created) AS CreatedUTC, ExternalBinding, BindingActive FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
         $Users->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
 
         if ( !$Users->execute() )
@@ -34,7 +34,7 @@ function msgQueryProfile( $aRequest )
             $Out->pushValue("bindingActive", $Data["BindingActive"] == "true");
             $Out->pushValue("binding", $Data["ExternalBinding"]);
             
-            $Created = $Data["Created"];
+            $CreatedUTC = $Data["CreatedUTC"];
         }
 
         $Users->closeCursor();
@@ -90,9 +90,9 @@ function msgQueryProfile( $aRequest )
         // Total raid count
 
         $NumRaids = 0;
-        $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` WHERE Start > :Registered AND Start < FROM_UNIXTIME(:Now)" );
+        $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now)" );
         $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
-        $Raids->bindValue( ":Registered", $Created, PDO::PARAM_STR );
+        $Raids->bindValue( ":Created", $CreatedUTC, PDO::PARAM_STR );
 
         if ( !$Raids->execute() )
         {
@@ -111,11 +111,11 @@ function msgQueryProfile( $aRequest )
         $Attendance = $Connector->prepare(  "Select `Status`, `Role`, COUNT(*) AS `Count` ".
                                             "FROM `".RP_TABLE_PREFIX."Attendance` ".
                                             "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) ".
-                                            "WHERE UserId = :UserId AND Start > :Registered AND Start < FROM_UNIXTIME(:Now) ".
+                                            "WHERE UserId = :UserId AND Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) ".
                                             "GROUP BY `Status`, `Role` ORDER BY Status" );
 
         $Attendance->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
-        $Attendance->bindValue( ":Registered", $Created, PDO::PARAM_STR );
+        $Attendance->bindValue( ":Created", $CreatedUTC, PDO::PARAM_INT );
         $Attendance->bindValue( ":Now", time(), PDO::PARAM_INT );
 
         if ( !$Attendance->execute() )
