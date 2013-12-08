@@ -6,13 +6,13 @@
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
     require_once("lib/private/gameconfig.php");
-             
-    $gSiteVersion = 104.0;
+    
+    loadSiteSettings();
     
     if ( !isset($_REQUEST["nocheck"]) )
         include_once("oldbrowser.php");
     
-    if ( !file_exists("lib/config/config.php") || !checkVersion($gSiteVersion) )
+    if ( !file_exists("lib/config/config.php") || !checkVersion($gSite["Version"]) )
     {
         include_once("runsetup.php");
         die();
@@ -22,7 +22,6 @@
     require_once("lib/private/tools_site.php");
     
     UserProxy::getInstance(); // Init user
-    loadSiteSettings();
     
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 ?>
@@ -39,38 +38,35 @@
             if (defined("STYLE_DEBUG") && STYLE_DEBUG)
                 include_once("lib/layout/_layout.css.php");
             else
-                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/_layout.css.php?version=".$gSiteVersion."\"/>";
+                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/_layout.css.php?version=".$gSite["Version"]."\"/>";
         ?>
         
         <!--[if IE 9]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSiteVersion; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSite["Version"]; ?>"/>
         <![endif]-->
         
         <!--[if IE 8]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $gSiteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSiteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $gSiteVersion; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $gSite["Version"]; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSite["Version"]; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $gSite["Version"]; ?>"/>
         <![endif]-->
         
         <!--[if IE 7]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $gSiteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSiteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $gSiteVersion; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $gSite["Version"]; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSite["Version"]; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $gSite["Version"]; ?>"/>
         <![endif]-->
         
-        <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $gSiteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $gSiteVersion; ?>"></script>
-                
         <?php
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
             {
             	include_once("lib/script/_scripts.js.php");
-            	//echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSiteVersion."&r=".((registeredUser()) ? 1 : 0)."\"></script>";
+            	//echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSite["Version"]."&r=".((registeredUser()) ? 1 : 0)."\"></script>";
             }
             else
             {
                 $Minified = (registeredUser()) ? "min.registered.js" : "min.login.js";
-                echo "<script type=\"text/javascript\" src=\"lib/script/".$Minified."?version=".$gSiteVersion."\"></script>";
+                echo "<script type=\"text/javascript\" src=\"lib/script/".$Minified."?version=".$gSite["Version"]."\"></script>";
         	}
         ?>
         
@@ -144,7 +140,7 @@
                 ?>
             </div>
             
-            <span id="version"><?php echo "version ".intVal($gSiteVersion / 100).".".intVal(($gSiteVersion % 100) / 10).".".intVal($gSiteVersion % 10).(($gSiteVersion - intval($gSiteVersion) > 0) ? chr(round(($gSiteVersion - intval($gSiteVersion)) * 10) + ord("a")-1) : ""); ?></span>
+            <span id="version"><?php echo "version ".intVal($gSite["Version"] / 100).".".intVal(($gSite["Version"] % 100) / 10).".".intVal($gSite["Version"] % 10).(($gSite["Version"] - intval($gSite["Version"]) > 0) ? chr(round(($gSite["Version"] - intval($gSite["Version"])) * 10) + ord("a")-1) : ""); ?></span>
         </div>
         
         <div id="eventblocker"></div>

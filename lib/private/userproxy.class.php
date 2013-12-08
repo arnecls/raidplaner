@@ -956,6 +956,7 @@
                 array_push($CharacterRoles2, $Character->Role2);
             }
             
+            $Out->pushValue("validUser", true);
             $Out->pushValue("id", $CurrentUser->UserId);
             $Out->pushValue("name", $CurrentUser->UserName);
             $Out->pushValue("characterIds", $CharacterIds);
@@ -976,6 +977,10 @@
             {
                 $Out->pushValue("calendar", null);
             }
+        }
+        else
+        {
+            $Out->pushValue("validUser", false);
         }
     }
 

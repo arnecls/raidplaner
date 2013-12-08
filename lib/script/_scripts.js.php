@@ -1,10 +1,12 @@
 <?php
     require_once(dirname(__FILE__)."/../private/userproxy.class.php");
+    require_once(dirname(__FILE__)."/../private/tools_site.php");
+    
     UserProxy::getInstance(); // Init user
     
 	// Scripts that are always loaded
 
-	$Loader_files_base = Array( 
+	$Loader_files = Array( 
 		"jquery-1.10.2.min.js",
 		"jquery-ui-1.10.3.custom.min.js",
 		"jquery.ba-hashchange.min.js",
@@ -19,35 +21,18 @@
 		"mobile.js",
 		"tooltip.js",
 		"main.js",
-		"hash.js" );
-	
-	// Conditional scripts
-	// When using release mode, this script should be loaded with an additional,
-	// unused paramter so that the browser may correctly cache the two different
-	// versions.
-	
-	if ( registeredUser() )
-	{
-		$Loader_files_opt = Array(
-			"calendar.js",
-			"sheet.js",
-			"raid.js",
-			"raidlist.js",
-			"profile.js",
-			"initmenu.js",
-			"combobox.js",
-			"settings.js" );
-	}
-	else
-	{
-		$Loader_files_opt = Array(
-			"login.js",
-			"initlogin.js",
-			"register.js");
-	}
+		"hash.js",
+		"calendar.js",
+		"sheet.js",
+		"raid.js",
+		"raidlist.js",
+		"profile.js",
+		"initmenu.js",
+		"combobox.js",
+		"settings.js",
+		"login.js",
+		"register.js" );
 		
-	$Loader_files = array_merge( $Loader_files_base, $Loader_files_opt );
-
 	// Load the files, depending on which mode is requested
 
 	if ( defined("SCRIPT_DEBUG") && SCRIPT_DEBUG )
@@ -57,7 +42,7 @@
 	
 		foreach ( $Loader_files as $File )
 		{
-			echo "<script type=\"text/javascript\" src=\"lib/script/".$File."?version=".$gSiteVersion."\"></script>\n";
+			echo "<script type=\"text/javascript\" src=\"lib/script/".$File."?version=".$gSite["Version"]."\"></script>\n";
 		}
 	}
 	else

@@ -22,6 +22,7 @@
     include_once("private/message_query_profile.php");
     include_once("private/message_query_settings.php");
     include_once("private/message_query_credentials.php");
+    include_once("private/message_query_config.php");
     include_once("private/message_profile_update.php");
     include_once("private/message_comment_update.php");
     include_once("private/message_settings_update.php");
@@ -41,8 +42,16 @@
     {   
         switch ( strtolower($_REQUEST["Action"]) )
         {
+        case "query_locale":
+            msgQueryLocale( $_REQUEST );
+            break;
+            
         case "query_user":
             msgQueryUser( $_REQUEST );
+            break;
+                    
+        case "query_config":
+            msgQueryConfig( $_REQUEST );
             break;
         
         case "query_credentials":

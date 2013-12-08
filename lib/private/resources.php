@@ -2,7 +2,7 @@
 
     function dumpImages( $Folder )
     {
-        global $gSiteVersion;
+        global $gSite;
         $FolderHandle = opendir( realpath( dirname(__FILE__)."/../../".$Folder ) );
 
         while ( ($FileName = readdir( $FolderHandle )) !== false )

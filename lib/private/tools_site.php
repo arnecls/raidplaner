@@ -4,6 +4,7 @@
     include_once(dirname(__FILE__)."/connector.class.php");
     
     $gSite = Array(
+        "Version"    => 104.0,
         "BannerLink" => "",
         "HelpLink"   => "",
         "Banner"     => "cataclysm.jpg",
@@ -26,16 +27,14 @@
     
         if ( $Settings->execute() )
         {
-            $gSite = Array(
-                "BannerLink" => "",
-                "HelpLink"   => "",
-                "Banner"     => "cataclysm.jpg",
-                "Background" => "flower.png",
-                "BGColor"    => "#898989",
-                "BGRepeat"   => "repeat-xy",
-                "PortalMode" => false,
-                "TimeFormat" => 24
-            );
+            $gSite["BannerLink"] = "";
+            $gSite["HelpLink"]   = "";
+            $gSite["Banner"]     = "cataclysm.jpg";
+            $gSite["Background"] = "flower.png";
+            $gSite["BGColor"]    = "#898989";
+            $gSite["BGRepeat"]   = "repeat-xy";
+            $gSite["PortalMode"] = false;
+            $gSite["TimeFormat"] = 24;
             
             while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
             {
@@ -87,8 +86,6 @@
     
     function beginSession()
     {
-        global $gSite;
-        
         ini_set("session.use_trans_sid",    0);
         ini_set("session.use_cookies",      1);
         ini_set("session.use_only_cookies", 1);
