@@ -41,6 +41,10 @@
     {   
         switch ( strtolower($_REQUEST["Action"]) )
         {
+        case "query_user":
+            msgQueryUser( $_REQUEST );
+            break;
+        
         case "query_credentials":
             msgQueryCredentials( $_REQUEST );
             break;

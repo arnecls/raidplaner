@@ -7,7 +7,7 @@
     require_once("lib/private/tools_site.php");
     require_once("lib/private/gameconfig.php");
              
-    $gSiteVersion = 103.0;
+    $gSiteVersion = 104.0;
     
     if ( !isset($_REQUEST["nocheck"]) )
         include_once("oldbrowser.php");
@@ -59,7 +59,6 @@
         <![endif]-->
         
         <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $gSiteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $gSiteVersion; ?>"></script>
         <script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $gSiteVersion; ?>"></script>
                 
         <?php

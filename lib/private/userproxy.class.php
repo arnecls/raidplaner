@@ -929,6 +929,55 @@
     // --------------------------------------------------------------------------------------------
 
     UserProxy::initBindings();
+    
+    // --------------------------------------------------------------------------------------------
+
+    function msgQueryUser($aRequest)
+    {
+        $Out = Out::getInstance();
+        
+        if (registeredUser())
+        {
+            $CurrentUser = UserProxy::getInstance();
+            
+            $CharacterIds = [];
+            $CharacterNames = [];
+            $CharacterClasses = [];
+            $CharacterRoles1 = [];
+            $CharacterRoles2 = [];
+            $Settings = [];
+            
+            foreach( $CurrentUser->Characters as $Character )
+            {
+                array_push($CharacterIds, $Character->CharacterId);
+                array_push($CharacterNames, $Character->Name);
+                array_push($CharacterClasses, $Character->ClassName);
+                array_push($CharacterRoles1, $Character->Role1);
+                array_push($CharacterRoles2, $Character->Role2);
+            }
+            
+            $Out->pushValue("id", $CurrentUser->UserId);
+            $Out->pushValue("name", $CurrentUser->UserName);
+            $Out->pushValue("characterIds", $CharacterIds);
+            $Out->pushValue("characterNames", $CharacterNames);
+            $Out->pushValue("characterClass", $CharacterClasses);
+            $Out->pushValue("role1", $CharacterRoles1);
+            $Out->pushValue("role2", $CharacterRoles2);            
+            $Out->pushValue("isRaidlead", validRaidlead());
+            $Out->pushValue("isAdmin", validAdmin());
+            $Out->pushValue("settings", $CurrentUser->Settings);
+            
+            if (isset($_SESSION["Calendar"]))
+            {
+                $CalendarValues = array("month" => $_SESSION["Calendar"]["month"], "year" => $_SESSION["Calendar"]["year"]);
+                $Out->pushValue("calendar", $CalendarValues);
+            }
+            else
+            {
+                $Out->pushValue("calendar", null);
+            }
+        }
+    }
 
     // --------------------------------------------------------------------------------------------
 
