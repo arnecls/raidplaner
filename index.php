@@ -1,7 +1,7 @@
 <?php
     define("LOCALE_MAIN", true);
     define("STYLE_DEBUG", false);
-    define("SCRIPT_DEBUG", true);
+    define("SCRIPT_DEBUG", false);
                  
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
@@ -60,13 +60,12 @@
         <?php
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
             {
-            	include_once("lib/script/_scripts.js.php");
-            	//echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSite["Version"]."&r=".((registeredUser()) ? 1 : 0)."\"></script>";
+            	include_once("lib/script/allscripts.php");
+            	//echo "<script type=\"text/javascript\" src=\"lib/script/allscripts.php?version=".$gSite["Version"]\"></script>";
             }
             else
             {
-                $Minified = (registeredUser()) ? "min.registered.js" : "min.login.js";
-                echo "<script type=\"text/javascript\" src=\"lib/script/".$Minified."?version=".$gSite["Version"]."\"></script>";
+                echo "<script type=\"text/javascript\" src=\"lib/script/raidplaner.js?version=".$gSite["Version"]."\"></script>";
         	}
         ?>
         
