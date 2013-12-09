@@ -311,84 +311,84 @@
         
         
         // PHPBB3        
-        $gLocale[ "PHPBB3Binding" ]            = "PHPBB3";
-        $gLocale[ "PHPBB3ConfigFile" ]         = "PHPBB3 Fichier de configuration";
-        $gLocale[ "PHPBB3Database" ]           = "PHPBB3 Base de données";
-        $gLocale[ "PHPBB3DatabaseEmpty" ]      = "PHPBB3 Base de données ne peut pas être vide.";
-        $gLocale[ "PHPBB3UserEmpty" ]          = "PHPBB3 utilisateur ne peut pas être vide.";
-        $gLocale[ "PHPBB3PasswordEmpty" ]      = "PHPBB3 Mot de passe de la base de données ne peut pas être vide.";
-        $gLocale[ "PHPBB3DBPasswordsMatch" ]   = "PHPBB3 Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "phpbb3_Binding" ]            = "PHPBB3";
+        $gLocale[ "phpbb3_ConfigFile" ]         = "PHPBB3 Fichier de configuration";
+        $gLocale[ "phpbb3_Database" ]           = "PHPBB3 Base de données";
+        $gLocale[ "phpbb3_DatabaseEmpty" ]      = "PHPBB3 Base de données ne peut pas être vide.";
+        $gLocale[ "phpbb3_UserEmpty" ]          = "PHPBB3 utilisateur ne peut pas être vide.";
+        $gLocale[ "phpbb3_PasswordEmpty" ]      = "PHPBB3 Mot de passe de la base de données ne peut pas être vide.";
+        $gLocale[ "phpbb3_DBPasswordsMatch" ]   = "PHPBB3 Les mots de passe de la base de données ne correspondent pas.";
         
         // EQDKP
-        $gLocale[ "EQDKPBinding" ]             = "EQDKP";
-        $gLocale[ "EQDKPConfigFile" ]          = "EQDKP Fichier de configuration";
-        $gLocale[ "EQDKPDatabase" ]            = "EQDKP Base de données";
-        $gLocale[ "EQDKPDatabaseEmpty" ]       = "EQDKP Base de données ne peut pas être vide.";
-        $gLocale[ "EQDKPUserEmpty" ]           = "EQDKP utilisateur ne peut pas être vide.";
-        $gLocale[ "EQDKPPasswordEmpty" ]       = "EQDKP Mot de passe de la base de données ne peut pas être vide.";
-        $gLocale[ "EQDKPDBPasswordsMatch" ]    = "EQDKP Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "eqdkp_Binding" ]             = "EQDKP";
+        $gLocale[ "eqdkp_ConfigFile" ]          = "EQDKP Fichier de configuration";
+        $gLocale[ "eqdkp_Database" ]            = "EQDKP Base de données";
+        $gLocale[ "eqdkp_DatabaseEmpty" ]       = "EQDKP Base de données ne peut pas être vide.";
+        $gLocale[ "eqdkp_UserEmpty" ]           = "EQDKP utilisateur ne peut pas être vide.";
+        $gLocale[ "eqdkp_PasswordEmpty" ]       = "EQDKP Mot de passe de la base de données ne peut pas être vide.";
+        $gLocale[ "eqdkp_DBPasswordsMatch" ]    = "EQDKP Les mots de passe de la base de données ne correspondent pas.";
         
         // vBulletin
-        $gLocale[ "VBulletinBinding" ]         = "vBulletin3";
-        $gLocale[ "VBulletinConfigFile" ]      = "vBulletin Fichier de configuration";
-        $gLocale[ "VBulletinDatabase" ]        = "vBulletin Base de données";
-        $gLocale[ "VBulletinDatabaseEmpty" ]   = "vBulletin Base de données ne peut pas être vide.";
-        $gLocale[ "VBulletinUserEmpty" ]       = "vBulletin utilisateur ne peut pas être vide.";
-        $gLocale[ "VBulletinPasswordEmpty" ]   = "vBulletin Mot de passe de la base de données ne peut pas être vide.";
-        $gLocale[ "VBulletinDBPasswordsMatch" ]= "vBulletin Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "vb3_Binding" ]               = "vBulletin3";
+        $gLocale[ "vb3_ConfigFile" ]            = "vBulletin Fichier de configuration";
+        $gLocale[ "vb3_Database" ]              = "vBulletin Base de données";
+        $gLocale[ "vb3_DatabaseEmpty" ]         = "vBulletin Base de données ne peut pas être vide.";
+        $gLocale[ "vb3_UserEmpty" ]             = "vBulletin utilisateur ne peut pas être vide.";
+        $gLocale[ "vb3_PasswordEmpty" ]         = "vBulletin Mot de passe de la base de données ne peut pas être vide.";
+        $gLocale[ "vb3_DBPasswordsMatch" ]      = "vBulletin Les mots de passe de la base de données ne correspondent pas.";
         
         // MyBB
-        $gLocale[ "MyBBBinding" ]              = "MyBB";
-        $gLocale[ "MyBBConfigFile" ]           = "MyBB Fichier de configuration";
-        $gLocale[ "MyBBDatabase" ]             = "MyBB Base de données";
-        $gLocale[ "MyBBDatabaseEmpty" ]        = "MyBB Base de données ne peut pas être vide.";
-        $gLocale[ "MyBBUserEmpty" ]            = "MyBB utilisateur ne peut pas être vide.";
-        $gLocale[ "MyBBPasswordEmpty" ]        = "MyBB Mot de passe de la base de données ne peut pas être vide.";
-        $gLocale[ "MyBBDBPasswordsMatch" ]     = "MyBB Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "mybb_Binding" ]              = "MyBB";
+        $gLocale[ "mybb_ConfigFile" ]           = "MyBB Fichier de configuration";
+        $gLocale[ "mybb_Database" ]             = "MyBB Base de données";
+        $gLocale[ "mybb_DatabaseEmpty" ]        = "MyBB Base de données ne peut pas être vide.";
+        $gLocale[ "mybb_UserEmpty" ]            = "MyBB utilisateur ne peut pas être vide.";
+        $gLocale[ "mybb_PasswordEmpty" ]        = "MyBB Mot de passe de la base de données ne peut pas être vide.";
+        $gLocale[ "mybb_DBPasswordsMatch" ]     = "MyBB Les mots de passe de la base de données ne correspondent pas.";
         
         // SMF
-        $gLocale[ "SMFBinding" ]               = "SMF";
-        $gLocale[ "SMFConfigFile" ]            = "SMF Fichier de configuration";
-        $gLocale[ "SMFDatabase" ]              = "SMF Base de données";
-        $gLocale[ "SMFDatabaseEmpty" ]         = "SMF Base de données ne peut pas être vide.";
-        $gLocale[ "SMFUserEmpty" ]             = "SMF utilisateur ne peut pas être vide.";
-        $gLocale[ "SMFPasswordEmpty" ]         = "SMF Mot de passe de la base de données ne peut pas être vide.";
-        $gLocale[ "SMFDBPasswordsMatch" ]      = "SMF Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "smf_Binding" ]               = "SMF";
+        $gLocale[ "smf_ConfigFile" ]            = "SMF Fichier de configuration";
+        $gLocale[ "smf_Database" ]              = "SMF Base de données";
+        $gLocale[ "smf_DatabaseEmpty" ]         = "SMF Base de données ne peut pas être vide.";
+        $gLocale[ "smf_UserEmpty" ]             = "SMF utilisateur ne peut pas être vide.";
+        $gLocale[ "smf_PasswordEmpty" ]         = "SMF Mot de passe de la base de données ne peut pas être vide.";
+        $gLocale[ "smf_DBPasswordsMatch" ]      = "SMF Les mots de passe de la base de données ne correspondent pas.";
         
         // Vanilla
-        $gLocale[ "VanillaBinding" ]           = "Vanilla";
-        $gLocale[ "VanillaConfigFile" ]        = "Vanilla Fichier de configuration";
-        $gLocale[ "VanillaDatabase" ]          = "Vanilla Base de données";
-        $gLocale[ "VanillaDatabaseEmpty" ]     = "Vanilla Base de données ne peut pas être vide.";
-        $gLocale[ "VanillaUserEmpty" ]         = "Vanilla utilisateur ne peut pas être vide.";
-        $gLocale[ "VanillaPasswordEmpty" ]     = "Vanilla Mot de passe de la base de données ne peut pas être vide.";
-        $gLocale[ "VanillaDBPasswordsMatch" ]  = "Vanilla Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "vanilla_Binding" ]           = "Vanilla";
+        $gLocale[ "vanilla_ConfigFile" ]        = "Vanilla Fichier de configuration";
+        $gLocale[ "vanilla_Database" ]          = "Vanilla Base de données";
+        $gLocale[ "vanilla_DatabaseEmpty" ]     = "Vanilla Base de données ne peut pas être vide.";
+        $gLocale[ "vanilla_UserEmpty" ]         = "Vanilla utilisateur ne peut pas être vide.";
+        $gLocale[ "vanilla_PasswordEmpty" ]     = "Vanilla Mot de passe de la base de données ne peut pas être vide.";
+        $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Vanilla Les mots de passe de la base de données ne correspondent pas.";
         
         // Joomla
-        $gLocale[ "JoomlaBinding" ]            = "Joomla3";
-        $gLocale[ "JoomlaConfigFile" ]         = "Joomla3 Fichier de configuration";
-        $gLocale[ "JoomlaDatabase" ]           = "Joomla3 Base de données";
-        $gLocale[ "JoomlaDatabaseEmpty" ]      = "Joomla3 Base de données ne peut pas être vide.";
-        $gLocale[ "JoomlaUserEmpty" ]          = "Joomla3 utilisateur ne peut pas être vide.";
-        $gLocale[ "JoomlaPasswordEmpty" ]      = "Joomla3 Mot de passe de la base de données ne peut pas être vide.";
-        $gLocale[ "JoomlaDBPasswordsMatch" ]   = "Joomla3 Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "jml3_Binding" ]              = "Joomla3";
+        $gLocale[ "jml3_ConfigFile" ]           = "Joomla3 Fichier de configuration";
+        $gLocale[ "jml3_Database" ]             = "Joomla3 Base de données";
+        $gLocale[ "jml3_DatabaseEmpty" ]        = "Joomla3 Base de données ne peut pas être vide.";
+        $gLocale[ "jml3_UserEmpty" ]            = "Joomla3 utilisateur ne peut pas être vide.";
+        $gLocale[ "jml3_PasswordEmpty" ]        = "Joomla3 Mot de passe de la base de données ne peut pas être vide.";
+        $gLocale[ "jml3_DBPasswordsMatch" ]     = "Joomla3 Les mots de passe de la base de données ne correspondent pas.";
         
         // Drupal
-        $gLocale[ "DrupalBinding" ]            = "Drupal";
-        $gLocale[ "DrupalConfigFile" ]         = "Drupal Fichier de configuration";
-        $gLocale[ "DrupalDatabase" ]           = "Drupal Base de données";
-        $gLocale[ "DrupalDatabaseEmpty" ]      = "Drupal Base de données ne peut pas être vide.";
-        $gLocale[ "DrupalUserEmpty" ]          = "Drupal utilisateur ne peut pas être vide.";
-        $gLocale[ "DrupalPasswordEmpty" ]      = "Drupal Mot de passe de la base de données ne peut pas être vide.";
-        $gLocale[ "DrupalDBPasswordsMatch" ]   = "Drupal Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "drupal_Binding" ]            = "Drupal";
+        $gLocale[ "drupal_ConfigFile" ]         = "Drupal Fichier de configuration";
+        $gLocale[ "drupal_Database" ]           = "Drupal Base de données";
+        $gLocale[ "drupal_DatabaseEmpty" ]      = "Drupal Base de données ne peut pas être vide.";
+        $gLocale[ "drupal_UserEmpty" ]          = "Drupal utilisateur ne peut pas être vide.";
+        $gLocale[ "drupal_PasswordEmpty" ]      = "Drupal Mot de passe de la base de données ne peut pas être vide.";
+        $gLocale[ "drupal_DBPasswordsMatch" ]   = "Drupal Les mots de passe de la base de données ne correspondent pas.";
         
         // Wordpress
-        $gLocale[ "WpBinding" ]                = "Wordpress";
-        $gLocale[ "WpConfigFile" ]             = "Wordpress Fichier de configuration";
-        $gLocale[ "WpDatabase" ]               = "Wordpress Base de données";
-        $gLocale[ "WpDatabaseEmpty" ]          = "Wordpress Base de données ne peut pas être vide.";
-        $gLocale[ "WpUserEmpty" ]              = "Wordpress utilisateur ne peut pas être vide.";
-        $gLocale[ "WpPasswordEmpty" ]          = "Wordpress Mot de passe de la base de données ne peut pas être vide.";
-        $gLocale[ "WpDBPasswordsMatch" ]       = "Wordpress Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "wp_Binding" ]                = "Wordpress";
+        $gLocale[ "wp_ConfigFile" ]             = "Wordpress Fichier de configuration";
+        $gLocale[ "wp_Database" ]               = "Wordpress Base de données";
+        $gLocale[ "wp_DatabaseEmpty" ]          = "Wordpress Base de données ne peut pas être vide.";
+        $gLocale[ "wp_UserEmpty" ]              = "Wordpress utilisateur ne peut pas être vide.";
+        $gLocale[ "wp_PasswordEmpty" ]          = "Wordpress Mot de passe de la base de données ne peut pas être vide.";
+        $gLocale[ "wp_DBPasswordsMatch" ]       = "Wordpress Les mots de passe de la base de données ne correspondent pas.";
     }
 ?>

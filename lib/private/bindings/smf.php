@@ -1,5 +1,5 @@
 <?php
-    @include_once dirname(__FILE__)."/../../config/config.smf.php";
+    include_once_exists(dirname(__FILE__)."/../../config/config.smf.php");
     
     array_push(PluginRegistry::$Classes, "SMFBinding");
     
@@ -15,6 +15,86 @@
         public function isActive()
         {
             return defined("SMF_BINDING") && SMF_BINDING;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getConfig()
+        {
+            return array(
+                "database"  => defined("SMF_DATABASE") ? SMF_DATABASE : RP_DATABASE,
+                "user"      => defined("SMF_USER") ? SMF_USER : RP_USER,
+                "password"  => defined("SMF_PASS") ? SMF_PASS : RP_PASS,
+                "prefix"    => defined("SMF_TABLE_PREFIX") ? SMF_TABLE_PREFIX : "smf_",
+                "members"   => defined("SMF_RAIDLEAD_GROUPS") ? explode(",", SMF_RAIDLEAD_GROUPS ) : [],
+                "leads"     => defined("SMF_MEMBER_GROUPS") ? explode(",", SMF_MEMBER_GROUPS ) : [],
+                "groups"    => true
+            );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        {
+            $Config = fopen( dirname(__FILE__)."/../../config/config.smf.php", "w+" );
+            
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine(\"SMF_BINDING\", ".(($aEnable) ? "true" : "false").");\n");
+            
+            if ( $aEnable )
+            {
+                fwrite( $Config, "\tdefine(\"SMF_DATABASE\", \"".$aDatabase."\");\n");
+                fwrite( $Config, "\tdefine(\"SMF_USER\", \"".$aUser."\");\n");
+                fwrite( $Config, "\tdefine(\"SMF_PASS\", \"".$aPass."\");\n");
+                fwrite( $Config, "\tdefine(\"SMF_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                                             
+                fwrite( $Config, "\tdefine(\"SMF_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
+                fwrite( $Config, "\tdefine(\"SMF_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
+            }
+            
+            fwrite( $Config, "?>");    
+            fclose( $Config );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroups($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
+        {
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
+            
+            if ($Connector != null)
+            {
+                $GroupQuery = $Connector->prepare( "SELECT id_group, group_name FROM `".$aPrefix."membergroups` ORDER BY group_name" );
+                $Groups = [];
+                
+                if ( $GroupQuery->execute() )
+                {
+                    while ( $Group = $GroupQuery->fetch(PDO::FETCH_ASSOC) )
+                    {
+                        array_push( $Groups, array(
+                            "id"   => $Group["id_group"], 
+                            "name" => $Group["group_name"])
+                        );
+                    }
+                }
+                else if ($aThrow)
+                {
+                    $Connector->throwError($GroupQuery);
+                }
+                
+                $GroupQuery->closeCursor();
+                return $Groups;
+            }
+            
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroupsFromConfig()
+        {
+            $Config = $this->getConfig();
+            return $this->getGroups($Config["database"], $Config["prefix"], $Config["user"], $Config["password"], false);
         }
         
         // -------------------------------------------------------------------------

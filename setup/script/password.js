@@ -1,20 +1,14 @@
-<?php
-    header("Content-type: text/javascript");
-    define( "LOCALE_SETUP", true );
-    require_once(dirname(__FILE__)."/../../lib/private/locale.php");
-?>
-
 function checkPasswordForm( a_NextPage ) 
 {
     if ( $("#password").val().length == 0 )
     {
-        alert("<?php echo L("AdminPasswordEmpty"); ?>");
+        alert(L("AdminPasswordEmpty"));
         return;
     }
     
     if ( $("#password").val() != $("#password_check").val() )
     {
-        alert("<?php echo L("AdminPasswordNoMatch"); ?>");
+        alert(L("AdminPasswordNoMatch"));
         return;
     }
     
@@ -29,7 +23,7 @@ function checkPasswordForm( a_NextPage )
         async    : true,
         data     : parameter,
         success  : function(a_XMLData) { OnPasswordSubmit(a_XMLData, a_NextPage); },
-        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
+        error    : function(aXHR, aStatus, aError) { alert(L("Error") + ":\n\n" + aError); }
     });
 }
 
@@ -47,7 +41,7 @@ function OnPasswordSubmit( a_XMLData, a_NextPage )
             errorString += $(this).text() + "\n";
         });
         
-        alert("<?php echo L("Error"); ?>:\n\n" + errorString );
+        alert(L("Error") + ":\n\n" + errorString );
     }
     else
     {

@@ -1,5 +1,5 @@
 <?php
-    @include_once dirname(__FILE__)."/../../config/config.vanilla.php";
+    include_once_exists(dirname(__FILE__)."/../../config/config.vanilla.php");
     
     array_push(PluginRegistry::$Classes, "VanillaBinding");
     
@@ -17,6 +17,86 @@
         public function isActive()
         {
             return defined("VANILLA_BINDING") && VANILLA_BINDING;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getConfig()
+        {
+            return array(
+                "database"  => defined("VANILLA_DATABASE") ? VANILLA_DATABASE : RP_DATABASE,
+                "user"      => defined("VANILLA_USER") ? VANILLA_USER : RP_USER,
+                "password"  => defined("VANILLA_PASS") ? VANILLA_PASS : RP_PASS,
+                "prefix"    => defined("VANILLA_TABLE_PREFIX") ? VANILLA_TABLE_PREFIX : "GDN_",
+                "members"   => defined("VANILLA_RAIDLEAD_GROUPS") ? explode(",", VANILLA_RAIDLEAD_GROUPS ) : [],
+                "leads"     => defined("VANILLA_MEMBER_GROUPS") ? explode(",", VANILLA_MEMBER_GROUPS ) : [],
+                "groups"    => true
+            );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        {
+            $Config = fopen( dirname(__FILE__)."/../../config/config.vanilla.php", "w+" );
+            
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine(\"VANILLA_BINDING\", ".(($aEnable) ? "true" : "false").");\n");
+            
+            if ( $aEnable )
+            {
+                fwrite( $Config, "\tdefine(\"VANILLA_DATABASE\", \"".$aDatabase."\");\n");
+                fwrite( $Config, "\tdefine(\"VANILLA_USER\", \"".$aUser."\");\n");
+                fwrite( $Config, "\tdefine(\"VANILLA_PASS\", \"".$aPass."\");\n");
+                fwrite( $Config, "\tdefine(\"VANILLA_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                                             
+                fwrite( $Config, "\tdefine(\"VANILLA_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
+                fwrite( $Config, "\tdefine(\"VANILLA_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
+            }
+            
+            fwrite( $Config, "?>");    
+            fclose( $Config );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroups($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
+        {
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
+            
+            if ($Connector != null)
+            {
+                $GroupQuery = $Connector->prepare( "SELECT RoleID, Name FROM `".$aPrefix."Role` ORDER BY Name" );
+                $Groups = [];
+                
+                if ( $GroupQuery->execute() )
+                {
+                    while ( $Group = $GroupQuery->fetch(PDO::FETCH_ASSOC) )
+                    {
+                        array_push( $Groups, array(
+                            "id"   => $Group["RoleID"], 
+                            "name" => $Group["Name"])
+                        );
+                    }
+                }
+                else if ($aThrow)
+                {
+                    $Connector->throwError($GroupQuery);
+                }
+                
+                $GroupQuery->closeCursor();
+                return $Groups;
+            }
+            
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroupsFromConfig()
+        {
+            $Config = $this->getConfig();
+            return $this->getGroups($Config["database"], $Config["prefix"], $Config["user"], $Config["password"], false);
         }
         
         // -------------------------------------------------------------------------

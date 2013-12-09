@@ -1,12 +1,6 @@
-<?php
-    header("Content-type: text/javascript");
-    define( "LOCALE_SETUP", true );
-    require_once(dirname(__FILE__)."/../../lib/private/locale.php");
-?>
-
 function onClassesResolved( a_XMLData )
 {
-    $(".classResolve:last").after("<div class=\"update_step_ok\">0 <?php echo L("ItemsToResolve"); ?></div>");
+    $(".classResolve:last").after("<div class=\"update_step_ok\">0 "+L("ItemsToResolve")+"</div>");
     $(".classResolve").detach();
 }
 
@@ -29,6 +23,6 @@ function resolveClasses()
         async    : true,
         data     : parameter,
         success  : onClassesResolved,
-        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
+        error    : function(aXHR, aStatus, aError) { alert(L("Error") + ":\n\n" + aError); }
     });
 }

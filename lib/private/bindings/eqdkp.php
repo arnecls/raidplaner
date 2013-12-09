@@ -1,5 +1,5 @@
 <?php
-    @include_once dirname(__FILE__)."/../../config/config.eqdkp.php";
+    include_once_exists(dirname(__FILE__)."/../../config/config.eqdkp.php");
     
     array_push(PluginRegistry::$Classes, "EQDKPBinding");
     
@@ -21,6 +21,72 @@
         public function isActive()
         {
             return defined("EQDKP_BINDING") && EQDKP_BINDING;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getConfig()
+        {
+            return array(
+                "database"  => defined("EQDKP_DATABASE") ? EQDKP_DATABASE : RP_DATABASE,
+                "user"      => defined("EQDKP_USER") ? EQDKP_USER : RP_USER,
+                "password"  => defined("EQDKP_PASS") ? EQDKP_PASS : RP_PASS,
+                "prefix"    => defined("EQDKP_TABLE_PREFIX") ? EQDKP_TABLE_PREFIX : "eqdkp_",
+                "members"   => [],
+                "leads"     => [],
+                "groups"    => false
+            );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        {
+            $Config = fopen( dirname(__FILE__)."/../../config/config.eqdkp.php", "w+" );
+            
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine(\"EQDKP_BINDING\", ".(($aEnable) ? "true" : "false").");\n");
+            
+            if ( $aEnable )
+            {
+                fwrite( $Config, "\tdefine(\"EQDKP_DATABASE\", \"".$aDatabase."\");\n");
+                fwrite( $Config, "\tdefine(\"EQDKP_USER\", \"".$aUser."\");\n");
+                fwrite( $Config, "\tdefine(\"EQDKP_PASS\", \"".$aPass."\");\n");
+                fwrite( $Config, "\tdefine(\"EQDKP_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+            }
+            
+            fwrite( $Config, "?>");    
+            fclose( $Config );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroups($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
+        {
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
+            
+            if ($Connector != null)
+            {
+                // only test if we can read the user table
+                $TestQuery = $Connector->prepare( "SELECT user_id FROM `".$aPrefix."users` LIMIT 1" );
+                
+                if ( !$TestQuery->execute() && $aThrow)
+                {
+                    $Connector->throwError($TestQuery);
+                }
+                
+                $TestQuery->closeCursor(); 
+           }
+            
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroupsFromConfig()
+        {
+            $Config = $this->getConfig();
+            return $this->getGroups($Config["database"], $Config["prefix"], $Config["user"], $Config["password"], false);
         }
         
         // -------------------------------------------------------------------------

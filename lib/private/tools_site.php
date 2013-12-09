@@ -16,6 +16,14 @@
     );
     
     // ---------------------------------------------------------------
+    
+    function include_once_exists($aFile)
+    {
+        if (file_exists($aFile))
+            include_once($aFile);
+    }
+    
+    // ---------------------------------------------------------------
 
     function loadSiteSettings()
     {

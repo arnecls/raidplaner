@@ -105,6 +105,21 @@
                 }
             }
         }
+    
+        // --------------------------------------------------------------------------------------------
+    
+        public function throwError( $aStatement )
+        {
+            $Message = L("DatabaseError").": ";
+            $ErrorInfo = $aStatement->errorInfo();
+            
+            foreach($ErrorInfo as $Info)
+            {
+                $Message .= $Info.", ";
+            }
+            
+            throw new PDOException($Message);
+        }
     }
     
     // --------------------------------------------------------------------------------------------

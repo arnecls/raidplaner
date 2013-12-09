@@ -1,5 +1,5 @@
 <?php
-    @include_once dirname(__FILE__)."/../../config/config.drupal.php";
+    include_once_exists(dirname(__FILE__)."/../../config/config.drupal.php");
     
     array_push(PluginRegistry::$Classes, "DrupalBinding");
     
@@ -23,6 +23,86 @@
         public function isActive()
         {
             return defined("DRUPAL_BINDING") && DRUPAL_BINDING;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getConfig()
+        {
+            return array(
+                "database"  => defined("DRUPAL_DATABASE") ? DRUPAL_DATABASE : RP_DATABASE,
+                "user"      => defined("DRUPAL_USER") ? DRUPAL_USER : RP_USER,
+                "password"  => defined("DRUPAL_PASS") ? DRUPAL_PASS : RP_PASS,
+                "prefix"    => defined("DRUPAL_TABLE_PREFIX") ? DRUPAL_TABLE_PREFIX : "",
+                "members"   => defined("DRUPAL_RAIDLEAD_GROUPS") ? explode(",", DRUPAL_RAIDLEAD_GROUPS ) : [],
+                "leads"     => defined("DRUPAL_MEMBER_GROUPS") ? explode(",", DRUPAL_MEMBER_GROUPS ) : [],
+                "groups"    => true
+            );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        {
+            $Config = fopen( dirname(__FILE__)."/../../config/config.drupal.php", "w+" );
+            
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine(\"DRUPAL_BINDING\", ".(($aEnable) ? "true" : "false").");\n");
+            
+            if ( $aEnable )
+            {
+                fwrite( $Config, "\tdefine(\"DRUPAL_DATABASE\", \"".$aDatabase."\");\n");
+                fwrite( $Config, "\tdefine(\"DRUPAL_USER\", \"".$aUser."\");\n");
+                fwrite( $Config, "\tdefine(\"DRUPAL_PASS\", \"".$aPass."\");\n");
+                fwrite( $Config, "\tdefine(\"DRUPAL_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+            
+                fwrite( $Config, "\tdefine(\"DRUPAL_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
+                fwrite( $Config, "\tdefine(\"DRUPAL_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
+            }
+            
+            fwrite( $Config, "?>");    
+            fclose( $Config );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroups($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
+        {
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
+            
+            if ($Connector != null)
+            {
+                $GroupQuery = $Connector->prepare( "SELECT rid, name FROM `".$aPrefix."role` ORDER BY name" );
+                $Groups = [];
+                
+                if ( $GroupQuery->execute() )
+                {
+                    while ( $Group = $GroupQuery->fetch(PDO::FETCH_ASSOC) )
+                    {
+                        array_push( $Groups, array(
+                            "id"   => $Group["rid"], 
+                            "name" => $Group["name"])
+                        );
+                    }
+                }
+                else if ($aThrow)
+                {
+                    $Connector->throwError($GroupQuery);
+                }
+                
+                $GroupQuery->closeCursor();
+                return $Groups;
+            }
+            
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroupsFromConfig()
+        {
+            $Config = $this->getConfig();
+            return $this->getGroups($Config["database"], $Config["prefix"], $Config["user"], $Config["password"], false);
         }
         
         // -------------------------------------------------------------------------

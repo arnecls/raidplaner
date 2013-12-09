@@ -1,20 +1,14 @@
-<?php
-    header("Content-type: text/javascript");
-    define( "LOCALE_SETUP", true );
-    require_once(dirname(__FILE__)."/../../lib/private/locale.php");
-?>
-
 function checkConfigForm( a_OnSuccess, a_Parameter ) 
 {
     if ( $("#password").val().length == 0 )
     {
-        alert("<?php echo L("DatabasePasswordEmpty"); ?>");
+        alert(L("DatabasePasswordEmpty"));
         return;
     }
     
     if ( $("#password").val() != $("#password_check").val() )
     {
-        alert("<?php echo L("DatabasePasswordNoMatch"); ?>");
+        alert(L("DatabasePasswordNoMatch"));
         return;
     }
     
@@ -32,7 +26,7 @@ function checkConfigForm( a_OnSuccess, a_Parameter )
         async    : true,
         data     : parameter,
         success  : function(a_XMLData) { a_OnSuccess(a_XMLData,a_Parameter); },
-        error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
+        error    : function(aXHR, aStatus, aError) { alert(L("Error") + ":\n\n" + aError); }
     });
 }
 
@@ -50,11 +44,11 @@ function OnCheckConfigConnection( a_XMLData )
             errorString += $(this).text() + "\n";
         });
         
-        alert("<?php echo L("ConnectionTestFailed"); ?>:\n\n" + errorString );
+        alert(L("ConnectionTestFailed") + ":\n\n" + errorString );
     }
     else
     {
-        alert("<?php echo L("ConnectionTestOk"); ?>");
+        alert(L("ConnectionTestOk"));
     }
 }
 
@@ -92,7 +86,7 @@ function OnConfigSubmit( a_XMLData, a_NextPage )
             errorString += $(this).text() + "\n";
         });
         
-        alert("<?php echo L("ConnectionTestFailed"); ?>:\n\n" + errorString );
+        alert(L("ConnectionTestFailed") + ":\n\n" + errorString );
     }
     else
     {
@@ -115,7 +109,7 @@ function OnConfigSubmit( a_XMLData, a_NextPage )
             async    : true,
             data     : parameter,
             success  : function(aXHR) { if (ShowDBErrors(aXHR)) open(a_NextPage); },
-            error    : function(aXHR, aStatus, aError) { alert("<?php echo L("Error"); ?>:\n\n" + aError); }
+            error    : function(aXHR, aStatus, aError) { alert(L("Error") + ":\n\n" + aError); }
         });
     }
 }

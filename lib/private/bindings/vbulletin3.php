@@ -1,5 +1,5 @@
 <?php
-    @include_once dirname(__FILE__)."/../../config/config.vb3.php";
+    include_once_exists(dirname(__FILE__)."/../../config/config.vb3.php");
     
     array_push(PluginRegistry::$Classes, "VB3Binding");
     
@@ -15,6 +15,86 @@
         public function isActive()
         {
             return defined("VB3_BINDING") && VB3_BINDING;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getConfig()
+        {
+            return array(
+                "database"  => defined("VB3_DATABASE") ? VB3_DATABASE : RP_DATABASE,
+                "user"      => defined("VB3_USER") ? VB3_USER : RP_USER,
+                "password"  => defined("VB3_PASS") ? VB3_PASS : RP_PASS,
+                "prefix"    => defined("VB3_TABLE_PREFIX") ? VB3_TABLE_PREFIX : "vb_",
+                "members"   => defined("VB3_RAIDLEAD_GROUPS") ? explode(",", VB3_RAIDLEAD_GROUPS ) : [],
+                "leads"     => defined("VB3_MEMBER_GROUPS") ? explode(",", VB3_MEMBER_GROUPS ) : [],
+                "groups"    => true
+            );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        {
+            $Config = fopen( dirname(__FILE__)."/../../config/config.vb3.php", "w+" );
+            
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine(\"VB3_BINDING\", ".(($aEnable) ? "true" : "false").");\n");
+            
+            if ( $aEnable )
+            {
+                fwrite( $Config, "\tdefine(\"VB3_DATABASE\", \"".$aDatabase."\");\n");
+                fwrite( $Config, "\tdefine(\"VB3_USER\", \"".$aUser."\");\n");
+                fwrite( $Config, "\tdefine(\"VB3_PASS\", \"".$aPass."\");\n");
+                fwrite( $Config, "\tdefine(\"VB3_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                                             
+                fwrite( $Config, "\tdefine(\"VB3_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
+                fwrite( $Config, "\tdefine(\"VB3_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
+            }
+            
+            fwrite( $Config, "?>");    
+            fclose( $Config );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroups($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
+        {
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
+            
+            if ($Connector != null)
+            {
+                $GroupQuery = $Connector->prepare( "SELECT usergroupid, title FROM `".$aPrefix."usergroup` ORDER BY title" );
+                $Groups = [];
+                
+                if ( $GroupQuery->execute() )
+                {
+                    while ( $Group = $GroupQuery->fetch(PDO::FETCH_ASSOC) )
+                    {
+                        array_push( $Groups, array(
+                            "id"   => $Group["usergroupid"], 
+                            "name" => $Group["title"])
+                        );
+                    }
+                }
+                else if ($aThrow)
+                {
+                    $Connector->throwError($GroupQuery);
+                }
+                
+                $GroupQuery->closeCursor();
+                return $Groups;
+            }
+            
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroupsFromConfig()
+        {
+            $Config = $this->getConfig();
+            return $this->getGroups($Config["database"], $Config["prefix"], $Config["user"], $Config["password"], false);
         }
         
         // -------------------------------------------------------------------------

@@ -307,84 +307,84 @@
         
         
         // PHPBB3        
-        $gLocale[ "PHPBB3Binding" ]            = "PHPBB3";
-        $gLocale[ "PHPBB3ConfigFile" ]         = "PHPBB3 config file";
-        $gLocale[ "PHPBB3Database" ]           = "PHPBB3 database";
-        $gLocale[ "PHPBB3DatabaseEmpty" ]      = "PHPBB3 database name must not be empty.";
-        $gLocale[ "PHPBB3UserEmpty" ]          = "PHPBB3 user must not be empty";
-        $gLocale[ "PHPBB3PasswordEmpty" ]      = "PHPBB3 database password must not be empty.";
-        $gLocale[ "PHPBB3DBPasswordsMatch" ]   = "PHPBB3 database passwords did not match.";
+        $gLocale[ "phpbb3_Binding" ]            = "PHPBB3";
+        $gLocale[ "phpbb3_ConfigFile" ]         = "PHPBB3 config file";
+        $gLocale[ "phpbb3_Database" ]           = "PHPBB3 database";
+        $gLocale[ "phpbb3_DatabaseEmpty" ]      = "PHPBB3 database name must not be empty.";
+        $gLocale[ "phpbb3_UserEmpty" ]          = "PHPBB3 user must not be empty";
+        $gLocale[ "phpbb3_PasswordEmpty" ]      = "PHPBB3 database password must not be empty.";
+        $gLocale[ "phpbb3_DBPasswordsMatch" ]   = "PHPBB3 database passwords did not match.";
         
         // EQDKP
-        $gLocale[ "EQDKPBinding" ]             = "EQDKP";
-        $gLocale[ "EQDKPConfigFile" ]          = "EQDKP config file";
-        $gLocale[ "EQDKPDatabase" ]            = "EQDKP database";
-        $gLocale[ "EQDKPDatabaseEmpty" ]       = "EQDKP database name must not be empty.";
-        $gLocale[ "EQDKPUserEmpty" ]           = "EQDKP user must not be empty";
-        $gLocale[ "EQDKPPasswordEmpty" ]       = "EQDKP database password must not be empty.";
-        $gLocale[ "EQDKPDBPasswordsMatch" ]    = "EQDKP database passwords did not match.";
+        $gLocale[ "eqdkp_Binding" ]             = "EQDKP";
+        $gLocale[ "eqdkp_ConfigFile" ]          = "EQDKP config file";
+        $gLocale[ "eqdkp_Database" ]            = "EQDKP database";
+        $gLocale[ "eqdkp_DatabaseEmpty" ]       = "EQDKP database name must not be empty.";
+        $gLocale[ "eqdkp_UserEmpty" ]           = "EQDKP user must not be empty";
+        $gLocale[ "eqdkp_PasswordEmpty" ]       = "EQDKP database password must not be empty.";
+        $gLocale[ "eqdkp_DBPasswordsMatch" ]    = "EQDKP database passwords did not match.";
         
         // vBulletin
-        $gLocale[ "VBulletinBinding" ]         = "vBulletin3";
-        $gLocale[ "VBulletinConfigFile" ]      = "vBulletin config file";
-        $gLocale[ "VBulletinDatabase" ]        = "vBulletin database";
-        $gLocale[ "VBulletinDatabaseEmpty" ]   = "vBulletin database name must not be empty.";
-        $gLocale[ "VBulletinUserEmpty" ]       = "vBulletin user must not be empty";
-        $gLocale[ "VBulletinPasswordEmpty" ]   = "vBulletin Database password must not be empty.";
-        $gLocale[ "VBulletinDBPasswordsMatch" ]= "vBulletin Database passwords did not match.";
+        $gLocale[ "vb3_Binding" ]               = "vBulletin3";
+        $gLocale[ "vb3_ConfigFile" ]            = "vBulletin config file";
+        $gLocale[ "vb3_Database" ]              = "vBulletin database";
+        $gLocale[ "vb3_DatabaseEmpty" ]         = "vBulletin database name must not be empty.";
+        $gLocale[ "vb3_UserEmpty" ]             = "vBulletin user must not be empty";
+        $gLocale[ "vb3_PasswordEmpty" ]         = "vBulletin Database password must not be empty.";
+        $gLocale[ "vb3_DBPasswordsMatch" ]      = "vBulletin Database passwords did not match.";
         
         // MyBB
-        $gLocale[ "MyBBBinding" ]              = "MyBB";
-        $gLocale[ "MyBBConfigFile" ]           = "MyBB config file";
-        $gLocale[ "MyBBDatabase" ]             = "MyBB database";
-        $gLocale[ "MyBBDatabaseEmpty" ]        = "MyBB database name must not be empty.";
-        $gLocale[ "MyBBUserEmpty" ]            = "MyBB user must not be empty";
-        $gLocale[ "MyBBPasswordEmpty" ]        = "MyBB Database password must not be empty.";
-        $gLocale[ "MyBBDBPasswordsMatch" ]     = "MyBB Database passwords did not match.";
+        $gLocale[ "mybb_Binding" ]              = "MyBB";
+        $gLocale[ "mybb_ConfigFile" ]           = "MyBB config file";
+        $gLocale[ "mybb_Database" ]             = "MyBB database";
+        $gLocale[ "mybb_DatabaseEmpty" ]        = "MyBB database name must not be empty.";
+        $gLocale[ "mybb_UserEmpty" ]            = "MyBB user must not be empty";
+        $gLocale[ "mybb_PasswordEmpty" ]        = "MyBB Database password must not be empty.";
+        $gLocale[ "mybb_DBPasswordsMatch" ]     = "MyBB Database passwords did not match.";
         
         // SMF
-        $gLocale[ "SMFBinding" ]               = "SMF";
-        $gLocale[ "SMFConfigFile" ]            = "SMF config file";
-        $gLocale[ "SMFDatabase" ]              = "SMF database";
-        $gLocale[ "SMFDatabaseEmpty" ]         = "SMF database name must not be empty.";
-        $gLocale[ "SMFUserEmpty" ]             = "SMF user must not be empty";
-        $gLocale[ "SMFPasswordEmpty" ]         = "SMF Database password must not be empty.";
-        $gLocale[ "SMFDBPasswordsMatch" ]      = "SMF Database passwords did not match.";
+        $gLocale[ "smf_Binding" ]               = "SMF";
+        $gLocale[ "smf_ConfigFile" ]            = "SMF config file";
+        $gLocale[ "smf_Database" ]              = "SMF database";
+        $gLocale[ "smf_DatabaseEmpty" ]         = "SMF database name must not be empty.";
+        $gLocale[ "smf_UserEmpty" ]             = "SMF user must not be empty";
+        $gLocale[ "smf_PasswordEmpty" ]         = "SMF Database password must not be empty.";
+        $gLocale[ "smf_DBPasswordsMatch" ]      = "SMF Database passwords did not match.";
         
         // Vanilla
-        $gLocale[ "VanillaBinding" ]           = "Vanilla";
-        $gLocale[ "VanillaConfigFile" ]        = "Vanilla config file";
-        $gLocale[ "VanillaDatabase" ]          = "Vanilla database";
-        $gLocale[ "VanillaDatabaseEmpty" ]     = "Vanilla database name must not be empty.";
-        $gLocale[ "VanillaUserEmpty" ]         = "Vanilla user must not be empty";
-        $gLocale[ "VanillaPasswordEmpty" ]     = "Vanilla Database password must not be empty.";
-        $gLocale[ "VanillaDBPasswordsMatch" ]  = "Vanilla Database passwords did not match.";
+        $gLocale[ "vanilla_Binding" ]           = "Vanilla";
+        $gLocale[ "vanilla_ConfigFile" ]        = "Vanilla config file";
+        $gLocale[ "vanilla_Database" ]          = "Vanilla database";
+        $gLocale[ "vanilla_DatabaseEmpty" ]     = "Vanilla database name must not be empty.";
+        $gLocale[ "vanilla_UserEmpty" ]         = "Vanilla user must not be empty";
+        $gLocale[ "vanilla_PasswordEmpty" ]     = "Vanilla Database password must not be empty.";
+        $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Vanilla Database passwords did not match.";
         
         // Joomla
-        $gLocale[ "JoomlaBinding" ]            = "Joomla3";
-        $gLocale[ "JoomlaConfigFile" ]         = "Joomla3 config file";
-        $gLocale[ "JoomlaDatabase" ]           = "Joomla3 database";
-        $gLocale[ "JoomlaDatabaseEmpty" ]      = "Joomla3 database name must not be empty.";
-        $gLocale[ "JoomlaUserEmpty" ]          = "Joomla3 user must not be empty";
-        $gLocale[ "JoomlaPasswordEmpty" ]      = "Joomla3 Database password must not be empty.";
-        $gLocale[ "JoomlaDBPasswordsMatch" ]   = "Joomla3 Database passwords did not match.";
+        $gLocale[ "jml3_Binding" ]              = "Joomla3";
+        $gLocale[ "jml3_ConfigFile" ]           = "Joomla3 config file";
+        $gLocale[ "jml3_Database" ]             = "Joomla3 database";
+        $gLocale[ "jml3_DatabaseEmpty" ]        = "Joomla3 database name must not be empty.";
+        $gLocale[ "jml3_UserEmpty" ]            = "Joomla3 user must not be empty";
+        $gLocale[ "jml3_PasswordEmpty" ]        = "Joomla3 Database password must not be empty.";
+        $gLocale[ "jml3_DBPasswordsMatch" ]     = "Joomla3 Database passwords did not match.";
         
         // Drupal
-        $gLocale[ "DrupalBinding" ]            = "Drupal";
-        $gLocale[ "DrupalConfigFile" ]         = "Drupal config file";
-        $gLocale[ "DrupalDatabase" ]           = "Drupal database";
-        $gLocale[ "DrupalDatabaseEmpty" ]      = "Drupal database name must not be empty.";
-        $gLocale[ "DrupalUserEmpty" ]          = "Drupal user must not be empty";
-        $gLocale[ "DrupalPasswordEmpty" ]      = "Drupal Database password must not be empty.";
-        $gLocale[ "DrupalDBPasswordsMatch" ]   = "Drupal Database passwords did not match.";
+        $gLocale[ "drupal_Binding" ]            = "Drupal";
+        $gLocale[ "drupal_ConfigFile" ]         = "Drupal config file";
+        $gLocale[ "drupal_Database" ]           = "Drupal database";
+        $gLocale[ "drupal_DatabaseEmpty" ]      = "Drupal database name must not be empty.";
+        $gLocale[ "drupal_UserEmpty" ]          = "Drupal user must not be empty";
+        $gLocale[ "drupal_PasswordEmpty" ]      = "Drupal Database password must not be empty.";
+        $gLocale[ "drupal_DBPasswordsMatch" ]   = "Drupal Database passwords did not match.";
         
         // Wordpress
-        $gLocale[ "WpBinding" ]                = "Wordpress";
-        $gLocale[ "WpConfigFile" ]             = "Wordpress config file";
-        $gLocale[ "WpDatabase" ]               = "Wordpress database";
-        $gLocale[ "WpDatabaseEmpty" ]          = "Wordpress database name must not be empty.";
-        $gLocale[ "WpUserEmpty" ]              = "Wordpress user must not be empty";
-        $gLocale[ "WpPasswordEmpty" ]          = "Wordpress Database password must not be empty.";
-        $gLocale[ "WpDBPasswordsMatch" ]       = "Wordpress Database passwords did not match.";
+        $gLocale[ "wp_Binding" ]                = "Wordpress";
+        $gLocale[ "wp_ConfigFile" ]             = "Wordpress config file";
+        $gLocale[ "wp_Database" ]               = "Wordpress database";
+        $gLocale[ "wp_DatabaseEmpty" ]          = "Wordpress database name must not be empty.";
+        $gLocale[ "wp_UserEmpty" ]              = "Wordpress user must not be empty";
+        $gLocale[ "wp_PasswordEmpty" ]          = "Wordpress Database password must not be empty.";
+        $gLocale[ "wp_DBPasswordsMatch" ]       = "Wordpress Database passwords did not match.";
     }
 ?>

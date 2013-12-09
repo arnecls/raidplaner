@@ -1,5 +1,5 @@
 <?php
-    @include_once dirname(__FILE__)."/../../config/config.phpbb3.php";
+    include_once_exists(dirname(__FILE__)."/../../config/config.phpbb3.php");
     
     array_push(PluginRegistry::$Classes, "PHPBB3Binding");
     
@@ -18,6 +18,86 @@
         public function isActive()
         {
             return defined("PHPBB3_BINDING") && PHPBB3_BINDING;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getConfig()
+        {
+            return array(
+                "database"  => defined("PHPBB3_DATABASE") ? PHPBB3_DATABASE : RP_DATABASE,
+                "user"      => defined("PHPBB3_USER") ? PHPBB3_USER : RP_USER,
+                "password"  => defined("PHPBB3_PASS") ? PHPBB3_PASS : RP_PASS,
+                "prefix"    => defined("PHPBB3_TABLE_PREFIX") ? PHPBB3_TABLE_PREFIX : "phpbb_",
+                "members"   => defined("PHPBB3_RAIDLEAD_GROUPS") ? explode(",", PHPBB3_RAIDLEAD_GROUPS ) : [],
+                "leads"     => defined("PHPBB3_MEMBER_GROUPS") ? explode(",", PHPBB3_MEMBER_GROUPS ) : [],
+                "groups"    => true
+            );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        {
+            $Config = fopen( dirname(__FILE__)."/../../config/config.phpbb3.php", "w+" );
+            
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine(\"PHPBB3_BINDING\", ".(($aEnable) ? "true" : "false").");\n");
+            
+            if ( $aEnable )
+            {
+                fwrite( $Config, "\tdefine(\"PHPBB3_DATABASE\", \"".$aDatabase."\");\n");
+                fwrite( $Config, "\tdefine(\"PHPBB3_USER\", \"".$aUser."\");\n");
+                fwrite( $Config, "\tdefine(\"PHPBB3_PASS\", \"".$aPass."\");\n");
+                fwrite( $Config, "\tdefine(\"PHPBB3_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                                             
+                fwrite( $Config, "\tdefine(\"PHPBB3_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
+                fwrite( $Config, "\tdefine(\"PHPBB3_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
+            }
+            
+            fwrite( $Config, "?>");    
+            fclose( $Config );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroups($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
+        {
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
+            
+            if ($Connector != null)
+            {
+                $GroupQuery = $Connector->prepare( "SELECT group_id, group_name FROM `".$aPrefix."groups` ORDER BY group_name" );
+                $Groups = [];
+                
+                if ( $GroupQuery->execute() )
+                {
+                    while ( $Group = $GroupQuery->fetch(PDO::FETCH_ASSOC) )
+                    {
+                        array_push( $Groups, array(
+                            "id"   => $Group["group_id"], 
+                            "name" => $Group["group_name"])
+                        );
+                    }
+                }
+                else if ($aThrow)
+                {
+                    $Connector->throwError($GroupQuery);
+                }
+                
+                $GroupQuery->closeCursor();
+                return $Groups;
+            }
+            
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroupsFromConfig()
+        {
+            $Config = $this->getConfig();
+            return $this->getGroups($Config["database"], $Config["prefix"], $Config["user"], $Config["password"], false);
         }
         
         // -------------------------------------------------------------------------

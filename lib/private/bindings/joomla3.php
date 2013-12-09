@@ -1,5 +1,5 @@
 <?php
-    @include_once dirname(__FILE__)."/../../config/config.joomla3.php";
+    include_once_exists(dirname(__FILE__)."/../../config/config.joomla3.php");
     
     array_push(PluginRegistry::$Classes, "JoomlaBinding");
     
@@ -15,6 +15,86 @@
         public function isActive()
         {
             return defined("JML3_BINDING") && JML3_BINDING;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getConfig()
+        {
+            return array(
+                "database"  => defined("JML3_DATABASE") ? JML3_DATABASE : RP_DATABASE,
+                "user"      => defined("JML3_USER") ? JML3_USER : RP_USER,
+                "password"  => defined("JML3_PASS") ? JML3_PASS : RP_PASS,
+                "prefix"    => defined("JML3_TABLE_PREFIX") ? JML3_TABLE_PREFIX : "jml_",
+                "members"   => defined("JML3_RAIDLEAD_GROUPS") ? explode(",", JML3_RAIDLEAD_GROUPS ) : [],
+                "leads"     => defined("JML3_MEMBER_GROUPS") ? explode(",", JML3_MEMBER_GROUPS ) : [],
+                "groups"    => true
+            );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        {
+            $Config = fopen( dirname(__FILE__)."/../../config/config.joomla3.php", "w+" );
+            
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine(\"JML3_BINDING\", ".(($aEnable) ? "true" : "false").");\n");
+            
+            if ( $aEnable )
+            {
+                fwrite( $Config, "\tdefine(\"JML3_DATABASE\", \"".$aDatabase."\");\n");
+                fwrite( $Config, "\tdefine(\"JML3_USER\", \"".$aUser."\");\n");
+                fwrite( $Config, "\tdefine(\"JML3_PASS\", \"".$aPass."\");\n");
+                fwrite( $Config, "\tdefine(\"JML3_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+            
+                fwrite( $Config, "\tdefine(\"JML3_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
+                fwrite( $Config, "\tdefine(\"JML3_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
+            }
+            
+            fwrite( $Config, "?>");    
+            fclose( $Config );
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroups($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
+        {
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
+            
+            if ($Connector != null)
+            {
+                $GroupQuery = $Connector->prepare( "SELECT id, title FROM `".$aPrefix."usergroups` ORDER BY title" );
+                $Groups = [];
+                
+                if ( $GroupQuery->execute() )
+                {
+                    while ( $Group = $GroupQuery->fetch( PDO::FETCH_ASSOC ) )
+                    {
+                        array_push( $Groups, array(
+                            "id"   => $Group["id"], 
+                            "name" => $Group["title"])
+                        );
+                    }
+                }
+                else if ($aThrow)
+                {
+                    $Connector->throwError($GroupQuery);
+                }
+                
+                $GroupQuery->closeCursor();
+                return $Groups;
+            }
+            
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function getGroupsFromConfig()
+        {
+            $Config = $this->getConfig();
+            return $this->getGroups($Config["database"], $Config["prefix"], $Config["user"], $Config["password"], false);
         }
         
         // -------------------------------------------------------------------------
