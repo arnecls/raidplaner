@@ -40,6 +40,16 @@
         
         // -------------------------------------------------------------------------
         
+        public function isConfigWriteable()
+        {
+            $ConfigFolder = dirname(__FILE__)."/../../config";
+            $ConfigFile   = $ConfigFolder."/config.eqdkp.php";
+            
+            return (!file_exists($ConfigFile) && is_writable($ConfigFolder)) || is_writable($ConfigFile);
+        }
+        
+        // -------------------------------------------------------------------------
+        
         public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.eqdkp.php", "w+" );
