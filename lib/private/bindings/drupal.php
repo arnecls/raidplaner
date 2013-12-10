@@ -55,7 +55,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookie)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.drupal.php", "w+" );
             
@@ -68,6 +68,7 @@
                 fwrite( $Config, "\tdefine(\"DRUPAL_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"DRUPAL_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"DRUPAL_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                fwrite( $Config, "\tdefine(\"DRUPAL_COOKIE\", \"".$aCookie."\");\n");
             
                 fwrite( $Config, "\tdefine(\"DRUPAL_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"DRUPAL_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
