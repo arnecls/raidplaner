@@ -33,6 +33,7 @@
                 "members"    => defined("PHPBB3_RAIDLEAD_GROUPS") ? explode(",", PHPBB3_RAIDLEAD_GROUPS ) : [],
                 "leads"      => defined("PHPBB3_MEMBER_GROUPS") ? explode(",", PHPBB3_MEMBER_GROUPS ) : [],
                 "cookie"     => true,
+                "basedir"    => false,
                 "groups"     => true
             );
         }
@@ -201,7 +202,7 @@
                     $UserId = $UserData["session_user_id"];
                     $UserSt->closeCursor();
                     
-                    return $this->getUserInfoById($UserId);
+                    return $this->getUserInfoById($UserId); // ### return, userinfo ###
                 }
                 
                 $UserSt->closeCursor();

@@ -30,13 +30,16 @@
         public function getConfig()
         {
             return array(
-                "database"  => defined("DRUPAL_DATABASE") ? DRUPAL_DATABASE : RP_DATABASE,
-                "user"      => defined("DRUPAL_USER") ? DRUPAL_USER : RP_USER,
-                "password"  => defined("DRUPAL_PASS") ? DRUPAL_PASS : RP_PASS,
-                "prefix"    => defined("DRUPAL_TABLE_PREFIX") ? DRUPAL_TABLE_PREFIX : "",
-                "members"   => defined("DRUPAL_RAIDLEAD_GROUPS") ? explode(",", DRUPAL_RAIDLEAD_GROUPS ) : [],
-                "leads"     => defined("DRUPAL_MEMBER_GROUPS") ? explode(",", DRUPAL_MEMBER_GROUPS ) : [],
-                "groups"    => true
+                "database"   => defined("DRUPAL_DATABASE") ? DRUPAL_DATABASE : RP_DATABASE,
+                "user"       => defined("DRUPAL_USER") ? DRUPAL_USER : RP_USER,
+                "password"   => defined("DRUPAL_PASS") ? DRUPAL_PASS : RP_PASS,
+                "prefix"     => defined("DRUPAL_TABLE_PREFIX") ? DRUPAL_TABLE_PREFIX : "",
+                "cookiename" => defined("DRUPAL_COOKIE") ? DRUPAL_COOKIE : "http://".$_SERVER['HTTP_HOST'],
+                "members"    => defined("DRUPAL_RAIDLEAD_GROUPS") ? explode(",", DRUPAL_RAIDLEAD_GROUPS ) : [],
+                "leads"      => defined("DRUPAL_MEMBER_GROUPS") ? explode(",", DRUPAL_MEMBER_GROUPS ) : [],
+                "cookie"     => false,
+                "basedir"    => true,
+                "groups"     => true
             );
         }
         
@@ -179,7 +182,38 @@
         
         public function getExternalLoginData()
         {
-            return null;
+            if (defined("DRUPAL_COOKIE"))
+            {
+                $DrupalBaseDir = substr(DRUPAL_COOKIE, strpos(DRUPAL_COOKIE, "://")+3);
+            
+                $Prefix = ini_get('session.cookie_secure') ? 'SSESS' : 'SESS';
+                $CookieName = $Prefix.substr(hash('sha256', $DrupalBaseDir), 0, 32);
+                
+                if (isset($_COOKIE[$CookieName]))
+                {
+                    if ($this->mConnector == null)
+                        $this->mConnector = new Connector(SQL_HOST, DRUPAL_DATABASE, DRUPAL_USER, DRUPAL_PASS);
+                    
+                    $UserSt = $this->mConnector->prepare("SELECT uid ".
+                         "FROM `".DRUPAL_TABLE_PREFIX."sessions` ".
+                         "WHERE sid = :sid LIMIT 1");
+                                              
+                    $UserSt->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
+                    
+                    if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                    {
+                        $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                        $UserId = $UserData["uid"];
+                        $UserSt->closeCursor();
+                        
+                        return $this->getUserInfoById($UserId); // ### return, userinfo ###
+                    }
+                    
+                    $UserSt->closeCursor();
+                }
+            }
+            
+            return null;  
         }
         
         // -------------------------------------------------------------------------
