@@ -85,7 +85,7 @@
 
         // --------------------------------------------------------------------------------------------
 
-        public function __construct()
+        public function __construct($aAllowAutoLogin)
         {
             assert(self::$mInstance == NULL);
 
@@ -161,7 +161,7 @@
             // Check if login was requested (direct or indirect)
             // Process all available bindings in their order of registration 
             
-            if ( !$this->processLoginRequest($LoginUser) )
+            if ( !$this->processLoginRequest($LoginUser, $aAllowAutoLogin) )
             {
                 // All checks failed -> logout            
                 $this->resetUser();
@@ -170,10 +170,10 @@
 
         // --------------------------------------------------------------------------------------------
 
-        public static function getInstance()
+        public static function getInstance($aAllowAutoLogin=false)
         {
             if (self::$mInstance == NULL)
-                self::$mInstance = new UserProxy();
+                self::$mInstance = new UserProxy($aAllowAutoLogin);
 
             return self::$mInstance;
         }
@@ -182,11 +182,11 @@
 
         private function resetUser()
         {
-            $this->UserGroup  = "none";
-            $this->UserId     = 0;
-            $this->UserName   = "";
-            $this->Characters = array();
-            $this->Settings   = array();
+            $this->UserGroup     = "none";
+            $this->UserId        = 0;
+            $this->UserName      = "";
+            $this->Characters    = array();
+            $this->Settings      = array();
             
             unset($_SESSION["User"]);
             unset($_SESSION["Calendar"]);
@@ -409,6 +409,30 @@
         
         // --------------------------------------------------------------------------------------------
 
+        public function getExternalLoginData()
+        {
+            if (defined("ALLOW_AUTO_LOGIN") && ALLOW_AUTO_LOGIN)
+            {         
+                // Iterate all bindings and search for the given user
+                
+                foreach( self::$mBindings as $Binding )
+                {
+                    if ( $Binding->isActive() )
+                    {
+                        $UserData = $Binding->getExternalLoginData();
+                        if ( $UserData != null )
+                            return $UserData;
+                    }
+                }
+            }
+            
+            // No external login detected
+            
+            return null;
+        }
+        
+        // --------------------------------------------------------------------------------------------
+
         public function getUserCredentialsById( $aUserId, $aBindingName )
         {
             // Iterate all bindings and search for the given user
@@ -531,99 +555,126 @@
 
         // --------------------------------------------------------------------------------------------
         
-        private function processLoginRequest( $aLoginUser )
+        private function processLoginRequest( $aLoginUser, $aAllowAutoLogin )
         {
-            if ( $aLoginUser == null )
-                return false; // ### return, no data ###
-
             $Connector = Connector::getInstance();
+            $UserData = null;
                 
-            $UserSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE Login = :Login LIMIT 1" );
-            $UserSt->bindValue(":Login", $aLoginUser["Login"], PDO::PARAM_STR );
-            $UserSt->execute();
-            
-            if ($UserSt->rowcount() > 0)
+            if ($aLoginUser == null)
             {
-                $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
-                $UserSt->closeCursor();
-                                
-                if ( $aLoginUser["Cookie"] )
-                {
-                    // User logged in using the encrypted cookie data.
-                    // In this case just check the password.
+                if ( !$aAllowAutoLogin )
+                    return false; // ### return, no data ###
                     
-                    $PasswordCheckOk = ($aLoginUser["Password"] == $UserData["Password"]);
+                // Check for external logins
+                
+                $ExternalUser = $this->getExternalLoginData();
+                
+                if ($ExternalUser == null)
+                    return false; // ### return, no data ###
+                    
+                // try to fetch the externally bound user 
+                
+                $UserSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
+                $UserSt->bindValue(":UserId", $ExternalUser->UserId, PDO::PARAM_INT );
+                $UserSt->bindValue(":Binding", $ExternalUser->BindingName, PDO::PARAM_STR );
+                $UserSt->execute();
+                
+                if ($UserSt->rowcount() > 0)
+                {
+                    $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
                 }
-                else
+                
+                $UserSt->closeCursor();
+                if ($UserData == null)
+                    return false; // ### return, not registered ###               
+            }
+            else
+            {           
+                // Try to login by $aLoginUser
+                
+                $PasswordCheckOk = false;
+                                
+                $UserSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE Login = :Login LIMIT 1" );
+                $UserSt->bindValue(":Login", $aLoginUser["Login"], PDO::PARAM_STR );
+                $UserSt->execute();
+                
+                if ($UserSt->rowcount() > 0)
                 {
-                    if ( defined("USE_CLEARTEXT_PASSWORDS") && USE_CLEARTEXT_PASSWORDS )
+                    $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
+                                                        
+                    if ( $aLoginUser["Cookie"] )
                     {
-                        // User logged in using a cleartext password.
-                        // In this case we encrypt locally via php.
+                        // User logged in using the encrypted cookie data.
+                        // In this case just check the password.
                         
-                        $UserId = (($UserData["BindingActive"] == "false") || ($UserData["ExternalBinding"] == "none")) 
-                            ? $UserData["UserId"] 
-                            : $UserData["ExternalId"];
-                    
-                        
-                        $PasswordCheckOk = $this->validateCleartextPassword( $aLoginUser["Password"], $UserId, $UserData["ExternalBinding"] );
+                        $PasswordCheckOk = ($aLoginUser["Password"] == $UserData["Password"]);
                     }
                     else
-                    { 
-                        // User logged in using one-time-key authentication
-                        // In this case we get a HMAC based password and need 
-                        // to reset the key
-                        
-                        $this->invalidateOneTimeKey( $UserData["UserId"] );                        
-                        $HashedStoredPassword = hash("sha256", $UserData["OneTimeKey"].$UserData["Password"]);                            
-                        $PasswordCheckOk = ($aLoginUser["Password"] == $HashedStoredPassword);
-                    }
-                }
-                
-                // Test and proceed ...                
-                
-                if ( $PasswordCheckOk )
-                {
-                    
-                    // Login successfull. Prepare session.
-                    // Update the current user entry to fix the external data binding (password, etc.)
-                    // and create a new session key while at it.
-                    
-                    $SessionKey = $this->updateSession( $UserData );
-                    
-                    // Encrypt session cookie
-                        
-                    $Data = array( "Login"    => $UserData["Login"],
-                                   "Password" => $UserData["Password"],
-                                   "Remote"   => $_SERVER["REMOTE_ADDR"] );
-
-                    $CookieData = intval($UserData["UserId"]).",".implode(",",self::encryptData($SessionKey, $Data));
-                    
-                    // Now query and set the session variables
-                    
-                    $_SESSION["User"] = $CookieData;
-                    $this->UserGroup  = $UserData["Group"];
-                    $this->UserId     = $UserData["UserId"];
-                    $this->UserName   = $UserData["Login"];
-                    
-                    $this->updateCharacters();
-                    $this->updateSettings();
-                    
-                    // Process sticky cookie
-                    // The sticky cookie stores the encrypted "credentials" part of the session
-                    
-                    if ( (isset($_REQUEST["sticky"]) && ($_REQUEST["sticky"] == "true")) ||
-                         (isset($_COOKIE[self::$mStickyCookieName.$this->SiteId])) )
                     {
-                        $this->setSessionCookie($CookieData);
+                        if ( defined("USE_CLEARTEXT_PASSWORDS") && USE_CLEARTEXT_PASSWORDS )
+                        {
+                            // User logged in using a cleartext password.
+                            // In this case we encrypt locally via php.
+                            
+                            $UserId = (($UserData["BindingActive"] == "false") || ($UserData["ExternalBinding"] == "none")) 
+                                ? $UserData["UserId"] 
+                                : $UserData["ExternalId"];
+                        
+                            
+                            $PasswordCheckOk = $this->validateCleartextPassword( $aLoginUser["Password"], $UserId, $UserData["ExternalBinding"] );
+                        }
+                        else
+                        { 
+                            // User logged in using one-time-key authentication
+                            // In this case we get a HMAC based password and need 
+                            // to reset the key
+                            
+                            $this->invalidateOneTimeKey( $UserData["UserId"] );                        
+                            $HashedStoredPassword = hash("sha256", $UserData["OneTimeKey"].$UserData["Password"]);                            
+                            $PasswordCheckOk = ($aLoginUser["Password"] == $HashedStoredPassword);
+                        }
                     }
-                    
-                    return true; // ### return, logged in ###
                 }
+                
+                $UserSt->closeCursor();                
+                if ( !$PasswordCheckOk )
+                    return false; // ### return, invalid password ###
             }
             
-            $UserSt->closeCursor();
-            return false;
+            // Login successfull. Prepare session.
+            // Update the current user entry to fix the external data binding (password, etc.)
+            // and create a new session key while at it.
+            
+            $SessionKey = $this->updateSession( $UserData );
+            
+            // Encrypt session cookie
+                
+            $Data = array( "Login"    => $UserData["Login"],
+                           "Password" => $UserData["Password"],
+                           "Remote"   => $_SERVER["REMOTE_ADDR"] );
+
+            $CookieData = intval($UserData["UserId"]).",".implode(",",self::encryptData($SessionKey, $Data));
+            
+            // Now query and set the session variables
+            
+            $_SESSION["User"] = $CookieData;
+            $this->UserGroup  = $UserData["Group"];
+            $this->UserId     = $UserData["UserId"];
+            $this->UserName   = $UserData["Login"];
+            
+            $this->updateCharacters();
+            $this->updateSettings();
+            
+            // Process sticky cookie
+            // The sticky cookie stores the encrypted "credentials" part of the session
+            
+            if ( (isset($_REQUEST["sticky"]) && ($_REQUEST["sticky"] == "true")) ||
+                 (isset($_COOKIE[self::$mStickyCookieName.$this->SiteId])) )
+            {
+                $this->setSessionCookie($CookieData);
+            }
+            
+            return true; // ### return, logged in ###
         }
         
         // --------------------------------------------------------------------------------------------

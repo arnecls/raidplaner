@@ -25,7 +25,7 @@
     // Init user and start session
     
     require_once("lib/private/userproxy.class.php");
-    UserProxy::getInstance();
+    UserProxy::getInstance(true);
     
     // Site framework
     
@@ -95,7 +95,7 @@
             ?>
             
             <div id="menu">
-                <?php if ( registeredUser() ) { ?>                
+                <?php if (registeredUser()) { ?>                
                 <span class="logout">
                     <form id="logout" method="post" action="index.php">
                         <input type="hidden" name="nocheck"/>

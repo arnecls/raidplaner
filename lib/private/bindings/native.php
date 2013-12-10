@@ -42,6 +42,13 @@
         
         // -------------------------------------------------------------------------
         
+        public function getExternalLoginData()
+        {
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
         public function getUserInfoByName( $aUserName )
         {
             $Connector = Connector::getInstance();

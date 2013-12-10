@@ -156,6 +156,13 @@
         
         // -------------------------------------------------------------------------
         
+        public function getExternalLoginData()
+        {
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
         private static function extractSaltPart( $aPassword )
         {            
             $Count = strpos(self::$Itoa64, $aPassword[3]);

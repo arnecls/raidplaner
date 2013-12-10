@@ -177,6 +177,13 @@
         
         // -------------------------------------------------------------------------
         
+        public function getExternalLoginData()
+        {
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
         public function getUserInfoByName( $aUserName )
         {
             if ($this->mConnector == null)
