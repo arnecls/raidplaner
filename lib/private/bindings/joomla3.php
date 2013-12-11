@@ -26,8 +26,10 @@
                 "user"      => defined("JML3_USER") ? JML3_USER : RP_USER,
                 "password"  => defined("JML3_PASS") ? JML3_PASS : RP_PASS,
                 "prefix"    => defined("JML3_TABLE_PREFIX") ? JML3_TABLE_PREFIX : "jml_",
+                "cookie"    => defined("JML3_SECRET") ? JML3_SECRET : "0123456789ABCDEF",
                 "members"   => defined("JML3_RAIDLEAD_GROUPS") ? explode(",", JML3_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("JML3_MEMBER_GROUPS") ? explode(",", JML3_MEMBER_GROUPS ) : [],
+                "cookie_ex" => true,
                 "groups"    => true
             );
         }
@@ -44,7 +46,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.joomla3.php", "w+" );
             
@@ -57,6 +59,7 @@
                 fwrite( $Config, "\tdefine(\"JML3_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"JML3_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"JML3_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                fwrite( $Config, "\tdefine(\"JML3_SECRET\", \"".$aCookieEx."\");\n");
             
                 fwrite( $Config, "\tdefine(\"JML3_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"JML3_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -153,7 +156,37 @@
         
         public function getExternalLoginData()
         {
-            return null;
+            $UserInfo = null;
+            
+            // Fetch user info if seesion cookie is set
+            
+            $CookieName = md5(md5(JML3_SECRET."site"));
+            
+            if (isset($_COOKIE[$CookieName]))
+            {
+                if ($this->mConnector == null)
+                    $this->mConnector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS);
+            
+                $UserSt = $this->mConnector->prepare("SELECT userid ".
+                    "FROM `".JML3_TABLE_PREFIX."session` ".
+                    "WHERE session_id = :sid LIMIT 1");
+                                          
+                $UserSt->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
+                
+                if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                {
+                    // Get user info by external id
+                    
+                    $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                    $UserId = $UserData["userid"];
+                    
+                    $UserInfo = $this->getUserInfoById($UserId);
+                }
+                
+                $UserSt->closeCursor();
+            }
+            
+            return $UserInfo;
         }
         
         // -------------------------------------------------------------------------

@@ -30,16 +30,15 @@
         public function getConfig()
         {
             return array(
-                "database"   => defined("DRUPAL_DATABASE") ? DRUPAL_DATABASE : RP_DATABASE,
-                "user"       => defined("DRUPAL_USER") ? DRUPAL_USER : RP_USER,
-                "password"   => defined("DRUPAL_PASS") ? DRUPAL_PASS : RP_PASS,
-                "prefix"     => defined("DRUPAL_TABLE_PREFIX") ? DRUPAL_TABLE_PREFIX : "",
-                "cookiename" => defined("DRUPAL_COOKIE") ? DRUPAL_COOKIE : "http://".$_SERVER['HTTP_HOST'],
-                "members"    => defined("DRUPAL_RAIDLEAD_GROUPS") ? explode(",", DRUPAL_RAIDLEAD_GROUPS ) : [],
-                "leads"      => defined("DRUPAL_MEMBER_GROUPS") ? explode(",", DRUPAL_MEMBER_GROUPS ) : [],
-                "cookie"     => false,
-                "basedir"    => true,
-                "groups"     => true
+                "database"  => defined("DRUPAL_DATABASE") ? DRUPAL_DATABASE : RP_DATABASE,
+                "user"      => defined("DRUPAL_USER") ? DRUPAL_USER : RP_USER,
+                "password"  => defined("DRUPAL_PASS") ? DRUPAL_PASS : RP_PASS,
+                "prefix"    => defined("DRUPAL_TABLE_PREFIX") ? DRUPAL_TABLE_PREFIX : "",
+                "cookie"    => defined("DRUPAL_ROOT") ? DRUPAL_ROOT : "http://".$_SERVER['HTTP_HOST'],
+                "members"   => defined("DRUPAL_RAIDLEAD_GROUPS") ? explode(",", DRUPAL_RAIDLEAD_GROUPS ) : [],
+                "leads"     => defined("DRUPAL_MEMBER_GROUPS") ? explode(",", DRUPAL_MEMBER_GROUPS ) : [],
+                "cookie_ex" => true,
+                "groups"    => true
             );
         }
         
@@ -55,7 +54,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookie)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.drupal.php", "w+" );
             
@@ -68,7 +67,7 @@
                 fwrite( $Config, "\tdefine(\"DRUPAL_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"DRUPAL_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"DRUPAL_TABLE_PREFIX\", \"".$aPrefix."\");\n");
-                fwrite( $Config, "\tdefine(\"DRUPAL_COOKIE\", \"".$aCookie."\");\n");
+                fwrite( $Config, "\tdefine(\"DRUPAL_ROOT\", \"".$aCookieEx."\");\n");
             
                 fwrite( $Config, "\tdefine(\"DRUPAL_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"DRUPAL_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -183,15 +182,21 @@
         
         public function getExternalLoginData()
         {
-            if (defined("DRUPAL_COOKIE"))
+            $UserInfo = null;
+            
+            if (defined("DRUPAL_ROOT"))
             {
-                $DrupalBaseDir = substr(DRUPAL_COOKIE, strpos(DRUPAL_COOKIE, "://")+3);
+                // Derive the drupal cookie name from its root path
+                
+                $DrupalBaseDir = substr(DRUPAL_ROOT, strpos(DRUPAL_ROOT, "://")+3);
             
                 $Prefix = ini_get('session.cookie_secure') ? 'SSESS' : 'SESS';
                 $CookieName = $Prefix.substr(hash('sha256', $DrupalBaseDir), 0, 32);
                 
                 if (isset($_COOKIE[$CookieName]))
                 {
+                    // Query the user id and info
+                    
                     if ($this->mConnector == null)
                         $this->mConnector = new Connector(SQL_HOST, DRUPAL_DATABASE, DRUPAL_USER, DRUPAL_PASS);
                     
@@ -205,16 +210,14 @@
                     {
                         $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
                         $UserId = $UserData["uid"];
-                        $UserSt->closeCursor();
-                        
-                        return $this->getUserInfoById($UserId); // ### return, userinfo ###
+                        $UserInfo = $this->getUserInfoById($UserId); // ### return, userinfo ###
                     }
                     
                     $UserSt->closeCursor();
                 }
             }
             
-            return null;  
+            return $UserInfo;  
         }
         
         // -------------------------------------------------------------------------

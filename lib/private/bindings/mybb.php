@@ -22,16 +22,14 @@
         public function getConfig()
         {
             return array(
-                "database"   => defined("MYBB_DATABASE") ? MYBB_DATABASE : RP_DATABASE,
-                "user"       => defined("MYBB_USER") ? MYBB_USER : RP_USER,
-                "password"   => defined("MYBB_PASS") ? MYBB_PASS : RP_PASS,
-                "prefix"     => defined("MYBB_TABLE_PREFIX") ? MYBB_TABLE_PREFIX : "mybb_",
-                "cookiename" => defined("MYBB_COOKIE") ? MYBB_COOKIE : "",
-                "members"    => defined("MYBB_RAIDLEAD_GROUPS") ? explode(",", MYBB_RAIDLEAD_GROUPS ) : [],
-                "leads"      => defined("MYBB_MEMBER_GROUPS") ? explode(",", MYBB_MEMBER_GROUPS ) : [],
-                "cookie"     => true,
-                "basedir"    => false,
-                "groups"     => true
+                "database"  => defined("MYBB_DATABASE") ? MYBB_DATABASE : RP_DATABASE,
+                "user"      => defined("MYBB_USER") ? MYBB_USER : RP_USER,
+                "password"  => defined("MYBB_PASS") ? MYBB_PASS : RP_PASS,
+                "prefix"    => defined("MYBB_TABLE_PREFIX") ? MYBB_TABLE_PREFIX : "mybb_",
+                "members"   => defined("MYBB_RAIDLEAD_GROUPS") ? explode(",", MYBB_RAIDLEAD_GROUPS ) : [],
+                "leads"     => defined("MYBB_MEMBER_GROUPS") ? explode(",", MYBB_MEMBER_GROUPS ) : [],
+                "cookie_ex" => false,
+                "groups"    => true
             );
         }
         
@@ -47,7 +45,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookie)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.mybb.php", "w+" );
             
@@ -60,7 +58,6 @@
                 fwrite( $Config, "\tdefine(\"MYBB_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"MYBB_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"MYBB_TABLE_PREFIX\", \"".$aPrefix."\");\n");
-                fwrite( $Config, "\tdefine(\"MYBB_COOKIE\", \"".$aCookie."\");\n");
             
                 fwrite( $Config, "\tdefine(\"MYBB_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"MYBB_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -164,30 +161,47 @@
         
         public function getExternalLoginData()
         {
-            if (defined("MYBB_COOKIE") && isset($_COOKIE[MYBB_COOKIE."sid"]))
+            if ($this->mConnector == null)
+                $this->mConnector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS);
+            
+            $UserInfo = null;
+            
+            // Fetch cookie name
+            
+            $CookieSt = $this->mConnector->prepare("SELECT value ".
+                "FROM `".MYBB_TABLE_PREFIX."settings` ".
+                "WHERE name = 'cookieprefix' LIMIT 1");
+            
+            if ( $CookieSt->execute() && ($CookieSt->rowCount() > 0) )
             {
-                if ($this->mConnector == null)
-                    $this->mConnector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS);
+                $ConfigData = $CookieSt->fetch( PDO::FETCH_ASSOC );
+                $CookieName = $ConfigData["value"]."sid";
                 
-                $UserSt = $this->mConnector->prepare("SELECT uid ".
-                     "FROM `".MYBB_TABLE_PREFIX."sessions` ".
-                     "WHERE sid = :sid LIMIT 1");
-                                          
-                $UserSt->BindValue( ":sid", $_COOKIE[MYBB_COOKIE."sid"], PDO::PARAM_STR );
-                
-                if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
-                {
-                    $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
-                    $UserId = $UserData["uid"];
-                    $UserSt->closeCursor();
+                // Fetch user info if seesion cookie is set
                     
-                    return $this->getUserInfoById($UserId); // ### return, userinfo ###
+                if (isset($_COOKIE[$CookieName]))
+                {
+                    $UserSt = $this->mConnector->prepare("SELECT uid ".
+                        "FROM `".MYBB_TABLE_PREFIX."sessions` ".
+                        "WHERE sid = :sid LIMIT 1");
+                                              
+                    $UserSt->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
+                    
+                    if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                    {
+                        // Get user info by external id
+                        
+                        $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                        $UserId = $UserData["uid"];                        
+                        $UserInfo = $this->getUserInfoById($UserId);
+                    }
+                    
+                    $UserSt->closeCursor();
                 }
-                
-                $UserSt->closeCursor();
             }
             
-            return null;
+            $CookieSt->closeCursor();
+            return $UserInfo;
         }
         
         // -------------------------------------------------------------------------

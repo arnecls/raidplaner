@@ -28,16 +28,14 @@
         public function getConfig()
         {
             return array(
-                "database"   => defined("EQDKP_DATABASE") ? EQDKP_DATABASE : RP_DATABASE,
-                "user"       => defined("EQDKP_USER") ? EQDKP_USER : RP_USER,
-                "password"   => defined("EQDKP_PASS") ? EQDKP_PASS : RP_PASS,
-                "prefix"     => defined("EQDKP_TABLE_PREFIX") ? EQDKP_TABLE_PREFIX : "eqdkp_",
-                "cookiename" => defined("EQDKP_COOKIE") ? EQDKP_COOKIE : "eqdkp_123456",
-                "members"    => [],
-                "leads"      => [],
-                "cookie"     => true,
-                "basedir"    => false,
-                "groups"     => false
+                "database"  => defined("EQDKP_DATABASE") ? EQDKP_DATABASE : RP_DATABASE,
+                "user"      => defined("EQDKP_USER") ? EQDKP_USER : RP_USER,
+                "password"  => defined("EQDKP_PASS") ? EQDKP_PASS : RP_PASS,
+                "prefix"    => defined("EQDKP_TABLE_PREFIX") ? EQDKP_TABLE_PREFIX : "eqdkp_",
+                "members"   => [],
+                "leads"     => [],
+                "cookie_ex" => false,
+                "groups"    => false
             );
         }
         
@@ -53,7 +51,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookie)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.eqdkp.php", "w+" );
             
@@ -66,7 +64,6 @@
                 fwrite( $Config, "\tdefine(\"EQDKP_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"EQDKP_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"EQDKP_TABLE_PREFIX\", \"".$aPrefix."\");\n");
-                fwrite( $Config, "\tdefine(\"EQDKP_COOKIE\", \"".$aCookie."\");\n");
             }
             
             fwrite( $Config, "?>");    
@@ -153,31 +150,47 @@
         
         public function getExternalLoginData()
         {
-            if (defined("EQDKP_COOKIE") && isset($_COOKIE[EQDKP_COOKIE."_sid"]))
+            if ($this->mConnector == null)
+                $this->mConnector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
+            
+            $UserInfo = null;
+            
+            // Fetch cookie name
+            
+            $CookieSt = $this->mConnector->prepare("SELECT config_value ".
+                "FROM `".EQDKP_TABLE_PREFIX."backup_cnf` ".
+                "WHERE config_name = 'cookie_name' LIMIT 1");
+                
+            if ( $CookieSt->execute() && ($CookieSt->rowCount() > 0) )
             {
-                if ($this->mConnector == null)
-                    $this->mConnector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
+                $ConfigData = $CookieSt->fetch( PDO::FETCH_ASSOC );
+                $CookieName = $ConfigData["config_value"]."_sid";
                 
-                $UserSt = $this->mConnector->prepare("SELECT session_user_id ".
-                     "FROM `".EQDKP_TABLE_PREFIX."sessions` ".
-                     "WHERE session_id = :sid LIMIT 1");
-                                          
-                $UserSt->BindValue( ":sid", $_COOKIE[EQDKP_COOKIE."_sid"], PDO::PARAM_STR );
-                
-                if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                // Fetch user info if seesion cookie is set
+                    
+                if (isset($_COOKIE[$CookieName]))
                 {
-                    $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                    $UserSt = $this->mConnector->prepare("SELECT session_user_id ".
+                        "FROM `".EQDKP_TABLE_PREFIX."sessions` ".
+                        "WHERE session_id = :sid LIMIT 1");
+                                              
+                    $UserSt->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
                     
-                    $UserId = $UserData["session_user_id"];
+                    if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                    {
+                        // Get user info by external id
+                        
+                        $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                        $UserId = $UserData["session_user_id"];                        
+                        $UserInfo = $this->getUserInfoById($UserId);
+                    }
+                    
                     $UserSt->closeCursor();
-                    
-                    return $this->getUserInfoById($UserId); // ### return, userinfo ###
                 }
-                
-                $UserSt->closeCursor();
             }
             
-            return null;
+            $CookieSt->closeCursor();
+            return $UserInfo;
         }
         
         // -------------------------------------------------------------------------

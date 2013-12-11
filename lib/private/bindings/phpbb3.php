@@ -25,16 +25,14 @@
         public function getConfig()
         {
             return array(
-                "database"   => defined("PHPBB3_DATABASE") ? PHPBB3_DATABASE : RP_DATABASE,
-                "user"       => defined("PHPBB3_USER") ? PHPBB3_USER : RP_USER,
-                "password"   => defined("PHPBB3_PASS") ? PHPBB3_PASS : RP_PASS,
-                "prefix"     => defined("PHPBB3_TABLE_PREFIX") ? PHPBB3_TABLE_PREFIX : "phpbb_",
-                "cookiename" => defined("PHPBB3_COOKIE") ? PHPBB3_COOKIE : "phpbb3__123456",
-                "members"    => defined("PHPBB3_RAIDLEAD_GROUPS") ? explode(",", PHPBB3_RAIDLEAD_GROUPS ) : [],
-                "leads"      => defined("PHPBB3_MEMBER_GROUPS") ? explode(",", PHPBB3_MEMBER_GROUPS ) : [],
-                "cookie"     => true,
-                "basedir"    => false,
-                "groups"     => true
+                "database"  => defined("PHPBB3_DATABASE") ? PHPBB3_DATABASE : RP_DATABASE,
+                "user"      => defined("PHPBB3_USER") ? PHPBB3_USER : RP_USER,
+                "password"  => defined("PHPBB3_PASS") ? PHPBB3_PASS : RP_PASS,
+                "prefix"    => defined("PHPBB3_TABLE_PREFIX") ? PHPBB3_TABLE_PREFIX : "phpbb_",
+                "members"   => defined("PHPBB3_RAIDLEAD_GROUPS") ? explode(",", PHPBB3_RAIDLEAD_GROUPS ) : [],
+                "leads"     => defined("PHPBB3_MEMBER_GROUPS") ? explode(",", PHPBB3_MEMBER_GROUPS ) : [],
+                "cookie_ex" => false,
+                "groups"    => true
             );
         }
         
@@ -50,7 +48,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookie)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.phpbb3.php", "w+" );
             
@@ -63,7 +61,6 @@
                 fwrite( $Config, "\tdefine(\"PHPBB3_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"PHPBB3_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"PHPBB3_TABLE_PREFIX\", \"".$aPrefix."\");\n");
-                fwrite( $Config, "\tdefine(\"PHPBB3_COOKIE\", \"".$aCookie."\");\n");
                                              
                 fwrite( $Config, "\tdefine(\"PHPBB3_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"PHPBB3_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -185,30 +182,47 @@
         
         public function getExternalLoginData()
         {
-            if (defined("PHPBB3_COOKIE") && isset($_COOKIE[PHPBB3_COOKIE."_sid"]))
+            if ($this->mConnector == null)
+                $this->mConnector = new Connector(SQL_HOST, PHPBB3_DATABASE, PHPBB3_USER, PHPBB3_PASS);
+            
+            $UserInfo = null;
+            
+            // Fetch cookie name
+            
+            $CookieSt = $this->mConnector->prepare("SELECT config_value ".
+                "FROM `".PHPBB3_TABLE_PREFIX."config` ".
+                "WHERE config_name = 'cookie_name' LIMIT 1");
+            
+            if ( $CookieSt->execute() && ($CookieSt->rowCount() > 0) )
             {
-                if ($this->mConnector == null)
-                    $this->mConnector = new Connector(SQL_HOST, PHPBB3_DATABASE, PHPBB3_USER, PHPBB3_PASS);
+                $ConfigData = $CookieSt->fetch( PDO::FETCH_ASSOC );
+                $CookieName = $ConfigData["config_value"]."_sid";
                 
-                $UserSt = $this->mConnector->prepare("SELECT session_user_id ".
-                     "FROM `".PHPBB3_TABLE_PREFIX."sessions` ".
-                     "WHERE session_id = :sid LIMIT 1");
-                                          
-                $UserSt->BindValue( ":sid", $_COOKIE[PHPBB3_COOKIE."_sid"], PDO::PARAM_STR );
-                
-                if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
-                {
-                    $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
-                    $UserId = $UserData["session_user_id"];
-                    $UserSt->closeCursor();
+                // Fetch user info if seesion cookie is set
                     
-                    return $this->getUserInfoById($UserId); // ### return, userinfo ###
+                if (isset($_COOKIE[$CookieName]))
+                {
+                    $UserSt = $this->mConnector->prepare("SELECT session_user_id ".
+                        "FROM `".PHPBB3_TABLE_PREFIX."sessions` ".
+                        "WHERE session_id = :sid LIMIT 1");
+                                              
+                    $UserSt->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
+                    
+                    if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                    {
+                        // Get user info by external id
+                        
+                        $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                        $UserId = $UserData["session_user_id"];                        
+                        $UserInfo = $this->getUserInfoById($UserId);
+                    }
+                    
+                    $UserSt->closeCursor();
                 }
-                
-                $UserSt->closeCursor();
             }
             
-            return null;
+            $CookieSt->closeCursor();
+            return $UserInfo;
         }
         
         // -------------------------------------------------------------------------
