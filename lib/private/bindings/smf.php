@@ -26,8 +26,10 @@
                 "user"      => defined("SMF_USER") ? SMF_USER : RP_USER,
                 "password"  => defined("SMF_PASS") ? SMF_PASS : RP_PASS,
                 "prefix"    => defined("SMF_TABLE_PREFIX") ? SMF_TABLE_PREFIX : "smf_",
+                "cookie"    => defined("SMF_COOKIE") ? SMF_COOKIE : "SMFCookie123",
                 "members"   => defined("SMF_RAIDLEAD_GROUPS") ? explode(",", SMF_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("SMF_MEMBER_GROUPS") ? explode(",", SMF_MEMBER_GROUPS ) : [],
+                "cookie_ex" => false,
                 "groups"    => true
             );
         }
@@ -44,7 +46,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.smf.php", "w+" );
             
@@ -57,6 +59,7 @@
                 fwrite( $Config, "\tdefine(\"SMF_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"SMF_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"SMF_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                fwrite( $Config, "\tdefine(\"SMF_COOKIE\", \"".$aCookieEx."\");\n");
                                              
                 fwrite( $Config, "\tdefine(\"SMF_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"SMF_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -160,7 +163,19 @@
         
         public function getExternalLoginData()
         {
-            return null;
+            $UserInfo = null;
+            
+            // Fetch user info if seesion cookie is set
+            
+            if (defined("SMF_COOKIE") && isset($_COOKIE[SMF_COOKIE]))
+            {
+                $UserId = unserialize($_COOKIE[SMF_COOKIE])[0];
+                $UserInfo = $this->getUserInfoById($UserId);
+                
+                $UserSt->closeCursor();
+            }
+            
+            return $UserInfo;
         }
         
         // -------------------------------------------------------------------------

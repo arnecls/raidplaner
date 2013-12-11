@@ -158,32 +158,35 @@
         {
             $UserInfo = null;
             
-            // Fetch user info if seesion cookie is set
-            
-            $CookieName = md5(md5(JML3_SECRET."site"));
-            
-            if (isset($_COOKIE[$CookieName]))
+            if (defined("JML3_SECRET"))
             {
-                if ($this->mConnector == null)
-                    $this->mConnector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS);
-            
-                $UserSt = $this->mConnector->prepare("SELECT userid ".
-                    "FROM `".JML3_TABLE_PREFIX."session` ".
-                    "WHERE session_id = :sid LIMIT 1");
-                                          
-                $UserSt->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
+                // Fetch user info if seesion cookie is set
+                        
+                $CookieName = md5(md5(JML3_SECRET."site"));
                 
-                if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                if (isset($_COOKIE[$CookieName]))
                 {
-                    // Get user info by external id
-                    
-                    $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
-                    $UserId = $UserData["userid"];
-                    
-                    $UserInfo = $this->getUserInfoById($UserId);
-                }
+                    if ($this->mConnector == null)
+                        $this->mConnector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS);
                 
-                $UserSt->closeCursor();
+                    $UserSt = $this->mConnector->prepare("SELECT userid ".
+                        "FROM `".JML3_TABLE_PREFIX."session` ".
+                        "WHERE session_id = :sid LIMIT 1");
+                                              
+                    $UserSt->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
+                    
+                    if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                    {
+                        // Get user info by external id
+                        
+                        $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                        $UserId = $UserData["userid"];
+                        
+                        $UserInfo = $this->getUserInfoById($UserId);
+                    }
+                    
+                    $UserSt->closeCursor();
+                }
             }
             
             return $UserInfo;
