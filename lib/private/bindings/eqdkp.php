@@ -28,13 +28,16 @@
         public function getConfig()
         {
             return array(
-                "database"  => defined("EQDKP_DATABASE") ? EQDKP_DATABASE : RP_DATABASE,
-                "user"      => defined("EQDKP_USER") ? EQDKP_USER : RP_USER,
-                "password"  => defined("EQDKP_PASS") ? EQDKP_PASS : RP_PASS,
-                "prefix"    => defined("EQDKP_TABLE_PREFIX") ? EQDKP_TABLE_PREFIX : "eqdkp_",
-                "members"   => [],
-                "leads"     => [],
-                "groups"    => false
+                "database"   => defined("EQDKP_DATABASE") ? EQDKP_DATABASE : RP_DATABASE,
+                "user"       => defined("EQDKP_USER") ? EQDKP_USER : RP_USER,
+                "password"   => defined("EQDKP_PASS") ? EQDKP_PASS : RP_PASS,
+                "prefix"     => defined("EQDKP_TABLE_PREFIX") ? EQDKP_TABLE_PREFIX : "eqdkp_",
+                "cookiename" => defined("EQDKP_COOKIE") ? EQDKP_COOKIE : "eqdkp_123456",
+                "members"    => [],
+                "leads"      => [],
+                "cookie"     => true,
+                "basedir"    => false,
+                "groups"     => false
             );
         }
         
@@ -50,7 +53,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookie)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.eqdkp.php", "w+" );
             
@@ -63,6 +66,7 @@
                 fwrite( $Config, "\tdefine(\"EQDKP_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"EQDKP_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"EQDKP_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                fwrite( $Config, "\tdefine(\"EQDKP_COOKIE\", \"".$aCookie."\");\n");
             }
             
             fwrite( $Config, "?>");    
@@ -149,6 +153,30 @@
         
         public function getExternalLoginData()
         {
+            if (defined("EQDKP_COOKIE") && isset($_COOKIE[EQDKP_COOKIE."_sid"]))
+            {
+                if ($this->mConnector == null)
+                    $this->mConnector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
+                
+                $UserSt = $this->mConnector->prepare("SELECT session_user_id ".
+                     "FROM `".EQDKP_TABLE_PREFIX."sessions` ".
+                     "WHERE session_id = :sid LIMIT 1");
+                                          
+                $UserSt->BindValue( ":sid", $_COOKIE[EQDKP_COOKIE."_sid"], PDO::PARAM_STR );
+                
+                if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                {
+                    $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                    
+                    $UserId = $UserData["session_user_id"];
+                    $UserSt->closeCursor();
+                    
+                    return $this->getUserInfoById($UserId); // ### return, userinfo ###
+                }
+                
+                $UserSt->closeCursor();
+            }
+            
             return null;
         }
         

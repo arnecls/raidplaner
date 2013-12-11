@@ -29,7 +29,7 @@
                 "user"       => defined("PHPBB3_USER") ? PHPBB3_USER : RP_USER,
                 "password"   => defined("PHPBB3_PASS") ? PHPBB3_PASS : RP_PASS,
                 "prefix"     => defined("PHPBB3_TABLE_PREFIX") ? PHPBB3_TABLE_PREFIX : "phpbb_",
-                "cookiename" => defined("PHPBB3_COOKIE") ? PHPBB3_COOKIE : "phpbb3",
+                "cookiename" => defined("PHPBB3_COOKIE") ? PHPBB3_COOKIE : "phpbb3__123456",
                 "members"    => defined("PHPBB3_RAIDLEAD_GROUPS") ? explode(",", PHPBB3_RAIDLEAD_GROUPS ) : [],
                 "leads"      => defined("PHPBB3_MEMBER_GROUPS") ? explode(",", PHPBB3_MEMBER_GROUPS ) : [],
                 "cookie"     => true,
