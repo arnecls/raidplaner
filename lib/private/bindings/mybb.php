@@ -22,13 +22,16 @@
         public function getConfig()
         {
             return array(
-                "database"  => defined("MYBB_DATABASE") ? MYBB_DATABASE : RP_DATABASE,
-                "user"      => defined("MYBB_USER") ? MYBB_USER : RP_USER,
-                "password"  => defined("MYBB_PASS") ? MYBB_PASS : RP_PASS,
-                "prefix"    => defined("MYBB_TABLE_PREFIX") ? MYBB_TABLE_PREFIX : "mybb_",
-                "members"   => defined("MYBB_RAIDLEAD_GROUPS") ? explode(",", MYBB_RAIDLEAD_GROUPS ) : [],
-                "leads"     => defined("MYBB_MEMBER_GROUPS") ? explode(",", MYBB_MEMBER_GROUPS ) : [],
-                "groups"    => true
+                "database"   => defined("MYBB_DATABASE") ? MYBB_DATABASE : RP_DATABASE,
+                "user"       => defined("MYBB_USER") ? MYBB_USER : RP_USER,
+                "password"   => defined("MYBB_PASS") ? MYBB_PASS : RP_PASS,
+                "prefix"     => defined("MYBB_TABLE_PREFIX") ? MYBB_TABLE_PREFIX : "mybb_",
+                "cookiename" => defined("MYBB_COOKIE") ? MYBB_COOKIE : "",
+                "members"    => defined("MYBB_RAIDLEAD_GROUPS") ? explode(",", MYBB_RAIDLEAD_GROUPS ) : [],
+                "leads"      => defined("MYBB_MEMBER_GROUPS") ? explode(",", MYBB_MEMBER_GROUPS ) : [],
+                "cookie"     => true,
+                "basedir"    => false,
+                "groups"     => true
             );
         }
         
@@ -44,7 +47,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookie)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.mybb.php", "w+" );
             
@@ -57,6 +60,7 @@
                 fwrite( $Config, "\tdefine(\"MYBB_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"MYBB_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"MYBB_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                fwrite( $Config, "\tdefine(\"MYBB_COOKIE\", \"".$aCookie."\");\n");
             
                 fwrite( $Config, "\tdefine(\"MYBB_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"MYBB_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -160,6 +164,29 @@
         
         public function getExternalLoginData()
         {
+            if (defined("MYBB_COOKIE") && isset($_COOKIE[MYBB_COOKIE."sid"]))
+            {
+                if ($this->mConnector == null)
+                    $this->mConnector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS);
+                
+                $UserSt = $this->mConnector->prepare("SELECT uid ".
+                     "FROM `".MYBB_TABLE_PREFIX."sessions` ".
+                     "WHERE sid = :sid LIMIT 1");
+                                          
+                $UserSt->BindValue( ":sid", $_COOKIE[MYBB_COOKIE."sid"], PDO::PARAM_STR );
+                
+                if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                {
+                    $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                    $UserId = $UserData["uid"];
+                    $UserSt->closeCursor();
+                    
+                    return $this->getUserInfoById($UserId); // ### return, userinfo ###
+                }
+                
+                $UserSt->closeCursor();
+            }
+            
             return null;
         }
         
