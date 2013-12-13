@@ -28,8 +28,10 @@
                 "user"      => defined("VANILLA_USER") ? VANILLA_USER : RP_USER,
                 "password"  => defined("VANILLA_PASS") ? VANILLA_PASS : RP_PASS,
                 "prefix"    => defined("VANILLA_TABLE_PREFIX") ? VANILLA_TABLE_PREFIX : "GDN_",
+                "cookie"    => defined("VANILLA_COOKIE") ? VANILLA_TCOOKIE : "Vanilla",
                 "members"   => defined("VANILLA_RAIDLEAD_GROUPS") ? explode(",", VANILLA_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("VANILLA_MEMBER_GROUPS") ? explode(",", VANILLA_MEMBER_GROUPS ) : [],
+                "cookie_ex" => true,
                 "groups"    => true
             );
         }
@@ -46,7 +48,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.vanilla.php", "w+" );
             
@@ -59,6 +61,7 @@
                 fwrite( $Config, "\tdefine(\"VANILLA_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"VANILLA_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"VANILLA_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                fwrite( $Config, "\tdefine(\"VANILLA_COOKIE\", \"".$aCookieEx."\");\n");
                                              
                 fwrite( $Config, "\tdefine(\"VANILLA_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"VANILLA_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -147,6 +150,7 @@
             $Info->UserName    = $aUserData["Name"];
             $Info->Password    = $aUserData["Password"];
             $Info->Salt        = self::extractSaltPart($aUserData["Password"]);
+            $Info->SessionSalt = null;
             $Info->Group       = $this->getGroup($aUserData);
             $Info->BindingName = $this->BindingName;
             $Info->PassBinding = $this->BindingName;
@@ -156,9 +160,54 @@
         
         // -------------------------------------------------------------------------
         
+        private static function Vanilla_HashHMAC($HashMethod, $Data, $Key) 
+        {
+            // This function is copied over from vanilla
+            
+            $PackFormats = array('md5' => 'H32', 'sha1' => 'H40');
+            
+            if (!isset($PackFormats[$HashMethod]))
+                return false;
+            
+            $PackFormat = $PackFormats[$HashMethod];
+            if (isset($Key[63]))
+                $Key = pack($PackFormat, $HashMethod($Key));
+            else
+                $Key = str_pad($Key, 64, chr(0));
+            
+            $InnerPad = (substr($Key, 0, 64) ^ str_repeat(chr(0x36), 64));
+            $OuterPad = (substr($Key, 0, 64) ^ str_repeat(chr(0x5C), 64));
+            
+            return $HashMethod($OuterPad . pack($PackFormat, $HashMethod($InnerPad . $Data)));
+       }
+        
+        // -------------------------------------------------------------------------
+        
         public function getExternalLoginData()
         {
-            return null;
+            $UserInfo = null;
+            
+            // Fetch user info if seesion cookie is set
+            
+            if (defined("VANILLA_COOKIE"))
+            {
+                list($CookieName, $CookieHashMethod, $CookieSalt) = explode(",", VANILLA_COOKIE);                
+                
+                if (isset($_COOKIE[$CookieName]))
+                {
+                    list($KeyData, $Signature, $Time, $UserId, $Expires) = explode("|", $_COOKIE[$CookieName]);
+                    
+                    $UserInfo = $this->getUserInfoById($UserId);
+                    
+                    $KeyHash     = self::Vanilla_HashHMAC($CookieHashMethod, $KeyData, $CookieSalt);
+                    $KeyHashHash = self::Vanilla_HashHMAC($CookieHashMethod, $KeyData, $KeyHash);
+                    
+                    if ($Signature != $KeyHashHash)
+                        $UserInfo = null;
+                }
+            }
+            
+            return $UserInfo;
         }
         
         // -------------------------------------------------------------------------

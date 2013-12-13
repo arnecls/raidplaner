@@ -189,12 +189,9 @@
                         
                     if (isset($_COOKIE[$CookieName]))
                     {
-                        $CookieData = explode("|", $_COOKIE[$CookieName]);
+                        list($UserName, $Expiration, $hmac) = explode("|", $_COOKIE[$CookieName]);
                     
-                        $UserName   = $CookieData[0];
-                        $Expiration = $CookieData[1];
-                        $hmac       = $CookieData[2];
-                        $UserInfo   = $this->getUserInfoByName($UserName);
+                        $UserInfo = $this->getUserInfoByName($UserName);
                         
                         if ($UserInfo != null)
                         {

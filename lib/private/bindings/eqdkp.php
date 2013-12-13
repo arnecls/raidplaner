@@ -254,8 +254,7 @@
         
             if ((substr($aPassword, 0, 4) == '$2a$') && ($Length == 60))
             {
-                $Parts = explode(":", $aPassword);
-                
+                $Parts = explode(":", $aPassword);                
                 return substr($Parts[0],0,29).":".$Parts[1];
             }
             
