@@ -28,7 +28,7 @@
                 "user"      => defined("VANILLA_USER") ? VANILLA_USER : RP_USER,
                 "password"  => defined("VANILLA_PASS") ? VANILLA_PASS : RP_PASS,
                 "prefix"    => defined("VANILLA_TABLE_PREFIX") ? VANILLA_TABLE_PREFIX : "GDN_",
-                "cookie"    => defined("VANILLA_COOKIE") ? VANILLA_TCOOKIE : "Vanilla",
+                "cookie"    => defined("VANILLA_COOKIE") ? VANILLA_COOKIE : "Vanilla,md5,123456",
                 "members"   => defined("VANILLA_RAIDLEAD_GROUPS") ? explode(",", VANILLA_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("VANILLA_MEMBER_GROUPS") ? explode(",", VANILLA_MEMBER_GROUPS ) : [],
                 "cookie_ex" => true,

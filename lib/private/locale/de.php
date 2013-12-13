@@ -364,7 +364,7 @@
         $gLocale[ "vanilla_UserEmpty" ]         = "Vanilla Benutzer darf nicht leer sein";
         $gLocale[ "vanilla_PasswordEmpty" ]     = "Vanilla Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Vanilla Datenbank-Passwörter stimmen nicht überein.";
-        $gLocale[ "vanilla_CookieEx" ]          = "Vanilla Cookie-Name";      
+        $gLocale[ "vanilla_CookieEx" ]          = "Cookie-Name, Hash Methode (z.B. md5), Salt";      
         
         // Joomla
         $gLocale[ "jml3_Binding" ]              = "Joomla3";
@@ -394,6 +394,6 @@
         $gLocale[ "wp_UserEmpty" ]              = "Wordpress Benutzer darf nicht leer sein";
         $gLocale[ "wp_PasswordEmpty" ]          = "Wordpress Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "wp_DBPasswordsMatch" ]       = "Wordpress Datenbank-Passwörter stimmen nicht überein.";      
-        $gLocale[ "wp_CookieEx" ]               = "Wordpress LOGGED_IN_KEY gefolgt von LOGGED_IN_SALT";
+        $gLocale[ "wp_CookieEx" ]               = "LOGGED_IN_KEY gefolgt von LOGGED_IN_SALT";
     }
 ?>

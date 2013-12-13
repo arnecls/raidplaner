@@ -38,7 +38,15 @@
         
         public function queryCookieEx($aRelativePath)
         {
-            return null;
+            $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/includes/config.php";
+            if (!file_exists($ConfigPath))
+            {
+                Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
+                return null;
+            }
+            
+            include_once($ConfigPath);
+            return $config["Misc"]["cookieprefix"];
         }
         
         // -------------------------------------------------------------------------

@@ -28,7 +28,7 @@
                 "user"      => defined("WP_USER") ? WP_USER : RP_USER,
                 "password"  => defined("WP_PASS") ? WP_PASS : RP_PASS,
                 "prefix"    => defined("WP_TABLE_PREFIX") ? WP_TABLE_PREFIX : "wp_",
-                "cookie"    => defined("WP_SECRET") ? WP_SECRET : "put LOGGED_IN_KEY + LOGGED_IN_SALT here",
+                "cookie"    => defined("WP_SECRET") ? WP_SECRET : "",
                 "members"   => defined("WP_RAIDLEAD_GROUPS") ? explode(",", WP_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("WP_MEMBER_GROUPS") ? explode(",", WP_MEMBER_GROUPS ) : [],
                 "cookie_ex" => true,
@@ -40,7 +40,15 @@
         
         public function queryCookieEx($aRelativePath)
         {
-            return null;
+            $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/wp-config.php";
+            if (!file_exists($ConfigPath))
+            {
+                Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
+                return null;
+            }
+            
+            include_once($ConfigPath);
+            return LOGGED_IN_KEY.LOGGED_IN_SALT;
         }
         
         // -------------------------------------------------------------------------
