@@ -1010,8 +1010,8 @@
                 array_push($CharacterRoles1, $Character->Role1);
                 array_push($CharacterRoles2, $Character->Role2);
             }
-            
-            $Out->pushValue("validUser", true);
+                        
+            $Out->pushValue("registeredUser", true);
             $Out->pushValue("id", $CurrentUser->UserId);
             $Out->pushValue("name", $CurrentUser->UserName);
             $Out->pushValue("characterIds", $CharacterIds);
@@ -1019,6 +1019,7 @@
             $Out->pushValue("characterClass", $CharacterClasses);
             $Out->pushValue("role1", $CharacterRoles1);
             $Out->pushValue("role2", $CharacterRoles2);            
+            $Out->pushValue("validUser", validUser());
             $Out->pushValue("isRaidlead", validRaidlead());
             $Out->pushValue("isAdmin", validAdmin());
             $Out->pushValue("settings", $CurrentUser->Settings);
@@ -1035,7 +1036,7 @@
         }
         else
         {
-            $Out->pushValue("validUser", false);
+            $Out->pushValue("registeredUser", false);
         }
     }
 
