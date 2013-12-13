@@ -42,7 +42,7 @@
 
         public static function getInstance( $aRethrow = false )
         {
-            require_once(dirname(__FILE__)."/../config/config.php");
+            @require_once(dirname(__FILE__)."/../config/config.php");
             return self::getExternInstance(SQL_HOST, RP_DATABASE, RP_USER, RP_PASS, $aRethrow);
         }
 

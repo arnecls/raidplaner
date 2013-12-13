@@ -26,8 +26,10 @@
                 "user"      => defined("VB3_USER") ? VB3_USER : RP_USER,
                 "password"  => defined("VB3_PASS") ? VB3_PASS : RP_PASS,
                 "prefix"    => defined("VB3_TABLE_PREFIX") ? VB3_TABLE_PREFIX : "vb_",
+                "cookie"    => defined("VB3_COOKIE_PREFIX") ? VB3_COOKIE_PREFIX : "bb",
                 "members"   => defined("VB3_RAIDLEAD_GROUPS") ? explode(",", VB3_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("VB3_MEMBER_GROUPS") ? explode(",", VB3_MEMBER_GROUPS ) : [],
+                "cookie_ex" => true,
                 "groups"    => true
             );
         }
@@ -44,7 +46,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.vb3.php", "w+" );
             
@@ -57,6 +59,7 @@
                 fwrite( $Config, "\tdefine(\"VB3_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"VB3_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"VB3_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                fwrite( $Config, "\tdefine(\"VB3_COOKIE_PREFIX\", \"".$aCookieEx."\");\n");
                                              
                 fwrite( $Config, "\tdefine(\"VB3_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"VB3_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -153,7 +156,40 @@
         
         public function getExternalLoginData()
         {
-            return null;
+            $UserInfo = null;
+            
+            // Fetch cookie name
+            if ( defined("VB3_COOKIE_PREFIX") )
+            {
+                $CookieName = VB3_COOKIE_PREFIX."sessionhash";
+                
+                // Fetch user info if seesion cookie is set
+                
+                if (isset($_COOKIE[$CookieName]))
+                {
+                    if ($this->mConnector == null)
+                        $this->mConnector = new Connector(SQL_HOST, VB3_DATABASE, VB3_USER, VB3_PASS);
+            
+                    $UserSt = $this->mConnector->prepare("SELECT userid ".
+                        "FROM `".VB3_TABLE_PREFIX."session` ".
+                        "WHERE sessionhash = :sid LIMIT 1");
+                                              
+                    $UserSt->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
+                    
+                    if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                    {
+                        // Get user info by external id
+                        
+                        $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                        $UserId = $UserData["userid"];                        
+                        $UserInfo = $this->getUserInfoById($UserId);
+                    }
+                    
+                    $UserSt->closeCursor();
+                }
+            }
+            
+            return $UserInfo;
         }
         
         // -------------------------------------------------------------------------
