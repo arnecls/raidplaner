@@ -20,7 +20,8 @@
             $_REQUEST[$Binding."_user"], 
             $_REQUEST[$Binding."_password"], 
             $_REQUEST[$Binding."_member"], 
-            $_REQUEST[$Binding."_raidlead"]);
+            $_REQUEST[$Binding."_raidlead"], 
+            $_REQUEST[$Binding."_cookie"]);
     }
     
     echo "</bindings>";    

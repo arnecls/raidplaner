@@ -237,6 +237,7 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
             parameter[bindings[i]+"_user"]     = $("#"+bindings[i]+"_user").val();
             parameter[bindings[i]+"_password"] = $("#"+bindings[i]+"_password").val();
             parameter[bindings[i]+"_prefix"]   = $("#"+bindings[i]+"_prefix").val();
+            parameter[bindings[i]+"_cookie"]   = $("#"+bindings[i]+"_cookie_ex").val();
             parameter[bindings[i]+"_member"]   = new Array();
             parameter[bindings[i]+"_raidlead"] = new Array();
             
