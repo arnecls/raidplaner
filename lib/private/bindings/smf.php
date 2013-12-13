@@ -152,6 +152,7 @@
             $Info->UserName    = $aUserData["member_name"];
             $Info->Password    = $aUserData["passwd"];
             $Info->Salt        = strtolower($aUserData["member_name"]);
+            $Info->SessionSalt = $aUserData["password_salt"];
             $Info->Group       = $this->getGroup($aUserData);
             $Info->BindingName = $this->BindingName;
             $Info->PassBinding = $this->BindingName;
@@ -169,10 +170,15 @@
             
             if (defined("SMF_COOKIE") && isset($_COOKIE[SMF_COOKIE]))
             {
-                $UserId = unserialize($_COOKIE[SMF_COOKIE])[0];
+                $CookieData = unserialize($_COOKIE[SMF_COOKIE]);
+                $UserId  = $CookieData[0];
+                $PwdHash = $CookieData[1];
+                
                 $UserInfo = $this->getUserInfoById($UserId);
                 
-                $UserSt->closeCursor();
+                $SessionHash = sha1($UserInfo->Password.$UserInfo->SessionSalt);
+                if ($PwdHash != $SessionHash)
+                    $UserInfo = null;
             }
             
             return $UserInfo;
@@ -185,7 +191,7 @@
             if ($this->mConnector == null)
                 $this->mConnector = new Connector(SQL_HOST, SMF_DATABASE, SMF_USER, SMF_PASS);
             
-            $UserSt = $this->mConnector->prepare("SELECT id_member, member_name, passwd, id_group, additional_groups, ban_time, expire_time ".
+            $UserSt = $this->mConnector->prepare("SELECT id_member, member_name, passwd, password_salt, id_group, additional_groups, ban_time, expire_time ".
                                                 "FROM `".SMF_TABLE_PREFIX."members` ".
                                                 "LEFT JOIN `".SMF_TABLE_PREFIX."ban_items` USING(id_member) ".
                                                 "LEFT JOIN `".SMF_TABLE_PREFIX."ban_groups` USING(id_ban_group) ".
@@ -212,7 +218,7 @@
             if ($this->mConnector == null)
                 $this->mConnector = new Connector(SQL_HOST, SMF_DATABASE, SMF_USER, SMF_PASS);
             
-            $UserSt = $this->mConnector->prepare("SELECT id_member, member_name, passwd, id_group, additional_groups, ban_time, expire_time ".
+            $UserSt = $this->mConnector->prepare("SELECT id_member, member_name, passwd, password_salt, id_group, additional_groups, ban_time, expire_time ".
                                                 "FROM `".SMF_TABLE_PREFIX."members` ".
                                                 "LEFT JOIN `".SMF_TABLE_PREFIX."ban_items` USING(id_member) ".
                                                 "LEFT JOIN `".SMF_TABLE_PREFIX."ban_groups` USING(id_ban_group) ".

@@ -28,6 +28,7 @@
         public $UserName;
         public $Password;
         public $Salt;
+        public $SessionSalt;
         public $Group;
         public $BindingName;
         public $PassBinding;

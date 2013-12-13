@@ -171,6 +171,7 @@
             $Info->UserName    = $aUserData["username_clean"];
             $Info->Password    = $aUserData["user_password"];
             $Info->Salt        = self::extractSaltPart($aUserData["user_password"]);
+            $Info->SessionSalt = null;
             $Info->Group       = $this->getGroup($aUserData["user_id"]);
             $Info->BindingName = $this->BindingName;
             $Info->PassBinding = $this->BindingName;

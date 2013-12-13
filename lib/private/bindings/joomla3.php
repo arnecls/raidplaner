@@ -145,6 +145,7 @@
             $Info->UserName    = $aUserData["username"];
             $Info->Password    = $Password;
             $Info->Salt        = $Salt;
+            $Info->SessionSalt = null;
             $Info->Group       = $this->getGroup($aUserData);
             $Info->BindingName = $this->BindingName;
             $Info->PassBinding = $this->BindingName;
