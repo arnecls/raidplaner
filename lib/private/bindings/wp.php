@@ -28,8 +28,10 @@
                 "user"      => defined("WP_USER") ? WP_USER : RP_USER,
                 "password"  => defined("WP_PASS") ? WP_PASS : RP_PASS,
                 "prefix"    => defined("WP_TABLE_PREFIX") ? WP_TABLE_PREFIX : "wp_",
+                "cookie"    => defined("WP_SECRET") ? WP_SECRET : "put LOGGED_IN_KEY + LOGGED_IN_SALT here",
                 "members"   => defined("WP_RAIDLEAD_GROUPS") ? explode(",", WP_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("WP_MEMBER_GROUPS") ? explode(",", WP_MEMBER_GROUPS ) : [],
+                "cookie_ex" => true,
                 "groups"    => true
             );
         }
@@ -46,7 +48,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.wp.php", "w+" );
             
@@ -59,6 +61,7 @@
                 fwrite( $Config, "\tdefine(\"WP_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"WP_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"WP_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                fwrite( $Config, "\tdefine(\"WP_SECRET\", \"".$aCookieEx."\");\n");
                                              
                 fwrite( $Config, "\tdefine(\"WP_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"WP_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -163,7 +166,52 @@
         
         public function getExternalLoginData()
         {
-            return null;
+            $UserInfo = null;
+            
+            if (defined("WP_SECRET"))
+            {
+                if ($this->mConnector == null)
+                    $this->mConnector = new Connector(SQL_HOST, WP_DATABASE, WP_USER, WP_PASS);
+               
+                // Fetch cookie name
+                
+                $CookieSt = $this->mConnector->prepare("SELECT option_value ".
+                    "FROM `".WP_TABLE_PREFIX."options` ".
+                    "WHERE option_name = 'siteurl' LIMIT 1");
+                
+                if ( $CookieSt->execute() && ($CookieSt->rowCount() > 0) )
+                {
+                    $ConfigData = $CookieSt->fetch( PDO::FETCH_ASSOC );
+                    $CookieName = "wordpress_logged_in_".md5($ConfigData["option_value"]);
+                    
+                    // Fetch user info if seesion cookie is set
+                        
+                    if (isset($_COOKIE[$CookieName]))
+                    {
+                        $CookieData = explode("|", $_COOKIE[$CookieName]);
+                    
+                        $UserName   = $CookieData[0];
+                        $Expiration = $CookieData[1];
+                        $hmac       = $CookieData[2];
+                        $UserInfo   = $this->getUserInfoByName($UserName);
+                        
+                        if ($UserInfo != null)
+                        {
+                            $PassFragment = substr($UserInfo->Password, 8, 4);
+                            
+                            $Key  = hash_hmac('md5', $UserName.$PassFragment.'|'.$Expiration, WP_SECRET);
+                            $Hash = hash_hmac('md5', $UserName . '|' . $Expiration, $Key);
+                            
+                            if ($Hash != $hmac)
+                                $UserInfo = null;
+                        }    
+                    }
+                }
+                
+                $CookieSt->closeCursor();
+            }
+            
+            return $UserInfo;
         }
         
         // -------------------------------------------------------------------------
