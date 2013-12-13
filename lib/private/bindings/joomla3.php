@@ -26,7 +26,7 @@
                 "user"      => defined("JML3_USER") ? JML3_USER : RP_USER,
                 "password"  => defined("JML3_PASS") ? JML3_PASS : RP_PASS,
                 "prefix"    => defined("JML3_TABLE_PREFIX") ? JML3_TABLE_PREFIX : "jml_",
-                "cookie"    => defined("JML3_SECRET") ? JML3_SECRET : "put JConfig->secret here",
+                "cookie"    => defined("JML3_SECRET") ? JML3_SECRET : "0123456789ABCDEF",
                 "members"   => defined("JML3_RAIDLEAD_GROUPS") ? explode(",", JML3_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("JML3_MEMBER_GROUPS") ? explode(",", JML3_MEMBER_GROUPS ) : [],
                 "cookie_ex" => true,

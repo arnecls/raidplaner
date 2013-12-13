@@ -364,7 +364,7 @@
         $gLocale[ "vanilla_UserEmpty" ]         = "Vanilla Benutzer darf nicht leer sein";
         $gLocale[ "vanilla_PasswordEmpty" ]     = "Vanilla Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Vanilla Datenbank-Passwörter stimmen nicht überein.";
-        $gLocale[ "vanilla_CookieEx" ]          = "Cookie-Name, Hash Methode (z.B. md5), Salt";      
+        $gLocale[ "vanilla_CookieEx" ]          = "Cookie-Name, Hash-Verfahren (z.B. md5), Cookie-Salt";      
         
         // Joomla
         $gLocale[ "jml3_Binding" ]              = "Joomla3";

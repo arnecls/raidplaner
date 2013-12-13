@@ -40,7 +40,30 @@
         
         public function queryCookieEx($aRelativePath)
         {
-            return null;
+            $DefaultsPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/conf/config-defaults.php";
+            $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/conf/config.php";
+            
+            if (!file_exists($DefaultsPath))
+            {
+                Out::getInstance()->pushError($DefaultsPath." ".L("NotExisting").".");
+                return null;
+            }
+            
+            if (!file_exists($ConfigPath))
+            {
+                Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
+                return null;
+            }
+            
+            define("APPLICATION", true);
+            define("PATH_CACHE", "");
+            
+            include_once($DefaultsPath);
+            include_once($ConfigPath);
+            
+            $CookieConf = $Configuration['Garden']['Cookie'];
+            
+            return $CookieConf["Name"].",".$CookieConf["HashMethod"].",".$CookieConf["Salt"];
         }
         
         // -------------------------------------------------------------------------
