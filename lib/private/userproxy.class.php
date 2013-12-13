@@ -420,9 +420,13 @@
                 {
                     if ( $Binding->isActive() )
                     {
-                        $UserData = $Binding->getExternalLoginData();
-                        if ( $UserData != null )
-                            return $UserData;
+                        $UserInfo = $Binding->getExternalLoginData();
+                        
+                        // Checking the credentials will create the user as if
+                        // he logs in manually.
+                        
+                        if ( $this->getUserCredentialsFromInfo($UserInfo, $Binding) != null )
+                            return $UserInfo;
                     }
                 }
             }
@@ -597,9 +601,8 @@
                                 
                 $UserSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE Login = :Login LIMIT 1" );
                 $UserSt->bindValue(":Login", $aLoginUser["Login"], PDO::PARAM_STR );
-                $UserSt->execute();
                 
-                if ($UserSt->rowcount() > 0)
+                if ($UserSt->execute() && ($UserSt->rowcount() > 0))
                 {
                     $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
                                                         
