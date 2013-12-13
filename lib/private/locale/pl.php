@@ -308,7 +308,10 @@
         $gLocale[ "AutoMemberLogin" ]          = "Użytkownicy wybranych poniżej grup, będą automatycznie dodawani jako \"Użytkownicy\":";
         $gLocale[ "AutoLeadLogin" ]            = "Użytkownicy wybranych poniżej grup, będą automatycznie dodawani jako \"Rajd liderzy\":";
         $gLocale[ "ReloadFailed" ]             = "Wczytywanie nie powiodło się";
-        
+        $gLocale[ "LoadCookieEx" ]             = null;
+        $gLocale[ "BindingBasePath" ]          = null;
+        $gLocale[ "RetrievalFailed" ]          = null;
+        $gLocale[ "NotExisting" ]              = null;
         
         // PHPBB3        
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB3";
@@ -329,13 +332,14 @@
         $gLocale[ "eqdkp_DBPasswordsMatch" ]    = "Hasło bazy danych EQDKP zostało powtórzone niepoprawnie.";
         
         // vBulletin
-        $gLocale[ "vb3_Binding" ]                 = "vBulletin3";
-        $gLocale[ "vb3_ConfigFile" ]              = "Plik konfiguracyjny vBulletin";
-        $gLocale[ "vb3_Database" ]                = "Baza danych vBulletin";
-        $gLocale[ "vb3_DatabaseEmpty" ]           = "Nazwa bazy danych vBulletin nie może być pusta.";
-        $gLocale[ "vb3_UserEmpty" ]               = "Nazwa użytkownika vBulletin nie może być pusta.";
-        $gLocale[ "vb3_PasswordEmpty" ]           = "Hasło bazy danych vBulletin nie powinno być puste.";
-        $gLocale[ "vb3_DBPasswordsMatch" ]        = "Hasło bazy danych vBulletin zostało powtórzone niepoprawnie.";
+        $gLocale[ "vb3_Binding" ]               = "vBulletin3";
+        $gLocale[ "vb3_ConfigFile" ]            = "Plik konfiguracyjny vBulletin";
+        $gLocale[ "vb3_Database" ]              = "Baza danych vBulletin";
+        $gLocale[ "vb3_DatabaseEmpty" ]         = "Nazwa bazy danych vBulletin nie może być pusta.";
+        $gLocale[ "vb3_UserEmpty" ]             = "Nazwa użytkownika vBulletin nie może być pusta.";
+        $gLocale[ "vb3_PasswordEmpty" ]         = "Hasło bazy danych vBulletin nie powinno być puste.";
+        $gLocale[ "vb3_DBPasswordsMatch" ]      = "Hasło bazy danych vBulletin zostało powtórzone niepoprawnie.";
+        $gLocale[ "vb3_CookieEx" ]              = null;
         
         // MyBB
         $gLocale[ "mybb_Binding" ]              = "MyBB";
@@ -363,6 +367,7 @@
         $gLocale[ "vanilla_UserEmpty" ]         = "Nazwa użytkownika Vanilla nie może być pusta.";
         $gLocale[ "vanilla_PasswordEmpty" ]     = "Hasło bazy danych Vanilla nie powinno być puste.";
         $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Hasło bazy danych Vanilla zostało powtórzone niepoprawnie.";
+        $gLocale[ "vanilla_CookieEx" ]          = null;      
         
         // Joomla
         $gLocale[ "jml3_Binding" ]              = "Joomla3";
@@ -372,6 +377,7 @@
         $gLocale[ "jml3_UserEmpty" ]            = "Nazwa użytkownika Joomla nie może być pusta.";
         $gLocale[ "jml3_PasswordEmpty" ]        = "Hasło bazy danych Joomla nie powinno być puste.";
         $gLocale[ "jml3_DBPasswordsMatch" ]     = "Hasło bazy danych Joomla zostało powtórzone niepoprawnie.";
+        $gLocale[ "jml3_CookieEx" ]             = null;
         
         // Drupal
         $gLocale[ "drupal_Binding" ]            = "Drupal";
@@ -381,7 +387,8 @@
         $gLocale[ "drupal_UserEmpty" ]          = "Nazwa użytkownika Drupal nie może być pusta.";
         $gLocale[ "drupal_PasswordEmpty" ]      = "Hasło bazy danych Drupal nie powinno być puste.";
         $gLocale[ "drupal_DBPasswordsMatch" ]   = "Hasło bazy danych Drupal zostało powtórzone niepoprawnie.";
-		
+		$gLocale[ "drupal_CookieEx" ]           = null;
+        
         // Wordpress
         $gLocale[ "wp_Binding" ]                = "Wordpress";
         $gLocale[ "wp_ConfigFile" ]             = "Plik konfiguracyjny Wordpress";
@@ -390,5 +397,6 @@
         $gLocale[ "wp_UserEmpty" ]              = "Nazwa użytkownika Wordpress nie może być pusta.";
         $gLocale[ "wp_PasswordEmpty" ]          = "Hasło bazy danych Wordpress nie powinno być puste.";
         $gLocale[ "wp_DBPasswordsMatch" ]       = "Hasło bazy danych Wordpress zostało powtórzone niepoprawnie.";
+        $gLocale[ "wp_CookieEx" ]               = null;
     }
 ?>

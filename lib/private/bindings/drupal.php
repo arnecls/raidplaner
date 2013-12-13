@@ -44,6 +44,13 @@
         
         // -------------------------------------------------------------------------
         
+        public function queryCookieEx($aRelativePath)
+        {
+            return "http://".$_SERVER['HTTP_HOST']."/".$aRelativePath;
+        }
+        
+        // -------------------------------------------------------------------------
+        
         public function isConfigWriteable()
         {
             $ConfigFolder = dirname(__FILE__)."/../../config";

@@ -73,6 +73,14 @@
         echo "<input type=\"password\" id=\"".$Binding->BindingName."_password\" value=\"".$Config["password"]."\"/> ".L("UserPassword")."<br/>";        
         echo "<input type=\"password\" id=\"".$Binding->BindingName."_password_check\" value=\"".$Config["password"]."\"/> ".L("RepeatPassword")."<br/>";        
         echo "<input type=\"text\" id=\"".$Binding->BindingName."_prefix\" value=\"".$Config["prefix"]."\"/> ".L("TablePrefix")."<br/>";
+        
+        if ( $Config["cookie_ex"] )
+        {
+            echo "<input type=\"text\" id=\"".$Binding->BindingName."_cookie_ex\" value=\"".$Config["cookie"]."\"/> ";
+            echo "<button onclick=\"LoadCookieEx('".$Binding->BindingName."')\">".L("LoadCookieEx")."</button> ";
+            echo L($Binding->BindingName."_CookieEx")."<br/>";
+        }
+        
         echo "</div>";
         
         if ( $Config["groups"] )

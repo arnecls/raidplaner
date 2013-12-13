@@ -78,6 +78,49 @@ function OnReloadGroups( aXHR )
     $("#"+aXHR.binding+"_member").empty().append( HTMLString );
     $("#"+aXHR.binding+"_raidlead").empty().append( HTMLString );
 }
+
+// ----------------------------------------------------------------------------
+
+function LoadCookieEx(aBinding)
+{
+    var basepath = window.prompt(L("BindingBasePath"), aBinding);
+    if ((basepath != null) && (basepath.length > 0))
+    {
+        var parameter = {
+            binding : aBinding,
+            path    : basepath
+        };
+        
+        $.ajax({
+            type     : "POST",
+            url      : "query/fetch_cookie.php",
+            dataType : "json",
+            async    : true,
+            data     : parameter,
+            success  : OnLoadCookieEx,
+            error    : function(aXHR, aStatus, aError) { alert(L("Error") + ":\n\n" + aError); }
+        });
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+function OnLoadCookieEx(aXHR)
+{
+    if ( (aXHR.error != null) && (aXHR.error.length > 0) )
+    {
+        var errorString = "";
+        
+        $.each(aXHR.error, function(index, value) {
+            errorString += value + "\n";
+        });
+        
+        alert(L("RetrievalFailed") + ":\n\n" + errorString );
+        return;
+    }
+    
+    $("#"+aXHR.binding+"_cookie_ex").val(aXHR.value);
+}
     
 // ----------------------------------------------------------------------------
 

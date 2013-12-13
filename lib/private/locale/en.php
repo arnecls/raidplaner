@@ -304,7 +304,10 @@
         $gLocale[ "AutoMemberLogin" ]          = "Users of the following, selected group(s) log in as \"members\":";
         $gLocale[ "AutoLeadLogin" ]            = "Users of the following, selected group(s) log in as \"raidleads\":";
         $gLocale[ "ReloadFailed" ]             = "Reload failed";
-        
+        $gLocale[ "LoadCookieEx" ]             = "Retrieve";
+        $gLocale[ "BindingBasePath" ]          = "Please enter the install path of this binding relative to your web root.";
+        $gLocale[ "RetrievalFailed" ]          = "Automatic retrieval failed";
+        $gLocale[ "NotExisting" ]              = "does not exist";
         
         // PHPBB3        
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB3";
@@ -332,6 +335,7 @@
         $gLocale[ "vb3_UserEmpty" ]             = "vBulletin user must not be empty";
         $gLocale[ "vb3_PasswordEmpty" ]         = "vBulletin Database password must not be empty.";
         $gLocale[ "vb3_DBPasswordsMatch" ]      = "vBulletin Database passwords did not match.";
+        $gLocale[ "vb3_CookieEx" ]              = "vBulletin cookie prefix";
         
         // MyBB
         $gLocale[ "mybb_Binding" ]              = "MyBB";
@@ -359,6 +363,7 @@
         $gLocale[ "vanilla_UserEmpty" ]         = "Vanilla user must not be empty";
         $gLocale[ "vanilla_PasswordEmpty" ]     = "Vanilla Database password must not be empty.";
         $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Vanilla Database passwords did not match.";
+        $gLocale[ "vanilla_CookieEx" ]          = "Vanilla cookie name";      
         
         // Joomla
         $gLocale[ "jml3_Binding" ]              = "Joomla3";
@@ -368,6 +373,7 @@
         $gLocale[ "jml3_UserEmpty" ]            = "Joomla3 user must not be empty";
         $gLocale[ "jml3_PasswordEmpty" ]        = "Joomla3 Database password must not be empty.";
         $gLocale[ "jml3_DBPasswordsMatch" ]     = "Joomla3 Database passwords did not match.";
+        $gLocale[ "jml3_CookieEx" ]             = "Joomla3 secret";
         
         // Drupal
         $gLocale[ "drupal_Binding" ]            = "Drupal";
@@ -377,6 +383,7 @@
         $gLocale[ "drupal_UserEmpty" ]          = "Drupal user must not be empty";
         $gLocale[ "drupal_PasswordEmpty" ]      = "Drupal Database password must not be empty.";
         $gLocale[ "drupal_DBPasswordsMatch" ]   = "Drupal Database passwords did not match.";
+        $gLocale[ "drupal_CookieEx" ]           = "Drupal base URL";
         
         // Wordpress
         $gLocale[ "wp_Binding" ]                = "Wordpress";
@@ -386,5 +393,6 @@
         $gLocale[ "wp_UserEmpty" ]              = "Wordpress user must not be empty";
         $gLocale[ "wp_PasswordEmpty" ]          = "Wordpress Database password must not be empty.";
         $gLocale[ "wp_DBPasswordsMatch" ]       = "Wordpress Database passwords did not match.";
+        $gLocale[ "wp_CookieEx" ]               = "Wordpress LOGGED_IN_KEY followed by LOGGED_IN_SALT";
     }
 ?>

@@ -36,6 +36,22 @@
         
         // -------------------------------------------------------------------------
         
+        public function queryCookieEx($aRelativePath)
+        {
+            $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/Configuration.php";
+            if (!file_exists($ConfigPath))
+            {
+                Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
+                return null;
+            }
+            
+            include_once($ConfigPath);
+            $Config = new JConfig();
+            return $Config->secret;
+        }
+        
+        // -------------------------------------------------------------------------
+        
         public function isConfigWriteable()
         {
             $ConfigFolder = dirname(__FILE__)."/../../config";

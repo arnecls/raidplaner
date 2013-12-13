@@ -41,6 +41,13 @@
         
         // -------------------------------------------------------------------------
         
+        public function queryCookieEx($aRelativePath)
+        {
+            return null;
+        }
+        
+        // -------------------------------------------------------------------------
+        
         public function isConfigWriteable()
         {
             $ConfigFolder = dirname(__FILE__)."/../../config";

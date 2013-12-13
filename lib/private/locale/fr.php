@@ -308,7 +308,10 @@
         $gLocale[ "AutoMemberLogin" ]          = "Les utilisateurs des groupes sélectionnés suivants se connecteront en tant que \"membres\":";
         $gLocale[ "AutoLeadLogin" ]            = "Les utilisateurs des groupes sélectionnés suivants se connecteront en tant que \"raidlead\":";
         $gLocale[ "ReloadFailed" ]             = "Rechargement échoué";
-        
+        $gLocale[ "LoadCookieEx" ]             = null;
+        $gLocale[ "BindingBasePath" ]          = null;
+        $gLocale[ "RetrievalFailed" ]          = null;
+        $gLocale[ "NotExisting" ]              = null;
         
         // PHPBB3        
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB3";
@@ -336,6 +339,7 @@
         $gLocale[ "vb3_UserEmpty" ]             = "vBulletin utilisateur ne peut pas être vide.";
         $gLocale[ "vb3_PasswordEmpty" ]         = "vBulletin Mot de passe de la base de données ne peut pas être vide.";
         $gLocale[ "vb3_DBPasswordsMatch" ]      = "vBulletin Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "vb3_CookieEx" ]              = null;
         
         // MyBB
         $gLocale[ "mybb_Binding" ]              = "MyBB";
@@ -363,6 +367,7 @@
         $gLocale[ "vanilla_UserEmpty" ]         = "Vanilla utilisateur ne peut pas être vide.";
         $gLocale[ "vanilla_PasswordEmpty" ]     = "Vanilla Mot de passe de la base de données ne peut pas être vide.";
         $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Vanilla Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "vanilla_CookieEx" ]          = null;      
         
         // Joomla
         $gLocale[ "jml3_Binding" ]              = "Joomla3";
@@ -372,6 +377,7 @@
         $gLocale[ "jml3_UserEmpty" ]            = "Joomla3 utilisateur ne peut pas être vide.";
         $gLocale[ "jml3_PasswordEmpty" ]        = "Joomla3 Mot de passe de la base de données ne peut pas être vide.";
         $gLocale[ "jml3_DBPasswordsMatch" ]     = "Joomla3 Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "jml3_CookieEx" ]             = null;
         
         // Drupal
         $gLocale[ "drupal_Binding" ]            = "Drupal";
@@ -381,6 +387,7 @@
         $gLocale[ "drupal_UserEmpty" ]          = "Drupal utilisateur ne peut pas être vide.";
         $gLocale[ "drupal_PasswordEmpty" ]      = "Drupal Mot de passe de la base de données ne peut pas être vide.";
         $gLocale[ "drupal_DBPasswordsMatch" ]   = "Drupal Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "drupal_CookieEx" ]           = null;
         
         // Wordpress
         $gLocale[ "wp_Binding" ]                = "Wordpress";
@@ -390,5 +397,6 @@
         $gLocale[ "wp_UserEmpty" ]              = "Wordpress utilisateur ne peut pas être vide.";
         $gLocale[ "wp_PasswordEmpty" ]          = "Wordpress Mot de passe de la base de données ne peut pas être vide.";
         $gLocale[ "wp_DBPasswordsMatch" ]       = "Wordpress Les mots de passe de la base de données ne correspondent pas.";
+        $gLocale[ "wp_CookieEx" ]               = null;
     }
 ?>

@@ -305,6 +305,10 @@
         $gLocale[ "AutoMemberLogin" ]          = "Benutzer der folgenden, ausgewälten Gruppe(n) werden als \"Mitglieder\" angemeldet:"; 
         $gLocale[ "AutoLeadLogin" ]            = "Benutzer der folgenden, ausgewälten Gruppe(n) werden als \"Raidleiter\" angemeldet:";
         $gLocale[ "ReloadFailed" ]             = "Ladevorgang fehlgeschlagen";
+        $gLocale[ "LoadCookieEx" ]             = "Ermitteln";
+        $gLocale[ "BindingBasePath" ]          = "Bitte gebe den Installationspfad dieses Bindings relativ zum web root an.";
+        $gLocale[ "RetrievalFailed" ]          = "Automatische Erkennung fehlgeschlagen";
+        $gLocale[ "NotExisting" ]              = "existiert nicht";
         
         // PHPBB3 
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB3";
@@ -332,6 +336,7 @@
         $gLocale[ "vb3_UserEmpty" ]             = "vBulletin Benutzer darf nicht leer sein";
         $gLocale[ "vb3_PasswordEmpty" ]         = "vBulletin Datenbank Passwort darf nicht leer sein";
         $gLocale[ "vb3_DBPasswordsMatch" ]      = "vBulletin Datenbank-Passwörter stimmen nicht überein";
+        $gLocale[ "vb3_CookieEx" ]              = "vBulletin Cookie-Prefix";
         
         // MyBB
         $gLocale[ "mybb_Binding" ]              = "MyBB";
@@ -358,7 +363,8 @@
         $gLocale[ "vanilla_DatabaseEmpty" ]     = "Name der Vanilla Datenbank darf nicht leer sein";
         $gLocale[ "vanilla_UserEmpty" ]         = "Vanilla Benutzer darf nicht leer sein";
         $gLocale[ "vanilla_PasswordEmpty" ]     = "Vanilla Datenbank Passwort darf nicht leer sein.";
-        $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Vanilla Datenbank-Passwörter stimmen nicht überein.";       
+        $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Vanilla Datenbank-Passwörter stimmen nicht überein.";
+        $gLocale[ "vanilla_CookieEx" ]          = "Vanilla Cookie-Name";      
         
         // Joomla
         $gLocale[ "jml3_Binding" ]              = "Joomla3";
@@ -368,6 +374,7 @@
         $gLocale[ "jml3_UserEmpty" ]            = "Joomla3 Benutzer darf nicht leer sein";
         $gLocale[ "jml3_PasswordEmpty" ]        = "Joomla3 Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "jml3_DBPasswordsMatch" ]     = "Joomla3 Datenbank-Passwörter stimmen nicht überein.";      
+        $gLocale[ "jml3_CookieEx" ]             = "Joomla3 Secret";
         
         // Drupal
         $gLocale[ "drupal_Binding" ]            = "Drupal";
@@ -377,6 +384,7 @@
         $gLocale[ "drupal_UserEmpty" ]          = "Drupal Benutzer darf nicht leer sein";
         $gLocale[ "drupal_PasswordEmpty" ]      = "Drupal Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "drupal_DBPasswordsMatch" ]   = "Drupal Datenbank-Passwörter stimmen nicht überein.";      
+        $gLocale[ "drupal_CookieEx" ]           = "Drupal Basis-URL";
         
         // Wordpress
         $gLocale[ "wp_Binding" ]                = "Wordpress";
@@ -385,6 +393,7 @@
         $gLocale[ "wp_DatabaseEmpty" ]          = "Name der Wordpress Datenbank darf nicht leer sein";
         $gLocale[ "wp_UserEmpty" ]              = "Wordpress Benutzer darf nicht leer sein";
         $gLocale[ "wp_PasswordEmpty" ]          = "Wordpress Datenbank Passwort darf nicht leer sein.";
-        $gLocale[ "wp_DBPasswordsMatch" ]       = "Wordpress Datenbank-Passwörter stimmen nicht überein.";
+        $gLocale[ "wp_DBPasswordsMatch" ]       = "Wordpress Datenbank-Passwörter stimmen nicht überein.";      
+        $gLocale[ "wp_CookieEx" ]               = "Wordpress LOGGED_IN_KEY gefolgt von LOGGED_IN_SALT";
     }
 ?>
