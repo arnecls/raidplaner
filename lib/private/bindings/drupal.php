@@ -36,8 +36,8 @@
                 "prefix"    => defined("DRUPAL_TABLE_PREFIX") ? DRUPAL_TABLE_PREFIX : "",
                 "cookie"    => defined("DRUPAL_ROOT") ? DRUPAL_ROOT : "http://".$_SERVER['HTTP_HOST'],
                 "autologin" => defined("DRUPAL_AUTOLOGIN") ? DRUPAL_AUTOLOGIN : false,
-                "members"   => defined("DRUPAL_RAIDLEAD_GROUPS") ? explode(",", DRUPAL_RAIDLEAD_GROUPS ) : [],
-                "leads"     => defined("DRUPAL_MEMBER_GROUPS") ? explode(",", DRUPAL_MEMBER_GROUPS ) : [],
+                "members"   => defined("DRUPAL_RAIDLEAD_GROUPS") ? explode(",", DRUPAL_RAIDLEAD_GROUPS ) : array(),
+                "leads"     => defined("DRUPAL_MEMBER_GROUPS") ? explode(",", DRUPAL_MEMBER_GROUPS ) : array(),
                 "cookie_ex" => true,
                 "groups"    => true
             );
@@ -126,7 +126,7 @@
             if ($Connector != null)
             {
                 $GroupQuery = $Connector->prepare( "SELECT rid, name FROM `".$aPrefix."role` ORDER BY name" );
-                $Groups = [];
+                $Groups = array();
                 
                 if ( $GroupQuery->execute() )
                 {

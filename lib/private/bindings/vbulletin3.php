@@ -28,8 +28,8 @@
                 "prefix"    => defined("VB3_TABLE_PREFIX") ? VB3_TABLE_PREFIX : "vb_",
                 "autologin" => defined("VB3_AUTOLOGIN") ? VB3_AUTOLOGIN : false,
                 "cookie"    => defined("VB3_COOKIE_PREFIX") ? VB3_COOKIE_PREFIX : "bb",
-                "members"   => defined("VB3_RAIDLEAD_GROUPS") ? explode(",", VB3_RAIDLEAD_GROUPS ) : [],
-                "leads"     => defined("VB3_MEMBER_GROUPS") ? explode(",", VB3_MEMBER_GROUPS ) : [],
+                "members"   => defined("VB3_RAIDLEAD_GROUPS") ? explode(",", VB3_RAIDLEAD_GROUPS ) : array(),
+                "leads"     => defined("VB3_MEMBER_GROUPS") ? explode(",", VB3_MEMBER_GROUPS ) : array(),
                 "cookie_ex" => true,
                 "groups"    => true
             );
@@ -108,7 +108,7 @@
             if ($Connector != null)
             {
                 $GroupQuery = $Connector->prepare( "SELECT usergroupid, title FROM `".$aPrefix."usergroup` ORDER BY title" );
-                $Groups = [];
+                $Groups = array();
                 
                 if ( $GroupQuery->execute() )
                 {

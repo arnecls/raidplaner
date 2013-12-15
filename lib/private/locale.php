@@ -2,7 +2,7 @@
     require_once(dirname(__FILE__)."/tools_string.php");
     require_once(dirname(__FILE__)."/out.class.php");
 
-    $gLocale = [];
+    $gLocale = array();
 
     if ( !isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) )
     {
@@ -49,7 +49,8 @@
         {
             if ($Value != null)
             {
-                $Encoded = htmlentities($Value, ENT_COMPAT | ENT_HTML401, 'UTF-8');
+                $Flags = (PHP_VERSION_ID >= 50400) ? ENT_COMPAT | ENT_XHTML : ENT_COMPAT;                
+                $Encoded = htmlentities($Value, $Flags, 'UTF-8');
                 $EncodedLocale[$Key] = $Encoded;
             }
         }

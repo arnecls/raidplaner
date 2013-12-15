@@ -28,8 +28,8 @@
                 "prefix"    => defined("SMF_TABLE_PREFIX") ? SMF_TABLE_PREFIX : "smf_",
                 "autologin" => defined("SMF_AUTOLOGIN") ? SMF_AUTOLOGIN : false,
                 "cookie"    => defined("SMF_COOKIE") ? SMF_COOKIE : "SMFCookie956",
-                "members"   => defined("SMF_RAIDLEAD_GROUPS") ? explode(",", SMF_RAIDLEAD_GROUPS ) : [],
-                "leads"     => defined("SMF_MEMBER_GROUPS") ? explode(",", SMF_MEMBER_GROUPS ) : [],
+                "members"   => defined("SMF_RAIDLEAD_GROUPS") ? explode(",", SMF_RAIDLEAD_GROUPS ) : array(),
+                "leads"     => defined("SMF_MEMBER_GROUPS") ? explode(",", SMF_MEMBER_GROUPS ) : array(),
                 "cookie_ex" => true,
                 "groups"    => true
             );
@@ -108,7 +108,7 @@
             if ($Connector != null)
             {
                 $GroupQuery = $Connector->prepare( "SELECT id_group, group_name FROM `".$aPrefix."membergroups` ORDER BY group_name" );
-                $Groups = [];
+                $Groups = array();
                 
                 if ( $GroupQuery->execute() )
                 {

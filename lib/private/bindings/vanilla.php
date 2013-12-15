@@ -30,8 +30,8 @@
                 "prefix"    => defined("VANILLA_TABLE_PREFIX") ? VANILLA_TABLE_PREFIX : "GDN_",
                 "autologin" => defined("VANILLA_AUTOLOGIN") ? VANILLA_AUTOLOGIN : false,
                 "cookie"    => defined("VANILLA_COOKIE") ? VANILLA_COOKIE : "Vanilla,md5,123456",
-                "members"   => defined("VANILLA_RAIDLEAD_GROUPS") ? explode(",", VANILLA_RAIDLEAD_GROUPS ) : [],
-                "leads"     => defined("VANILLA_MEMBER_GROUPS") ? explode(",", VANILLA_MEMBER_GROUPS ) : [],
+                "members"   => defined("VANILLA_RAIDLEAD_GROUPS") ? explode(",", VANILLA_RAIDLEAD_GROUPS ) : array(),
+                "leads"     => defined("VANILLA_MEMBER_GROUPS") ? explode(",", VANILLA_MEMBER_GROUPS ) : array(),
                 "cookie_ex" => true,
                 "groups"    => true
             );
@@ -125,7 +125,7 @@
             if ($Connector != null)
             {
                 $GroupQuery = $Connector->prepare( "SELECT RoleID, Name FROM `".$aPrefix."Role` ORDER BY Name" );
-                $Groups = [];
+                $Groups = array();
                 
                 if ( $GroupQuery->execute() )
                 {

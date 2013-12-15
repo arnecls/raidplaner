@@ -33,8 +33,8 @@
                 "password"  => defined("EQDKP_PASS") ? EQDKP_PASS : RP_PASS,
                 "prefix"    => defined("EQDKP_TABLE_PREFIX") ? EQDKP_TABLE_PREFIX : "eqdkp_",
                 "autologin" => defined("EQDKP_AUTOLOGIN") ? EQDKP_AUTOLOGIN : false,
-                "members"   => [],
-                "leads"     => [],
+                "members"   => array(),
+                "leads"     => array(),
                 "cookie_ex" => false,
                 "groups"    => false
             );

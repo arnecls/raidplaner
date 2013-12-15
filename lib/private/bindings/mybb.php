@@ -27,8 +27,8 @@
                 "password"  => defined("MYBB_PASS") ? MYBB_PASS : RP_PASS,
                 "prefix"    => defined("MYBB_TABLE_PREFIX") ? MYBB_TABLE_PREFIX : "mybb_",
                 "autologin" => defined("MYBB_AUTOLOGIN") ? MYBB_AUTOLOGIN : false,
-                "members"   => defined("MYBB_RAIDLEAD_GROUPS") ? explode(",", MYBB_RAIDLEAD_GROUPS ) : [],
-                "leads"     => defined("MYBB_MEMBER_GROUPS") ? explode(",", MYBB_MEMBER_GROUPS ) : [],
+                "members"   => defined("MYBB_RAIDLEAD_GROUPS") ? explode(",", MYBB_RAIDLEAD_GROUPS ) : array(),
+                "leads"     => defined("MYBB_MEMBER_GROUPS") ? explode(",", MYBB_MEMBER_GROUPS ) : array(),
                 "cookie_ex" => false,
                 "groups"    => true
             );
@@ -106,7 +106,7 @@
             if ($Connector != null)
             {
                 $GroupQuery = $Connector->prepare( "SELECT gid, title FROM `".$aPrefix."usergroups` ORDER BY title" );
-                $Groups = [];
+                $Groups = array();
                 
                 if ( $GroupQuery->execute() )
                 {

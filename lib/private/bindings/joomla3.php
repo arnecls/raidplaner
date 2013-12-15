@@ -28,8 +28,8 @@
                 "prefix"    => defined("JML3_TABLE_PREFIX") ? JML3_TABLE_PREFIX : "jml_",
                 "autologin" => defined("JML3_AUTOLOGIN") ? JML3_AUTOLOGIN : false,
                 "cookie"    => defined("JML3_SECRET") ? JML3_SECRET : "0123456789ABCDEF",
-                "members"   => defined("JML3_RAIDLEAD_GROUPS") ? explode(",", JML3_RAIDLEAD_GROUPS ) : [],
-                "leads"     => defined("JML3_MEMBER_GROUPS") ? explode(",", JML3_MEMBER_GROUPS ) : [],
+                "members"   => defined("JML3_RAIDLEAD_GROUPS") ? explode(",", JML3_RAIDLEAD_GROUPS ) : array(),
+                "leads"     => defined("JML3_MEMBER_GROUPS") ? explode(",", JML3_MEMBER_GROUPS ) : array(),
                 "cookie_ex" => true,
                 "groups"    => true
             );
@@ -103,7 +103,7 @@
             if ($Connector != null)
             {
                 $GroupQuery = $Connector->prepare( "SELECT id, title FROM `".$aPrefix."usergroups` ORDER BY title" );
-                $Groups = [];
+                $Groups = array();
                 
                 if ( $GroupQuery->execute() )
                 {

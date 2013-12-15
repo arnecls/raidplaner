@@ -13,15 +13,15 @@ function msgQueryConfig( $aRequest )
     $Out = Out::getInstance();
     loadSiteSettings();
     
-    $Config = [];    
-    $Config["GroupSizes"] = [];
-    $Config["RoleNames"] = [];
-    $Config["RoleIds"] = [];
-    $Config["RoleIdents"] = [];
+    $Config = array();    
+    $Config["GroupSizes"] = array();
+    $Config["RoleNames"] = array();
+    $Config["RoleIds"] = array();
+    $Config["RoleIdents"] = array();
     $Config["RoleImages"] = $gRoleImages;
     $Config["RoleColumnCount"] = $gRoleColumnCount;
-    $Config["ClassIdx"] = [];
-    $Config["Classes"] = [];
+    $Config["ClassIdx"] = array();
+    $Config["Classes"] = array();
     
     // Groups
     
@@ -48,9 +48,10 @@ function msgQueryConfig( $aRequest )
     for ( $i=0; list($ClassIdent,$ClassConfig) = each($gClasses); ++$i )
     {
         $Config["ClassIdx"][$ClassIdent] = $i;
+        $Flags = (PHP_VERSION_ID >= 50400) ? ENT_COMPAT | ENT_XHTML : ENT_COMPAT;
         
         $ClassText = (isset($gLocale[$ClassConfig[0]]))
-            ? htmlentities($gLocale[$ClassConfig[0]], ENT_COMPAT | ENT_HTML401, 'UTF-8')
+            ? htmlentities($gLocale[$ClassConfig[0]], $Flags, 'UTF-8')
             : "";
         
         array_push( $Config["Classes"], array(

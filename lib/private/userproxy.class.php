@@ -1031,12 +1031,12 @@
         {
             $CurrentUser = UserProxy::getInstance();
             
-            $CharacterIds = [];
-            $CharacterNames = [];
-            $CharacterClasses = [];
-            $CharacterRoles1 = [];
-            $CharacterRoles2 = [];
-            $Settings = [];
+            $CharacterIds = array();
+            $CharacterNames = array();
+            $CharacterClasses = array();
+            $CharacterRoles1 = array();
+            $CharacterRoles2 = array();
+            $Settings = array();
             
             foreach( $CurrentUser->Characters as $Character )
             {

@@ -30,8 +30,8 @@
                 "password"  => defined("PHPBB3_PASS") ? PHPBB3_PASS : RP_PASS,
                 "prefix"    => defined("PHPBB3_TABLE_PREFIX") ? PHPBB3_TABLE_PREFIX : "phpbb_",
                 "autologin" => defined("PHPBB3_AUTOLOGIN") ? PHPBB3_AUTOLOGIN : false,
-                "members"   => defined("PHPBB3_RAIDLEAD_GROUPS") ? explode(",", PHPBB3_RAIDLEAD_GROUPS ) : [],
-                "leads"     => defined("PHPBB3_MEMBER_GROUPS") ? explode(",", PHPBB3_MEMBER_GROUPS ) : [],
+                "members"   => defined("PHPBB3_RAIDLEAD_GROUPS") ? explode(",", PHPBB3_RAIDLEAD_GROUPS ) : array(),
+                "leads"     => defined("PHPBB3_MEMBER_GROUPS") ? explode(",", PHPBB3_MEMBER_GROUPS ) : array(),
                 "cookie_ex" => false,
                 "groups"    => true
             );
@@ -109,7 +109,7 @@
             if ($Connector != null)
             {
                 $GroupQuery = $Connector->prepare( "SELECT group_id, group_name FROM `".$aPrefix."groups` ORDER BY group_name" );
-                $Groups = [];
+                $Groups = array();
                 
                 if ( $GroupQuery->execute() )
                 {

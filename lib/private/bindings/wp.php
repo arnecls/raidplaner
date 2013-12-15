@@ -30,8 +30,8 @@
                 "prefix"    => defined("WP_TABLE_PREFIX") ? WP_TABLE_PREFIX : "wp_",
                 "autologin" => defined("WP_AUTOLOGIN") ? WP_AUTOLOGIN : false,
                 "cookie"    => defined("WP_SECRET") ? WP_SECRET : "",
-                "members"   => defined("WP_RAIDLEAD_GROUPS") ? explode(",", WP_RAIDLEAD_GROUPS ) : [],
-                "leads"     => defined("WP_MEMBER_GROUPS") ? explode(",", WP_MEMBER_GROUPS ) : [],
+                "members"   => defined("WP_RAIDLEAD_GROUPS") ? explode(",", WP_RAIDLEAD_GROUPS ) : array(),
+                "leads"     => defined("WP_MEMBER_GROUPS") ? explode(",", WP_MEMBER_GROUPS ) : array(),
                 "cookie_ex" => true,
                 "groups"    => true
             );
@@ -109,7 +109,7 @@
             
             if ($Connector != null)
             {
-                $Groups = [];
+                $Groups = array();
                 $OptionsQuery = $Connector->prepare( "SELECT option_value FROM `".$aPrefix."options` WHERE option_name = \"wp_user_roles\" LIMIT 1" );
                 
                 if ( $OptionsQuery->execute() )
