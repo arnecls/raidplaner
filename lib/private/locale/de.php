@@ -334,7 +334,7 @@
         $gLocale[ "eqdkp_DBPasswordsMatch" ]    = "EQDKP Datenbank-Passwörter stimmen nicht überein";
         
         // vBulletin
-        $gLocale[ "vb3_Binding" ]               = "vBulletin 3.x";
+        $gLocale[ "vb3_Binding" ]               = "vBulletin 3.x/4.x";
         $gLocale[ "vb3_ConfigFile" ]            = "vBulletin Konfigurationsdatei";
         $gLocale[ "vb3_Database" ]              = "Name der vBulletin Datenbank";
         $gLocale[ "vb3_DatabaseEmpty" ]         = "Name der vBulletin Datenbank darf nicht leer sein";
@@ -344,7 +344,7 @@
         $gLocale[ "vb3_CookieEx" ]              = "vBulletin Cookie-Prefix";
         
         // MyBB
-        $gLocale[ "mybb_Binding" ]              = "MyBB";
+        $gLocale[ "mybb_Binding" ]              = "MyBB 1.6+";
         $gLocale[ "mybb_ConfigFile" ]           = "MyBB Konfigurationsdatei";
         $gLocale[ "mybb_Database" ]             = "Name der MyBB Datenbank";
         $gLocale[ "mybb_DatabaseEmpty" ]        = "Name der MyBB Datenbank darf nicht leer sein";
@@ -353,7 +353,7 @@
         $gLocale[ "mybb_DBPasswordsMatch" ]     = "MyBB Datenbank-Passwörter stimmen nicht überein.";        
         
         // SMF
-        $gLocale[ "smf_Binding" ]               = "Simple Machines Forum";
+        $gLocale[ "smf_Binding" ]               = "Simple Machines Forum 2.x";
         $gLocale[ "smf_ConfigFile" ]            = "SMF Konfigurationsdatei";
         $gLocale[ "smf_Database" ]              = "Name der SMF Datenbank";
         $gLocale[ "smf_DatabaseEmpty" ]         = "Name der SMF Datenbank darf nicht leer sein";
@@ -382,7 +382,7 @@
         $gLocale[ "jml3_CookieEx" ]             = "Joomla3 Secret";
         
         // Drupal
-        $gLocale[ "drupal_Binding" ]            = "Drupal";
+        $gLocale[ "drupal_Binding" ]            = "Drupal 7.6+";
         $gLocale[ "drupal_ConfigFile" ]         = "Drupal Konfigurationsdatei";
         $gLocale[ "drupal_Database" ]           = "Name der Drupal Datenbank";
         $gLocale[ "drupal_DatabaseEmpty" ]      = "Name der Drupal Datenbank darf nicht leer sein";
@@ -392,7 +392,7 @@
         $gLocale[ "drupal_CookieEx" ]           = "Drupal Basis-URL";
         
         // Wordpress
-        $gLocale[ "wp_Binding" ]                = "Wordpress";
+        $gLocale[ "wp_Binding" ]                = "Wordpress 3.x";
         $gLocale[ "wp_ConfigFile" ]             = "Wordpress Konfigurationsdatei";
         $gLocale[ "wp_Database" ]               = "Name der Wordpress Datenbank";
         $gLocale[ "wp_DatabaseEmpty" ]          = "Name der Wordpress Datenbank darf nicht leer sein";

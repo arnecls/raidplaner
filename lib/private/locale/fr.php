@@ -346,7 +346,7 @@
         $gLocale[ "vb3_CookieEx" ]              = null;
         
         // MyBB
-        $gLocale[ "mybb_Binding" ]              = "MyBB";
+        $gLocale[ "mybb_Binding" ]              = "MyBB 1.6+";
         $gLocale[ "mybb_ConfigFile" ]           = "MyBB Fichier de configuration";
         $gLocale[ "mybb_Database" ]             = "MyBB Base de données";
         $gLocale[ "mybb_DatabaseEmpty" ]        = "MyBB Base de données ne peut pas être vide.";
@@ -355,7 +355,7 @@
         $gLocale[ "mybb_DBPasswordsMatch" ]     = "MyBB Les mots de passe de la base de données ne correspondent pas.";
         
         // SMF
-        $gLocale[ "smf_Binding" ]               = "Simple Machines Forum";
+        $gLocale[ "smf_Binding" ]               = "Simple Machines Forum 2.x";
         $gLocale[ "smf_ConfigFile" ]            = "SMF Fichier de configuration";
         $gLocale[ "smf_Database" ]              = "SMF Base de données";
         $gLocale[ "smf_DatabaseEmpty" ]         = "SMF Base de données ne peut pas être vide.";
@@ -384,7 +384,7 @@
         $gLocale[ "jml3_CookieEx" ]             = null;
         
         // Drupal
-        $gLocale[ "drupal_Binding" ]            = "Drupal";
+        $gLocale[ "drupal_Binding" ]            = "Drupal 7.6+";
         $gLocale[ "drupal_ConfigFile" ]         = "Drupal Fichier de configuration";
         $gLocale[ "drupal_Database" ]           = "Drupal Base de données";
         $gLocale[ "drupal_DatabaseEmpty" ]      = "Drupal Base de données ne peut pas être vide.";
@@ -394,7 +394,7 @@
         $gLocale[ "drupal_CookieEx" ]           = null;
         
         // Wordpress
-        $gLocale[ "wp_Binding" ]                = "Wordpress";
+        $gLocale[ "wp_Binding" ]                = "Wordpress 3.x";
         $gLocale[ "wp_ConfigFile" ]             = "Wordpress Fichier de configuration";
         $gLocale[ "wp_Database" ]               = "Wordpress Base de données";
         $gLocale[ "wp_DatabaseEmpty" ]          = "Wordpress Base de données ne peut pas être vide.";

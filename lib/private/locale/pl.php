@@ -336,7 +336,7 @@
         $gLocale[ "eqdkp_DBPasswordsMatch" ]    = "Hasło bazy danych EQDKP zostało powtórzone niepoprawnie.";
         
         // vBulletin
-        $gLocale[ "vb3_Binding" ]               = "vBulletin 3.x";
+        $gLocale[ "vb3_Binding" ]               = "vBulletin 3.x/4.x";
         $gLocale[ "vb3_ConfigFile" ]            = "Plik konfiguracyjny vBulletin";
         $gLocale[ "vb3_Database" ]              = "Baza danych vBulletin";
         $gLocale[ "vb3_DatabaseEmpty" ]         = "Nazwa bazy danych vBulletin nie może być pusta.";
@@ -346,7 +346,7 @@
         $gLocale[ "vb3_CookieEx" ]              = null;
         
         // MyBB
-        $gLocale[ "mybb_Binding" ]              = "MyBB";
+        $gLocale[ "mybb_Binding" ]              = "MyBB 1.6+";
         $gLocale[ "mybb_ConfigFile" ]           = "Plik konfiguracyjny MyBB";
         $gLocale[ "mybb_Database" ]             = "Baza danych MyBB";
         $gLocale[ "mybb_DatabaseEmpty" ]        = "Nazwa bazy danych MyBB nie może być pusta.";
@@ -355,7 +355,7 @@
         $gLocale[ "mybb_DBPasswordsMatch" ]     = "Hasło bazy danych MyBB zostało powtórzone niepoprawnie.";
         
         // SMF
-        $gLocale[ "smf_Binding" ]               = "Simple Machines Forum";
+        $gLocale[ "smf_Binding" ]               = "Simple Machines Forum 2.x";
         $gLocale[ "smf_ConfigFile" ]            = "Plik konfiguracyjny SMF";
         $gLocale[ "smf_Database" ]              = "Baza danych SMF";
         $gLocale[ "smf_DatabaseEmpty" ]         = "Nazwa bazy danych SMF nie może być pusta.";
@@ -384,7 +384,7 @@
         $gLocale[ "jml3_CookieEx" ]             = null;
         
         // Drupal
-        $gLocale[ "drupal_Binding" ]            = "Drupal";
+        $gLocale[ "drupal_Binding" ]            = "Drupal 7.6+";
         $gLocale[ "drupal_ConfigFile" ]         = "Plik konfiguracyjny Drupal";
         $gLocale[ "drupal_Database" ]           = "Baza danych Drupal";
         $gLocale[ "drupal_DatabaseEmpty" ]      = "Nazwa bazy danych Drupal nie może być pusta.";
@@ -394,7 +394,7 @@
 		$gLocale[ "drupal_CookieEx" ]           = null;
         
         // Wordpress
-        $gLocale[ "wp_Binding" ]                = "Wordpress";
+        $gLocale[ "wp_Binding" ]                = "Wordpress 3.x";
         $gLocale[ "wp_ConfigFile" ]             = "Plik konfiguracyjny Wordpress";
         $gLocale[ "wp_Database" ]               = "Baza danych Wordpress";
         $gLocale[ "wp_DatabaseEmpty" ]          = "Nazwa bazy danych Wordpress nie może być pusta.";

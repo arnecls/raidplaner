@@ -48,6 +48,7 @@
                 return null;
             }
             
+            define("SHORTINIT", true);
             @include_once($ConfigPath);
             
             if (!isset($table_prefix))
