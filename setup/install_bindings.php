@@ -7,7 +7,7 @@
     
     // Load bindings
     
-    $gBindings = [];
+    $gBindings = array();
     
     foreach(PluginRegistry::$Classes as $PluginName)
     {

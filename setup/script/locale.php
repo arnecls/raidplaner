@@ -14,7 +14,8 @@ var gLocale = {
             else 
                 echo ",\n    ";
             
-            echo $Key." : \"".htmlentities($Value, ENT_COMPAT | ENT_HTML401, 'UTF-8')."\"";   
+            $Flags = (PHP_VERSION_ID >= 50400) ? ENT_COMPAT | ENT_XHTML : ENT_COMPAT;
+            echo $Key." : \"".htmlentities($Value, $Flags, 'UTF-8')."\"";   
         }    
     ?>    
 };
