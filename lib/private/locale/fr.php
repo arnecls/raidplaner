@@ -315,6 +315,7 @@
         $gLocale[ "NotExisting" ]              = null;
         $gLocale[ "AllowAutoLogin" ]           = null;
         $gLocale[ "NoValidConfig" ]            = null;
+        $gLocale[ "CookieNote" ]               = null;
         
         // PHPBB3        
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";

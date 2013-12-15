@@ -142,7 +142,8 @@
             echo "<button onclick=\"CheckGrouplessBinding('".$Binding->BindingName."')\"".$Disabled.">".L("VerifySettings")."</button><br/><br/>";
         }
         
-        echo "<p><input type=\"checkbox\" id=\"".$Binding->BindingName."_autologin\"".(($Config["autologin"]) ? "checked=\"checked\"" : "")."".$Disabled."/> ".L("AllowAutoLogin")."</p>";
+        echo "<p><input type=\"checkbox\" id=\"".$Binding->BindingName."_autologin\"".(($Config["autologin"]) ? "checked=\"checked\"" : "")."".$Disabled."/> ".L("AllowAutoLogin")."<br/><br/>";
+        echo L("CookieNote")."</p>";
         
         echo "</div>";
         echo "</div>";

@@ -312,6 +312,8 @@
         $gLocale[ "NotExisting" ]              = "existiert nicht";
         $gLocale[ "AllowAutoLogin" ]           = "Automatisches einloggen erlauben";
         $gLocale[ "NoValidConfig" ]            = "Keine gültige Konfigurationsdatei gefunden.";
+        $gLocale[ "CookieNote" ]               = "Automatisches einloggen erfordert, dass der raidplaner in einem Unterordner des Cookie-Pfads diese Bindings installiert ist. ".
+                                                 "Dieser muss ggF. in der Konfiguration dieses Bindings angepasst werden.";
         
         // PHPBB3 
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";
