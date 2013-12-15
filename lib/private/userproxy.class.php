@@ -420,11 +420,38 @@
                 {
                     $UserInfo = $Binding->getExternalLoginData();
                     
-                    // Checking the credentials will create the user as if
-                    // he logs in manually.
-                    
-                    if ( $this->getUserCredentialsFromInfo($UserInfo, $Binding) != null )
-                        return $UserInfo;
+                    if ($UserInfo != null)
+                    {
+                        // Fetch the user data so UserId and Binding fields
+                        // can be set to correct values
+                        
+                        $Connector = Connector::getInstance();
+                        $UserSt = $Connector->prepare( "SELECT UserId, BindingActive FROM `".RP_TABLE_PREFIX."User` ".
+                                                       "WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
+                                                       
+                        $UserSt->bindValue(":UserId", $UserInfo->UserId, PDO::PARAM_INT );
+                        $UserSt->bindValue(":Binding", $UserInfo->BindingName, PDO::PARAM_STR );
+                        
+                        // The query might fail if the user is not yet registered
+                        
+                        if ($UserSt->execute() && ($UserSt->rowcount() > 0))
+                        {
+                            $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
+                            
+                            if ($UserData["BindingActive"] == "false")
+                                $UserInfo->BindingName = "none"; // unlinked
+                            
+                            $UserInfo->UserId = $UserData["UserId"];
+                        }
+                        
+                        $UserSt->closeCursor();
+                        
+                        // Checking the credentials will create the user as if
+                        // he logs in manually.
+                        
+                        if ( $this->getUserCredentialsFromInfo($UserInfo, $Binding) != null )
+                            return $UserInfo;
+                    }
                 }
             }
             
@@ -520,9 +547,8 @@
             $Connector = Connector::getInstance();
             $UserSt = $Connector->prepare( "SELECT OneTimeKey, Password, ExternalBinding, BindingActive, ExternalId FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
             $UserSt->bindValue(":UserId", $this->UserId, PDO::PARAM_INT );
-            $UserSt->execute();
             
-            if ($UserSt->rowcount() > 0)
+            if ($UserSt->execute() && ($UserSt->rowcount() > 0))
             {
                 $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
                 
@@ -574,11 +600,10 @@
                 if ($ExternalUser == null)
                     return false; // ### return, no data ###
                     
-                // try to fetch the externally bound user 
+                // try to fetch the externally bound user
                 
-                $UserSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
+                $UserSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
                 $UserSt->bindValue(":UserId", $ExternalUser->UserId, PDO::PARAM_INT );
-                $UserSt->bindValue(":Binding", $ExternalUser->BindingName, PDO::PARAM_STR );
                 $UserSt->execute();
                 
                 if ($UserSt->rowcount() > 0)
