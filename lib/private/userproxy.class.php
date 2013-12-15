@@ -343,10 +343,9 @@
                 // user twice after an external rename.
                 
                 $OneTimeKey = self::generateKey128();
-                $IsLocalInfo = $aUserInfo->BindingName == "none";
-                $IsNativeBinding = $aBinding->BindingName == "none";
+                $IsLocalInfo = $aUserInfo->BindingName == "none"; // In this case UserId != ExternalUserId (!)
                 
-                $UpdateUserSt = $this->updateUserMirror( $aUserInfo, $IsNativeBinding, $OneTimeKey );
+                $UpdateUserSt = $this->updateUserMirror( $aUserInfo, $IsLocalInfo, $OneTimeKey );
                 $UpdateUserSt->execute();
                 
                 if ( $UpdateUserSt->rowcount() == 0 )
@@ -387,6 +386,71 @@
         
         // --------------------------------------------------------------------------------------------
 
+        public function getExternalLoginData()
+        {
+            // Iterate all bindings and search for the given user
+            
+            foreach( self::$mBindings as $Binding )
+            {
+                if ( $Binding->isActive() )
+                {
+                    $UserInfo = $Binding->getExternalLoginData();
+                    
+                    if ($UserInfo != null)
+                    {
+                        // Fetch the user data so UserId and Binding fields
+                        // can be set to correct values for getUserCredentialsFromInfo
+                        
+                        $ExternalUserId = $UserInfo->UserId;
+                        
+                        $Connector = Connector::getInstance();
+                        $UserSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` ".
+                                                       "WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
+                                                       
+                        $UserSt->bindValue(":UserId", $UserInfo->UserId, PDO::PARAM_INT );
+                        $UserSt->bindValue(":Binding", $UserInfo->BindingName, PDO::PARAM_STR );
+                        
+                        // The query might fail if the user is not yet registered
+                        
+                        if ($UserSt->execute() && ($UserSt->rowcount() > 0))
+                        {
+                            $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
+                            
+                            if ($UserData["BindingActive"] == "false")
+                            {
+                                // We are querying a local user in that case we need to
+                                // modify the userinfo for getUserCredentialsFromInfo
+                                // to work as expected
+                                
+                                $UserInfo->BindingName = "none";
+                                $UserInfo->UserId = $UserData["UserId"];
+                            }
+                        }
+                        
+                        $UserSt->closeCursor();
+                        
+                        // Checking the credentials will create the user if necessary.
+                        
+                        if ( $this->getUserCredentialsFromInfo($UserInfo, $Binding) != null )
+                        {
+                            // Revert user info to database values
+                            
+                            $UserInfo->UserId = $ExternalUserId;
+                            $UserInfo->BindingName = $Binding->BindingName;
+                                
+                            return $UserInfo;
+                        }
+                    }
+                }
+            }
+            
+            // No external login detected
+            
+            return null;
+        }
+        
+        // --------------------------------------------------------------------------------------------
+
         public function getUserCredentials( $aUserName )
         {
             // Iterate all bindings and search for the given user
@@ -404,58 +468,6 @@
             }
             
             // User not found
-            
-            return null;
-        }
-        
-        // --------------------------------------------------------------------------------------------
-
-        public function getExternalLoginData()
-        {
-            // Iterate all bindings and search for the given user
-            
-            foreach( self::$mBindings as $Binding )
-            {
-                if ( $Binding->isActive() )
-                {
-                    $UserInfo = $Binding->getExternalLoginData();
-                    
-                    if ($UserInfo != null)
-                    {
-                        // Fetch the user data so UserId and Binding fields
-                        // can be set to correct values
-                        
-                        $Connector = Connector::getInstance();
-                        $UserSt = $Connector->prepare( "SELECT UserId, BindingActive FROM `".RP_TABLE_PREFIX."User` ".
-                                                       "WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
-                                                       
-                        $UserSt->bindValue(":UserId", $UserInfo->UserId, PDO::PARAM_INT );
-                        $UserSt->bindValue(":Binding", $UserInfo->BindingName, PDO::PARAM_STR );
-                        
-                        // The query might fail if the user is not yet registered
-                        
-                        if ($UserSt->execute() && ($UserSt->rowcount() > 0))
-                        {
-                            $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
-                            
-                            if ($UserData["BindingActive"] == "false")
-                                $UserInfo->BindingName = "none"; // unlinked
-                            
-                            $UserInfo->UserId = $UserData["UserId"];
-                        }
-                        
-                        $UserSt->closeCursor();
-                        
-                        // Checking the credentials will create the user as if
-                        // he logs in manually.
-                        
-                        if ( $this->getUserCredentialsFromInfo($UserInfo, $Binding) != null )
-                            return $UserInfo;
-                    }
-                }
-            }
-            
-            // No external login detected
             
             return null;
         }
@@ -600,13 +612,15 @@
                 if ($ExternalUser == null)
                     return false; // ### return, no data ###
                     
-                // try to fetch the externally bound user
+                // Try to fetch the externally bound user.
+                // We need to do this again (has already been done in getExternalLoginData) 
+                // to fetch any updated/newly created data
                 
-                $UserSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
+                $UserSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
                 $UserSt->bindValue(":UserId", $ExternalUser->UserId, PDO::PARAM_INT );
-                $UserSt->execute();
+                $UserSt->bindValue(":Binding", $ExternalUser->BindingName, PDO::PARAM_STR );
                 
-                if ($UserSt->rowcount() > 0)
+                if ($UserSt->execute() && ($UserSt->rowcount() > 0))
                 {
                     $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
                 }
@@ -811,10 +825,13 @@
         
         public function updateUserMirror( &$UserInfo, $aIsStoredLocally, $aKey )
         {   
+            // TODO: $UserInfo->UserId referres to UserId when updating a local user
+            //       and ExternalUserId otherwise. This is inconvenient.
+        
             $Out = Out::getInstance();
             $Connector = Connector::getInstance();
                  
-            if ($UserInfo->BindingName == "none")
+            if ($aIsStoredLocally)
             {
                 // Local users don't change externally, so just update the key
                 
@@ -826,27 +843,24 @@
             }
             else
             {
-                if ( $aIsStoredLocally )
+                if (!isset(self::$mBindingsByName[$UserInfo->PassBinding]))
                 {
-                    if (!isset(self::$mBindingsByName[$UserInfo->PassBinding]))
+                    $Out->pushError($UserInfo->PassBinding." binding did not register correctly.");
+                }
+                else
+                {
+                    $Binding = self::$mBindingsByName[$UserInfo->PassBinding];
+                    
+                    if ($Binding->isActive())
                     {
-                        $Out->pushError($UserInfo->PassBinding." binding did not register correctly.");
+                        $ExternalInfo = $Binding->getUserInfoById($UserInfo->UserId);
+                        if ( $ExternalInfo != null )
+                            $UserInfo = $ExternalInfo;
+                    
                     }
                     else
                     {
-                        $Binding = self::$mBindingsByName[$UserInfo->PassBinding];
-                        
-                        if ($Binding->isActive())
-                        {
-                            $ExternalInfo = $Binding->getUserInfoById($UserInfo->UserId);
-                            if ( $ExternalInfo != null )
-                                $UserInfo = $ExternalInfo;
-                        
-                        }
-                        else
-                        {
-                            $Out->pushError($UserInfo->PassBinding." binding has been disabled.");
-                        }
+                        $Out->pushError($UserInfo->PassBinding." binding has been disabled.");
                     }
                 }
                 
