@@ -26,6 +26,7 @@
                 "user"      => defined("MYBB_USER") ? MYBB_USER : RP_USER,
                 "password"  => defined("MYBB_PASS") ? MYBB_PASS : RP_PASS,
                 "prefix"    => defined("MYBB_TABLE_PREFIX") ? MYBB_TABLE_PREFIX : "mybb_",
+                "autologin" => defined("MYBB_AUTOLOGIN") ? MYBB_AUTOLOGIN : false,
                 "members"   => defined("MYBB_RAIDLEAD_GROUPS") ? explode(",", MYBB_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("MYBB_MEMBER_GROUPS") ? explode(",", MYBB_MEMBER_GROUPS ) : [],
                 "cookie_ex" => false,
@@ -35,9 +36,30 @@
         
         // -------------------------------------------------------------------------
         
-        public function queryCookieEx($aRelativePath)
+        public function queryExternalConfig($aRelativePath)
         {
-            return null;
+            $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/inc/config.php";
+            if (!file_exists($ConfigPath))
+            {
+                Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
+                return null;
+            }
+            
+            @include_once($ConfigPath);
+            
+            if (!isset($config))
+            {
+                Out::getInstance()->pushError(L("NoValidConfig"));
+                return null;
+            }
+            
+            return array(
+                "database"  => $config["database"]["database"],
+                "user"      => $config["database"]["username"],
+                "password"  => $config["database"]["password"],
+                "prefix"    => $config["database"]["table_prefix"],
+                "cookie"    => null
+            );
         }
         
         // -------------------------------------------------------------------------
@@ -52,7 +74,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.mybb.php", "w+" );
             
@@ -65,6 +87,7 @@
                 fwrite( $Config, "\tdefine(\"MYBB_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"MYBB_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"MYBB_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                fwrite( $Config, "\tdefine(\"MYBB_AUTOLOGIN\", ".(($aAutoLogin) ? "true" : "false").");\n");
             
                 fwrite( $Config, "\tdefine(\"MYBB_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"MYBB_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -169,6 +192,9 @@
         
         public function getExternalLoginData()
         {
+            if (!defined("MYBB_AUTOLOGIN") || !MYBB_AUTOLOGIN)
+                return null;
+                
             if ($this->mConnector == null)
                 $this->mConnector = new Connector(SQL_HOST, MYBB_DATABASE, MYBB_USER, MYBB_PASS);
             

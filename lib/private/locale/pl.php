@@ -308,13 +308,16 @@
         $gLocale[ "AutoMemberLogin" ]          = "Użytkownicy wybranych poniżej grup, będą automatycznie dodawani jako \"Użytkownicy\":";
         $gLocale[ "AutoLeadLogin" ]            = "Użytkownicy wybranych poniżej grup, będą automatycznie dodawani jako \"Rajd liderzy\":";
         $gLocale[ "ReloadFailed" ]             = "Wczytywanie nie powiodło się";
-        $gLocale[ "LoadCookieEx" ]             = null;
+        $gLocale[ "LoadSettings" ]             = null;
         $gLocale[ "BindingBasePath" ]          = null;
         $gLocale[ "RetrievalFailed" ]          = null;
+        $gLocale[ "RetrievalOk" ]              = null;
         $gLocale[ "NotExisting" ]              = null;
+        $gLocale[ "AllowAutoLogin" ]           = null;
+        $gLocale[ "NoValidConfig" ]            = null;
         
         // PHPBB3        
-        $gLocale[ "phpbb3_Binding" ]            = "PHPBB3";
+        $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";
         $gLocale[ "phpbb3_ConfigFile" ]         = "Plik konfiguracyjny PHPBB";
         $gLocale[ "phpbb3_Database" ]           = "Baza danych PHPBB";
         $gLocale[ "phpbb3_DatabaseEmpty" ]      = "Nazwa bazy danych PHPBB nie może być pusta.";
@@ -332,7 +335,7 @@
         $gLocale[ "eqdkp_DBPasswordsMatch" ]    = "Hasło bazy danych EQDKP zostało powtórzone niepoprawnie.";
         
         // vBulletin
-        $gLocale[ "vb3_Binding" ]               = "vBulletin3";
+        $gLocale[ "vb3_Binding" ]               = "vBulletin 3.x";
         $gLocale[ "vb3_ConfigFile" ]            = "Plik konfiguracyjny vBulletin";
         $gLocale[ "vb3_Database" ]              = "Baza danych vBulletin";
         $gLocale[ "vb3_DatabaseEmpty" ]         = "Nazwa bazy danych vBulletin nie może być pusta.";
@@ -351,7 +354,7 @@
         $gLocale[ "mybb_DBPasswordsMatch" ]     = "Hasło bazy danych MyBB zostało powtórzone niepoprawnie.";
         
         // SMF
-        $gLocale[ "smf_Binding" ]               = "SMF";
+        $gLocale[ "smf_Binding" ]               = "Simple Machines Forum";
         $gLocale[ "smf_ConfigFile" ]            = "Plik konfiguracyjny SMF";
         $gLocale[ "smf_Database" ]              = "Baza danych SMF";
         $gLocale[ "smf_DatabaseEmpty" ]         = "Nazwa bazy danych SMF nie może być pusta.";
@@ -360,7 +363,7 @@
         $gLocale[ "smf_DBPasswordsMatch" ]      = "Hasło bazy danych SMF zostało powtórzone niepoprawnie.";
         
         // Vanilla
-        $gLocale[ "vanilla_Binding" ]           = "Vanilla";
+        $gLocale[ "vanilla_Binding" ]           = "Vanilla Forum 2.x";
         $gLocale[ "vanilla_ConfigFile" ]        = "Plik konfiguracyjny Vanilla";
         $gLocale[ "vanilla_Database" ]          = "Baza danych Vanilla";
         $gLocale[ "vanilla_DatabaseEmpty" ]     = "Nazwa bazy danych Vanilla nie może być pusta.";
@@ -370,7 +373,7 @@
         $gLocale[ "vanilla_CookieEx" ]          = null;      
         
         // Joomla
-        $gLocale[ "jml3_Binding" ]              = "Joomla3";
+        $gLocale[ "jml3_Binding" ]              = "Joomla 3.x";
         $gLocale[ "jml3_ConfigFile" ]           = "Plik konfiguracyjny Joomla";
         $gLocale[ "jml3_Database" ]             = "Baza danych Joomla";
         $gLocale[ "jml3_DatabaseEmpty" ]        = "Nazwa bazy danych Joomla nie może być pusta.";

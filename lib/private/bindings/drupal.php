@@ -35,6 +35,7 @@
                 "password"  => defined("DRUPAL_PASS") ? DRUPAL_PASS : RP_PASS,
                 "prefix"    => defined("DRUPAL_TABLE_PREFIX") ? DRUPAL_TABLE_PREFIX : "",
                 "cookie"    => defined("DRUPAL_ROOT") ? DRUPAL_ROOT : "http://".$_SERVER['HTTP_HOST'],
+                "autologin" => defined("DRUPAL_AUTOLOGIN") ? DRUPAL_AUTOLOGIN : false,
                 "members"   => defined("DRUPAL_RAIDLEAD_GROUPS") ? explode(",", DRUPAL_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("DRUPAL_MEMBER_GROUPS") ? explode(",", DRUPAL_MEMBER_GROUPS ) : [],
                 "cookie_ex" => true,
@@ -44,9 +45,40 @@
         
         // -------------------------------------------------------------------------
         
-        public function queryCookieEx($aRelativePath)
+        public function queryExternalConfig($aRelativePath)
         {
-            return "http://".$_SERVER['HTTP_HOST']."/".$aRelativePath;
+            $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/sites";
+            if (!file_exists($ConfigPath))
+            {
+                Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
+                return null;
+            }
+            
+            $Sites = scandir($ConfigPath);
+            
+            foreach($Sites as $SiteDir)
+            {
+                if (is_dir($ConfigPath."/".$SiteDir) && file_exists($ConfigPath."/".$SiteDir."/settings.php"))
+                {
+                    @include_once($ConfigPath."/".$SiteDir."/settings.php");
+                    
+                    if (isset($databases) && isset($databases["default"]["default"]))
+                    {
+                        $DbConfig = $databases["default"]["default"];
+                        
+                        return array(
+                            "database"  => $DbConfig["database"],
+                            "user"      => $DbConfig["username"],
+                            "password"  => $DbConfig["password"],
+                            "prefix"    => $DbConfig["prefix"],
+                            "cookie"    => (isset($base_url)) ? $base_url : "http://".$_SERVER['HTTP_HOST']."/".$aRelativePath,
+                        );   
+                    }                   
+                }
+            }
+            
+            Out::getInstance()->pushError(L("NoValidConfig"));
+            return null;
         }
         
         // -------------------------------------------------------------------------
@@ -61,7 +93,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.drupal.php", "w+" );
             
@@ -75,6 +107,7 @@
                 fwrite( $Config, "\tdefine(\"DRUPAL_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"DRUPAL_TABLE_PREFIX\", \"".$aPrefix."\");\n");
                 fwrite( $Config, "\tdefine(\"DRUPAL_ROOT\", \"".$aCookieEx."\");\n");
+                fwrite( $Config, "\tdefine(\"DRUPAL_AUTOLOGIN\", ".(($aAutoLogin) ? "true" : "false").");\n");
             
                 fwrite( $Config, "\tdefine(\"DRUPAL_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"DRUPAL_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -190,6 +223,9 @@
         
         public function getExternalLoginData()
         {
+            if (!defined("DRUPAL_AUTOLOGIN") || !DRUPAL_AUTOLOGIN)
+                return null;
+            
             $UserInfo = null;
             
             if (defined("DRUPAL_ROOT"))

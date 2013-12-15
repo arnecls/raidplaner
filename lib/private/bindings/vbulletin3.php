@@ -26,6 +26,7 @@
                 "user"      => defined("VB3_USER") ? VB3_USER : RP_USER,
                 "password"  => defined("VB3_PASS") ? VB3_PASS : RP_PASS,
                 "prefix"    => defined("VB3_TABLE_PREFIX") ? VB3_TABLE_PREFIX : "vb_",
+                "autologin" => defined("VB3_AUTOLOGIN") ? VB3_AUTOLOGIN : false,
                 "cookie"    => defined("VB3_COOKIE_PREFIX") ? VB3_COOKIE_PREFIX : "bb",
                 "members"   => defined("VB3_RAIDLEAD_GROUPS") ? explode(",", VB3_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("VB3_MEMBER_GROUPS") ? explode(",", VB3_MEMBER_GROUPS ) : [],
@@ -36,7 +37,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function queryCookieEx($aRelativePath)
+        public function queryExternalConfig($aRelativePath)
         {
             $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/includes/config.php";
             if (!file_exists($ConfigPath))
@@ -45,8 +46,21 @@
                 return null;
             }
             
-            include_once($ConfigPath);
-            return $config["Misc"]["cookieprefix"];
+            @include_once($ConfigPath);
+            
+            if (!isset($config))
+            {
+                Out::getInstance()->pushError(L("NoValidConfig"));
+                return null;
+            }
+            
+            return array(
+                "database"  => $config["Database"]["dbname"],
+                "user"      => $config["MasterServer"]["username"],
+                "password"  => $config["MasterServer"]["password"],
+                "prefix"    => $config["Database"]["tableprefix"],
+                "cookie"    => $config["Misc"]["cookieprefix"],
+            );
         }
         
         // -------------------------------------------------------------------------
@@ -61,7 +75,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.vb3.php", "w+" );
             
@@ -75,6 +89,7 @@
                 fwrite( $Config, "\tdefine(\"VB3_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"VB3_TABLE_PREFIX\", \"".$aPrefix."\");\n");
                 fwrite( $Config, "\tdefine(\"VB3_COOKIE_PREFIX\", \"".$aCookieEx."\");\n");
+                fwrite( $Config, "\tdefine(\"VB3_AUTOLOGIN\", ".(($aAutoLogin) ? "true" : "false").");\n");
                                              
                 fwrite( $Config, "\tdefine(\"VB3_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"VB3_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -171,6 +186,9 @@
         
         public function getExternalLoginData()
         {
+            if (!defined("VB3_AUTOLOGIN") || !VB3_AUTOLOGIN)
+                return null;
+                
             $UserInfo = null;
             
             // Fetch cookie name

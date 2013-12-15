@@ -18,7 +18,8 @@
             $_REQUEST[$Binding."_database"], 
             $_REQUEST[$Binding."_prefix"], 
             $_REQUEST[$Binding."_user"], 
-            $_REQUEST[$Binding."_password"], 
+            $_REQUEST[$Binding."_password"],
+            $_REQUEST[$Binding."_autologin"] == "true", 
             $_REQUEST[$Binding."_member"], 
             $_REQUEST[$Binding."_raidlead"], 
             $_REQUEST[$Binding."_cookie"]);

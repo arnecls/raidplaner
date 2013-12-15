@@ -412,22 +412,19 @@
 
         public function getExternalLoginData()
         {
-            if (defined("ALLOW_AUTO_LOGIN") && ALLOW_AUTO_LOGIN)
-            {         
-                // Iterate all bindings and search for the given user
-                
-                foreach( self::$mBindings as $Binding )
+            // Iterate all bindings and search for the given user
+            
+            foreach( self::$mBindings as $Binding )
+            {
+                if ( $Binding->isActive() )
                 {
-                    if ( $Binding->isActive() )
-                    {
-                        $UserInfo = $Binding->getExternalLoginData();
-                        
-                        // Checking the credentials will create the user as if
-                        // he logs in manually.
-                        
-                        if ( $this->getUserCredentialsFromInfo($UserInfo, $Binding) != null )
-                            return $UserInfo;
-                    }
+                    $UserInfo = $Binding->getExternalLoginData();
+                    
+                    // Checking the credentials will create the user as if
+                    // he logs in manually.
+                    
+                    if ( $this->getUserCredentialsFromInfo($UserInfo, $Binding) != null )
+                        return $UserInfo;
                 }
             }
             

@@ -28,6 +28,7 @@
                 "user"      => defined("WP_USER") ? WP_USER : RP_USER,
                 "password"  => defined("WP_PASS") ? WP_PASS : RP_PASS,
                 "prefix"    => defined("WP_TABLE_PREFIX") ? WP_TABLE_PREFIX : "wp_",
+                "autologin" => defined("WP_AUTOLOGIN") ? WP_AUTOLOGIN : false,
                 "cookie"    => defined("WP_SECRET") ? WP_SECRET : "",
                 "members"   => defined("WP_RAIDLEAD_GROUPS") ? explode(",", WP_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("WP_MEMBER_GROUPS") ? explode(",", WP_MEMBER_GROUPS ) : [],
@@ -38,7 +39,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function queryCookieEx($aRelativePath)
+        public function queryExternalConfig($aRelativePath)
         {
             $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/wp-config.php";
             if (!file_exists($ConfigPath))
@@ -47,8 +48,21 @@
                 return null;
             }
             
-            include_once($ConfigPath);
-            return LOGGED_IN_KEY.LOGGED_IN_SALT;
+            @include_once($ConfigPath);
+            
+            if (!isset($table_prefix))
+            {
+                Out::getInstance()->pushError(L("NoValidConfig"));
+                return null;
+            }
+            
+            return array(
+                "database"  => DB_NAME,
+                "user"      => DB_USER,
+                "password"  => DB_PASSWORD,
+                "prefix"    => $table_prefix,
+                "cookie"    => LOGGED_IN_KEY.LOGGED_IN_SALT
+            );
         }
         
         // -------------------------------------------------------------------------
@@ -63,7 +77,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.wp.php", "w+" );
             
@@ -77,6 +91,7 @@
                 fwrite( $Config, "\tdefine(\"WP_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"WP_TABLE_PREFIX\", \"".$aPrefix."\");\n");
                 fwrite( $Config, "\tdefine(\"WP_SECRET\", \"".$aCookieEx."\");\n");
+                fwrite( $Config, "\tdefine(\"WP_AUTOLOGIN\", ".(($aAutoLogin) ? "true" : "false").");\n");
                                              
                 fwrite( $Config, "\tdefine(\"WP_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"WP_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -182,6 +197,9 @@
         
         public function getExternalLoginData()
         {
+            if (!defined("WP_AUTOLOGIN") || !WP_AUTOLOGIN)
+                return null;
+                
             $UserInfo = null;
             
             if (defined("WP_SECRET"))

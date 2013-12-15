@@ -32,6 +32,7 @@
                 "user"      => defined("EQDKP_USER") ? EQDKP_USER : RP_USER,
                 "password"  => defined("EQDKP_PASS") ? EQDKP_PASS : RP_PASS,
                 "prefix"    => defined("EQDKP_TABLE_PREFIX") ? EQDKP_TABLE_PREFIX : "eqdkp_",
+                "autologin" => defined("EQDKP_AUTOLOGIN") ? EQDKP_AUTOLOGIN : false,
                 "members"   => [],
                 "leads"     => [],
                 "cookie_ex" => false,
@@ -41,9 +42,30 @@
         
         // -------------------------------------------------------------------------
         
-        public function queryCookieEx($aRelativePath)
+        public function queryExternalConfig($aRelativePath)
         {
-            return null;
+            $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/config.php";
+            if (!file_exists($ConfigPath))
+            {
+                Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
+                return null;
+            }
+            
+            @include_once($ConfigPath);
+            
+            if (!defined("EQDKP_INSTALLED"))
+            {
+                Out::getInstance()->pushError(L("NoValidConfig"));
+                return null;
+            }
+            
+            return array(
+                "database"  => $dbname,
+                "user"      => $dbuser,
+                "password"  => $dbpass,
+                "prefix"    => $table_prefix,
+                "cookie"    => null
+            );
         }
         
         // -------------------------------------------------------------------------
@@ -58,7 +80,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.eqdkp.php", "w+" );
             
@@ -71,6 +93,7 @@
                 fwrite( $Config, "\tdefine(\"EQDKP_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"EQDKP_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"EQDKP_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                fwrite( $Config, "\tdefine(\"EQDKP_AUTOLOGIN\", ".(($aAutoLogin) ? "true" : "false").");\n");
             }
             
             fwrite( $Config, "?>");    
@@ -158,6 +181,9 @@
         
         public function getExternalLoginData()
         {
+            if (!defined("EQDKP_AUTOLOGIN") || !EQDKP_AUTOLOGIN)
+                return null;
+                
             if ($this->mConnector == null)
                 $this->mConnector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
             

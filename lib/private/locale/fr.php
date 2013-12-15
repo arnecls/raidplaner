@@ -308,13 +308,16 @@
         $gLocale[ "AutoMemberLogin" ]          = "Les utilisateurs des groupes sélectionnés suivants se connecteront en tant que \"membres\":";
         $gLocale[ "AutoLeadLogin" ]            = "Les utilisateurs des groupes sélectionnés suivants se connecteront en tant que \"raidlead\":";
         $gLocale[ "ReloadFailed" ]             = "Rechargement échoué";
-        $gLocale[ "LoadCookieEx" ]             = null;
+        $gLocale[ "LoadSettings" ]             = null;
         $gLocale[ "BindingBasePath" ]          = null;
         $gLocale[ "RetrievalFailed" ]          = null;
+        $gLocale[ "RetrievalOk" ]              = null;
         $gLocale[ "NotExisting" ]              = null;
+        $gLocale[ "AllowAutoLogin" ]           = null;
+        $gLocale[ "NoValidConfig" ]            = null;
         
         // PHPBB3        
-        $gLocale[ "phpbb3_Binding" ]            = "PHPBB3";
+        $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";
         $gLocale[ "phpbb3_ConfigFile" ]         = "PHPBB3 Fichier de configuration";
         $gLocale[ "phpbb3_Database" ]           = "PHPBB3 Base de données";
         $gLocale[ "phpbb3_DatabaseEmpty" ]      = "PHPBB3 Base de données ne peut pas être vide.";
@@ -332,7 +335,7 @@
         $gLocale[ "eqdkp_DBPasswordsMatch" ]    = "EQDKP Les mots de passe de la base de données ne correspondent pas.";
         
         // vBulletin
-        $gLocale[ "vb3_Binding" ]               = "vBulletin3";
+        $gLocale[ "vb3_Binding" ]               = "vBulletin 3.x";
         $gLocale[ "vb3_ConfigFile" ]            = "vBulletin Fichier de configuration";
         $gLocale[ "vb3_Database" ]              = "vBulletin Base de données";
         $gLocale[ "vb3_DatabaseEmpty" ]         = "vBulletin Base de données ne peut pas être vide.";
@@ -351,7 +354,7 @@
         $gLocale[ "mybb_DBPasswordsMatch" ]     = "MyBB Les mots de passe de la base de données ne correspondent pas.";
         
         // SMF
-        $gLocale[ "smf_Binding" ]               = "SMF";
+        $gLocale[ "smf_Binding" ]               = "Simple Machines Forum";
         $gLocale[ "smf_ConfigFile" ]            = "SMF Fichier de configuration";
         $gLocale[ "smf_Database" ]              = "SMF Base de données";
         $gLocale[ "smf_DatabaseEmpty" ]         = "SMF Base de données ne peut pas être vide.";
@@ -360,7 +363,7 @@
         $gLocale[ "smf_DBPasswordsMatch" ]      = "SMF Les mots de passe de la base de données ne correspondent pas.";
         
         // Vanilla
-        $gLocale[ "vanilla_Binding" ]           = "Vanilla";
+        $gLocale[ "vanilla_Binding" ]           = "Vanilla Forum 2.x";
         $gLocale[ "vanilla_ConfigFile" ]        = "Vanilla Fichier de configuration";
         $gLocale[ "vanilla_Database" ]          = "Vanilla Base de données";
         $gLocale[ "vanilla_DatabaseEmpty" ]     = "Vanilla Base de données ne peut pas être vide.";
@@ -370,7 +373,7 @@
         $gLocale[ "vanilla_CookieEx" ]          = null;      
         
         // Joomla
-        $gLocale[ "jml3_Binding" ]              = "Joomla3";
+        $gLocale[ "jml3_Binding" ]              = "Joomla 3.x";
         $gLocale[ "jml3_ConfigFile" ]           = "Joomla3 Fichier de configuration";
         $gLocale[ "jml3_Database" ]             = "Joomla3 Base de données";
         $gLocale[ "jml3_DatabaseEmpty" ]        = "Joomla3 Base de données ne peut pas être vide.";

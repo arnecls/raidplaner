@@ -26,19 +26,41 @@
                 "user"      => defined("SMF_USER") ? SMF_USER : RP_USER,
                 "password"  => defined("SMF_PASS") ? SMF_PASS : RP_PASS,
                 "prefix"    => defined("SMF_TABLE_PREFIX") ? SMF_TABLE_PREFIX : "smf_",
-                "cookie"    => defined("SMF_COOKIE") ? SMF_COOKIE : "SMFCookie123",
+                "autologin" => defined("SMF_AUTOLOGIN") ? SMF_AUTOLOGIN : false,
+                "cookie"    => defined("SMF_COOKIE") ? SMF_COOKIE : "SMFCookie956",
                 "members"   => defined("SMF_RAIDLEAD_GROUPS") ? explode(",", SMF_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("SMF_MEMBER_GROUPS") ? explode(",", SMF_MEMBER_GROUPS ) : [],
-                "cookie_ex" => false,
+                "cookie_ex" => true,
                 "groups"    => true
             );
         }
         
         // -------------------------------------------------------------------------
         
-        public function queryCookieEx($aRelativePath)
+        public function queryExternalConfig($aRelativePath)
         {
-            return null;
+            $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/Settings.php";
+            if (!file_exists($ConfigPath))
+            {
+                Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
+                return null;
+            }
+            
+            @include_once($ConfigPath);
+            
+            if (!isset($mbname))
+            {
+                Out::getInstance()->pushError(L("NoValidConfig"));
+                return null;
+            }
+            
+            return array(
+                "database"  => $db_name,
+                "user"      => $db_user,
+                "password"  => $db_passwd,
+                "prefix"    => $db_prefix,
+                "cookie"    => (isset($cookiename)) ? $cookiename : "SMFCookie956"
+            );
         }
         
         // -------------------------------------------------------------------------
@@ -53,7 +75,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.smf.php", "w+" );
             
@@ -67,6 +89,7 @@
                 fwrite( $Config, "\tdefine(\"SMF_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"SMF_TABLE_PREFIX\", \"".$aPrefix."\");\n");
                 fwrite( $Config, "\tdefine(\"SMF_COOKIE\", \"".$aCookieEx."\");\n");
+                fwrite( $Config, "\tdefine(\"SMF_AUTOLOGIN\", ".(($aAutoLogin) ? "true" : "false").");\n");
                                              
                 fwrite( $Config, "\tdefine(\"SMF_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"SMF_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -171,6 +194,9 @@
         
         public function getExternalLoginData()
         {
+            if (!defined("SMF_AUTOLOGIN") || !SMF_AUTOLOGIN)
+                return null;
+                
             $UserInfo = null;
             
             // Fetch user info if seesion cookie is set

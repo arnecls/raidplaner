@@ -29,6 +29,7 @@
                 "user"      => defined("PHPBB3_USER") ? PHPBB3_USER : RP_USER,
                 "password"  => defined("PHPBB3_PASS") ? PHPBB3_PASS : RP_PASS,
                 "prefix"    => defined("PHPBB3_TABLE_PREFIX") ? PHPBB3_TABLE_PREFIX : "phpbb_",
+                "autologin" => defined("PHPBB3_AUTOLOGIN") ? PHPBB3_AUTOLOGIN : false,
                 "members"   => defined("PHPBB3_RAIDLEAD_GROUPS") ? explode(",", PHPBB3_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("PHPBB3_MEMBER_GROUPS") ? explode(",", PHPBB3_MEMBER_GROUPS ) : [],
                 "cookie_ex" => false,
@@ -38,9 +39,30 @@
         
         // -------------------------------------------------------------------------
         
-        public function queryCookieEx($aRelativePath)
+        public function queryExternalConfig($aRelativePath)
         {
-            return null;
+            $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/config.php";
+            if (!file_exists($ConfigPath))
+            {
+                Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
+                return null;
+            }
+            
+            @include_once($ConfigPath);
+            
+            if (!defined("PHPBB_INSTALLED"))
+            {
+                Out::getInstance()->pushError(L("NoValidConfig"));
+                return null;
+            }
+            
+            return array(
+                "database"  => $dbname,
+                "user"      => $dbuser,
+                "password"  => $dbpasswd,
+                "prefix"    => $table_prefix,
+                "cookie"    => null
+            );
         }
         
         // -------------------------------------------------------------------------
@@ -55,7 +77,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.phpbb3.php", "w+" );
             
@@ -68,6 +90,7 @@
                 fwrite( $Config, "\tdefine(\"PHPBB3_USER\", \"".$aUser."\");\n");
                 fwrite( $Config, "\tdefine(\"PHPBB3_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"PHPBB3_TABLE_PREFIX\", \"".$aPrefix."\");\n");
+                fwrite( $Config, "\tdefine(\"PHPBB3_AUTOLOGIN\", ".(($aAutoLogin) ? "true" : "false").");\n");
                                              
                 fwrite( $Config, "\tdefine(\"PHPBB3_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"PHPBB3_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -190,6 +213,9 @@
         
         public function getExternalLoginData()
         {
+            if (!defined("PHPBB3_AUTOLOGIN") || !PHPBB3_AUTOLOGIN)
+                return null;
+                
             if ($this->mConnector == null)
                 $this->mConnector = new Connector(SQL_HOST, PHPBB3_DATABASE, PHPBB3_USER, PHPBB3_PASS);
             

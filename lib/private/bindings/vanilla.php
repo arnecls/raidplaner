@@ -28,6 +28,7 @@
                 "user"      => defined("VANILLA_USER") ? VANILLA_USER : RP_USER,
                 "password"  => defined("VANILLA_PASS") ? VANILLA_PASS : RP_PASS,
                 "prefix"    => defined("VANILLA_TABLE_PREFIX") ? VANILLA_TABLE_PREFIX : "GDN_",
+                "autologin" => defined("VANILLA_AUTOLOGIN") ? VANILLA_AUTOLOGIN : false,
                 "cookie"    => defined("VANILLA_COOKIE") ? VANILLA_COOKIE : "Vanilla,md5,123456",
                 "members"   => defined("VANILLA_RAIDLEAD_GROUPS") ? explode(",", VANILLA_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("VANILLA_MEMBER_GROUPS") ? explode(",", VANILLA_MEMBER_GROUPS ) : [],
@@ -38,7 +39,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function queryCookieEx($aRelativePath)
+        public function queryExternalConfig($aRelativePath)
         {
             $DefaultsPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/conf/config-defaults.php";
             $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/conf/config.php";
@@ -58,12 +59,25 @@
             define("APPLICATION", true);
             define("PATH_CACHE", "");
             
-            include_once($DefaultsPath);
-            include_once($ConfigPath);
+            @include_once($DefaultsPath);
+            @include_once($ConfigPath);
+            
+            if (!isset($Configuration))
+            {
+                Out::getInstance()->pushError(L("NoValidConfig"));
+                return null;
+            }
             
             $CookieConf = $Configuration['Garden']['Cookie'];
+            $DbConf = $Configuration['Database'];
             
-            return $CookieConf["Name"].",".$CookieConf["HashMethod"].",".$CookieConf["Salt"];
+            return array(
+                "database"  => $DbConf["Name"],
+                "user"      => $DbConf["User"],
+                "password"  => $DbConf["Password"],
+                "prefix"    => $DbConf["DatabasePrefix"],
+                "cookie"    => $CookieConf["Name"].",".$CookieConf["HashMethod"].",".$CookieConf["Salt"],
+            );
         }
         
         // -------------------------------------------------------------------------
@@ -78,7 +92,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.vanilla.php", "w+" );
             
@@ -92,6 +106,7 @@
                 fwrite( $Config, "\tdefine(\"VANILLA_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"VANILLA_TABLE_PREFIX\", \"".$aPrefix."\");\n");
                 fwrite( $Config, "\tdefine(\"VANILLA_COOKIE\", \"".$aCookieEx."\");\n");
+                fwrite( $Config, "\tdefine(\"VANILLA_AUTOLOGIN\", ".(($aAutoLogin) ? "true" : "false").");\n");
                                              
                 fwrite( $Config, "\tdefine(\"VANILLA_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"VANILLA_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -215,6 +230,9 @@
         
         public function getExternalLoginData()
         {
+            if (!defined("VANILLA_AUTOLOGIN") || !VANILLA_AUTOLOGIN)
+                return null;
+                
             $UserInfo = null;
             
             // Fetch user info if seesion cookie is set

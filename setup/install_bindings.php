@@ -35,17 +35,27 @@
 <?php } ?>
 
 <div id="bindings">
-    <div class="tab_bg">
-    <?php
-        $tabClass = "tab_active";        
-        foreach ($gBindings as $Binding)
-        {
-            echo "<div id=\"button_".$Binding->BindingName."\" class=\"".$tabClass."\" onclick=\"showConfig('".$Binding->BindingName."')\">";
-            echo "<input type=\"checkbox\" id=\"allow_".$Binding->BindingName."\"".(($Binding->isActive()) ? " checked=\"checked\"/>": "/>").L($Binding->BindingName."_Binding")."</div>";
-            if ($tabClass == "tab_active") $tabClass = "tab_inactive";
-        }
+    <?php 
+        $FirstBinding = $gBindings[0];
     ?>
+    <div class="binding_select">
+        <select id="binding_current" onchange="showConfig($(this).children('option:selected').val())">
+        <?php
+            foreach ($gBindings as $Binding)
+            {
+                echo "<option value=\"".$Binding->BindingName."\"".(($Binding == $FirstBinding) ? " selected" : "").">".L($Binding->BindingName."_Binding")."</option>";
+            }
+        ?>
+        </select>
+        <input type="checkbox" id="binding_allow" onchange="toggleCurrentBinding(this)" style="margin-left: 8px; width: 14px;" <?php if ($FirstBinding->IsActive()) echo "checked=\"checked\""; ?>/>
+        <?php
+            foreach ($gBindings as $Binding)
+            {
+                echo "<input type=\"hidden\" id=\"allow_".$Binding->BindingName."\" value=\"".($Binding->IsActive() ? "true" : "false")."\">";
+            }
+        ?>
     </div>
+    <h2 id="binding_name"><?php echo L($FirstBinding->BindingName."_Binding"); ?></h2>
 </div>
 
 <?php
@@ -54,6 +64,7 @@
     {
         $LocalePrefix = $Binding->BindingName."_";
         $Config = $Binding->getConfig();
+        $Disabled = ($Binding->IsActive()) ? "" : " disabled=\"disabled\"";
         
         if (!$hidden)
         {
@@ -65,33 +76,43 @@
             echo "<div id=\"".$Binding->BindingName."\" class=\"config\" style=\"display:none\">";
         }
         
-        echo "<div>";
-        echo "<h2>".L($LocalePrefix."Binding")."</h2>";
+        echo "<div class=\"left\">";
         
-        echo "<input type=\"text\" id=\"".$Binding->BindingName."_database\" value=\"".$Config["database"]."\"/> ".L($LocalePrefix."Database")."<br/>";
-        echo "<input type=\"text\" id=\"".$Binding->BindingName."_user\" value=\"".$Config["user"]."\"/> ".L("UserWithDBPermissions")."<br/>";
-        echo "<input type=\"password\" id=\"".$Binding->BindingName."_password\" value=\"".$Config["password"]."\"/> ".L("UserPassword")."<br/>";        
-        echo "<input type=\"password\" id=\"".$Binding->BindingName."_password_check\" value=\"".$Config["password"]."\"/> ".L("RepeatPassword")."<br/>";        
-        echo "<input type=\"text\" id=\"".$Binding->BindingName."_prefix\" value=\"".$Config["prefix"]."\"/> ".L("TablePrefix")."<br/>";
+        echo "<button id=\"".$Binding->BindingName."_loadconfig\" onclick=\"LoadSettings('".$Binding->BindingName."')\"".$Disabled.">".L("LoadSettings")."</button><br/><br/>";
+        
+        echo "<p>".L($LocalePrefix."Database")."<br/>";
+        echo "<input type=\"text\" id=\"".$Binding->BindingName."_database\" value=\"".$Config["database"]."\"".$Disabled."/></p>";
+        
+        echo "<p>".L("UserWithDBPermissions")."<br/>";
+        echo "<input type=\"text\" id=\"".$Binding->BindingName."_user\" value=\"".$Config["user"]."\"".$Disabled."/></p>";
+        
+        echo "<p>".L("UserPassword")."<br/>";
+        echo "<input type=\"password\" id=\"".$Binding->BindingName."_password\" value=\"".$Config["password"]."\"".$Disabled."/></p>";        
+        
+        echo "<p>".L("RepeatPassword")."<br/>";
+        echo "<input type=\"password\" id=\"".$Binding->BindingName."_password_check\" value=\"".$Config["password"]."\"".$Disabled."/></p>";        
+        
+        echo "<p>".L("TablePrefix")."<br/>";
+        echo "<input type=\"text\" id=\"".$Binding->BindingName."_prefix\" value=\"".$Config["prefix"]."\"".$Disabled."/></p>";
         
         if ( $Config["cookie_ex"] )
         {
-            echo "<input type=\"text\" id=\"".$Binding->BindingName."_cookie_ex\" value=\"".$Config["cookie"]."\"/> ";
-            echo "<button onclick=\"LoadCookieEx('".$Binding->BindingName."')\">".L("LoadCookieEx")."</button> ";
-            echo L($Binding->BindingName."_CookieEx")."<br/>";
+            echo "<p>".L($Binding->BindingName."_CookieEx")."<br/>";
+            echo "<input type=\"text\" id=\"".$Binding->BindingName."_cookie_ex\" value=\"".$Config["cookie"]."\"".$Disabled."/></p>";
         }
         
         echo "</div>";
+        
+        echo "<div class=\"right\">";
         
         if ( $Config["groups"] )
         {
             $Groups = $Binding->getGroupsFromConfig();
             
-            echo "<div style=\"margin-top: 1em\">";
-            echo "<button onclick=\"ReloadGroups('".$Binding->BindingName."')\">".L("LoadGroups")."</button><br/><br/>";
+            echo "<button id=\"".$Binding->BindingName."_loadgroups\" onclick=\"ReloadGroups('".$Binding->BindingName."')\"".$Disabled.">".L("LoadGroups")."</button><br/><br/>";
             
             echo L("AutoMemberLogin")."<br/>";;
-            echo "<select id=\"".$Binding->BindingName."_member\" multiple=\"multiple\" style=\"width: 400px; height: 5.5em\">";
+            echo "<select id=\"".$Binding->BindingName."_member\" multiple=\"multiple\" style=\"height: 5.5em\"".$Disabled.">";
             
             if ($Groups != null)
             {
@@ -104,7 +125,7 @@
             echo "</select><br/><br/>";
             
             echo L("AutoLeadLogin")."<br/>";
-            echo "<select id=\"".$Binding->BindingName."_raidlead\" multiple=\"multiple\" style=\"width: 400px; height: 5.5em\">";
+            echo "<select id=\"".$Binding->BindingName."_raidlead\" multiple=\"multiple\" style=\"height: 5.5em\"".$Disabled.">";
             
             if ($Groups != null)
             {
@@ -114,15 +135,16 @@
                 }
             }
         
-            echo "</select></div>";                    
+            echo "</select><br/><br/>";                    
         }
         else
         {
-            echo "<div style=\"margin-top: 1em\">";
-            echo "<button onclick=\"CheckGrouplessBinding('".$Binding->BindingName."')\">".L("VerifySettings")."</button><br/><br/>";
-            echo "</div>";
+            echo "<button onclick=\"CheckGrouplessBinding('".$Binding->BindingName."')\"".$Disabled.">".L("VerifySettings")."</button><br/><br/>";
         }
         
+        echo "<p><input type=\"checkbox\" id=\"".$Binding->BindingName."_autologin\"".(($Config["autologin"]) ? "checked=\"checked\"" : "")."".$Disabled."/> ".L("AllowAutoLogin")."</p>";
+        
+        echo "</div>";
         echo "</div>";
     }
 ?>

@@ -24,10 +24,10 @@
         
         if ($PluginInstance->BindingName == $BindingName)
         {
-            $Value = $PluginInstance->queryCookieEx($_REQUEST["path"]);
+            $Value = $PluginInstance->queryExternalConfig($_REQUEST["path"]);
             if ($Value != null)
             {
-                $Out->pushValue("value", $Value);
+                $Out->pushValue("settings", $Value);
             }
             break;
         }

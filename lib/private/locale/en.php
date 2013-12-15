@@ -304,13 +304,16 @@
         $gLocale[ "AutoMemberLogin" ]          = "Users of the following, selected group(s) log in as \"members\":";
         $gLocale[ "AutoLeadLogin" ]            = "Users of the following, selected group(s) log in as \"raidleads\":";
         $gLocale[ "ReloadFailed" ]             = "Reload failed";
-        $gLocale[ "LoadCookieEx" ]             = "Retrieve";
-        $gLocale[ "BindingBasePath" ]          = "Please enter the install path of this binding relative to your web root.";
+        $gLocale[ "LoadSettings" ]             = "Retrieve settings automatically";
+        $gLocale[ "BindingBasePath" ]          = "Please enter the install path of this binding relative to '".$_SERVER["DOCUMENT_ROOT"]."'.";
         $gLocale[ "RetrievalFailed" ]          = "Automatic retrieval failed";
+        $gLocale[ "RetrievalOk" ]              = "Automatic retrieval has been successful";
         $gLocale[ "NotExisting" ]              = "does not exist";
+        $gLocale[ "AllowAutoLogin" ]           = "Allow automatic login";
+        $gLocale[ "NoValidConfig" ]            = "No valid configuration file found.";
         
         // PHPBB3        
-        $gLocale[ "phpbb3_Binding" ]            = "PHPBB3";
+        $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";
         $gLocale[ "phpbb3_ConfigFile" ]         = "PHPBB3 config file";
         $gLocale[ "phpbb3_Database" ]           = "PHPBB3 database";
         $gLocale[ "phpbb3_DatabaseEmpty" ]      = "PHPBB3 database name must not be empty.";
@@ -328,7 +331,7 @@
         $gLocale[ "eqdkp_DBPasswordsMatch" ]    = "EQDKP database passwords did not match.";
         
         // vBulletin
-        $gLocale[ "vb3_Binding" ]               = "vBulletin3";
+        $gLocale[ "vb3_Binding" ]               = "vBulletin 3.x";
         $gLocale[ "vb3_ConfigFile" ]            = "vBulletin config file";
         $gLocale[ "vb3_Database" ]              = "vBulletin database";
         $gLocale[ "vb3_DatabaseEmpty" ]         = "vBulletin database name must not be empty.";
@@ -347,7 +350,7 @@
         $gLocale[ "mybb_DBPasswordsMatch" ]     = "MyBB Database passwords did not match.";
         
         // SMF
-        $gLocale[ "smf_Binding" ]               = "SMF";
+        $gLocale[ "smf_Binding" ]               = "Simple Machines Forum";
         $gLocale[ "smf_ConfigFile" ]            = "SMF config file";
         $gLocale[ "smf_Database" ]              = "SMF database";
         $gLocale[ "smf_DatabaseEmpty" ]         = "SMF database name must not be empty.";
@@ -356,7 +359,7 @@
         $gLocale[ "smf_DBPasswordsMatch" ]      = "SMF Database passwords did not match.";
         
         // Vanilla
-        $gLocale[ "vanilla_Binding" ]           = "Vanilla";
+        $gLocale[ "vanilla_Binding" ]           = "Vanilla Forum 2.x";
         $gLocale[ "vanilla_ConfigFile" ]        = "Vanilla config file";
         $gLocale[ "vanilla_Database" ]          = "Vanilla database";
         $gLocale[ "vanilla_DatabaseEmpty" ]     = "Vanilla database name must not be empty.";
@@ -366,7 +369,7 @@
         $gLocale[ "vanilla_CookieEx" ]          = "Cookie name, hash method (e.g. md5), cookie salt";     
         
         // Joomla
-        $gLocale[ "jml3_Binding" ]              = "Joomla3";
+        $gLocale[ "jml3_Binding" ]              = "Joomla 3.x";
         $gLocale[ "jml3_ConfigFile" ]           = "Joomla3 config file";
         $gLocale[ "jml3_Database" ]             = "Joomla3 database";
         $gLocale[ "jml3_DatabaseEmpty" ]        = "Joomla3 database name must not be empty.";

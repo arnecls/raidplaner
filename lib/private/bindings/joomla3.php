@@ -26,6 +26,7 @@
                 "user"      => defined("JML3_USER") ? JML3_USER : RP_USER,
                 "password"  => defined("JML3_PASS") ? JML3_PASS : RP_PASS,
                 "prefix"    => defined("JML3_TABLE_PREFIX") ? JML3_TABLE_PREFIX : "jml_",
+                "autologin" => defined("JML3_AUTOLOGIN") ? JML3_AUTOLOGIN : false,
                 "cookie"    => defined("JML3_SECRET") ? JML3_SECRET : "0123456789ABCDEF",
                 "members"   => defined("JML3_RAIDLEAD_GROUPS") ? explode(",", JML3_RAIDLEAD_GROUPS ) : [],
                 "leads"     => defined("JML3_MEMBER_GROUPS") ? explode(",", JML3_MEMBER_GROUPS ) : [],
@@ -36,7 +37,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function queryCookieEx($aRelativePath)
+        public function queryExternalConfig($aRelativePath)
         {
             $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/Configuration.php";
             if (!file_exists($ConfigPath))
@@ -45,9 +46,16 @@
                 return null;
             }
             
-            include_once($ConfigPath);
+            @include_once($ConfigPath);
             $Config = new JConfig();
-            return $Config->secret;
+            
+            return array(
+                "database"  => $Config->db,
+                "user"      => $Config->user,
+                "password"  => $Config->password,
+                "prefix"    => $Config->dbprefix,
+                "cookie"    => $Config->secret,
+            );
         }
         
         // -------------------------------------------------------------------------
@@ -62,7 +70,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.joomla3.php", "w+" );
             
@@ -76,6 +84,7 @@
                 fwrite( $Config, "\tdefine(\"JML3_PASS\", \"".$aPass."\");\n");
                 fwrite( $Config, "\tdefine(\"JML3_TABLE_PREFIX\", \"".$aPrefix."\");\n");
                 fwrite( $Config, "\tdefine(\"JML3_SECRET\", \"".$aCookieEx."\");\n");
+                fwrite( $Config, "\tdefine(\"JML3_AUTOLOGIN\", ".(($aAutoLogin) ? "true" : "false").");\n");
             
                 fwrite( $Config, "\tdefine(\"JML3_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"JML3_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
@@ -173,6 +182,9 @@
         
         public function getExternalLoginData()
         {
+            if (!defined("JML3_AUTOLOGIN") || !JML3_AUTOLOGIN)
+                return null;
+                
             $UserInfo = null;
             
             if (defined("JML3_SECRET"))

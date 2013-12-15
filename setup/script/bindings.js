@@ -71,41 +71,89 @@ function OnReloadGroups( aXHR )
     
     HTMLString = "";
     
+    // Store old selected
+    
+    var members = new Array();
+    
+    $("#"+aXHR.binding+"_member option:selected").each(function() {
+        members[members.length] = $(this).val();
+    });
+    
+    var leads = new Array();
+    
+    $("#"+aXHR.binding+"_raidlead option:selected").each(function() {
+        leads[members.length] = $(this).val();
+    });
+    
+    // Rebuild groups
+    
     $.each(aXHR.groups, function(index, value) {   
         HTMLString += "<option value=\"" + value.id + "\">" + value.name + "</option>";
     });
     
     $("#"+aXHR.binding+"_member").empty().append( HTMLString );
     $("#"+aXHR.binding+"_raidlead").empty().append( HTMLString );
-}
-
-// ----------------------------------------------------------------------------
-
-function LoadCookieEx(aBinding)
-{
-    var basepath = window.prompt(L("BindingBasePath"), aBinding);
-    if ((basepath != null) && (basepath.length > 0))
-    {
-        var parameter = {
-            binding : aBinding,
-            path    : basepath
-        };
-        
-        $.ajax({
-            type     : "POST",
-            url      : "query/fetch_cookie.php",
-            dataType : "json",
-            async    : true,
-            data     : parameter,
-            success  : OnLoadCookieEx,
-            error    : function(aXHR, aStatus, aError) { alert(L("Error") + ":\n\n" + aError); }
+    
+    // Select old values
+    
+    $("#"+aXHR.binding+"_member option").each(function() {
+        for (var i=0; i<members.length; ++i)
+        {
+            if ($(this).val() == members[i])
+            {
+                $(this).prop("selected", true);
+                break;
+            }
+        }
+    });
+    
+    $("#"+aXHR.binding+"_raidlead option").each(function() {
+        for (var i=0; i<leads.length; ++i)
+        {
+            if ($(this).val() == leads[i])
+            {
+                $(this).prop("selected", true);
+                break;
+            }
+        }
+    });
+    
+    // Mark as loaded
+    
+    $(".config .right select").css("background-color","#cfc")
+        .delay(1000).queue(function() {
+            $(this).css("background-color","").dequeue();
         });
-    }
 }
 
 // ----------------------------------------------------------------------------
 
-function OnLoadCookieEx(aXHR)
+function LoadSettings(aBinding)
+{
+    var basepath = window.prompt(L("BindingBasePath"), "");
+    
+    if (basepath == null)
+        return;
+    
+    var parameter = {
+        binding : aBinding,
+        path    : basepath
+    };
+    
+    $.ajax({
+        type     : "POST",
+        url      : "query/fetch_settings.php",
+        dataType : "json",
+        async    : true,
+        data     : parameter,
+        success  : OnLoadSettings,
+        error    : function(aXHR, aStatus, aError) { alert(L("Error") + ":\n\n" + aError); }
+    });
+}
+
+// ----------------------------------------------------------------------------
+
+function OnLoadSettings(aXHR)
 {
     if ( (aXHR.error != null) && (aXHR.error.length > 0) )
     {
@@ -119,7 +167,28 @@ function OnLoadCookieEx(aXHR)
         return;
     }
     
-    $("#"+aXHR.binding+"_cookie_ex").val(aXHR.value);
+    if (aXHR.settings != undefined)
+    {
+        $("#"+aXHR.binding+"_database").val(aXHR.settings.database);
+        $("#"+aXHR.binding+"_user").val(aXHR.settings.user);
+        $("#"+aXHR.binding+"_password").val(aXHR.settings.password);
+        $("#"+aXHR.binding+"_password_check").val(aXHR.settings.password);
+        $("#"+aXHR.binding+"_prefix").val(aXHR.settings.prefix);
+        
+        if (aXHR.settings.cookie != undefined)
+        {
+            $("#"+aXHR.binding+"_cookie_ex").val(aXHR.settings.cookie);
+        }
+        
+        $(".config .left input").css("background-color","#cfc")
+        .delay(1000).queue(function() {
+            $(this).css("background-color","").dequeue();
+        });
+    }
+    else
+    {
+        alert(L("RetrievalFailed"));
+    }
 }
     
 // ----------------------------------------------------------------------------
@@ -229,17 +298,18 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
     
     for (var i=0; i<bindings.length; ++i)
     {
-        parameter[bindings[i]+"_allow"] = $("#allow_"+bindings[i]+":checked").val() == "on"
+        parameter[bindings[i]+"_allow"] = $("#allow_"+bindings[i]).val() == "true";
     
         if ( parameter[bindings[i]+"_allow"] )
         {
-            parameter[bindings[i]+"_database"] = $("#"+bindings[i]+"_database").val();
-            parameter[bindings[i]+"_user"]     = $("#"+bindings[i]+"_user").val();
-            parameter[bindings[i]+"_password"] = $("#"+bindings[i]+"_password").val();
-            parameter[bindings[i]+"_prefix"]   = $("#"+bindings[i]+"_prefix").val();
-            parameter[bindings[i]+"_cookie"]   = $("#"+bindings[i]+"_cookie_ex").val();
-            parameter[bindings[i]+"_member"]   = new Array();
-            parameter[bindings[i]+"_raidlead"] = new Array();
+            parameter[bindings[i]+"_database"]  = $("#"+bindings[i]+"_database").val();
+            parameter[bindings[i]+"_user"]      = $("#"+bindings[i]+"_user").val();
+            parameter[bindings[i]+"_password"]  = $("#"+bindings[i]+"_password").val();
+            parameter[bindings[i]+"_prefix"]    = $("#"+bindings[i]+"_prefix").val();
+            parameter[bindings[i]+"_autologin"] = $("#"+bindings[i]+"_autologin").prop("checked");
+            parameter[bindings[i]+"_cookie"]    = $("#"+bindings[i]+"_cookie_ex").val();
+            parameter[bindings[i]+"_member"]    = new Array();
+            parameter[bindings[i]+"_raidlead"]  = new Array();
             
             $("#"+bindings[i]+"_member option:selected").each( function() {
                 parameter[bindings[i]+"_member"].push( $(this).val() );
@@ -267,8 +337,19 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
 function showConfig( a_Name )
 {
     $(".config").hide();    
-    $(".tab_active").removeClass("tab_active").addClass("tab_inactive");
+    $("#"+a_Name).show();
+    $("#binding_name").empty().append(L(a_Name+"_Binding"));
     
-    $("#"+a_Name).show();    
-    $("#button_"+a_Name).removeClass("tab_inactive").addClass("tab_active");
+    $("#binding_allow").prop( "checked", $("#allow_"+a_Name).val() == "true" );
+}
+
+// ----------------------------------------------------------------------------
+
+function toggleCurrentBinding( aCheckBox )
+{
+    var bindingName = $("#binding_current").children("option:selected").val();
+    var enabled = $(aCheckBox).prop("checked");
+    
+    $("#allow_"+bindingName).val(enabled  ? "true" : "false");
+    $("#"+bindingName+" input, "+"#"+bindingName+" select, "+"#"+bindingName+" button").prop("disabled", !enabled);
 }
