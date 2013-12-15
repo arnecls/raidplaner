@@ -239,7 +239,7 @@
                                                 "WHERE LOWER(username) = :Login LIMIT 1");
                                           
             $UserSt->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
-        
+            
             if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
             {
                 $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
