@@ -103,9 +103,9 @@
 }
 
 #sheet_body .description {
-    min-height: 85px;
-    max-height: 85px;
-    height: 85px;
+    min-height: 100px;
+    max-height: 100px;
+    height: 100px;
 }
 
 #selectlocation {

@@ -104,6 +104,10 @@
         $gLocale[ "SetAbsent" ]                = "Mettre absent";
         $gLocale[ "Comment" ]                  = "Commentaire";
         $gLocale[ "SaveComment" ]              = "Sauvegarder le commentaire";
+        $gLocale[ "RepeatOnce" ]               = null;
+        $gLocale[ "RepeatDay" ]                = null;
+        $gLocale[ "RepeatWeek" ]               = null;
+        $gLocale[ "RepeatMonth" ]              = null;
         
         // Raid
         $gLocale[ "Raid" ]                     = "Raid";

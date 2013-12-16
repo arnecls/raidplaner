@@ -101,6 +101,10 @@
         $gLocale[ "SetAbsent" ]                = "Ich bin abwesend";
         $gLocale[ "Comment" ]                  = "Kommentar";
         $gLocale[ "SaveComment" ]              = "Kommentar speichern";
+        $gLocale[ "RepeatOnce" ]               = "Nicht wiederholen";
+        $gLocale[ "RepeatDay" ]                = "Tage lang wiederholen";
+        $gLocale[ "RepeatWeek" ]               = "Wochen lang wiederholen";
+        $gLocale[ "RepeatMonth" ]              = "Monate lang wiederholen";
         
         // Raid
         $gLocale[ "Raid" ]                     = "Raid";

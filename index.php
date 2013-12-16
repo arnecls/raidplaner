@@ -1,6 +1,6 @@
 <?php
     define("LOCALE_MAIN", true);
-    define("STYLE_DEBUG", false);
+    define("STYLE_DEBUG", true);
     define("SCRIPT_DEBUG", true);
                  
     require_once("lib/private/locale.php");
@@ -43,7 +43,7 @@
                     
             if (defined("STYLE_DEBUG") && STYLE_DEBUG)
             {
-                include_once("lib/layout/_layout.css.php");
+                include_once("lib/layout/allstyles.php");
             }
             else
             {
