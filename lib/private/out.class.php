@@ -91,7 +91,6 @@
                 {
                     $sanitized = str_replace("\n", "</br>", $Value);
                     $sanitized = str_replace("\\", "\\\\", $sanitized);
-                                        
                     echo '"'.$sanitized.'"';
                 }
                 
