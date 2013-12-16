@@ -126,6 +126,7 @@
         $gLocale[ "SetupBy" ]                  = "Attended";
         $gLocale[ "AbsentBy" ]                 = "Unattended";
         $gLocale[ "SwitchChar" ]               = "Switched character";
+        $gLocale[ "RaidNotFound" ]             = "Raid could not be found.";
         
         // Profile        
         $gLocale[ "Profile" ]                  = "Profile";

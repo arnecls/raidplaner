@@ -127,6 +127,7 @@
         $gLocale[ "SetupBy" ]                  = "Aufgestellt";
         $gLocale[ "AbsentBy" ]                 = "Abgemeldet";
         $gLocale[ "SwitchChar" ]               = "Charakter gewechselt";
+        $gLocale[ "RaidNotFound" ]             = "Raid konnte nicht gefunden werden.";
         
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";

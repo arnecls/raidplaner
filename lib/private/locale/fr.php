@@ -130,6 +130,7 @@
         $gLocale[ "SetupBy" ]                  = "Validé";
         $gLocale[ "AbsentBy" ]                 = "Noté Absent";
         $gLocale[ "SwitchChar" ]               = "Changé de personnage";
+        $gLocale[ "RaidNotFound" ]             = null;
         
         // Profile        
         $gLocale[ "Profile" ]                  = "Profil";
