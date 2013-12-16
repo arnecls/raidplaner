@@ -19,9 +19,11 @@ function xmlentities( $aString, $aCompat, $aCharset )
     $ValidString = htmlentities($aString, $aCompat, $aCharset);
     
     // if the given charset did not work use fallback
+    
+    $Flags = (PHP_VERSION_ID >= 50300) ? $aCompat | ENT_IGNORE : $aCompat;
 
     if ( $ValidString == "" )
-        $ValidString = htmlentities( $aString, $aCompat | ENT_IGNORE, "ISO8859-15" );
+        $ValidString = htmlentities( $aString, $Flags, "ISO8859-15" );
 
     $HtmlTranslationTable = get_html_translation_table( HTML_ENTITIES, $aCompat );
 
