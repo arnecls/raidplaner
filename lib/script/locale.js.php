@@ -16,7 +16,8 @@ var g_Locale = [];
     {
         if ($Value != null)
         {
-            $Encoded = htmlentities(str_replace("\"","\\\"", $Value), ENT_COMPAT | ENT_HTML401, 'UTF-8');
+            $Flags = (PHP_VERSION_ID >= 50400) ? ENT_COMPAT | ENT_XHTML : ENT_COMPAT;
+            $Encoded = htmlentities(str_replace("\"","\\\"", $Value), $Flags, 'UTF-8');
             echo "g_Locale[\"".$Key."\"] = \"".$Encoded."\";\n";
         }
     }
