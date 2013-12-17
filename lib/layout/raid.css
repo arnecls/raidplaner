@@ -123,6 +123,9 @@
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 5px;
+    width: 450px;
+    height: 32px;
+    overflow-y: hidden;
 }
 
 #raiddetail .raidsize {
