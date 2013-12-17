@@ -15,6 +15,8 @@ function msgQueryProfile( $aRequest )
         }
 
         $Connector = Connector::getInstance();
+        
+        $Out->pushValue("show", $aRequest["showPanel"]);
 
         // Admintool relevant data
 
