@@ -244,23 +244,23 @@
 }
 
 #settings .users {
-    background-image: url(images/block_users.png);
+    background-image: url(images/block_01.png);
 }
 
 #settings .locations {
-    background-image: url(images/block_locations.png);
+    background-image: url(images/block_02.png);
 }
 
 #settings .settings {
-    background-image: url(images/block_settings.png);
+    background-image: url(images/block_03.png);
 }
 
 #settings .stats {
-    background-image: url(images/block_stats.png);
+    background-image: url(images/block_04.png);
 }
 
 #settings .about {
-    background-image: url(images/block_about.png);
+    background-image: url(images/block_05.png);
 }
 
 #settings .icon_users {

@@ -26,15 +26,15 @@
 }
 
 #raiddetail .setup {
-    background-image: url(images/block_users.png);
+    background-image: url(images/block_01.png);
 }
 
 #raiddetail .slackers {
-    background-image: url(images/block_locations.png);
+    background-image: url(images/block_02.png);
 }
 
 #raiddetail .settings {
-    background-image: url(images/block_settings.png);
+    background-image: url(images/block_03.png);
 }
 
 #raiddetail .icon_setup {
