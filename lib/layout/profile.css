@@ -479,6 +479,27 @@
     border: 1px solid #ddd;
 }
 
+#profilesettings .datepicker {
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    color: #fefefe;
+    padding: 2px;
+    width: 124px;
+    border-left: 0px;
+    display: inline-block;
+}
+
+#profilesettings .datepicker_icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-image: url(images/ui-icons_222222_256x240.png);
+    background-position:-32px -112px;
+    border: 1px solid #aaa;
+    background-color: #ccc;
+    border-right: 0px;
+}
+
 #profile_strprogress {
     width: 144px;
     height: 16px;
