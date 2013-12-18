@@ -99,7 +99,7 @@
     padding-top: 4px;
     height: 410px;
     width: 900px;
-    overflow-y: auto;    
+    overflow: hidden;    
 }
 
 #charlist {

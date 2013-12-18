@@ -155,6 +155,7 @@
         $gLocale[ "WrongPassword" ]            = "Wrong password";
         $gLocale[ "PasswordLocked" ]           = "Password cannot be changed.";
         $gLocale[ "PasswordChanged" ]          = "The password has been changed.";
+        $gLocale[ "UserNotFound" ]             = "User could not be found.";
                 
         // Settings
         $gLocale[ "Settings" ]                 = "Settings";

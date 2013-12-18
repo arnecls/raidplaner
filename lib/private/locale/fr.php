@@ -159,6 +159,7 @@
         $gLocale[ "WrongPassword" ]            = "Mauvais mot de passe";
         $gLocale[ "PasswordLocked" ]           = "Le mot de passe ne peut pas être modifié.";
         $gLocale[ "PasswordChanged" ]          = "Le mot de passe a été modifié.";
+        $gLocale[ "UserNotFound" ]             = null;
                 
         // Settings
         $gLocale[ "Settings" ]                 = "Réglages";

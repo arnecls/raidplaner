@@ -6,9 +6,9 @@ function msgProfileupdate( $aRequest )
     {
         $UserId = UserProxy::getInstance()->UserId;
 
-        if ( validAdmin() && isset( $aRequest["id"] ) )
+        if ( validAdmin() && isset($aRequest["userId"]) && ($aRequest["userId"]!=0) )
         {
-            $UserId = intval( $aRequest["id"] );
+            $UserId = intval( $aRequest["userId"] );
         }
 
         $Connector = Connector::getInstance();
