@@ -102,6 +102,14 @@
     overflow: hidden;    
 }
 
+#settings {    
+    padding-left: 15px;
+    padding-top: 4px;
+    height: 410px;
+    width: 900px;
+    overflow: hidden;    
+}
+
 #charlist {
     display: inline-block;
     vertical-align: top;
@@ -430,4 +438,61 @@
     display: inline-block;
     position: relative;
     margin-left: 0px;
+}
+
+#profilesettings {
+    padding-left: 15px;
+    padding-top: 15px;
+    height: 410px;
+    width: 900px;
+    overflow: hidden;
+}
+
+#profilesettings .settinglabel {
+    width: 160px;
+    max-width: 160px;
+    float: left;
+    display: inline-block;
+    clear: left;
+    margin-bottom: 8px;
+    vertical-align: top;
+}
+
+#profilesettings .settingField {
+    margin-left: 6px;
+    margin-bottom: 8px;
+    vertical-align: top;
+    float: left;
+    display: inline-block;
+}
+
+#profilesettings input[type=password] {
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    color: #fefefe;
+    padding: 2px;
+    width: 140px;
+}
+
+#profilesettings input[type=password]:disabled {
+    background-color: #ddd;
+    border: 1px solid #ddd;
+}
+
+#profile_strprogress {
+    width: 144px;
+    height: 16px;
+    background-color: #ddd;
+    text-align: left;  
+    border: 1px solid #ccc;   
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 2px;
+}
+
+#profile_strprogress .pglabel {
+    width: 140px;
+    color: #aaa;
 }
