@@ -52,6 +52,8 @@ function msgProfileupdate( $aRequest )
         {
             if ($aRequest["vacationStart"] != null)
             {
+                // Update times
+                
                 $StartSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, IntValue) VALUES (:UserId, 'VacationStart', :Time)");
                 $StartSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
                 $StartSt->bindValue(":Time", $aRequest["vacationStart"], PDO::PARAM_INT);
@@ -74,11 +76,17 @@ function msgProfileupdate( $aRequest )
                 
                 $EndSt->closeCursor();
                 
+                // Update message
+                
+                $VacationMessage = "";
+                
                 if ($aRequest["vacationMessage"] != null)
-                {                
+                {
+                    $VacationMessage = $aRequest["vacationMessage"];
+                               
                     $MessageSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, TextValue) VALUES (:UserId, 'VacationMessage', :Message)");
                     $MessageSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                    $MessageSt->bindValue(":Message", $aRequest["vacationMessage"], PDO::PARAM_STR);
+                    $MessageSt->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
                     
                     if ( !$MessageSt->execute() )
                     {
@@ -87,6 +95,41 @@ function msgProfileupdate( $aRequest )
                     
                     $MessageSt->closeCursor();
                 }
+                
+                // Update all raids in this time that exist now and are not yet attended
+                
+                $RaidsSt = $Connector->prepare("SELECT RaidId FROM `".RP_TABLE_PREFIX."Raid` ".
+                   "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (RaidId) ".
+                   "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) AND UserId IS NULL");
+                
+                $RaidsSt->bindValue(":Start", $aRequest["vacationStart"], PDO::PARAM_INT);
+                $RaidsSt->bindValue(":End", $aRequest["vacationEnd"], PDO::PARAM_INT);
+                
+                if ( !$RaidsSt->execute() )
+                {
+                    postErrorMessage( $RaidsSt );
+                }
+                else
+                {
+                    while ($RaidData = $RaidsSt->fetch(PDO::FETCH_ASSOC))
+                    {
+                        $AbsendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
+                            "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
+                        
+                        $AbsendSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                        $AbsendSt->bindValue(":RaidId", $RaidData["RaidId"], PDO::PARAM_INT);
+                        $AbsendSt->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
+                        
+                        if ( !$AbsendSt->execute() )
+                        {
+                            postErrorMessage( $AbsendSt );
+                        }
+                        
+                        $AbsendSt->closeCursor();
+                    }
+                }
+                
+                $RaidsSt->closeCursor();
             }
         }
         
