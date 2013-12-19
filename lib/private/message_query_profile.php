@@ -55,7 +55,7 @@ function msgQueryProfile( $aRequest )
         {
             while ($Data = $SettingsSt->fetch(PDO::FETCH_ASSOC))
             {
-                $UserSettings[$Data["Name"]] = array("IntValue" => $Data["IntValue"], "TextValue" => $Data["TextValue"]);
+                $UserSettings[$Data["Name"]] = array("number" => $Data["IntValue"], "text" => $Data["TextValue"]);
             }
         }
         

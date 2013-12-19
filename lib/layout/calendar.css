@@ -64,6 +64,10 @@
     color: #7d7d7d;
 }
 
+#calendar .vacation {
+    border-top: 2px solid rgba(255,0,0,0.5);
+}
+
 #calendar .today {
     border-style: solid;
     border-color: #b88e8e;
