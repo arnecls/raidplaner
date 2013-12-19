@@ -8,6 +8,8 @@ function msgRaidCreate( $aRequest )
         $Connector = Connector::getInstance();
 
         $LocationId = $aRequest["locationId"];
+        
+        // Create location
 
         if ( $LocationId == 0 )
         {
@@ -30,6 +32,8 @@ function msgRaidCreate( $aRequest )
 
             $NewLocationSt->closeCursor();
         }
+        
+        // Create raid
 
         if ( $LocationId != 0 )
         {
@@ -84,13 +88,55 @@ function msgRaidCreate( $aRequest )
             $EndDay    = intval($aRequest["endDay"]);
             $EndMonth  = intval($aRequest["endMonth"]);
             $EndYear   = intval($aRequest["endYear"]);
+            
+            // Get users on vacation
+            
+            $VactionUsers = array();
+                
+            $UserSettingsSt = $Connector->prepare("SELECT UserId, Name, IntValue, TextValue FROM `".RP_TABLE_PREFIX."UserSetting` ".
+               "WHERE Name = 'VacationStart' OR Name = 'VacationEnd' OR Name = 'VacationMessage' ORDER BY UserId");
+               
+            if (!$UserSettingsSt->execute())
+            {
+                postErrorMessage( $UserSettingsSt );
+            }
+            else
+            {
+                while ($Settings = $UserSettingsSt->fetch(PDO::FETCH_ASSOC))
+                {
+                    if (!isset($VactionUsers[$Settings["UserId"]]))
+                    {
+                        $VactionUsers[$Settings["UserId"]] = array("VacationMessage" => "");
+                    }
+                    
+                    switch ($Settings["Name"])
+                    {
+                    case "VacationStart":
+                        $VactionUsers[$Settings["UserId"]]["Start"] = $Settings["IntValue"];
+                        break;
+                        
+                    case "VacationEnd":
+                        $VactionUsers[$Settings["UserId"]]["End"] = $Settings["IntValue"];
+                        break;
+                        
+                    case "VacationMessage":
+                        $VactionUsers[$Settings["UserId"]]["Message"] = $Settings["TextValue"];
+                        break;
+                    
+                    default:
+                        break;
+                    }
+                }
+            }
+            
+            $UserSettingsSt->closeCursor();
                 
             // Create raids(s)
                     
             $Repeat = max(0, intval($aRequest["repeat"])) + 1; // repeat at least once
             
             for ($rc=0; $rc<$Repeat; ++$rc)
-            {        
+            {
                 $NewRaidSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Raid` ".
                                                  "(LocationId, Size, Start, End, Mode, Description, SlotsRole1, SlotsRole2, SlotsRole3, SlotsRole4, SlotsRole5 ) ".
                                                  "VALUES (:LocationId, :Size, FROM_UNIXTIME(:Start), FROM_UNIXTIME(:End), :Mode, :Description, ".
@@ -123,8 +169,34 @@ function msgRaidCreate( $aRequest )
                 {
                     postErrorMessage( $NewRaidSt );
                 }
+                
+                $RaidId = $Connector->lastInsertId();
     
                 $NewRaidSt->closeCursor();
+                
+                // Set vacation attendances
+                
+                while (list($UserId, $Settings) = each($VactionUsers))
+                {
+                    if ( ($StartDateTime >= $Settings["Start"]) && ($StartDateTime <= $Settings["End"]) )
+                    {                    
+                        $AbsendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
+                            "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
+                            
+                        $AbsendSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                        $AbsendSt->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+                        $AbsendSt->bindValue(":Message", $Settings["Message"], PDO::PARAM_STR);
+                        
+                        if (!$AbsendSt->execute())
+                        {
+                            postErrorMessage( $AbsendSt );
+                        }
+                        
+                        $AbsendSt->closeCursor();
+                    }
+                }
+                
+                reset($VactionUsers);
                 
                 // Increment start/end
                 

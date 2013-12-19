@@ -100,7 +100,7 @@ function msgProfileupdate( $aRequest )
                 
                 $RaidsSt = $Connector->prepare("SELECT RaidId FROM `".RP_TABLE_PREFIX."Raid` ".
                    "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (RaidId) ".
-                   "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) AND UserId IS NULL");
+                   "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) AND `".RP_TABLE_PREFIX."Attendance`.UserId IS NULL");
                 
                 $RaidsSt->bindValue(":Start", $aRequest["vacationStart"], PDO::PARAM_INT);
                 $RaidsSt->bindValue(":End", $aRequest["vacationEnd"], PDO::PARAM_INT);
