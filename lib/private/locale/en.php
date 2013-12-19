@@ -160,6 +160,7 @@
         $gLocale[ "VacationEnd" ]              = "Last day of vacation";
         $gLocale[ "NoStartDate" ]              = "Please enter the first day of your vacation.";
         $gLocale[ "NoEndDate" ]                = "Please enter the last day of your vacation.";
+        $gLocale[ "VacationMessage" ]          = "Vacation message";
                 
         // Settings
         $gLocale[ "Settings" ]                 = "Settings";

@@ -41,7 +41,7 @@ function msgProfileupdate( $aRequest )
         
         // Update vacation settings
         
-        $SettingSt = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd')");
+        $SettingSt = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd' OR Name = 'VacationMessage')");
         $SettingSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
         
         if ( !$SettingSt->execute() )
@@ -73,6 +73,20 @@ function msgProfileupdate( $aRequest )
                 }
                 
                 $EndSt->closeCursor();
+                
+                if ($aRequest["vacationMessage"] != null)
+                {                
+                    $MessageSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, TextValue) VALUES (:UserId, 'VacationMessage', :Message)");
+                    $MessageSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                    $MessageSt->bindValue(":Message", $aRequest["vacationMessage"], PDO::PARAM_STR);
+                    
+                    if ( !$MessageSt->execute() )
+                    {
+                        postErrorMessage( $MessageSt );
+                    }
+                    
+                    $MessageSt->closeCursor();
+                }
             }
         }
         

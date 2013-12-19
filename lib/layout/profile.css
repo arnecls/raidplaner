@@ -102,14 +102,6 @@
     overflow: hidden;    
 }
 
-#settings {    
-    padding-left: 15px;
-    padding-top: 4px;
-    height: 410px;
-    width: 900px;
-    overflow: hidden;    
-}
-
 #charlist {
     display: inline-block;
     vertical-align: top;
@@ -473,7 +465,7 @@
 #profilesettings input[type=password] {
     background-color: #ccc;
     border: 1px solid #aaa;
-    color: #fefefe;
+    color: #666;
     padding: 2px;
     width: 140px;
     margin-top: 0px;
@@ -483,6 +475,19 @@
 #profilesettings input[type=password]:disabled {
     background-color: #ddd;
     border: 1px solid #ddd;
+}
+
+#profilesettings textarea {
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    color: #666;
+    padding: 2px 4px;
+    width: 280px;
+    max-width: 280px;
+    height: 43px;
+    max-height: 43px;
+    margin-top: 0px;
+    margin-bottom: 4px;
 }
 
 #profile_hashing {
