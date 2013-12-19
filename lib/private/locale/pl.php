@@ -160,6 +160,10 @@
         $gLocale[ "PasswordLocked" ]           = "Hasło nie może być zmienione.";
         $gLocale[ "PasswordChanged" ]          = "Hasło zostało zmienione.";
         $gLocale[ "UserNotFound" ]             = null;
+        $gLocale[ "VacationStart" ]            = null;
+        $gLocale[ "VacationEnd" ]              = null;
+        $gLocale[ "NoStartDate" ]              = null;
+        $gLocale[ "NoEndDate" ]                = null;
                 
         // Settings
         $gLocale[ "Settings" ]                 = "Ustawienia";

@@ -2,15 +2,16 @@
     @require_once(dirname(__FILE__)."/connector.class.php");
     
     $gSite = Array(
-        "Version"    => 109.0,
-        "BannerLink" => "",
-        "HelpLink"   => "",
-        "Banner"     => "cataclysm.jpg",
-        "Background" => "flower.png",
-        "BGColor"    => "#898989",
-        "BGRepeat"   => "repeat-xy",
-        "PortalMode" => false,
-        "TimeFormat" => 24
+        "Version"     => 109.0,
+        "BannerLink"  => "",
+        "HelpLink"    => "",
+        "Banner"      => "cataclysm.jpg",
+        "Background"  => "flower.png",
+        "BGColor"     => "#898989",
+        "BGRepeat"    => "repeat-xy",
+        "PortalMode"  => false,
+        "TimeFormat"  => 24,
+        "StartOfWeek" => 1
     );
     
     // ---------------------------------------------------------------
@@ -33,14 +34,15 @@
     
         if ( $Settings->execute() )
         {
-            $gSite["BannerLink"] = "";
-            $gSite["HelpLink"]   = "";
-            $gSite["Banner"]     = "cataclysm.jpg";
-            $gSite["Background"] = "flower.png";
-            $gSite["BGColor"]    = "#898989";
-            $gSite["BGRepeat"]   = "repeat-xy";
-            $gSite["PortalMode"] = false;
-            $gSite["TimeFormat"] = 24;
+            $gSite["BannerLink"]  = "";
+            $gSite["HelpLink"]    = "";
+            $gSite["Banner"]      = "cataclysm.jpg";
+            $gSite["Background"]  = "flower.png";
+            $gSite["BGColor"]     = "#898989";
+            $gSite["BGRepeat"]    = "repeat-xy";
+            $gSite["PortalMode"]  = false;
+            $gSite["TimeFormat"]  = 24;
+            $gSite["StartOfWeek"] = 1;
             
             while ( $Data = $Settings->fetch( PDO::FETCH_ASSOC ) )
             {
@@ -77,6 +79,10 @@
     
                 case "TimeFormat":
                     $gSite["TimeFormat"] = $Data["IntValue"];
+                    break;
+    
+                case "StartOfWeek":
+                    $gSite["StartOfWeek"] = $Data["IntValue"];
                     break;
     
                 default:

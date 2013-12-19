@@ -40,6 +40,28 @@ function msgQueryProfile( $aRequest )
         }
         
         $Users->closeCursor();
+        
+        // Load settings
+        
+        $SettingsSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId" );
+        $SettingsSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+        $UserSettings = array();
+            
+        if ( !$SettingsSt->execute() )
+        {
+            postErrorMessage( $SettingsSt );
+        }
+        else
+        {
+            while ($Data = $SettingsSt->fetch(PDO::FETCH_ASSOC))
+            {
+                $UserSettings[$Data["Name"]] = array("IntValue" => $Data["IntValue"], "TextValue" => $Data["TextValue"]);
+            }
+        }
+        
+        $Out->pushValue("settings", $UserSettings);
+
+        $SettingsSt->closeCursor();
 
         // Load characters
         
@@ -98,7 +120,7 @@ function msgQueryProfile( $aRequest )
 
         if ( !$Raids->execute() )
         {
-            postErrorMessage( $User );
+            postErrorMessage( $Raids );
         }
         else
         {

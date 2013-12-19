@@ -1009,7 +1009,7 @@
                 $CookieData = intval($aUserId).",".implode(",",self::encryptData($SessionKey, $Data));
                 $_SESSION["User"] = $CookieData;
                     
-                if ( isset($_COOKIE[self::$mStickyCookieName.$this->SiteId]) )
+                if ( isset($_COOKIE[self::$mStickyCookieName.self::$mInstance->SiteId]) )
                     $this->setSessionCookie($CookieData);
             }
 

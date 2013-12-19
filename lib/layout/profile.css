@@ -449,13 +449,17 @@
 }
 
 #profilesettings .settinglabel {
-    width: 160px;
+    width: 170px;
     max-width: 160px;
     float: left;
     display: inline-block;
     clear: left;
     margin-bottom: 8px;
     vertical-align: top;
+}
+
+#profilesettings .labeldisabled {
+    color: #aaa;
 }
 
 #profilesettings .settingField {
@@ -472,6 +476,8 @@
     color: #fefefe;
     padding: 2px;
     width: 140px;
+    margin-top: 0px;
+    margin-bottom: 4px;
 }
 
 #profilesettings input[type=password]:disabled {
@@ -479,25 +485,22 @@
     border: 1px solid #ddd;
 }
 
-#profilesettings .datepicker {
+#profile_hashing {
+    position: absolute;
+    top: 472px;
+    right: 200px;
+    width: 150px;
+    height: 23px;
     background-color: #ccc;
-    border: 1px solid #aaa;
-    color: #fefefe;
-    padding: 2px;
-    width: 124px;
-    border-left: 0px;
-    display: inline-block;
+    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
 }
 
-#profilesettings .datepicker_icon {
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    background-image: url(images/ui-icons_222222_256x240.png);
-    background-position:-32px -112px;
-    border: 1px solid #aaa;
-    background-color: #ccc;
-    border-right: 0px;
+#profile_hashing .pglabel {
+    width: 150px;
+    line-height: 23px;
+    color: #aaa;
 }
 
 #profile_strprogress {
@@ -510,10 +513,30 @@
     -webkit-border-radius: 4px;
     border-radius: 4px;
     display: inline-block;
-    margin-top: 2px;
 }
 
 #profile_strprogress .pglabel {
     width: 140px;
     color: #aaa;
+}
+
+#profilesettings .datepicker {
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    width: 128px;
+    display: inline-block;
+    background-image: url(images/ui-icons_222222_256x240.png);
+    background-repeat: no-repeat;
+    padding-left: 16px;
+    margin-bottom: 4px;
+}
+
+#profilesettings .datepicker_field {
+    width: 124px;
+    height: 14px;
+    border: 0px;
+    margin: 0px;
+    padding: 2px;
+    background-color: #ccc;
+    color: #666;
 }

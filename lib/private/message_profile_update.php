@@ -12,9 +12,75 @@ function msgProfileupdate( $aRequest )
         }
 
         $Connector = Connector::getInstance();
+        
+        // Update password
+        
+        if (isset($aRequest["newPass"]) && ($aRequest["oldPass"] != ""))
+        {
+            if ( UserProxy::getInstance()->validateCredentials($aRequest["oldPass"]) )
+            {
+                // User authenticated with valid password
+                // change the password of the given id. ChangePassword does a check
+                // for validity (e.g. only admin may change other user's passwords)
+                
+                $Salt = UserProxy::generateKey128();
+                $HashedPassword = NativeBinding::hash( $aRequest["newPass"], $Salt, "none" );
+            
+                if ( !UserProxy::changePassword($UserId, $HashedPassword, $Salt) )
+                {
+                    $Out = Out::getInstance();
+                    $Out->pushError(L("PasswordLocked"));
+                }
+            }
+            else
+            {
+                $Out = Out::getInstance();
+                $Out->pushError(L("WrongPassword"));
+            }
+        }
+        
+        // Update vacation settings
+        
+        $SettingSt = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd')");
+        $SettingSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+        
+        if ( !$SettingSt->execute() )
+        {
+            postErrorMessage( $SettingSt );
+        }
+        else
+        {
+            if ($aRequest["vacationStart"] != null)
+            {
+                $StartSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, IntValue) VALUES (:UserId, 'VacationStart', :Time)");
+                $StartSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                $StartSt->bindValue(":Time", $aRequest["vacationStart"], PDO::PARAM_INT);
+                
+                if ( !$StartSt->execute() )
+                {
+                    postErrorMessage( $StartSt );
+                }
+                
+                $StartSt->closeCursor();
+                
+                $EndSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, IntValue) VALUES (:UserId, 'VacationEnd', :Time)");
+                $EndSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                $EndSt->bindValue(":Time", $aRequest["vacationEnd"], PDO::PARAM_INT);
+                
+                if ( !$EndSt->execute() )
+                {
+                    postErrorMessage( $EndSt );
+                }
+                
+                $EndSt->closeCursor();
+            }
+        }
+        
+        $SettingSt->closeCursor();
+        
+        // Update characters
 
-        $Characters = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId ORDER BY Name");
-
+        $Characters = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId ORDER BY Name");
         $Characters->bindValue(":UserId", $UserId, PDO::PARAM_INT);
 
         $ValidCharacterIds = array();
@@ -163,7 +229,7 @@ function msgProfileupdate( $aRequest )
             
             UserProxy::getInstance()->updateCharacters();
         }
-
+        
         msgQueryProfile( $aRequest );
     }
     else

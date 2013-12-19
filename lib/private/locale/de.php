@@ -157,6 +157,10 @@
         $gLocale[ "PasswordLocked" ]           = "Passwort kann nicht verändert werden.";
         $gLocale[ "PasswordChanged" ]          = "Das Passwort wurde geändert.";
         $gLocale[ "UserNotFound" ]             = "Benutzer konnte nicht gefunden werden.";
+        $gLocale[ "VacationStart" ]            = "Erster Tag des Urlaubs";
+        $gLocale[ "VacationEnd" ]              = "Letzter Tag des Urlaubs";
+        $gLocale[ "NoStartDate" ]              = "Bitte gebe den ersten Tag deines Urlaubs an.";
+        $gLocale[ "NoEndDate" ]                = "Bitte gebe den letzten Tag deines Urlaubs an.";
         
         // Settings           
         $gLocale[ "Settings" ]                 = "Einstellungen";

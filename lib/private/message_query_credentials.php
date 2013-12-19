@@ -30,6 +30,7 @@ function msgQueryLocalCredentialsById( $aRequest )
     }
     else
     {
+        $Out->pushValue("id", $aRequest["UserId"]);
         $Out->pushValue("salt", $Credentials["salt"]);
         $Out->pushValue("pubkey", $Credentials["key"]);
         $Out->pushValue("method", $Credentials["method"]);
