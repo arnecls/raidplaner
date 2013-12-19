@@ -165,6 +165,7 @@
         $gLocale[ "NoStartDate" ]              = null;
         $gLocale[ "NoEndDate" ]                = null;
         $gLocale[ "VacationMessage" ]          = null;
+        $gLocale[ "ClearVacation" ]            = null;
                 
         // Settings
         $gLocale[ "Settings" ]                 = "Réglages";

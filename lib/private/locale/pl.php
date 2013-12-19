@@ -108,6 +108,7 @@
         $gLocale[ "RepeatDay" ]                = null;
         $gLocale[ "RepeatWeek" ]               = null;
         $gLocale[ "RepeatMonth" ]              = null;
+        $gLocale[ "ClearVacation" ]            = null;
         
         // Raid
         $gLocale[ "Raid" ]                     = "Rajd";

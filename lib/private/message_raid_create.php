@@ -106,7 +106,7 @@ function msgRaidCreate( $aRequest )
                 {
                     if (!isset($VactionUsers[$Settings["UserId"]]))
                     {
-                        $VactionUsers[$Settings["UserId"]] = array("VacationMessage" => "");
+                        $VactionUsers[$Settings["UserId"]] = array("Message" => "");
                     }
                     
                     switch ($Settings["Name"])
