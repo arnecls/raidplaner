@@ -41,40 +41,26 @@ function msgProfileupdate( $aRequest )
         
         // Update vacation settings
         
-        $SettingSt = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd' OR Name = 'VacationMessage')");
-        $SettingSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+        $SettingQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd' OR Name = 'VacationMessage')");
+        $SettingQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
         
-        if ( !$SettingSt->execute() )
-        {
-            postErrorMessage( $SettingSt );
-        }
-        else
+        if ( $SettingQuery->execute() )
         {
             if ($aRequest["vacationStart"] != null)
             {
                 // Update times
                 
-                $StartSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, IntValue) VALUES (:UserId, 'VacationStart', :Time)");
-                $StartSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                $StartSt->bindValue(":Time", $aRequest["vacationStart"], PDO::PARAM_INT);
+                $StartQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, IntValue) VALUES (:UserId, 'VacationStart', :Time)");
+                $StartQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                $StartQuery->bindValue(":Time", $aRequest["vacationStart"], PDO::PARAM_INT);
                 
-                if ( !$StartSt->execute() )
-                {
-                    postErrorMessage( $StartSt );
-                }
+                $StartQuery->execute();
                 
-                $StartSt->closeCursor();
+                $EndQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, IntValue) VALUES (:UserId, 'VacationEnd', :Time)");
+                $EndQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                $EndQuery->bindValue(":Time", $aRequest["vacationEnd"], PDO::PARAM_INT);
                 
-                $EndSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, IntValue) VALUES (:UserId, 'VacationEnd', :Time)");
-                $EndSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                $EndSt->bindValue(":Time", $aRequest["vacationEnd"], PDO::PARAM_INT);
-                
-                if ( !$EndSt->execute() )
-                {
-                    postErrorMessage( $EndSt );
-                }
-                
-                $EndSt->closeCursor();
+                $EndQuery->execute();
                 
                 // Update message
                 
@@ -84,209 +70,162 @@ function msgProfileupdate( $aRequest )
                 {
                     $VacationMessage = $aRequest["vacationMessage"];
                                
-                    $MessageSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, TextValue) VALUES (:UserId, 'VacationMessage', :Message)");
-                    $MessageSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                    $MessageSt->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
+                    $MessageQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, TextValue) VALUES (:UserId, 'VacationMessage', :Message)");
+                    $MessageQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                    $MessageQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
                     
-                    if ( !$MessageSt->execute() )
-                    {
-                        postErrorMessage( $MessageSt );
-                    }
-                    
-                    $MessageSt->closeCursor();
+                    $MessageQuery->execute();
                 }
                 
                 // Update all raids in this time that exist now and are not yet attended
                 
-                $RaidsSt = $Connector->prepare("SELECT RaidId FROM `".RP_TABLE_PREFIX."Raid` ".
+                $RaidsQuery = $Connector->prepare("SELECT RaidId FROM `".RP_TABLE_PREFIX."Raid` ".
                    "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (RaidId) ".
                    "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) AND `".RP_TABLE_PREFIX."Attendance`.UserId IS NULL");
                 
-                $RaidsSt->bindValue(":Start", $aRequest["vacationStart"], PDO::PARAM_INT);
-                $RaidsSt->bindValue(":End", $aRequest["vacationEnd"], PDO::PARAM_INT);
+                $RaidsQuery->bindValue(":Start", $aRequest["vacationStart"], PDO::PARAM_INT);
+                $RaidsQuery->bindValue(":End", $aRequest["vacationEnd"], PDO::PARAM_INT);
                 
-                if ( !$RaidsSt->execute() )
+                $RaidsQuery->loop(function($RaidData)
                 {
-                    postErrorMessage( $RaidsSt );
-                }
-                else
-                {
-                    while ($RaidData = $RaidsSt->fetch(PDO::FETCH_ASSOC))
-                    {
-                        $AbsendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
-                            "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
-                        
-                        $AbsendSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                        $AbsendSt->bindValue(":RaidId", $RaidData["RaidId"], PDO::PARAM_INT);
-                        $AbsendSt->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
-                        
-                        if ( !$AbsendSt->execute() )
-                        {
-                            postErrorMessage( $AbsendSt );
-                        }
-                        
-                        $AbsendSt->closeCursor();
-                    }
-                }
-                
-                $RaidsSt->closeCursor();
+                    $AbsentQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
+                        "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
+                    
+                    $AbsentQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                    $AbsentQuery->bindValue(":RaidId", $RaidData["RaidId"], PDO::PARAM_INT);
+                    $AbsentQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
+                    
+                    $AbsentQuery->execute();
+                });
             }
         }
         
-        $SettingSt->closeCursor();
-        
         // Update characters
 
-        $Characters = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId ORDER BY Name");
-        $Characters->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+        $CharacterQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId ORDER BY Name");
+        $CharacterQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
 
         $ValidCharacterIds = array();
         $UpdatedCharacteIds = array();
 
-        if ( !$Characters->execute() )
+        $CharacterQuery->loop( function($Data) use (&$ValidCharacterIds)
         {
-            postErrorMessage( $Characters );
-            $Characters->closeCursor();
+            array_push( $ValidCharacterIds, $Data["CharacterId"] );
+        });
+
+        $NumCharacters = (isset($aRequest["charId"]) && is_array($aRequest["charId"])) ? sizeof($aRequest["charId"]) : 0;
+
+        // Sanity check mainchar
+
+        $FoundMainChar = false;
+
+        for ( $CharIndex=0; $CharIndex < $NumCharacters; ++$CharIndex )
+        {
+            if ( $aRequest["mainChar"][$CharIndex] == "true" )
+            {
+                if ( $FoundMainChar )
+                {
+                    $aRequest["mainChar"][$CharIndex] = "false";
+                }
+                else
+                {
+                    $FoundMainChar = true;
+                }
+            }
         }
-        else
+
+        if ( !$FoundMainChar && $NumCharacters > 0 )
         {
-            while ( $Data = $Characters->fetch( PDO::FETCH_ASSOC ) )
+            $aRequest["mainChar"][0] = "true";
+        }
+
+        // Update/insert chars
+
+        $Connector->beginTransaction();
+
+        for ( $CharIndex=0; $CharIndex < $NumCharacters; ++$CharIndex )
+        {
+            $CharId = $aRequest["charId"][$CharIndex];
+
+            if ( $CharId == 0 )
             {
-                array_push( $ValidCharacterIds, $Data["CharacterId"] );
-            }
+                // Insert new character
 
-            $Characters->closeCursor();
+                $InsertChar = $Connector->prepare(  "INSERT INTO `".RP_TABLE_PREFIX."Character` ".
+                                                    "( UserId, Name, Class, Mainchar, Role1, Role2 ) ".
+                                                    "VALUES ( :UserId, :Name, :Class, :Mainchar, :Role1, :Role2 )" );
 
-            $NumCharacters = (isset($aRequest["charId"]) && is_array($aRequest["charId"])) ? sizeof($aRequest["charId"]) : 0;
+                $InsertChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+                $InsertChar->bindValue( ":Name", requestToXML( $aRequest["name"][$CharIndex], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
+                $InsertChar->bindValue( ":Class", $aRequest["charClass"][$CharIndex], PDO::PARAM_STR );
+                $InsertChar->bindValue( ":Mainchar", $aRequest["mainChar"][$CharIndex], PDO::PARAM_STR );
+                $InsertChar->bindValue( ":Role1", $aRequest["role1"][$CharIndex], PDO::PARAM_STR );
+                $InsertChar->bindValue( ":Role2", $aRequest["role2"][$CharIndex], PDO::PARAM_STR );
 
-            // Sanity check mainchar
-
-            $FoundMainChar = false;
-
-            for ( $CharIndex=0; $CharIndex < $NumCharacters; ++$CharIndex )
-            {
-                if ( $aRequest["mainChar"][$CharIndex] == "true" )
+                if ( !$InsertChar->execute() )
                 {
-                    if ( $FoundMainChar )
-                    {
-                        $aRequest["mainChar"][$CharIndex] = "false";
-                    }
-                    else
-                    {
-                        $FoundMainChar = true;
-                    }
-                }
-            }
-
-            if ( !$FoundMainChar && $NumCharacters > 0 )
-            {
-                $aRequest["mainChar"][0] = "true";
-            }
-
-            // Update/insert chars
-
-            $Connector->beginTransaction();
-
-            for ( $CharIndex=0; $CharIndex < $NumCharacters; ++$CharIndex )
-            {
-                $CharId = $aRequest["charId"][$CharIndex];
-
-                if ( $CharId == 0 )
-                {
-                    // Insert new character
-
-                    $InsertChar = $Connector->prepare(  "INSERT INTO `".RP_TABLE_PREFIX."Character` ".
-                                                        "( UserId, Name, Class, Mainchar, Role1, Role2 ) ".
-                                                        "VALUES ( :UserId, :Name, :Class, :Mainchar, :Role1, :Role2 )" );
-
-                    $InsertChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
-                    $InsertChar->bindValue( ":Name", requestToXML( $aRequest["name"][$CharIndex], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
-                    $InsertChar->bindValue( ":Class", $aRequest["charClass"][$CharIndex], PDO::PARAM_STR );
-                    $InsertChar->bindValue( ":Mainchar", $aRequest["mainChar"][$CharIndex], PDO::PARAM_STR );
-                    $InsertChar->bindValue( ":Role1", $aRequest["role1"][$CharIndex], PDO::PARAM_STR );
-                    $InsertChar->bindValue( ":Role2", $aRequest["role2"][$CharIndex], PDO::PARAM_STR );
-
-                    if ( !$InsertChar->execute() )
-                    {
-                        postErrorMessage( $InsertChar );
-                        $InsertChar->closeCursor();
-                        $Connector->rollBack();
-                        return;
-                    }
-
-                    $InsertChar->closeCursor();
-                }
-                else if ( in_array( $CharId, $ValidCharacterIds ) )
-                {
-                    // Update character
-
-                    array_push( $UpdatedCharacteIds, $CharId );
-
-                    $UpdateChar = $Connector->prepare(  "UPDATE `".RP_TABLE_PREFIX."Character` ".
-                                                        "SET Mainchar = :Mainchar, Role1 = :Role1, Role2 = :Role2 ".
-                                                        "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
-
-                    $UpdateChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
-                    $UpdateChar->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
-                    $UpdateChar->bindValue( ":Mainchar", $aRequest["mainChar"][$CharIndex], PDO::PARAM_STR );
-                    $UpdateChar->bindValue( ":Role1", $aRequest["role1"][$CharIndex], PDO::PARAM_STR );
-                    $UpdateChar->bindValue( ":Role2", $aRequest["role2"][$CharIndex], PDO::PARAM_STR );
-
-                    if ( !$UpdateChar->execute() )
-                    {
-                        postErrorMessage( $UpdateChar );
-                        $UpdateChar->closeCursor();
-                        $Connector->rollBack();
-                        return;
-                    }
-
-                    $UpdateChar->closeCursor();
-                }
-            }
-
-            $IdsToRemove = array_diff( $ValidCharacterIds, $UpdatedCharacteIds );
-
-            foreach( $IdsToRemove as $CharId )
-            {
-               // Remove character
-            
-                $DropChar = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Character` ".
-                                                "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
-                
-                $DropAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` ".
-                                                      "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
-                
-                $DropChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
-                $DropChar->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
-                
-                $DropAttendance->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
-                $DropAttendance->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
-                
-                if ( !$DropChar->execute() )
-                {
-                    postErrorMessage( $DropChar );
-                    $DropChar->closeCursor();
                     $Connector->rollBack();
                     return;
                 }
-                
-                if ( !$DropAttendance->execute() )
+            }
+            else if ( in_array( $CharId, $ValidCharacterIds ) )
+            {
+                // Update character
+
+                array_push( $UpdatedCharacteIds, $CharId );
+
+                $UpdateChar = $Connector->prepare(  "UPDATE `".RP_TABLE_PREFIX."Character` ".
+                                                    "SET Mainchar = :Mainchar, Role1 = :Role1, Role2 = :Role2 ".
+                                                    "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
+
+                $UpdateChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+                $UpdateChar->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
+                $UpdateChar->bindValue( ":Mainchar", $aRequest["mainChar"][$CharIndex], PDO::PARAM_STR );
+                $UpdateChar->bindValue( ":Role1", $aRequest["role1"][$CharIndex], PDO::PARAM_STR );
+                $UpdateChar->bindValue( ":Role2", $aRequest["role2"][$CharIndex], PDO::PARAM_STR );
+
+                if ( !$UpdateChar->execute() )
                 {
-                    postErrorMessage( $DropAttendance );
-                    $DropAttendance->closeCursor();
                     $Connector->rollBack();
                     return;
                 }
-                
-                $DropChar->closeCursor();
-                $DropAttendance->closeCursor();
+            }
+        }
+
+        $IdsToRemove = array_diff( $ValidCharacterIds, $UpdatedCharacteIds );
+
+        foreach( $IdsToRemove as $CharId )
+        {
+           // Remove character
+        
+            $DropChar = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Character` ".
+                                            "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
+            
+            $DropAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` ".
+                                                  "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
+            
+            $DropChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+            $DropChar->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
+            
+            $DropAttendance->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+            $DropAttendance->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
+            
+            if ( !$DropChar->execute() )
+            {
+                $Connector->rollBack();
+                return;
             }
             
-            $Connector->commit();
-            
-            UserProxy::getInstance()->updateCharacters();
+            if ( !$DropAttendance->execute() )
+            {
+                $Connector->rollBack();
+                return;
+            }
         }
         
+        $Connector->commit();
+        
+        UserProxy::getInstance()->updateCharacters();
         msgQueryProfile( $aRequest );
     }
     else

@@ -81,36 +81,37 @@
         echo "<button id=\"".$Binding->BindingName."_loadconfig\" onclick=\"LoadSettings('".$Binding->BindingName."')\"".$Disabled.">".L("LoadSettings")."</button><br/><br/>";
         
         echo "<p>".L($LocalePrefix."Database")."<br/>";
-        echo "<input type=\"text\" id=\"".$Binding->BindingName."_database\" value=\"".$Config["database"]."\"".$Disabled."/></p>";
+        echo "<input type=\"text\" id=\"".$Binding->BindingName."_database\" value=\"".$Config->Database."\"".$Disabled."/></p>";
         
         echo "<p>".L("UserWithDBPermissions")."<br/>";
-        echo "<input type=\"text\" id=\"".$Binding->BindingName."_user\" value=\"".$Config["user"]."\"".$Disabled."/></p>";
+        echo "<input type=\"text\" id=\"".$Binding->BindingName."_user\" value=\"".$Config->User."\"".$Disabled."/></p>";
         
         echo "<p>".L("UserPassword")."<br/>";
-        echo "<input type=\"password\" id=\"".$Binding->BindingName."_password\" value=\"".$Config["password"]."\"".$Disabled."/></p>";        
+        echo "<input type=\"password\" id=\"".$Binding->BindingName."_password\" value=\"".$Config->Password."\"".$Disabled."/></p>";        
         
         echo "<p>".L("RepeatPassword")."<br/>";
-        echo "<input type=\"password\" id=\"".$Binding->BindingName."_password_check\" value=\"".$Config["password"]."\"".$Disabled."/></p>";        
+        echo "<input type=\"password\" id=\"".$Binding->BindingName."_password_check\" value=\"".$Config->Password."\"".$Disabled."/></p>";        
         
         echo "<p>".L("TablePrefix")."<br/>";
-        echo "<input type=\"text\" id=\"".$Binding->BindingName."_prefix\" value=\"".$Config["prefix"]."\"".$Disabled."/></p>";
+        echo "<input type=\"text\" id=\"".$Binding->BindingName."_prefix\" value=\"".$Config->Prefix."\"".$Disabled."/></p>";
         
-        if ( $Config["cookie_ex"] )
+        if ( $Config->HasCookieConfig )
         {
             echo "<p>".L($Binding->BindingName."_CookieEx")."<br/>";
-            echo "<input type=\"text\" id=\"".$Binding->BindingName."_cookie_ex\" value=\"".$Config["cookie"]."\"".$Disabled."/></p>";
+            echo "<input type=\"text\" id=\"".$Binding->BindingName."_cookie_ex\" value=\"".$Config->CookieData."\"".$Disabled."/></p>";
         }
         
         echo "</div>";
         
         echo "<div class=\"right\">";
         
-        if ( $Config["groups"] )
+        if ( $Config->HasGroupConfig )
         {
             $Groups = $Binding->getGroupsFromConfig();
             
-            echo "<button id=\"".$Binding->BindingName."_loadgroups\" onclick=\"ReloadGroups('".$Binding->BindingName."')\"".$Disabled.">".L("LoadGroups")."</button><br/><br/>";
+            echo "<button id=\"".$Binding->BindingName."_loaddata\" onclick=\"LoadBindingData('".$Binding->BindingName."')\"".$Disabled.">".L("LoadGroups")."</button><br/><br/>";
             
+            echo "<div class=\"groups\" style=\"margin-right: 10px\">";
             echo L("AutoMemberLogin")."<br/>";;
             echo "<select id=\"".$Binding->BindingName."_member\" multiple=\"multiple\" style=\"height: 5.5em\"".$Disabled.">";
             
@@ -118,12 +119,13 @@
             {
                 foreach( $Groups as $Group )
                 {
-                    echo "<option value=\"".$Group["id"]."\"".((in_array($Group["id"], $Config["members"])) ? " selected=\"selected\"" : "" ).">".$Group["name"]."</option>";
+                    echo "<option value=\"".$Group["id"]."\"".((in_array($Group["id"], $Config->Members)) ? " selected=\"selected\"" : "" ).">".$Group["name"]."</option>";
                 }
             }
             
-            echo "</select><br/><br/>";
+            echo "</select></div>";
             
+            echo "<div class=\"groups\">";
             echo L("AutoLeadLogin")."<br/>";
             echo "<select id=\"".$Binding->BindingName."_raidlead\" multiple=\"multiple\" style=\"height: 5.5em\"".$Disabled.">";
             
@@ -131,19 +133,54 @@
             {
                 foreach( $Groups as $Group )
                 {
-                    echo "<option value=\"".$Group["id"]."\"".((in_array($Group["id"], $Config["leads"])) ? " selected=\"selected\"" : "" ).">".$Group["name"]."</option>";
+                    echo "<option value=\"".$Group["id"]."\"".((in_array($Group["id"], $Config->Raidleads)) ? " selected=\"selected\"" : "" ).">".$Group["name"]."</option>";
                 }
             }
         
-            echo "</select><br/><br/>";                    
+            echo "</select></div>";                    
         }
         else
         {
-            echo "<button onclick=\"CheckGrouplessBinding('".$Binding->BindingName."')\"".$Disabled.">".L("VerifySettings")."</button><br/><br/>";
+            echo "<button onclick=\"CheckGrouplessBinding('".$Binding->BindingName."')\"".$Disabled.">".L("VerifySettings")."</button>";
         }
         
-        echo "<p><input type=\"checkbox\" id=\"".$Binding->BindingName."_autologin\"".(($Config["autologin"]) ? "checked=\"checked\"" : "")."".$Disabled."/> ".L("AllowAutoLogin")."<br/><br/>";
+        echo "<br/><br/>";
+        echo "<p><input type=\"checkbox\" id=\"".$Binding->BindingName."_autologin\"".(($Config->AutoLoginEnabled) ? "checked=\"checked\"" : "")."".$Disabled."/> ".L("AllowAutoLogin")."<br/><br/>";
         echo L("CookieNote")."</p>";
+        
+        if ( $Config->HasForumConfig )
+        {
+            $Forums = $Binding->getForumsFromConfig();
+            
+            echo L("PostToForum")."<br/>";;
+            echo "<select id=\"".$Binding->BindingName."_postto\"".$Disabled.">";
+            echo "<option value=\"0\"".(($Config->PostTo == "") ? " selected=\"selected\"" : "" ).">".L("DisablePosting")."</option>";
+            
+            if ($Forums != null)
+            {
+                foreach( $Forums as $Forum )
+                {
+                    echo "<option value=\"".$Forum["id"]."\"".(($Config->PostTo == $Forum["id"]) ? " selected=\"selected\"" : "" ).">".$Forum["name"]."</option>";
+                }
+            }
+            
+            echo "</select><br/><br/>";
+            
+            $Users = $Binding->getUsersFromConfig();
+            
+            echo L("PostAsUser")."<br/>";;
+            echo "<select id=\"".$Binding->BindingName."_postas\"".$Disabled.">";
+            
+            if ($Users != null)
+            {
+                foreach( $Users as $User )
+                {
+                    echo "<option value=\"".$User["id"]."\"".(($Config->PostAs == $User["id"]) ? " selected=\"selected\"" : "" ).">".$User["name"]."</option>";
+                }
+            }
+            
+            echo "</select>";
+        }
         
         echo "</div>";
         echo "</div>";

@@ -10,32 +10,21 @@ function msgQueryLocations( $aRequest )
 
         // Locations
 
+        $Locations = Array();
+
         $ListLocations = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Location` ORDER BY Name");
-
-
-        if ( !$ListLocations->execute() )
+        $ListLocations->loop( function($Data) use (&$Locations)
         {
-            postErrorMessage( $ListLocations );
-        }
-        else
-        {
-            $Locations = Array();
+            $LocationData = Array(
+                "id"    => $Data["LocationId"],
+                "name"  => $Data["Name"],
+                "image" => $Data["Image"],
+            );
             
-            while ( $Data = $ListLocations->fetch( PDO::FETCH_ASSOC ) )
-            {
-                $LocationData = Array(
-                    "id"    => $Data["LocationId"],
-                    "name"  => $Data["Name"],
-                    "image" => $Data["Image"],
-                );
-                
-                array_push($Locations, $LocationData);
-            }
-            
-            $Out->pushValue("location", $Locations);
-        }
-
-        $ListLocations->closeCursor();
+            array_push($Locations, $LocationData);
+        };
+        
+        $Out->pushValue("location", $Locations);
 
         // Images
 

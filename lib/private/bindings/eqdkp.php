@@ -3,51 +3,49 @@
     
     array_push(PluginRegistry::$Classes, "EQDKPBinding");
     
-    class EQDKPBinding
+    class EQDKPBinding extends Binding
     {
+        private static $BindingName = "eqdkp";
+        private static $Itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        
         public static $HashMethod_sha512s = "eqdkp_sha512s";
         public static $HashMethod_sha512b = "eqdkp_sha512sb";
         public static $HashMethod_sha512d = "eqdkp_sha512sd";
         public static $HashMethod_sha512r = "eqdkp_sha512r";
         public static $HashMethod_md5     = "eqdkp_md5";
         
-        private static $Itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        
-        public $BindingName = "eqdkp";
-        private $mConnector = null;
-    
         // -------------------------------------------------------------------------
         
-        public function isActive()
+        public function getName()
         {
-            return defined("EQDKP_BINDING") && EQDKP_BINDING;
+            return self::$BindingName;
         }
         
         // -------------------------------------------------------------------------
         
         public function getConfig()
         {
-            return array(
-                "database"  => defined("EQDKP_DATABASE") ? EQDKP_DATABASE : RP_DATABASE,
-                "user"      => defined("EQDKP_USER") ? EQDKP_USER : RP_USER,
-                "password"  => defined("EQDKP_PASS") ? EQDKP_PASS : RP_PASS,
-                "prefix"    => defined("EQDKP_TABLE_PREFIX") ? EQDKP_TABLE_PREFIX : "eqdkp_",
-                "autologin" => defined("EQDKP_AUTOLOGIN") ? EQDKP_AUTOLOGIN : false,
-                "members"   => array(),
-                "leads"     => array(),
-                "cookie_ex" => false,
-                "groups"    => false
-            );
+            $Config = new BindingConfig();
+            
+            $Config->Database         = defined("EQDKP_DATABASE") ? EQDKP_DATABASE : RP_DATABASE;
+            $Config->User             = defined("EQDKP_USER") ? EQDKP_USER : RP_USER;
+            $Config->Password         = defined("EQDKP_PASS") ? EQDKP_PASS : RP_PASS;
+            $Config->Prefix           = defined("EQDKP_TABLE_PREFIX") ? EQDKP_TABLE_PREFIX : "eqdkp_";
+            $Config->AutoLoginEnabled = defined("EQDKP_AUTOLOGIN") ? EQDKP_AUTOLOGIN : false;
+                
+            return $Config;
         }
         
         // -------------------------------------------------------------------------
         
-        public function queryExternalConfig($aRelativePath)
+        public function getExternalConfig($aRelativePath)
         {
+            $Out = Out::getInstance();
+            
             $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/config.php";
             if (!file_exists($ConfigPath))
             {
-                Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
+                $Out->pushError($ConfigPath." ".L("NotExisting").".");
                 return null;
             }
             
@@ -55,7 +53,7 @@
             
             if (!defined("EQDKP_INSTALLED"))
             {
-                Out::getInstance()->pushError(L("NoValidConfig"));
+                $Out->pushError(L("NoValidConfig"));
                 return null;
             }
             
@@ -70,17 +68,7 @@
         
         // -------------------------------------------------------------------------
         
-        public function isConfigWriteable()
-        {
-            $ConfigFolder = dirname(__FILE__)."/../../config";
-            $ConfigFile   = $ConfigFolder."/config.eqdkp.php";
-            
-            return (!file_exists($ConfigFile) && is_writable($ConfigFolder)) || is_writable($ConfigFile);
-        }
-        
-        // -------------------------------------------------------------------------
-        
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.eqdkp.php", "w+" );
             
@@ -110,13 +98,7 @@
             {
                 // only test if we can read the user table
                 $TestQuery = $Connector->prepare( "SELECT user_id FROM `".$aPrefix."users` LIMIT 1" );
-                
-                if ( !$TestQuery->execute() && $aThrow)
-                {
-                    $Connector->throwError($TestQuery);
-                }
-                
-                $TestQuery->closeCursor(); 
+                $Connector->run($TestQuery, $aThrow);
            }
             
             return null;
@@ -124,45 +106,54 @@
         
         // -------------------------------------------------------------------------
         
-        public function getGroupsFromConfig()
+        public function getForums($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
-            $Config = $this->getConfig();
-            return $this->getGroups($Config["database"], $Config["prefix"], $Config["user"], $Config["password"], false);
+            return null;    
         }
         
         // -------------------------------------------------------------------------
         
-        private function getGroup( $aUserId )
+        public function getUsers($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
-            $UserRightsSt = $this->mConnector->prepare("SELECT ".EQDKP_TABLE_PREFIX."users.user_active, ".EQDKP_TABLE_PREFIX."auth_users.auth_setting,  ".EQDKP_TABLE_PREFIX."auth_options.auth_value ".
-                                                      "FROM `".EQDKP_TABLE_PREFIX."users` ".
-                                                      "LEFT JOIN `".EQDKP_TABLE_PREFIX."auth_users` USING(user_id) ".
-                                                      "LEFT JOIN `".EQDKP_TABLE_PREFIX."auth_options` USING(auth_id) ".
-                                                      "WHERE user_id = :UserId");
+            return null;    
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        private function getGroupForUser( $aUserId )
+        {
+            $Connector = $this->getConnector();
+            $UserRightsQuery = $Connector->prepare("SELECT ".EQDKP_TABLE_PREFIX."users.user_active, ".EQDKP_TABLE_PREFIX."auth_users.auth_setting,  ".EQDKP_TABLE_PREFIX."auth_options.auth_value ".
+                                                "FROM `".EQDKP_TABLE_PREFIX."users` ".
+                                                "LEFT JOIN `".EQDKP_TABLE_PREFIX."auth_users` USING(user_id) ".
+                                                "LEFT JOIN `".EQDKP_TABLE_PREFIX."auth_options` USING(auth_id) ".
+                                                "WHERE user_id = :UserId");
                                           
-            $UserRightsSt->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
-            $UserRightsSt->execute();
+            $UserRightsQuery->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
+            $AssignedGroup = "member";
             
-            while ( $Right = $UserRightsSt->fetch(PDO::FETCH_ASSOC) )
+            $UserRightsQuery->loop(function($Right) use (&$AssignedGroup)
             {
                 if ( $Right["user_active"] == 0 )
                 {
-                    return "none"; // ### return, not active ###
+                    $AssignedGroup = "none"; 
+                    return false; // ### return, not active ###
                 }
                 
                 if ( (($Right["auth_value"] == "a_raid_add") || ($Right["auth_value"] == "a_raid_upd"))
                      && ($Right["auth_setting"] == "Y") )
                 {
-                    return "raidlead"; // ### return, highest possible group ###
+                    $AssignedGroup = "raidlead"; 
+                    return false; // ### return, highest possible group ###
                 }
-            }
+            });
             
-            return "member";
+            return $AssignedGroup;
         }
         
         // -------------------------------------------------------------------------
         
-        private function generateInfo( $aUserData )
+        private function generateUserInfo( $aUserData )
         {
             $Info = new UserInfo();
             $Info->UserId      = $aUserData["user_id"];
@@ -170,7 +161,7 @@
             $Info->Password    = $aUserData["user_password"];
             $Info->Salt        = self::extractSaltPart($aUserData["user_password"]);
             $Info->SessionSalt = null;
-            $Info->Group       = $this->getGroup($aUserData["user_id"]);
+            $Info->Group       = $this->getGroupForUser($aUserData["user_id"]);
             $Info->BindingName = $this->BindingName;
             $Info->PassBinding = $this->BindingName;
             
@@ -183,47 +174,44 @@
         {
             if (!defined("EQDKP_AUTOLOGIN") || !EQDKP_AUTOLOGIN)
                 return null;
-                
-            if ($this->mConnector == null)
-                $this->mConnector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
             
+            $Connector = $this->getConnector();
             $UserInfo = null;
             
             // Fetch cookie name
             
-            $CookieSt = $this->mConnector->prepare("SELECT config_value ".
+            $CookieQuery = $Connector->prepare("SELECT config_value ".
                 "FROM `".EQDKP_TABLE_PREFIX."backup_cnf` ".
                 "WHERE config_name = 'cookie_name' LIMIT 1");
                 
-            if ( $CookieSt->execute() && ($CookieSt->rowCount() > 0) )
+            $ConfigData = $CookieQuery->fetchFirst();
+                
+            if ( $ConfigData != null )
             {
-                $ConfigData = $CookieSt->fetch( PDO::FETCH_ASSOC );
                 $CookieName = $ConfigData["config_value"]."_sid";
                 
                 // Fetch user info if seesion cookie is set
                     
                 if (isset($_COOKIE[$CookieName]))
                 {
-                    $UserSt = $this->mConnector->prepare("SELECT session_user_id ".
+                    $UserQuery = $Connector->prepare("SELECT session_user_id ".
                         "FROM `".EQDKP_TABLE_PREFIX."sessions` ".
                         "WHERE session_id = :sid LIMIT 1");
                                               
-                    $UserSt->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
+                    $UserQuery->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
+                    $UserData = $UserQuery->fetchFirst();
                     
-                    if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                    if ( $UserData != null )
                     {
                         // Get user info by external id
                         
-                        $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
+                        $UserData = $UserQuery->fetch( PDO::FETCH_ASSOC );
                         $UserId = $UserData["session_user_id"];                        
                         $UserInfo = $this->getUserInfoById($UserId);
                     }
-                    
-                    $UserSt->closeCursor();
                 }
             }
             
-            $CookieSt->closeCursor();
             return $UserInfo;
         }
         
@@ -231,52 +219,34 @@
         
         public function getUserInfoByName( $aUserName )
         {
-            if ($this->mConnector == null)
-                $this->mConnector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
-            
-            $UserSt = $this->mConnector->prepare("SELECT user_id, username, user_password ".
-                                                "FROM `".EQDKP_TABLE_PREFIX."users` ".
-                                                "WHERE LOWER(username) = :Login LIMIT 1");
+            $Connector = $this->getConnector();
+            $UserQuery = $Connector->prepare("SELECT user_id, username, user_password ".
+                                          "FROM `".EQDKP_TABLE_PREFIX."users` ".
+                                          "WHERE LOWER(username) = :Login LIMIT 1");
                                               
-            $UserSt->bindValue(":Login", strtolower($aUserName), PDO::PARAM_STR);
-            $UserSt->execute();
-            
-            if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
-            {
-                $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
-                $UserSt->closeCursor();
+            $UserQuery->bindValue(":Login", strtolower($aUserName), PDO::PARAM_STR);
+            $UserData = $UserQuery->fetchFirst();
                 
-                return $this->generateInfo( $UserData );
-            }
-        
-            $UserSt->closeCursor();
-            return null;
+            return ($UserData != null)
+                ? $this->generateUserInfo($UserData)
+                : null;
         }
         
         // -------------------------------------------------------------------------
         
         public function getUserInfoById( $aUserId )
         {
-            if ($this->mConnector == null)
-                $this->mConnector = new Connector(SQL_HOST, EQDKP_DATABASE, EQDKP_USER, EQDKP_PASS);
-            
-            $UserSt = $this->mConnector->prepare("SELECT user_id, username, user_password ".
-                                                "FROM `".EQDKP_TABLE_PREFIX."users` ".
-                                                "WHERE user_id = :UserId LIMIT 1");
+            $Connector = $this->getConnector();
+            $UserQuery = $Connector->prepare("SELECT user_id, username, user_password ".
+                                          "FROM `".EQDKP_TABLE_PREFIX."users` ".
+                                          "WHERE user_id = :UserId LIMIT 1");
                                               
-            $UserSt->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
-            $UserSt->execute();
-            
-            if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
-            {
-                $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
-                $UserSt->closeCursor();
+            $UserQuery->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
+            $UserData = $UserQuery->fetchFirst();
                 
-                return $this->generateInfo( $UserData );
-            }
-        
-            $UserSt->closeCursor();
-            return null;
+            return ($UserData != null)
+                ? $this->generateUserInfo($UserData)
+                : null;
         }
         
         // -------------------------------------------------------------------------
@@ -371,7 +341,7 @@
         
         // -------------------------------------------------------------------------
         
-        public static function hash( $aPassword, $aSalt, $aMethod )
+        public function hash( $aPassword, $aSalt, $aMethod )
         {
             if ( ($aMethod == self::$HashMethod_sha512b) ||
                  ($aMethod == self::$HashMethod_sha512d) )
@@ -408,6 +378,13 @@
             }
             
             return md5($aPassword);
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function post($aSubject, $aMessage)
+        {
+            
         }
     }
 ?>

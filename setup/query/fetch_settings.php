@@ -24,7 +24,7 @@
         
         if ($PluginInstance->BindingName == $BindingName)
         {
-            $Value = $PluginInstance->queryExternalConfig($_REQUEST["path"]);
+            $Value = $PluginInstance->getExternalConfig($_REQUEST["path"]);
             if ($Value != null)
             {
                 $Out->pushValue("settings", $Value);

@@ -135,6 +135,7 @@
         $gLocale[ "AbsentBy" ]                 = "Noté Absent";
         $gLocale[ "SwitchChar" ]               = "Changé de personnage";
         $gLocale[ "RaidNotFound" ]             = null;
+        $gLocale[ "RaidSetup" ]                = null;
         
         // Profile        
         $gLocale[ "Profile" ]                  = "Profil";
@@ -317,8 +318,8 @@
         
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Charger les groupes utilisant ces réglages";
-        $gLocale[ "AutoMemberLogin" ]          = "Les utilisateurs des groupes sélectionnés suivants se connecteront en tant que \"membres\":";
-        $gLocale[ "AutoLeadLogin" ]            = "Les utilisateurs des groupes sélectionnés suivants se connecteront en tant que \"raidlead\":";
+        $gLocale[ "AutoMemberLogin" ]          = null;
+        $gLocale[ "AutoLeadLogin" ]            = null;
         $gLocale[ "ReloadFailed" ]             = "Rechargement échoué";
         $gLocale[ "LoadSettings" ]             = null;
         $gLocale[ "BindingBasePath" ]          = null;
@@ -328,6 +329,9 @@
         $gLocale[ "AllowAutoLogin" ]           = null;
         $gLocale[ "NoValidConfig" ]            = null;
         $gLocale[ "CookieNote" ]               = null;
+        $gLocale[ "PostToForum" ]              = null;
+        $gLocale[ "PostAsUser" ]               = null;
+        $gLocale[ "DisablePosting" ]           = null;
         
         // PHPBB3        
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";

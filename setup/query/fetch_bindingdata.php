@@ -38,10 +38,24 @@
             
             if ($PluginInstance->BindingName == $BindingName)
             {
+                $Config = $PluginInstance->getConfig();
+                
                 try
                 {
-                    $Groups = $PluginInstance->getGroups($_REQUEST["database"], $_REQUEST["prefix"], $_REQUEST["user"], $_REQUEST["password"], true);
-                    $Out->pushValue("groups", $Groups);
+                    if ($Config->HasGroupConfig)
+                    {
+                        $Groups = $PluginInstance->getGroups($_REQUEST["database"], $_REQUEST["prefix"], $_REQUEST["user"], $_REQUEST["password"], true);
+                        $Out->pushValue("groups", $Groups);
+                    }
+                    
+                    if ($Config->HasForumConfig)
+                    {
+                        $Forums = $PluginInstance->getForums($_REQUEST["database"], $_REQUEST["prefix"], $_REQUEST["user"], $_REQUEST["password"], true);
+                        $Out->pushValue("forums", $Forums);
+                        
+                        $Users = $PluginInstance->getUsers($_REQUEST["database"], $_REQUEST["prefix"], $_REQUEST["user"], $_REQUEST["password"], true);
+                        $Out->pushValue("users", $Users);
+                    }
                 }
                 catch (PDOException $Exception)
                 {

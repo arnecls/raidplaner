@@ -9,7 +9,7 @@
 
             $Connector = Connector::getInstance();
 
-            $ListRaidSt = $Connector->prepare("Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.Name AS LocationName, ".RP_TABLE_PREFIX."Location.Image AS LocationImage, ".
+            $ListRaidQuery = $Connector->prepare("SELECT ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.Name AS LocationName, ".RP_TABLE_PREFIX."Location.Image AS LocationImage, ".
                                               RP_TABLE_PREFIX."Attendance.AttendanceId, ".RP_TABLE_PREFIX."Attendance.UserId, ".RP_TABLE_PREFIX."Attendance.CharacterId, ".
                                               RP_TABLE_PREFIX."Attendance.Status, ".RP_TABLE_PREFIX."Attendance.Role, ".RP_TABLE_PREFIX."Attendance.Comment, UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Attendance.LastUpdate) AS LastUpdate, ".
                                               RP_TABLE_PREFIX."Character.Name, ".RP_TABLE_PREFIX."Character.Class, ".RP_TABLE_PREFIX."Character.Mainchar, ".RP_TABLE_PREFIX."Character.Role1, ".RP_TABLE_PREFIX."Character.Role2, ".
@@ -21,16 +21,11 @@
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(CharacterId) ".
                                               "WHERE RaidId = :RaidId ORDER BY `".RP_TABLE_PREFIX."Attendance`.AttendanceId");
 
-            $ListRaidSt->bindValue( ":RaidId", $aRequest["id"], PDO::PARAM_INT );
+            $ListRaidQuery->bindValue( ":RaidId", $aRequest["id"], PDO::PARAM_INT );
+            $Data = $ListRaidQuery->fetchFirstOfLoop();
 
-            if (!$ListRaidSt->execute())
+            if ($Data != null)
             {
-                postErrorMessage( $ListRaidSt );
-            }
-            else
-            {
-                $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC );
-
                 $Participants = Array();
 
                 $StartDate    = getdate($Data["StartUTC"]);
@@ -56,7 +51,7 @@
 
                 if ( $Data["UserId"] != NULL )
                 {
-                    do
+                    $ListRaidQuery->loop(function($Data) use (&$MaxAttendanceId, &$Participants, &$Attendees)
                     {
                         // Track max attendance id to give undecided players (without a comment) a distinct one.
                         $MaxAttendanceId = Max($MaxAttendanceId,$Data["AttendanceId"]);
@@ -75,64 +70,49 @@
                                 // Fetch the mainchar of the registered player and display this
                                 // character as "absent"
 
-                                $CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
-                                                                "FROM `".RP_TABLE_PREFIX."Character` LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
-                                                                "WHERE UserId = :UserId ".
-                                                                "ORDER BY Mainchar, CharacterId ASC" );
+                                $CharQuery = $Connector->prepare("SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
+                                                                 "FROM `".RP_TABLE_PREFIX."Character` LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
+                                                                 "WHERE UserId = :UserId ".
+                                                                 "ORDER BY Mainchar, CharacterId ASC" );
 
-                                $CharSt->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
-
-
-                                if (!$CharSt->execute())
+                                $CharQuery->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
+                                $CharData = $CharQuery->fetchFirstOfLoop();
+                                
+                                if ( ($CharData != null) && ($CharData["CharacterId"] != null) )
                                 {
-                                    postErrorMessage( $ErrorInfo );
-                                }
-                                else
-                                {
-                                    $CharData = $CharSt->fetch( PDO::FETCH_ASSOC );
-
-                                    if ( $CharData["CharacterId"] != NULL )
+                                    $AttendeeData = Array(
+                                        "id"        => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
+                                        "hasId"     => true,
+                                        "userId"    => $Data["UserId"],
+                                        "timestamp" => $Data["LastUpdate"],
+                                        "charid"    => $CharData["CharacterId"],
+                                        "name"      => $CharData["Name"],
+                                        "mainchar"  => $CharData["Mainchar"],
+                                        "classname" => $CharData["Class"],
+                                        "role"      => $CharData["Role1"],
+                                        "role1"     => $CharData["Role1"],
+                                        "role2"     => $CharData["Role2"],
+                                        "status"    => $Data["Status"],
+                                        "comment"   => $Data["Comment"],
+                                        "character" => Array()
+                                    );
+                                    
+                                    $CharQuery->loop(function($CharData) use (&$AttendeeData) 
                                     {
-                                        $AttendeeData = Array(
-                                            "id"        => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
-                                            "hasId"     => true,
-                                            "userId"    => $Data["UserId"],
-                                            "timestamp" => $Data["LastUpdate"],
-                                            "charid"    => $CharData["CharacterId"],
+                                        $Character = Array(
+                                            "id"        => $CharData["CharacterId"],
                                             "name"      => $CharData["Name"],
                                             "mainchar"  => $CharData["Mainchar"],
                                             "classname" => $CharData["Class"],
-                                            "role"      => $CharData["Role1"],
                                             "role1"     => $CharData["Role1"],
-                                            "role2"     => $CharData["Role2"],
-                                            "status"    => $Data["Status"],
-                                            "comment"   => $Data["Comment"],
-                                            "character" => Array()
+                                            "role2"     => $CharData["Role2"]
                                         );
                                         
-                                        do 
-                                        {
-                                            $Character = Array(
-                                                "id"        => $CharData["CharacterId"],
-                                                "name"      => $CharData["Name"],
-                                                "mainchar"  => $CharData["Mainchar"],
-                                                "classname" => $CharData["Class"],
-                                                "role1"     => $CharData["Role1"],
-                                                "role2"     => $CharData["Role2"]
-                                            );
-                                            
-                                            array_push($AttendeeData["character"], $Character);
-                                        }
-                                        while ( $CharData = $CharSt->fetch( PDO::FETCH_ASSOC ) );
+                                        array_push($AttendeeData["character"], $Character);
+                                    });
 
-                                        array_push($Attendees, $AttendeeData);
-                                    }
-                                    // else {
-                                    // Character has been deleted or player has no character.
-                                    // This character does not need to be displayed. }
+                                    array_push($Attendees, $AttendeeData);
                                 }
-
-                                $CharSt->closeCursor();
                             }
                             else
                             {
@@ -179,68 +159,54 @@
                                 "character" => Array()
                             );
 
-                            $CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
+                            $CharQuery = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
                                                             "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
                                                             "WHERE UserId = :UserId ".
                                                             "ORDER BY Mainchar, CharacterId ASC" );
 
-                            $CharSt->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
+                            $CharQuery->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
+                            $CharQuery->loop( function($CharData) use (&$AttendeeData)
+                            {
+                                $Character = Array(
+                                    "id"        => $CharData["CharacterId"],
+                                    "name"      => $CharData["Name"],
+                                    "mainchar"  => $CharData["Mainchar"],
+                                    "classname" => $CharData["Class"],
+                                    "role1"     => $CharData["Role1"],
+                                    "role2"     => $CharData["Role2"]
+                                );
+                                
+                                array_push($AttendeeData["character"], $Character);
+                            });
                             
-                            if (!$CharSt->execute())
-                            {
-                                postErrorMessage( $ErrorInfo );
-                            }
-                            else
-                            {
-                                while ( $CharData = $CharSt->fetch( PDO::FETCH_ASSOC ) )
-                                {
-                                    $Character = Array(
-                                        "id"        => $CharData["CharacterId"],
-                                        "name"      => $CharData["Name"],
-                                        "mainchar"  => $CharData["Mainchar"],
-                                        "classname" => $CharData["Class"],
-                                        "role1"     => $CharData["Role1"],
-                                        "role2"     => $CharData["Role2"]
-                                    );
-                                    
-                                    array_push($AttendeeData["character"], $Character);
-                                }
-                            }
-
                             array_push($Attendees, $AttendeeData);
                         }
-                    }
-                    while ( $Data = $ListRaidSt->fetch( PDO::FETCH_ASSOC ) );
+                    });
                 }
 
                 // Fetch all registered and unblocked users
 
-                $AllUsersSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."User.UserId ".
+                $AllUsersQuery = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."User.UserId ".
                                                     "FROM `".RP_TABLE_PREFIX."User` ".
                                                     "WHERE `Group` != \"none\"" );
 
-                $AllUsersSt->execute();
-
-                while ( $User = $AllUsersSt->fetch(PDO::FETCH_ASSOC) )
+                $AllUsersQuery->loop(function($User) use (&$Participants, &$Attendees)
                 {
                     if ( !in_array( intval($User["UserId"]), $Participants ) )
                     {
                         // Users that are not registered for this raid are undecided
                         // Fetch their character data, maincharacter first
 
-                        $CharSt = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
+                        $CharQuery = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
                                                         "FROM `".RP_TABLE_PREFIX."Character` LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
                                                         "WHERE UserId = :UserId AND Created < FROM_UNIXTIME(:RaidEnd) ".
                                                         "ORDER BY Mainchar, CharacterId ASC" );
                                                         
-                        $CharSt->bindValue( ":UserId", $User["UserId"], PDO::PARAM_INT );
-                        $CharSt->bindValue( ":RaidEnd", $EndTimestamp, PDO::PARAM_INT );
-
-                        if (!$CharSt->execute())
-                        {
-                            postErrorMessage( $ErrorInfo );
-                        }
-                        else if ( $UserData = $CharSt->fetch(PDO::FETCH_ASSOC) )
+                        $CharQuery->bindValue( ":UserId", $User["UserId"], PDO::PARAM_INT );
+                        $CharQuery->bindValue( ":RaidEnd", $EndTimestamp, PDO::PARAM_INT );
+                        $UserData = $CharQuery->fetchFirstOfLoop();
+                        
+                        if ( $UserData != null )
                         {
                             // Absent user have no attendance Id, so we need to generate one
                             // that is not in use (for this raid).
@@ -264,7 +230,7 @@
                                 "character" => Array()
                             );
 
-                            do 
+                            $CharQuery->loop(function($UserData) use (&$AttendeeData)
                             {
                                 $Character = Array(
                                     "id"        => $UserData["CharacterId"],
@@ -276,22 +242,15 @@
                                 );
                                 
                                 array_push($AttendeeData["character"], $Character);
-                            }
-                            while ( $UserData = $CharSt->fetch(PDO::FETCH_ASSOC) );
+                            });
 
                             array_push($Attendees, $AttendeeData);
                         }
-
-                        $CharSt->closeCursor();
                     }
                 }
-
-                $AllUsersSt->closeCursor();
                 
                 $Out->pushValue("attendee", $Attendees);
             }
-
-            $ListRaidSt->closeCursor();
 
             if ( validRaidlead() )
             {

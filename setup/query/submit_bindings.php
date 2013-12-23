@@ -20,6 +20,8 @@
             $_REQUEST[$Binding."_user"], 
             $_REQUEST[$Binding."_password"],
             $_REQUEST[$Binding."_autologin"] == "true", 
+            $_REQUEST[$Binding."_postto"], 
+            $_REQUEST[$Binding."_postas"], 
             $_REQUEST[$Binding."_member"], 
             $_REQUEST[$Binding."_raidlead"], 
             $_REQUEST[$Binding."_cookie"]);

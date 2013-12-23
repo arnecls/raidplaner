@@ -10,18 +10,18 @@
     $Out = Out::getInstance();
     $Connector = Connector::getInstance();
     
-    $TestSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE UserId=1 LIMIT 1" );
+    $TestQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE UserId=1 LIMIT 1" );
     
-    if (!$TestSt->execute())
+    if (!$TestQuery->execute())
     {
-        postErrorMessage($TestSt);
+        postErrorMessage($TestQuery);
     }
     else
     {    
         $Salt = md5(mcrypt_create_iv(2048, MCRYPT_RAND));
         $HashedPassword = hash("sha256", sha1($_REQUEST["password"]).$Salt);
                 
-        if ( $TestSt->rowCount() == 0 )
+        if ( $TestQuery->rowCount() == 0 )
         {
             $Connector->exec( "INSERT INTO `".RP_TABLE_PREFIX."User` VALUES(1, 'admin', 0, 'none', 'true', 'admin', '".$HashedPassword."', '".$Salt."', '', '', FROM_UNIXTIME(".time()."));" );
         }   
@@ -31,7 +31,7 @@
         }
     }
     
-    $TestSt->closeCursor();
+    $TestQuery->closeCursor();
     $Out->flushXML("");
     
     echo "</database>";

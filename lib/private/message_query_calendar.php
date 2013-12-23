@@ -13,17 +13,11 @@ function prepareCalRequest( $aMonth, $aYear )
 function getCalStartDay()
 {
     $Connector = Connector::getInstance();
-    $SettingsSt = $Connector->prepare( "Select IntValue FROM ".RP_TABLE_PREFIX."Setting WHERE Name = \"StartOfWeek\" LIMIT 1" );
+    $SettingsQuery = $Connector->prepare( "Select IntValue FROM ".RP_TABLE_PREFIX."Setting WHERE Name = \"StartOfWeek\" LIMIT 1" );
     
-    $FirstDay = 1;
+    $Data = $SettingsQuery->fetchFirst();
+    $FirstDay = ($Data == null) 1 : intval($Data["IntValue"]);
     
-    if ($SettingsSt->execute())
-    {
-        if ($Data = $SettingsSt->fetch(PDO::FETCH_ASSOC) )
-            $FirstDay = intval($Data["IntValue"]);
-    }
-    
-    $SettingsSt->closeCursor();
     return $FirstDay;
 }
 
@@ -37,7 +31,7 @@ function msgQueryCalendar( $aRequest )
     {
         $Connector = Connector::getInstance();
 
-        $ListRaidSt = $Connector->prepare(  "Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.*, ".
+        $ListRaidQuery = $Connector->prepare(  "Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.*, ".
                                             RP_TABLE_PREFIX."Attendance.CharacterId, ".RP_TABLE_PREFIX."Attendance.UserId, ".
                                             RP_TABLE_PREFIX."Attendance.Status, ".RP_TABLE_PREFIX."Attendance.Role, ".RP_TABLE_PREFIX."Attendance.Comment, ".
                                             "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.Start) AS StartUTC, ".
@@ -73,29 +67,20 @@ function msgQueryCalendar( $aRequest )
         
         // Query and return
         
-        $ListRaidSt->bindValue(":Start", $StartUTC, PDO::PARAM_INT);
-        $ListRaidSt->bindValue(":End",   $EndUTC,   PDO::PARAM_INT);
+        $ListRaidQuery->bindValue(":Start", $StartUTC, PDO::PARAM_INT);
+        $ListRaidQuery->bindValue(":End",   $EndUTC,   PDO::PARAM_INT);
 
-        if (!$ListRaidSt->execute())
-        {
-            postErrorMessage( $ListRaidSt );
-        }
-        else
-        {
-            $_SESSION["Calendar"]["month"] = intval($aRequest["Month"]);
-            $_SESSION["Calendar"]["year"]  = intval($aRequest["Year"]);
-            
-            $Out->pushValue("startDay", $StartDate["mday"]);
-            $Out->pushValue("startMonth", $StartDate["mon"]);
-            $Out->pushValue("startYear", $StartDate["year"]);
-            $Out->pushValue("startOfWeek", $StartDay);
-            $Out->pushValue("displayMonth", $aRequest["Month"]);
-            $Out->pushValue("displayYear", $aRequest["Year"]);
-            
-            parseRaidQuery( $aRequest, $ListRaidSt, 0 );
-        }
-
-        $ListRaidSt->closeCursor();
+        $_SESSION["Calendar"]["month"] = intval($aRequest["Month"]);
+        $_SESSION["Calendar"]["year"]  = intval($aRequest["Year"]);
+        
+        $Out->pushValue("startDay", $StartDate["mday"]);
+        $Out->pushValue("startMonth", $StartDate["mon"]);
+        $Out->pushValue("startYear", $StartDate["year"]);
+        $Out->pushValue("startOfWeek", $StartDay);
+        $Out->pushValue("displayMonth", $aRequest["Month"]);
+        $Out->pushValue("displayYear", $aRequest["Year"]);
+        
+        parseRaidQuery( $aRequest, $ListRaidQuery, 0 );
     }
     else
     {
@@ -113,7 +98,7 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
     $RaidData = Array();
     $RaidInfo = Array();
 
-    while ($Data = $aQueryResult->fetch( PDO::FETCH_ASSOC ))
+    $aQueryResult->loop( function($Data) use (&$RaidData, &$RaidInfo)
     {
         array_push($RaidData, $Data);
 
@@ -136,7 +121,7 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
         {
             ++$RaidInfo[$Data["RaidId"]]["role".$Data["Role"]];
         }
-    }
+    });
 
     $LastRaidId = -1;
     $RaidDataCount = sizeof($RaidData);

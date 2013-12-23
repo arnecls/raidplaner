@@ -35,18 +35,13 @@ class Settings
 
         $this->Property = Array();
 
-        if ( $Query->execute() )
+        $Query->loop( function($Data) use (&$this)
         {
-            while ( $Data = $Query->fetch( PDO::FETCH_ASSOC ) )
-            {
-                $this->Property[$Data["Name"]] = Array(
-                    "IntValue"  => intval($Data["IntValue"]),
-                    "TextValue" => $Data["TextValue"]
-                );
-            }
-        }
-
-        $Query->closeCursor();
+            $this->Property[$Data["Name"]] = Array(
+                "IntValue"  => intval($Data["IntValue"]),
+                "TextValue" => $Data["TextValue"]
+            );
+        });
     }
 }
 

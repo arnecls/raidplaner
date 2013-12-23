@@ -29,7 +29,7 @@ function CheckBindingFields(aBinding)
 
 // ----------------------------------------------------------------------------
 
-function ReloadGroups(aBinding) 
+function LoadBindingData(aBinding) 
 {
     if (CheckBindingFields(aBinding))
     {
@@ -43,11 +43,11 @@ function ReloadGroups(aBinding)
         
         $.ajax({
             type     : "POST",
-            url      : "query/fetch_groups.php",
+            url      : "query/fetch_bindingdata.php",
             dataType : "json",
             async    : true,
             data     : parameter,
-            success  : OnReloadGroups,
+            success  : OnLoadBindingData,
             error    : function(aXHR, aStatus, aError) { alert(L("Error") + ":\n\n" + aError); }
         });
     }
@@ -55,7 +55,7 @@ function ReloadGroups(aBinding)
 
 // ----------------------------------------------------------------------------
 
-function OnReloadGroups( aXHR )
+function OnLoadBindingData( aXHR )
 {
     if ( (aXHR.error != null) && (aXHR.error.length > 0) )
     {
@@ -69,55 +69,90 @@ function OnReloadGroups( aXHR )
         return;
     }    
     
-    HTMLString = "";
+    // Load group data
     
-    // Store old selected
+    if (aXHR.groups != undefined)
+    {
+        // Store old selected
+        
+        var members = new Array();
+        
+        $("#"+aXHR.binding+"_member option:selected").each(function() {
+            members[members.length] = $(this).val();
+        });
+        
+        var leads = new Array();
+        
+        $("#"+aXHR.binding+"_raidlead option:selected").each(function() {
+            leads[members.length] = $(this).val();
+        });
+        
+        // Rebuild groups
+        
+        HTMLString = "";
     
-    var members = new Array();
-    
-    $("#"+aXHR.binding+"_member option:selected").each(function() {
-        members[members.length] = $(this).val();
-    });
-    
-    var leads = new Array();
-    
-    $("#"+aXHR.binding+"_raidlead option:selected").each(function() {
-        leads[members.length] = $(this).val();
-    });
-    
-    // Rebuild groups
-    
-    $.each(aXHR.groups, function(index, value) {   
-        HTMLString += "<option value=\"" + value.id + "\">" + value.name + "</option>";
-    });
-    
-    $("#"+aXHR.binding+"_member").empty().append( HTMLString );
-    $("#"+aXHR.binding+"_raidlead").empty().append( HTMLString );
-    
-    // Select old values
-    
-    $("#"+aXHR.binding+"_member option").each(function() {
-        for (var i=0; i<members.length; ++i)
-        {
-            if ($(this).val() == members[i])
+        $.each(aXHR.groups, function(index, value) {   
+            HTMLString += "<option value=\"" + value.id + "\">" + value.name + "</option>";
+        });
+        
+        $("#"+aXHR.binding+"_member").empty().append( HTMLString );
+        $("#"+aXHR.binding+"_raidlead").empty().append( HTMLString );
+        
+        // Select old values
+        
+        $("#"+aXHR.binding+"_member option").each(function() {
+            for (var i=0; i<members.length; ++i)
             {
-                $(this).prop("selected", true);
-                break;
+                if ($(this).val() == members[i])
+                {
+                    $(this).prop("selected", true);
+                    break;
+                }
             }
-        }
-    });
-    
-    $("#"+aXHR.binding+"_raidlead option").each(function() {
-        for (var i=0; i<leads.length; ++i)
-        {
-            if ($(this).val() == leads[i])
+        });
+        
+        $("#"+aXHR.binding+"_raidlead option").each(function() {
+            for (var i=0; i<leads.length; ++i)
             {
-                $(this).prop("selected", true);
-                break;
+                if ($(this).val() == leads[i])
+                {
+                    $(this).prop("selected", true);
+                    break;
+                }
             }
-        }
-    });
+        });
+    }
     
+    // Load forum data
+    
+    if (aXHR.forums != undefined)
+    {
+        var selectedForum = $("#"+aXHR.binding+"_postto option:selected").val();
+        var selectedUser = $("#"+aXHR.binding+"_postas option:selected").val();
+        
+        // Forums
+        
+        HTMLString = "<option value=\"0\">" + L("DisablePosting") + "</option>";
+    
+        $.each(aXHR.forums, function(index, value) {
+            HTMLString += "<option value=\"" + value.id + "\">" + value.name + "</option>";
+        });
+        
+        $("#"+aXHR.binding+"_postto").empty().append( HTMLString );
+        $("#"+aXHR.binding+"_postto option[value="+selectedForum+"]").prop("selected", true);
+        
+        // Users
+        
+        HTMLString = "";
+        
+        $.each(aXHR.users, function(index, value) {
+            HTMLString += "<option value=\"" + value.id + "\">" + value.name + "</option>";
+        });
+        
+        $("#"+aXHR.binding+"_postas").empty().append( HTMLString );
+        $("#"+aXHR.binding+"_postas option[value="+selectedUser+"]").prop("selected", true);
+    }   
+     
     // Mark as loaded
     
     $(".config .right select").css("background-color","#cfc")
@@ -308,6 +343,8 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
             parameter[bindings[i]+"_prefix"]    = $("#"+bindings[i]+"_prefix").val();
             parameter[bindings[i]+"_autologin"] = $("#"+bindings[i]+"_autologin").prop("checked");
             parameter[bindings[i]+"_cookie"]    = $("#"+bindings[i]+"_cookie_ex").val();
+            parameter[bindings[i]+"_postto"]    = $("#"+bindings[i]+"_postto option:selected").val();
+            parameter[bindings[i]+"_postas"]    = $("#"+bindings[i]+"_postas option:selected").val();
             parameter[bindings[i]+"_member"]    = new Array();
             parameter[bindings[i]+"_raidlead"]  = new Array();
             

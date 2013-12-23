@@ -10,33 +10,26 @@ function msgRaidDelete( $aRequest )
 
         $Connector->beginTransaction();
 
-        $DeleteRaidSt = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1" );
+        $DeleteRaidQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1" );
+        $DeleteRaidQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
 
-        $DeleteRaidSt->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
-
-        if (!$DeleteRaidSt->execute())
+        if (!$DeleteRaidQuery->execute())
         {
-            postErrorMessage( $DeleteRaidSt );
             $Connector->rollBack();
-            return;
+            return; // ### return, error ###
         }
-
-        $DeleteRaidSt->closeCursor();
 
         // Delete attendance
 
-        $DeleteAttendanceSt = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE RaidId = :RaidId" );
+        $DeleteAttendanceQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE RaidId = :RaidId" );
+        $DeleteAttendanceQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
 
-        $DeleteAttendanceSt->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
-
-        if (!$DeleteAttendanceSt->execute())
+        if (!$DeleteAttendanceQuery->execute())
         {
-            postErrorMessage( $DeleteAttendanceSt );
             $Connector->rollBack();
-            return;
+            return; // ### return, error ###
         }
 
-        $DeleteAttendanceSt->closeCursor();
         $Connector->commit();
 
         $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : $aRequest["month"];

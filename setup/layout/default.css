@@ -245,6 +245,11 @@ div.bottom_navigation {
     display: inline-block;
 }
 
+.config .groups {
+    width: 175px;
+    display: inline-block;
+}
+
 .config button {
     width: 100%;
     border: 0px;

@@ -3,7 +3,8 @@
     require_once(dirname(__FILE__)."/tools_string.php");
     require_once(dirname(__FILE__)."/locale.php");
     require_once(dirname(__FILE__)."/out.class.php");
-
+    require_once(dirname(__FILE__)."/statement.class.php");
+    
     class Connector extends PDO
     {
         private static $Instance = NULL;
@@ -84,67 +85,7 @@
                 $Out->writeJSONandStop();
             }
 
-            return $StatementObj;
+            return new Query($StatementObj);
         }
-        
-        // --------------------------------------------------------------------------------------------
-        
-        public function exec($aStatement)
-        {
-            if (parent::exec($aStatement) === false)
-            {
-                $Out = Out::getInstance();
-                $Out->pushError(L("DatabaseError"));
-                
-                $ErrorInfo = $this->errorInfo();
-        
-                foreach($ErrorInfo as $Info)
-                {
-                    $Out->pushError($Info);
-                }
-            }
-        }
-    
-        // --------------------------------------------------------------------------------------------
-    
-        public function throwError( $aStatement )
-        {
-            $Message = L("DatabaseError").": ";
-            $ErrorInfo = $aStatement->errorInfo();
-            
-            foreach($ErrorInfo as $Info)
-            {
-                $Message .= $Info.", ";
-            }
-            
-            throw new PDOException($Message);
-        }
-    }
-    
-    // --------------------------------------------------------------------------------------------
-
-    function postErrorMessage( $aStatement )
-    {
-        $Out = Out::getInstance();
-        $Out->pushError(L("DatabaseError"));
-        
-        $ErrorInfo = $aStatement->errorInfo();
-        
-        foreach($ErrorInfo as $Info)
-        {
-            $Out->pushError($Info);
-        }
-    }
-    
-    // --------------------------------------------------------------------------------------------
-
-    function postHTMLErrorMessage( $aStatement )
-    {
-        $ErrorInfo = $aStatement->errorInfo();
-        echo "<div class=\"database_error\">";
-        echo "<div class=\"error_head\">".L("DatabaseError")."</div>";
-        echo "<div class=\"error_line error_line1\">".$ErrorInfo[0]."</div>";
-        echo "<div class=\"error_line error_line2\">".$ErrorInfo[2]."</div>";
-        echo "</div>";
     }
 ?>

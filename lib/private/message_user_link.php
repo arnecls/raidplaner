@@ -5,22 +5,14 @@ function tryGetUserLink( $UserId )
     $Connector = Connector::getInstance();
     $UserProxy = UserProxy::getInstance();
     
-    $UserSt = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` WHERE UserId=:UserId LIMIT 1");
-    $UserSt->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+    $UserQuery = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` WHERE UserId=:UserId LIMIT 1");
+    $UserQuery->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+    $UserData = $UserQuery->fetchFirst();
     
-    if ( !$UserSt->execute() )
-    {
-        postErrorMessage( $UserSt );
-        $UserSt->closeCursor();
-        
+    if ( $UserData == null )
         return null; // ### return, failed ###
-    }
     
     // Try to find a fitting binding
-    
-    $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
-    $UserSt->closeCursor();
-    
     // External binding is still set.
     // Finding the user is trivial
     

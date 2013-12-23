@@ -23,14 +23,10 @@ function msgQueryProfile( $aRequest )
         $Users = $Connector->prepare( "SELECT Login, UNIX_TIMESTAMP(Created) AS CreatedUTC, ExternalBinding, BindingActive FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
         $Users->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
 
-        if ( !$Users->execute() )
-        {
-            postErrorMessage( $User );
-        }
-        else
-        {
-            $Data = $Users->fetch( PDO::FETCH_ASSOC );
-            
+        $Data = $Users->fetchFirst();
+        
+        if ($Data != null)
+        {    
             $Out->pushValue("userid", $UserId);
             $Out->pushValue("name", $Data["Login"]);
             $Out->pushValue("bindingActive", $Data["BindingActive"] == "true");
@@ -39,29 +35,18 @@ function msgQueryProfile( $aRequest )
             $CreatedUTC = $Data["CreatedUTC"];
         }
         
-        $Users->closeCursor();
-        
         // Load settings
         
-        $SettingsSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId" );
-        $SettingsSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+        $SettingsQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId" );
+        $SettingsQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
         $UserSettings = array();
             
-        if ( !$SettingsSt->execute() )
+        $SettingsQuery->loop(function($Data) use (&$UserSettings)
         {
-            postErrorMessage( $SettingsSt );
-        }
-        else
-        {
-            while ($Data = $SettingsSt->fetch(PDO::FETCH_ASSOC))
-            {
-                $UserSettings[$Data["Name"]] = array("number" => $Data["IntValue"], "text" => $Data["TextValue"]);
-            }
-        }
+            $UserSettings[$Data["Name"]] = array("number" => $Data["IntValue"], "text" => $Data["TextValue"]);
+        });
         
         $Out->pushValue("settings", $UserSettings);
-
-        $SettingsSt->closeCursor();
 
         // Load characters
         
@@ -85,14 +70,13 @@ function msgQueryProfile( $aRequest )
         }
         else
         {
-            $CharacterSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Character` ".
+            $CharacterQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Character` ".
                                                 "WHERE UserId = :UserId ".
                                                 "ORDER BY Mainchar, Name" );
 
-            $CharacterSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-            $CharacterSt->execute();
+            $CharacterQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
             
-            while ( $Row = $CharacterSt->fetch( PDO::FETCH_ASSOC ) )
+            $CharacterQuery->loop( function($Row) use (&$Characters)
             {
                 $Character = Array(
                     "id"        => $Row["CharacterId"],
@@ -104,9 +88,7 @@ function msgQueryProfile( $aRequest )
                 );
                 
                 array_push($Characters, $Character);
-            }
-            
-            $CharacterSt->closeCursor();
+            });
         }
                 
         $Out->pushValue("character", $Characters);
@@ -114,77 +96,60 @@ function msgQueryProfile( $aRequest )
         // Total raid count
 
         $NumRaids = 0;
-        $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now)" );
-        $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
-        $Raids->bindValue( ":Created", $CreatedUTC, PDO::PARAM_STR );
+        $RaidsQuery = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now)" );
+        $RaidsQuery->bindValue( ":Now", time(), PDO::PARAM_INT );
+        $RaidsQuery->bindValue( ":Created", $CreatedUTC, PDO::PARAM_STR );
 
-        if ( !$Raids->execute() )
-        {
-            postErrorMessage( $Raids );
-        }
-        else
-        {
-            $Data = $Raids->fetch( PDO::FETCH_ASSOC );
+        $Data = $RaidsQuery->fetchFirst();
+        if ($Data != null)
             $NumRaids = $Data["NumberOfRaids"];
-        }
-
-        $Raids->closeCursor();
-
+        
         // Load attendance
 
-        $Attendance = $Connector->prepare(  "Select `Status`, `Role`, COUNT(*) AS `Count` ".
+        $AttendanceQuery = $Connector->prepare(  "Select `Status`, `Role`, COUNT(*) AS `Count` ".
                                             "FROM `".RP_TABLE_PREFIX."Attendance` ".
                                             "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) ".
                                             "WHERE UserId = :UserId AND Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) ".
                                             "GROUP BY `Status`, `Role` ORDER BY Status" );
 
-        $Attendance->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
-        $Attendance->bindValue( ":Created", $CreatedUTC, PDO::PARAM_INT );
-        $Attendance->bindValue( ":Now", time(), PDO::PARAM_INT );
+        $AttendanceQuery->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+        $AttendanceQuery->bindValue( ":Created", $CreatedUTC, PDO::PARAM_INT );
+        $AttendanceQuery->bindValue( ":Now", time(), PDO::PARAM_INT );
 
-        if ( !$Attendance->execute() )
+        $AttendanceData = array(
+            "raids"       => $NumRaids,
+            "available"   => 0,
+            "unavailable" => 0,
+            "ok"          => 0 );
+
+        // Initialize roles
+
+        $RoleKeys = array_keys($gRoles);
+
+        foreach ( $RoleKeys as $RoleKey )
         {
-            postErrorMessage( $Attendance );
+            $AttendanceData[$RoleKey] = 0;
         }
-        else
+
+        // Pull data
+
+        $AttendanceQuery->loop( function($Data) use (&$AttendanceData, $RoleKeys)
         {
-            $AttendanceData = array(
-                "raids"       => $NumRaids,
-                "available"   => 0,
-                "unavailable" => 0,
-                "ok"          => 0 );
+            if ( $Data["Status"] != "undecided" )
+                $AttendanceData[ $Data["Status"] ] += $Data["Count"];
 
-            // Initialize roles
-
-            $RoleKeys = array_keys($gRoles);
-
-            foreach ( $RoleKeys as $RoleKey )
+            if ( $Data["Status"] == "ok" )
             {
-                $AttendanceData[$RoleKey] = 0;
-            }
-
-            // Pull data
-
-            while ( $Data = $Attendance->fetch( PDO::FETCH_ASSOC ) )
-            {
-                if ( $Data["Status"] != "undecided" )
-                    $AttendanceData[ $Data["Status"] ] += $Data["Count"];
-
-                if ( $Data["Status"] == "ok" )
+                $RoleIdx = intval($Data["Role"]);
+                if ( $RoleIdx < sizeof($RoleKeys) )
                 {
-                    $RoleIdx = intval($Data["Role"]);
-                    if ( $RoleIdx < sizeof($RoleKeys) )
-                    {
-                        $ResolvedRole = $RoleKeys[ $RoleIdx ];
-                        $AttendanceData[ $ResolvedRole ] += $Data["Count"];
-                    }
+                    $ResolvedRole = $RoleKeys[ $RoleIdx ];
+                    $AttendanceData[ $ResolvedRole ] += $Data["Count"];
                 }
             }
-            
-            $Out->pushValue("attendance", $AttendanceData);
-        }
-
-        $Attendance->closeCursor();
+        });
+        
+        $Out->pushValue("attendance", $AttendanceData);
     }
     else
     {

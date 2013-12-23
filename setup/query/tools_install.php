@@ -105,12 +105,12 @@
         
         // Add default values for settings table
             
-        $TestSt = $Connector->prepare( "SELECT * FROM `".$Prefix."Setting`" );
+        $TestQuery = $Connector->prepare( "SELECT * FROM `".$Prefix."Setting`" );
         $ExistingSettings = array();
         
-        if ($TestSt->execute())
+        if ($TestQuery->execute())
         {
-            while ($Row = $TestSt->fetch(PDO::FETCH_ASSOC) )
+            while ($Row = $TestQuery->fetch(PDO::FETCH_ASSOC) )
             {
                 array_push($ExistingSettings, $Row["Name"]);
             }
@@ -160,6 +160,6 @@
         else   
             $Connector->exec( "UPDATE `".$Prefix."Setting` SET IntValue=100 WHERE Name='Version' LIMIT 1" );
         
-        $TestSt->closeCursor();
+        $TestQuery->closeCursor();
     }
 ?>

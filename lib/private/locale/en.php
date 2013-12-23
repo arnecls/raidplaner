@@ -131,6 +131,7 @@
         $gLocale[ "AbsentBy" ]                 = "Unattended";
         $gLocale[ "SwitchChar" ]               = "Switched character";
         $gLocale[ "RaidNotFound" ]             = "Raid could not be found.";
+        $gLocale[ "RaidSetup" ]                = "Raid setup";
         
         // Profile        
         $gLocale[ "Profile" ]                  = "Profile";
@@ -313,8 +314,8 @@
         
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Load groups using these settings";
-        $gLocale[ "AutoMemberLogin" ]          = "Users of the following, selected group(s) log in as \"members\":";
-        $gLocale[ "AutoLeadLogin" ]            = "Users of the following, selected group(s) log in as \"raidleads\":";
+        $gLocale[ "AutoMemberLogin" ]          = "\"Member\" groups:";
+        $gLocale[ "AutoLeadLogin" ]            = "\"Raidlead\" groups:";
         $gLocale[ "ReloadFailed" ]             = "Reload failed";
         $gLocale[ "LoadSettings" ]             = "Retrieve settings automatically";
         $gLocale[ "BindingBasePath" ]          = "Please enter the install path of this binding relative to '".$_SERVER["DOCUMENT_ROOT"]."'.";
@@ -325,6 +326,9 @@
         $gLocale[ "NoValidConfig" ]            = "No valid configuration file found.";
         $gLocale[ "CookieNote" ]               = "Automatic login requires the raidplaner to be installed in a subfolder of this binding's cookie path. ".
                                                  "This path might have to be changed in this binding's configuration.";
+        $gLocale[ "PostToForum" ]              = "Post new raids in this forum";
+        $gLocale[ "PostAsUser" ]               = "Post new raids as this user";
+        $gLocale[ "DisablePosting" ]           = "Do not create postings";
         
         // PHPBB3        
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";

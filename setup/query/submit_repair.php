@@ -234,15 +234,15 @@
     {
         require_once(dirname(__FILE__)."/../../lib/private/userproxy.class.php");
         
-        $UserSt = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding = '' OR ExternalBinding = NULL");
+        $UserQuery = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding = '' OR ExternalBinding = NULL");
         
-        if (!$UserSt->execute())
+        if (!$UserQuery->execute())
         {
-            postHTMLErrorMessage( $UserSt );
+            postHTMLErrorMessage( $UserQuery );
         }
         else
         {
-            while($UserData = $UserSt->fetch(PDO::FETCH_ASSOC))
+            while($UserData = $UserQuery->fetch(PDO::FETCH_ASSOC))
             {                
                 $BindingName = "none";
                 
@@ -277,20 +277,20 @@
                         list($BindingName, $UserInfo) = each($Candidates); // fetch the first entry
                 }
                 
-                $UpdateSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ExternalBinding=:Binding WHERE UserId=:UserId LIMIT 1");
-                $UpdateSt->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
-                $UpdateSt->bindValue(":Binding",$BindingName, PDO::PARAM_STR);
+                $UpdateQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ExternalBinding=:Binding WHERE UserId=:UserId LIMIT 1");
+                $UpdateQuery->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":Binding",$BindingName, PDO::PARAM_STR);
                 
-                if (!$UpdateSt->execute())
-                    postHTMLErrorMessage($UpdateSt);
+                if (!$UpdateQuery->execute())
+                    postHTMLErrorMessage($UpdateQuery);
                     
-                $UpdateSt->closeCursor();
+                $UpdateQuery->closeCursor();
             }
             
-            echo "<div class=\"update_step_ok\">".$UserSt->rowCount()." ".L("ItemsRepaired")." (".L("StrayBindings").")</div>";
+            echo "<div class=\"update_step_ok\">".$UserQuery->rowCount()." ".L("ItemsRepaired")." (".L("StrayBindings").")</div>";
         }
         
-        $UserSt->closeCursor();
+        $UserQuery->closeCursor();
     }
                     
     echo "</div>";

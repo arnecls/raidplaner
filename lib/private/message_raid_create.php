@@ -4,7 +4,7 @@ function msgRaidCreate( $aRequest )
 {
     if ( validRaidlead() )
     {
-        global $gGroupSizes;
+        global $gGroupSizes, $gSite;
         $Connector = Connector::getInstance();
 
         $LocationId = $aRequest["locationId"];
@@ -13,37 +13,22 @@ function msgRaidCreate( $aRequest )
 
         if ( $LocationId == 0 )
         {
-            $NewLocationSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Location`".
-                                                 "(Name, Image) VALUES (:Name, :Image)");
+            $NewLocationQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Location`".
+                                                    "(Name, Image) VALUES (:Name, :Image)");
 
-            $NewLocationSt->bindValue(":Name", requestToXML( $aRequest["locationName"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
-            $NewLocationSt->bindValue(":Image", $aRequest["raidImage"], PDO::PARAM_STR );
+            $NewLocationQuery->bindValue(":Name", requestToXML( $aRequest["locationName"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
+            $NewLocationQuery->bindValue(":Image", $aRequest["raidImage"], PDO::PARAM_STR );
 
-            if (!$NewLocationSt->execute())
-            {
-                postErrorMessage( $NewLocationSt );
-                $NewLocationSt->closeCursor();
-                return;
-            }
-            else
-            {
-                $LocationId = $Connector->lastInsertId();
-            }
-
-            $NewLocationSt->closeCursor();
+            if (!$NewLocationQuery->execute())
+                return; // ### return, location could not be created ###
+            
+            $LocationId = $Connector->lastInsertId();
         }
         
         // Create raid
-
+        
         if ( $LocationId != 0 )
         {
-            // Sanity checks
-            
-            //while ( list($GroupSize,$Slots) = each($gGroupSizes) )
-            //{
-            //    echo "<option value=\"".$GroupSize."\">".$GroupSize."</option>";
-            //}
-
             // Get the default sizes
 
             if ( isset($gGroupSizes[$aRequest["locationSize"]]) )
@@ -91,45 +76,62 @@ function msgRaidCreate( $aRequest )
             
             // Get users on vacation
             
-            $VactionUsers = array();
-                
-            $UserSettingsSt = $Connector->prepare("SELECT UserId, Name, IntValue, TextValue FROM `".RP_TABLE_PREFIX."UserSetting` ".
+            $UserSettingsQuery = $Connector->prepare("SELECT UserId, Name, IntValue, TextValue FROM `".RP_TABLE_PREFIX."UserSetting` ".
                "WHERE Name = 'VacationStart' OR Name = 'VacationEnd' OR Name = 'VacationMessage' ORDER BY UserId");
-               
-            if (!$UserSettingsSt->execute())
+            
+            $VactionUsers = array();
+            $UserSettingsQuery->loop( function($Settings) use (&$VactionUsers)
             {
-                postErrorMessage( $UserSettingsSt );
-            }
-            else
-            {
-                while ($Settings = $UserSettingsSt->fetch(PDO::FETCH_ASSOC))
+                if (!isset($VactionUsers[$Settings["UserId"]]))
                 {
-                    if (!isset($VactionUsers[$Settings["UserId"]]))
-                    {
-                        $VactionUsers[$Settings["UserId"]] = array("Message" => "");
-                    }
-                    
-                    switch ($Settings["Name"])
-                    {
-                    case "VacationStart":
-                        $VactionUsers[$Settings["UserId"]]["Start"] = $Settings["IntValue"];
-                        break;
-                        
-                    case "VacationEnd":
-                        $VactionUsers[$Settings["UserId"]]["End"] = $Settings["IntValue"];
-                        break;
-                        
-                    case "VacationMessage":
-                        $VactionUsers[$Settings["UserId"]]["Message"] = $Settings["TextValue"];
-                        break;
-                    
-                    default:
-                        break;
-                    }
+                    $VactionUsers[$Settings["UserId"]] = array("Message" => "");
                 }
+                
+                switch ($Settings["Name"])
+                {
+                case "VacationStart":
+                    $VactionUsers[$Settings["UserId"]]["Start"] = $Settings["IntValue"];
+                    break;
+                    
+                case "VacationEnd":
+                    $VactionUsers[$Settings["UserId"]]["End"] = $Settings["IntValue"];
+                    break;
+                    
+                case "VacationMessage":
+                    $VactionUsers[$Settings["UserId"]]["Message"] = $Settings["TextValue"];
+                    break;
+                
+                default:
+                    break;
+                }
+            });
+            
+            // Prepare posting raids to forum
+            
+            $PostTargets = array();
+            PluginRegistry::ForEachPlugin(function($PluginInstance) use (&$PostTargets)
+            {
+                if ($PluginInstance->isActive() && $PluginInstance->postRequested())
+                {
+                    array_push($PostTargets, $PluginInstance);
+                }
+            });
+            
+            $LocationName = "Raid";
+            
+            if ( sizeof($PostTargets) > 0 )
+            {
+                loadSiteSettings();
+                
+                $LocationQuery = $Connector->prepare("SELECT Name FROM `".RP_TABLE_PREFIX."Location` WHERE LocationId = :LocationId LIMIT 1");
+                $LocationQuery->bindValue(":LocationId", $LocationId, PDO::PARAM_INT);
+                $LocationData = $LocationQuery->fetchFirst();
+                    
+                if ($LocationData != null)
+                    $LocationName = $LocationData["Name"];
             }
             
-            $UserSettingsSt->closeCursor();
+            $LocationName .= " (".$aRequest["locationSize"].")";
                 
             // Create raids(s)
                     
@@ -137,10 +139,10 @@ function msgRaidCreate( $aRequest )
             
             for ($rc=0; $rc<$Repeat; ++$rc)
             {
-                $NewRaidSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Raid` ".
-                                                 "(LocationId, Size, Start, End, Mode, Description, SlotsRole1, SlotsRole2, SlotsRole3, SlotsRole4, SlotsRole5 ) ".
-                                                 "VALUES (:LocationId, :Size, FROM_UNIXTIME(:Start), FROM_UNIXTIME(:End), :Mode, :Description, ".
-                                                 ":SlotsRole1, :SlotsRole2, :SlotsRole3, :SlotsRole4, :SlotsRole5)");
+                $NewRaidQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Raid` ".
+                                                    "(LocationId, Size, Start, End, Mode, Description, SlotsRole1, SlotsRole2, SlotsRole3, SlotsRole4, SlotsRole5 ) ".
+                                                    "VALUES (:LocationId, :Size, FROM_UNIXTIME(:Start), FROM_UNIXTIME(:End), :Mode, :Description, ".
+                                                    ":SlotsRole1, :SlotsRole2, :SlotsRole3, :SlotsRole4, :SlotsRole5)");
     
                 $StartDateTime = mktime($StartHour, $StartMinute, 0, $StartMonth, $StartDay, $StartYear);
                 $EndDateTime   = mktime($EndHour, $EndMinute, 0, $EndMonth, $EndDay, $EndYear);
@@ -150,29 +152,23 @@ function msgRaidCreate( $aRequest )
                 $StartDateTime += $aRequest["startOffset"] * 60;
                 $EndDateTime   += $aRequest["endOffset"] * 60;
     
-                $NewRaidSt->bindValue(":LocationId",  $LocationId, PDO::PARAM_INT);
-                $NewRaidSt->bindValue(":Size",        $aRequest["locationSize"], PDO::PARAM_INT);
-                $NewRaidSt->bindValue(":Start",       $StartDateTime, PDO::PARAM_INT);
-                $NewRaidSt->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
-                $NewRaidSt->bindValue(":Mode",        $aRequest["mode"], PDO::PARAM_STR);
-                $NewRaidSt->bindValue(":Description", requestToXML( $aRequest["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
+                $NewRaidQuery->bindValue(":LocationId",  $LocationId, PDO::PARAM_INT);
+                $NewRaidQuery->bindValue(":Size",        $aRequest["locationSize"], PDO::PARAM_INT);
+                $NewRaidQuery->bindValue(":Start",       $StartDateTime, PDO::PARAM_INT);
+                $NewRaidQuery->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
+                $NewRaidQuery->bindValue(":Mode",        $aRequest["mode"], PDO::PARAM_STR);
+                $NewRaidQuery->bindValue(":Description", requestToXML( $aRequest["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
     
                 // Set role sizes
     
-                $NewRaidSt->bindValue(":SlotsRole1", $DefaultSizes[0], PDO::PARAM_INT);
-                $NewRaidSt->bindValue(":SlotsRole2", $DefaultSizes[1], PDO::PARAM_INT);
-                $NewRaidSt->bindValue(":SlotsRole3", $DefaultSizes[2], PDO::PARAM_INT);
-                $NewRaidSt->bindValue(":SlotsRole4", $DefaultSizes[3], PDO::PARAM_INT);
-                $NewRaidSt->bindValue(":SlotsRole5", $DefaultSizes[4], PDO::PARAM_INT);
+                $NewRaidQuery->bindValue(":SlotsRole1", $DefaultSizes[0], PDO::PARAM_INT);
+                $NewRaidQuery->bindValue(":SlotsRole2", $DefaultSizes[1], PDO::PARAM_INT);
+                $NewRaidQuery->bindValue(":SlotsRole3", $DefaultSizes[2], PDO::PARAM_INT);
+                $NewRaidQuery->bindValue(":SlotsRole4", $DefaultSizes[3], PDO::PARAM_INT);
+                $NewRaidQuery->bindValue(":SlotsRole5", $DefaultSizes[4], PDO::PARAM_INT);
     
-                if (!$NewRaidSt->execute())
-                {
-                    postErrorMessage( $NewRaidSt );
-                }
-                
+                $NewRaidQuery->execute();
                 $RaidId = $Connector->lastInsertId();
-    
-                $NewRaidSt->closeCursor();
                 
                 // Set vacation attendances
                 
@@ -180,23 +176,39 @@ function msgRaidCreate( $aRequest )
                 {
                     if ( ($StartDateTime >= $Settings["Start"]) && ($StartDateTime <= $Settings["End"]) )
                     {                    
-                        $AbsendSt = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
-                            "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
+                        $AbsentQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
+                                                           "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
                             
-                        $AbsendSt->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                        $AbsendSt->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
-                        $AbsendSt->bindValue(":Message", $Settings["Message"], PDO::PARAM_STR);
+                        $AbsentQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                        $AbsentQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+                        $AbsentQuery->bindValue(":Message", $Settings["Message"], PDO::PARAM_STR);
                         
-                        if (!$AbsendSt->execute())
-                        {
-                            postErrorMessage( $AbsendSt );
-                        }
-                        
-                        $AbsendSt->closeCursor();
+                        $AbsentQuery->execute();
                     }
                 }
                 
                 reset($VactionUsers);
+                
+                // Post raids to forum
+                
+                if (sizeof($PostTargets) > 0)
+                {
+                    $Subject = $LocationName.", ".(($gSite["TimeFormat"] == 24) ? $StartDay.".".$StartMonth."." : $StartMonth."/".$StartDay." ").$StartYear;
+                    $RaidUrl = $_SERVER["HTTP_ORIGIN"].substr($_SERVER["REQUEST_URI"], 0, strpos($_SERVER["REQUEST_URI"], "lib/"))."index.php#raid,".$RaidId;
+                    $Message = $LocationName."\n<a href=\"".$RaidUrl."\">".L("RaidSetup")."</a>\n\n".$aRequest["description"];
+            
+                    try
+                    {
+                        foreach($PostTargets as $PluginInstance)
+                        {
+                            $PluginInstance->post($Subject, $Message);
+                        }
+                    }
+                    catch (PDOException $Exception)
+                    {
+                        Out::getInstance()->pushError($Exception->getMessage());
+                    }
+                }
                 
                 // Increment start/end
                 

@@ -132,6 +132,7 @@
         $gLocale[ "AbsentBy" ]                 = "Abgemeldet";
         $gLocale[ "SwitchChar" ]               = "Charakter gewechselt";
         $gLocale[ "RaidNotFound" ]             = "Raid konnte nicht gefunden werden.";
+        $gLocale[ "RaidSetup" ]                = "Aufstellung";
         
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
@@ -314,8 +315,8 @@
         
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Lade Gruppen mit den angegebenen Verbindungsdaten";
-        $gLocale[ "AutoMemberLogin" ]          = "Benutzer der folgenden, ausgewälten Gruppe(n) werden als \"Mitglieder\" angemeldet:"; 
-        $gLocale[ "AutoLeadLogin" ]            = "Benutzer der folgenden, ausgewälten Gruppe(n) werden als \"Raidleiter\" angemeldet:";
+        $gLocale[ "AutoMemberLogin" ]          = "\"Mitglieder\" Gruppen:"; 
+        $gLocale[ "AutoLeadLogin" ]            = "\"Raidleiter\" Gruppen:";
         $gLocale[ "ReloadFailed" ]             = "Ladevorgang fehlgeschlagen";
         $gLocale[ "LoadSettings" ]             = "Einstellungen automatisch ermitteln";
         $gLocale[ "BindingBasePath" ]          = "Bitte gebe den Installationspfad dieses Bindings relativ zu '".$_SERVER["DOCUMENT_ROOT"]."' an.";
@@ -326,6 +327,9 @@
         $gLocale[ "NoValidConfig" ]            = "Keine gültige Konfigurationsdatei gefunden.";
         $gLocale[ "CookieNote" ]               = "Automatisches einloggen erfordert, dass der raidplaner in einem Unterordner des Cookie-Pfads diese Bindings installiert ist. ".
                                                  "Dieser muss ggF. in der Konfiguration dieses Bindings angepasst werden.";
+        $gLocale[ "PostToForum" ]              = "Poste neue Raids in diesem Forum";
+        $gLocale[ "PostAsUser" ]               = "Poste neue Raids mit diesem Benutzer"; 
+        $gLocale[ "DisablePosting" ]           = "Keine Postings erstellen";                                        
         
         // PHPBB3 
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";

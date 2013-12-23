@@ -5,23 +5,12 @@ function updateGroup( $Connector, $GroupName, $IdArray )
     $UserGroup = $Connector->prepare( "SELECT UserId FROM `".RP_TABLE_PREFIX."User` WHERE `Group` = :GroupName" );
     $UserGroup->bindValue(":GroupName", $GroupName, PDO::PARAM_STR );
 
-    if ( !$UserGroup->execute() )
-    {
-        postErrorMessage( $UserGroup );
-
-        $UserGroup->closeCursor();
-        $Connector->rollBack();
-        return false;
-    }
-
     $CurrentGroupIds = Array();
-
-    while ( $User = $UserGroup->fetch( PDO::FETCH_ASSOC ) )
+    $UserGroup->loop( function($User) use (&$CurrentGroupIds)
     {
         array_push( $CurrentGroupIds, intval($User["UserId"]) );
     }
 
-    $UserGroup->closeCursor();
     $ChangedIds = array_diff( $IdArray, $CurrentGroupIds ); // new ids
 
     foreach ( $ChangedIds as $UserId )
@@ -32,14 +21,9 @@ function updateGroup( $Connector, $GroupName, $IdArray )
 
         if ( !$ChangeUser->execute() )
         {
-            postErrorMessage( $ChangeUser );
-
-            $ChangeUser->closeCursor();
             $Connector->rollBack();
-            return false;
+            return false; // ### return, error ###
         }
-
-        $ChangeUser->closeCursor();
     }
 
     return true;
@@ -98,21 +82,13 @@ function msgSettingsupdate( $aRequest )
         // Update settings
 
         $ExistingSettings = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Setting`" );
+        
         $CurrentValues = array();
-
-        if ( !$ExistingSettings->execute() )
+        $ExistingSettings->loop( function($Data) use (&$CurrentValues)
         {
-            postErrorMessage( $ExistingSettings );
-        }
-        else
-        {
-            while ( $Data = $ExistingSettings->fetch( PDO::FETCH_ASSOC ) )
-            {
-                $CurrentValues[$Data["Name"]] = array( "number" => $Data["IntValue"], "text" => $Data["TextValue"] );
-            }
-        }
+            $CurrentValues[$Data["Name"]] = array( "number" => $Data["IntValue"], "text" => $Data["TextValue"] );
+        });
 
-        $ExistingSettings->closeCursor();
         $QueryString = "";
         $BindValues = array();
 
@@ -133,8 +109,8 @@ function msgSettingsupdate( $aRequest )
         $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "HelpPage", $aRequest["helpPage"] );
 
         if ( $QueryString != "" )
-           {
-               $SettingsUpdate = $Connector->prepare( $QueryString );
+        {
+            $SettingsUpdate = $Connector->prepare( $QueryString );
 
             foreach( $BindValues as $BindData )
             {
@@ -142,37 +118,27 @@ function msgSettingsupdate( $aRequest )
             }
 
             $Connector->beginTransaction();
+            
             if ( !$SettingsUpdate->execute() )
             {
-                postErrorMessage( $SettingsUpdate );
                 $Connector->rollBack();
             }
             else
             {
                 $Connector->commit();
             }
-
-            $SettingsUpdate->closeCursor();
         }
 
         // Update locations
 
         $ExistingLocations = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Location`" );
+        
         $CurrentValues = array();
-
-        if ( !$ExistingLocations->execute() )
+        $ExistingLocations->loop( function($Data) use (&$CurrentValues)
         {
-            postErrorMessage( $ExistingLocations );
-        }
-        else
-        {
-            while ( $Data = $ExistingLocations->fetch( PDO::FETCH_ASSOC ) )
-            {
-                $CurrentValues[$Data["LocationId"]] = array( "Name" => $Data["Name"], "Image" => $Data["Image"] );
-            }
-        }
+            $CurrentValues[$Data["LocationId"]] = array( "Name" => $Data["Name"], "Image" => $Data["Image"] );
+        });
 
-        $ExistingLocations->closeCursor();
         $QueryString = "";
         $BindValues = array();
 
@@ -211,7 +177,7 @@ function msgSettingsupdate( $aRequest )
 
         if ( $QueryString != "" )
 	    {
-		   $LocationUpdate = $Connector->prepare( $QueryString );
+		    $LocationUpdate = $Connector->prepare( $QueryString );
 
             foreach( $BindValues as $BindData )
             {
@@ -222,15 +188,12 @@ function msgSettingsupdate( $aRequest )
 
             if ( !$LocationUpdate->execute() )
             {
-                postErrorMessage( $LocationUpdate );
                 $Connector->rollBack();
             }
             else
             {
                 $Connector->commit();
             }
-
-            $LocationUpdate->closeCursor();
         }
 
         // Update users and groups
@@ -266,14 +229,9 @@ function msgSettingsupdate( $aRequest )
     
             if ( !$UnlinkUser->execute() )
             {
-                postErrorMessage( $UnlinkUser );
-    
-                $UnlinkUser->closeCursor();
                 $Connector->rollBack();
-                return;
+                return; // ### return, error ###
             }
-    
-            $UnlinkUser->closeCursor();
         }
         
         // Update relinked users
@@ -284,26 +242,21 @@ function msgSettingsupdate( $aRequest )
             
             if ( $UserInfo != null )
             {
-                $UpdateSt = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
-                                                "Password = :Password, Salt = :Salt, `Group` = :Group, ExternalBinding = :Binding, BindingActive = 'true' ".
-                                                "WHERE UserId = :UserId LIMIT 1" );
+                $UpdateQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
+                                                   "Password = :Password, Salt = :Salt, `Group` = :Group, ExternalBinding = :Binding, BindingActive = 'true' ".
+                                                   "WHERE UserId = :UserId LIMIT 1" );
             
-                $UpdateSt->bindValue( ":Password", $UserInfo->Password,    PDO::PARAM_STR );
-                $UpdateSt->bindValue( ":Group",    $UserInfo->Group,       PDO::PARAM_STR );
-                $UpdateSt->bindValue( ":Salt",     $UserInfo->Salt,        PDO::PARAM_STR );
-                $UpdateSt->bindValue( ":Binding",  $UserInfo->BindingName, PDO::PARAM_STR );
-                $UpdateSt->bindValue( ":UserId",   $UserId,                PDO::PARAM_INT );
+                $UpdateQuery->bindValue( ":Password", $UserInfo->Password,    PDO::PARAM_STR );
+                $UpdateQuery->bindValue( ":Group",    $UserInfo->Group,       PDO::PARAM_STR );
+                $UpdateQuery->bindValue( ":Salt",     $UserInfo->Salt,        PDO::PARAM_STR );
+                $UpdateQuery->bindValue( ":Binding",  $UserInfo->BindingName, PDO::PARAM_STR );
+                $UpdateQuery->bindValue( ":UserId",   $UserId,                PDO::PARAM_INT );
                 
-                if ( !$UpdateSt->execute() )
+                if ( !$UpdateQuery->execute() )
                 {
-                    postErrorMessage( $UpdateSt );
-        
-                    $UpdateSt->closeCursor();
                     $Connector->rollBack();
-                    return;
+                    return; // ### return, error ###
                 }
-                
-                $UpdateSt->closeCursor();
             }
         }
 
@@ -321,24 +274,15 @@ function msgSettingsupdate( $aRequest )
 
             if ( !$DropCharacter->execute() )
             {
-                postErrorMessage( $DropCharacter );
-
-                $DropCharacter->closeCursor();
                 $Connector->rollBack();
-                return;
+                return; // ### return, error ###
             }
 
             if ( !$DropAttendance->execute() )
             {
-                postErrorMessage( $DropAttendance );
-
-                $DropAttendance->closeCursor();
                 $Connector->rollBack();
-                return;
+                return; // ### return, error ###
             }
-
-            $DropCharacter->closeCursor();
-            $DropAttendance->closeCursor();
 
             // remove user
 
@@ -347,14 +291,9 @@ function msgSettingsupdate( $aRequest )
 
             if ( !$DropUser->execute() )
             {
-                postErrorMessage( $DropUser );
-
-                $DropUser->closeCursor();
                 $Connector->rollBack();
-                return false;
+                return false; // ### return, error ###
             }
-
-            $DropUser->closeCursor();
         }
 
         $Connector->commit();

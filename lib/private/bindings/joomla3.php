@@ -1,48 +1,51 @@
 <?php
-    include_once_exists(dirname(__FILE__)."/../../config/config.joomla3.php");
+    include_once_exists(dirname(__FILE__)."/../../config/config.jml3.php");
     
     array_push(PluginRegistry::$Classes, "JoomlaBinding");
     
-    class JoomlaBinding
+    class JoomlaBinding extends Binding
     {
+        private static $BindingName = "jml3";
+        
         public static $HashMethod = "jml_md5s";
         
-        public $BindingName = "jml3";
-        private $mConnector = null;
-    
         // -------------------------------------------------------------------------
         
-        public function isActive()
+        public function getName()
         {
-            return defined("JML3_BINDING") && JML3_BINDING;
+            return self::$BindingName;
         }
         
         // -------------------------------------------------------------------------
         
         public function getConfig()
         {
-            return array(
-                "database"  => defined("JML3_DATABASE") ? JML3_DATABASE : RP_DATABASE,
-                "user"      => defined("JML3_USER") ? JML3_USER : RP_USER,
-                "password"  => defined("JML3_PASS") ? JML3_PASS : RP_PASS,
-                "prefix"    => defined("JML3_TABLE_PREFIX") ? JML3_TABLE_PREFIX : "jml_",
-                "autologin" => defined("JML3_AUTOLOGIN") ? JML3_AUTOLOGIN : false,
-                "cookie"    => defined("JML3_SECRET") ? JML3_SECRET : "0123456789ABCDEF",
-                "members"   => defined("JML3_RAIDLEAD_GROUPS") ? explode(",", JML3_RAIDLEAD_GROUPS ) : array(),
-                "leads"     => defined("JML3_MEMBER_GROUPS") ? explode(",", JML3_MEMBER_GROUPS ) : array(),
-                "cookie_ex" => true,
-                "groups"    => true
-            );
+            $Config = new BindingConfig();
+            
+            $Config->Database         = defined("JML3_DATABASE") ? JML3_DATABASE : RP_DATABASE;
+            $Config->User             = defined("JML3_USER") ? JML3_USER : RP_USER;
+            $Config->Password         = defined("JML3_PASS") ? JML3_PASS : RP_PASS;
+            $Config->Prefix           = defined("JML3_TABLE_PREFIX") ? JML3_TABLE_PREFIX : "jml_";
+            $Config->AutoLoginEnabled = defined("JML3_AUTOLOGIN") ? JML3_AUTOLOGIN : false;
+            $Config->CookieData       = defined("JML3_SECRET") ? JML3_SECRET : "0123456789ABCDEF";
+            $Config->Members          = defined("JML3_RAIDLEAD_GROUPS") ? explode(",", JML3_RAIDLEAD_GROUPS ) : array();
+            $Config->Raidleads        = defined("JML3_MEMBER_GROUPS") ? explode(",", JML3_MEMBER_GROUPS ) : array();
+            $Config->HasCookieConfig  = true;
+            $Config->HasGroupConfig   = true;
+            
+            return $Config;
         }
         
         // -------------------------------------------------------------------------
         
-        public function queryExternalConfig($aRelativePath)
+        public function getExternalConfig($aRelativePath)
         {
+            $Out = Out::getInstance();
+            
             $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/Configuration.php";
             if (!file_exists($ConfigPath))
             {
-                Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
+                $Out->pushError($ConfigPath." ".L("NotExisting").".");
                 return null;
             }
             
@@ -60,19 +63,9 @@
         
         // -------------------------------------------------------------------------
         
-        public function isConfigWriteable()
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
         {
-            $ConfigFolder = dirname(__FILE__)."/../../config";
-            $ConfigFile   = $ConfigFolder."/config.joomla3.php";
-            
-            return (!file_exists($ConfigFile) && is_writable($ConfigFolder)) || is_writable($ConfigFile);
-        }
-        
-        // -------------------------------------------------------------------------
-        
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aMembers, $aLeads, $aCookieEx)
-        {
-            $Config = fopen( dirname(__FILE__)."/../../config/config.joomla3.php", "w+" );
+            $Config = fopen( dirname(__FILE__)."/../../config/config.jml3.php", "w+" );
             
             fwrite( $Config, "<?php\n");
             fwrite( $Config, "\tdefine(\"JML3_BINDING\", ".(($aEnable) ? "true" : "false").");\n");
@@ -105,22 +98,14 @@
                 $GroupQuery = $Connector->prepare( "SELECT id, title FROM `".$aPrefix."usergroups` ORDER BY title" );
                 $Groups = array();
                 
-                if ( $GroupQuery->execute() )
+                $GroupQuery->loop(function($Group) use (&$Groups) 
                 {
-                    while ( $Group = $GroupQuery->fetch( PDO::FETCH_ASSOC ) )
-                    {
-                        array_push( $Groups, array(
-                            "id"   => $Group["id"], 
-                            "name" => $Group["title"])
-                        );
-                    }
-                }
-                else if ($aThrow)
-                {
-                    $Connector->throwError($GroupQuery);
-                }
+                    array_push( $Groups, array(
+                        "id"   => $Group["id"], 
+                        "name" => $Group["title"])
+                    );
+                }, $aThrow);
                 
-                $GroupQuery->closeCursor();
                 return $Groups;
             }
             
@@ -129,37 +114,43 @@
         
         // -------------------------------------------------------------------------
         
-        public function getGroupsFromConfig()
+        public function getForums($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
-            $Config = $this->getConfig();
-            return $this->getGroups($Config["database"], $Config["prefix"], $Config["user"], $Config["password"], false);
+            return null;    
         }
         
         // -------------------------------------------------------------------------
         
-        private function getGroup( $aUserData )
+        public function getUsers($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
+        {
+            return null;    
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        private function getGroupForUser( $aUserData )
         {
             // TODO: Banning?
             
+            $AssignedGroup  = "none";
             $MemberGroups   = explode(",", JML3_MEMBER_GROUPS );
             $RaidleadGroups = explode(",", JML3_RAIDLEAD_GROUPS );
-            $DefaultGroup   = "none";
             
             foreach( $aUserData["Groups"] as $Group )
             {
                 if ( in_array($Group, $MemberGroups) )
-                    $DefaultGroup = "member";
+                    $AssignedGroup = "member";
                    
                 if ( in_array($Group, $RaidleadGroups) )
                     return "raidlead"; // ### return, best possible group ###
             }
             
-            return $DefaultGroup;
+            return $AssignedGroup;
         }
         
         // -------------------------------------------------------------------------
         
-        private function generateInfo( $aUserData )
+        private function generateUserInfo( $aUserData )
         {
             $Parts = explode(":", $aUserData["password"]);
             $Password = $Parts[0];
@@ -171,7 +162,7 @@
             $Info->Password    = $Password;
             $Info->Salt        = $Salt;
             $Info->SessionSalt = null;
-            $Info->Group       = $this->getGroup($aUserData);
+            $Info->Group       = $this->getGroupForUser($aUserData);
             $Info->BindingName = $this->BindingName;
             $Info->PassBinding = $this->BindingName;
         
@@ -195,26 +186,21 @@
                 
                 if (isset($_COOKIE[$CookieName]))
                 {
-                    if ($this->mConnector == null)
-                        $this->mConnector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS);
-                
-                    $UserSt = $this->mConnector->prepare("SELECT userid ".
+                    $Connector = $this->getConnector();
+                    $UserQuery = $Connector->prepare("SELECT userid ".
                         "FROM `".JML3_TABLE_PREFIX."session` ".
                         "WHERE session_id = :sid LIMIT 1");
                                               
-                    $UserSt->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
+                    $UserQuery->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
+                    $UserData = $UserQuery->fetchFirst();
                     
-                    if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+                    if ( $UserData != null )
                     {
                         // Get user info by external id
                         
-                        $UserData = $UserSt->fetch( PDO::FETCH_ASSOC );
                         $UserId = $UserData["userid"];
-                        
                         $UserInfo = $this->getUserInfoById($UserId);
                     }
-                    
-                    $UserSt->closeCursor();
                 }
             }
             
@@ -225,60 +211,54 @@
         
         public function getUserInfoByName( $aUserName )
         {
-            if ($this->mConnector == null)
-                $this->mConnector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS);
-            
-            $UserSt = $this->mConnector->prepare("SELECT user_id, group_id, username, password, activation ".
-                                                "FROM `".JML3_TABLE_PREFIX."users` ".
-                                                "LEFT JOIN `".JML3_TABLE_PREFIX."user_usergroup_map` ON id=user_id ".
-                                                "WHERE LOWER(username) = :Login");
+            $Connector = $this->getConnector();
+            $UserQuery = $Connector->prepare("SELECT user_id, group_id, username, password, activation ".
+                                          "FROM `".JML3_TABLE_PREFIX."users` ".
+                                          "LEFT JOIN `".JML3_TABLE_PREFIX."user_usergroup_map` ON id=user_id ".
+                                          "WHERE LOWER(username) = :Login");
                                           
-            $UserSt->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
-        
-            if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
-            {                
-                $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
-                $UserData["Groups"] = array($UserData["group_id"]);
+            $UserQuery->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
+            $UserData = null;
+            $Groups = array();
+            
+            $UserQuery->loop(function($UserData) use (&$UserData, &$Groups)
+            {
+                $UserData = $UserQuery->fetch(PDO::FETCH_ASSOC);
+                array_push($Groups, $UserData["group_id"]);
+            });
+            
+            if ($UserData == null)
+                return null; // ### return, no users ###
                 
-                while ($Row = $UserSt->fetch(PDO::FETCH_ASSOC))
-                    array_push($UserData["Groups"], $Row["group_id"]);
-                
-                $UserSt->closeCursor();
-                return $this->generateInfo($UserData);
-            }
-        
-            $UserSt->closeCursor();
-            return null;
+            $UserData["Groups"] = $Groups;
+            return $this->generateUserInfo($UserData);
         }
         
         // -------------------------------------------------------------------------
         
         public function getUserInfoById( $aUserId )
         {
-            if ($this->mConnector == null)
-                $this->mConnector = new Connector(SQL_HOST, JML3_DATABASE, JML3_USER, JML3_PASS);
-            
-            $UserSt = $this->mConnector->prepare("SELECT user_id, group_id, username, password, activation ".
-                                                "FROM `".JML3_TABLE_PREFIX."users` ".
-                                                "LEFT JOIN `".JML3_TABLE_PREFIX."user_usergroup_map` ON id=user_id ".
-                                                "WHERE id = :UserId");
+            $Connector = $this->getConnector();
+            $UserQuery = $Connector->prepare("SELECT user_id, group_id, username, password, activation ".
+                                          "FROM `".JML3_TABLE_PREFIX."users` ".
+                                          "LEFT JOIN `".JML3_TABLE_PREFIX."user_usergroup_map` ON id=user_id ".
+                                          "WHERE id = :UserId");
                                           
-            $UserSt->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
-        
-            if ( $UserSt->execute() && ($UserSt->rowCount() > 0) )
+            $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
+            $UserData = null;
+            $Groups = array();
+            
+            $UserQuery->loop(function($UserData) use (&$UserData, &$Groups)
             {
-                $UserData = $UserSt->fetch(PDO::FETCH_ASSOC);
-                $UserData["Groups"] = array($UserData["group_id"]);
+                $UserData = $UserQuery->fetch(PDO::FETCH_ASSOC);
+                array_push($Groups, $UserData["group_id"]);
+            });
+            
+            if ($UserData == null)
+                return null; // ### return, no users ###
                 
-                while ($Row = $UserSt->fetch(PDO::FETCH_ASSOC))
-                    array_push($UserData["Groups"], $Row["group_id"]);
-                               
-                $UserSt->closeCursor();
-                return $this->generateInfo($UserData);
-            }
-        
-            $UserSt->closeCursor();
-            return null;
+            $UserData["Groups"] = $Groups;
+            return $this->generateUserInfo($UserData);
         }
         
         // -------------------------------------------------------------------------
@@ -290,9 +270,16 @@
         
         // -------------------------------------------------------------------------
         
-        public static function hash( $aPassword, $aSalt, $aMethod )
+        public function hash( $aPassword, $aSalt, $aMethod )
         {
             return md5($aPassword.$aSalt);
+        }
+        
+        // -------------------------------------------------------------------------
+        
+        public function post($aSubject, $aMessage)
+        {
+            
         }
     }
 ?>
