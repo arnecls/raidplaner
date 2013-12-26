@@ -98,7 +98,7 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
     $RaidData = Array();
     $RaidInfo = Array();
 
-    $aQueryResult->loop( function($Data) use (&$RaidData, &$RaidInfo)
+    $aQueryResult->loop( function($Data) use (&$gRoles, &$RaidData, &$RaidInfo)
     {
         array_push($RaidData, $Data);
 

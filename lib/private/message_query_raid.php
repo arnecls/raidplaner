@@ -51,7 +51,7 @@
 
                 if ( $Data["UserId"] != NULL )
                 {
-                    $ListRaidQuery->loop(function($Data) use (&$MaxAttendanceId, &$Participants, &$Attendees)
+                    $ListRaidQuery->loop(function($Data) use (&$Connector, &$MaxAttendanceId, &$Participants, &$Attendees)
                     {
                         // Track max attendance id to give undecided players (without a comment) a distinct one.
                         $MaxAttendanceId = Max($MaxAttendanceId,$Data["AttendanceId"]);
@@ -190,7 +190,7 @@
                                                     "FROM `".RP_TABLE_PREFIX."User` ".
                                                     "WHERE `Group` != \"none\"" );
 
-                $AllUsersQuery->loop(function($User) use (&$Participants, &$Attendees)
+                $AllUsersQuery->loop(function($User) use (&$Connector, &$EndTimestamp, &$Participants, &$Attendees)
                 {
                     if ( !in_array( intval($User["UserId"]), $Participants ) )
                     {

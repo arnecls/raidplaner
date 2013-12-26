@@ -104,7 +104,7 @@ function msgQuerySettings( $aRequest )
         $StateCounts = array( "undecided" => 0, "available" => 0, "unavailable" => 0, "ok" => 0 );
         $Attendances = Array();
 
-        $Attendance->loop( function($Data) use (&$UserId, &$NumRaidsRemain, &$MainCharName, &$StateCounts, &$Attendances)
+        $Attendance->loop( function($Data) use (&$Connector, &$UserId, &$NumRaidsRemain, &$MainCharName, &$StateCounts, &$Attendances)
         {
             if ( $UserId != $Data["UserId"] )
             {
