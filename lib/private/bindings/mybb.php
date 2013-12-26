@@ -328,6 +328,7 @@
             $Connector->beginTransaction();
 
             $Timestamp = time();
+            $FormattedMessage = preg_replace('/<a href="(.*)"\\>(.*)<\\/a\\>/', "[url=\\1]\\2[/url]", $aMessage);
 
             // Fetch user
 
@@ -366,7 +367,7 @@
                 $PostQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
 
                 $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
-                $PostQuery->BindValue( ":Text", $aMessage, PDO::PARAM_STR );
+                $PostQuery->BindValue( ":Text", $FormattedMessage, PDO::PARAM_STR );
                 
                 $PostQuery->execute(true);
                 $PostId = $Connector->lastInsertId();
