@@ -7,7 +7,6 @@
     {
         private static $BindingName = "jml3";
 
-        public static $HashMethodMD5  = "jml_md5";
         public static $HashMethodMD5s = "jml_md5s";
         public static $HashMethodBF   = "jml_bf";
 
@@ -272,9 +271,6 @@
             {
             case self::$HashMethodBF:
                 return substr($aPassword, 0, 7+22);
-                
-            case self::$HashMethodMD5:
-                return substr($aPassword, 0, 3+12);
              
             default:   
             case self::$HashMethodMD5s:
@@ -292,9 +288,6 @@
             
             if ( strpos($aPassword, "$2a$") === 0 )
                 return self::$HashMethodBF;
-                
-            if ( strpos($aPassword, "$1$") === 0 )
-                return self::$HashMethodMD5;
                 
             return self::$HashMethodMD5s;
         }

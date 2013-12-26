@@ -197,7 +197,7 @@
 
             $GroupQuery->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
 
-            $GroupQuery->loop(function($Group) use (&$AssignedGroup)
+            $GroupQuery->loop(function($Group) use (&$AssignedGroup, $MemberGroups, $RaidleadGroups)
             {
                 if ( ($Group["user_type"] == 1) ||
 

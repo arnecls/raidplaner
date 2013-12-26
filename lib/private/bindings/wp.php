@@ -154,7 +154,7 @@
 
             $MetaQuery->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
 
-            $MetaQuery->loop(function($MetaData) use (&$AssigedGroup)
+            $MetaQuery->loop(function($MetaData) use (&$AssigedGroup, $MemberGroups, $RaidleadGroups)
             {
                 $Roles = array_keys(unserialize($MetaData["meta_value"]));
 
