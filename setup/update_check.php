@@ -61,8 +61,6 @@
                $Version = 92;
         }
         
-        $GetVersion->closeCursor();
-        
         $Patch = $Version % 10;
         $Minor = ($Version / 10) % 10;
         $Major = ($Version / 100) % 10;

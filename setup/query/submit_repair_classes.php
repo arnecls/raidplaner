@@ -30,13 +30,9 @@
                                                     "DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE CharacterId=:CharId;");
             
             $DeleteAttendance->bindValue(":CharId", $CharId, PDO::PARAM_INT);
+            $DeleteAttendance->setErrorsAsHTML(true);
             
-            if (!$DeleteAttendance->execute())
-            {
-                postErrorMessage( $DeleteAttendance );
-            }
-            
-            $DeleteAttendance->closeCursor();
+            $DeleteAttendance->execute();
         }
         else
         {
@@ -48,13 +44,9 @@
             $UpdateChar->bindValue(":Class", $Class, PDO::PARAM_STR);
             $UpdateChar->bindValue(":Role", $DefaultRole, PDO::PARAM_INT);
             $UpdateChar->bindValue(":CharId", $CharId, PDO::PARAM_INT);
+            $DeleteAttendance->setErrorsAsHTML(true);
             
-            if (!$UpdateChar->execute())
-            {
-                postHTMLErrorMessage( $UpdateChar );
-            }
-            
-            $UpdateChar->closeCursor();
+            $UpdateChar->execute();
         }
     }    
 ?>

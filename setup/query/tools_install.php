@@ -159,7 +159,5 @@
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 100, '');" );
         else   
             $Connector->exec( "UPDATE `".$Prefix."Setting` SET IntValue=100 WHERE Name='Version' LIMIT 1" );
-        
-        $TestQuery->closeCursor();
     }
 ?>

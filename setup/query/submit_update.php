@@ -13,11 +13,9 @@
             echo "<div class=\"update_step\">".$Name;
             
             $Action = $Connector->prepare( $Query );
-            if ( !$Action->execute() )
-            {
-                postHTMLErrorMessage( $Action );
-            }
-            else
+            $Action->setErrorsAsHTML(true);
+            
+            if ( $Action->execute() )
             {
                 echo "<div class=\"update_step_ok\">OK</div>";
             }
@@ -53,6 +51,8 @@
         $Queries1 = Array();
         
         $IndexStatement = $Connector->prepare( "SHOW INDEXES FROM `".RP_TABLE_PREFIX."Setting` WHERE Key_Name='Unique_Name'" );
+        $IndexStatement->setErrorsAsHTML(true);
+        
         if ( $IndexStatement->execute() )
         {
             if ( !$IndexStatement->fetch(PDO::FETCH_ASSOC) )
@@ -60,8 +60,6 @@
                 $Queries1["Unique setting names"] = "ALTER TABLE  `".RP_TABLE_PREFIX."Setting` ADD CONSTRAINT `Unique_Name` UNIQUE (`Name`);";
             }
         }
-        
-        $IndexStatement->closeCursor();
         
         // Static updates
         
@@ -87,7 +85,10 @@
                                               "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING (RaidId) ".
                                               "GROUP BY `".RP_TABLE_PREFIX."Character`.UserId ".
                                               "ORDER BY `".RP_TABLE_PREFIX."Raid`.Start, `".RP_TABLE_PREFIX."Character`.UserId" );
-                                               
+                                              
+        
+        $DataStatement->setErrorsAsHTML(true);
+            
         if ( $DataStatement->execute() )
         {                          
             $UpdateString = "";
@@ -99,10 +100,10 @@
             
             $Connector->beginTransaction();
             $Action = $Connector->prepare( $UpdateString );
+            $Action->setErrorsAsHTML(true);            
             
             if ( !$Action->execute() )
             {
-                postHTMLErrorMessage( $Action );
                 $Connector->rollback();
             }
             else
@@ -111,8 +112,6 @@
                 $Connector->commit();
             }
         }
-        
-        $DataStatement->closeCursor();
                           
         echo "</div>";
         echo "</div>";
@@ -189,23 +188,17 @@
             echo "<div class=\"update_step\">Convert VB Users";
             
             $UserQuery = $Connector->prepare("SELECT UserId, ExternalId FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding = 'vb3'");
+            $UserQuery->setErrorsAsHTML(true);
             
-            if ( !$UserQuery->execute() )
-            {
-                postHTMLErrorMessage( $UserQuery );
-            }
-            else
+            if ( $UserQuery->execute() )
             {                
                 // Update vbulletin users
                 
                 $VbConnector = new Connector(SQL_HOST, VB3_DATABASE, VB3_USER, VB3_PASS);
                 $VbUserQuery = $VbConnector->prepare("SELECT userid,salt FROM `".VB3_TABLE_PREFIX."user`");
+                $VbUserQuery->setErrorsAsHTML(true);
                 
-                if ( !$VbUserQuery->execute() )
-                {
-                    postHTMLErrorMessage( $VbUserQuery );
-                }
-                else
+                if ( $VbUserQuery->execute() )
                 {
                     $Error = false;
                     
@@ -227,25 +220,16 @@
                             
                             $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
                             $UpdateUser->bindValue(":Salt", $VbUserSalt[$UserData["ExternalId"]], PDO::PARAM_STR);
-                            
-                            if ( !$UpdateUser->execute() )
-                            {
-                                $Error = true;
-                                postHTMLErrorMessage( $UpdateUser );
-                            }
-                            
-                            $UpdateUser->closeCursor();
+                            $UpdateUser->setErrorsAsHTML(true);
+        
+                            $Error = !$UpdateUser->execute();
                         }
                     }
                 }
                 
-                $VbUserQuery->closeCursor();
-                
                 if (!$Error)
                     echo "<div class=\"update_step_ok\">OK</div>";
             }
-            
-            $UserQuery->closeCursor();
             
             echo "</div>";
         }
@@ -255,12 +239,9 @@
         // Update native password hashes
         
         $NativeUserQuery = $Connector->prepare("SELECT UserId, Salt, Password FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding=\"none\"");
+        $NativeUserQuery->setErrorsAsHTML(true);
         
-        if ( !$NativeUserQuery->execute() )
-        {
-            postHTMLErrorMessage( $NativeUserQuery );
-        }
-        else
+        if ( $NativeUserQuery->execute() )
         {
             $Error = false;
             
@@ -276,23 +257,16 @@
                                 
                     $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
                     $UpdateUser->bindValue(":Password", hash("sha256", $UserData["Password"].$UserData["Salt"]), PDO::PARAM_STR);
+                    $UpdateUser->setErrorsAsHTML(true);
                     
-                    if ( !$UpdateUser->execute() )
-                    {
-                        $Error = true;
-                        postHTMLErrorMessage( $UpdateUser );
-                    }
-                    
-                    $UpdateUser->closeCursor();
+                    $Error = !$UpdateUser->execute();
                 }
             }
             
             if (!$Error)
                 echo "<div class=\"update_step_ok\">OK</div>";                   
         }
-        
-        $NativeUserQuery->closeCursor();
-        
+                
         echo "</div>";        
         echo "</div>";
     }

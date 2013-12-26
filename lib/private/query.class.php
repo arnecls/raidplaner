@@ -5,6 +5,7 @@
     {
         public $PDO = null;
         private $AffectedRows;
+        private $OutputHTML;
         
         // --------------------------------------------------------------------------------------------
         
@@ -12,6 +13,12 @@
         {
             $this->PDO = $aPDOStatement;
             $this->AffectedRows = 0;
+            $this->OutputHTML = false;
+        }
+        
+        public function setErrorsAsHTML($aEnable)
+        {
+            $this->OutputHTML = $aEnable;
         }
         
         // --------------------------------------------------------------------------------------------
@@ -153,14 +160,21 @@
     
         public function postErrorMessage()
         {
-            $Out = Out::getInstance();
-            $Out->pushError(L("DatabaseError"));
-            
-            $ErrorInfo = $this->PDO->errorInfo();
-            
-            foreach($ErrorInfo as $Info)
+            if ($this->OutputHTML)
             {
-                $Out->pushError($Info);
+                $this->postHTMLErrorMessage();
+            }
+            else
+            {
+                $Out = Out::getInstance();
+                $Out->pushError(L("DatabaseError"));
+                
+                $ErrorInfo = $this->PDO->errorInfo();
+                
+                foreach($ErrorInfo as $Info)
+                {
+                    $Out->pushError($Info);
+                }
             }
         }
         

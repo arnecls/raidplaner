@@ -39,117 +39,104 @@
     echo "<div class=\"update_version\">".L("InvalidCharacters");
     
     $CharStatement = $Connector->prepare("SELECT CharacterId, Name, Class, Role1, Role2 FROM `".RP_TABLE_PREFIX."Character`");
+    $CharStatement->setErrorsAsHTML(true);
+    
     $FixCount = 0;
-    $ResolveCount = 0;
-        
-    if (!$CharStatement->execute())
+    $ResolveCount = 0;        
+    $InvalidCharacters = array();
+    
+    $CharStatement->loop( function($Character) use (&$InvalidCharacters, &$FixCount, &$ResolveCount)
     {
-        postHTMLErrorMessage( $CharStatement );
-    }
-    else
-    {
-        $InvalidCharacters = array();
+        $CharId = intval($Character["CharacterId"]);
+        $SubmitNewRole = false;
         
-        while ( $Character = $CharStatement->fetch(PDO::FETCH_ASSOC) )
+        if ( !array_key_exists($Character["Class"], $gClasses) )
         {
-            $CharId = intval($Character["CharacterId"]);
-            $SubmitNewRole = false;
+            array_push( $InvalidCharacters, $Character );
+        }
+        else
+        {            
+            $MainRoleOk = false;
+            $OffRoleOk  = false;
+            $Roles      = $gClasses[$Character["Class"]][2];
             
-            if ( !array_key_exists($Character["Class"], $gClasses) )
+            // Check if roles are allowed for the class
+            
+            foreach ( $Roles as $Role )
             {
-                array_push( $InvalidCharacters, $Character );
+                $MainRoleOk = $MainRoleOk || ($g_RoleToIdx[$Role] == intval($Character["Role1"]));
+                $OffRoleOk  = $OffRoleOk  || ($g_RoleToIdx[$Role] == intval($Character["Role2"]));
             }
-            else
-            {            
-                $MainRoleOk = false;
-                $OffRoleOk  = false;
-                $Roles      = $gClasses[$Character["Class"]][2];
+            
+            // Fix main role if necessary
+            
+            if ( !$MainRoleOk )
+            {
+                $Character["Role1"] = ($OffRoleOk) 
+                    ? $Character["Role2"]
+                    : $g_RoleToIdx[ $Roles[0] ];
+            }
+            
+            // Fix off role if necessary
+            
+            if ( !$OffRoleOk )
+            {
+                $Character["Role2"] = ($MainRoleOk) 
+                    ? $Character["Role1"]
+                    : $g_RoleToIdx[ $Roles[0] ];
+            }
+            
+            if ( !$MainRoleOk || !$OffRoleOk )
+            {
+                // Update roles
+            
+                $UpdateChar = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Character` SET Role1=:Role1, Role2=:Role2 WHERE CharacterId=:CharId");
                 
-                // Check if roles are allowed for the class
+                $UpdateChar->bindValue(":Role1", $Character["Role1"], PDO::PARAM_INT);
+                $UpdateChar->bindValue(":Role2", $Character["Role2"], PDO::PARAM_INT);
+                $UpdateChar->bindValue(":CharId", $Character["CharacterId"], PDO::PARAM_INT);
+                $UpdateChar->setErrorsAsHTML(true);
                 
-                foreach ( $Roles as $Role )
+                if ($UpdateChar->execute())
                 {
-                    $MainRoleOk = $MainRoleOk || ($g_RoleToIdx[$Role] == intval($Character["Role1"]));
-                    $OffRoleOk  = $OffRoleOk  || ($g_RoleToIdx[$Role] == intval($Character["Role2"]));
+                    ++$FixCount;
                 }
                 
-                // Fix main role if necessary
+                // Delete attendances with invalid roles
                 
-                if ( !$MainRoleOk )
-                {
-                    $Character["Role1"] = ($OffRoleOk) 
-                        ? $Character["Role2"]
-                        : $g_RoleToIdx[ $Roles[0] ];
-                }
+                $DeleteAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE CharacterId=:CharId AND Role!=:Role1 AND Role!=:Role2");
                 
-                // Fix off role if necessary
+                $DeleteAttendance->bindValue(":Role1", $Character["Role1"], PDO::PARAM_INT);
+                $DeleteAttendance->bindValue(":Role2", $Character["Role2"], PDO::PARAM_INT);
+                $DeleteAttendance->bindValue(":CharId", $Character["CharacterId"], PDO::PARAM_INT);
+                $DeleteAttendance->setErrorsAsHTML(true);
                 
-                if ( !$OffRoleOk )
-                {
-                    $Character["Role2"] = ($MainRoleOk) 
-                        ? $Character["Role1"]
-                        : $g_RoleToIdx[ $Roles[0] ];
-                }
-                
-                if ( !$MainRoleOk || !$OffRoleOk )
-                {
-                    // Update roles
-                
-                    $UpdateChar = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Character` SET Role1=:Role1, Role2=:Role2 WHERE CharacterId=:CharId");
-                    $UpdateChar->bindValue(":Role1", $Character["Role1"], PDO::PARAM_INT);
-                    $UpdateChar->bindValue(":Role2", $Character["Role2"], PDO::PARAM_INT);
-                    $UpdateChar->bindValue(":CharId", $Character["CharacterId"], PDO::PARAM_INT);
-                    
-                    if (!$UpdateChar->execute())
-                    {
-                        postHTMLErrorMessage( $UpdateChar );
-                    }
-                    else
-                    {
-                        ++$FixCount;
-                    }
-                    
-                    // Delete attendances with invalid roles
-                    
-                    $UpdateChar->closeCursor();
-                    
-                    $DeleteAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE CharacterId=:CharId AND Role!=:Role1 AND Role!=:Role2");
-                    $DeleteAttendance->bindValue(":Role1", $Character["Role1"], PDO::PARAM_INT);
-                    $DeleteAttendance->bindValue(":Role2", $Character["Role2"], PDO::PARAM_INT);
-                    $DeleteAttendance->bindValue(":CharId", $Character["CharacterId"], PDO::PARAM_INT);
-                    
-                    if (!$DeleteAttendance->execute())
-                    {
-                        postHTMLErrorMessage( $DeleteAttendance );
-                    }
-                    
-                    $DeleteAttendance->closeCursor();
-                }
+                $DeleteAttendance->execute();
             }
         }
+    });
+    
+    $ResolveCount = sizeof($InvalidCharacters);
+    
+    foreach( $InvalidCharacters as $Character )
+    {
+        echo "<div class=\"update_step_warning classResolve\">".$Character["Name"];
+        echo "<div class=\"resolve_options\">";
+        echo "<span class=\"resolve_type\">".$Character["Class"]."</span>";
+        echo "<select id=\"char".$Character["CharacterId"]."\" class=\"change_class\">";
+        echo "<option value=\"_delete\">".L("Delete")."</option>";
         
-        $ResolveCount = sizeof($InvalidCharacters);
-        
-        foreach( $InvalidCharacters as $Character )
+        while(list($Class,$Info) = each($gClasses))
         {
-            echo "<div class=\"update_step_warning classResolve\">".$Character["Name"];
-            echo "<div class=\"resolve_options\">";
-            echo "<span class=\"resolve_type\">".$Character["Class"]."</span>";
-            echo "<select id=\"char".$Character["CharacterId"]."\" class=\"change_class\">";
-            echo "<option value=\"_delete\">".L("Delete")."</option>";
-            
-            while(list($Class,$Info) = each($gClasses))
-            {
-                if ( $Class != "empty" )
-                    echo "<option value=\"".$Class."\">".$Info[0]."</option>";
-            }
-            
-            reset($gClasses);
-            
-            echo "</select>";
-            echo "</div>";
-            echo "</div>";
+            if ( $Class != "empty" )
+                echo "<option value=\"".$Class."\">".$Info[0]."</option>";
         }
+        
+        reset($gClasses);
+        
+        echo "</select>";
+        echo "</div>";
+        echo "</div>";
     }
     
     if ($ResolveCount > 0)
@@ -170,7 +157,6 @@
     else
         echo "<div class=\"update_step_ok\">".$FixCount." ".L("ItemsRepaired")."</div>";
         
-    $CharStatement->closeCursor();
     echo "</div>";
     
     // -------------------------------------------------------------------------
@@ -182,18 +168,14 @@
     // Delete attended roles that are out of range
     
     $DeleteAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE Role>:MaxRole");
-    $DeleteAttendance->bindValue(":MaxRole", sizeof($gRoles), PDO::PARAM_INT);
     
-    if (!$DeleteAttendance->execute())
-    {
-        postHTMLErrorMessage( $DeleteAttendance );
-    }
-    else
+    $DeleteAttendance->bindValue(":MaxRole", sizeof($gRoles), PDO::PARAM_INT);
+    $DeleteAttendance->setErrorsAsHTML(true);
+    
+    if ($DeleteAttendance->execute())
     {
         echo "<div class=\"update_step_ok\">".$DeleteAttendance->rowCount()." ".L("ItemsRepaired")." (".L("StrayRoles").")</div>";
     }
-    
-    $DeleteAttendance->closeCursor();
     
     // Delete stray attends from deleted characters
     
@@ -201,16 +183,12 @@
                                             "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(CharacterId) ".
                                             "WHERE `".RP_TABLE_PREFIX."Character`.UserId IS NULL");
     
-    if (!$DeleteAttendance->execute())
-    {
-        postHTMLErrorMessage( $DeleteAttendance );
-    }
-    else
+    $DeleteAttendance->setErrorsAsHTML(true);
+    
+    if ($DeleteAttendance->execute())
     {
         echo "<div class=\"update_step_ok\">".$DeleteAttendance->rowCount()." ".L("ItemsRepaired")." (".L("StrayCharacters").")</div>";
     }
-    
-    $DeleteAttendance->closeCursor();
     
     // Delete stray attends from deleted users
     
@@ -218,16 +196,12 @@
                                             "LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
                                             "WHERE `".RP_TABLE_PREFIX."User`.UserId IS NULL");
     
-    if (!$DeleteAttendance->execute())
-    {
-        postHTMLErrorMessage( $DeleteAttendance );
-    }
-    else
+    $DeleteAttendance->setErrorsAsHTML(true);
+    
+    if ($DeleteAttendance->execute())
     {
         echo "<div class=\"update_step_ok\">".$DeleteAttendance->rowCount()." ".L("ItemsRepaired")." (".L("StrayUsers").")</div>";
     }
-    
-    $DeleteAttendance->closeCursor();
     
     // Convert users with a cleared binding to local users
     
@@ -235,62 +209,53 @@
         require_once(dirname(__FILE__)."/../../lib/private/userproxy.class.php");
         
         $UserQuery = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding = '' OR ExternalBinding = NULL");
+        $UserQuery->setErrorsAsHTML(true);
         
-        if (!$UserQuery->execute())
-        {
-            postHTMLErrorMessage( $UserQuery );
-        }
-        else
-        {
-            while($UserData = $UserQuery->fetch(PDO::FETCH_ASSOC))
-            {                
-                $BindingName = "none";
-                
-                if ($UserData["ExternalId"] != 0)
-                {
-                    $Candidates = UserProxy::getAllUserInfosById($UserData["ExternalId"]);
+        $UserQuery->loop( function($UserData)
+        {                
+            $BindingName = "none";
             
-                    if ( sizeof($Candidates) > 1 )
+            if ($UserData["ExternalId"] != 0)
+            {
+                $Candidates = UserProxy::getAllUserInfosById($UserData["ExternalId"]);
+        
+                if ( sizeof($Candidates) > 1 )
+                {
+                    // More than one binding, check the username and
+                    // reduce the array to username matches
+                    
+                    $Filtered = array();
+                    
+                    while( list($BindingName, $UserInfo) = each($Candidates) )
                     {
-                        // More than one binding, check the username and
-                        // reduce the array to username matches
-                        
-                        $Filtered = array();
-                        
-                        while( list($BindingName, $UserInfo) = each($Candidates) )
+                        if ( $UserInfo->UserName == $UserData["Login"] )
                         {
-                            if ( $UserInfo->UserName == $UserData["Login"] )
-                            {
-                                $Filtered[$BindingName] = $UserInfo;
-                            }
+                            $Filtered[$BindingName] = $UserInfo;
                         }
-                        
-                        // If filtering was successfull, switch arrays
-                        
-                        if ( sizeof($Filtered) > 0 )
-                            $Candidates = $Filtered;
-                        else
-                            reset($Candidates);
                     }
                     
-                    if ( sizeof($Candidates) > 0 )
-                        list($BindingName, $UserInfo) = each($Candidates); // fetch the first entry
+                    // If filtering was successfull, switch arrays
+                    
+                    if ( sizeof($Filtered) > 0 )
+                        $Candidates = $Filtered;
+                    else
+                        reset($Candidates);
                 }
                 
-                $UpdateQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ExternalBinding=:Binding WHERE UserId=:UserId LIMIT 1");
-                $UpdateQuery->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":Binding",$BindingName, PDO::PARAM_STR);
-                
-                if (!$UpdateQuery->execute())
-                    postHTMLErrorMessage($UpdateQuery);
-                    
-                $UpdateQuery->closeCursor();
+                if ( sizeof($Candidates) > 0 )
+                    list($BindingName, $UserInfo) = each($Candidates); // fetch the first entry
             }
             
-            echo "<div class=\"update_step_ok\">".$UserQuery->rowCount()." ".L("ItemsRepaired")." (".L("StrayBindings").")</div>";
-        }
+            $UpdateQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ExternalBinding=:Binding WHERE UserId=:UserId LIMIT 1");
+            
+            $UpdateQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $UpdateQuery->bindValue(":Binding",$BindingName, PDO::PARAM_STR);
+            $UpdateQuery->setErrorsAsHTML(true);
+            
+            $UpdateQuery->execute();
+        });
         
-        $UserQuery->closeCursor();
+        echo "<div class=\"update_step_ok\">".$UserQuery->getAffectedRows()." ".L("ItemsRepaired")." (".L("StrayBindings").")</div>";
     }
                     
     echo "</div>";
