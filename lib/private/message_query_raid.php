@@ -190,7 +190,7 @@
                                                     "FROM `".RP_TABLE_PREFIX."User` ".
                                                     "WHERE `Group` != \"none\"" );
 
-                $AllUsersQuery->loop(function($User) use (&$Connector, &$EndTimestamp, &$Participants, &$Attendees)
+                $AllUsersQuery->loop(function($User) use (&$Connector, &$MaxAttendanceId, &$EndTimestamp, &$Participants, &$Attendees)
                 {
                     if ( !in_array( intval($User["UserId"]), $Participants ) )
                     {
