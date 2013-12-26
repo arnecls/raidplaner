@@ -93,7 +93,6 @@
             }
 
             fwrite( $Config, "?>");
-
             fclose( $Config );
         }
 
@@ -109,11 +108,9 @@
                 $GroupQuery = $Connector->prepare( "SELECT group_id, group_name FROM `".$aPrefix."groups` ORDER BY group_name" );
 
                 $GroupQuery->loop(function($Group) use (&$Groups)
-
                 {
                     array_push( $Groups, array(
                         "id"   => $Group["group_id"],
-
                         "name" => $Group["group_name"])
                     );
                 }, $aThrow);
@@ -140,7 +137,6 @@
                 {
                     array_push( $Forums, array(
                         "id"   => $Forum["forum_id"],
-
                         "name" => $Forum["forum_name"])
                     );
                 }, $aThrow);

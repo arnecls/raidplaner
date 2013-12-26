@@ -125,16 +125,52 @@
 
         public function getForums($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
-            return null;
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
 
+            if ($Connector != null)
+            {
+                $Forums = array();
+                $ForumQuery = $Connector->prepare( "SELECT fid, name FROM `".$aPrefix."forums` ".
+                                                   "WHERE type = 'f' ORDER BY name" );
+
+                $ForumQuery->loop(function($Forum) use (&$Forums)
+                {
+                    array_push( $Forums, array(
+                        "id"   => $Forum["fid"],
+                        "name" => $Forum["name"])
+                    );
+                }, $aThrow);
+
+                return $Forums;
+            }
+
+            return null;
         }
 
         // -------------------------------------------------------------------------
 
         public function getUsers($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
-            return null;
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
 
+            if ($Connector != null)
+            {
+                $Users = array();
+                $UserQuery = $Connector->prepare("SELECT uid, username FROM `".$aPrefix."users` ".
+                                                 "ORDER BY username" );
+
+                $UserQuery->loop(function($User) use (&$Users)
+                {
+                    array_push( $Users, array(
+                        "id"   => $User["uid"],
+                        "name" => $User["username"])
+                    );
+                }, $aThrow);
+
+                return $Users;
+            }
+
+            return null;
         }
 
         // -------------------------------------------------------------------------
@@ -288,7 +324,70 @@
 
         public function post($aSubject, $aMessage)
         {
+            $Connector = $this->getConnector();
+            $Connector->beginTransaction();
 
+            $Timestamp = time();
+
+            // Fetch user
+
+            try
+            {
+                $UserQuery = $Connector->prepare("SELECT username FROM `".MYBB_TABLE_PREFIX."users` WHERE uid=:UserId LIMIT 1");
+                $UserQuery->BindValue( ":UserId", MYBB_POSTAS, PDO::PARAM_INT );
+
+                $UserData = $UserQuery->fetchFirst();
+
+                // Create thread
+
+                $ThreadQuery = $Connector->prepare("INSERT INTO `".MYBB_TABLE_PREFIX."threads` ".
+                                                   "(fid, uid, subject, username, dateline, lastpost, lastposter, lastposteruid, visible) VALUES ".
+                                                   "(:ForumId, :UserId, :Subject, :Username, :Now, :Now, :Username, :UserId, 1)");
+
+                $ThreadQuery->BindValue( ":ForumId", MYBB_POSTTO, PDO::PARAM_INT );
+                $ThreadQuery->BindValue( ":UserId", MYBB_POSTAS, PDO::PARAM_INT );
+                $ThreadQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
+                $ThreadQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
+                $ThreadQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
+
+                $ThreadQuery->execute(true);
+                $ThreadId = $Connector->lastInsertId();
+
+                // Create post
+
+                $PostQuery = $Connector->prepare("INSERT INTO `".MYBB_TABLE_PREFIX."posts` ".
+                                              "(tid, fid, uid, username, dateline, subject, message, visible) VALUES ".
+                                              "(:ThreadId, :ForumId, :UserId, :Username, :Now, :Subject, :Text, 1)");
+
+                $PostQuery->BindValue( ":ThreadId", $ThreadId, PDO::PARAM_INT );
+                $PostQuery->BindValue( ":ForumId", MYBB_POSTTO, PDO::PARAM_INT );
+                $PostQuery->BindValue( ":UserId", MYBB_POSTAS, PDO::PARAM_INT );
+                $PostQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
+                $PostQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
+
+                $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
+                $PostQuery->BindValue( ":Text", $aMessage, PDO::PARAM_STR );
+                
+                $PostQuery->execute(true);
+                $PostId = $Connector->lastInsertId();
+
+                // Finish thread
+
+                $ThreadFinishQuery = $Connector->prepare("UPDATE `".MYBB_TABLE_PREFIX."threads` ".
+                                                         "SET firstpost = :PostId ".
+                                                         "WHERE tid = :ThreadId LIMIT 1");
+
+                $ThreadFinishQuery->BindValue( ":ThreadId", $ThreadId, PDO::PARAM_INT );
+                $ThreadFinishQuery->BindValue( ":PostId", $PostId, PDO::PARAM_INT );
+
+                $ThreadFinishQuery->execute(true);
+                $Connector->commit();
+            }
+            catch (PDOException $Exception)
+            {
+                $Connector->rollBack();
+                throw $e;
+            }
         }
     }
 ?>
