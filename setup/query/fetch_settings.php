@@ -17,21 +17,18 @@
     
     $Out->pushValue("binding", $BindingName);
     
-    foreach(PluginRegistry::$Classes as $PluginName)
+    PluginRegistry::ForEachPlugin( function($PluginInstance) use ($BindingName, $Out)
     {
-        $Plugin = new ReflectionClass($PluginName);
-        $PluginInstance = $Plugin->newInstance();
-        
-        if ($PluginInstance->BindingName == $BindingName)
+        if ($PluginInstance->getName() == $BindingName)
         {
             $Value = $PluginInstance->getExternalConfig($_REQUEST["path"]);
             if ($Value != null)
             {
                 $Out->pushValue("settings", $Value);
             }
-            break;
+            return false;
         }
-    }
+    });
     
     $Out->flushJSON();
 ?>

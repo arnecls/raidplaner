@@ -53,12 +53,9 @@
         $IndexStatement = $Connector->prepare( "SHOW INDEXES FROM `".RP_TABLE_PREFIX."Setting` WHERE Key_Name='Unique_Name'" );
         $IndexStatement->setErrorsAsHTML(true);
         
-        if ( $IndexStatement->execute() )
+        if ( $IndexStatement->execute() && ($IndexStatement->getAffectedRows() == 0) )
         {
-            if ( !$IndexStatement->fetch(PDO::FETCH_ASSOC) )
-            {
-                $Queries1["Unique setting names"] = "ALTER TABLE  `".RP_TABLE_PREFIX."Setting` ADD CONSTRAINT `Unique_Name` UNIQUE (`Name`);";
-            }
+            $Queries1["Unique setting names"] = "ALTER TABLE  `".RP_TABLE_PREFIX."Setting` ADD CONSTRAINT `Unique_Name` UNIQUE (`Name`);";
         }
         
         // Static updates
@@ -88,15 +85,15 @@
                                               
         
         $DataStatement->setErrorsAsHTML(true);
+        $UpdateString = "";
             
-        if ( $DataStatement->execute() )
-        {                          
-            $UpdateString = "";
+        $DataStatement->loop( function($Data) use (&$UpdateString)
+        {
+            $UpdateString .= "UPDATE `".RP_TABLE_PREFIX."User` SET Created='".$Data["Start"]."' WHERE UserId=".intval($Data["UserId"])." LIMIT 1;";
+        });
             
-            while ( $Data = $DataStatement->fetch( PDO::FETCH_ASSOC ) )
-            {
-                $UpdateString .= "UPDATE `".RP_TABLE_PREFIX."User` SET Created='".$Data["Start"]."' WHERE UserId=".intval($Data["UserId"])." LIMIT 1;";
-            }
+        if ($UpdateString != "")
+        {
             
             $Connector->beginTransaction();
             $Action = $Connector->prepare( $UpdateString );
@@ -190,7 +187,13 @@
             $UserQuery = $Connector->prepare("SELECT UserId, ExternalId FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding = 'vb3'");
             $UserQuery->setErrorsAsHTML(true);
             
-            if ( $UserQuery->execute() )
+            $AffectedUsers = array();
+            $UserQuery->loop( function($UserData) use (&$AffectedUsers)
+            {
+                array_push($AffectedUsers, $UserData);
+            });
+            
+            if ( sizeof($AffectedUsers) > 0 )
             {                
                 // Update vbulletin users
                 
@@ -198,32 +201,28 @@
                 $VbUserQuery = $VbConnector->prepare("SELECT userid,salt FROM `".VB3_TABLE_PREFIX."user`");
                 $VbUserQuery->setErrorsAsHTML(true);
                 
-                if ( $VbUserQuery->execute() )
-                {
-                    $Error = false;
-                    
-                    // Gather all vbulletin users
-                    
-                    $VbUserSalt = array();
-                    while ( $UserData = $VbUserQuery->fetch(PDO::FETCH_ASSOC) )
-                    {
-                        $VbUserSalt[$UserData["userid"]] = $UserData["salt"];
-                    }
-                    
-                    // Update salt per user
+                // Gather all vbulletin users
                 
-                    while ( $UserData = $UserQuery->fetch(PDO::FETCH_ASSOC) )
+                $VbUserSalt = array();
+                $VbUserQuery->loop( function($UserData) use (&$VbUserSalt)
+                {
+                    $VbUserSalt[$UserData["userid"]] = $UserData["salt"];
+                });
+                
+                // Update salt per user
+                
+                $Error = false;
+                foreach ( $AffectedUsers as $UserData )
+                {
+                    if ( isset($VbUserSalt[$UserData["ExternalId"]]) )
                     {
-                        if ( isset($VbUserSalt[$UserData["ExternalId"]]) )
-                        {
-                            $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Salt = :Salt WHERE UserId = :UserId LIMIT 1");
-                            
-                            $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
-                            $UpdateUser->bindValue(":Salt", $VbUserSalt[$UserData["ExternalId"]], PDO::PARAM_STR);
-                            $UpdateUser->setErrorsAsHTML(true);
-        
-                            $Error = !$UpdateUser->execute();
-                        }
+                        $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Salt = :Salt WHERE UserId = :UserId LIMIT 1");
+                        
+                        $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
+                        $UpdateUser->bindValue(":Salt", $VbUserSalt[$UserData["ExternalId"]], PDO::PARAM_STR);
+                        $UpdateUser->setErrorsAsHTML(true);
+    
+                        $Error = !$UpdateUser->execute();
                     }
                 }
                 
@@ -241,31 +240,28 @@
         $NativeUserQuery = $Connector->prepare("SELECT UserId, Salt, Password FROM `".RP_TABLE_PREFIX."User` WHERE ExternalBinding=\"none\"");
         $NativeUserQuery->setErrorsAsHTML(true);
         
-        if ( $NativeUserQuery->execute() )
+        $Error = false;
+        
+        $NativeUserQuery->loop( function($UserData) use (&$Error)
         {
-            $Error = false;
+            // Old style passwords are stored as sha1 hash -> 160 bits (20 bytes -> 40 char hex)
+            // New style passwords are stored as sha256 hash -> 256 bits (32 bytes -> 64 char hex)
             
-            while ( $UserData = $NativeUserQuery->fetch(PDO::FETCH_ASSOC) )
+            if ( strlen($UserData["Password"]) < 64 )
             {
-                // Old style passwords are stored as sha1 hash -> 160 bits (20 bytes -> 40 char hex)
-                // New style passwords are stored as sha256 hash -> 256 bits (32 bytes -> 64 char hex)
+                $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Password=:Password, BindingActive='false' ".
+                                                  "WHERE UserId= :UserId LIMIT 1");
+                            
+                $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
+                $UpdateUser->bindValue(":Password", hash("sha256", $UserData["Password"].$UserData["Salt"]), PDO::PARAM_STR);
+                $UpdateUser->setErrorsAsHTML(true);
                 
-                if ( strlen($UserData["Password"]) < 64 )
-                {
-                    $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Password=:Password, BindingActive='false' ".
-                                                      "WHERE UserId= :UserId LIMIT 1");
-                                
-                    $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
-                    $UpdateUser->bindValue(":Password", hash("sha256", $UserData["Password"].$UserData["Salt"]), PDO::PARAM_STR);
-                    $UpdateUser->setErrorsAsHTML(true);
-                    
-                    $Error = !$UpdateUser->execute();
-                }
+                $Error = !$UpdateUser->execute();
             }
-            
-            if (!$Error)
-                echo "<div class=\"update_step_ok\">OK</div>";                   
-        }
+        });
+        
+        if (!$Error)
+            echo "<div class=\"update_step_ok\">OK</div>";
                 
         echo "</div>";        
         echo "</div>";

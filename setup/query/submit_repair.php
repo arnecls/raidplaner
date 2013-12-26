@@ -174,7 +174,7 @@
     
     if ($DeleteAttendance->execute())
     {
-        echo "<div class=\"update_step_ok\">".$DeleteAttendance->rowCount()." ".L("ItemsRepaired")." (".L("StrayRoles").")</div>";
+        echo "<div class=\"update_step_ok\">".$DeleteAttendance->getAffectedRows()." ".L("ItemsRepaired")." (".L("StrayRoles").")</div>";
     }
     
     // Delete stray attends from deleted characters
@@ -187,7 +187,7 @@
     
     if ($DeleteAttendance->execute())
     {
-        echo "<div class=\"update_step_ok\">".$DeleteAttendance->rowCount()." ".L("ItemsRepaired")." (".L("StrayCharacters").")</div>";
+        echo "<div class=\"update_step_ok\">".$DeleteAttendance->getAffectedRows()." ".L("ItemsRepaired")." (".L("StrayCharacters").")</div>";
     }
     
     // Delete stray attends from deleted users
@@ -200,7 +200,7 @@
     
     if ($DeleteAttendance->execute())
     {
-        echo "<div class=\"update_step_ok\">".$DeleteAttendance->rowCount()." ".L("ItemsRepaired")." (".L("StrayUsers").")</div>";
+        echo "<div class=\"update_step_ok\">".$DeleteAttendance->getAffectedRows()." ".L("ItemsRepaired")." (".L("StrayUsers").")</div>";
     }
     
     // Convert users with a cleared binding to local users

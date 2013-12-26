@@ -108,13 +108,10 @@
         $TestQuery = $Connector->prepare( "SELECT * FROM `".$Prefix."Setting`" );
         $ExistingSettings = array();
         
-        if ($TestQuery->execute())
+        $TestQuery->loop( function($Row) use ($ExistingSettings)
         {
-            while ($Row = $TestQuery->fetch(PDO::FETCH_ASSOC) )
-            {
-                array_push($ExistingSettings, $Row["Name"]);
-            }
-        }
+            array_push($ExistingSettings, $Row["Name"]);
+        });
         
         if ( !in_array("PurgeRaids", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('PurgeRaids', 7257600, '');" );

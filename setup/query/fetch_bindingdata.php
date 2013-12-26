@@ -31,12 +31,9 @@
     }
     else
     {    
-        foreach(PluginRegistry::$Classes as $PluginName)
+        PluginRegistry::ForEachPlugin( function($PluginInstance) use ($BindingName, $Out)
         {
-            $Plugin = new ReflectionClass($PluginName);
-            $PluginInstance = $Plugin->newInstance();
-            
-            if ($PluginInstance->BindingName == $BindingName)
+            if ($PluginInstance->getName() == $BindingName)
             {
                 $Config = $PluginInstance->getConfig();
                 
@@ -62,9 +59,9 @@
                     $Out->pushError($Exception->getMessage());
                 }
                 
-                break;
+                return false;
             }
-        }
+        });
     }
     
     $Out->flushJSON();

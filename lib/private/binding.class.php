@@ -96,7 +96,7 @@
         
         public function isConfigWriteable()
         {
-            $ConfigFolder = dirname(__FILE__)."/../../config";
+            $ConfigFolder = dirname(__FILE__)."/../config";
             $ConfigFile   = $ConfigFolder."/config.".$this->getName().".php";
             
             return (!file_exists($ConfigFile) && is_writable($ConfigFolder)) || is_writable($ConfigFile);

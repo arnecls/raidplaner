@@ -12,11 +12,9 @@
     
     echo "<test>";
     
-    foreach(PluginRegistry::$Classes as $PluginName)
+    PluginRegistry::ForEachPlugin( function($PluginInstance) use ($Out)
     {
-        $Plugin = new ReflectionClass($PluginName);
-        $PluginInstance = $Plugin->newInstance();
-        $Binding = $PluginInstance->BindingName;
+        $Binding = $PluginInstance->getName();
         
         if ( $_REQUEST[$Binding."_check"] == "true" )
         {
@@ -33,7 +31,7 @@
             
             $Out->FlushXML("");
         }
-    }
+    });
     
     echo "</test>";
 ?>

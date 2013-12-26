@@ -17,7 +17,7 @@ function msgCommentupdate( $aRequest )
         {
             $UpdateQuery = null;
 
-            if ( $CheckQuery->rowCount() > 0 )
+            if ( $CheckQuery->getAffectedRows() > 0 )
             {
                 $UpdateQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` ".
                                                 "SET comment = :Comment, LastUpdate = FROM_UNIXTIME(:Timestamp) ".

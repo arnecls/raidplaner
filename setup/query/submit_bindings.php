@@ -7,11 +7,9 @@
     require_once("../../lib/private/connector.class.php");
     require_once("../../lib/private/userproxy.class.php");
     
-    foreach(PluginRegistry::$Classes as $PluginName)
+    PluginRegistry::ForEachPlugin( function($PluginInstance)
     {
-        $Plugin = new ReflectionClass($PluginName);
-        $PluginInstance = $Plugin->newInstance();
-        $Binding = $PluginInstance->BindingName;
+        $Binding = $PluginInstance->getName();
         
         $PluginInstance->writeConfig(
             $_REQUEST[$Binding."_allow"] == "true", 
@@ -25,7 +23,7 @@
             $_REQUEST[$Binding."_member"], 
             $_REQUEST[$Binding."_raidlead"], 
             $_REQUEST[$Binding."_cookie"]);
-    }
+    });
     
     echo "</bindings>";    
 ?>

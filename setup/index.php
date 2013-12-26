@@ -7,6 +7,34 @@
                        is_writable("../lib/config/config.php");
                        
     $UpdateMode = $ConfigFolderState && $ConfigFileState;
+    
+    if ($UpdateMode)
+    {
+        require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
+        @require_once(dirname(__FILE__)."/../lib/config/config.php");
+        
+        $Connector = Connector::getInstance();
+        
+        $TableQuery = $Connector->prepare("SHOW TABLES");
+        $Tables = array("Attendance", "Character", "Location", "Raid", "Setting", "User", "UserSetting");
+        $TablesOk = false;
+                
+        $TableQuery->loop( function($TableData) use ($Tables, &$TablesOk) {
+            list($key,$TableName) = each($TableData);
+            
+            if (strpos($TableName, RP_TABLE_PREFIX) === 0)
+            {
+                $Name = substr($TableName, strlen(RP_TABLE_PREFIX));
+                if (in_array($Name, $Tables))
+                {
+                    $TablesOk = true;
+                    return false;
+                }
+            }
+        });
+        
+        $UpdateMode = $TablesOk;
+    }
 ?>
 <?php readfile("layout/header.html"); ?>
                 

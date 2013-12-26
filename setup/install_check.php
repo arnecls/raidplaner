@@ -119,24 +119,17 @@
     
     // Plugin config files check
     
-    foreach(PluginRegistry::$Classes as $PluginName)
+    PluginRegistry::ForEachPlugin(function($PluginInstance) use (&$TestsFailed)
     {
-        $Plugin = new ReflectionClass($PluginName);
-        $PluginInstance = $Plugin->newInstance();
-        $Binding = $PluginInstance->BindingName;
+        $Binding = $PluginInstance->getName();
         
-        echo "<br/><span class=\"check_field\">".L($Binding."_ConfigFile")."</span>";
-                                    
-        if ( $PluginInstance->isConfigWriteable() )
-        {
-            echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
-        }
-        else
+        if ( !$PluginInstance->isConfigWriteable() )
         {
             ++$TestsFailed;
+            echo "<br/><span class=\"check_field\">".L($Binding."_ConfigFile")."</span>";
             echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
         }
-    }
+    });
 ?>
 </div>
 <div class="bottom_navigation">

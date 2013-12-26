@@ -49,17 +49,11 @@
         
         $GetVersion = $Connector->prepare("SELECT IntValue FROM `".RP_TABLE_PREFIX."Setting` WHERE Name='Version' LIMIT 1");
 
-        if ( !$GetVersion->execute() )
-        {
-            $Version = 0;
-        }
+       
+        if ( $Data = $GetVersion->fetchFirst() )
+           $Version = intval($Data["IntValue"]);
         else
-        {
-            if ( $Data = $GetVersion->fetch(PDO::FETCH_ASSOC) )
-               $Version = intval($Data["IntValue"]);
-            else
-               $Version = 92;
-        }
+           $Version = 0;
         
         $Patch = $Version % 10;
         $Minor = ($Version / 10) % 10;
