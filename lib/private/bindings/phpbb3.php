@@ -455,7 +455,7 @@
                 $TopicQuery->BindValue( ":Color", $UserData["user_colour"], PDO::PARAM_STR );
                 $TopicQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
 
-                $Connector->run($TopicQuery, true);
+                $TopicQuery->execute(true);
                 $TopicId = $Connector->lastInsertId();
 
                 // Create post
@@ -474,7 +474,7 @@
                 $PostQuery->BindValue( ":Text", $aMessage, PDO::PARAM_STR );
                 $PostQuery->BindValue( ":TextMD5", md5($aMessage), PDO::PARAM_STR );
 
-                $Connector->run($PostQuery, true);
+                $PostQuery->execute(true);
                 $PostId = $Connector->lastInsertId();
 
                 // Finish topic
@@ -486,10 +486,10 @@
                 $TopicFinishQuery->BindValue( ":TopicId", $TopicId, PDO::PARAM_INT );
                 $TopicFinishQuery->BindValue( ":PostId", $PostId, PDO::PARAM_INT );
 
-                $Connector->run($TopicFinishQuery, true);
+                $TopicFinishQuery->execute(true);
                 $Connector->commit();
             }
-            catch (Exception $e)
+            catch (PDOException $Exception)
             {
                 $Connector->rollBack();
                 throw $e;
