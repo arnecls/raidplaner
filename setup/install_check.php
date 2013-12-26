@@ -22,10 +22,9 @@
     // Version check    
     
     echo "<br/><span class=\"check_field\">".L("PHPVersion")." (>= 5.3.0)</span>";
-    $Version = explode('.', phpversion());
     $TestsFailed = 0;
     
-    if ( ($Version[0] > 5) || ($Version[0] == 5 && $Version[1] >= 3) )
+    if ( PHP_VERSION_ID >= 50300 )
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok");
     }

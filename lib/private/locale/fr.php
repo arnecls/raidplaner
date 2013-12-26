@@ -49,6 +49,7 @@
         $gLocale[ "UnappliedChanges" ]         = "Voulez-vous annuler les modifications non sauvegardées?";
         $gLocale[ "DiscardChanges" ]           = "Oui annuler";
         $gLocale[ "to" ]                       = "à";
+        $gLocale[ "PHPVersionWarning" ]        = null;
         
         // Login und user registration
         $gLocale[ "Login" ]                    = "Connexion";

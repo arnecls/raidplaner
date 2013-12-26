@@ -45,6 +45,7 @@
         $gLocale[ "UnappliedChanges" ]         = "Do you want to discard unapplied changes?";
         $gLocale[ "DiscardChanges" ]           = "Yes, discard";
         $gLocale[ "to" ]                       = "to";
+        $gLocale[ "PHPVersionWarning" ]        = "As of Raidplaner version 1.1.0 PHP 5.3 or better is required.<br/>I'm sorry but your server requires an update :(";
         
         // Login und user registration
         $gLocale[ "Login" ]                    = "Login";

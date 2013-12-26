@@ -49,6 +49,7 @@
         $gLocale[ "UnappliedChanges" ]         = "Czy chcesz pominąć wprowadzone zmiany?";
         $gLocale[ "DiscardChanges" ]           = "Tak";
         $gLocale[ "to" ]                       = "do";
+        $gLocale[ "PHPVersionWarning" ]        = null;
         
         // Login und user registration
         $gLocale[ "Login" ]                    = "Zaloguj";
