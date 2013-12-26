@@ -10,9 +10,9 @@ function msgQueryLocations( $aRequest )
 
         // Locations
 
-        $Locations = Array();
-
         $ListLocations = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Location` ORDER BY Name");
+        
+        $Locations = Array();
         $ListLocations->loop( function($Data) use (&$Locations)
         {
             $LocationData = Array(
@@ -22,7 +22,7 @@ function msgQueryLocations( $aRequest )
             );
             
             array_push($Locations, $LocationData);
-        };
+        });
         
         $Out->pushValue("location", $Locations);
 

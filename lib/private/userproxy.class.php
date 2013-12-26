@@ -43,7 +43,7 @@
                 $NativeBinding // native has to be first
             );
             
-            self::$mBindingsByName[$NativeBinding->BindingName] = $NativeBinding;
+            self::$mBindingsByName[$NativeBinding->getName()] = $NativeBinding;
             
             PluginRegistry::ForEachPlugin(function($PluginInstance) 
             {
@@ -675,9 +675,8 @@
 
                 $CharacterQuery->bindValue(":UserId", $this->UserId, PDO::PARAM_INT);
                 
-                $this->Characters = array();
-
-                $CharacterQuery->loop( function($Row) use (&$this)
+                $Characters = array();
+                $CharacterQuery->loop( function($Row) use (&$Characters)
                 {
                     $Character = new CharacterInfo();
                     
@@ -688,8 +687,10 @@
                     $Character->Role1       = $Row["Role1"];
                     $Character->Role2       = $Row["Role2"];
                     
-                    array_push($this->Characters, $Character);
+                    array_push($Characters, $Character);
                 });
+                
+                $this->Characters = $Characters;
             }
         }
         
@@ -705,12 +706,14 @@
 
                 $SettingQuery->bindValue(":UserId", $this->UserId, PDO::PARAM_INT);
                 
-                $this->Settings = array();
+                $Settings = array();
 
-                $SettingQuery->loop( function($Row) use ($this)
+                $SettingQuery->loop( function($Row) use (&$Settings)
                 {
-                    $this->Settings[$Row["Name"]] = array("number" => $Row["IntValue"], "text" => $Row["TextValue"]);
-                }
+                    $Settings[$Row["Name"]] = array("number" => $Row["IntValue"], "text" => $Row["TextValue"]);
+                });
+                
+                $this->Settings = $Settings;
             }
         }
 

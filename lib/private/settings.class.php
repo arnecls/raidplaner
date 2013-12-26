@@ -33,15 +33,17 @@ class Settings
         $Connector = Connector::getInstance();
         $Query = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Setting` ORDER BY Name" );
 
-        $this->Property = Array();
+        $Property = array();
 
-        $Query->loop( function($Data) use (&$this)
+        $Query->loop( function($Data) use (&$Property)
         {
-            $this->Property[$Data["Name"]] = Array(
+            $Property[$Data["Name"]] = Array(
                 "IntValue"  => intval($Data["IntValue"]),
                 "TextValue" => $Data["TextValue"]
             );
         });
+        
+        $this->Property = $Property;
     }
 }
 

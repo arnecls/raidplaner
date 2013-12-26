@@ -247,7 +247,7 @@
                             array_push($Attendees, $AttendeeData);
                         }
                     }
-                }
+                });
                 
                 $Out->pushValue("attendee", $Attendees);
             }

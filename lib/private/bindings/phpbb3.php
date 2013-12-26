@@ -224,7 +224,7 @@
                     $AssignedGroup = "raidlead"; 
                     return false; // ### return, highest possible group ###
                 }
-            }
+            });
 
             return $AssignedGroup;
         }
@@ -431,7 +431,7 @@
                 $UserQuery = $Connector->prepare("SELECT username, user_colour FROM `".PHPBB3_TABLE_PREFIX."users` WHERE user_id=:UserId LIMIT 1");
                 $UserQuery->BindValue( ":UserId", PHPBB3_POSTAS, PDO::PARAM_INT );
                 
-                $UserData = $UserQuery, true->fetchFirst();
+                $UserData = $UserQuery->fetchFirst();
                     
                 // Create topic
                 

@@ -1,5 +1,5 @@
 <?php
-    @require_once(dirname(__FILE__)."/connector.class.php");
+    require_once(dirname(__FILE__)."/connector.class.php");
     
     $gSite = Array(
         "Version"     => 109.0,

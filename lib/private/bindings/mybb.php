@@ -105,7 +105,7 @@
                 $GroupQuery = $Connector->prepare( "SELECT gid, title FROM `".$aPrefix."usergroups` ORDER BY title" );
                 $Groups = array();
                 
-                $GroupQuery->loop(function($Group) using (&$Groups)
+                $GroupQuery->loop(function($Group) use (&$Groups)
                 {
                     array_push( $Groups, array(
                         "id"   => $Group["gid"], 

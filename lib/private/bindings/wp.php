@@ -3,7 +3,7 @@
     
     array_push(PluginRegistry::$Classes, "WPBinding");
     
-    class WPBinding
+    class WPBinding extends Binding
     {
         private static $Itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         private static $BindingName = "wp";
@@ -102,7 +102,7 @@
             if ($Connector != null)
             {
                 $OptionsQuery = $Connector->prepare( "SELECT option_value FROM `".$aPrefix."options` WHERE option_name = \"wp_user_roles\" LIMIT 1" );
-                $Option = $OptionsQuery, $aThrow->fetchFirst();
+                $Option = $OptionsQuery->fetchFirst($aThrow);
                 
                 $Groups = array();
                 $Roles = unserialize($Option["option_value"]);

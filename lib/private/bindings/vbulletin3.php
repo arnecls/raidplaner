@@ -230,7 +230,7 @@
             $UserData = $UserQuery->fetchFirst();
             
             return ($UserData != null)
-                ? $this->generateUserInfo($UserData);
+                ? $this->generateUserInfo($UserData)
                 : null;
         }
         
@@ -249,7 +249,7 @@
             $UserData = $UserQuery->fetchFirst();
             
             return ($UserData != null)
-                ? $this->generateUserInfo($UserData);
+                ? $this->generateUserInfo($UserData)
                 : null;
         }
         

@@ -3,7 +3,7 @@
     
     array_push(PluginRegistry::$Classes, "VanillaBinding");
     
-    class VanillaBinding
+    class VanillaBinding extends Binding
     {
         private static $BindingName = "vanilla";
         private static $Itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

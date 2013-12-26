@@ -190,7 +190,7 @@
                         return false; // ### return, highest possible group ###
                     }
                 }
-            }
+            });
 
             return $AssignedGroup;
         }

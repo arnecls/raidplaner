@@ -20,7 +20,7 @@
         
         // ---------------------------------------------------------------------
         
-        public static ForEachPlugin($aFunction)
+        public static function ForEachPlugin($aFunction)
         {
             if (sizeof(self::$Classes) == 0)
                 return;

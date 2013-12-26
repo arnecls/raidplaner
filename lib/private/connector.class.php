@@ -3,7 +3,7 @@
     require_once(dirname(__FILE__)."/tools_string.php");
     require_once(dirname(__FILE__)."/locale.php");
     require_once(dirname(__FILE__)."/out.class.php");
-    require_once(dirname(__FILE__)."/statement.class.php");
+    require_once(dirname(__FILE__)."/query.class.php");
     
     class Connector extends PDO
     {

@@ -9,7 +9,7 @@ function updateGroup( $Connector, $GroupName, $IdArray )
     $UserGroup->loop( function($User) use (&$CurrentGroupIds)
     {
         array_push( $CurrentGroupIds, intval($User["UserId"]) );
-    }
+    });
 
     $ChangedIds = array_diff( $IdArray, $CurrentGroupIds ); // new ids
 

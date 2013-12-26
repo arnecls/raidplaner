@@ -64,7 +64,7 @@
         abstract public function getConfig();
         abstract public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx);
         
-        abstract public function getExternalConfig($aRelativePath)
+        abstract public function getExternalConfig($aRelativePath);
         abstract public function getGroups($aDatabase, $aPrefix, $aUser, $aPass, $aThrow);
         abstract public function getForums($aDatabase, $aPrefix, $aUser, $aPass, $aThrow);
         abstract public function getUsers($aDatabase, $aPrefix, $aUser, $aPass, $aThrow);
@@ -73,7 +73,7 @@
         abstract public function getExternalLoginData();
         abstract public function getUserInfoByName( $aUserName );
         abstract public function getUserInfoById( $aUserId );
-        abstract public function getMethodFromPass( $aPassword )
+        abstract public function getMethodFromPass( $aPassword );
         abstract public function hash( $aPassword, $aSalt, $aMethod );
         
         // -------------------------------------------------------------------------

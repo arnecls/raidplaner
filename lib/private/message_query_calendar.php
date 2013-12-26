@@ -16,7 +16,7 @@ function getCalStartDay()
     $SettingsQuery = $Connector->prepare( "Select IntValue FROM ".RP_TABLE_PREFIX."Setting WHERE Name = \"StartOfWeek\" LIMIT 1" );
     
     $Data = $SettingsQuery->fetchFirst();
-    $FirstDay = ($Data == null) 1 : intval($Data["IntValue"]);
+    $FirstDay = ($Data == null) ? 1 : intval($Data["IntValue"]);
     
     return $FirstDay;
 }
