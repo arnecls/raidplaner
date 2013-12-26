@@ -8,7 +8,9 @@ function msgUserCreate( $aRequest )
     if ( ALLOW_REGISTRATION )
     {
         $Salt = UserProxy::generateKey128();
-        $HashedPassword = NativeBinding::hash( $aRequest["pass"], $Salt, "none" );
+        $NativeBinding = new NativeBinding();
+        
+        $HashedPassword = $NativeBinding->hash( $aRequest["pass"], $Salt, "none" );
 
         $PublicMode = defined("PUBLIC_MODE") && PUBLIC_MODE;
         $DefaultGroup = ($PublicMode) ? "member" : "none";

@@ -7,7 +7,9 @@
     {
         private static $BindingName = "jml3";
 
-        public static $HashMethod = "jml_md5s";
+        public static $HashMethodMD5  = "jml_md5";
+        public static $HashMethodMD5s = "jml_md5s";
+        public static $HashMethodBF   = "jml_bf";
 
         // -------------------------------------------------------------------------
 
@@ -104,7 +106,6 @@
                 {
                     array_push( $Groups, array(
                         "id"   => $Group["id"],
-
                         "name" => $Group["title"])
                     );
                 }, $aThrow);
@@ -157,19 +158,15 @@
 
         private function generateUserInfo( $aUserData )
         {
-            $Parts = explode(":", $aUserData["password"]);
-            $Password = $Parts[0];
-            $Salt = $Parts[1];
-
             $Info = new UserInfo();
             $Info->UserId      = $aUserData["user_id"];
             $Info->UserName    = $aUserData["username"];
-            $Info->Password    = $Password;
-            $Info->Salt        = $Salt;
+            $Info->Password    = $aUserData["password"];
+            $Info->Salt        = $this->extractSaltPart($aUserData["password"]);
             $Info->SessionSalt = null;
             $Info->Group       = $this->getGroupForUser($aUserData);
-            $Info->BindingName = $this->BindingName;
-            $Info->PassBinding = $this->BindingName;
+            $Info->BindingName = $this->getName();
+            $Info->PassBinding = $this->getName();
 
             return $Info;
         }
@@ -223,17 +220,19 @@
                                           "WHERE LOWER(username) = :Login");
 
             $UserQuery->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
+            
             $UserData = null;
             $Groups = array();
 
-            $UserQuery->loop(function($UserData) use (&$UserData, &$Groups)
+            $UserQuery->loop(function($Data) use (&$UserData, &$Groups)
             {
+                $UserData = $Data;
                 array_push($Groups, $UserData["group_id"]);
             });
-
+            
             if ($UserData == null)
                 return null; // ### return, no users ###
-
+                
             $UserData["Groups"] = $Groups;
             return $this->generateUserInfo($UserData);
         }
@@ -244,16 +243,17 @@
         {
             $Connector = $this->getConnector();
             $UserQuery = $Connector->prepare("SELECT user_id, group_id, username, password, activation ".
-                                          "FROM `".JML3_TABLE_PREFIX."users` ".
-                                          "LEFT JOIN `".JML3_TABLE_PREFIX."user_usergroup_map` ON id=user_id ".
-                                          "WHERE id = :UserId");
+                                             "FROM `".JML3_TABLE_PREFIX."users` ".
+                                             "LEFT JOIN `".JML3_TABLE_PREFIX."user_usergroup_map` ON id=user_id ".
+                                             "WHERE id = :UserId");
 
             $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
             $UserData = null;
             $Groups = array();
 
-            $UserQuery->loop(function($UserData) use (&$UserData, &$Groups)
+            $UserQuery->loop(function($Data) use (&$UserData, &$Groups)
             {
+                $UserData = $Data;
                 array_push($Groups, $UserData["group_id"]);
             });
 
@@ -266,16 +266,51 @@
 
         // -------------------------------------------------------------------------
 
+        private function extractSaltPart( $aPassword )
+        {
+            switch ( $this->getMethodFromPass($aPassword) )
+            {
+            case self::$HashMethodBF:
+                return substr($aPassword, 0, 7+22);
+                
+            case self::$HashMethodMD5:
+                return substr($aPassword, 0, 3+12);
+             
+            default:   
+            case self::$HashMethodMD5s:
+                list($Password,$Salt) = explode(":", $aPassword);
+                return $Salt;
+            }
+        }
+
+        // -------------------------------------------------------------------------
+
         public function getMethodFromPass( $aPassword )
         {
-            return self::$HashMethod;
+            if ( strpos($aPassword, "$2y$") === 0 )
+                return self::$HashMethodBF;
+            
+            if ( strpos($aPassword, "$2a$") === 0 )
+                return self::$HashMethodBF;
+                
+            if ( strpos($aPassword, "$1$") === 0 )
+                return self::$HashMethodMD5;
+                
+            return self::$HashMethodMD5s;
         }
 
         // -------------------------------------------------------------------------
 
         public function hash( $aPassword, $aSalt, $aMethod )
         {
-            return md5($aPassword.$aSalt);
+            switch($aMethod)
+            {
+            case self::$HashMethod_MD5s:
+                return md5($aPassword.$aSalt);
+            
+            default:
+                return crypt($aPassword,$aSalt);
+            }
         }
 
         // -------------------------------------------------------------------------

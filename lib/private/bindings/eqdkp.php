@@ -167,8 +167,8 @@
             $Info->Salt        = self::extractSaltPart($aUserData["user_password"]);
             $Info->SessionSalt = null;
             $Info->Group       = $this->getGroupForUser($aUserData["user_id"]);
-            $Info->BindingName = $this->BindingName;
-            $Info->PassBinding = $this->BindingName;
+            $Info->BindingName = $this->getName();
+            $Info->PassBinding = $this->getName();
 
             return $Info;
         }

@@ -174,8 +174,8 @@
             $Info->Password    = $aUserData["password"];
             $Info->Salt        = $aUserData["salt"];
             $Info->Group       = $this->getGroupForUser($aUserData);
-            $Info->BindingName = $this->BindingName;
-            $Info->PassBinding = $this->BindingName;
+            $Info->BindingName = $this->getName();
+            $Info->PassBinding = $this->getName();
 
             return $Info;
         }

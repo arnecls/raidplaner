@@ -114,7 +114,7 @@
             else
             {
                 $Info->UserId      = $aUserData["UserId"];
-                $Info->BindingName = self::$BindingName;
+                $Info->BindingName = $this->getName();
             }
 
             return $Info;
