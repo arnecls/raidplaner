@@ -22,4 +22,3 @@
     <div class="button_next" style="background-image: url(layout/repair_white.png)"><?php echo L("Continue"); ?></div>
 
 <?php readfile("layout/footer.html"); ?>
-

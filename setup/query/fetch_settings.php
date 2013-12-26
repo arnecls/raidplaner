@@ -5,18 +5,18 @@
     require_once(dirname(__FILE__)."/../../lib/private/userproxy.class.php");
     require_once(dirname(__FILE__)."/../../lib/private/out.class.php");
 
-    $Out = Out::getInstance();  
-        
+    $Out = Out::getInstance();
+
     header("Content-type: application/json");
     header("Cache-Control: no-cache, max-age=0, s-maxage=0");
-    
+
     // Check fields
-    
+
     $BindingName = $_REQUEST["binding"];
     $LocalePrefix = $BindingName."_";
-    
+
     $Out->pushValue("binding", $BindingName);
-    
+
     PluginRegistry::ForEachPlugin( function($PluginInstance) use ($BindingName, $Out)
     {
         if ($PluginInstance->getName() == $BindingName)
@@ -29,6 +29,6 @@
             return false;
         }
     });
-    
+
     $Out->flushJSON();
 ?>

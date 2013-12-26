@@ -19,11 +19,11 @@
     echo L("ChangePermissions")."<br/>";
     echo L("FTPClientHelp")."<br/><br/>";
 
-    // Version check    
-    
+    // Version check
+
     echo "<br/><span class=\"check_field\">".L("PHPVersion")." (>= 5.3.0)</span>";
     $TestsFailed = 0;
-    
+
     if ( PHP_VERSION_ID >= 50300 )
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok");
@@ -33,7 +33,7 @@
         ++$TestsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("OutdatedPHP");
     }
-        
+
     echo " (".phpversion().")</span>";
 
     // PDO check
@@ -41,7 +41,7 @@
     echo "<br/><span class=\"check_field\">".L("PDOModule")."</span>";
     $Extensions = get_loaded_extensions();
     $PDOInstalled = in_array("PDO", $Extensions);
-    
+
     if ( $PDOInstalled )
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
@@ -51,18 +51,18 @@
         ++$TestsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("PDONotFound")."</span>";
     }
-    
+
     // PDO MySQL check
 
     echo "<br/><span class=\"check_field\">".L("PDOMySQLModule")."</span>";
     $PDODriverInstalled = false;
-    
+
     if ( $PDOInstalled )
     {
         $Drivers = PDO::getAvailableDrivers();
         $PDODriverInstalled = in_array("mysql", $Drivers);
     }
-    
+
     if ($PDODriverInstalled)
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
@@ -72,8 +72,8 @@
         ++$TestsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("PDOMySQLNotFound")."</span>";
     }
-    
-    // MCrypt module check         
+
+    // MCrypt module check
 
     echo "<br/><span class=\"check_field\">".L("McryptModule")."</span>";
     if ( in_array("mcrypt", $Extensions) )
@@ -85,12 +85,12 @@
         ++$TestsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("McryptNotFound")."</span>";
     }
-    
+
     // Config folder check
 
     echo "<br/><br/><span class=\"check_field\">".L("ConfigFolder")."</span>";
     $ConfigFolderState = is_writable("../lib/config");
-    
+
     if ( $ConfigFolderState )
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
@@ -100,13 +100,14 @@
         ++$TestsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
     }
-    
+
     // Main config file check
-    
+
     echo "<br/><span class=\"check_field\">".L("MainConfigFile")."</span>";
-    $ConfigFileState = (!file_exists("../lib/config/config.php") && $ConfigFolderState) || 
+    $ConfigFileState = (!file_exists("../lib/config/config.php") && $ConfigFolderState) ||
+
                         is_writable("../lib/config/config.php");
-    
+
     if ( $ConfigFileState )
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
@@ -116,13 +117,13 @@
         ++$TestsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
     }
-    
+
     // Plugin config files check
-    
+
     PluginRegistry::ForEachPlugin(function($PluginInstance) use (&$TestsFailed)
     {
         $Binding = $PluginInstance->getName();
-        
+
         if ( !$PluginInstance->isConfigWriteable() )
         {
             ++$TestsFailed;

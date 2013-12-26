@@ -12,7 +12,8 @@
 </script>
 
 <h2><?php echo L("SetupComplete"); ?></h2>
-<?php 
+<?php
+
     echo L("RaidplanerSetupDone")."<br/>";
     echo L("DeleteSetupFolder")."<br/>";
     echo "<br/>";
@@ -28,6 +29,5 @@
 <div class="bottom_navigation">
     <div class="button_back" style="background-image: url(layout/bindings_white.png)"><?php echo L("Back"); ?></div>
     <div class="button_next" style="background-image: url(layout/install_white.png)"><?php echo L("Continue"); ?></div>
-
 
 <?php readfile("layout/footer.html"); ?>

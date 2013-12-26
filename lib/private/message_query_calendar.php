@@ -14,10 +14,10 @@ function getCalStartDay()
 {
     $Connector = Connector::getInstance();
     $SettingsQuery = $Connector->prepare( "Select IntValue FROM ".RP_TABLE_PREFIX."Setting WHERE Name = \"StartOfWeek\" LIMIT 1" );
-    
+
     $Data = $SettingsQuery->fetchFirst();
     $FirstDay = ($Data == null) ? 1 : intval($Data["IntValue"]);
-    
+
     return $FirstDay;
 }
 
@@ -26,7 +26,7 @@ function getCalStartDay()
 function msgQueryCalendar( $aRequest )
 {
     $Out = Out::getInstance();
-        
+
     if (validUser())
     {
         $Connector = Connector::getInstance();
@@ -42,44 +42,46 @@ function msgQueryCalendar( $aRequest )
                                             "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING (CharacterId) ".
                                             "WHERE ".RP_TABLE_PREFIX."Raid.Start >= FROM_UNIXTIME(:Start) AND ".RP_TABLE_PREFIX."Raid.Start <= FROM_UNIXTIME(:End) ".
                                             "ORDER BY ".RP_TABLE_PREFIX."Raid.Start, ".RP_TABLE_PREFIX."Raid.RaidId" );
-        
+
         // Calculate the correct start end end times
-        
+
         $StartDay = getCalStartDay();
         $StartUTC = mktime(0, 0, 0, $aRequest["Month"], 1, $aRequest["Year"]);
         $StartDate = getdate($StartUTC);
-        
+
         if ( $StartDate["wday"] != $StartDay )
         {
             // Calculate the first day displayed in the calendar
-            
-            $Offset = ($StartDate["wday"] < $StartDay) 
-                ? 7 - ($StartDay - $StartDate["wday"]) 
+
+            $Offset = ($StartDate["wday"] < $StartDay)
+
+                ? 7 - ($StartDay - $StartDate["wday"])
+
                 : ($StartDate["wday"] - $StartDay);
-            
+
             $StartUTC -= 60 * 60 * 24 * $Offset;
             $StartDate = getdate($StartUTC);
         }
-        
+
         // Calculate the last day displayed in the calendar
-        
+
         $EndUTC = $StartUTC + 60 * 60 * 24 * 7 * 6; // + 6 weeks
-        
+
         // Query and return
-        
+
         $ListRaidQuery->bindValue(":Start", $StartUTC, PDO::PARAM_INT);
         $ListRaidQuery->bindValue(":End",   $EndUTC,   PDO::PARAM_INT);
 
         $_SESSION["Calendar"]["month"] = intval($aRequest["Month"]);
         $_SESSION["Calendar"]["year"]  = intval($aRequest["Year"]);
-        
+
         $Out->pushValue("startDay", $StartDate["mday"]);
         $Out->pushValue("startMonth", $StartDate["mon"]);
         $Out->pushValue("startYear", $StartDate["year"]);
         $Out->pushValue("startOfWeek", $StartDay);
         $Out->pushValue("displayMonth", $aRequest["Month"]);
         $Out->pushValue("displayYear", $aRequest["Year"]);
-        
+
         parseRaidQuery( $aRequest, $ListRaidQuery, 0 );
     }
     else
@@ -179,13 +181,13 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
                     "comment"         => $Comment,
                     "role"            => $Role,
                 );
-                
+
                 for ( $i=0; $i < sizeof($gRoles); ++$i )
                 {
                     $Raid["role".$i."Slots"] = $Data["SlotsRole".($i+1)];
                     $Raid["role".$i]         = $RaidInfo[$Data["RaidId"]]["role".$i];
                 }
-                
+
                 array_push($Raids, $Raid);
 
                 $LastRaidId = $Data["RaidId"];

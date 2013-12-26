@@ -3,7 +3,7 @@
 function msgQuerySettings( $aRequest )
 {
     $Out = Out::getInstance();
-        
+
     if ( validAdmin() )
     {
         $Connector = Connector::getInstance();
@@ -16,7 +16,7 @@ function msgQuerySettings( $aRequest )
         // Load users
 
         $UserQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."User` ORDER BY Login, `Group`");
-        
+
         $Users = Array();
         $UserQuery->loop( function($Data) use (&$Users)
         {
@@ -27,10 +27,10 @@ function msgQuerySettings( $aRequest )
                 "binding"       => $Data["ExternalBinding"],
                 "group"         => $Data["Group"]
             );
-            
+
             array_push($Users, $UserData);
         });
-        
+
         $Out->pushValue("user", $Users);
 
         // Load settings
@@ -45,12 +45,12 @@ function msgQuerySettings( $aRequest )
                 "intValue"  => $Data["IntValue"],
                 "textValue" => $Data["TextValue"]
             );
-            
+
             array_push($Settings, $SettingData);
         });
-        
+
         $Out->pushValue("setting", $Settings);
-        
+
         // Load themes
 
         $ThemeFiles = scandir( "../images/themes" );
@@ -64,12 +64,12 @@ function msgQuerySettings( $aRequest )
                 {
                     $Theme = @new SimpleXMLElement( file_get_contents("../images/themes/".$ThemeFileName) );
                     $SimpleThemeFileName = substr($ThemeFileName, 0, strrpos($ThemeFileName, "."));
-                    
+
                     if ($Theme->name != "")
                         $ThemeName = $Theme->name;
                     else
                         $ThemeName = str_replace("_", " ", $SimpleThemeFileName);
-        
+
                     array_push($Themes, Array(
                         "name" => $ThemeName,
                         "file" => $SimpleThemeFileName
@@ -81,7 +81,7 @@ function msgQuerySettings( $aRequest )
                 $Out->pushError("Error parsing themefile ".$ThemeFileName.": ".$e->getMessage());
             }
         }
-        
+
         $Out->pushValue("theme", $Themes);
 
         // Query attendance
@@ -118,29 +118,29 @@ function msgQuerySettings( $aRequest )
                         "unavailable" => $StateCounts["unavailable"],
                         "undecided"   => $StateCounts["undecided"] + $NumRaidsRemain
                     );
-                    
+
                     array_push($Attendances, $AttendanceData);
                 }
-                
+
                 // Clear cache
-                
+
                 $StateCounts["ok"] = 0;
                 $StateCounts["available"] = 0;
                 $StateCounts["unavailable"] = 0;
                 $StateCounts["undecided"] = 0;
                 $NumRaidsRemain = 0;
-                
+
                 $UserId = $Data["UserId"];
                 $MainCharName = $Data["Name"];
-                
+
                 // Fetch number of attendable raids
-                
+
                 $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
                                               "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now)" );
-                    
+
                 $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
                 $Raids->bindValue( ":Created", $Data["CreatedUTC"], PDO::PARAM_INT );
-        
+
                 $RaidCountData = $Raids->fetchFirst();
                 $NumRaidsRemain = ($RaidCountData == null) ? 0 : $RaidCountData["NumberOfRaids"];
             }
@@ -148,7 +148,7 @@ function msgQuerySettings( $aRequest )
             $StateCounts[$Data["Status"]] += $Data["Count"];
             $NumRaidsRemain -= $Data["Count"];
         });
-        
+
         // Push last user
 
         if ($UserId != 0)
@@ -161,12 +161,12 @@ function msgQuerySettings( $aRequest )
                 "unavailable" => $StateCounts["unavailable"],
                 "undecided"   => $StateCounts["undecided"] + $NumRaidsRemain,
             );
-            
+
             array_push($Attendances, $AttendanceData);
         }
-            
+
         $Out->pushValue("attendance", $Attendances);
-        
+
         // Locations
 
         msgQueryLocations( $aRequest );

@@ -21,7 +21,6 @@ $gRoles = Array(
 
 assert( sizeof($gRoles) <= 5 );
 
-
 $gRoleImages = Array(
     "images/roles/slot_role4.png",
     "images/roles/slot_role2.png",

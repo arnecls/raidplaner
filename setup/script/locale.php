@@ -9,20 +9,26 @@ var gLocale = {
         $first = true;
         while (list($Key, $Value) = each($gLocale))
         {
-            if ($first) 
+            if ($first)
+
                 $first = false;
-            else 
+            else
+
                 echo ",\n    ";
-            
+
             $Flags = (PHP_VERSION_ID >= 50400) ? ENT_COMPAT | ENT_XHTML : ENT_COMPAT;
-            echo $Key." : \"".htmlentities($Value, $Flags, 'UTF-8')."\"";   
-        }    
-    ?>    
+            echo $Key." : \"".htmlentities($Value, $Flags, 'UTF-8')."\"";
+
+        }
+
+    ?>
+
 };
 
 // -----------------------------------------------------------------------------
 
-function L( aKey ) 
+function L( aKey )
+
 {
     if ( gLocale[aKey] == null )
         return "LOCA_MISSING_" + aKey;

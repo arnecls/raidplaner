@@ -82,7 +82,7 @@ function msgSettingsupdate( $aRequest )
         // Update settings
 
         $ExistingSettings = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Setting`" );
-        
+
         $CurrentValues = array();
         $ExistingSettings->loop( function($Data) use (&$CurrentValues)
         {
@@ -118,7 +118,7 @@ function msgSettingsupdate( $aRequest )
             }
 
             $Connector->beginTransaction();
-            
+
             if ( !$SettingsUpdate->execute() )
             {
                 $Connector->rollBack();
@@ -132,7 +132,7 @@ function msgSettingsupdate( $aRequest )
         // Update locations
 
         $ExistingLocations = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Location`" );
-        
+
         $CurrentValues = array();
         $ExistingLocations->loop( function($Data) use (&$CurrentValues)
         {
@@ -144,8 +144,8 @@ function msgSettingsupdate( $aRequest )
 
         // Build location query
 
-		if (isset($aRequest["locationIds"]))
-		{
+        if (isset($aRequest["locationIds"]))
+        {
             for ( $i=0; $i < sizeof($aRequest["locationIds"]); ++$i )
             {
                 $LocationId      = intval($aRequest["locationIds"][$i]);
@@ -162,7 +162,7 @@ function msgSettingsupdate( $aRequest )
                     $QueryString .= "UPDATE `".RP_TABLE_PREFIX."Location` SET Name = :Name".$LocationId.", Image = :Image".$LocationId." WHERE LocationId=".$LocationId."; ";
                 }
             }
-		}
+        }
 
         if ( isset($aRequest["locationRemoved"]) )
         {
@@ -176,8 +176,8 @@ function msgSettingsupdate( $aRequest )
         }
 
         if ( $QueryString != "" )
-	    {
-		    $LocationUpdate = $Connector->prepare( $QueryString );
+        {
+            $LocationUpdate = $Connector->prepare( $QueryString );
 
             foreach( $BindValues as $BindData )
             {
@@ -219,39 +219,39 @@ function msgSettingsupdate( $aRequest )
 
         if ( !updateGroup( $Connector, "admin", $AdminIds ) )
             return;
-            
+
         // Update unlinked users
-        
+
         foreach ( $UnlinkedIds as $UserId )
         {
             $UnlinkUser = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET `BindingActive` = 'false' WHERE UserId = :UserId LIMIT 1" );
             $UnlinkUser->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-    
+
             if ( !$UnlinkUser->execute() )
             {
                 $Connector->rollBack();
                 return; // ### return, error ###
             }
         }
-        
+
         // Update relinked users
-        
+
         foreach ( $RelinkedIds as $UserId )
         {
             $UserInfo = tryGetUserLink($UserId);
-            
+
             if ( $UserInfo != null )
             {
                 $UpdateQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
                                                    "Password = :Password, Salt = :Salt, `Group` = :Group, ExternalBinding = :Binding, BindingActive = 'true' ".
                                                    "WHERE UserId = :UserId LIMIT 1" );
-            
+
                 $UpdateQuery->bindValue( ":Password", $UserInfo->Password,    PDO::PARAM_STR );
                 $UpdateQuery->bindValue( ":Group",    $UserInfo->Group,       PDO::PARAM_STR );
                 $UpdateQuery->bindValue( ":Salt",     $UserInfo->Salt,        PDO::PARAM_STR );
                 $UpdateQuery->bindValue( ":Binding",  $UserInfo->BindingName, PDO::PARAM_STR );
                 $UpdateQuery->bindValue( ":UserId",   $UserId,                PDO::PARAM_INT );
-                
+
                 if ( !$UpdateQuery->execute() )
                 {
                     $Connector->rollBack();

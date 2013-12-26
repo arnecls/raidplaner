@@ -2,7 +2,7 @@
     function msgRaidDetail( $aRequest )
     {
         $Out = Out::getInstance();
-            
+
         if (validUser())
         {
             $Out->pushValue("show", $aRequest["showPanel"]);
@@ -31,7 +31,7 @@
                 $StartDate    = getdate($Data["StartUTC"]);
                 $EndDate      = getdate($Data["EndUTC"]);
                 $EndTimestamp = $Data["EndUTC"];
-                
+
                 $Out->pushValue("raidId", $Data["RaidId"]);
                 $Out->pushValue("locationid", $Data["LocationId"]);
                 $Out->pushValue("locationname", $Data["LocationName"]);
@@ -46,7 +46,7 @@
                 $Out->pushValue("description", $Data["Description"]);
                 $Out->pushValue("slots", Array($Data["SlotsRole1"], $Data["SlotsRole2"], $Data["SlotsRole3"], $Data["SlotsRole4"], $Data["SlotsRole5"]));
                 $Attendees = Array();
-                
+
                 $MaxAttendanceId = 1;
 
                 if ( $Data["UserId"] != NULL )
@@ -60,7 +60,7 @@
                         {
                             array_push( $Participants, intval($Data["UserId"]) );
                         }
-                        
+
                         if ( $Data["CharacterId"] == 0 )
                         {
                             // CharacterId is 0 on random players or players that are absent
@@ -77,7 +77,7 @@
 
                                 $CharQuery->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
                                 $CharData = $CharQuery->fetchFirstOfLoop();
-                                
+
                                 if ( ($CharData != null) && ($CharData["CharacterId"] != null) )
                                 {
                                     $AttendeeData = Array(
@@ -96,8 +96,9 @@
                                         "comment"   => $Data["Comment"],
                                         "character" => Array()
                                     );
-                                    
-                                    $CharQuery->loop(function($CharData) use (&$AttendeeData) 
+
+                                    $CharQuery->loop(function($CharData) use (&$AttendeeData)
+
                                     {
                                         $Character = Array(
                                             "id"        => $CharData["CharacterId"],
@@ -107,7 +108,7 @@
                                             "role1"     => $CharData["Role1"],
                                             "role2"     => $CharData["Role2"]
                                         );
-                                        
+
                                         array_push($AttendeeData["character"], $Character);
                                     });
 
@@ -117,7 +118,7 @@
                             else
                             {
                                 // CharacterId and UserId set to 0 means "random player"
-                                
+
                                 $AttendeeData = Array(
                                     "id"        => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
                                     "hasId"     => true,
@@ -175,10 +176,10 @@
                                     "role1"     => $CharData["Role1"],
                                     "role2"     => $CharData["Role2"]
                                 );
-                                
+
                                 array_push($AttendeeData["character"], $Character);
                             });
-                            
+
                             array_push($Attendees, $AttendeeData);
                         }
                     });
@@ -201,18 +202,18 @@
                                                         "FROM `".RP_TABLE_PREFIX."Character` LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
                                                         "WHERE UserId = :UserId AND Created < FROM_UNIXTIME(:RaidEnd) ".
                                                         "ORDER BY Mainchar, CharacterId ASC" );
-                                                        
+
                         $CharQuery->bindValue( ":UserId", $User["UserId"], PDO::PARAM_INT );
                         $CharQuery->bindValue( ":RaidEnd", $EndTimestamp, PDO::PARAM_INT );
                         $UserData = $CharQuery->fetchFirstOfLoop();
-                        
+
                         if ( $UserData != null )
                         {
                             // Absent user have no attendance Id, so we need to generate one
                             // that is not in use (for this raid).
-                            
+
                             ++$MaxAttendanceId;
-                                                        
+
                             $AttendeeData = Array(
                                 "id"        => $MaxAttendanceId,
                                 "hasId"     => false,
@@ -240,7 +241,7 @@
                                     "role1"     => $UserData["Role1"],
                                     "role2"     => $UserData["Role2"]
                                 );
-                                
+
                                 array_push($AttendeeData["character"], $Character);
                             });
 
@@ -248,7 +249,7 @@
                         }
                     }
                 });
-                
+
                 $Out->pushValue("attendee", $Attendees);
             }
 

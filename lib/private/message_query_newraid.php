@@ -3,7 +3,7 @@
 function msgQueryNewRaidData( $aRequest )
 {
     $Out = Out::getInstance();
-    
+
     if ( validRaidlead() )
     {
         $Connector = Connector::getInstance();
@@ -22,7 +22,7 @@ function msgQueryNewRaidData( $aRequest )
                 "name"  => $Data["Name"],
                 "value" => null
             );
-            
+
             if ( in_array($Data["Name"], $IntOfInterest) )
             {
                 $KeyValue["value"] = $Data["IntValue"];
@@ -31,7 +31,7 @@ function msgQueryNewRaidData( $aRequest )
             {
                 $KeyValue["value"] = $Data["TextValue"];
             }
-            
+
             array_push($Settings, $KeyValue);
         });
 

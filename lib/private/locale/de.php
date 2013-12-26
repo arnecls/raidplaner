@@ -1,7 +1,7 @@
 <?php
     if ( defined("LOCALE_MAIN") )
     {
-        
+
         // Classes
         $gLocale[ "Deathknight" ]              = "Todesritter";
         $gLocale[ "Druid" ]                    = "Druide";
@@ -14,12 +14,12 @@
         $gLocale[ "Shaman" ]                   = "Schamane";
         $gLocale[ "Warlock" ]                  = "Hexenmeister";
         $gLocale[ "Warrior" ]                  = "Krieger";
-        
+
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
         $gLocale[ "Healer" ]                   = "Heiler";
         $gLocale[ "Damage" ]                   = "Schaden";
-        
+
         // Pre-loading checks
         $gLocale[ "ContinueNoUpdate" ]         = "Ohne Aktualisierung fortfahren";
         $gLocale[ "UpdateBrowser" ]            = "Bitte aktualisiere deinen Browser";
@@ -28,10 +28,11 @@
         $gLocale[ "DownloadNewBrowser" ]       = "Du solltest deinen Browser aktualisieren oder einen der folgenden Browser herunterladen.";
         $gLocale[ "RaidplanerNotConfigured" ]  = "Der Raidplaner ist noch nicht konfiguriert oder benötigt ein Update.";
         $gLocale[ "PleaseRunSetup" ]           = "Bitte führe den <a href=\"setup\">Setup</a> aus oder befolge die Instruktionen für eine <a href=\"http://code.google.com/p/ppx-raidplaner/wiki/ManualSetup\">manuelle Installation</a>.";
-        
+
         // General
         $gLocale[ "Reserved" ]                 = "Reserviert";
-        $gLocale[ "Error" ]                    = "Fehler.";    
+        $gLocale[ "Error" ]                    = "Fehler.";
+
         $gLocale[ "Apply" ]                    = "Änderungen speichern";
         $gLocale[ "AccessDenied" ]             = "Zugriff verweigert";
         $gLocale[ "ForeignCharacter" ]         = "Fremder Charakter";
@@ -47,7 +48,7 @@
         $gLocale[ "DiscardChanges" ]           = "Ja, verwerfen";
         $gLocale[ "to" ]                       = "bis";
         $gLocale[ "PHPVersionWarning" ]        = "Seit Raidplaner Version 1.1.0 wird PHP 5.3 oder besser benötigt.<br/>Es tut mir leid, aber dein Server benötigt ein Update :(";
-        
+
         // Login und user registration
         $gLocale[ "Login" ]                    = "Anmelden";
         $gLocale[ "Logout" ]                   = "Abmelden";
@@ -65,7 +66,7 @@
         $gLocale[ "NoSuchUser" ]               = "Der angegebene Benutzer konnte nicht gefunden werden.";
         $gLocale[ "HashingInProgress" ]        = "Passwort hashing";
         $gLocale[ "PassStrength"]              = "Passwortstärke";
-        
+
         // Calendar
         $gLocale[ "Calendar" ]                 = "Kalender";
         $gLocale[ "January" ]                  = "Januar";
@@ -79,14 +80,16 @@
         $gLocale[ "September" ]                = "September";
         $gLocale[ "October" ]                  = "Oktober";
         $gLocale[ "November" ]                 = "November";
-        $gLocale[ "December" ]                 = "Dezember";    
+        $gLocale[ "December" ]                 = "Dezember";
+
         $gLocale[ "Monday" ]                   = "Montag";
         $gLocale[ "Tuesday" ]                  = "Dienstag";
         $gLocale[ "Wednesday" ]                = "Mittwoch";
         $gLocale[ "Thursday" ]                 = "Donnerstag";
         $gLocale[ "Friday" ]                   = "Freitag";
         $gLocale[ "Saturday" ]                 = "Samstag";
-        $gLocale[ "Sunday" ]                   = "Sonntag";          
+        $gLocale[ "Sunday" ]                   = "Sonntag";
+
         $gLocale[ "Mon" ]                      = "Mo";
         $gLocale[ "Tue" ]                      = "Di";
         $gLocale[ "Wed" ]                      = "Mi";
@@ -97,7 +100,8 @@
         $gLocale[ "NotSignedUp" ]              = "Nicht angemeldet";
         $gLocale[ "Absent" ]                   = "Abgemeldet";
         $gLocale[ "QueuedAs" ]                 = "Auf der Warteliste als ";
-        $gLocale[ "Raiding" ]                  = "Aufgestellt als ";    
+        $gLocale[ "Raiding" ]                  = "Aufgestellt als ";
+
         $gLocale[ "WhyAbsent" ]                = "Bitte teile uns mit warum du abwesend bist.";
         $gLocale[ "SetAbsent" ]                = "Ich bin abwesend";
         $gLocale[ "Comment" ]                  = "Kommentar";
@@ -106,11 +110,12 @@
         $gLocale[ "RepeatDay" ]                = "Tage lang wiederholen";
         $gLocale[ "RepeatWeek" ]               = "Wochen lang wiederholen";
         $gLocale[ "RepeatMonth" ]              = "Monate lang wiederholen";
-        
+
         // Raid
         $gLocale[ "Raid" ]                     = "Raid";
         $gLocale[ "Upcoming" ]                 = "Anstehende Raids";
-        $gLocale[ "CreateRaid" ]               = "Raid anlegen";    
+        $gLocale[ "CreateRaid" ]               = "Raid anlegen";
+
         $gLocale[ "NewDungeon" ]               = "Neue Instanz";
         $gLocale[ "Description" ]              = "Beschreibung";
         $gLocale[ "DefaultRaidMode" ]          = "Voreingestellte Anmeldeform";
@@ -118,13 +123,15 @@
         $gLocale[ "RaidOpen" ]                 = "Raid freigegeben";
         $gLocale[ "RaidLocked" ]               = "Raid gesperrt";
         $gLocale[ "RaidCanceled" ]             = "Raid abgesagt";
-        $gLocale[ "DeleteRaid" ]               = "Raid entfernen";    
+        $gLocale[ "DeleteRaid" ]               = "Raid entfernen";
+
         $gLocale[ "ConfirmRaidDelete" ]        = "Soll dieser Raid wirklich gelöschen werden?";
         $gLocale[ "Players" ]                  = "Spieler";
         $gLocale[ "RequiredForRole" ]          = "Benötigt für Rolle";
         $gLocale[ "AbsentPlayers" ]            = "Abgemeldete Spieler";
         $gLocale[ "UndecidedPlayers" ]         = "Unentschlossene Spieler";
-        $gLocale[ "AbsentNoReason" ]           = "Kein Grund angegeben.";   
+        $gLocale[ "AbsentNoReason" ]           = "Kein Grund angegeben.";
+
         $gLocale[ "Undecided" ]                = "Hat noch keine Aussage getroffen.";
         $gLocale[ "MarkAsAbesent" ]            = "Als abwesend melden";
         $gLocale[ "MakeAbsent" ]               = "Spieler wird nicht anwesend sein";
@@ -134,7 +141,7 @@
         $gLocale[ "SwitchChar" ]               = "Charakter gewechselt";
         $gLocale[ "RaidNotFound" ]             = "Raid konnte nicht gefunden werden.";
         $gLocale[ "RaidSetup" ]                = "Aufstellung";
-        
+
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
         $gLocale[ "History" ]                  = "Vergangene Raids";
@@ -165,24 +172,28 @@
         $gLocale[ "NoEndDate" ]                = "Bitte gebe den letzten Tag deines Urlaubs an.";
         $gLocale[ "VacationMessage" ]          = "Urlaubsbenachrichtigung";
         $gLocale[ "ClearVacation" ]            = "Urlaubsdaten löschen";
-        
-        // Settings           
+
+        // Settings
+
         $gLocale[ "Settings" ]                 = "Einstellungen";
         $gLocale[ "Locked" ]                   = "Gesperrt";
         $gLocale[ "Members" ]                  = "Mitglieder";
         $gLocale[ "Raidleads" ]                = "Raidleiter";
-        $gLocale[ "Administrators" ]           = "Administratoren";        
+        $gLocale[ "Administrators" ]           = "Administratoren";
+
         $gLocale[ "ConfirmDeleteUser" ]        = "Willst du diesen Benutzer wirklich löschen?";
         $gLocale[ "DeleteUser" ]               = "Benutzer entfernen";
         $gLocale[ "MoveUser" ]                 = "Benutzer verschieben";
         $gLocale[ "UnlinkUser" ]               = "Synchronisation beenden und in lokalen Nutzer konvertieren.";
         $gLocale[ "LinkUser" ]                 = "Synchronisiere Nutzer";
-        $gLocale[ "SyncFailed" ]               = "Synchronisation fehlgeschlagen.</br>Es konnte kein passender Benutzer gefunden werden.";        
+        $gLocale[ "SyncFailed" ]               = "Synchronisation fehlgeschlagen.</br>Es konnte kein passender Benutzer gefunden werden.";
+
         $gLocale[ "EditForeignCharacters" ]    = "Charaktere bearbeiten für Benutzer";
         $gLocale[ "ConfirmDeleteLocation" ]    = "Möchtest du diese Instanz wirklich löschen?";
         $gLocale[ "NoteDeleteRaidsToo" ]       = "Alle Raids in dieser Instanz werden ebenfalls gelöscht.";
         $gLocale[ "DeleteRaids" ]              = "Lösche Raids ";
-        $gLocale[ "DeleteLocationRaids" ]      = "Instanz und Raids entfernen";        
+        $gLocale[ "DeleteLocationRaids" ]      = "Instanz und Raids entfernen";
+
         $gLocale[ "LockRaids" ]                = "Sperre Raids";
         $gLocale[ "AfterDone" ]                = "nach Ende eines Raids";
         $gLocale[ "BeforeStart" ]              = "bevor ein Raid startet";
@@ -204,13 +215,14 @@
         $gLocale[ "RaidModeManual" ]           = "Aufstellung durch Raidleiter";
         $gLocale[ "RaidModeOverbook" ]         = "Durch Raidleiter mit Überbuchen";
         $gLocale[ "RaidModeAttend" ]           = "Aufstellung nach Anmeldung";
-        $gLocale[ "RaidModeAll" ]              = "Nur Liste";        
+        $gLocale[ "RaidModeAll" ]              = "Nur Liste";
+
         $gLocale[ "UpdateCheck" ]              = "Suche nach Updates";
         $gLocale[ "UpToDate" ]                 = "Dieser Raidplaner ist aktuell.";
         $gLocale[ "NewVersionAvailable" ]      = "Es ist eine neue Version verfügbar:";
         $gLocale[ "VisitProjectPage" ]         = "Zur Projekt-Homepage";
     }
-    
+
     if ( defined("LOCALE_SETUP") )
     {
         // General
@@ -221,15 +233,16 @@
         $gLocale[ "Ignore" ]                   = "Ignorieren";
         $gLocale[ "Retry" ]                    = "Wiederholen";
         $gLocale[ "DatabaseError" ]            = "Datenbank Fehler";
-        
+
         // Menu
         $gLocale[ "Install" ]                  = "Installieren";
-        $gLocale[ "Update" ]                   = "Updaten";        
+        $gLocale[ "Update" ]                   = "Updaten";
+
         $gLocale[ "EditBindings" ]             = "Anbindungen bearbeiten";
         $gLocale[ "EditConfig" ]               = "Konfiguration bearbeiten";
         $gLocale[ "ResetPassword" ]            = "Admin Passwort setzen";
         $gLocale[ "RepairDatabase" ]           = "Datenbank reparieren";
-        
+
         // Checks
         $gLocale[ "FilesystemChecks" ]         = "Überprüfung der Dateisystemrechte.";
         $gLocale[ "NotWriteable" ]             = "Keine Schreibrechte";
@@ -246,9 +259,10 @@
         $gLocale[ "PDOModule" ]                = "PDO Modul";
         $gLocale[ "PDONotFound" ]              = "PHP wurde nicht mit PDO konfiguriert";
         $gLocale[ "PDOMySQLModule" ]           = "PDO MySQL Treiber";
-        $gLocale[ "PDOMySQLNotFound" ]         = "PDO MySQL Treiber nicht gefunden";        
+        $gLocale[ "PDOMySQLNotFound" ]         = "PDO MySQL Treiber nicht gefunden";
+
         $gLocale[ "PHPRequirements" ]          = "Der Raidplaner benötigt eine PHP 5.2 Installation die mit der mcrypt und PDO Erweiterung Konfiguriert wurde.";
-        
+
         // Database setup
         $gLocale[ "ConfigureDatabase" ]        = "Bitte gib die Konfigurationsdaten der Datenbank an in der die Raidplaner Daten abgelegt werden können.";
         $gLocale[ "SameAsForumDatabase" ]      = "Wenn der Raidplaner an ein externes Forum gebunden werden soll, so müssen die Datenbanken auf dem gleichen Server liegen.";
@@ -262,7 +276,7 @@
         $gLocale[ "VerifySettings" ]           = "Überprüfe diese Einstellung";
         $gLocale[ "ConnectionTestFailed" ]     = "Verbindungstest fehlgeschlagen";
         $gLocale[ "ConnectionTestOk" ]         = "Verbindungstest erfolgreich";
-        
+
         // Registration and admin
         $gLocale[ "AdminPassword" ]            = "Passwort für den Administrator";
         $gLocale[ "AdminPasswordSetup"]        = "Der Administrator (Anmeldename \"admin\") ist ein Benutzer der immer alle verfügbaren Rechte besitzt.";
@@ -275,7 +289,7 @@
         $gLocale[ "AllowGroupSync" ]           = "Gruppen externer Nutzer synchronisieren";
         $gLocale[ "AllowPublicMode" ]          = "Neue Benutzer als Mitglieder registrieren (nicht empfohlen)";
         $gLocale[ "UseClearText" ]             = "Übertragung von Klartext Passwörtern (nicht empfohlen)";
-        
+
         // Install/Update
         $gLocale[ "SetupComplete" ]            = "Installation abgeschlossen";
         $gLocale[ "UpdateComplete" ]           = "Update abgeschlossen";
@@ -295,7 +309,7 @@
         $gLocale[ "UpdateErrors" ]             = "Fehler während des Updates";
         $gLocale[ "ReportedErrors" ]           = "Die folgenden Fehler wurden während des updates gemeldet.";
         $gLocale[ "PartiallyUpdated" ]         = "Dies kann auf eine bereits (teilweise) upgedatete Datenbank hinweisen.";
-        
+
         // Repair
         $gLocale[ "Repair" ]                   = "Datenbank Inkonsistenzen reparieren";
         $gLocale[ "GameconfigProblems" ]       = "Durch Veränderungen in der lib/gameconfig.php können ungütige Datenbankeinträge entstehen (z.B. Charaktere mit ungütigen Rollen).";
@@ -304,7 +318,8 @@
         $gLocale[ "BrokenDatabase" ]           = "Die Datenbank scheint defekt zu sein";
         $gLocale[ "EnsureValidDatabase" ]      = "Korrektheit der Datenbank sicherstellen";
         $gLocale[ "ItemsRepaired" ]            = "Einträge repariert";
-        $gLocale[ "ItemsToResolve" ]           = "Einträge müssen manuell aufgelöst werden";        
+        $gLocale[ "ItemsToResolve" ]           = "Einträge müssen manuell aufgelöst werden";
+
         $gLocale[ "InvalidCharacters" ]        = "Ungültige Charaktere";
         $gLocale[ "InvalidAttendances" ]       = "Ungültige Anmeldungen";
         $gLocale[ "Delete" ]                   = "Löschen";
@@ -313,10 +328,11 @@
         $gLocale[ "StrayCharacters" ]          = "Gelöschte Charaktere";
         $gLocale[ "StrayUsers" ]               = "Gelöschte Benutzer";
         $gLocale[ "StrayBindings" ]            = "Ungütige Benutzer";
-        
+
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Lade Gruppen mit den angegebenen Verbindungsdaten";
-        $gLocale[ "AutoMemberLogin" ]          = "\"Mitglieder\" Gruppen:"; 
+        $gLocale[ "AutoMemberLogin" ]          = "\"Mitglieder\" Gruppen:";
+
         $gLocale[ "AutoLeadLogin" ]            = "\"Raidleiter\" Gruppen:";
         $gLocale[ "ReloadFailed" ]             = "Ladevorgang fehlgeschlagen";
         $gLocale[ "LoadSettings" ]             = "Einstellungen automatisch ermitteln";
@@ -329,10 +345,12 @@
         $gLocale[ "CookieNote" ]               = "Automatisches einloggen erfordert, dass der raidplaner in einem Unterordner des Cookie-Pfads diese Bindings installiert ist. ".
                                                  "Dieser muss ggF. in der Konfiguration dieses Bindings angepasst werden.";
         $gLocale[ "PostToForum" ]              = "Poste neue Raids in diesem Forum";
-        $gLocale[ "PostAsUser" ]               = "Poste neue Raids mit diesem Benutzer"; 
-        $gLocale[ "DisablePosting" ]           = "Keine Postings erstellen";                                        
-        
-        // PHPBB3 
+        $gLocale[ "PostAsUser" ]               = "Poste neue Raids mit diesem Benutzer";
+
+        $gLocale[ "DisablePosting" ]           = "Keine Postings erstellen";
+
+        // PHPBB3
+
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";
         $gLocale[ "phpbb3_ConfigFile" ]         = "PHPBB3 Konfigurationsdatei";
         $gLocale[ "phpbb3_Database" ]           = "Name der PHPBB3 Datenbank";
@@ -340,7 +358,7 @@
         $gLocale[ "phpbb3_UserEmpty" ]          = "PHPBB3 Benutzer darf nicht leer sein";
         $gLocale[ "phpbb3_PasswordEmpty" ]      = "PHPBB3 Datenbank Passwort darf nicht leer sein";
         $gLocale[ "phpbb3_DBPasswordsMatch" ]   = "PHPBB3 Datenbank-Passwoerter stimmen nicht überein";
-        
+
         // EQDKP
         $gLocale[ "eqdkp_Binding" ]             = "EQDKP";
         $gLocale[ "eqdkp_ConfigFile" ]          = "EQDKP Konfigurationsdatei";
@@ -349,7 +367,7 @@
         $gLocale[ "eqdkp_UserEmpty" ]           = "EQDKP Benutzer darf nicht leer sein";
         $gLocale[ "eqdkp_PasswordEmpty" ]       = "EQDKP Datenbank Passwort darf nicht leer sein";
         $gLocale[ "eqdkp_DBPasswordsMatch" ]    = "EQDKP Datenbank-Passwörter stimmen nicht überein";
-        
+
         // vBulletin
         $gLocale[ "vb3_Binding" ]               = "vBulletin 3.x/4.x";
         $gLocale[ "vb3_ConfigFile" ]            = "vBulletin Konfigurationsdatei";
@@ -359,7 +377,7 @@
         $gLocale[ "vb3_PasswordEmpty" ]         = "vBulletin Datenbank Passwort darf nicht leer sein";
         $gLocale[ "vb3_DBPasswordsMatch" ]      = "vBulletin Datenbank-Passwörter stimmen nicht überein";
         $gLocale[ "vb3_CookieEx" ]              = "vBulletin Cookie-Prefix";
-        
+
         // MyBB
         $gLocale[ "mybb_Binding" ]              = "MyBB 1.6+";
         $gLocale[ "mybb_ConfigFile" ]           = "MyBB Konfigurationsdatei";
@@ -367,8 +385,8 @@
         $gLocale[ "mybb_DatabaseEmpty" ]        = "Name der MyBB Datenbank darf nicht leer sein";
         $gLocale[ "mybb_UserEmpty" ]            = "MyBB Benutzer darf nicht leer sein";
         $gLocale[ "mybb_PasswordEmpty" ]        = "MyBB Datenbank Passwort darf nicht leer sein.";
-        $gLocale[ "mybb_DBPasswordsMatch" ]     = "MyBB Datenbank-Passwörter stimmen nicht überein.";        
-        
+        $gLocale[ "mybb_DBPasswordsMatch" ]     = "MyBB Datenbank-Passwörter stimmen nicht überein.";
+
         // SMF
         $gLocale[ "smf_Binding" ]               = "Simple Machines Forum 2.x";
         $gLocale[ "smf_ConfigFile" ]            = "SMF Konfigurationsdatei";
@@ -376,8 +394,8 @@
         $gLocale[ "smf_DatabaseEmpty" ]         = "Name der SMF Datenbank darf nicht leer sein";
         $gLocale[ "smf_UserEmpty" ]             = "SMF Benutzer darf nicht leer sein";
         $gLocale[ "smf_PasswordEmpty" ]         = "SMF Datenbank Passwort darf nicht leer sein.";
-        $gLocale[ "smf_DBPasswordsMatch" ]      = "SMF Datenbank-Passwörter stimmen nicht überein.";        
-        
+        $gLocale[ "smf_DBPasswordsMatch" ]      = "SMF Datenbank-Passwörter stimmen nicht überein.";
+
         // Vanilla
         $gLocale[ "vanilla_Binding" ]           = "Vanilla Forum 2.x";
         $gLocale[ "vanilla_ConfigFile" ]        = "Vanilla Konfigurationsdatei";
@@ -386,8 +404,8 @@
         $gLocale[ "vanilla_UserEmpty" ]         = "Vanilla Benutzer darf nicht leer sein";
         $gLocale[ "vanilla_PasswordEmpty" ]     = "Vanilla Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Vanilla Datenbank-Passwörter stimmen nicht überein.";
-        $gLocale[ "vanilla_CookieEx" ]          = "Cookie-Name, Hash-Verfahren (z.B. md5), Cookie-Salt";      
-        
+        $gLocale[ "vanilla_CookieEx" ]          = "Cookie-Name, Hash-Verfahren (z.B. md5), Cookie-Salt";
+
         // Joomla
         $gLocale[ "jml3_Binding" ]              = "Joomla 3.x";
         $gLocale[ "jml3_ConfigFile" ]           = "Joomla3 Konfigurationsdatei";
@@ -395,9 +413,10 @@
         $gLocale[ "jml3_DatabaseEmpty" ]        = "Name der Joomla3 Datenbank darf nicht leer sein";
         $gLocale[ "jml3_UserEmpty" ]            = "Joomla3 Benutzer darf nicht leer sein";
         $gLocale[ "jml3_PasswordEmpty" ]        = "Joomla3 Datenbank Passwort darf nicht leer sein.";
-        $gLocale[ "jml3_DBPasswordsMatch" ]     = "Joomla3 Datenbank-Passwörter stimmen nicht überein.";      
+        $gLocale[ "jml3_DBPasswordsMatch" ]     = "Joomla3 Datenbank-Passwörter stimmen nicht überein.";
+
         $gLocale[ "jml3_CookieEx" ]             = "Joomla3 Secret";
-        
+
         // Drupal
         $gLocale[ "drupal_Binding" ]            = "Drupal 7.6+";
         $gLocale[ "drupal_ConfigFile" ]         = "Drupal Konfigurationsdatei";
@@ -405,9 +424,10 @@
         $gLocale[ "drupal_DatabaseEmpty" ]      = "Name der Drupal Datenbank darf nicht leer sein";
         $gLocale[ "drupal_UserEmpty" ]          = "Drupal Benutzer darf nicht leer sein";
         $gLocale[ "drupal_PasswordEmpty" ]      = "Drupal Datenbank Passwort darf nicht leer sein.";
-        $gLocale[ "drupal_DBPasswordsMatch" ]   = "Drupal Datenbank-Passwörter stimmen nicht überein.";      
+        $gLocale[ "drupal_DBPasswordsMatch" ]   = "Drupal Datenbank-Passwörter stimmen nicht überein.";
+
         $gLocale[ "drupal_CookieEx" ]           = "Drupal Basis-URL";
-        
+
         // Wordpress
         $gLocale[ "wp_Binding" ]                = "Wordpress 3.x";
         $gLocale[ "wp_ConfigFile" ]             = "Wordpress Konfigurationsdatei";
@@ -415,7 +435,8 @@
         $gLocale[ "wp_DatabaseEmpty" ]          = "Name der Wordpress Datenbank darf nicht leer sein";
         $gLocale[ "wp_UserEmpty" ]              = "Wordpress Benutzer darf nicht leer sein";
         $gLocale[ "wp_PasswordEmpty" ]          = "Wordpress Datenbank Passwort darf nicht leer sein.";
-        $gLocale[ "wp_DBPasswordsMatch" ]       = "Wordpress Datenbank-Passwörter stimmen nicht überein.";      
+        $gLocale[ "wp_DBPasswordsMatch" ]       = "Wordpress Datenbank-Passwörter stimmen nicht überein.";
+
         $gLocale[ "wp_CookieEx" ]               = "LOGGED_IN_KEY gefolgt von LOGGED_IN_SALT";
     }
 ?>

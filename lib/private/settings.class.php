@@ -42,7 +42,7 @@ class Settings
                 "TextValue" => $Data["TextValue"]
             );
         });
-        
+
         $this->Property = $Property;
     }
 }

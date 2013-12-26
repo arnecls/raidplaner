@@ -23,12 +23,12 @@
 
 <div style="margin-top: 1.5em">
     <h2><?php echo L("DatabaseConnection"); ?></h2>
-    
+
     <?php echo L("ConfigureDatabase"); ?><br/>
     <?php echo L("EnterPrefix"); ?><br/>
     <?php echo L("SameAsForumDatabase"); ?><br/>
     <br/>
-    
+
     <input type="text" id="host" value="<?php echo (defined("SQL_HOST")) ? SQL_HOST : "localhost" ?>"/> <?php echo L("DatabaseHost"); ?><br/>
     <input type="text" id="database" value="<?php echo (defined("RP_USER")) ? RP_DATABASE : "raidplaner" ?>"/> <?php echo L("RaidplanerDatabase"); ?><br/>
     <input type="text" id="user" value="<?php echo (defined("RP_USER")) ? RP_USER : "root" ?>"/> <?php echo L("UserWithDBPermissions"); ?><br/>
@@ -39,7 +39,8 @@
     <br/>
     <input type="checkbox" id="allow_registration"<?php echo (!defined("ALLOW_REGISTRATION") || ALLOW_REGISTRATION) ? " checked=\"checked\"" : "" ?>/> <?php echo L("AllowManualRegistration"); ?><br/>
     <input type="checkbox" id="allow_group_sync"<?php echo (!defined("ALLOW_GROUP_SYNC") || ALLOW_GROUP_SYNC) ? " checked=\"checked\"" : "" ?>/> <?php echo L("AllowGroupSync"); ?><br/>
-    <input type="checkbox" id="allow_public_mode"<?php echo (defined("PUBLIC_MODE") && PUBLIC_MODE) ? " checked=\"checked\"" : "" ?>/> <?php echo L("AllowPublicMode"); ?><br/>    
+    <input type="checkbox" id="allow_public_mode"<?php echo (defined("PUBLIC_MODE") && PUBLIC_MODE) ? " checked=\"checked\"" : "" ?>/> <?php echo L("AllowPublicMode"); ?><br/>
+
     <input type="checkbox" id="allow_cleartext"<?php echo (defined("USE_CLEARTEXT_PASSWORDS") && USE_CLEARTEXT_PASSWORDS) ? " checked=\"checked\"" : "" ?>/> <?php echo L("UseClearText"); ?><br/>
     <br/>
     <button onclick="checkConfigForm(OnCheckConfigConnection)"><?php echo L("VerifySettings"); ?></button>
@@ -55,6 +56,4 @@
     <div class="button_next" style="background-image: url(layout/password_white.png)"><?php echo L("Continue"); ?></div>
 <?php } ?>
 
-
 <?php readfile("layout/footer.html"); ?>
-

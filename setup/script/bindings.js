@@ -5,31 +5,32 @@ function CheckBindingFields(aBinding)
         alert(L(aBinding+"_DatabaseEmpty"));
         return false;
     }
-    
+
     if ( $("#"+aBinding+"_user").val().length == 0 )
     {
         alert(L(aBinding+"_UserEmpty"));
         return false;
     }
-    
+
     if ( $("#"+aBinding+"_password").val().length == 0 )
     {
         alert(L(aBinding+"_PasswordEmpty"));
         return false;
     }
-    
+
     if ( $("#"+aBinding+"_password").val() != $("#"+aBinding+"_password_check").val() )
     {
         alert(L(aBinding+"_DBPasswordsMatch"));
         return false;
     }
-    
+
     return true;
 }
 
 // ----------------------------------------------------------------------------
 
-function LoadBindingData(aBinding) 
+function LoadBindingData(aBinding)
+
 {
     if (CheckBindingFields(aBinding))
     {
@@ -40,7 +41,7 @@ function LoadBindingData(aBinding)
             password : $("#"+aBinding+"_password").val(),
             prefix   : $("#"+aBinding+"_prefix").val()
         };
-        
+
         $.ajax({
             type     : "POST",
             url      : "query/fetch_bindingdata.php",
@@ -60,46 +61,47 @@ function OnLoadBindingData( aXHR )
     if ( (aXHR.error != null) && (aXHR.error.length > 0) )
     {
         var errorString = "";
-        
+
         $.each(aXHR.error, function(index, value) {
             errorString += value + "\n";
         });
-        
+
         alert(L("ReloadFailed") + ":\n\n" + errorString );
         return;
-    }    
-    
+    }
+
     // Load group data
-    
+
     if (aXHR.groups != undefined)
     {
         // Store old selected
-        
+
         var members = new Array();
-        
+
         $("#"+aXHR.binding+"_member option:selected").each(function() {
             members[members.length] = $(this).val();
         });
-        
+
         var leads = new Array();
-        
+
         $("#"+aXHR.binding+"_raidlead option:selected").each(function() {
             leads[members.length] = $(this).val();
         });
-        
+
         // Rebuild groups
-        
+
         HTMLString = "";
-    
-        $.each(aXHR.groups, function(index, value) {   
+
+        $.each(aXHR.groups, function(index, value) {
+
             HTMLString += "<option value=\"" + value.id + "\">" + value.name + "</option>";
         });
-        
+
         $("#"+aXHR.binding+"_member").empty().append( HTMLString );
         $("#"+aXHR.binding+"_raidlead").empty().append( HTMLString );
-        
+
         // Select old values
-        
+
         $("#"+aXHR.binding+"_member option").each(function() {
             for (var i=0; i<members.length; ++i)
             {
@@ -110,7 +112,7 @@ function OnLoadBindingData( aXHR )
                 }
             }
         });
-        
+
         $("#"+aXHR.binding+"_raidlead option").each(function() {
             for (var i=0; i<leads.length; ++i)
             {
@@ -122,39 +124,39 @@ function OnLoadBindingData( aXHR )
             }
         });
     }
-    
+
     // Load forum data
-    
+
     if (aXHR.forums != undefined)
     {
         var selectedForum = $("#"+aXHR.binding+"_postto option:selected").val();
         var selectedUser = $("#"+aXHR.binding+"_postas option:selected").val();
-        
+
         // Forums
-        
+
         HTMLString = "<option value=\"0\">" + L("DisablePosting") + "</option>";
-    
+
         $.each(aXHR.forums, function(index, value) {
             HTMLString += "<option value=\"" + value.id + "\">" + value.name + "</option>";
         });
-        
+
         $("#"+aXHR.binding+"_postto").empty().append( HTMLString );
         $("#"+aXHR.binding+"_postto option[value="+selectedForum+"]").prop("selected", true);
-        
+
         // Users
-        
+
         HTMLString = "";
-        
+
         $.each(aXHR.users, function(index, value) {
             HTMLString += "<option value=\"" + value.id + "\">" + value.name + "</option>";
         });
-        
+
         $("#"+aXHR.binding+"_postas").empty().append( HTMLString );
         $("#"+aXHR.binding+"_postas option[value="+selectedUser+"]").prop("selected", true);
-    }   
-     
+    }
+
     // Mark as loaded
-    
+
     $(".config .right select").css("background-color","#cfc")
         .delay(1000).queue(function() {
             $(this).css("background-color","").dequeue();
@@ -166,15 +168,15 @@ function OnLoadBindingData( aXHR )
 function LoadSettings(aBinding)
 {
     var basepath = window.prompt(L("BindingBasePath"), "");
-    
+
     if (basepath == null)
         return;
-    
+
     var parameter = {
         binding : aBinding,
         path    : basepath
     };
-    
+
     $.ajax({
         type     : "POST",
         url      : "query/fetch_settings.php",
@@ -193,15 +195,15 @@ function OnLoadSettings(aXHR)
     if ( (aXHR.error != null) && (aXHR.error.length > 0) )
     {
         var errorString = "";
-        
+
         $.each(aXHR.error, function(index, value) {
             errorString += value + "\n";
         });
-        
+
         alert(L("RetrievalFailed") + ":\n\n" + errorString );
         return;
     }
-    
+
     if (aXHR.settings != undefined)
     {
         $("#"+aXHR.binding+"_database").val(aXHR.settings.database);
@@ -209,12 +211,12 @@ function OnLoadSettings(aXHR)
         $("#"+aXHR.binding+"_password").val(aXHR.settings.password);
         $("#"+aXHR.binding+"_password_check").val(aXHR.settings.password);
         $("#"+aXHR.binding+"_prefix").val(aXHR.settings.prefix);
-        
+
         if (aXHR.settings.cookie != undefined)
         {
             $("#"+aXHR.binding+"_cookie_ex").val(aXHR.settings.cookie);
         }
-        
+
         $(".config .left input").css("background-color","#cfc")
         .delay(1000).queue(function() {
             $(this).css("background-color","").dequeue();
@@ -225,7 +227,7 @@ function OnLoadSettings(aXHR)
         alert(L("RetrievalFailed"));
     }
 }
-    
+
 // ----------------------------------------------------------------------------
 
 function CheckGrouplessBinding(aBinding)
@@ -239,7 +241,7 @@ function CheckGrouplessBinding(aBinding)
             password : $("#"+aBinding+"_password").val(),
             prefix   : $("#"+aBinding+"_prefix").val()
         };
-        
+
         $.ajax({
             type     : "POST",
             url      : "query/fetch_groups.php",
@@ -259,42 +261,43 @@ function OnCheckBinding( aXHR )
     if ( (aXHR.error != null) && (aXHR.error.length > 0) )
     {
         var errorString = "";
-        
+
         $.each(aXHR.error, function(index, value) {
             errorString += value + "\n";
         });
-        
+
         alert(L("ConnectionTestFailed") + ":\n\n" + errorString );
         return;
     }
-    
+
     alert(L("ConnectionTestOk"));
 }
 
 // ----------------------------------------------------------------------------
 
-function CheckBindingForm(a_Parameter) 
+function CheckBindingForm(a_Parameter)
+
 {
     var bindings = new Array();
     var parameter = new Object();
-    
+
     $(".config").each( function() {
         bindings[bindings.length] = $(this).attr("id");
     });
-    
+
     for (var i=0; i<bindings.length; ++i)
     {
         parameter[bindings[i]+"_check"] = $("#allow_"+bindings[i]+":checked").val() == "on"
-    
+
         if ( parameter[bindings[i]+"_check"] && !CheckBindingFields(bindings[i]) )
             return;
-            
+
         parameter[bindings[i]+"_database"] = $("#"+bindings[i]+"_database").val();
         parameter[bindings[i]+"_user"]     =  $("#"+bindings[i]+"_user").val();
         parameter[bindings[i]+"_password"] =  $("#"+bindings[i]+"_password").val();
         parameter[bindings[i]+"_prefix"]   =  $("#"+bindings[i]+"_prefix").val();
     }
-    
+
     $.ajax({
         type     : "POST",
         url      : "query/install_bindings_check.php",
@@ -311,30 +314,30 @@ function CheckBindingForm(a_Parameter)
 function OnDbCheckDone( a_XMLData, a_NextPage )
 {
     var testResult = $(a_XMLData).children("test");
-    
+
     if ( testResult.children("error").size() > 0 )
     {
         var errorString = "";
-        
+
         testResult.children("error").each( function() {
             errorString += $(this).prev().text() + ": " + $(this).text() + "\n\n";
         });
-        
+
         alert(L("ConnectionTestFailed") + ":\n\n" + errorString );
         return; // ### return, failed ###
     }
-    
+
     var bindings = new Array();
     var parameter = new Object();
-    
+
     $(".config").each( function() {
         bindings[bindings.length] = $(this).attr("id");
     });
-    
+
     for (var i=0; i<bindings.length; ++i)
     {
         parameter[bindings[i]+"_allow"] = $("#allow_"+bindings[i]).val() == "true";
-    
+
         if ( parameter[bindings[i]+"_allow"] )
         {
             parameter[bindings[i]+"_database"]  = $("#"+bindings[i]+"_database").val();
@@ -347,17 +350,17 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
             parameter[bindings[i]+"_postas"]    = $("#"+bindings[i]+"_postas option:selected").val();
             parameter[bindings[i]+"_member"]    = new Array();
             parameter[bindings[i]+"_raidlead"]  = new Array();
-            
+
             $("#"+bindings[i]+"_member option:selected").each( function() {
                 parameter[bindings[i]+"_member"].push( $(this).val() );
             });
-            
+
             $("#"+bindings[i]+"_raidlead option:selected").each( function() {
                 parameter[bindings[i]+"_raidlead"].push( $(this).val() );
             });
         }
     }
-    
+
     $.ajax({
         type     : "POST",
         url      : "query/submit_bindings.php",
@@ -373,10 +376,11 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
 
 function showConfig( a_Name )
 {
-    $(".config").hide();    
+    $(".config").hide();
+
     $("#"+a_Name).show();
     $("#binding_name").empty().append(L(a_Name+"_Binding"));
-    
+
     $("#binding_allow").prop( "checked", $("#allow_"+a_Name).val() == "true" );
 }
 
@@ -386,7 +390,7 @@ function toggleCurrentBinding( aCheckBox )
 {
     var bindingName = $("#binding_current").children("option:selected").val();
     var enabled = $(aCheckBox).prop("checked");
-    
+
     $("#allow_"+bindingName).val(enabled  ? "true" : "false");
     $("#"+bindingName+" input, "+"#"+bindingName+" select, "+"#"+bindingName+" button").prop("disabled", !enabled);
 }

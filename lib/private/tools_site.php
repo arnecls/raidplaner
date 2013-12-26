@@ -1,6 +1,6 @@
 <?php
     require_once(dirname(__FILE__)."/connector.class.php");
-    
+
     $gSite = Array(
         "Version"     => 109.0,
         "BannerLink"  => "",
@@ -13,25 +13,25 @@
         "TimeFormat"  => 24,
         "StartOfWeek" => 1
     );
-    
+
     // ---------------------------------------------------------------
-    
+
     function include_once_exists($aFile)
     {
         if (file_exists($aFile))
             include_once($aFile);
     }
-    
+
     // ---------------------------------------------------------------
 
     function loadSiteSettings()
     {
         global $gSite;
-        
+
         $Out = Out::getInstance();
         $Connector = Connector::getInstance();
         $Settings = $Connector->prepare("Select `Name`, `TextValue`, `IntValue` FROM `".RP_TABLE_PREFIX."Setting`");
-    
+
         $gSite["BannerLink"]  = "";
         $gSite["HelpLink"]    = "";
         $gSite["Banner"]      = "cataclysm.jpg";
@@ -41,7 +41,7 @@
         $gSite["PortalMode"]  = false;
         $gSite["TimeFormat"]  = 24;
         $gSite["StartOfWeek"] = 1;
-        
+
         $Settings->loop( function($Data) use (&$gSite)
         {
             switch( $Data["Name"] )
@@ -49,7 +49,7 @@
             case "Site":
                 $gSite["BannerLink"] = $Data["TextValue"];
                 break;
-                
+
             case "HelpPage":
                 $gSite["HelpLink"] = $Data["TextValue"];
                 break;
@@ -87,10 +87,10 @@
                 break;
             };
         });
-    } 
-    
+    }
+
     // ---------------------------------------------------------------
-    
+
     function beginSession()
     {
         ini_set("session.use_trans_sid",    0);
@@ -99,35 +99,36 @@
         ini_set("session.cookie_httponly",  1);
         ini_set("session.hash_function",    1);
         ini_set("session.bug_compat_42",    0);
-        
+
         $SiteId = dechex(crc32(dirname(__FILE__)));
 
         session_name("ppx_raidplaner_".$SiteId);
         session_start();
     }
-    
+
     // ---------------------------------------------------------------
-    
+
     function checkVersion($aSiteVersion)
     {
         try
         {
             $Connector = Connector::getInstance(true);
             $VersionQuery = $Connector->prepare("SELECT IntValue FROM `".RP_TABLE_PREFIX."Setting` WHERE Name = 'Version' LIMIT 1" );
-            $Result = $VersionQuery->fetchFirst(); 
-                
+            $Result = $VersionQuery->fetchFirst();
+
             if ($Result != null)
                 return intval(intval($aSiteVersion) / 10) == intval(intval($Result["IntValue"]) / 10);
         }
         catch(PDOException $Exception)
         {
         }
-        
-        return false;        
+
+        return false;
+
     }
-    
+
     // ---------------------------------------------------------------
-    
+
     function lockOldRaids( $aSeconds )
     {
         if ( validUser() )
@@ -141,7 +142,7 @@
             $UpdateRaidQuery->execute();
         }
     }
-    
+
     // ---------------------------------------------------------------
 
     function purgeOldRaids( $aSeconds )
@@ -150,7 +151,6 @@
         $DropRaidQuery = $Connector->prepare( "DELETE `".RP_TABLE_PREFIX."Raid`, `".RP_TABLE_PREFIX."Attendance` ".
                                            "FROM `".RP_TABLE_PREFIX."Raid` LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING ( RaidId ) ".
                                            "WHERE ".RP_TABLE_PREFIX."Raid.End < FROM_UNIXTIME(:Time)" );
-
 
         $Timestamp = time() - $aSeconds;
         $DropRaidQuery->bindValue( ":Time", $Timestamp, PDO::PARAM_INT );

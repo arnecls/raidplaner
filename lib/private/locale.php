@@ -24,7 +24,7 @@
             include_once( dirname(__FILE__)."/locale/en.php" );
         }
     }
-    
+
     // -------------------------------------------------------------------------
 
     function L( $aKey )
@@ -36,25 +36,25 @@
 
         return $gLocale[$aKey];
     }
-    
-    
+
     // -------------------------------------------------------------------------
-    
+
     function msgQueryLocale( $aRequest )
     {
         global $gLocale;
         $EncodedLocale = array();
-        
+
         while ( list( $Key, $Value) = each($gLocale) )
         {
             if ($Value != null)
             {
-                $Flags = (PHP_VERSION_ID >= 50400) ? ENT_COMPAT | ENT_XHTML : ENT_COMPAT;                
+                $Flags = (PHP_VERSION_ID >= 50400) ? ENT_COMPAT | ENT_XHTML : ENT_COMPAT;
+
                 $Encoded = htmlentities($Value, $Flags, 'UTF-8');
                 $EncodedLocale[$Key] = $Encoded;
             }
         }
-        
+
         Out::getInstance()->pushValue("locale", $EncodedLocale);
     }
 ?>

@@ -3,7 +3,7 @@
     function msgRaidList( $aRequest )
     {
         $Out = Out::getInstance();
-            
+
         if (validUser())
         {
             $Connector = Connector::getInstance();
@@ -24,7 +24,7 @@
 
             $NextRaidQuery->bindValue( ":Start", mktime(0,0,0), PDO::PARAM_INT );
             parseRaidQuery( $aRequest, $NextRaidQuery, 6 );
-            
+
             // Load raid history
 
             $RaidHistoryQuery = $Connector->prepare("Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.*, ".
@@ -54,10 +54,11 @@
                     "endDate"   => $EndDate["year"]."-".leadingZero10($EndDate["mon"])."-".leadingZero10($EndDate["mday"]),
                     "end"       => leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"])
                 );
-                
-                array_push($RaidList, $Raid);                    
+
+                array_push($RaidList, $Raid);
+
             });
-                
+
             $Out->pushValue("history", $RaidList);
         }
         else

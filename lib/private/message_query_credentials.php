@@ -4,7 +4,7 @@ function msgQueryCredentials( $aRequest )
 {
     $Credentials = UserProxy::getInstance()->getUserCredentials($aRequest["Login"]);
     $Out = Out::getInstance();
-        
+
     if ($Credentials == null )
     {
         $Out->pushError(L("NoSuchUser"));
@@ -23,7 +23,7 @@ function msgQueryLocalCredentialsById( $aRequest )
 {
     $Credentials = UserProxy::getInstance()->getUserCredentialsById($aRequest["UserId"], "none");
     $Out = Out::getInstance();
-        
+
     if ($Credentials == null )
     {
         $Out->pushError(L("NoSuchUser"));

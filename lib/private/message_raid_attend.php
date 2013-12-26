@@ -22,12 +22,12 @@ function msgRaidAttend( $aRequest )
         $LockCheckQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
 
         $RaidInfo = $LockCheckQuery->fetchFirst();
-            
+
         if ( $RaidInfo == null )
             return; // ### return, locked ###
-        
+
         $ChangeAllowed = $RaidInfo["Stage"] == "open";
-        
+
         if ( $ChangeAllowed )
         {
             // Check if character matches user
@@ -38,7 +38,7 @@ function msgRaidAttend( $aRequest )
                 $CheckQuery->bindValue(":CharacterId", $AttendanceIdx, PDO::PARAM_INT);
 
                 $CharacterInfo = $CheckQuery->fetchFirst();
-                
+
                 if ($CharacterInfo != null)
                 {
                     $ChangeAllowed &= ($CharacterInfo["UserId"] == $UserId );
@@ -76,7 +76,8 @@ function msgRaidAttend( $aRequest )
                     {
                         $AttendQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
                                                         "CharacterId = :CharacterId, Status = :Status, Role = :Role, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
-                                                        "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );                            
+                                                        "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
+
                     }
                 }
                 else
@@ -101,7 +102,7 @@ function msgRaidAttend( $aRequest )
                     $CharacterId = intval( $aRequest["fallback"] );
                 }
                 else
-                
+
                 {
                     $CharacterId = $AttendanceIdx;
 
@@ -127,7 +128,7 @@ function msgRaidAttend( $aRequest )
                     $Comment = requestToXML( $aRequest["comment"], ENT_COMPAT, "UTF-8" );
                     $AttendQuery->bindValue(":Comment", $Comment, PDO::PARAM_INT);
                 }
-                
+
                 $AttendQuery->bindValue(":CharacterId", $CharacterId, PDO::PARAM_INT);
                 $AttendQuery->bindValue(":RaidId",      $RaidId,      PDO::PARAM_INT);
                 $AttendQuery->bindValue(":UserId",      $UserId,      PDO::PARAM_INT);
@@ -135,8 +136,10 @@ function msgRaidAttend( $aRequest )
                 $AttendQuery->bindValue(":Role",        $Role,        PDO::PARAM_INT);
                 $AttendQuery->bindValue(":Timestamp",   time(),       PDO::PARAM_INT);
 
-                if ( $AttendQuery->execute() && 
-                     ($RaidInfo["Mode"] == "attend") && 
+                if ( $AttendQuery->execute() &&
+
+                     ($RaidInfo["Mode"] == "attend") &&
+
                      ($Status == "ok") )
                 {
                     // Check constraints for auto-attend
@@ -151,7 +154,7 @@ function msgRaidAttend( $aRequest )
                     $AttendenceQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
                     $AttendenceQuery->bindValue(":RoleId", $Role, PDO::PARAM_INT);
                     $AttendenceQuery->bindValue(":MaxCount", $MaxSlotCount, PDO::PARAM_INT);
-                    
+
                     $LastAttend = $AttendenceQuery->fetchFirst();
 
                     if ( $AttendenceQuery->getAffectedRows() == $MaxSlotCount )
@@ -169,7 +172,7 @@ function msgRaidAttend( $aRequest )
                         $FixQuery->execute();
                     }
                 }
-                
+
             }
             else
             {
@@ -187,7 +190,7 @@ function msgRaidAttend( $aRequest )
 
         $RaidQuery = $Connector->prepare("SELECT Start FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
         $RaidQuery->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
-        
+
         $RaidData = $RaidQuery->fetchFirst();
 
         $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : intval( substr( $RaidData["Start"], 5, 2 ) );

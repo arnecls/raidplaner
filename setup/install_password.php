@@ -23,7 +23,8 @@
 <h2><?php echo L("AdminPassword"); ?></h2>
 
 <?php echo L("AdminPasswordSetup"); ?><br/>
-<?php echo L("AdminNotMoveable"); ?><br/>    
+<?php echo L("AdminNotMoveable"); ?><br/>
+
 <br/>
 
 <input type="password" id="password"/> <?php echo L("AdminPassword"); ?><br/>
@@ -39,6 +40,4 @@
     <div class="button_next" style="background-image: url(layout/bindings_white.png)"><?php echo L("Continue"); ?></div>
 <?php } ?>
 
-
 <?php readfile("layout/footer.html"); ?>
-

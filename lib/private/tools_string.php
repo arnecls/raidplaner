@@ -5,10 +5,11 @@ function xmlSpecialChar( $aChar )
     $Utf8 = (mb_check_encoding($aChar,"UTF-8"))
         ? $aChar
         : mb_convert_encoding($aChar,"UTF-8");
-    
-    $Char = mb_convert_encoding($Utf8, "UCS-4BE", "UTF-8");    
+
+    $Char = mb_convert_encoding($Utf8, "UCS-4BE", "UTF-8");
+
     $Val = unpack("N",$Char);
-    
+
     return "&#".$Val[1].";";
 }
 
@@ -17,9 +18,9 @@ function xmlSpecialChar( $aChar )
 function xmlentities( $aString, $aCompat, $aCharset )
 {
     $ValidString = htmlentities($aString, $aCompat, $aCharset);
-    
+
     // if the given charset did not work use fallback
-    
+
     $Flags = (PHP_VERSION_ID >= 50300) ? $aCompat | ENT_IGNORE : $aCompat;
 
     if ( $ValidString == "" )
@@ -38,7 +39,7 @@ function xmlentities( $aString, $aCompat, $aCharset )
     {
          $TranslationTable[$Value] = xmlSpecialChar($Key);
     }
-    
+
     $Translated = strtr( $ValidString, $TranslationTable );
 
     if ($Translated === false)
@@ -59,7 +60,7 @@ function requestToXML( $aString, $aCompat, $aCharset )
 function leadingZero10( $aValue )
 {
     $Number = intval($aValue,10);
-    
+
     return ($Number < 10)
         ? "0".$Number
         : $Number;

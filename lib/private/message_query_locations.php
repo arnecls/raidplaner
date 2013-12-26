@@ -3,7 +3,7 @@
 function msgQueryLocations( $aRequest )
 {
     $Out = Out::getInstance();
-    
+
     if ( validRaidlead() )
     {
         $Connector = Connector::getInstance();
@@ -11,7 +11,7 @@ function msgQueryLocations( $aRequest )
         // Locations
 
         $ListLocations = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Location` ORDER BY Name");
-        
+
         $Locations = Array();
         $ListLocations->loop( function($Data) use (&$Locations)
         {
@@ -20,10 +20,10 @@ function msgQueryLocations( $aRequest )
                 "name"  => $Data["Name"],
                 "image" => $Data["Image"],
             );
-            
+
             array_push($Locations, $LocationData);
         });
-        
+
         $Out->pushValue("location", $Locations);
 
         // Images

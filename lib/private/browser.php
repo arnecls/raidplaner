@@ -614,7 +614,6 @@
             return false;
         }
 
-
         /**
          * Determine if the browser is WebTv or not (last updated 1.7)
          * @return boolean True if the browser is WebTv otherwise false

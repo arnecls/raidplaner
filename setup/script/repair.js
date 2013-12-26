@@ -10,12 +10,12 @@ function resolveClasses()
         ids : new Array(),
         classes : new Array(),
     };
-    
+
     $(".change_class").each( function() {
         parameter.ids.push($(this).attr("id").substr(4));
         parameter.classes.push($(this).children("option:selected").val());
     });
-    
+
     $.ajax({
         type     : "POST",
         url      : "query/submit_repair_classes.php",

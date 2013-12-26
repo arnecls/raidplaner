@@ -15,7 +15,7 @@ function msgQueryProfile( $aRequest )
         }
 
         $Connector = Connector::getInstance();
-        
+
         $Out->pushValue("show", $aRequest["showPanel"]);
 
         // Admintool relevant data
@@ -24,34 +24,35 @@ function msgQueryProfile( $aRequest )
         $Users->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
 
         $Data = $Users->fetchFirst();
-        
+
         if ($Data != null)
-        {    
+        {
+
             $Out->pushValue("userid", $UserId);
             $Out->pushValue("name", $Data["Login"]);
             $Out->pushValue("bindingActive", $Data["BindingActive"] == "true");
             $Out->pushValue("binding", $Data["ExternalBinding"]);
-            
+
             $CreatedUTC = $Data["CreatedUTC"];
         }
-        
+
         // Load settings
-        
+
         $SettingsQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId" );
         $SettingsQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
         $UserSettings = array();
-            
+
         $SettingsQuery->loop(function($Data) use (&$UserSettings)
         {
             $UserSettings[$Data["Name"]] = array("number" => $Data["IntValue"], "text" => $Data["TextValue"]);
         });
-        
+
         $Out->pushValue("settings", $UserSettings);
 
         // Load characters
-        
+
         $Characters = Array();
-        
+
         if ( $UserId == UserProxy::getInstance()->UserId )
         {
             foreach ( UserProxy::getInstance()->Characters as $Data )
@@ -64,7 +65,7 @@ function msgQueryProfile( $aRequest )
                     "role1"     => $Data->Role1,
                     "role2"     => $Data->Role2
                 );
-                
+
                 array_push($Characters, $Character);
             }
         }
@@ -75,7 +76,7 @@ function msgQueryProfile( $aRequest )
                                                 "ORDER BY Mainchar, Name" );
 
             $CharacterQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-            
+
             $CharacterQuery->loop( function($Row) use (&$Characters)
             {
                 $Character = Array(
@@ -86,13 +87,13 @@ function msgQueryProfile( $aRequest )
                     "role1"     => $Row["Role1"],
                     "role2"     => $Row["Role2"]
                 );
-                
+
                 array_push($Characters, $Character);
             });
         }
-                
+
         $Out->pushValue("character", $Characters);
-        
+
         // Total raid count
 
         $NumRaids = 0;
@@ -103,7 +104,7 @@ function msgQueryProfile( $aRequest )
         $Data = $RaidsQuery->fetchFirst();
         if ($Data != null)
             $NumRaids = $Data["NumberOfRaids"];
-        
+
         // Load attendance
 
         $AttendanceQuery = $Connector->prepare(  "Select `Status`, `Role`, COUNT(*) AS `Count` ".
@@ -148,7 +149,7 @@ function msgQueryProfile( $aRequest )
                 }
             }
         });
-        
+
         $Out->pushValue("attendance", $AttendanceData);
     }
     else

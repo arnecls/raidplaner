@@ -1,27 +1,28 @@
 <?php
     define( "LOCALE_SETUP", true );
     require_once(dirname(__FILE__)."/../lib/private/locale.php");
-    
+
     $ConfigFolderState = is_writable("../lib/config");
-    $ConfigFileState = (file_exists("../lib/config/config.php") && $ConfigFolderState) || 
+    $ConfigFileState = (file_exists("../lib/config/config.php") && $ConfigFolderState) ||
+
                        is_writable("../lib/config/config.php");
-                       
+
     $UpdateMode = $ConfigFolderState && $ConfigFileState;
-    
+
     if ($UpdateMode)
     {
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
         @require_once(dirname(__FILE__)."/../lib/config/config.php");
-        
+
         $Connector = Connector::getInstance();
-        
+
         $TableQuery = $Connector->prepare("SHOW TABLES");
         $Tables = array("Attendance", "Character", "Location", "Raid", "Setting", "User", "UserSetting");
         $TablesOk = false;
-                
+
         $TableQuery->loop( function($TableData) use ($Tables, &$TablesOk) {
             list($key,$TableName) = each($TableData);
-            
+
             if (strpos($TableName, RP_TABLE_PREFIX) === 0)
             {
                 $Name = substr($TableName, strlen(RP_TABLE_PREFIX));
@@ -32,25 +33,25 @@
                 }
             }
         });
-        
+
         $UpdateMode = $TablesOk;
     }
 ?>
 <?php readfile("layout/header.html"); ?>
-                
+
 <script type="text/javascript">
     $(document).ready( function() {
         $(".button_small, .button_large").mouseout( function() {
             $(".button_text").empty();
         });
-        
+
         <?php if ($UpdateMode) { ?>
         $(".icon_update")  .mouseover( function() { $(".button_text").append("<?php echo L("Update");?>"); });
         $(".icon_bindings").mouseover( function() { $(".button_text").append("<?php echo L("EditBindings");?>"); });
         $(".icon_repair")  .mouseover( function() { $(".button_text").append("<?php echo L("RepairDatabase");?>"); });
         $(".icon_password").mouseover( function() { $(".button_text").append("<?php echo L("ResetPassword");?>"); });
         $(".icon_config")  .mouseover( function() { $(".button_text").append("<?php echo L("EditConfig");?>"); });
-        
+
         $(".icon_update")  .click( function() { open("update_check.php"); });
         $(".icon_config")  .click( function() { open("install_config.php?single"); });
         $(".icon_password").click( function() { open("install_password.php?single"); });

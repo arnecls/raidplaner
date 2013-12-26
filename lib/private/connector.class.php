@@ -4,7 +4,7 @@
     require_once(dirname(__FILE__)."/locale.php");
     require_once(dirname(__FILE__)."/out.class.php");
     require_once(dirname(__FILE__)."/query.class.php");
-    
+
     class Connector extends PDO
     {
         private static $Instance = NULL;
@@ -21,7 +21,7 @@
                 $this->mHost  = $aHost;
                 $this->mDatabase = $aDatabase;
                 parent::__construct("mysql:dbname=".$aDatabase.";host=".$aHost, $aUser, $aPass,
-                	array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8' COLLATE 'utf8_general_ci', time_zone = '+00:00'"));
+                    array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8' COLLATE 'utf8_general_ci', time_zone = '+00:00'"));
             }
             catch (PDOException $Exception)
             {
@@ -33,7 +33,8 @@
                 {
                     $Out = Out::getInstance();
                     $Out->pushError("Database connection error");
-                    $Out->pushError($Exception->getMessage());                    
+                    $Out->pushError($Exception->getMessage());
+
                 }
             }
         }
@@ -76,7 +77,7 @@
             if ($StatementObj === false)
             {
                 $Out = Out::getInstance();
-                
+
                 foreach (parent::errorInfo() as $ErrorLine)
                 {
                     $Out->pushError($ErrorLine);

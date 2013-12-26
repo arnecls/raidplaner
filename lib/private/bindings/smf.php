@@ -1,27 +1,27 @@
 <?php
     include_once_exists(dirname(__FILE__)."/../../config/config.smf.php");
-    
+
     array_push(PluginRegistry::$Classes, "SMFBinding");
-    
+
     class SMFBinding extends Binding
     {
         private static $BindingName = "smf";
-        
+
         public static $HashMethod = "smf_sha1s";
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function getName()
         {
             return self::$BindingName;
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function getConfig()
         {
             $Config = new BindingConfig();
-            
+
             $Config->Database         = defined("SMF_DATABASE") ? SMF_DATABASE : RP_DATABASE;
             $Config->User             = defined("SMF_USER") ? SMF_USER : RP_USER;
             $Config->Password         = defined("SMF_PASS") ? SMF_PASS : RP_PASS;
@@ -35,12 +35,12 @@
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
-            
+
             return $Config;
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function getExternalConfig($aRelativePath)
         {
             $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/Settings.php";
@@ -49,15 +49,15 @@
                 Out::getInstance()->pushError($ConfigPath." ".L("NotExisting").".");
                 return null;
             }
-            
+
             @include_once($ConfigPath);
-            
+
             if (!isset($mbname))
             {
                 Out::getInstance()->pushError(L("NoValidConfig"));
                 return null;
             }
-            
+
             return array(
                 "database"  => $db_name,
                 "user"      => $db_user,
@@ -66,16 +66,16 @@
                 "cookie"    => (isset($cookiename)) ? $cookiename : "SMFCookie956"
             );
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
         {
             $Config = fopen( dirname(__FILE__)."/../../config/config.smf.php", "w+" );
-            
+
             fwrite( $Config, "<?php\n");
             fwrite( $Config, "\tdefine(\"SMF_BINDING\", ".(($aEnable) ? "true" : "false").");\n");
-            
+
             if ( $aEnable )
             {
                 fwrite( $Config, "\tdefine(\"SMF_DATABASE\", \"".$aDatabase."\");\n");
@@ -84,58 +84,62 @@
                 fwrite( $Config, "\tdefine(\"SMF_TABLE_PREFIX\", \"".$aPrefix."\");\n");
                 fwrite( $Config, "\tdefine(\"SMF_COOKIE\", \"".$aCookieEx."\");\n");
                 fwrite( $Config, "\tdefine(\"SMF_AUTOLOGIN\", ".(($aAutoLogin) ? "true" : "false").");\n");
-                                             
+
                 fwrite( $Config, "\tdefine(\"SMF_POSTTO\", ".$aPostTo.");\n");
                 fwrite( $Config, "\tdefine(\"SMF_POSTAS\", ".$aPostAs.");\n");
                 fwrite( $Config, "\tdefine(\"SMF_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
                 fwrite( $Config, "\tdefine(\"SMF_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
             }
-            
-            fwrite( $Config, "?>");    
+
+            fwrite( $Config, "?>");
+
             fclose( $Config );
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function getGroups($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
             $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
-            
+
             if ($Connector != null)
             {
                 $GroupQuery = $Connector->prepare( "SELECT id_group, group_name FROM `".$aPrefix."membergroups` ORDER BY group_name" );
                 $Groups = array();
-                
+
                 $GroupQuery->loop(function($Group) use (&$Groups)
                 {
                     array_push( $Groups, array(
-                        "id"   => $Group["id_group"], 
+                        "id"   => $Group["id_group"],
+
                         "name" => $Group["group_name"])
                     );
                 }, $aThrow);
-                
+
                 return $Groups;
             }
-            
+
             return null;
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function getForums($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
-            return null;    
+            return null;
+
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function getUsers($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
-            return null;    
+            return null;
+
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         private function getGroupForUser( $aUserData )
         {
             if ($aUserData["ban_time"] > 0)
@@ -147,28 +151,28 @@
                     return "none"; // ### return, banned ###
                 }
             };
-            
+
             $MemberGroups   = explode(",", SMF_MEMBER_GROUPS );
             $RaidleadGroups = explode(",", SMF_RAIDLEAD_GROUPS );
             $AssignedGroup  = "none";
-            
+
             $Groups = explode(",", $aUserData["additional_groups"]);
             array_push($Groups, $aUserData["id_group"] );
-            
+
             foreach( $Groups as $Group )
             {
                 if ( in_array($Group, $MemberGroups) )
                     $AssignedGroup = "member";
-                   
+
                 if ( in_array($Group, $RaidleadGroups) )
                     return "raidlead"; // ### return, best possible group ###
             }
-            
+
             return $AssignedGroup;
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         private function generateUserInfo( $aUserData )
         {
             $Info = new UserInfo();
@@ -180,39 +184,39 @@
             $Info->Group       = $this->getGroupForUser($aUserData);
             $Info->BindingName = $this->BindingName;
             $Info->PassBinding = $this->BindingName;
-        
+
             return $Info;
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function getExternalLoginData()
         {
             if (!defined("SMF_AUTOLOGIN") || !SMF_AUTOLOGIN)
                 return null;
-                
+
             $UserInfo = null;
-            
+
             // Fetch user info if seesion cookie is set
-            
+
             if (defined("SMF_COOKIE") && isset($_COOKIE[SMF_COOKIE]))
             {
                 $CookieData = unserialize($_COOKIE[SMF_COOKIE]);
                 $UserId  = $CookieData[0];
                 $PwdHash = $CookieData[1];
-                
+
                 $UserInfo = $this->getUserInfoById($UserId);
-                
+
                 $SessionHash = sha1($UserInfo->Password.$UserInfo->SessionSalt);
                 if ($PwdHash != $SessionHash)
                     $UserInfo = null;
             }
-            
+
             return $UserInfo;
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function getUserInfoByName( $aUserName )
         {
             $Connector = $this->getConnector();
@@ -221,17 +225,17 @@
                                           "LEFT JOIN `".SMF_TABLE_PREFIX."ban_items` USING(id_member) ".
                                           "LEFT JOIN `".SMF_TABLE_PREFIX."ban_groups` USING(id_ban_group) ".
                                           "WHERE LOWER(member_name) = :Login LIMIT 1");
-                                          
+
             $UserQuery->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
             $UserData = $UserQuery->fetchFirst();
-        
+
             return ($UserData != null)
                 ? $this->generateUserInfo($UserData)
                 : null;
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function getUserInfoById( $aUserId )
         {
             $Connector = $this->getConnector();
@@ -240,34 +244,34 @@
                                           "LEFT JOIN `".SMF_TABLE_PREFIX."ban_items` USING(id_member) ".
                                           "LEFT JOIN `".SMF_TABLE_PREFIX."ban_groups` USING(id_ban_group) ".
                                           "WHERE id_member = :UserId LIMIT 1");
-                                          
+
             $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
-        
+
             return ($UserData != null)
                 ? $this->generateUserInfo($UserData)
                 : null;
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function getMethodFromPass( $aPassword )
         {
             return self::$HashMethod;
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function hash( $aPassword, $aSalt, $aMethod )
         {
             return sha1($aSalt.$aPassword);
         }
-        
+
         // -------------------------------------------------------------------------
-        
+
         public function post($aSubject, $aMessage)
         {
-            
+
         }
     }
 ?>

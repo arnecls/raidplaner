@@ -1,11 +1,12 @@
 <?php
     require_once(dirname(__FILE__)."/../../lib/private/connector.class.php");
-    
-    function InstallDB($Prefix) 
+
+    function InstallDB($Prefix)
+
     {
         $Out = Out::getInstance();
         $Connector = Connector::getInstance();
-    
+
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."Attendance` (
               `AttendanceId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `CharacterId` int(10) unsigned NOT NULL,
@@ -20,7 +21,7 @@
               KEY `CharacterId` (`CharacterId`),
               KEY `RaidId` (`RaidId`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;" );
-        
+
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."Character` (
               `CharacterId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `UserId` int(10) unsigned NOT NULL,
@@ -32,14 +33,14 @@
               PRIMARY KEY (`CharacterId`),
               KEY `UserId` (`UserId`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
-            
+
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."Location` (
               `LocationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `Name` varchar(128) NOT NULL,
               `Image` varchar(255) NOT NULL,
               PRIMARY KEY (`LocationId`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
-            
+
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."Raid` (
               `RaidId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `LocationId` int(10) unsigned NOT NULL,
@@ -57,7 +58,7 @@
               PRIMARY KEY (`RaidId`),
               KEY `LocationId` (`LocationId`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
-            
+
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."Setting` (
               `SettingId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `Name` varchar(64) NOT NULL,
@@ -67,7 +68,7 @@
               FULLTEXT KEY `Name` (`Name`),
               UNIQUE KEY `Unique_Name` (`Name`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
-            
+
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."User` (
               `UserId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `Group` enum('admin','raidlead','member','none') NOT NULL,
@@ -83,7 +84,7 @@
               PRIMARY KEY (`UserId`),
               KEY `ExternalId` (`ExternalId`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
-            
+
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."UserSetting` (
               `UserSettingId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `UserId` int(10) unsigned NOT NULL,
@@ -96,65 +97,66 @@
               FULLTEXT KEY `Name` (`Name`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
     }
-    
+
     // ------------------------------------------------------------------------
-    
+
     function InstallDefaultSettings($Prefix)
     {
         $Connector = Connector::getInstance();
-        
+
         // Add default values for settings table
-            
+
         $TestQuery = $Connector->prepare( "SELECT * FROM `".$Prefix."Setting`" );
         $ExistingSettings = array();
-        
+
         $TestQuery->loop( function($Row) use ($ExistingSettings)
         {
             array_push($ExistingSettings, $Row["Name"]);
         });
-        
+
         if ( !in_array("PurgeRaids", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('PurgeRaids', 7257600, '');" );
-        
+
         if ( !in_array("LockRaids", $ExistingSettings) )
-            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('LockRaids', 3600, '');" );        
-        
+            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('LockRaids', 3600, '');" );
+
         if ( !in_array("RaidStartHour", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidStartHour', 19, '');" );
-        
+
         if ( !in_array("RaidStartMinute", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidStartMinute', 30, '');" );
-        
+
         if ( !in_array("RaidEndHour", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidEndHour', 23, '');" );
-        
+
         if ( !in_array("RaidEndMinute", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidEndMinute', 0, '');" );
-        
+
         if ( !in_array("RaidSize", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidSize', 10, '');" );
-        
+
         if ( !in_array("RaidMode", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('RaidMode', 0, 'manual');" );
-        
+
         if ( !in_array("Site", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Site', 0, '');" );
-        
+
         if ( !in_array("HelpPage", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('HelpPage', 0, '');" );
-        
+
         if ( !in_array("Theme", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Theme', 0, 'cataclysm');" );
-        
+
         if ( !in_array("TimeFormat", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('TimeFormat', 24, '');" );
-        
+
         if ( !in_array("StartOfWeek", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('StartOfWeek', 1, '');" );
-            
+
         if ( !in_array("Version", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 100, '');" );
-        else   
+        else
+
             $Connector->exec( "UPDATE `".$Prefix."Setting` SET IntValue=100 WHERE Name='Version' LIMIT 1" );
     }
 ?>

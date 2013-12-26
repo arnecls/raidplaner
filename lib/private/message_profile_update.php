@@ -12,9 +12,9 @@ function msgProfileupdate( $aRequest )
         }
 
         $Connector = Connector::getInstance();
-        
+
         // Update password
-        
+
         if (isset($aRequest["newPass"]) && ($aRequest["oldPass"] != ""))
         {
             if ( UserProxy::getInstance()->validateCredentials($aRequest["oldPass"]) )
@@ -22,10 +22,10 @@ function msgProfileupdate( $aRequest )
                 // User authenticated with valid password
                 // change the password of the given id. ChangePassword does a check
                 // for validity (e.g. only admin may change other user's passwords)
-                
+
                 $Salt = UserProxy::generateKey128();
                 $HashedPassword = NativeBinding::hash( $aRequest["newPass"], $Salt, "none" );
-            
+
                 if ( !UserProxy::changePassword($UserId, $HashedPassword, $Salt) )
                 {
                     $Out = Out::getInstance();
@@ -38,68 +38,68 @@ function msgProfileupdate( $aRequest )
                 $Out->pushError(L("WrongPassword"));
             }
         }
-        
+
         // Update vacation settings
-        
+
         $SettingQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd' OR Name = 'VacationMessage')");
         $SettingQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-        
+
         if ( $SettingQuery->execute() )
         {
             if ($aRequest["vacationStart"] != null)
             {
                 // Update times
-                
+
                 $StartQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, IntValue) VALUES (:UserId, 'VacationStart', :Time)");
                 $StartQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
                 $StartQuery->bindValue(":Time", $aRequest["vacationStart"], PDO::PARAM_INT);
-                
+
                 $StartQuery->execute();
-                
+
                 $EndQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, IntValue) VALUES (:UserId, 'VacationEnd', :Time)");
                 $EndQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
                 $EndQuery->bindValue(":Time", $aRequest["vacationEnd"], PDO::PARAM_INT);
-                
+
                 $EndQuery->execute();
-                
+
                 // Update message
-                
+
                 $VacationMessage = "";
-                
+
                 if ($aRequest["vacationMessage"] != null)
                 {
                     $VacationMessage = $aRequest["vacationMessage"];
-                               
+
                     $MessageQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, TextValue) VALUES (:UserId, 'VacationMessage', :Message)");
                     $MessageQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
                     $MessageQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
-                    
+
                     $MessageQuery->execute();
                 }
-                
+
                 // Update all raids in this time that exist now and are not yet attended
-                
+
                 $RaidsQuery = $Connector->prepare("SELECT RaidId FROM `".RP_TABLE_PREFIX."Raid` ".
                    "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (RaidId) ".
                    "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) AND `".RP_TABLE_PREFIX."Attendance`.UserId IS NULL");
-                
+
                 $RaidsQuery->bindValue(":Start", $aRequest["vacationStart"], PDO::PARAM_INT);
                 $RaidsQuery->bindValue(":End", $aRequest["vacationEnd"], PDO::PARAM_INT);
-                
+
                 $RaidsQuery->loop(function($RaidData)
                 {
                     $AbsentQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
                         "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
-                    
+
                     $AbsentQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
                     $AbsentQuery->bindValue(":RaidId", $RaidData["RaidId"], PDO::PARAM_INT);
                     $AbsentQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
-                    
+
                     $AbsentQuery->execute();
                 });
             }
         }
-        
+
         // Update characters
 
         $CharacterQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId ORDER BY Name");
@@ -197,34 +197,34 @@ function msgProfileupdate( $aRequest )
         foreach( $IdsToRemove as $CharId )
         {
            // Remove character
-        
+
             $DropChar = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Character` ".
                                             "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
-            
+
             $DropAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` ".
                                                   "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
-            
+
             $DropChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
             $DropChar->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
-            
+
             $DropAttendance->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
             $DropAttendance->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
-            
+
             if ( !$DropChar->execute() )
             {
                 $Connector->rollBack();
                 return;
             }
-            
+
             if ( !$DropAttendance->execute() )
             {
                 $Connector->rollBack();
                 return;
             }
         }
-        
+
         $Connector->commit();
-        
+
         UserProxy::getInstance()->updateCharacters();
         msgQueryProfile( $aRequest );
     }
