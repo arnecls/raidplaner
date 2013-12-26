@@ -223,7 +223,6 @@
             
             $UserQuery->loop(function($UserData) use (&$UserData, &$Groups)
             {
-                $UserData = $UserQuery->fetch(PDO::FETCH_ASSOC);
                 array_push($Groups, $UserData["group_id"]);
             });
             
@@ -250,7 +249,6 @@
             
             $UserQuery->loop(function($UserData) use (&$UserData, &$Groups)
             {
-                $UserData = $UserQuery->fetch(PDO::FETCH_ASSOC);
                 array_push($Groups, $UserData["group_id"]);
             });
             

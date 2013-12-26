@@ -205,7 +205,7 @@
                     {
                         // Get user info by external id
                         
-                        $UserData = $UserQuery->fetch( PDO::FETCH_ASSOC );
+                        $UserData = $UserQuery->fetchFirst();
                         $UserId = $UserData["session_user_id"];                        
                         $UserInfo = $this->getUserInfoById($UserId);
                     }
