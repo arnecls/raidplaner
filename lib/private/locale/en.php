@@ -1,7 +1,6 @@
 <?php
     if ( defined("LOCALE_MAIN") )
     {
-
         // Classes
         $gLocale[ "Deathknight" ]              = "Deathknight";
         $gLocale[ "Druid" ]                    = "Druid";
@@ -43,7 +42,6 @@
         $gLocale[ "UnknownRequest" ]           = "Unknown request";
         $gLocale[ "InvalidRequest" ]           = "Invalid request";
         $gLocale[ "InputRequired" ]            = "Input required";
-
         $gLocale[ "UnappliedChanges" ]         = "Do you want to discard unapplied changes?";
         $gLocale[ "DiscardChanges" ]           = "Yes, discard";
         $gLocale[ "to" ]                       = "to";
@@ -54,14 +52,12 @@
         $gLocale[ "Logout" ]                   = "Logout";
         $gLocale[ "Username" ]                 = "Username";
         $gLocale[ "Password" ]                 = "Password";
-
         $gLocale[ "RepeatPassword" ]           = "Repeat password";
         $gLocale[ "Register" ]                 = "Register";
         $gLocale[ "EnterValidUsername" ]       = "You must enter a valid username.";
         $gLocale[ "EnterNonEmptyPassword" ]    = "You must enter a non-empty password.";
         $gLocale[ "PasswordsNotMatch" ]        = "Passwords did not match.";
         $gLocale[ "NameInUse" ]                = "This username is already in use.";
-
         $gLocale[ "RegistrationDone" ]         = "Registration complete.";
         $gLocale[ "AccountIsLocked" ]          = "Your account is currently locked.";
         $gLocale[ "ContactAdminToUnlock" ]     = "Please contact your admin to get your account unlocked.";
@@ -83,7 +79,6 @@
         $gLocale[ "October" ]                  = "October";
         $gLocale[ "November" ]                 = "November";
         $gLocale[ "December" ]                 = "December";
-
         $gLocale[ "Monday" ]                   = "Monday";
         $gLocale[ "Tuesday" ]                  = "Tuesday";
         $gLocale[ "Wednesday" ]                = "Wednesday";
@@ -91,7 +86,6 @@
         $gLocale[ "Friday" ]                   = "Friday";
         $gLocale[ "Saturday" ]                 = "Saturday";
         $gLocale[ "Sunday" ]                   = "Sunday";
-
         $gLocale[ "Mon" ]                      = "Mo";
         $gLocale[ "Tue" ]                      = "Tu";
         $gLocale[ "Wed" ]                      = "We";
@@ -119,7 +113,6 @@
         $gLocale[ "NewDungeon" ]               = "New dungeon";
         $gLocale[ "Description" ]              = "Description";
         $gLocale[ "DefaultRaidMode" ]          = "Default attendance mode";
-
         $gLocale[ "RaidStatus" ]               = "Status";
         $gLocale[ "RaidOpen" ]                 = "Raid open";
         $gLocale[ "RaidLocked" ]               = "Raid locked";
@@ -142,7 +135,6 @@
         $gLocale[ "RaidSetup" ]                = "Raid setup";
 
         // Profile
-
         $gLocale[ "Profile" ]                  = "Profile";
         $gLocale[ "History" ]                  = "Raid history";
         $gLocale[ "Characters" ]               = "Your characters";
@@ -154,7 +146,6 @@
         $gLocale[ "AttendancesRemoved" ]       = "All existing attendances will be removed, too.";
         $gLocale[ "RaidAttendance" ]           = "Raid attendance";
         $gLocale[ "RolesInRaids" ]             = "Roles in attended raids";
-
         $gLocale[ "Queued" ]                   = "Queued";
         $gLocale[ "Attended" ]                 = "Attended";
         $gLocale[ "Missed" ]                   = "Missed";
@@ -209,12 +200,10 @@
         $gLocale[ "HelpPage" ]                 = "Help link";
         $gLocale[ "Theme" ]                    = "Theme";
         $gLocale[ "RaidSetupStyle" ]           = "Attendance style";
-
         $gLocale[ "RaidModeManual" ]           = "Setup by raidlead";
         $gLocale[ "RaidModeOverbook" ]         = "By raidlead with overbooking";
         $gLocale[ "RaidModeAttend" ]           = "Setup by attend";
         $gLocale[ "RaidModeAll" ]              = "Just list";
-
         $gLocale[ "UpdateCheck" ]              = "Check for updates";
         $gLocale[ "UpToDate" ]                 = "This raidplaner is up to date.";
         $gLocale[ "NewVersionAvailable" ]      = "There is a new version available:";
@@ -313,7 +302,6 @@
         $gLocale[ "RepairDone" ]               = "Repair done.";
         $gLocale[ "BrokenDatabase" ]           = "Database seems to be broken";
         $gLocale[ "EnsureValidDatabase" ]      = "Ensure a valid database";
-
         $gLocale[ "ItemsRepaired" ]            = "Items repaired";
         $gLocale[ "ItemsToResolve" ]           = "Items need to be resolved manually";
         $gLocale[ "InvalidCharacters" ]        = "Invalid characters";
@@ -342,9 +330,9 @@
         $gLocale[ "PostToForum" ]              = "Post new raids in this forum";
         $gLocale[ "PostAsUser" ]               = "Post new raids as this user";
         $gLocale[ "DisablePosting" ]           = "Do not create postings";
+        $gLocale[ "NoUsersFound" ]             = "No users found";
 
         // PHPBB3
-
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";
         $gLocale[ "phpbb3_ConfigFile" ]         = "PHPBB3 config file";
         $gLocale[ "phpbb3_Database" ]           = "PHPBB3 database";

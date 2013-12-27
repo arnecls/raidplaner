@@ -46,7 +46,6 @@
         $gLocale[ "UnknownRequest" ]           = "Nieznane żądanie";
         $gLocale[ "InvalidRequest" ]           = "Niepoprawne żądanie";
         $gLocale[ "InputRequired" ]            = "Wymagane dodatkowe dane";
-
         $gLocale[ "UnappliedChanges" ]         = "Czy chcesz pominąć wprowadzone zmiany?";
         $gLocale[ "DiscardChanges" ]           = "Tak";
         $gLocale[ "to" ]                       = "do";
@@ -57,14 +56,12 @@
         $gLocale[ "Logout" ]                   = "Wyloguj";
         $gLocale[ "Username" ]                 = "Nazwa użytkownika";
         $gLocale[ "Password" ]                 = "Hasło";
-
         $gLocale[ "RepeatPassword" ]           = "Powtórz hasło";
         $gLocale[ "Register" ]                 = "Zarejestruj";
         $gLocale[ "EnterValidUsername" ]       = "Wprowadź poprawną nazwę użytkownika.";
         $gLocale[ "EnterNonEmptyPassword" ]    = "Hasło nie może być puste.";
         $gLocale[ "PasswordsNotMatch" ]        = "Hasło zostało powtórzone niepoprawnie.";
         $gLocale[ "NameInUse" ]                = "Użytkownik o podanej nazwie już istnieje.";
-
         $gLocale[ "RegistrationDone" ]         = "Rejestracja zakończona.";
         $gLocale[ "AccountIsLocked" ]          = "Twoje konto jest aktualnie zablokowane.";
         $gLocale[ "ContactAdminToUnlock" ]     = "Skontaktuj się z administratorem w celu odblokowania konta.";
@@ -86,7 +83,6 @@
         $gLocale[ "October" ]                  = "Październik";
         $gLocale[ "November" ]                 = "Listopad";
         $gLocale[ "December" ]                 = "Grudzień";
-
         $gLocale[ "Monday" ]                   = "Poniedziałek";
         $gLocale[ "Tuesday" ]                  = "Wtorek";
         $gLocale[ "Wednesday" ]                = "Środa";
@@ -94,7 +90,6 @@
         $gLocale[ "Friday" ]                   = "Piątek";
         $gLocale[ "Saturday" ]                 = "Sobota";
         $gLocale[ "Sunday" ]                   = "Niedziela";
-
         $gLocale[ "Mon" ]                      = "Po";
         $gLocale[ "Tue" ]                      = "Wt";
         $gLocale[ "Wed" ]                      = "Śr";
@@ -123,7 +118,6 @@
         $gLocale[ "NewDungeon" ]               = "Nowa instancja";
         $gLocale[ "Description" ]              = "Opis";
         $gLocale[ "DefaultRaidMode" ]          = "Domyślny sposób zapisu";
-
         $gLocale[ "RaidStatus" ]               = "Status";
         $gLocale[ "RaidOpen" ]                 = "Rajd otwarty";
         $gLocale[ "RaidLocked" ]               = "Rajd zablokowany";
@@ -158,7 +152,6 @@
         $gLocale[ "AttendancesRemoved" ]       = "Wszystkie zapisane obecności zostaną również usunięte.";
         $gLocale[ "RaidAttendance" ]           = "Obecność na rajdach";
         $gLocale[ "RolesInRaids" ]             = "Role w zapisanych rajdach";
-
         $gLocale[ "Queued" ]                   = "Zapisany";
         $gLocale[ "Attended" ]                 = "Obecny";
         $gLocale[ "Missed" ]                   = "Opuszczony";
@@ -212,12 +205,10 @@
         $gLocale[ "HelpPage" ]                 = "Link do pomocy";
         $gLocale[ "Theme" ]                    = "Motyw";
         $gLocale[ "RaidSetupStyle" ]           = "Sposób zapisów";
-
         $gLocale[ "RaidModeManual" ]           = "Przez rajd lidera";
         $gLocale[ "RaidModeOverbook" ]         = "Przez raid lidera z nadmiarem";
         $gLocale[ "RaidModeAttend" ]           = "Automatyczny";
         $gLocale[ "RaidModeAll" ]              = "Tylko lista";
-
         $gLocale[ "UpdateCheck" ]              = "Sprawdź aktualizacje";
         $gLocale[ "UpToDate" ]                 = "Raidplanner jest aktualny.";
         $gLocale[ "NewVersionAvailable" ]      = "Dostępna jest nowa wersja:";
@@ -316,7 +307,6 @@
         $gLocale[ "RepairDone" ]               = "Naprawa zakończona.";
         $gLocale[ "BrokenDatabase" ]           = "Baza danych wygląda na nienaprawialną";
         $gLocale[ "EnsureValidDatabase" ]      = "Upewnij się czy baza danych jest poprawna";
-
         $gLocale[ "ItemsRepaired" ]            = "naprawionych elementów";
         $gLocale[ "ItemsToResolve" ]           = "elementów, które muszą zostać poprawione ręcznie";
         $gLocale[ "InvalidCharacters" ]        = "Nieprawidłowe postacie";
@@ -344,9 +334,9 @@
         $gLocale[ "PostToForum" ]              = null;
         $gLocale[ "PostAsUser" ]               = null;
         $gLocale[ "DisablePosting" ]           = null;
+        $gLocale[ "NoUsersFound" ]             = null;
 
         // PHPBB3
-
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";
         $gLocale[ "phpbb3_ConfigFile" ]         = "Plik konfiguracyjny PHPBB";
         $gLocale[ "phpbb3_Database" ]           = "Baza danych PHPBB";

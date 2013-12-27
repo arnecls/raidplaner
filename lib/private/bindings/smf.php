@@ -126,16 +126,52 @@
 
         public function getForums($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
-            return null;
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
 
+            if ($Connector != null)
+            {
+                $Forums = array();
+                $ForumQuery = $Connector->prepare( "SELECT id_board, name FROM `".$aPrefix."boards` ".
+                                                   "WHERE redirect = \"\" ORDER BY name" );
+
+                $ForumQuery->loop(function($Forum) use (&$Forums)
+                {
+                    array_push( $Forums, array(
+                        "id"   => $Forum["id_board"],
+                        "name" => $Forum["name"])
+                    );
+                }, $aThrow);
+
+                return $Forums;
+            }
+
+            return null;
         }
 
         // -------------------------------------------------------------------------
 
         public function getUsers($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
-            return null;
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
 
+            if ($Connector != null)
+            {
+                $Users = array();
+                $UserQuery = $Connector->prepare( "SELECT id_member, member_name FROM `".$aPrefix."members` ".
+                                                  "ORDER BY member_name" );
+
+                $UserQuery->loop(function($User) use (&$Users)
+                {
+                    array_push( $Users, array(
+                        "id"   => $User["id_member"],
+                        "name" => $User["member_name"])
+                    );
+                }, $aThrow);
+
+                return $Users;
+            }
+
+            return null;
         }
 
         // -------------------------------------------------------------------------

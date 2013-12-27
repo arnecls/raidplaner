@@ -143,16 +143,52 @@
 
         public function getForums($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
-            return null;
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
 
+            if ($Connector != null)
+            {
+                $Forums = array();
+                $ForumQuery = $Connector->prepare( "SELECT CategoryID, Name FROM `".$aPrefix."Category` ".
+                                                   "WHERE CategoryID > 0 ORDER BY Name" );
+
+                $ForumQuery->loop(function($Forum) use (&$Forums)
+                {
+                    array_push( $Forums, array(
+                        "id"   => $Forum["CategoryID"],
+                        "name" => $Forum["Name"])
+                    );
+                }, $aThrow);
+
+                return $Forums;
+            }
+
+            return null;
         }
 
         // -------------------------------------------------------------------------
 
         public function getUsers($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
-            return null;
+            $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, $aThrow);
 
+            if ($Connector != null)
+            {
+                $Users = array();
+                $UserQuery = $Connector->prepare( "SELECT UserID, Name FROM `".$aPrefix."User` ".
+                                                  "ORDER BY Name" );
+
+                $UserQuery->loop(function($User) use (&$Users)
+                {
+                    array_push( $Users, array(
+                        "id"   => $User["UserID"],
+                        "name" => $User["Name"])
+                    );
+                }, $aThrow);
+
+                return $Users;
+            }
+
+            return null;
         }
 
         // -------------------------------------------------------------------------

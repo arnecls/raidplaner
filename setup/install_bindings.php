@@ -167,16 +167,21 @@
             echo "</select><br/><br/>";
 
             $Users = $Binding->getUsersFromConfig();
+            $FoundUsers = ($Users != null) && (sizeof($Users) > 0);
 
-            echo L("PostAsUser")."<br/>";;
+            echo L("PostAsUser")."<br/>";
             echo "<select id=\"".$Binding->getName()."_postas\"".$Disabled.">";
 
-            if ($Users != null)
+            if ($FoundUsers)
             {
                 foreach( $Users as $User )
                 {
                     echo "<option value=\"".$User["id"]."\"".(($Config->PostAs == $User["id"]) ? " selected=\"selected\"" : "" ).">".$User["name"]."</option>";
                 }
+            }
+            else
+            {
+                echo "<option value=\"0\" selected=\"selected\">".L("NoUsersFound")."</option>";
             }
 
             echo "</select>";
