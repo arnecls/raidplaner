@@ -351,16 +351,16 @@
                 $TopicQuery->execute(true);
                 $TopicId = $Connector->lastInsertId();
                 
-                // Finish topic
+                // Finish post
 
-                $TopicFinishQuery = $Connector->prepare("UPDATE `".SMF_TABLE_PREFIX."messages` ".
+                $PostFinishQuery = $Connector->prepare("UPDATE `".SMF_TABLE_PREFIX."messages` ".
                                                      "SET id_topic = :TopicId ".
                                                      "WHERE id_msg = :PostId LIMIT 1");
 
-                $TopicFinishQuery->BindValue( ":TopicId", $TopicId, PDO::PARAM_INT );
-                $TopicFinishQuery->BindValue( ":PostId", $PostId, PDO::PARAM_INT );
+                $PostFinishQuery->BindValue( ":TopicId", $TopicId, PDO::PARAM_INT );
+                $PostFinishQuery->BindValue( ":PostId", $PostId, PDO::PARAM_INT );
 
-                $TopicFinishQuery->execute(true);
+                $PostFinishQuery->execute(true);
                 $Connector->commit();
             }
             catch (PDOException $Exception)

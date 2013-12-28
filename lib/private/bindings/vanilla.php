@@ -420,7 +420,31 @@
 
         public function post($aSubject, $aMessage)
         {
+            $Connector = $this->getConnector();
+            $Timestamp = time();
 
+            try
+            {
+                // Create post
+
+                $PostQuery = $Connector->prepare("INSERT INTO `".VANILLA_TABLE_PREFIX."Discussion` ".
+                                              "(ForeignID, CategoryID, InsertUserID, Format, Name, Body, DateInserted) VALUES ".
+                                              "('stub', :ForumId, :UserId, 'Html', :Subject, :Text, FROM_UNIXTIME(:Now))");
+
+                $PostQuery->BindValue( ":ForumId", VANILLA_POSTTO, PDO::PARAM_INT );
+                $PostQuery->BindValue( ":UserId", VANILLA_POSTAS, PDO::PARAM_INT );
+                $PostQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
+
+                $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
+                $PostQuery->BindValue( ":Text", $aMessage, PDO::PARAM_STR );
+
+                $PostQuery->execute(true);
+            }
+            catch (PDOException $Exception)
+            {
+                $Connector->rollBack();
+                throw $Exception;
+            }
         }
     }
 ?>
