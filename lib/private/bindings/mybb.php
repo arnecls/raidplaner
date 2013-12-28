@@ -387,7 +387,7 @@
             catch (PDOException $Exception)
             {
                 $Connector->rollBack();
-                throw $e;
+                throw $Exception;
             }
         }
     }
