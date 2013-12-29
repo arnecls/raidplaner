@@ -1,0 +1,57 @@
+<post>
+    <!--
+        The following attributes are available for subject and message:
+        
+        locale   : Set to your locale, e.g. "de_DE" or do not set for using the browser's locale.
+                   See http://www.w3.org/WAI/ER/IG/ert/iso639.htm
+                   See http://www.php.net/manual/en/function.setlocale.php
+        timezone : Set to the timezone you want to use, e.g. "CET". Defaults to "UTC".
+                   See http://www.php.net/manual/en/timezones.php
+                   
+        You can use tags in your messages to access fields from the tables "raids_Raid" and
+        "raids_Location". Tags are written inside curly braces, parameters are separated by a
+        colon. Not all tags have parameters. 
+        While in theory you can access all fields from the two database tables, the following 
+        fields are the must useful:
+        
+        {URL}               Base URL of the raidplaner (e.g. http://www.myserver.com/raidplaner/)
+        
+        {Raid:RaidId}       Id of the raid
+        {Raid:Size}         Size of the raid (e.g. 25)
+        {Raid:Description}  The description entered for this raid
+        {Raid:Start:format} Start of the raid format must be a valid strftime format.
+                            See http://www.php.net/manual/en/function.strftime.php
+        {Raid:End:format}   End of the raid format must be a valid strftime format.
+                            See http://www.php.net/manual/en/function.strftime.php
+                            
+        {Location:Name}     Name of the location
+        {Location:Image}    Filename of the icon used for this raid
+        
+        Some forums (like MyBB) will refuse to display HTML, so certain parts will be
+        converted to BBCode automatically. Note that tags that span multiple lines won't be
+        affected.
+        The following BBCode replacements will be done:
+        
+        <a href="x"></a>    [url]x[/url]
+        <a href="x">y</a>   [url=x]y[/url]
+        <b>x</b>            [b]x[/b]
+        <i>x</i>            [i]x[/i]
+        <br/>               \n aka. linebreak
+        <img src="x"/>      [img]x[/img] 
+    -->
+    <subject>
+        <![CDATA[
+            {Location:Name} ({Raid:Size}) - {Raid:Start:%A, %x}
+        ]]>
+    </subject>
+    <message timezone="Europe/Berlin">
+        <![CDATA[
+            <b>{Location:Name} ({Raid:Size})</b>
+            <i>{Raid:Start:%A, %x}</i>
+            <i>{Raid:Start:%X (%Z)} to {Raid:End:%X (%Z)}</i>
+            <a href="{URL}index.php#raid,{Raid:RaidId}">Link to raid</a>
+            
+            {Raid:Description}
+        ]]>
+    </message>
+</post>

@@ -5,7 +5,7 @@
 
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
-    require_once("lib/private/gameconfig.php");
+    require_once("lib/private/config/game.php");
 
     // Old browser check
 

@@ -66,4 +66,18 @@ function leadingZero10( $aValue )
         : $Number;
 }
 
+function HTMLToBBCode($aString)
+{
+    $Text = $aString;
+    
+    $Text = preg_replace('/<a href="(.*)"\\><\\/a\\>/', "[url]\\1[/url]", $Text);
+    $Text = preg_replace('/<a href="(.*)"\\>(.*)<\\/a\\>/', "[url=\\1]\\2[/url]", $Text);
+    $Text = preg_replace('/<b>(.*)<\\/b\\>/', "[b]\\1[/b]", $Text);
+    $Text = preg_replace('/<i>(.*)<\\/i\\>/', "[i]\\1[/i]", $Text);
+    $Text = preg_replace('/<img src="(.*)"\\/>/', "[img]\\1[/img]", $Text);
+    $Text = preg_replace('/<br\\/>/', "\n", $Text);
+    
+    return $Text;
+}
+
 ?>

@@ -316,7 +316,7 @@
             $Connector->beginTransaction();
 
             $Timestamp = time();
-            $FormattedMessage = preg_replace('/<a href="(.*)"\\>(.*)<\\/a\\>/', "[url=\\1]\\2[/url]", $aMessage);
+            $FormattedMessage = HTMLToBBCode($aMessage);
 
             // Fetch user
 

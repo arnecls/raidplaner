@@ -117,21 +117,16 @@ function msgRaidCreate( $aRequest )
                 }
             });
 
-            $LocationName = "Raid";
+            $LocationData = null;
 
             if ( sizeof($PostTargets) > 0 )
             {
                 loadSiteSettings();
 
-                $LocationQuery = $Connector->prepare("SELECT Name FROM `".RP_TABLE_PREFIX."Location` WHERE LocationId = :LocationId LIMIT 1");
+                $LocationQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Location` WHERE LocationId = :LocationId LIMIT 1");
                 $LocationQuery->bindValue(":LocationId", $LocationId, PDO::PARAM_INT);
                 $LocationData = $LocationQuery->fetchFirst();
-
-                if ($LocationData != null)
-                    $LocationName = $LocationData["Name"];
             }
-
-            $LocationName .= " (".$aRequest["locationSize"].")";
 
             // Create raids(s)
 
@@ -194,15 +189,17 @@ function msgRaidCreate( $aRequest )
 
                 if (sizeof($PostTargets) > 0)
                 {
-                    $Subject = $LocationName.", ".(($gSite["TimeFormat"] == 24) ? $StartDay.".".$StartMonth."." : $StartMonth."/".$StartDay." ").$StartYear;
-                    $RaidUrl = $_SERVER["HTTP_ORIGIN"].substr($_SERVER["REQUEST_URI"], 0, strpos($_SERVER["REQUEST_URI"], "lib/"))."index.php#raid,".$RaidId;
-                    $Message = $LocationName."\n<a href=\"".$RaidUrl."\">".L("RaidSetup")."</a>\n\n".$aRequest["description"];
-
+                    $RaidQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId=:RaidId LIMIT 1");
+                    $RaidQuery->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
+                    $RaidData = $RaidQuery->fetchFirst();
+                    
+                    $MessageData = Binding::generateMessage($RaidData, $LocationData);
+                    
                     try
                     {
                         foreach($PostTargets as $PluginInstance)
                         {
-                            $PluginInstance->post($Subject, $Message);
+                            $PluginInstance->post($MessageData["subject"], $MessageData["message"]);
                         }
                     }
                     catch (PDOException $Exception)

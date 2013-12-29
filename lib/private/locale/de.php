@@ -298,7 +298,7 @@
 
         // Repair
         $gLocale[ "Repair" ]                   = "Datenbank Inkonsistenzen reparieren";
-        $gLocale[ "GameconfigProblems" ]       = "Durch Veränderungen in der lib/gameconfig.php können ungütige Datenbankeinträge entstehen (z.B. Charaktere mit ungütigen Rollen).";
+        $gLocale[ "GameconfigProblems" ]       = "Durch Veränderungen in der lib/private/config/game.php können ungütige Datenbankeinträge entstehen (z.B. Charaktere mit ungütigen Rollen).";
         $gLocale[ "RepairTheseProblems" ]      = "Dieses Script behebt diese Probleme so gut wie möglich.";
         $gLocale[ "RepairDone" ]               = "Reparatur abgeschlossen.";
         $gLocale[ "BrokenDatabase" ]           = "Die Datenbank scheint defekt zu sein";

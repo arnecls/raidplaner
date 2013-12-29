@@ -140,6 +140,111 @@
             $Config = $this->getConfig();
             return $this->getUsers($Config->Database, $Config->Prefix, $Config->User, $Config->Password, false);
         }
+        
+        // -------------------------------------------------------------------------
+
+        public static function generateMessage($aRaidData, $aLocationData)
+        {
+            $Template = new SimpleXMLElement( file_get_contents(dirname(__FILE__)."/config/post_template.xml") );
+            
+            $SystemLocale   = setlocale(LC_ALL, 0);
+            $SystemTimezone = date_default_timezone_get();
+            $Subject = "";
+            $Message = "";
+            
+            $BrowserLang = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
+            $DefaultLocale = str_replace("-", "_", substr($BrowserLang, 0, strpos($BrowserLang, ",")));
+            
+            try
+            {
+                $SubjectLocale = (isset($Template->subject["locale"]))
+                    ? $Template->subject["locale"]
+                    : $DefaultLocale;
+                    
+                $SubjectTimezone = (isset($Template->subject["timezone"]))
+                    ? $Template->subject["timezone"]
+                    : $SystemTimezone;
+                    
+                $MessageLocale = (isset($Template->message["locale"]))
+                    ? $Template->message["locale"]
+                    : $DefaultLocale;
+                
+                $MessageTimezone = (isset($Template->message["timezone"]))
+                    ? $Template->message["timezone"]
+                    : $SystemTimezone;
+            
+                setlocale(LC_ALL, $SubjectLocale);
+                $Subject = self::parseTemplate($Template->subject, $aRaidData, $aLocationData, $SubjectTimezone);
+                
+                setlocale(LC_ALL, $MessageLocale);
+                $Message = self::parseTemplate($Template->message, $aRaidData, $aLocationData, $MessageTimezone);
+            }
+            catch (Exception $e)
+            {
+            }                
+            
+            setlocale(LC_ALL, $SystemLocale);
+            date_default_timezone_set($SystemTimezone);
+                        
+            return array(
+                "subject" => trim($Subject),
+                "message" => trim($Message)
+            ); 
+        }
+        
+        // -------------------------------------------------------------------------
+
+        private static function parseTemplate($aTemplate, $aRaidData, $aLocationData, $aTimezone)
+        {
+            $Offset = 0;
+            $Text = "";
+            
+            $TagStart = strpos($aTemplate, "{", $Offset);
+            
+            while( $TagStart !== false )
+            {
+                $TagEnd = strpos($aTemplate, "}", $TagStart);
+                $TagData = explode(":", substr($aTemplate, $TagStart+1, $TagEnd-$TagStart-1));
+                
+                $Parsed = "";
+                
+                switch (strtolower($TagData[0]))
+                {
+                case "url":
+                    $Parsed = $_SERVER["HTTP_ORIGIN"].substr($_SERVER["REQUEST_URI"], 0, strpos($_SERVER["REQUEST_URI"], "lib/"));
+                    break;
+                
+                case "location":
+                    $Parsed = isset($aLocationData[$TagData[1]]) ? $aLocationData[$TagData[1]] : "UNKNOWN LOCATION FIELD";
+                    break;
+                    
+                case "raid":
+                    switch (strtolower($TagData[1]))
+                    {
+                    case "end":
+                    case "start":
+                        date_default_timezone_set('UTC');
+                        $Timestamp = strtotime($aRaidData[$TagData[1]]);
+                        
+                        date_default_timezone_set($aTimezone);
+                        $Parsed = strftime($TagData[2], $Timestamp);
+                        break;
+                        
+                    default:
+                        $Parsed = isset($aRaidData[$TagData[1]]) ? $aRaidData[$TagData[1]] : "UNKNOWN RAID FIELD";
+                        break;
+                    }
+                    break;
+                }
+                
+                $Text .= substr($aTemplate, $Offset, $TagStart-$Offset).$Parsed;
+                $Offset = $TagEnd+1;
+                $TagStart = strpos($aTemplate, "{", $Offset);
+            }
+            
+            $Text.= substr($aTemplate, $Offset);
+            return $Text;
+        }
     }
 
 ?>

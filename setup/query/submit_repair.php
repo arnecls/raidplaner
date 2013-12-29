@@ -1,7 +1,7 @@
 <?php
     require_once(dirname(__FILE__)."/../../lib/private/connector.class.php");
     require_once(dirname(__FILE__)."/../../lib/config/config.php");
-    require_once(dirname(__FILE__)."/../../lib/private/gameconfig.php");
+    require_once(dirname(__FILE__)."/../../lib/private/config/game.php");
     require_once("tools_install.php");
 
     // globals
