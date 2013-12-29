@@ -211,7 +211,11 @@
                 switch (strtolower($TagData[0]))
                 {
                 case "url":
-                    $Parsed = $_SERVER["HTTP_ORIGIN"].substr($_SERVER["REQUEST_URI"], 0, strpos($_SERVER["REQUEST_URI"], "lib/"));
+                    $Protocol = (strpos($_SERVER["SERVER_PROTOCOL"], "https") !== false) ? "https://" : "http://";
+                    $Host = $_SERVER["SERVER_NAME"].(($_SERVER["SERVER_PORT"] == 80) ? "" : ":".$_SERVER["SERVER_PORT"]);
+                    $Path = substr($_SERVER["REQUEST_URI"], 0, strpos($_SERVER["REQUEST_URI"], "lib/"));
+                    
+                    $Parsed = $Protocol.$Host.$Path;
                     break;
                 
                 case "location":
