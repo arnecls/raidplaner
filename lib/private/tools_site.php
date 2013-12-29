@@ -5,6 +5,7 @@
         "Version"     => 109.0,
         "BannerLink"  => "",
         "HelpLink"    => "",
+        "Logout"      => true,
         "Banner"      => "cataclysm.jpg",
         "Background"  => "flower.png",
         "BGColor"     => "#898989",
@@ -34,6 +35,7 @@
 
         $gSite["BannerLink"]  = "";
         $gSite["HelpLink"]    = "";
+        $gSite["Logout"]      = true;
         $gSite["Banner"]      = "cataclysm.jpg";
         $gSite["Background"]  = "flower.png";
         $gSite["BGColor"]     = "#898989";
@@ -62,11 +64,24 @@
                     try
                     {
                         $Theme = @new SimpleXMLElement( file_get_contents($ThemeFile) );
+                        
                         $gSite["Banner"]     = (string)$Theme->banner;
                         $gSite["Background"] = (string)$Theme->bgimage;
                         $gSite["BGColor"]    = (string)$Theme->bgcolor;
                         $gSite["BGRepeat"]   = (string)$Theme->bgrepeat;
                         $gSite["PortalMode"] = ((string)$Theme->portalmode) == "true";
+                        $gSite["Logout"]     = ((string)$Theme->logout) != "false";
+                        
+                        if (isset($Theme->random))
+                        {
+                            $Index = rand(0, sizeof($Theme->random));
+                            $Overwrite = $Theme->random[$Index];
+                        
+                            $gSite["Banner"]     = (isset($Overwrite->banner))   ? (string)$Overwrite->banner   : $gSite["Banner"];
+                            $gSite["Background"] = (isset($Overwrite->bgimage))  ? (string)$Overwrite->bgimage  : $gSite["Background"];
+                            $gSite["BGColor"]    = (isset($Overwrite->bgcolor))  ? (string)$Overwrite->bgcolor  : $gSite["BGColor"];
+                            $gSite["BGRepeat"]   = (isset($Overwrite->bgrepeat)) ? (string)$Overwrite->bgrepeat : $gSite["BGRepeat"];
+                        }
                     }
                     catch(Exception $e)
                     {

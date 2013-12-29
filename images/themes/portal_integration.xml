@@ -5,4 +5,5 @@
     <bgimage>none</bgimage>
     <bgcolor>none</bgcolor>
     <portalmode>true</portalmode>
+    <logout>false</logout>
 </theme>

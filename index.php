@@ -100,11 +100,13 @@
                 <?php if (registeredUser()) { ?>
 
                 <span class="logout">
+                    <?php if ($gSite["Logout"]) { ?>
                     <form id="logout" method="post" action="index.php">
                         <input type="hidden" name="nocheck"/>
                         <input type="hidden" name="logout"/>
                         <button onclick="return onLogOut()" class="button_logout"><?php echo L("Logout"); ?></button>
                     </form>
+                    <?php } ?>
                 </span>
                 <?php if ($gSite["HelpLink"] != "") { ?>
                 <span id="help">
