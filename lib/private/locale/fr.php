@@ -137,6 +137,7 @@
         $gLocale[ "SwitchChar" ]               = "Changé de personnage";
         $gLocale[ "RaidNotFound" ]             = null;
         $gLocale[ "RaidSetup" ]                = null;
+        $gLocale[ "LinkToRaid" ]               = null;
 
         // Profile
 

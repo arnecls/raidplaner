@@ -133,6 +133,7 @@
         $gLocale[ "SwitchChar" ]               = "Charakter gewechselt";
         $gLocale[ "RaidNotFound" ]             = "Raid konnte nicht gefunden werden.";
         $gLocale[ "RaidSetup" ]                = "Aufstellung";
+        $gLocale[ "LinkToRaid" ]               = "Link zum Raid";
 
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";

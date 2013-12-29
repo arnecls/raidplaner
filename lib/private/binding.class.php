@@ -218,6 +218,10 @@
                     $Parsed = isset($aLocationData[$TagData[1]]) ? $aLocationData[$TagData[1]] : "UNKNOWN LOCATION FIELD";
                     break;
                     
+                case "l":
+                    $Parsed = L($TagData[1]);
+                    break;
+                    
                 case "raid":
                     switch (strtolower($TagData[1]))
                     {

@@ -16,6 +16,10 @@
         
         {URL}               Base URL of the raidplaner (e.g. http://www.myserver.com/raidplaner/)
         
+        {L:tag}             Localized string (see lib/private/locale for available tags).
+                            Note that strings are localized to the language of the user
+                            creating the raid.
+        
         {Raid:RaidId}       Id of the raid
         {Raid:Size}         Size of the raid (e.g. 25)
         {Raid:Description}  The description entered for this raid
@@ -48,8 +52,8 @@
         <![CDATA[
             <b>{Location:Name} ({Raid:Size})</b>
             <i>{Raid:Start:%A, %x}</i>
-            <i>{Raid:Start:%X (%Z)} to {Raid:End:%X (%Z)}</i>
-            <a href="{URL}index.php#raid,{Raid:RaidId}">Link to raid</a>
+            <i>{Raid:Start:%X (%Z)} {L:to} {Raid:End:%X (%Z)}</i>
+            <a href="{URL}index.php#raid,{Raid:RaidId}">{L:LinkToRaid}</a>
             
             {Raid:Description}
         ]]>
