@@ -2,6 +2,9 @@
 
 function msgQueryLocations( $aRequest )
 {
+    loadSiteSettings();
+    
+    global $gSite;
     $Out = Out::getInstance();
 
     if ( validRaidlead() )
@@ -28,15 +31,18 @@ function msgQueryLocations( $aRequest )
 
         // Images
 
-        $Images = scandir("../images/raidsmall");
+        $Images = scandir("../images/icons/".$gSite["Iconset"]."/raidsmall");
+        $ImageList = Array();
 
         foreach ( $Images as $Image )
         {
             if ( strripos( $Image, ".png" ) !== false )
             {
-                $Out->pushValue("locationimage", $Image);
+                array_push($ImageList, $Image);
             }
         }
+        
+        $Out->pushValue("locationimage", $ImageList);
     }
     else
     {

@@ -3,9 +3,10 @@
     function dumpImages( $Folder )
     {
         global $gSite;
-        $FolderHandle = opendir( realpath( dirname(__FILE__)."/../../".$Folder ) );
+        $FolderHandle = opendir( realpath(dirname(__FILE__)."/../../".$Folder) );
 
-        while ( ($FileName = readdir( $FolderHandle )) !== false )
+        while ( ($FolderHandle !== false) && 
+                (($FileName = readdir($FolderHandle)) !== false) )
         {
             $FilePath = realpath( dirname(__FILE__)."/../../".$Folder."/".$FileName );
 
@@ -30,9 +31,9 @@
     }
 
     dumpImages( "lib/layout/images" );
-    dumpImages( "images/raidsmall" );
-    dumpImages( "images/raidbig" );
-    dumpImages( "images/classessmall" );
-    dumpImages( "images/classesbig" );
-    dumpImages( "images/roles" );
+    dumpImages( "images/icons/".$gSite["Iconset"]."/raidsmall" );
+    dumpImages( "images/icons/".$gSite["Iconset"]."/raidbig" );
+    dumpImages( "images/icons/".$gSite["Iconset"]."/classessmall" );
+    dumpImages( "images/icons/".$gSite["Iconset"]."/classesbig" );
+    dumpImages( "images/icons/".$gSite["Iconset"]."/roles" );
 ?>

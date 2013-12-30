@@ -10,6 +10,7 @@
         "Background"  => "flower.png",
         "BGColor"     => "#898989",
         "BGRepeat"    => "repeat-xy",
+        "Iconset"     => "wow",
         "PortalMode"  => false,
         "TimeFormat"  => 24,
         "StartOfWeek" => 1
@@ -24,7 +25,7 @@
     }
 
     // ---------------------------------------------------------------
-
+    
     function loadSiteSettings()
     {
         global $gSite;
@@ -40,6 +41,7 @@
         $gSite["Background"]  = "flower.png";
         $gSite["BGColor"]     = "#898989";
         $gSite["BGRepeat"]    = "repeat-xy";
+        $gSite["Iconset"]     = "wow";
         $gSite["PortalMode"]  = false;
         $gSite["TimeFormat"]  = 24;
         $gSite["StartOfWeek"] = 1;
@@ -65,12 +67,14 @@
                     {
                         $Theme = @new SimpleXMLElement( file_get_contents($ThemeFile) );
                         
-                        $gSite["Banner"]     = (string)$Theme->banner;
-                        $gSite["Background"] = (string)$Theme->bgimage;
-                        $gSite["BGColor"]    = (string)$Theme->bgcolor;
-                        $gSite["BGRepeat"]   = (string)$Theme->bgrepeat;
-                        $gSite["PortalMode"] = ((string)$Theme->portalmode) == "true";
-                        $gSite["Logout"]     = ((string)$Theme->logout) != "false";
+                        $gSite["Banner"]     = (isset($Theme->banner))   ? (string)$Theme->banner   : $gSite["Banner"];
+                        $gSite["Background"] = (isset($Theme->bgimage))  ? (string)$Theme->bgimage  : $gSite["Background"];
+                        $gSite["BGColor"]    = (isset($Theme->bgcolor))  ? (string)$Theme->bgcolor  : $gSite["BGColor"];
+                        $gSite["BGRepeat"]   = (isset($Theme->bgrepeat)) ? (string)$Theme->bgrepeat : $gSite["BGRepeat"];
+                        
+                        $gSite["Iconset"]    = (isset($Theme->iconset))    ? (string)$Theme->iconset                : $gSite["Iconset"];
+                        $gSite["PortalMode"] = (isset($Theme->portalmode)) ? ((string)$Theme->portalmode) == "true" : $gSite["PortalMode"];
+                        $gSite["Logout"]     = (isset($Theme->logout))     ? ((string)$Theme->logout) != "false"    : $gSite["Logout"];
                         
                         if (isset($Theme->random))
                         {
