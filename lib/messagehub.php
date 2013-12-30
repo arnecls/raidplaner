@@ -7,7 +7,7 @@
     require_once(dirname(__FILE__)."/private/tools_string.php");
     require_once(dirname(__FILE__)."/private/tools_site.php");
     require_once(dirname(__FILE__)."/private/settings.class.php");
-    require_once(dirname(__FILE__)."/private/config/game.php");
+    require_once(dirname(__FILE__)."/config/game.php");
     require_once(dirname(__FILE__)."/private/out.class.php");
 
     include_once("private/message_query_calendar.php");

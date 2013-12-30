@@ -3,6 +3,18 @@
 // This file contains information about the game represented by this raidplaner instance.
 // By default this is World of Warcraft.
 
+// You can choose between different class modes which will change the way classes and roles
+// are being handled by the profile page and the raid attend tooltips.
+// The following values are supported:
+//
+// "wow"  : World of Warcraft style classes and roles.
+//          Each character has one class and two different roles based on that class.
+//
+// "ff14" : Final Fantasy 14 style job system
+//          Each character may have one or more class(es) with one predefined role each.
+
+$gClassMode = "ff14";
+
 // Roles:
 //
 // Role ident => Localization string (must be present in all files in lib/private/locale)

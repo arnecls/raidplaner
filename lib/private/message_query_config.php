@@ -3,6 +3,7 @@
 function msgQueryConfig( $aRequest )
 {
     global $gSite;
+    global $gClassMode;
     global $gRoles;
     global $gClasses;
     global $gGroupSizes;
@@ -23,6 +24,7 @@ function msgQueryConfig( $aRequest )
     $Config["RoleColumnCount"] = $gRoleColumnCount;
     $Config["ClassIdx"] = array();
     $Config["Classes"] = array();
+    $Config["ClassMode"] = $gClassMode;
 
     // Groups
 

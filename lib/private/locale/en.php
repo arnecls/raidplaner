@@ -298,7 +298,7 @@
 
         // Repair
         $gLocale[ "Repair" ]                   = "Repaire database inconsistencies";
-        $gLocale[ "GameconfigProblems" ]       = "By changing the lib/private/config/game.php inconsistent database entries can be created (e.g. characters with invalid roles).";
+        $gLocale[ "GameconfigProblems" ]       = "By changing the lib/config/game.php inconsistent database entries can be created (e.g. characters with invalid roles).";
         $gLocale[ "RepairTheseProblems" ]      = "This script fixes these problems as good as possible.";
         $gLocale[ "RepairDone" ]               = "Repair done.";
         $gLocale[ "BrokenDatabase" ]           = "Database seems to be broken";

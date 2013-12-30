@@ -303,7 +303,7 @@
 
         // Repair
         $gLocale[ "Repair" ]                   = "Napraw niespójną bazę danych";
-        $gLocale[ "GameconfigProblems" ]       = "Zmiany w pliku lib/private/config/game.php mogą wywołać niespójność bazy danych (np. postacie z nieprawidłowym przypisaniem ról).";
+        $gLocale[ "GameconfigProblems" ]       = "Zmiany w pliku lib/config/game.php mogą wywołać niespójność bazy danych (np. postacie z nieprawidłowym przypisaniem ról).";
         $gLocale[ "RepairTheseProblems" ]      = "Ten skrypt postara się naprawić te błędy w jak największym stopniu.";
         $gLocale[ "RepairDone" ]               = "Naprawa zakończona.";
         $gLocale[ "BrokenDatabase" ]           = "Baza danych wygląda na nienaprawialną";
