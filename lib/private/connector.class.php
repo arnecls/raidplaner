@@ -14,14 +14,23 @@
 
         // --------------------------------------------------------------------------------------------
 
-        public function __construct($aHost, $aDatabase, $aUser, $aPass, $aRethrow = false)
+        public function __construct($aHost, $aDatabase, $aUser, $aPass, $aRethrow = false, $aSetTimezone = true)
         {
             try
             {
                 $this->mHost  = $aHost;
                 $this->mDatabase = $aDatabase;
-                parent::__construct("mysql:dbname=".$aDatabase.";host=".$aHost, $aUser, $aPass,
-                    array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8' COLLATE 'utf8_general_ci', time_zone = '+00:00'"));
+                
+                if ($aSetTimezone)
+                {
+                    parent::__construct("mysql:dbname=".$aDatabase.";host=".$aHost, $aUser, $aPass,
+                        array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8' COLLATE 'utf8_general_ci', time_zone = '+00:00'"));
+                }
+                else
+                {
+                    parent::__construct("mysql:dbname=".$aDatabase.";host=".$aHost, $aUser, $aPass,
+                        array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8' COLLATE 'utf8_general_ci'"));
+                }
             }
             catch (PDOException $Exception)
             {

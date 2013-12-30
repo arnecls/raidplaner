@@ -4,7 +4,7 @@
     @include_once(dirname(__FILE__)."/../lib/config/config.php");
     require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
 
-    $CurrentVersion = 100;
+    $CurrentVersion = 110;
     $CurrentPatch = $CurrentVersion % 10;
     $CurrentMinor = ($CurrentVersion / 10) % 10;
     $CurrentMajor = ($CurrentVersion / 100) % 10;
@@ -94,6 +94,7 @@
             <option value="96"<?php if ($Version==96) echo " selected"; ?>>0.9.6</option>
             <option value="97"<?php if ($Version==97) echo " selected"; ?>>0.9.7</option>
             <option value="98"<?php if ($Version==98) echo " selected"; ?>>0.9.8</option>
+            <option value="100"<?php if ($Version==100) echo " selected"; ?>>1.0.0</option>
         </select>
         <span> <?php echo L("UpdateTo")." ".$CurrentMajor.".".$CurrentMinor.".".$CurrentPatch; ?></span>
     </div>

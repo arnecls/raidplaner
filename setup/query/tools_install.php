@@ -27,7 +27,7 @@
               `UserId` int(10) unsigned NOT NULL,
               `Name` varchar(64) NOT NULL,
               `Mainchar` enum('true','false') NOT NULL DEFAULT 'false',
-              `Class` CHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+              `Class` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
               `Role1` tinyint(1) unsigned NOT NULL,
               `Role2` tinyint(1) unsigned NOT NULL,
               PRIMARY KEY (`CharacterId`),
@@ -154,9 +154,8 @@
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('StartOfWeek', 1, '');" );
 
         if ( !in_array("Version", $ExistingSettings) )
-            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 100, '');" );
+            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 110, '');" );
         else
-
-            $Connector->exec( "UPDATE `".$Prefix."Setting` SET IntValue=100 WHERE Name='Version' LIMIT 1" );
+            $Connector->exec( "UPDATE `".$Prefix."Setting` SET IntValue=110 WHERE Name='Version' LIMIT 1" );
     }
 ?>

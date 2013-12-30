@@ -290,12 +290,46 @@
     function upgrade_098()
     {
         echo "<div class=\"update_version\">".L("UpdateFrom")." 0.9.8 ".L("UpdateTo")." 1.0.0";
-
+        
         $Updates = Array( "Overbooking mode"           => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` CHANGE  `Mode`  `Mode` ENUM('manual', 'overbook', 'attend', 'all') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
                           "Create user settings table" => "CREATE TABLE `".RP_TABLE_PREFIX."UserSetting` (`UserSettingId` int(10) unsigned NOT NULL AUTO_INCREMENT, `UserId` int(10) unsigned NOT NULL, `Name` varchar(64) NOT NULL, `IntValue` int(11) NOT NULL, `TextValue` varchar(255) NOT NULL, PRIMARY KEY (`UserSettingId`), UNIQUE KEY `Unique_Name` (`Name`), KEY `UserId` (`UserId`), FULLTEXT KEY `Name` (`Name`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;"
-
                         );
 
+        doUpgrade( $Updates );
+
+        echo "</div>";
+    }
+    
+    // ----------------------------------------------------------------------------
+
+    function upgrade_100()
+    {
+        echo "<div class=\"update_version\">".L("UpdateFrom")." 1.0.0 ".L("UpdateTo")." 1.1.0";
+
+        $Updates = Array( "Multi class support" => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Class` `Class` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;" );
+        
+        // Timezone fix
+        
+        $Connector = Connector::getInstance();
+        $ConnectorNonUTC = new Connector(SQL_HOST, RP_DATABASE, RP_USER, RP_PASS, false, false);
+        
+        $RaidDateQuery = $ConnectorNonUTC->prepare("SELECT UNIX_TIMESTAMP(Start) AS Timestamp FROM `".RP_TABLE_PREFIX."Raid` LIMIT 1");
+        $RaidNonUTC = $RaidDateQuery->fetchFirst();
+        
+        if ( $RaidNonUTC != null )
+        {        
+            $RaidDateQuery = $Connector->prepare("SELECT UNIX_TIMESTAMP(Start) AS Timestamp FROM `".RP_TABLE_PREFIX."Raid` LIMIT 1");
+            $Raid = $RaidDateQuery->fetchFirst();
+        
+            if ($Raid != null)
+            {
+                $Offset = $Raid["Timestamp"] - $RaidNonUTC["Timestamp"];
+                $OffsetString = ($Offset >= 0) ? "+".$Offset : $Offset;
+                
+                $Updates["Timezone fix (".$OffsetString.")"] = "UPDATE `".RP_TABLE_PREFIX."Raid` SET Start = FROM_UNIXTIME(UNIX_TIMESTAMP(Start)".$OffsetString."), End = FROM_UNIXTIME(UNIX_TIMESTAMP(End)".$OffsetString.");";
+            }
+        }
+        
         doUpgrade( $Updates );
 
         echo "</div>";
@@ -329,8 +363,10 @@
             upgrade_097();
         case 98:
             upgrade_098();
+        case 100:
+            upgrade_100();
         default:
-            setVersion(100);
+            setVersion(110);
             break;
         }
     }
