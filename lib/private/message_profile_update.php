@@ -146,6 +146,9 @@ function msgProfileupdate( $aRequest )
         for ( $CharIndex=0; $CharIndex < $NumCharacters; ++$CharIndex )
         {
             $CharId = $aRequest["charId"][$CharIndex];
+            
+            $ClassArray = $aRequest["charClass"][$CharIndex];
+            $Classes = (sizeof($ClassArray) == 1) ? $ClassArray[0] : implode(":", $ClassArray);
 
             if ( $CharId == 0 )
             {
@@ -154,10 +157,10 @@ function msgProfileupdate( $aRequest )
                 $InsertChar = $Connector->prepare(  "INSERT INTO `".RP_TABLE_PREFIX."Character` ".
                                                     "( UserId, Name, Class, Mainchar, Role1, Role2 ) ".
                                                     "VALUES ( :UserId, :Name, :Class, :Mainchar, :Role1, :Role2 )" );
-
+                                                    
                 $InsertChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
                 $InsertChar->bindValue( ":Name", requestToXML( $aRequest["name"][$CharIndex], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
-                $InsertChar->bindValue( ":Class", $aRequest["charClass"][$CharIndex], PDO::PARAM_STR );
+                $InsertChar->bindValue( ":Class", $Classes, PDO::PARAM_STR );
                 $InsertChar->bindValue( ":Mainchar", $aRequest["mainChar"][$CharIndex], PDO::PARAM_STR );
                 $InsertChar->bindValue( ":Role1", $aRequest["role1"][$CharIndex], PDO::PARAM_STR );
                 $InsertChar->bindValue( ":Role2", $aRequest["role2"][$CharIndex], PDO::PARAM_STR );
@@ -175,11 +178,12 @@ function msgProfileupdate( $aRequest )
                 array_push( $UpdatedCharacteIds, $CharId );
 
                 $UpdateChar = $Connector->prepare(  "UPDATE `".RP_TABLE_PREFIX."Character` ".
-                                                    "SET Mainchar = :Mainchar, Role1 = :Role1, Role2 = :Role2 ".
+                                                    "SET Class = :Class, Mainchar = :Mainchar, Role1 = :Role1, Role2 = :Role2 ".
                                                     "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
 
                 $UpdateChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
                 $UpdateChar->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
+                $UpdateChar->bindValue( ":Class", $Classes, PDO::PARAM_STR );
                 $UpdateChar->bindValue( ":Mainchar", $aRequest["mainChar"][$CharIndex], PDO::PARAM_STR );
                 $UpdateChar->bindValue( ":Role1", $aRequest["role1"][$CharIndex], PDO::PARAM_STR );
                 $UpdateChar->bindValue( ":Role2", $aRequest["role2"][$CharIndex], PDO::PARAM_STR );
