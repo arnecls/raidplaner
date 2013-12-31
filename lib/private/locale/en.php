@@ -155,7 +155,7 @@
         $gLocale[ "OldPasswordEmpty" ]         = "The old password must not be empty.";
         $gLocale[ "AdminPassword" ]            = "Administrator password";
         $gLocale[ "AdminPasswordEmpty" ]       = "The administrator password must not be empty.";
-        $gLocale[ "WrongPassword" ]            = "Wrong password";
+        $gLocale[ "WrongPassword" ]            = "Invalid login credentials";
         $gLocale[ "PasswordLocked" ]           = "Password cannot be changed.";
         $gLocale[ "PasswordChanged" ]          = "The password has been changed.";
         $gLocale[ "UserNotFound" ]             = "User could not be found.";
@@ -298,7 +298,7 @@
 
         // Repair
         $gLocale[ "Repair" ]                   = "Repaire database inconsistencies";
-        $gLocale[ "GameconfigProblems" ]       = "By changing the lib/config/game.php inconsistent database entries can be created (e.g. characters with invalid roles).";
+        $gLocale[ "GameconfigProblems" ]       = "By changing the lib/config/config.game.php inconsistent database entries can be created (e.g. characters with invalid roles).";
         $gLocale[ "RepairTheseProblems" ]      = "This script fixes these problems as good as possible.";
         $gLocale[ "RepairDone" ]               = "Repair done.";
         $gLocale[ "BrokenDatabase" ]           = "Database seems to be broken";

@@ -145,7 +145,7 @@
 
         public static function generateMessage($aRaidData, $aLocationData)
         {
-            $Template = new SimpleXMLElement( file_get_contents(dirname(__FILE__)."/../config/post_template.xml") );
+            $Template = new SimpleXMLElement( file_get_contents(dirname(__FILE__)."/../config/config.post.xml") );
             
             $SystemLocale   = setlocale(LC_ALL, 0);
             $SystemTimezone = date_default_timezone_get();

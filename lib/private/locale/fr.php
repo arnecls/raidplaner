@@ -160,7 +160,7 @@
         $gLocale[ "OldPasswordEmpty" ]         = "L'ancien mot de passe ne peut pas être vide.";
         $gLocale[ "AdminPassword" ]            = "Mot de passe administrateur";
         $gLocale[ "AdminPasswordEmpty" ]       = "Le mot de passe de l'administrateur ne peut pas être vide.";
-        $gLocale[ "WrongPassword" ]            = "Mauvais mot de passe";
+        $gLocale[ "WrongPassword" ]            = null;
         $gLocale[ "PasswordLocked" ]           = "Le mot de passe ne peut pas être modifié.";
         $gLocale[ "PasswordChanged" ]          = "Le mot de passe a été modifié.";
         $gLocale[ "UserNotFound" ]             = null;
@@ -303,7 +303,7 @@
 
         // Repair
         $gLocale[ "Repair" ]                   = "Réparer les irrégularités de la base de données";
-        $gLocale[ "GameconfigProblems" ]       = "En modifiant lib/config/game.php des irrégularités dans la base de données peuvent apparaître (ex : personnages avec des rôles invalides).";
+        $gLocale[ "GameconfigProblems" ]       = "En modifiant lib/config/config.game.php des irrégularités dans la base de données peuvent apparaître (ex : personnages avec des rôles invalides).";
         $gLocale[ "RepairTheseProblems" ]      = "Ce script règle le problème du mieux possible.";
         $gLocale[ "RepairDone" ]               = "Réparation effectuée.";
         $gLocale[ "BrokenDatabase" ]           = "La base de données semble être corrompue";

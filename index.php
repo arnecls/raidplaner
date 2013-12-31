@@ -4,8 +4,7 @@
     define("SCRIPT_DEBUG", true);
 
     require_once("lib/private/locale.php");
-    require_once("lib/private/tools_site.php");
-    require_once("lib/config/game.php");
+    require_once("lib/private/gamedata.php");
 
     // Old browser check
 
@@ -61,7 +60,6 @@
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
             {
                 include_once("lib/script/allscripts.php");
-                //echo "<script type=\"text/javascript\" src=\"lib/script/allscripts.php?version=".$gSite["Version"]\"></script>";
             }
             else
             {

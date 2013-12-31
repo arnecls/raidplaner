@@ -155,7 +155,7 @@
         $gLocale[ "OldPasswordEmpty" ]         = "Das alte Passwort darf nicht leer sein.";
         $gLocale[ "AdminPassword" ]            = "Administrator passwort";
         $gLocale[ "AdminPasswordEmpty" ]       = "Das Administrator Passwort darf nicht leer sein.";
-        $gLocale[ "WrongPassword" ]            = "Falsches Passwort";
+        $gLocale[ "WrongPassword" ]            = "Ungültige Logindaten";
         $gLocale[ "PasswordLocked" ]           = "Passwort kann nicht verändert werden.";
         $gLocale[ "PasswordChanged" ]          = "Das Passwort wurde geändert.";
         $gLocale[ "UserNotFound" ]             = "Benutzer konnte nicht gefunden werden.";
@@ -299,7 +299,7 @@
 
         // Repair
         $gLocale[ "Repair" ]                   = "Datenbank Inkonsistenzen reparieren";
-        $gLocale[ "GameconfigProblems" ]       = "Durch Veränderungen in der lib/config/game.php können ungütige Datenbankeinträge entstehen (z.B. Charaktere mit ungütigen Rollen).";
+        $gLocale[ "GameconfigProblems" ]       = "Durch Veränderungen in der lib/config/config.game.php können ungütige Datenbankeinträge entstehen (z.B. Charaktere mit ungütigen Rollen).";
         $gLocale[ "RepairTheseProblems" ]      = "Dieses Script behebt diese Probleme so gut wie möglich.";
         $gLocale[ "RepairDone" ]               = "Reparatur abgeschlossen.";
         $gLocale[ "BrokenDatabase" ]           = "Die Datenbank scheint defekt zu sein";
