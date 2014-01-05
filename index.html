@@ -13,58 +13,139 @@
 
   <body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/arnecls/raidplaner">View on GitHub</a>
-
-          <h1 id="project_title">Raidplaner</h1>
-          <h2 id="project_tagline">Packedpixel Raidplaner</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/arnecls/raidplaner/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/arnecls/raidplaner/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+    <div id="slate"></div>
+    <div id="mainframe">
+        <div id="head">
+            <div class="topmenu">
+                <a class="element" href="https://github.com/arnecls/raidplaner"><div class="badge github"></div></a>
+                <a class="element" href="https://plus.google.com/b/117920822853814771101/117920822853814771101"><div class="badge googleplus"></div></a>
+            </div>
+            <a class="element" href="https://github.com/arnecls/raidplaner/releases"><div class="download">
+                <span class="hint">Download</span><br/>
+                Version 1.0.3
+            </div></a>
+        </div>   
+        
+        <h1 class="high">Manage your raids: fast, easy and elegant</h1>
+        <h2 class="low">Raid management does not need to be complicated.</h2>
+        <img src="images/teaser.jpg" alt="Its just two simple steps" style="margin-top: 50px"/>
+        
+        <div class="separator"></div>        
+        <div id="keypoints">
+            <div class="keypoint icon_gears">
+                <h2 class="high">Integrated</h2>
+                Already have a forum or CMS? Choose from a variety of forum and CMS bindings.
+            </div>
+            <div class="keypoint icon_tools">
+                <h2 class="high">Customizable</h2>
+                Not happy with the predefined settings? Customize the Raidplaner to your needs.
+            </div>
+            <div class="keypoint icon_theme">
+                <h2 class="high">Themeable</h2>
+                Use one of the bundled themes or create your own theme to wave your guild's banner.
+            </div>
+        </div>
+        
+        <div id="logos">
+            <h2 style="margin-bottom: 40px">Supported forums and content management systems</h2>
+            <div class="logo" style="background-image: url(images/logos/drupal.png); width: 154px"></div>
+            <div class="logo" style="background-image: url(images/logos/eqdkp.png); width: 130px"></div>
+            <div class="logo" style="background-image: url(images/logos/joomla.png); width: 229px"></div>
+            <div class="logo" style="background-image: url(images/logos/mybb.png); width: 145px"></div>
+            <div class="logo" style="background-image: url(images/logos/phpbb.png); width: 105px"></div>
+            <div class="logo" style="background-image: url(images/logos/smf.png); width: 96px"></div>
+            <div class="logo" style="background-image: url(images/logos/vanilla.png); width: 102px"></div>
+            <div class="logo" style="background-image: url(images/logos/vbulletin.png); width: 135px"></div>
+            <div class="logo" style="background-image: url(images/logos/wordpress.png); width: 203px"></div>
+        </div>
+        
+        <div class="separator"></div>
+        <h1 class="high">Spend your time raiding, not managing</h1>
+                
+        <div class="teaser right" style="padding-top: 80px">
+            <img src="images/teaser4.jpg" alt="Create a raid in seconds"/>
+            <div class="text">
+                <h2 class="high">Create raids in seconds</h2>
+                Creating raids is often tedious work. Or is it?<br/>
+                Double click on the date of your raid and choose a raid instance.<br/>
+                Your raid starts at the usual time with the usual amount of players? You're done already.<br/>
+                Want to try out the new raid instance from the latest patch? Create it right in place. 
+            </div>            
+        </div>
+                
+        <div class="teaser left" style="padding-top: 50px">
+            <img src="images/teaser2.jpg" alt="Drag&Drop raid setup"/>
+            <div class="text" style="padding-top: 5px">
+                <h2 class="high">Managing raids is easy</h2>
+                Deciding which players to set up is crucial for a successful raid.
+                Don't waste your time on clumsy interfaces that reload on every click.<br/>
+                Managing your raid has never been more convenient.<br/>
+                Double click a player to switch between raiding and waiting.<br/>
+                Need that healer to do damage? Drag and drop him to another role.<br/>
+                Need this player to play with an alt? Click the player, choose the alt and click again.                
+            </div>            
+        </div>
+        
+        <div class="teaser right" style="padding-top: 50px">
+            <img src="images/teaser3.jpg" alt="3 steps to create a character"/>
+            <div class="text" style="padding-top: 35px">
+                <h2 class="high">Keeping it simple</h2>
+                Ever wondered why you still have to enter things like race, level or resistances for your characters?<br/>
+                Those were important once, but are now obsolete. Raid prerequisites are well known and there are in-game plugins managing gear and stats.<br/>
+                The Raidplaner focuses just on the things that matter: Who you are and what you play.
+            </div>            
+        </div>
+        
+        <div class="separator"></div> 
+        <h1 class="high">What's new in version 1.0.0</h1>
+        <h2 class="low" style="margin-bottom: 50px">You can view the full <a href="https://github.com/arnecls/raidplaner/wiki/Changelog">changelog</a> on GitHub.</h2>
+        
+        <ul class="column">
+            <li>
+                <h3>New attendance modes</h3>
+                You can now choose between  the standard manual setup (with overbooking), first come / first serve attending and automatic setup on attend.
+            </li>
+            <li>
+                <h3>Automatic timezone support</h3>
+                All raiding times are now displayed correctly according to the timezone set on your system.
+            </li>
+            <li>
+                <h3>Faster loading times</h3>
+                HTTP requests are now using JSON, resulting in even shorter response times.
+                Additionally, all javascript files have been minified to improve initial loading times.
+            </li>
+        </ul>
+        <ul class="column">
+            <li>
+                <h3>Wordpress binding</h3>
+                You can now login from an existing Wordpress installation. With this binding, there are now 9 different bindings available.
+            </li>
+            <li>
+                <h3>Improved localizations</h3>
+                French and polish community localizations have been added. All strings and pages are now UTF-8 for easier maintenance.
+            </li>
+            <li>
+                <h3>And there is even more ...</h3>
+                Version 1.0.3 contains over 30 bugfixes and 17 new features.<br/>
+                Have a look at the <a href="https://github.com/arnecls/raidplaner/wiki/Changelog">changelog</a> for a complete list of all changes.
+            </li>
+        </ul>
+        
+        <div class="separator"></div>
+        <p style="margin-bottom: 50px">
+            Packedpixel Raidplaner requires PHP 5.3 or better with PDO (MySQL) and mcrypt support as well as a MySQL 4.x or better database.<br/>
+            Supported browsers are Firefox 4+, Google Chrome, Internet Explorer 9+, Opera 12+ and Safari 4+.
+        </p>
     </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <p>Packedpixel raidplaner is an easy to use raid manager for World of Warcraft.</p>
-
-<ul>
-<li>Supported languages are german, english, french and polish. Additional languages can be added easily.</li>
-<li>Supports login bindings to common forums and CMS: PHPBB, EQDKP, vBulletin, MyBB, Simple Machines Forum, Vanilla Forum, Joomla, Drupal and Wordpress.</li>
-<li>Easier and faster to use than most other raid managers.</li>
-</ul><p>If you want to know more about the current development status you can also follow me on
-<a href="https://plus.google.com/117920822853814771101%22">Google+</a>.<br>
-There is a short <a href="../../wiki/Roadmap/">Roadmap</a> for the things to change for upcoming versions and a list of the used <a href="../../wiki/Externals/">Externals</a>.</p>
-
-<p>If you want to modify the Raidplaner you should have a look at the <a href="../../wiki/Customization">Customization</a> page.<br>
-If you want to share your modifications or have questions visit the <a href="http://www.packedpixel.de/raidplaner">Forum</a>.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Raidplaner maintained by <a href="https://github.com/arnecls">arnecls</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-22920310-3");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
-
-
+        
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+      ga('create', 'UA-22920310-3', 'arnecls.github.io');
+      ga('send', 'pageview');
+    </script>
   </body>
 </html>
