@@ -1,3 +1,5 @@
+### What it is
+
 Packedpixel raidplaner is an easy to use raid manager for World of Warcraft.
 
 * Supported languages are german, english, french and polish. Additional languages can be added easily.
@@ -10,3 +12,9 @@ There is a short [Roadmap](../../wiki/Roadmap/) for the things to change for upc
 
 If you want to modify the Raidplaner you should have a look at the [Customization](../../wiki/Customization) page.  
 If you want to share your modifications or have questions visit the [Forum](http://www.packedpixel.de/raidplaner).
+
+### What to download
+
+If you want to download the latest version, please check the **Release** section.  
+**Master** contains the latest version plus bugfixes.  
+**Any other branch** is used for development. You should not use these versions in production.
