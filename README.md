@@ -17,4 +17,5 @@ If you want to share your modifications or have questions visit the [Forum](http
 
 If you want to download the latest version, please check the **Release** section.  
 **Master** contains the latest version plus bugfixes.  
-**Any other branch** is used for development. You should not use these versions in production.
+**Any other branch** is used for development and considered unstable.  
+You should use these branches only for testing.
