@@ -29,13 +29,20 @@
     // -----------------------------------------------------------------------------------------------
     
     // Empty roles slots will be displayed in with a certain image.
-    // These images are searched in the current iconset, e.g. "images/icons/wow/roles".
+    // These images are named "role_*.png" and can be found in "lib/layout/images".
     // The order of the images here have to match the order of $gRoles.
+    //
+    // Available images are:
+    // - role_tank
+    // - role_heal
+    // - role_support
+    // - role_melee
+    // - role_range    
     
     $gRoleImages = Array(
-        "slot_role4.png",
-        "slot_role2.png",
-        "slot_role1.png"
+        "role_tank.png",
+        "role_heal.png",
+        "role_melee.png"
     );
     
     // -----------------------------------------------------------------------------------------------
@@ -79,7 +86,7 @@
     // "ff14" : Final Fantasy 14 style job system
     //          Each character may have one or more class(es) with one predefined role each.
     
-    $gClassMode = "wow";
+    $gClassMode = "ff14";
     
     // -----------------------------------------------------------------------------------------------
     

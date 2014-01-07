@@ -119,37 +119,50 @@
 
 #profile .charslot {
     vertical-align: top;
-    background: url(images/charslot.png);
-    background-repeat: no-repeat;
     display: inline-block;
     width: 123px;
     height: 148px;
     margin-right: 5px;
     margin-bottom: 10px;
+    background-color: #dadada;
+    border-radius: 5px;
+    box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.25) inset;
 }
 
 #profile .newchar {
     vertical-align: top;
-    background: url(images/charslot_add.png);
-    background-repeat: no-repeat;
     display: inline-block;
     width: 123px;
-    height: 148px;
+    padding-top: 32px;
+    height: 116px;
     margin-right: 5px;
     margin-bottom: 10px;
     cursor: pointer;
+    background-color: #dadada;
+    border-radius: 5px;
+    box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.25) inset;
+    text-align: center;
+    font-size: 64px;
+    font-weight: bold;
+    color: #aaa;
 }
 
 #profile .nextgroup {
     vertical-align: top;
-    background: url(images/charslot_more.png);
-    background-repeat: no-repeat;
     display: inline-block;
     width: 123px;
-    height: 148px;
+    height: 122px;
+    padding-top: 26px;
     margin-right: 5px;
     margin-bottom: 10px;
     cursor: pointer;
+    background-color: #dadada;
+    border-radius: 5px;
+    box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.25) inset;
+    text-align: center;
+    font-size: 90px;
+    font-weight: bold;
+    color: #aaa;
 }
 
 #profile .charslot .clearchar {
@@ -170,7 +183,7 @@
     background-repeat: no-repeat;
 }
 
-#profile .charslot .class {
+#profile .charslot .class_wow {
     width: 64px;
     height: 64px;
     display: block;
@@ -179,11 +192,20 @@
     left: 29px;
 }
 
+#profile .charslot .class_ff14 {
+    width: 64px;
+    height: 64px;
+    display: block;
+    position: relative;
+    top: 24px;
+    left: 29px;
+}
+
 #profile .charslot .newclass {
     cursor: pointer;
 }
 
-#profile .charslot .class .badge {
+#profile .charslot .class_wow .badge {
     width: 38px;
     height: 48px;
     display: block;
@@ -192,18 +214,27 @@
     left: -28px;
 }
 
-#profile .charslot .class .mainchar {
+#profile .charslot .class_ff14 .badge {
+    width: 38px;
+    height: 48px;
+    display: block;
+    position: relative;
+    top: -25px;
+    left: -28px;
+}
+
+#profile .charslot .mainchar {
     background: url(images/mainchar.png);
     background-repeat: no-repeat;
 }
 
-#profile .charslot .class .twink {
+#profile .charslot .twink {
     background: url(images/twink.png);
     background-repeat: no-repeat;
     cursor: pointer;
 }
 
-#profile .charslot .class .twink:hover {
+#profile .charslot .twink:hover {
     background: url(images/mainchar.png);
     background-repeat: no-repeat;
 }
@@ -215,19 +246,16 @@
     display: block;
     position: relative;
     text-align: center;
-    top: 20px;
     overflow: hidden;
     margin: 0 auto;
 }
 
 #profile .charslot .newname {    
-    text-align: center;    
     width: 105px;
     height: 13px;
     display: block;
     position: relative;
     text-align: center;
-    top: 20px;
     left: 8px;
     margin-bottom:15px;
     padding: 0px;
@@ -246,7 +274,6 @@
     display: block;
     position: relative;
     text-align: center;
-    top: 20px;
     left: 8px;
     margin-bottom:15px;
     padding: 0px;

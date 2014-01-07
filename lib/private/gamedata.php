@@ -9,7 +9,7 @@
     
     // Load the custom config
             
-    include_once_exists(dirname(__FILE__)."/../config/config.game.php");
+    include_once(dirname(__FILE__)."/../config/config.game.php");
         
     // Check if constraints are matched
     // Data ranges
