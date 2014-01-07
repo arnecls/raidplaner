@@ -34,13 +34,15 @@
 
 .raidSlot {
     display: inline-block;
-    background: url(images/raidslot.png);
     background-repeat: no-repeat;
     width: 310px;
     height: 85px;
     margin-right: 15px;
     margin-bottom: 10px;
     overflow: hidden;
+    background-color: #e8e8e8;
+    border-radius: 5px;
+    box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.25) inset;
 }
 
 .raidSlot .tooltip {

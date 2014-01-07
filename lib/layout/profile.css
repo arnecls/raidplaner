@@ -151,8 +151,8 @@
     vertical-align: top;
     display: inline-block;
     width: 123px;
-    height: 122px;
-    padding-top: 26px;
+    height: 124px;
+    padding-top: 24px;
     margin-right: 5px;
     margin-bottom: 10px;
     cursor: pointer;
@@ -183,44 +183,22 @@
     background-repeat: no-repeat;
 }
 
-#profile .charslot .class_wow {
+#profile .charslot .class {
     width: 64px;
     height: 64px;
     display: block;
     position: relative;
-    top: 15px;
-    left: 29px;
-}
-
-#profile .charslot .class_ff14 {
-    width: 64px;
-    height: 64px;
-    display: block;
-    position: relative;
-    top: 24px;
-    left: 29px;
 }
 
 #profile .charslot .newclass {
     cursor: pointer;
 }
 
-#profile .charslot .class_wow .badge {
+#profile .charslot .class .badge {
     width: 38px;
     height: 48px;
     display: block;
     position: relative;
-    top: -18px;
-    left: -28px;
-}
-
-#profile .charslot .class_ff14 .badge {
-    width: 38px;
-    height: 48px;
-    display: block;
-    position: relative;
-    top: -25px;
-    left: -28px;
 }
 
 #profile .charslot .mainchar {
