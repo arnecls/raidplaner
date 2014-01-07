@@ -124,7 +124,7 @@
     height: 148px;
     margin-right: 5px;
     margin-bottom: 10px;
-    background-color: #dadada;
+    background-color: rgba(215, 215, 215, 0.5);
     border-radius: 5px;
     box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.25) inset;
 }
@@ -138,7 +138,7 @@
     margin-right: 5px;
     margin-bottom: 10px;
     cursor: pointer;
-    background-color: #dadada;
+    background-color: rgba(215, 215, 215, 0.5);
     border-radius: 5px;
     box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.25) inset;
     text-align: center;
@@ -156,7 +156,7 @@
     margin-right: 5px;
     margin-bottom: 10px;
     cursor: pointer;
-    background-color: #dadada;
+    background-color: rgba(215, 215, 215, 0.5);
     border-radius: 5px;
     box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.25) inset;
     text-align: center;
