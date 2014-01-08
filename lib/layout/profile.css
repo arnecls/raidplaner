@@ -103,7 +103,6 @@
 }
 
 #charlist {
-    display: inline-block;
     vertical-align: top;
     width: 910px;
     height: 175px;
@@ -118,41 +117,42 @@
 }
 
 #profile .charslot {
-    vertical-align: top;
-    display: inline-block;
+    float: left;
     width: 123px;
     height: 148px;
     margin-right: 5px;
     margin-bottom: 10px;
+    vertical-align: top;
 }
 
 #profile .newchar {
-    vertical-align: top;
-    display: inline-block;
+    float: left;
     width: 123px;
-    padding-top: 32px;
-    height: 116px;
-    margin-right: 5px;
-    margin-bottom: 10px;
+    height: 148px;
+    margin: 0px 5px 0px 0px;
+    padding: 0px;
     cursor: pointer;
+    font-family: arial;
     text-align: center;
     font-size: 64px;
+    line-height: 147px;
     font-weight: bold;
     color: #aaa;
 }
 
 #profile .nextgroup {
-    vertical-align: top;
-    display: inline-block;
-    width: 123px;
-    height: 124px;
-    padding-top: 24px;
-    margin-right: 5px;
-    margin-bottom: 10px;
+    float: left;
+    width: 115px;
+    height: 148px;
+    margin: 0px 5px 0px 0px;
+    padding: 0px 0px 0px 8px;
     cursor: pointer;
+    font-family: arial;
     text-align: center;
-    font-size: 90px;
+    font-size: 64px;
+    line-height: 147px;
     font-weight: bold;
+    letter-spacing: 8px;
     color: #aaa;
 }
 
