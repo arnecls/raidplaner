@@ -1,5 +1,5 @@
 ### What it is
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/912cf66f0003f90d9fcebbd7975ef354 "githalytics.com")](http://githalytics.com/arnecls/raidplaner)
+
 Packedpixel raidplaner is an easy to use raid manager for World of Warcraft.
 
 * Supported languages are german, english, french and polish. Additional languages can be added easily.
