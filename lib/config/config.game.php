@@ -86,7 +86,7 @@
     // "ff14" : Final Fantasy 14 style job system
     //          Each character may have one or more class(es) with one predefined role each.
     
-    $gClassMode = "ff14";
+    $gClassMode = "wow";
     
     // -----------------------------------------------------------------------------------------------
     

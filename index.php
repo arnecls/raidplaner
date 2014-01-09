@@ -156,31 +156,11 @@
         </div>
 
         <?php if ( registeredUser() ) { ?>
-
-        <table id="tooltip" cellspacing="0" border="0">
-            <tr class="top">
-                <td class="left"></td>
-                <td class="center" id="info_arrow_tl"></td>
-                <td class="center" id="info_arrow_tr"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="middle">
-                <td class="left" id="info_arrow_ml"></td>
-                <td class="center" colspan="2" rowspan="2" id="info_text"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="middle2">
-                <td class="left" id="info_arrow_ml2"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="bottom">
-                <td class="left"></td>
-                <td class="center" id="info_arrow_bl"></td>
-
-               <td class="center" id="info_arrow_br"></td>
-                <td class="right"></td>
-            </tr>
-        </table>
+        
+        <div id="tooltip">
+            <div id="tooltip_arrow"></div>
+            <div id="info_text"></div>
+        </div>
 
         <div id="sheetoverlay">
             <div id="closesheet"></div>
