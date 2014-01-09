@@ -310,11 +310,17 @@
     overflow: visible;
 }
 
-#raiddetail .roleList h2 {
+#raiddetail h2 {
     margin-top: 10px;
     margin-bottom: 5px;
     position: relative;
     font-size: 20px;
+    font-weight: bold;
+}
+
+#raiddetail .slackerspanel h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
 }
 
 #raiddetail .attendance_count {
@@ -438,8 +444,8 @@
     height: 24px;
     float: left;
     position: absolute;
-    left: 14px;
-    top: 14px;
+    left: 2px;
+    top: 2px;
     display: inline-block;
 }
 
