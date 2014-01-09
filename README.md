@@ -19,3 +19,5 @@ If you want to download the latest version, please check the **Release** section
 **Master** contains the latest version plus bugfixes.  
 **Any other branch** is used for development and considered unstable.  
 You should use these branches only for testing.
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/912cf66f0003f90d9fcebbd7975ef354 "githalytics.com")](http://githalytics.com/arnecls/raidplaner)
