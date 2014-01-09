@@ -182,24 +182,10 @@
             </tr>
         </table>
 
-        <table id="sheetoverlay" cellspacing="0" border="0">
-            <tr class="top">
-                <td class="left" id="closesheet"></td>
-                <td class="center"></td>
-
-                <td class="right"></td>
-            </tr>
-            <tr class="middle">
-                <td class="left"></td>
-                <td class="center" id="sheet_body"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="bottom">
-                <td class="left"></td>
-                <td class="center"></td>
-                <td class="right"></td>
-            </tr>
-        </table>
+        <div id="sheetoverlay">
+            <div id="closesheet"></div>
+            <div id="sheet_body"></div>
+        </div>
 
         <?php } else { ?>
         <div class="preload"><?php include("lib/private/resources.php"); ?></div>
