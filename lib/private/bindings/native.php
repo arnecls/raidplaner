@@ -1,7 +1,4 @@
 <?php
-    require_once dirname(__FILE__)."/../connector.class.php";
-    require_once dirname(__FILE__)."/../../config/config.php";
-
     class NativeBinding extends Binding
     {
         private static $BindingName = "none";

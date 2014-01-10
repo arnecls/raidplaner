@@ -2,7 +2,7 @@
     require_once dirname(__FILE__)."/connector.class.php";
     require_once dirname(__FILE__)."/binding.class.php";
     require_once dirname(__FILE__)."/tools_site.php";
-    require_once dirname(__FILE__)."/../config/config.php";
+    @include_once dirname(__FILE__)."/../config/config.php";
     require_once dirname(__FILE__)."/pluginregistry.class.php";
 
     // Helper class for character information for the current user.

@@ -40,13 +40,13 @@
 }
 
 #calendar .calendarDay {
-    height: 77px;
-    max-height: 77px;
+    height: 70px;
+    max-height: 70px;
 }
 
 #calendar .day_overflow {
-    height: 77px;
-    max-height: 77px;
+    height: 70px;
+    max-height: 70px;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
@@ -76,6 +76,7 @@
     border-width: 1px;
     vertical-align: top;
     background-color: rgba(215, 215, 210, 0.4);
+    padding: 3px;
 }
 
 #calendar .day {
@@ -86,6 +87,7 @@
     border-bottom-width: 1px;
     border-right-width: 1px;
     vertical-align: top;
+    padding: 3px;
 }
 
 #calendar .dayFirst {
@@ -99,6 +101,7 @@
     border-left-style: dotted;
     border-left-width: 1px;
     vertical-align: top;
+    padding: 3px;
 }
 
 #month {
@@ -227,7 +230,7 @@
     background-repeat: no-repeat;
     position: relative;
     float: right;
-    top: -13px;
+    top: -15px;
     cursor: pointer;
 }
 
@@ -242,7 +245,7 @@
     background-repeat: no-repeat;
     position: relative;
     float: right;
-    top: -13px;
+    top: -15px;
     cursor: pointer;
 }
 

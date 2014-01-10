@@ -1,80 +1,47 @@
 #sheetoverlay {
-    border-spacing: 0px 0px;
     position: fixed;
     top: 50%;
-    left: 50%;
+    left: 50%; 
     display: none;
+    background-color: rgba(0,0,0,0.9);
+    border-radius: 16px;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    -o-border-radius: 16px;
+    -ms-border-radius: 16px;
+    box-shadow: 0px 0px 10px 4px rgba(0,0,0,0.5);
+    padding: 24px;
+    z-index: 10;
 }
 
-#sheetoverlay .top {
-    height: 46px;
-}
-
-#sheetoverlay .top .left {
+#closesheet {
+    position: absolute;
+    top: -14px;
+    left: -14px;
+    width: 28px;
+    height: 28px;
+    border: 2px solid white;
+    background-color: black;
+    cursor: pointer;
+    
+    background-image: url(images/close.png);
     background-repeat: no-repeat;
-    padding: 0px;
-    margin: 0px;
-    background-image: url(images/overlay_topleft.png);
-    width: 44px;
+    
+    box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+    -moz-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+    -o-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+    -ms-box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+    
+    border-radius: 32px;
+    -webkit-border-radius: 32px;
+    -moz-border-radius: 32px;
+    -o-border-radius: 32px;
+    -ms-border-radius: 32px;
 }
 
-#sheetoverlay .top .center {
-    background-image: url(images/overlay_top.png);
-    background-repeat: repeat-x;
-}
-
-#sheetoverlay .top .right {
-    background-repeat: no-repeat;
-    background-image: url(images/overlay_topright.png);
-    width: 44px;
-}
-
-#sheetoverlay .middle {
-}
-
-#sheetoverlay .middle .left {
-    padding: 0px;
-    margin: 0px;
-    background-repeat: repeat-y;
-    background-image: url(images/overlay_left.png);
-    width: 44px;
-}
-
-#sheetoverlay .middle .center {
-    color: white;
-    font-size: 11px;
-    font-family: Helvetica, Verdana, Arial, sans-serif;
-    background-image: url(images/overlay.png);
-    background-repeat: repeat;
-}
-
-#sheetoverlay .middle .right {
-    background-repeat: repeat-y;
-    background-image: url(images/overlay_right.png);
-    width: 44px;
-}
-
-#sheetoverlay .bottom {
-    height: 39px;
-}
-
-#sheetoverlay .bottom .left {
-    padding: 0px;
-    margin: 0px;
-    background-image: url(images/overlay_bottomleft.png);
-    background-repeat: no-repeat;
-    width: 44px;
-}
-
-#sheetoverlay .bottom .center {
-    background-image: url(images/overlay_bottom.png);
-    background-repeat: repeat-x;
-}
-
-#sheetoverlay .bottom .right {
-    background-image: url(images/overlay_bottomright.png);
-    background-repeat: no-repeat;
-    width: 44px;
+#sheet_body {
+    clear: both;
 }
 
 #sheet_body select {
@@ -103,9 +70,9 @@
 }
 
 #sheet_body .description {
-    min-height: 100px;
-    max-height: 100px;
-    height: 100px;
+    min-height: 95px;
+    max-height: 95px;
+    height: 95px;
 }
 
 #selectlocation {

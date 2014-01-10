@@ -156,50 +156,16 @@
         </div>
 
         <?php if ( registeredUser() ) { ?>
+        
+        <div id="tooltip">
+            <div id="tooltip_arrow"></div>
+            <div id="info_text"></div>
+        </div>
 
-        <table id="tooltip" cellspacing="0" border="0">
-            <tr class="top">
-                <td class="left"></td>
-                <td class="center" id="info_arrow_tl"></td>
-                <td class="center" id="info_arrow_tr"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="middle">
-                <td class="left" id="info_arrow_ml"></td>
-                <td class="center" colspan="2" rowspan="2" id="info_text"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="middle2">
-                <td class="left" id="info_arrow_ml2"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="bottom">
-                <td class="left"></td>
-                <td class="center" id="info_arrow_bl"></td>
-
-               <td class="center" id="info_arrow_br"></td>
-                <td class="right"></td>
-            </tr>
-        </table>
-
-        <table id="sheetoverlay" cellspacing="0" border="0">
-            <tr class="top">
-                <td class="left" id="closesheet"></td>
-                <td class="center"></td>
-
-                <td class="right"></td>
-            </tr>
-            <tr class="middle">
-                <td class="left"></td>
-                <td class="center" id="sheet_body"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="bottom">
-                <td class="left"></td>
-                <td class="center"></td>
-                <td class="right"></td>
-            </tr>
-        </table>
+        <div id="sheetoverlay">
+            <div id="closesheet"></div>
+            <div id="sheet_body"></div>
+        </div>
 
         <?php } else { ?>
         <div class="preload"><?php include("lib/private/resources.php"); ?></div>
