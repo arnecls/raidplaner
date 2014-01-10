@@ -10,6 +10,20 @@
     // from the setup utility. This will happen when changing the order of $gRoles.
     // -----------------------------------------------------------------------------------------------
     
+    // You can choose between different class modes which will change the way classes and roles
+    // are being handled by the profile page and the raid attend tooltips.
+    // The following values are supported:
+    //
+    // "wow"  : World of Warcraft style classes and roles.
+    //          Each character has one class and two different roles based on that class.
+    //
+    // "ff14" : Final Fantasy 14 style job system
+    //          Each character may have one or more class(es) with one predefined role each.
+    
+    $gClassMode = "ff14";
+    
+    // -----------------------------------------------------------------------------------------------
+    
     // You can define different roles for your raids.
     // This can be tank/heal/dmg or range, melee, support, etc.
     // You can define up to 5 roles.
@@ -73,20 +87,6 @@
         25 => Array(2,6,17),
         40 => Array(1,1,38)
     );
-    
-    // -----------------------------------------------------------------------------------------------
-    
-    // You can choose between different class modes which will change the way classes and roles
-    // are being handled by the profile page and the raid attend tooltips.
-    // The following values are supported:
-    //
-    // "wow"  : World of Warcraft style classes and roles.
-    //          Each character has one class and two different roles based on that class.
-    //
-    // "ff14" : Final Fantasy 14 style job system
-    //          Each character may have one or more class(es) with one predefined role each.
-    
-    $gClassMode = "wow";
     
     // -----------------------------------------------------------------------------------------------
     
