@@ -63,7 +63,6 @@
     top: 11px;
     width: 64px;
     height: 64px;
-    cursor: pointer;
 }
 
 #raidlist .raidSlot .overlayStatus {
@@ -137,7 +136,6 @@
     margin-right: 20px;
     margin-bottom: 10px;
     height: 32px;
-    cursor: pointer;
 }
 
 #raidHistory .historySlot .icon {

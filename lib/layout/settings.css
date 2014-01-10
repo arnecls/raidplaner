@@ -206,7 +206,6 @@
     float: right;
     width: 24px;
     height: 24px;
-    cursor: pointer;
 }
 
 #settings .user .functionDelete {
@@ -241,7 +240,6 @@
     height: 32px;
     margin-left: 2px;
     margin-top: 5px;
-    cursor: pointer;
 }
 
 #settings .users {

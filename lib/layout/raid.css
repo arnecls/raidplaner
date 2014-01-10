@@ -53,7 +53,6 @@
     background-image: url(images/icon_raid_off.png);
     opacity: 0.2;
     filter:Alpha(opacity=20);
-    cursor: pointer;
 }
 
 #raiddetail .icon_setup_off:hover {
@@ -65,7 +64,6 @@
     background-image: url(images/icon_users_off.png);
     opacity: 0.2;
     filter:Alpha(opacity=20);
-    cursor: pointer;
 }
 
 #raiddetail .icon_slackers_off:hover {
@@ -77,7 +75,6 @@
     background-image: url(images/icon_settings_off.png);
     opacity: 0.2;
     filter:Alpha(opacity=20);
-    cursor: pointer;
 }
 
 #raiddetail .icon_settings_off:hover {
@@ -377,13 +374,13 @@
     border-radius: 4px;
 }
 
-#raiddetail .clickable {
+#raiddetail .clip .clickable {
     -moz-box-shadow: 0px 1px 0 #aaa;
     -webkit-box-shadow: 0px 1px 0 #aaa;
     box-shadow: 0px 1px 0 #aaa;
 }
 
-#raiddetail .clickable:active {
+#raiddetail .clip .clickable:active {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -391,12 +388,7 @@
     margin-bottom: 3px;
 }
 
-#raiddetail .clickable2 {
-    cursor: pointer;
-}
-
 #raiddetail .dragable {
-    cursor: pointer;
 }
 
 #raiddetail .activeSlot {
@@ -405,7 +397,6 @@
 
 #raiddetail .activeSlotComment {
     background-image: url(images/slot_set_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .spilledSlot {
@@ -414,7 +405,6 @@
 
 #raiddetail .spilledSlotComment {
     background-image: url(images/slot_spill_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .waitSlot {
@@ -423,7 +413,6 @@
 
 #raiddetail .waitSlotComment {
     background-image: url(images/slot_wait_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .benchSlot {
@@ -432,7 +421,6 @@
 
 #raiddetail .benchSlotComment {
     background-image: url(images/slot_bench_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .emptySlot {
@@ -441,12 +429,10 @@
 
 #raiddetail .randomSlot {
     background-image: url(images/slot_random.png);
-    cursor: pointer;
 }
 
 #raiddetail .clipchange {
     background-image: url(images/slot_more.png);
-    cursor: pointer;
 }
 
 #raiddetail .slotMarker {
