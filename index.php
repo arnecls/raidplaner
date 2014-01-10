@@ -51,10 +51,6 @@
             }
         ?>
 
-        <!--[if IE 9]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSite["Version"]; ?>"/>
-        <![endif]-->
-
         <?php // Load scripts
 
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
@@ -111,19 +107,19 @@
                     <button onclick="openLink('<?php echo $gSite["HelpLink"] ?>')" class="button_help"></button>
                 </span>
                 <?php } ?>
-                <span id="button_calendar" class="menu_button"><?php echo L("Calendar"); ?></span>
-                <span id="button_raid" class="menu_button"><?php echo L("Raid"); ?></span>
-                <span id="button_profile" class="menu_button"><?php echo L("Profile"); ?></span>
+                <span id="button_calendar" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Calendar"); ?></div><div class="indicator"></div></span>
+                <span id="button_raid" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Raid"); ?></div><div class="indicator"></div></span>
+                <span id="button_profile" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Profile"); ?></div><div class="indicator"></div></span>
 
                     <?php if ( validAdmin() ) { ?>
-                <span id="button_settings_users" class="menu_button"><?php echo L("Settings"); ?></span>
+                <span id="button_settings_users" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Settings"); ?></div><div class="indicator"></div></span>
                     <?php } ?>
 
                 <?php } else { ?>
 
-                <span id="button_login" class="menu_button"><?php echo L("Login"); ?></span>
+                <span id="button_login" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Login"); ?></div><div class="indicator"></div></span>
                     <?php if ( ALLOW_REGISTRATION ) { ?>
-                <span id="button_register" class="menu_button"><?php echo L("Register"); ?></span>
+                <span id="button_register" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Register"); ?></div><div class="indicator"></div></span>
                     <?php } ?>
 
                 <?php } ?>

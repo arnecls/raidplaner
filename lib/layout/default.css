@@ -72,14 +72,6 @@ a:hover {
     background-color: black;
 }
 
-#menu {
-    display: block;
-    height: 50px;
-    background-repeat: repeat-x;
-    background-image: url(images/button_background.png);
-    width: 1024px;
-}
-
 #lockMessage {
     float: left;
     position: relative;
@@ -94,90 +86,118 @@ a:hover {
     font-family: Helvetica, Verdana, Arial, sans-serif;
 }
 
-.menu_button {
+#menu {
+    display: block;
+    height: 45px;
+    width: 1024px;
+    
+    border-top: 1px solid #2A2A2A;
+    border-bottom: 1px solid #666;
+    margin-bottom: 5px;
+    
+    background: linear-gradient(to bottom, rgba(45,45,45,1) 0%,rgba(93,93,93,1) 100%);
+    background: -moz-linear-gradient(top, rgba(45,45,45,1) 0%, rgba(93,93,93,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(45,45,45,1) 0%,rgba(93,93,93,1) 100%);
+    background: -o-linear-gradient(top, rgba(45,45,45,1) 0%,rgba(93,93,93,1) 100%);
+    background: -ms-linear-gradient(top, rgba(45,45,45,1) 0%,rgba(93,93,93,1) 100%);
+}
+
+#menu .menu_button {
     display: inline-block;
-    height: 35px;
-    width: 134px;
-    background-repeat: no-repeat;
+    height: 45px;
+    width: 160px;
     font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 14px;
     text-align: center;
+    vertical-align: middle;
+    line-height: 45px;
     color: white;
-    padding-left: 30px;
-    padding-top: 15px;
     cursor: pointer;
 }
 
-#button_login {
-    background-image: url(images/button_login.png);
+#menu .on {
+    background: linear-gradient(to bottom, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -moz-linear-gradient(top, rgba(55,55,55,1) 0%, rgba(129,129,129,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -o-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -ms-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    
+    box-shadow: inset -2px 0px 5px 0px rgba(0,0,0,0.4);
+    -webkit-box-shadow: inset -2px 0px 5px 0px rgba(0,0,0,0.4);
+    -moz-box-shadow: inset -2px 0px 5px 0px rgba(0,0,0,0.4);
+    -o-box-shadow: inset -2px 0px 5px 0px rgba(0,0,0,0.4);
+    -ms-box-shadow: inset -2px 0px 5px 0px rgba(0,0,0,0.4);
 }
 
-#button_login:hover {
-    background-image: url(images/button_login_over.png);
+#menu .menu_button:hover {
+    background: linear-gradient(to bottom, rgba(60,60,60,1) 0%,rgba(142,142,142,1) 100%);
+    background: -moz-linear-gradient(top, rgba(60,60,60,1) 0%, rgba(142,142,142,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(60,60,60,1) 0%,rgba(142,142,142,1) 100%);
+    background: -o-linear-gradient(top, rgba(60,60,60,1) 0%,rgba(142,142,142,1) 100%);
+    background: -ms-linear-gradient(top, rgba(60,60,60,1) 0%,rgba(142,142,142,1) 100%);
 }
 
-#button_login.on {
-    background-image: url(images/button_login_on.png);
+#menu .on:hover {
+    background: linear-gradient(to bottom, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -moz-linear-gradient(top, rgba(55,55,55,1) 0%, rgba(129,129,129,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -o-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -ms-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
 }
 
-#button_register {
-    background-image: url(images/button_register.png);
+#menu .menu_button .icon {
+    float: left;
+    background-repeat: no-repeat;
+    background-position: 8px 8px;
+    width: 45px;
+    height: 45px;
 }
 
-#button_register:hover {
-    background-image: url(images/button_register_over.png);
+#menu .menu_button .text {
+    float: left;
+    width: 100px;
+    height: 45px;
+    padding-right: 15px;
 }
 
-#button_register.on {
-    background-image: url(images/button_register_on.png);
+#menu .indicator {
+    display: none;
+    position: relative;
+    top: 37px;
+    left: 66px;
+    width: 0px;
+    height: 0px;
+    border-bottom: 14px solid white;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
 }
 
-#button_calendar {
-    background-image: url(images/button_calendar.png);
+#menu .on .indicator {
+    display: block;
 }
 
-#button_calendar:hover {
-    background-image: url(images/button_calendar_over.png);
+#button_login .icon {
+    background-image: url(images/menu_user.png);
 }
 
-#button_calendar.on {
-    background-image: url(images/button_calendar_on.png);
+#button_register .icon {
+    background-image: url(images/menu_register.png);
 }
 
-#button_raid {
-    background-image: url(images/button_raid.png);
+#button_calendar .icon {
+    background-image: url(images/menu_calendar.png);
 }
 
-#button_raid:hover {
-    background-image: url(images/button_raid_over.png);
+#button_raid .icon {
+    background-image: url(images/menu_raid.png);
 }
 
-#button_raid.on {
-    background-image: url(images/button_raid_on.png);
+#button_profile .icon {
+    background-image: url(images/menu_user.png);
 }
 
-#button_profile {
-    background-image: url(images/button_profile.png);
-}
-
-#button_profile:hover {
-    background-image: url(images/button_profile_over.png);
-}
-
-#button_profile.on {
-    background-image: url(images/button_profile_on.png);
-}
-
-#button_settings_users {
-    background-image: url(images/button_settings.png);
-}
-
-#button_settings_users:hover {
-    background-image: url(images/button_settings_over.png);
-}
-
-#button_settings_users.on {
-    background-image: url(images/button_settings_on.png);
+#button_settings_users .icon {
+    background-image: url(images/menu_settings.png);
 }
 
 #body {
@@ -185,8 +205,12 @@ a:hover {
     display: block;
     height: 576px;
     width: 1024px;
-    background-image: url(images/background.png);
-    background-repeat: repeat-x;
+
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);    
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(185,184,184,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
 }
 
 .button {

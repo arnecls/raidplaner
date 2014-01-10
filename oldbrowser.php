@@ -9,7 +9,7 @@
         switch ( $BrowserInfo->getBrowser() )
         {
         case Browser::BROWSER_SAFARI:
-            return $BrowserInfo->getVersion() >= 4;
+            return $BrowserInfo->getVersion() >= 5;
             break;
 
         case Browser::BROWSER_FIREFOX:
@@ -17,11 +17,11 @@
             break;
 
         case Browser::BROWSER_IE:
-            return $BrowserInfo->getVersion() >= 9;
+            return $BrowserInfo->getVersion() >= 10;
             break;
 
         case Browser::BROWSER_CHROME:
-            return $BrowserInfo->getVersion() >= 4;
+            return $BrowserInfo->getVersion() >= 10;
             break;
 
         case Browser::BROWSER_OPERA:
