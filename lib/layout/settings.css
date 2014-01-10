@@ -393,7 +393,7 @@
 }
 
 #statistics .start {
-    background: url("images/progress_start.png");
+    background: url(images/progress_start.png);
     display: inline-block;
     width: 7px;
     height: 26px;
@@ -402,7 +402,7 @@
 }
 
 #statistics .start_bar {
-    background: url("images/progress_start.png");
+    background: url(images/progress_start.png);
     width: 7px;
     height: 26px;
     position: relative;
@@ -412,7 +412,7 @@
 }
 
 #statistics .end {
-    background: url("images/progress_end.png");
+    background: url(images/progress_end.png);
     width: 7px;
     height: 26px;
     position: relative;
@@ -421,7 +421,7 @@
 }
 
 #statistics .box .end {
-    background: url("images/progress_end.png");
+    background: url(images/progress_end.png);
     width: 7px;
     height: 26px;
     position: relative;
@@ -430,7 +430,7 @@
 }
 
 #statistics .ok {
-    background: url("images/progress_green.png");
+    background: url(images/progress_green.png);
     display: inline-block;
     height: 26px;
     color: #00AA00;
@@ -438,7 +438,7 @@
 }
 
 #statistics .available {
-    background: url("images/progress_yellow_stripe.png");
+    background: url(images/progress_yellow_stripe.png);
     display: inline-block;
     height: 26px;
     color: #888822;
@@ -446,7 +446,7 @@
 }
 
 #statistics .unavailable {
-    background: url("images/progress_red_stripe.png");
+    background: url(images/progress_red_stripe.png);
     display: inline-block;
     height: 26px;
     color: #AA6666;
@@ -454,7 +454,7 @@
 }
 
 #statistics .missed {
-    background: url("images/progress_grey.png");
+    background: url(images/progress_grey.png);
     display: inline-block;
     height: 26px;
     color: #777777;
@@ -502,7 +502,7 @@
     margin-left: 0px;
 }
 
-.removeLink {
+#tooltip .removeLink {
     width: 32px;
     height: 32px;
     margin-right: 8px;

@@ -32,7 +32,7 @@
     padding: 0px;
 }
 
-.raidSlot {
+#raidlist .raidSlot {
     display: inline-block;
     background-repeat: no-repeat;
     width: 310px;
@@ -42,21 +42,21 @@
     overflow: hidden;
 }
 
-.raidSlot .tooltip {
+#raidlist .raidSlot .tooltip {
     left: 0px;
     top: 0px;
     position: fixed;
     visibility: hidden;
 }
 
-.raidSlot .comment {
+#raidlist .raidSlot .comment {
     left: 0px;
     top: 0px;
     position: fixed;
     visibility: hidden;
 }
 
-.raidSlot .locationImg {
+#raidlist .raidSlot .locationImg {
     position: relative;
     float: left;
     left: 10px;
@@ -66,7 +66,7 @@
     cursor: pointer;
 }
 
-.raidSlot .overlayStatus {
+#raidlist .raidSlot .overlayStatus {
     position: relative;
     float: right;
     background-repeat: no-repeat;
@@ -75,22 +75,22 @@
     height: 64px;
 }
 
-.raidSlot .overlayStatusOk {
+#raidlist .raidSlot .overlayStatusOk {
 }
 
-.raidSlot .overlayStatusOpen {
-    background-image: url("images/raid_open.gif");
+#raidlist .raidSlot .overlayStatusOpen {
+    background-image: url(images/raid_open.gif);
 }
 
-.raidSlot .overlayStatusCanceled {
-    background-image: url("images/raid_canceled.png");
+#raidlist .raidSlot .overlayStatusCanceled {
+    background-image: url(images/raid_canceled.png);
 }
 
-.raidSlot .overlayStatusLocked {
-    background-image: url("images/raid_locked.png");
+#raidlist .raidSlot .overlayStatusLocked {
+    background-image: url(images/raid_locked.png);
 }
 
-.raidSlot .raidInfo {
+#raidlist .raidSlot .raidInfo {
     position: relative;
     float: left;
     font-size: 10px;
@@ -101,13 +101,13 @@
     height: 64px;
 }
 
-.raidSlot .raidInfo .location {
+#raidlist .raidSlot .raidInfo .location {
     font-weight: bold;
     font-size: 12px;
     margin-bottom: 5px;
 }
 
-.raidSlot .setupInfo {
+#raidlist .raidSlot .setupInfo {
     float: left;
     margin-top: 10px;
     margin-left: 18px;
@@ -116,7 +116,7 @@
     overflow: hidden;
 }
 
-.raidSlot .setupInfoSlot {
+#raidlist .raidSlot .setupInfoSlot {
     height: 27px;
     width: 140px;
     margin-bottom: 2px;
@@ -140,14 +140,14 @@
     cursor: pointer;
 }
 
-.historySlot .icon {
+#raidHistory .historySlot .icon {
     display: inline-block;
     float: left;
     width: 32px;
     height: 32px;
 }
 
-.historySlot .overlayCanceled {
+#raidHistory .historySlot .overlayCanceled {
     display: inline-block;
     background-image: url(images/raid_canceled_small.png);
     background-repeat: no-repeat;
@@ -159,7 +159,7 @@
 }
 
 
-.historySlot .overlayLocked {
+#raidHistory .historySlot .overlayLocked {
     display: inline-block;
     background-image: url(images/raid_locked_small.png);
     background-repeat: no-repeat;
@@ -170,7 +170,7 @@
     position: relative;
 }
 
-.historySlot .name {
+#raidHistory .historySlot .name {
     margin-top: 2px;
     display: inline-block;
     font-size: 12px;

@@ -73,14 +73,14 @@
 
     </head>
 
-    <body style="background: <?php echo $gSite["BGColor"] ?> <?php echo ($gSite["Background"] == "none") ? "none" : "url(images/background/".$gSite["Background"].")" ?> <?php echo $gSite["BGRepeat"] ?>">
+    <body style="background: <?php echo $gSite["BGColor"] ?> <?php echo ($gSite["Background"] == "none") ? "none" : "url(themes/backgrounds/".$gSite["Background"].")" ?> <?php echo $gSite["BGRepeat"] ?>">
         <div id="appwindow"<?php if ($gSite["PortalMode"]) echo " class=\"portalmode\""; ?>>
             <?php
                 if (strtolower($gSite["Banner"]) != "disable")
                 {
                     $BannerImage = (strtolower($gSite["Banner"]) != "none")
 
-                        ? "url(images/banner/".$gSite["Banner"].")"
+                        ? "url(themes/banner/".$gSite["Banner"].")"
                         : "none";
 
                     if ( $gSite["BannerLink"] == "" )
@@ -164,7 +164,7 @@
         </div>
 
         <?php } else { ?>
-        <div class="preload"><?php include("lib/private/resources.php"); ?></div>
+        <div id="preload"><?php include("lib/private/resources.php"); ?></div>
         <?php } ?>
 
     </body>

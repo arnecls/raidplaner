@@ -1,4 +1,6 @@
 <?php
+    require_once(dirname(__FILE__)."/../private/tools_site.php");
+
     $LoaderFiles = Array(
         "reset.css",
         "jquery-ui-1.10.3.custom.min.css",
@@ -12,7 +14,8 @@
         "shadow.css",
         "sheet.css",
         "settings.css");
-
+        
+    
     if ( defined("STYLE_DEBUG") )
     {
         // "Debug mode"
@@ -21,6 +24,11 @@
         foreach ( $LoaderFiles as $File )
         {
             echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/".$File."\"/>\n";
+        }
+        
+        foreach($gSite["Styles"] as $File)
+        {
+            echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"themes/styles/".$File."\"/>\n";
         }
     }
     else
@@ -35,7 +43,12 @@
         {
             readfile($LoaderCurrentFile);
             echo "\n";
-
+        }
+        
+        foreach($gSite["Styles"] as $File)
+        {
+            readfile("../../themes/styles/".$LoaderCurrentFile);
+            echo "\n";
         }
     }
 ?>

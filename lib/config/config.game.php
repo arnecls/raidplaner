@@ -94,7 +94,7 @@
     //
     // Class ident => Array( Localization string, Default role, Allowed roles array )
     //
-    // Class ident is also mapped to a png image in "images/icons/<iconset>/classes[big|small]"
+    // Class ident is also mapped to a png image in "themes/icons/<iconset>/classes[big|small]"
     // The "empty" class must always be present and first in list.
     // If you are using the ff14 classmode only the first role in the array will be used as classes
     // have exactly one role with that mode.

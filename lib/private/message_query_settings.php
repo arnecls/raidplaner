@@ -53,7 +53,7 @@ function msgQuerySettings( $aRequest )
 
         // Load themes
 
-        $ThemeFiles = scandir( "../images/themes" );
+        $ThemeFiles = scandir( "../themes/themes" );
         $Themes = Array();
 
         foreach ( $ThemeFiles as $ThemeFileName )
@@ -62,7 +62,7 @@ function msgQuerySettings( $aRequest )
             {
                 if (strpos($ThemeFileName,".") > 0)
                 {
-                    $Theme = @new SimpleXMLElement( file_get_contents("../images/themes/".$ThemeFileName) );
+                    $Theme = @new SimpleXMLElement( file_get_contents("../themes/themes/".$ThemeFileName) );
                     $SimpleThemeFileName = substr($ThemeFileName, 0, strrpos($ThemeFileName, "."));
 
                     if ($Theme->name != "")

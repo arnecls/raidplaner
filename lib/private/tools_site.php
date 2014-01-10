@@ -11,6 +11,7 @@
         "BGColor"     => "#898989",
         "BGRepeat"    => "repeat-xy",
         "Iconset"     => "wow",
+        "Styles"      => array(),
         "PortalMode"  => false,
         "TimeFormat"  => 24,
         "StartOfWeek" => 1
@@ -42,6 +43,7 @@
         $gSite["BGColor"]     = "#898989";
         $gSite["BGRepeat"]    = "repeat-xy";
         $gSite["Iconset"]     = "wow";
+        $gSite["Styles"]      = array();
         $gSite["PortalMode"]  = false;
         $gSite["TimeFormat"]  = 24;
         $gSite["StartOfWeek"] = 1;
@@ -59,7 +61,7 @@
                 break;
 
             case "Theme":
-                $ThemeFile = dirname(__FILE__)."/../../images/themes/".$Data["TextValue"].".xml";
+                $ThemeFile = dirname(__FILE__)."/../../themes/themes/".$Data["TextValue"].".xml";
 
                 if ( file_exists($ThemeFile) )
                 {
@@ -75,6 +77,14 @@
                         $gSite["Iconset"]    = (isset($Theme->iconset))    ? (string)$Theme->iconset                : $gSite["Iconset"];
                         $gSite["PortalMode"] = (isset($Theme->portalmode)) ? ((string)$Theme->portalmode) == "true" : $gSite["PortalMode"];
                         $gSite["Logout"]     = (isset($Theme->logout))     ? ((string)$Theme->logout) != "false"    : $gSite["Logout"];
+                        
+                        if (isset($Theme->style))
+                        {
+                            foreach($Theme->style as $Style)
+                            {
+                                array_push($gSite["Styles"], $Style);
+                            }
+                        }
                         
                         if (isset($Theme->random))
                         {

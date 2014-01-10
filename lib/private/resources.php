@@ -31,9 +31,9 @@
     }
 
     dumpImages( "lib/layout/images" );
-    dumpImages( "images/icons/".$gSite["Iconset"]."/raidsmall" );
-    dumpImages( "images/icons/".$gSite["Iconset"]."/raidbig" );
-    dumpImages( "images/icons/".$gSite["Iconset"]."/classessmall" );
-    dumpImages( "images/icons/".$gSite["Iconset"]."/classesbig" );
-    dumpImages( "images/icons/".$gSite["Iconset"]."/roles" );
+    dumpImages( "themes/icons/".$gSite["Iconset"]."/raidsmall" );
+    dumpImages( "themes/icons/".$gSite["Iconset"]."/raidbig" );
+    dumpImages( "themes/icons/".$gSite["Iconset"]."/classessmall" );
+    dumpImages( "themes/icons/".$gSite["Iconset"]."/classesbig" );
+    dumpImages( "themes/icons/".$gSite["Iconset"]."/roles" );
 ?>

@@ -31,7 +31,7 @@ function msgQueryLocations( $aRequest )
 
         // Images
 
-        $Images = scandir("../images/icons/".$gSite["Iconset"]."/raidsmall");
+        $Images = scandir("../themes/icons/".$gSite["Iconset"]."/raidsmall");
         $ImageList = Array();
 
         foreach ( $Images as $Image )

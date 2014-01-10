@@ -204,13 +204,13 @@
     visibility: hidden;
 }
 
-.comment .submit {
+#tooltip .comment .submit {
     position: relative;
     top: 5px;
     margin: 0px;
 }
 
-.comment .text {
+#tooltip .comment .text {
     padding: 2px;
     font-size: 12px;
     font-family: Helvetica, Verdana, Arial, sans-serif;
@@ -223,7 +223,7 @@
     margin-top: 10px;
 }
 
-.commentbadge {
+#tooltip .commentbadge {
     width: 32px;
     height: 41px;
     background: url(images/badge.png);
@@ -234,11 +234,11 @@
     cursor: pointer;
 }
 
-.commentbadge:hover {
+#tooltip .commentbadge:hover {
     background: url(images/badge_over.png);
 }
 
-.infobadge {
+#tooltip .infobadge {
     width: 32px;
     height: 41px;
     background: url(images/raidbadge.png);
@@ -249,7 +249,7 @@
     cursor: pointer;
 }
 
-.infobadge:hover {
+#tooltip .infobadge:hover {
     background: url(images/raidbadge_over.png);
 }
 
