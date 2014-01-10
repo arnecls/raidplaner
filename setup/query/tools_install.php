@@ -15,6 +15,7 @@
               `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
               `Status` enum('ok','available','unavailable','undecided') NOT NULL,
               `Role` tinyint(1) unsigned NOT NULL,
+              `Class` tinyint(2) NOT NULL DEFAULT '0',
               `Comment` text NOT NULL,
               PRIMARY KEY (`AttendanceId`),
               KEY `UserId` (`UserId`),

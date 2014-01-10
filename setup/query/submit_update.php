@@ -306,7 +306,8 @@
     {
         echo "<div class=\"update_version\">".L("UpdateFrom")." 1.0.0 ".L("UpdateTo")." 1.1.0";
 
-        $Updates = Array( "Multi class support" => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Class` `Class` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;" );
+        $Updates = Array( "Multi class support" => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Class` `Class` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
+                          "Class attendance"    => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` ADD `Class` TINYINT(2) NOT NULL DEFAULT '0' AFTER `Role`;" );
         
         // Timezone fix
         
