@@ -106,13 +106,21 @@
 #settings .groupSlot {
     float: left;
     margin-right: 7px;
+    width: 227px;
+    height: 420px;
+    
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    overflow: hidden;
 }
 
-#settings .groupSlot .top {
-    background-image: url(images/userslot_top.png);
-    background-repeat: no-repeat;
+#settings .groupSlot .head {
     width: 227px;
     height: 20px;
+    background-color: rgba(0,0,0,0.1);
     text-align: center;
     font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 12px;
@@ -121,21 +129,13 @@
     padding-top: 10px;
 }
 
-#settings .groupSlot .center {
-    background-image: url(images/userslot_center.png);
-    background-repeat: repeat-y;
-    width: 227px;
-    height: 380px;
+#settings .groupSlot .content {
+    width: 225px;
+    height: 388px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-#settings .groupSlot .bottom {
-    background-image: url(images/userslot_bottom.png);
-    background-repeat: no-repeat;
-    width: 227px;
-    height: 7px;
-}
 
 #settings .groupTarget {
     background-color: #eeeeee;
