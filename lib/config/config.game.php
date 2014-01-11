@@ -14,13 +14,13 @@
     // are being handled by the profile page and the raid attend tooltips.
     // The following values are supported:
     //
-    // "wow"  : World of Warcraft style classes and roles.
-    //          Each character has one class and two different roles based on that class.
+    // "single" : World of Warcraft style classes and roles.
+    //            Each character has one class and two different roles based on that class.
     //
-    // "ff14" : Final Fantasy 14 style job system
-    //          Each character may have one or more class(es) with one predefined role each.
+    // "multi"  : Final Fantasy 14 style job system
+    //            Each character may have one or more class(es) with one predefined role each.
     
-    $gClassMode = "ff14";
+    $gClassMode = "single";
     
     // -----------------------------------------------------------------------------------------------
     
@@ -96,8 +96,6 @@
     //
     // Class ident is also mapped to a png image in "themes/icons/<iconset>/classes[big|small]"
     // The "empty" class must always be present and first in list.
-    // If you are using the ff14 classmode only the first role in the array will be used as classes
-    // have exactly one role with that mode.
     
     $gClasses = Array(
         "empty"         => Array( "",            "dmg",  Array("dmg") ),

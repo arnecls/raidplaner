@@ -15,7 +15,7 @@
     // Data ranges
     
     assert( sizeof($gRoles) <= 5 );
-    assert( ($gClassMode == "wow") || ($gClassMode == "ff14") );
+    assert( ($gClassMode == "single") || ($gClassMode == "multi") );
     
     // Max num columns
     
