@@ -18,7 +18,7 @@ function msgQueryConfig( $aRequest )
 
     $Config["GroupSizes"] = array();
     $Config["RoleNames"] = array();
-    $Config["RoleIds"] = array();
+    $Config["RoleIdx"] = array();
     $Config["RoleIdents"] = array();
     $Config["RoleImages"] = $gRoleImages;
     $Config["RoleColumnCount"] = $gRoleColumnCount;
@@ -40,7 +40,7 @@ function msgQueryConfig( $aRequest )
     for ( $i=0; list($RoleIdent,$RoleName) = each($gRoles); ++$i )
     {
         $Config["RoleNames"][$RoleIdent] = $RoleName;
-        $Config["RoleIds"][$RoleIdent] = $i;
+        $Config["RoleIdx"][$RoleIdent] = $i;
         $Config["RoleIdents"][$i] = $RoleIdent;
     }
 

@@ -20,7 +20,7 @@
     // "ff14" : Final Fantasy 14 style job system
     //          Each character may have one or more class(es) with one predefined role each.
     
-    $gClassMode = "ff14";
+    $gClassMode = "wow";
     
     // -----------------------------------------------------------------------------------------------
     
@@ -35,9 +35,9 @@
     // registered users and/or attends) you will have to change all role fields the database, too.
     
     $gRoles = Array(
-        "tank" => "Tank",
-        "heal" => "Healer",
-        "dmg"  => "Damage"
+        "tank"  => "Tank",
+        "heal"  => "Healer",
+        "dmg"   => "Damage"
     );
     
     // -----------------------------------------------------------------------------------------------
@@ -54,9 +54,9 @@
     // - role_range    
     
     $gRoleImages = Array(
-        "role_tank.png",
-        "role_heal.png",
-        "role_melee.png"
+        "role_tank",
+        "role_heal",
+        "role_melee"
     );
     
     // -----------------------------------------------------------------------------------------------

@@ -244,24 +244,49 @@
     color: #AAA;
 }
 
-#profile .charslot .role {
-    width: 32px;
+#profile .charslot .role_group {
+    width: 123px;
     height: 32px;
-    display: inline-block;
-    background-repeat: no-repeat;
-    float: left;
     position: relative;
+    top: 16px;
+    overflow: hidden;
 }
 
-#profile .charslot .mainrole {
-    background: url(images/star.png);
-    width: 24px;
-    height: 24px;
-    display: inline-block;
+#profile .role_group .single {
+    width: 123px;
+    height: 32px;
+    
+    background-position: 46px 0px;
+}
+
+#profile .role_group .primary {
+    width: 60px;
+    height: 32px;
     float: left;
     position: relative;
-    top: 14px;
-    left: 13px;
+    left: -5px;
+        
+    background-position: 26px 0px;
+    
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+}
+
+#profile .role_group .secondary {
+    width: 60px;
+    height: 32px;
+    float: right;
+    position: relative;
+    right: -5px; 
+    
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
 }
 
 #profile .button_profile {
