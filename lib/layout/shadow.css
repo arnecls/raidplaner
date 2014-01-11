@@ -17,3 +17,19 @@
 .shadow_default {
     text-shadow: 1px 1px 1px black;
 }
+
+.box_inlay {
+    background-color: rgba(215, 215, 215, 0.5);
+    
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    
+    box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.25) inset;
+    -webkit-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
+    -moz-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
+    -o-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
+    -ms-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
+}

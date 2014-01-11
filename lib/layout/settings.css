@@ -106,13 +106,21 @@
 #settings .groupSlot {
     float: left;
     margin-right: 7px;
+    width: 227px;
+    height: 420px;
+    
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    overflow: hidden;
 }
 
-#settings .groupSlot .top {
-    background-image: url(images/userslot_top.png);
-    background-repeat: no-repeat;
+#settings .groupSlot .head {
     width: 227px;
     height: 20px;
+    background-color: rgba(0,0,0,0.1);
     text-align: center;
     font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 12px;
@@ -121,21 +129,13 @@
     padding-top: 10px;
 }
 
-#settings .groupSlot .center {
-    background-image: url(images/userslot_center.png);
-    background-repeat: repeat-y;
-    width: 227px;
-    height: 380px;
+#settings .groupSlot .content {
+    width: 225px;
+    height: 388px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-#settings .groupSlot .bottom {
-    background-image: url(images/userslot_bottom.png);
-    background-repeat: no-repeat;
-    width: 227px;
-    height: 7px;
-}
 
 #settings .groupTarget {
     background-color: #eeeeee;
@@ -208,7 +208,6 @@
     float: right;
     width: 24px;
     height: 24px;
-    cursor: pointer;
 }
 
 #settings .user .functionDelete {
@@ -243,7 +242,6 @@
     height: 32px;
     margin-left: 2px;
     margin-top: 5px;
-    cursor: pointer;
 }
 
 #settings .users {
@@ -395,7 +393,7 @@
 }
 
 #statistics .start {
-    background: url("images/progress_start.png");
+    background: url(images/progress_start.png);
     display: inline-block;
     width: 7px;
     height: 26px;
@@ -404,7 +402,7 @@
 }
 
 #statistics .start_bar {
-    background: url("images/progress_start.png");
+    background: url(images/progress_start.png);
     width: 7px;
     height: 26px;
     position: relative;
@@ -414,7 +412,7 @@
 }
 
 #statistics .end {
-    background: url("images/progress_end.png");
+    background: url(images/progress_end.png);
     width: 7px;
     height: 26px;
     position: relative;
@@ -423,7 +421,7 @@
 }
 
 #statistics .box .end {
-    background: url("images/progress_end.png");
+    background: url(images/progress_end.png);
     width: 7px;
     height: 26px;
     position: relative;
@@ -432,7 +430,7 @@
 }
 
 #statistics .ok {
-    background: url("images/progress_green.png");
+    background: url(images/progress_green.png);
     display: inline-block;
     height: 26px;
     color: #00AA00;
@@ -440,7 +438,7 @@
 }
 
 #statistics .available {
-    background: url("images/progress_yellow_stripe.png");
+    background: url(images/progress_yellow_stripe.png);
     display: inline-block;
     height: 26px;
     color: #888822;
@@ -448,7 +446,7 @@
 }
 
 #statistics .unavailable {
-    background: url("images/progress_red_stripe.png");
+    background: url(images/progress_red_stripe.png);
     display: inline-block;
     height: 26px;
     color: #AA6666;
@@ -456,7 +454,7 @@
 }
 
 #statistics .missed {
-    background: url("images/progress_grey.png");
+    background: url(images/progress_grey.png);
     display: inline-block;
     height: 26px;
     color: #777777;
@@ -504,7 +502,7 @@
     margin-left: 0px;
 }
 
-.removeLink {
+#tooltip .removeLink {
     width: 32px;
     height: 32px;
     margin-right: 8px;

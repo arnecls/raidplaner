@@ -32,14 +32,14 @@ a:hover {
     text-decoration: underline;
 }
 
-.preload {
+#preload {
     position: fixed;
     float: left;
     left:0px;
     top:100%;
 }
 
-.preload img {
+#preload img {
     width: 1px;
     height: 1px;
 }
@@ -53,7 +53,7 @@ a:hover {
     overflow: visible;
 }
 
-.portalmode {
+#appwindow.portalmode {
     position: absolute!important;
     top: 0px!important;
     left: 0px!important;
@@ -207,8 +207,8 @@ a:hover {
     width: 1024px;
 
     background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);    
-    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(185,184,184,1) 100%);
     background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(185,184,184,1) 100%);
     background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
     background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
 }
@@ -238,7 +238,7 @@ a:hover {
     width: 28px;
 }
 
-.logout {
+#menu .logout {
     position: relative;
     display: inline-block;
     padding: 0px;
@@ -248,15 +248,11 @@ a:hover {
     float: right;
 }
 
-.logout form {
-    margin: 0px;
-}
-
-.logout .button_logout {
+#menu .logout .button_logout {
     height: 24px;
 }
 
-.login {
+#loginform {
     width: 200px;
     height: 200px;
     left: 50%;
@@ -267,7 +263,7 @@ a:hover {
     float: left;
 }
 
-.login input.text {
+#loginform input.text {
     display: block;
     width: 196px;
     height: 16px;
@@ -287,7 +283,7 @@ a:hover {
     border-bottom: 1px solid white;
 }
 
-.login input.textactive {
+#loginform input.textactive {
     display: block;
     width: 196px;
     height: 16px;
@@ -307,13 +303,13 @@ a:hover {
     border-bottom: 1px solid white;
 }
 
-.login input.textactive:disabled {
+#loginform input.textactive:disabled {
     color: #888;
     background-color: #ccc;
     border: 1px solid #aaaaaa;
 }
 
-.login .buttonfield {
+#loginform  .buttonfield {
     width: 150px;
     position: absolute;
     left: 50%;
@@ -321,19 +317,19 @@ a:hover {
     margin-left: -70px;
 }
 
-.login .button_login {
+#loginform .button_login {
     width: 100px;
     height: 24px;
     float: left;
 }
 
-.login .button_sticky {
+#loginform .button_sticky {
     width: 28px;
     height: 22px;
     float: left;
 }
 
-.login .button_register {
+#loginform .button_register {
     width: 100px;
     height: 24px;
     margin-top: 10px;
@@ -352,6 +348,18 @@ a:hover {
     -moz-border-radius: 4px;
     -o-border-radius: 4px;
     -ms-border-radius: 4px;
+}
+
+#strprogress .pglabel {
+    position: absolute;
+    display: inline-block;
+    width: 200px;
+    line-height: 16px;
+    font-size: 10px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    color: #888;
+    text-align:center;
+    float:left;
 }
 
 #strength {
@@ -379,18 +387,6 @@ a:hover {
     -moz-border-radius: 4px;
     -o-border-radius: 4px;
     -ms-border-radius: 4px;
-}
-
-.pglabel {
-    position: absolute;
-    display: inline-block;
-    width: 200px;
-    line-height: 16px;
-    font-size: 10px;
-    font-family: Helvetica, Verdana, Arial, sans-serif;
-    color: #888;
-    text-align:center;
-    float:left;
 }
 
 #hashprogress {
@@ -453,9 +449,6 @@ a:hover {
     filter: Alpha(opacity=75);
 }
 
-#dialog {
-}
-
 #prompt_text {
     background: #222222;
     border: 1px solid #666666;
@@ -489,20 +482,4 @@ a:hover {
     top: 470px;
     right: 4px;
     white-space: nowrap;
-}
-
-.box_inlay {
-    background-color: rgba(215, 215, 215, 0.5);
-    
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -o-border-radius: 5px;
-    -ms-border-radius: 5px;
-    
-    box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.25) inset;
-    -webkit-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
-    -moz-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
-    -o-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
-    -ms-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
 }

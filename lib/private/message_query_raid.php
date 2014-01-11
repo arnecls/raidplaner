@@ -11,7 +11,8 @@
 
             $ListRaidQuery = $Connector->prepare("SELECT ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.Name AS LocationName, ".RP_TABLE_PREFIX."Location.Image AS LocationImage, ".
                                               RP_TABLE_PREFIX."Attendance.AttendanceId, ".RP_TABLE_PREFIX."Attendance.UserId, ".RP_TABLE_PREFIX."Attendance.CharacterId, ".
-                                              RP_TABLE_PREFIX."Attendance.Status, ".RP_TABLE_PREFIX."Attendance.Role, ".RP_TABLE_PREFIX."Attendance.Comment, UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Attendance.LastUpdate) AS LastUpdate, ".
+                                              RP_TABLE_PREFIX."Attendance.Status, ".RP_TABLE_PREFIX."Attendance.Role, ".RP_TABLE_PREFIX."Attendance.Class AS ActiveClass, ".RP_TABLE_PREFIX."Attendance.Comment, ".
+                                              "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Attendance.LastUpdate) AS LastUpdate, ".
                                               RP_TABLE_PREFIX."Character.Name, ".RP_TABLE_PREFIX."Character.Class, ".RP_TABLE_PREFIX."Character.Mainchar, ".RP_TABLE_PREFIX."Character.Role1, ".RP_TABLE_PREFIX."Character.Role2, ".
                                               "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.Start) AS StartUTC, ".
                                               "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.End) AS EndUTC ".
@@ -81,20 +82,21 @@
                                 if ( ($CharData != null) && ($CharData["CharacterId"] != null) )
                                 {
                                     $AttendeeData = Array(
-                                        "id"        => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
-                                        "hasId"     => true,
-                                        "userId"    => $Data["UserId"],
-                                        "timestamp" => $Data["LastUpdate"],
-                                        "charid"    => $CharData["CharacterId"],
-                                        "name"      => $CharData["Name"],
-                                        "mainchar"  => $CharData["Mainchar"],
-                                        "classname" => $CharData["Class"],
-                                        "role"      => $CharData["Role1"],
-                                        "role1"     => $CharData["Role1"],
-                                        "role2"     => $CharData["Role2"],
-                                        "status"    => $Data["Status"],
-                                        "comment"   => $Data["Comment"],
-                                        "character" => Array()
+                                        "id"          => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
+                                        "hasId"       => true,
+                                        "userId"      => $Data["UserId"],
+                                        "timestamp"   => $Data["LastUpdate"],
+                                        "charid"      => $CharData["CharacterId"],
+                                        "name"        => $CharData["Name"],
+                                        "mainchar"    => $CharData["Mainchar"],
+                                        "classname"   => $CharData["Class"],
+                                        "activeclass" => 0,
+                                        "role"        => $CharData["Role1"],
+                                        "role1"       => $CharData["Role1"],
+                                        "role2"       => $CharData["Role2"],
+                                        "status"      => $Data["Status"],
+                                        "comment"     => $Data["Comment"],
+                                        "character"   => Array()
                                     );
 
                                     $CharQuery->loop(function($CharData) use (&$AttendeeData)
@@ -120,20 +122,21 @@
                                 // CharacterId and UserId set to 0 means "random player"
 
                                 $AttendeeData = Array(
-                                    "id"        => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
-                                    "hasId"     => true,
-                                    "userId"    => 0,
-                                    "timestamp" => $Data["LastUpdate"],
-                                    "charid"    => 0,
-                                    "name"      => $Data["Comment"],
-                                    "mainchar"  => false,
-                                    "classname" => "random",
-                                    "role"      => $Data["Role"],
-                                    "role1"     => $Data["Role"],
-                                    "role2"     => $Data["Role"],
-                                    "status"    => $Data["Status"],
-                                    "comment"   => "",
-                                    "character" => Array()
+                                    "id"          => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
+                                    "hasId"       => true,
+                                    "userId"      => 0,
+                                    "timestamp"   => $Data["LastUpdate"],
+                                    "charid"      => 0,
+                                    "name"        => $Data["Comment"],
+                                    "mainchar"    => false,
+                                    "classname"   => "random",
+                                    "activeclass" => 0,
+                                    "role"        => $Data["Role"],
+                                    "role1"       => $Data["Role"],
+                                    "role2"       => $Data["Role"],
+                                    "status"      => $Data["Status"],
+                                    "comment"     => "",
+                                    "character"   => Array()
                                 );
 
                                 array_push($Attendees, $AttendeeData);
@@ -144,20 +147,21 @@
                             // CharacterId is set
 
                             $AttendeeData = Array(
-                                "id"        => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
-                                "hasId"     => true,
-                                "userId"    => $Data["UserId"],
-                                "timestamp" => $Data["LastUpdate"],
-                                "charid"    => $Data["CharacterId"],
-                                "name"      => $Data["Name"],
-                                "mainchar"  => $Data["Mainchar"],
-                                "classname" => $Data["Class"],
-                                "role"      => $Data["Role"],
-                                "role1"     => $Data["Role1"],
-                                "role2"     => $Data["Role2"],
-                                "status"    => $Data["Status"],
-                                "comment"   => $Data["Comment"],
-                                "character" => Array()
+                                "id"          => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
+                                "hasId"       => true,
+                                "userId"      => $Data["UserId"],
+                                "timestamp"   => $Data["LastUpdate"],
+                                "charid"      => $Data["CharacterId"],
+                                "name"        => $Data["Name"],
+                                "mainchar"    => $Data["Mainchar"],
+                                "classname"   => $Data["Class"],
+                                "activeclass" => $Data["ActiveClass"],
+                                "role"        => $Data["Role"],
+                                "role1"       => $Data["Role1"],
+                                "role2"       => $Data["Role2"],
+                                "status"      => $Data["Status"],
+                                "comment"     => $Data["Comment"],
+                                "character"   => Array()
                             );
 
                             $CharQuery = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
@@ -215,20 +219,21 @@
                             ++$MaxAttendanceId;
 
                             $AttendeeData = Array(
-                                "id"        => $MaxAttendanceId,
-                                "hasId"     => false,
-                                "userId"    => $UserData["UserId"],
-                                "timestamp" => time(),
-                                "charid"    => $UserData["CharacterId"],
-                                "name"      => $UserData["Name"],
-                                "mainchar"  => $UserData["Mainchar"],
-                                "classname" => $UserData["Class"],
-                                "role"      => $UserData["Role1"],
-                                "role1"     => $UserData["Role1"],
-                                "role2"     => $UserData["Role2"],
-                                "status"    => "undecided",
-                                "comment"   => "",
-                                "character" => Array()
+                                "id"          => $MaxAttendanceId,
+                                "hasId"       => false,
+                                "userId"      => $UserData["UserId"],
+                                "timestamp"   => time(),
+                                "charid"      => $UserData["CharacterId"],
+                                "name"        => $UserData["Name"],
+                                "mainchar"    => $UserData["Mainchar"],
+                                "classname"   => $UserData["Class"],
+                                "activeclass" => 0,
+                                "role"        => $UserData["Role1"],
+                                "role1"       => $UserData["Role1"],
+                                "role2"       => $UserData["Role2"],
+                                "status"      => "undecided",
+                                "comment"     => "",
+                                "character"   => Array()
                             );
 
                             $CharQuery->loop(function($UserData) use (&$AttendeeData)

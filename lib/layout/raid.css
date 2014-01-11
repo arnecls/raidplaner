@@ -53,7 +53,6 @@
     background-image: url(images/icon_raid_off.png);
     opacity: 0.2;
     filter:Alpha(opacity=20);
-    cursor: pointer;
 }
 
 #raiddetail .icon_setup_off:hover {
@@ -65,7 +64,6 @@
     background-image: url(images/icon_users_off.png);
     opacity: 0.2;
     filter:Alpha(opacity=20);
-    cursor: pointer;
 }
 
 #raiddetail .icon_slackers_off:hover {
@@ -77,7 +75,6 @@
     background-image: url(images/icon_settings_off.png);
     opacity: 0.2;
     filter:Alpha(opacity=20);
-    cursor: pointer;
 }
 
 #raiddetail .icon_settings_off:hover {
@@ -161,23 +158,23 @@
     float: left;
 }
 
-.activeSlot .playerIcon {
+#raidsetup .activeSlot .playerIcon {
     left: 4px;
 }
 
-.activeSlotComment .playerIcon {
+#raidsetup .activeSlotComment .playerIcon {
     left: 4px;
 }
 
-.spilledSlot .playerIcon {
+#raidsetup .spilledSlot .playerIcon {
     left: 4px;
 }
 
-.spilledSlotComment .playerIcon {
+#raidsetup .spilledSlotComment .playerIcon {
     left: 4px;
 }
 
-.playerIcon .mainbadge {
+#raiddetail .playerIcon .mainbadge {
     background-image: url(images/star.png);
     width: 18px;
     height: 16px;
@@ -186,18 +183,18 @@
     top: 14px;
 }
 
-.playerTooltipIcon {
+#tooltip .playerTooltipIcon {
     width: 32px;
     height: 32px;
     float: left;
 }
 
-.playerTooltipRoleIcon {
+#tooltip .playerTooltipRoleIcon {
     width: 32px;
     height: 32px;
 }
 
-.playerTooltipRoleIcon .mainbadge {
+#tooltip .playerTooltipRoleIcon .mainbadge {
     background-image: url(images/star.png);
     width: 18px;
     height: 16px;
@@ -206,14 +203,25 @@
     top: 14px;
 }
 
-.playerTooltipIconLarge {
+#tooltip .playerTooltipIconLarge {
     width: 64px;
     height: 64px;
     text-align: center;
     float: left;
 }
 
-.playerTooltipIconLarge .twinkcount {
+#tooltip .playerTooltipIconLarge .mainbadge {
+    background-image: url(images/star.png);
+    width: 24px;
+    height: 24px;
+    float: left;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    display: inline-block;
+}
+
+#tooltip .playerTooltipIconLarge .twinkcount {
     background-image: url(images/switchable.png);
     font-size: 12px;
     position: relative;
@@ -224,14 +232,14 @@
     padding-top: 1px;
 }
 
-.playerTooltipText {
+#tooltip .playerTooltipText {
     float: left;
     margin-left: 10px;
     max-width: 200px;
     display: inline-block;
 }
 
-.playerTooltipText .name {
+#tooltip .playerTooltipText .name {
     font-weight: bold;
     font-size: 1.2em;
     margin-bottom: 10px;
@@ -249,22 +257,22 @@
     overflow: hidden;
 }
 
-.activeSlot .playerName {
+#raidsetup .activeSlot .playerName {
     padding-left: 4px;
     width: 76px!important;
 }
 
-.activeSlotComment .playerName {
+#raidsetup .activeSlotComment .playerName {
     padding-left: 4px;
     width: 76px!important;
 }
 
-.spilledSlot .playerName {
+#raidsetup .spilledSlot .playerName {
     padding-left: 4px;
     width: 76px!important;
 }
 
-.spilledSlotComment .playerName {
+#raidsetup .spilledSlotComment .playerName {
     padding-left: 4px;
     width: 76px!important;
 }
@@ -283,22 +291,22 @@
     border-bottom: 1px dotted #AAA;
 }
 
-.activeSlot .editableName {
+#raidsetup .activeSlot .editableName {
     margin-left: 4px;
     width: 88px!important;
 }
 
-.activeSlotComment .editableName {
+#raidsetup .activeSlotComment .editableName {
     margin-left: 4px;
     width: 88px!important;
 }
 
-.spilledSlot .editableName {
+#raidsetup .spilledSlot .editableName {
     margin-left: 4px;
     width: 88px!important;
 }
 
-.spilledSlotComment .editableName {
+#raidsetup .spilledSlotComment .editableName {
     margin-left: 4px;
     width: 88px!important;
 }
@@ -370,13 +378,13 @@
     -ms-border-radius: 5px;
 }
 
-#raiddetail .clickable {
+#raiddetail .clip .clickable {
     -moz-box-shadow: 0px 1px 0 #aaa;
     -webkit-box-shadow: 0px 1px 0 #aaa;
     box-shadow: 0px 1px 0 #aaa;
 }
 
-#raiddetail .clickable:active {
+#raiddetail .clip .clickable:active {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -384,12 +392,7 @@
     margin-bottom: 3px;
 }
 
-#raiddetail .clickable2 {
-    cursor: pointer;
-}
-
 #raiddetail .dragable {
-    cursor: pointer;
 }
 
 #raiddetail .activeSlot {
@@ -398,7 +401,6 @@
 
 #raiddetail .activeSlotComment {
     background-image: url(images/slot_set_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .spilledSlot {
@@ -407,7 +409,6 @@
 
 #raiddetail .spilledSlotComment {
     background-image: url(images/slot_spill_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .waitSlot {
@@ -416,7 +417,6 @@
 
 #raiddetail .waitSlotComment {
     background-image: url(images/slot_wait_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .benchSlot {
@@ -425,7 +425,6 @@
 
 #raiddetail .benchSlotComment {
     background-image: url(images/slot_bench_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .emptySlot {
@@ -434,23 +433,10 @@
 
 #raiddetail .randomSlot {
     background-image: url(images/slot_random.png);
-    cursor: pointer;
 }
 
 #raiddetail .clipchange {
     background-image: url(images/slot_more.png);
-    cursor: pointer;
-}
-
-.playerTooltipIconLarge .mainbadge {
-    background-image: url(images/star.png);
-    width: 24px;
-    height: 24px;
-    float: left;
-    position: absolute;
-    left: 2px;
-    top: 2px;
-    display: inline-block;
 }
 
 #raiddetail .slotMarker {
