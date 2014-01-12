@@ -183,6 +183,82 @@
     top: 14px;
 }
 
+#tooltip .role_select {
+    display: inline-block;
+    width: 32px;
+    height: 64px;
+    padding-right: 8px;
+    border-right: 1px solid #666;
+    overflow: hidden;
+    line-height: 0;
+}
+
+#tooltip img.role {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    top: -16px;
+}
+
+#tooltip img.single_role {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    top: 16px;    
+}
+
+#tooltip .char_select {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    padding-left: 8px;
+    background-repeat: no-repeat;
+    background-position: 8px 0px;
+}
+
+#tooltip .player_info {
+    display: inline-block;
+    max-width: 200px;
+    line-height: 1.5em;
+    color: white;
+    vertical-align: top;
+    padding-left: 16px;
+}
+
+#tooltip .player_info .name {
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#tooltip .switch_role_up {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 30;
+}
+
+#tooltip .switch_role_down {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 40px;
+    left: 8px;
+    z-index: 30;
+}
+
+#tooltip .switch_char_next {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    top: 16px;
+    left: 47px;
+    background-image: url(images/move_right.png);
+}
+
+/*
 #tooltip .playerTooltipIcon {
     width: 32px;
     height: 32px;
@@ -243,7 +319,7 @@
     font-weight: bold;
     font-size: 1.2em;
     margin-bottom: 10px;
-}
+}*/
 
 #raiddetail .playerName {
     height: 16px;
