@@ -55,11 +55,19 @@
     right: 16px;
 }
 
-#tooltip_arrow.side {
+#tooltip_arrow.side_left {
     left: -20px;
     top: 16px;
     border-bottom: 10px solid transparent;
     border-left: 10px solid transparent;
+    border-top: 10px solid transparent;
+}
+
+#tooltip_arrow.side_right {
+    right: -20px;
+    top: 16px;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid transparent;
     border-top: 10px solid transparent;
 }
 
