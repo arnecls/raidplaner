@@ -1005,7 +1005,7 @@
             {
                 array_push($CharacterIds, $Character->CharacterId);
                 array_push($CharacterNames, $Character->Name);
-                array_push($CharacterClasses, $Character->ClassName);
+                array_push($CharacterClasses, explode(":",$Character->ClassName));
                 array_push($CharacterRoles1, $Character->Role1);
                 array_push($CharacterRoles2, $Character->Role2);
             }

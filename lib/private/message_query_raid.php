@@ -89,7 +89,7 @@
                                         "charid"      => $CharData["CharacterId"],
                                         "name"        => $CharData["Name"],
                                         "mainchar"    => $CharData["Mainchar"],
-                                        "classname"   => $CharData["Class"],
+                                        "classname"   => explode(":",$CharData["Class"]),
                                         "activeclass" => 0,
                                         "role"        => $CharData["Role1"],
                                         "role1"       => $CharData["Role1"],
@@ -106,7 +106,7 @@
                                             "id"        => $CharData["CharacterId"],
                                             "name"      => $CharData["Name"],
                                             "mainchar"  => $CharData["Mainchar"],
-                                            "classname" => $CharData["Class"],
+                                            "classname" => explode(":",$CharData["Class"]),
                                             "role1"     => $CharData["Role1"],
                                             "role2"     => $CharData["Role2"]
                                         );
@@ -129,7 +129,7 @@
                                     "charid"      => 0,
                                     "name"        => $Data["Comment"],
                                     "mainchar"    => false,
-                                    "classname"   => "random",
+                                    "classname"   => Array("random"),
                                     "activeclass" => 0,
                                     "role"        => $Data["Role"],
                                     "role1"       => $Data["Role"],
@@ -154,7 +154,7 @@
                                 "charid"      => $Data["CharacterId"],
                                 "name"        => $Data["Name"],
                                 "mainchar"    => $Data["Mainchar"],
-                                "classname"   => $Data["Class"],
+                                "classname"   => explode(":",$Data["Class"]),
                                 "activeclass" => $Data["ActiveClass"],
                                 "role"        => $Data["Role"],
                                 "role1"       => $Data["Role1"],
@@ -176,7 +176,7 @@
                                     "id"        => $CharData["CharacterId"],
                                     "name"      => $CharData["Name"],
                                     "mainchar"  => $CharData["Mainchar"],
-                                    "classname" => $CharData["Class"],
+                                    "classname" => explode(":",$CharData["Class"]),
                                     "role1"     => $CharData["Role1"],
                                     "role2"     => $CharData["Role2"]
                                 );
@@ -226,7 +226,7 @@
                                 "charid"      => $UserData["CharacterId"],
                                 "name"        => $UserData["Name"],
                                 "mainchar"    => $UserData["Mainchar"],
-                                "classname"   => $UserData["Class"],
+                                "classname"   => explode(":",$UserData["Class"]),
                                 "activeclass" => 0,
                                 "role"        => $UserData["Role1"],
                                 "role1"       => $UserData["Role1"],
@@ -242,7 +242,7 @@
                                     "id"        => $UserData["CharacterId"],
                                     "name"      => $UserData["Name"],
                                     "mainchar"  => $UserData["Mainchar"],
-                                    "classname" => $UserData["Class"],
+                                    "classname" => explode(":",$UserData["Class"]),
                                     "role1"     => $UserData["Role1"],
                                     "role2"     => $UserData["Role2"]
                                 );

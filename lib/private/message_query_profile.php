@@ -58,12 +58,10 @@ function msgQueryProfile( $aRequest )
         {
             foreach ( UserProxy::getInstance()->Characters as $Data )
             {
-                $Classes = explode(":", $Data->ClassName);
-                
                 $Character = Array(
                     "id"        => $Data->CharacterId,
                     "name"      => $Data->Name,
-                    "classname" => $Classes,
+                    "classname" => explode(":", $Data->ClassName),
                     "mainchar"  => $Data->IsMainChar,
                     "role1"     => $Data->Role1,
                     "role2"     => $Data->Role2
@@ -82,12 +80,10 @@ function msgQueryProfile( $aRequest )
 
             $CharacterQuery->loop( function($Row) use (&$Characters)
             {
-                $Classes = explode(":", $Row["Class"]);
-                
                 $Character = Array(
                     "id"        => $Row["CharacterId"],
                     "name"      => $Row["Name"],
-                    "classname" => $Classes,
+                    "classname" => explode(":", $Row["Class"]),
                     "mainchar"  => $Row["Mainchar"] == "true",
                     "role1"     => $Row["Role1"],
                     "role2"     => $Row["Role2"]
