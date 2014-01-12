@@ -13,6 +13,7 @@
         $gLocale[ "Shaman" ]                   = "Shaman";
         $gLocale[ "Warlock" ]                  = "Warlock";
         $gLocale[ "Warrior" ]                  = "Warrior";
+        $gLocale[ "Random" ]                   = "Random";
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";

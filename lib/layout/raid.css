@@ -216,9 +216,20 @@
     background-position: 8px 0px;
 }
 
+#tooltip .char_select .mainchar {
+    background-image: url(images/star.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    left: 52px;
+    top: 2px;
+}
+
 #tooltip .player_info {
     display: inline-block;
     max-width: 200px;
+    min-width: 100px;
     line-height: 1.5em;
     color: white;
     vertical-align: top;
@@ -228,6 +239,12 @@
 #tooltip .player_info .name {
     font-weight: bold;
     font-size: 1.5em;
+}
+
+#tooltip .player_info .detail {
+    font-size: 10px;
+    font-style: italic;
+    color: #666;
     margin-bottom: 10px;
 }
 
