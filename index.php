@@ -159,7 +159,7 @@
         </div>
 
         <div id="sheetoverlay">
-            <div id="closesheet clickable"></div>
+            <div id="closesheet" class="clickable"></div>
             <div id="sheet_body"></div>
         </div>
 

@@ -130,12 +130,9 @@
     height: 148px;
     margin: 0px 5px 0px 0px;
     padding: 0px;
-    font-family: arial;
-    text-align: center;
-    font-size: 64px;
-    line-height: 147px;
-    font-weight: bold;
-    color: #aaa;
+    background-image: url(images/profile_add.png);
+    background-repeat: no-repeat;
+    background-position: 46px 58px
 }
 
 #profile .nextgroup {
@@ -144,13 +141,9 @@
     height: 148px;
     margin: 0px 5px 0px 0px;
     padding: 0px 0px 0px 8px;
-    font-family: arial;
-    text-align: center;
-    font-size: 64px;
-    line-height: 147px;
-    font-weight: bold;
-    letter-spacing: 8px;
-    color: #aaa;
+    background-image: url(images/profile_next.png);
+    background-repeat: no-repeat;
+    background-position: 26px 58px
 }
 
 #profile .charslot .clearchar {
