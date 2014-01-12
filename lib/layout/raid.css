@@ -226,6 +226,10 @@
     top: 2px;
 }
 
+#tooltip .switch_button {
+    width: 110px;
+}
+
 #tooltip .player_info {
     display: inline-block;
     max-width: 200px;
@@ -257,6 +261,12 @@
     z-index: 30;
 }
 
+#tooltip .switch_role_up:hover {
+    background-position: 0px -5px;
+    background-repeat: no-repeat;
+    background-image: url(images/move_up.png);
+}
+
 #tooltip .switch_role_down {
     width: 32px;
     height: 32px;
@@ -264,6 +274,12 @@
     top: 40px;
     left: 8px;
     z-index: 30;
+}
+
+#tooltip .switch_role_down:hover {
+    background-position: 0px 10px;
+    background-repeat: no-repeat;
+    background-image: url(images/move_down.png);
 }
 
 #tooltip .switch_char_next {

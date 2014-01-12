@@ -13,7 +13,7 @@
         $gLocale[ "Shaman" ]                   = "Shaman";
         $gLocale[ "Warlock" ]                  = "Warlock";
         $gLocale[ "Warrior" ]                  = "Warrior";
-        $gLocale[ "Random" ]                   = "Random";
+        $gLocale[ "Random" ]                   = "Unknown";
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
@@ -135,6 +135,7 @@
         $gLocale[ "RaidNotFound" ]             = "Raid could not be found.";
         $gLocale[ "RaidSetup" ]                = "Raid setup";
         $gLocale[ "LinkToRaid" ]               = "Link to raid";
+        $gLocale[ "Switch" ]                   = "Switch";
 
         // Profile
         $gLocale[ "Profile" ]                  = "Profile";

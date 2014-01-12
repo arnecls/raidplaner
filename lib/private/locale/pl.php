@@ -140,6 +140,7 @@
         $gLocale[ "RaidNotFound" ]             = null;
         $gLocale[ "RaidSetup" ]                = null;
         $gLocale[ "LinkToRaid" ]               = null;
+        $gLocale[ "Switch" ]                   = null;
 
         // Profile
 
