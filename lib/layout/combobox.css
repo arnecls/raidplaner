@@ -103,7 +103,9 @@
 
 .combobox_list .option .text {
     line-height: 16px;
+    font-size: 11px;
     display: inline-block;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
 }
 
 .combobox_list .separator {
