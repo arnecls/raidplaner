@@ -296,6 +296,7 @@
     float: left;
     border-radius: 4px;
     border: 1px solid #999;
+    overflow: hidden;
 }
 
 #attendance .attendanceType {
@@ -307,6 +308,7 @@
     float: left;
     border-radius: 4px;
     border: 1px solid #999;
+    overflow: hidden;
 }
 
 #attendance .label {
