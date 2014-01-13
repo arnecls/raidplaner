@@ -294,6 +294,8 @@
     display: inline-block;
     text-align: right;
     float: left;
+    border-radius: 4px;
+    border: 1px solid #999;
 }
 
 #attendance .attendanceType {
@@ -303,6 +305,8 @@
     display: inline-block;
     text-align: right;
     float: left;
+    border-radius: 4px;
+    border: 1px solid #999;
 }
 
 #attendance .label {
@@ -312,6 +316,7 @@
     float: left;
     margin-top: 10px;
     color: #666666;
+    text-align: left;
 }
 
 #attendance .count {
@@ -321,91 +326,121 @@
     top: 4px;
 }
 
-#attendance .start {
-    background: url(images/progress_start.png);
-    display: inline-block;
-    width: 7px;
-    height: 26px;
-    float: left;
-    position: absolute;
-}
-
-#attendance .end {
-    background: url(images/progress_end.png);
-    width: 7px;
-    height: 26px;
-    margin-left: -7px;
-    position: absolute;
-    float: left;
-}
-
-#attendance .ok {
-    background: url(images/progress_green.png);
+#attendance .ok {    
     display: inline-block;
     height: 26px;
     color: #00AA00;
+    
+    background: linear-gradient(to bottom, rgba(117,225,111,1) 0%,rgba(79,217,73,1) 100%); 
+    background: -webkit-linear-gradient(top, rgba(117,225,111,1) 0%,rgba(79,217,73,1) 100%);
+    background: -moz-linear-gradient(top, rgba(117,225,111,1) 0%, rgba(79,217,73,1) 100%);
+    background: -o-linear-gradient(top, rgba(117,225,111,1) 0%,rgba(79,217,73,1) 100%);
+    background: -ms-linear-gradient(top, rgba(117,225,111,1) 0%,rgba(79,217,73,1) 100%);
 }
 
 #attendance .available {
-    background: url(images/progress_yellow_stripe.png);
     display: inline-block;
     height: 26px;
     color: #888822;
+    
+    background: linear-gradient(to bottom, rgba(214,206,147,1) 0%,rgba(200,189,108,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(214,206,147,1) 0%,rgba(200,189,108,1) 100%);
+    background: -moz-linear-gradient(top, rgba(214,206,147,1) 0%, rgba(200,189,108,1) 100%);
+    background: -o-linear-gradient(top, rgba(214,206,147,1) 0%,rgba(200,189,108,1) 100%);
+    background: -ms-linear-gradient(top, rgba(214,206,147,1) 0%,rgba(200,189,108,1) 100%);
 }
 
 #attendance .unavailable {
-    background: url(images/progress_red_stripe.png);
     display: inline-block;
     height: 26px;
     color: #AA6666;
+    
+    background: linear-gradient(to bottom, rgba(205,158,157,1) 0%,rgba(189,129,127,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(205,158,157,1) 0%,rgba(189,129,127,1) 100%);
+    background: -moz-linear-gradient(top, rgba(205,158,157,1) 0%, rgba(189,129,127,1) 100%);
+    background: -o-linear-gradient(top, rgba(205,158,157,1) 0%,rgba(189,129,127,1) 100%);
+    background: -ms-linear-gradient(top, rgba(205,158,157,1) 0%,rgba(189,129,127,1) 100%);
 }
 
 #attendance .missed {
-    background: url(images/progress_grey.png);
     display: inline-block;
     height: 26px;
     color: #777777;
+    
+    background: linear-gradient(to bottom, rgba(177,177,177,1) 0%,rgba(154,154,154,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(177,177,177,1) 0%,rgba(154,154,154,1) 100%);
+    background: -moz-linear-gradient(top, rgba(177,177,177,1) 0%, rgba(154,154,154,1) 100%);
+    background: -o-linear-gradient(top, rgba(177,177,177,1) 0%,rgba(154,154,154,1) 100%);
+    background: -ms-linear-gradient(top, rgba(177,177,177,1) 0%,rgba(154,154,154,1) 100%);
 }
 
-#attendance .role1 {
-    background: url(images/progress_brown.png);
+#attendance .role_tank {
     display: inline-block;
     height: 26px;
     color: #998855;
+
+    background: linear-gradient(to bottom, rgba(255,212,127,1) 0%,rgba(204,175,102,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255,212,127,1) 0%,rgba(204,175,102,1) 100%);
+    background: -moz-linear-gradient(top, rgba(255,212,127,1) 0%, rgba(204,175,102,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,212,127,1) 0%,rgba(204,175,102,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,212,127,1) 0%,rgba(204,175,102,1) 100%);
 }
 
-#attendance .role2 {
-    background: url(images/progress_white.png);
+#attendance .role_heal {
     display: inline-block;
     height: 26px;
     color: #AAAAAA;
+
+    background: linear-gradient(to bottom, rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
+    background: -moz-linear-gradient(top, rgba(222,246,247,1) 0%, rgba(187,242,255,1) 100%);
+    background: -o-linear-gradient(top, rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
+    background: -ms-linear-gradient(top, rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
 }
 
-#attendance .role3 {
-    background: url(images/progress_yellow.png);
+#attendance .role_melee {
     display: inline-block;
     height: 26px;
     color: #888822;
+    
+    background: linear-gradient(to bottom, rgba(255,71,50,1) 0%,rgba(178,80,67,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255,71,50,1) 0%,rgba(178,80,67,1) 100%);
+    background: -moz-linear-gradient(top, rgba(255,71,50,1) 0%, rgba(178,80,67,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,71,50,1) 0%,rgba(178,80,67,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,71,50,1) 0%,rgba(178,80,67,1) 100%);
 }
 
-#attendance .role4 {
-    background: url(images/progress_blue.png);
+#attendance .role_range {
     display: inline-block;
     height: 26px;
     color: #998855;
+    
+    background: linear-gradient(to bottom, rgba(187,255,116,1) 0%,rgba(131,178,82,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(187,255,116,1) 0%,rgba(131,178,82,1) 100%);
+    background: -moz-linear-gradient(top, rgba(187,255,116,1) 0%, rgba(131,178,82,1) 100%);
+    background: -o-linear-gradient(top, rgba(187,255,116,1) 0%,rgba(131,178,82,1) 100%);
+    background: -ms-linear-gradient(top, rgba(187,255,116,1) 0%,rgba(131,178,82,1) 100%);
 }
 
-#attendance .role5 {
-    background: url(images/progress_violet.png);
+#attendance .role_support {
     display: inline-block;
     height: 26px;
     color: #998855;
+    
+    background: linear-gradient(to bottom, rgba(245,167,255,1) 0%,rgba(180,151,229,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(245,167,255,1) 0%,rgba(180,151,229,1) 100%);
+    background: -moz-linear-gradient(top, rgba(245,167,255,1) 0%, rgba(180,151,229,1) 100%);
+    background: -o-linear-gradient(top, rgba(245,167,255,1) 0%,rgba(180,151,229,1) 100%);
+    background: -ms-linear-gradient(top, rgba(245,167,255,1) 0%,rgba(180,151,229,1) 100%);
 }
 
 #attendance .box {
     display: inline-block;
     width: 14px;
+    height: 26px;
     float: left;
+    border-radius: 4px;
+    border: 1px solid #999;
 }
 
 #attendance .labels {
