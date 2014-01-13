@@ -3,6 +3,7 @@
 
     $gSite = Array(
         "Version"     => 110.0,
+        "Theme"       => "defaults",
         "BannerLink"  => "",
         "HelpLink"    => "",
         "Logout"      => true,
@@ -35,6 +36,8 @@
         $Connector = Connector::getInstance();
         $Settings = $Connector->prepare("Select `Name`, `TextValue`, `IntValue` FROM `".RP_TABLE_PREFIX."Setting`");
 
+        
+        $gSite["Theme"]       = "";
         $gSite["BannerLink"]  = "";
         $gSite["HelpLink"]    = "";
         $gSite["Logout"]      = true;
@@ -62,7 +65,9 @@
 
             case "Theme":
                 $ThemeFile = dirname(__FILE__)."/../../themes/themes/".$Data["TextValue"].".xml";
-
+                
+                $gSite["Theme"] = $Data["TextValue"];
+                
                 if ( file_exists($ThemeFile) )
                 {
                     try

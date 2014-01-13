@@ -24,7 +24,7 @@ function msgQueryConfig( $aRequest )
     $Config["RoleColumnCount"] = $gRoleColumnCount;
     $Config["ClassIdx"] = array();
     $Config["Classes"] = array();
-    $Config["ClassMode"] = $gClassMode;
+    $Config["ClassMode"] = $gClassMode;    
 
     // Groups
 

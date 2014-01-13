@@ -38,18 +38,7 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
         <link rel="icon" href="favicon.png" type="image/png"/>
-
-        <?php // Load Styles
-
-            if (defined("STYLE_DEBUG") && STYLE_DEBUG)
-            {
-                include_once("lib/layout/allstyles.php");
-            }
-            else
-            {
-                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/allstyles.php?version=".$gSite["Version"]."\"/>";
-            }
-        ?>
+        <link rel="stylesheet" type="text/css" href="lib/layout/allstyles.php<?php if (STYLE_DEBUG) echo "?debug"; ?>"/>
 
         <?php // Load scripts
 
