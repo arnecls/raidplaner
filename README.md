@@ -1,4 +1,4 @@
 Warning
 =======
-This branch contains experimental changes.
-DO NOT USE IN PRODUCTION.
+This branch contains experimental changes and is thus considered unstable.  
+Use at your own risk.
