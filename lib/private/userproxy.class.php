@@ -35,6 +35,14 @@
         private $SiteId    = "";
 
         // --------------------------------------------------------------------------------------------
+        
+        public static function registerInstance($aPluginInstance)
+        {
+            array_push(self::$mBindings, $aPluginInstance);
+            self::$mBindingsByName[$aPluginInstance->getName()] = $aPluginInstance;
+        }
+        
+        // --------------------------------------------------------------------------------------------
 
         public static function initBindings()
         {
@@ -43,13 +51,9 @@
                 $NativeBinding // native has to be first
             );
 
-            self::$mBindingsByName[$NativeBinding->getName()] = $NativeBinding;
-
-            PluginRegistry::ForEachPlugin(function($PluginInstance)
-
-            {
-                array_push(self::$mBindings, $PluginInstance);
-                self::$mBindingsByName[$PluginInstance->getName()] = $PluginInstance;
+            self::$mBindingsByName[$NativeBinding->getName()] = $NativeBinding;            
+            PluginRegistry::ForEachPlugin(function($PluginInstance) {
+                UserProxy::registerInstance($PluginInstance);
             });
         }
 
