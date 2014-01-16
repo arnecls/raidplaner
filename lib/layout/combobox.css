@@ -5,9 +5,10 @@
     position: relative; /* for absolute positioning of .combobox_list */
 }
 
-.combobox input {
+.combobox input[type=text] {
     border: 0;
     background-color: transparent;
+    color: white;
 }
 
 .combobox_value {

@@ -537,13 +537,12 @@
     background-image: url(images/ui-icons_222222_256x240.png);
     background-repeat: no-repeat;
     padding-left: 16px;
-    margin-bottom: 4px;
 }
 
 #profilesettings .datepicker_field {
     width: 124px;
-    height: 14px;
-    line-height: 14px;
+    height: 16px;
+    line-height: 16px;
     border: 0px;
     margin: 0px;
     padding: 2px;

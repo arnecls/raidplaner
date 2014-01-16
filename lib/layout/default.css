@@ -53,6 +53,119 @@ a:hover {
     font-size: 12px;   
 }
 
+input[type=text] {
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    color: #888;
+    padding: 2px;
+    font-size: 11px;
+    line-height: 16px;
+    margin: 0px;
+}
+
+input[type=password] {
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    color: #888;
+    padding: 2px;
+    font-size: 11px;
+    line-height: 16px;
+    margin: 0px;
+}
+
+input[type=password]:disabled {
+    background-color: #ddd;
+    border: 1px solid #ddd;
+}
+
+textarea {
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    color: #888;
+    padding: 2px 4px;
+    font-size: 11px;
+    line-height: 16px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.tabs {
+    width: 47px;
+    height: 220px;
+    float: left;
+    background-repeat: no-repeat;
+}
+
+.tab_icon {
+    width: 32px;
+    height: 32px;
+    margin-left: 2px;
+    margin-top: 5px;
+}
+
+.settingLine {
+    min-height: 20px;    
+    vertical-align: top;
+    margin-bottom: 5px;
+}
+
+.settingNewSection {
+    margin-top: 20px;
+}
+
+.settingLabel {
+    width: 200px;
+    display: inline-block;
+    clear: left;
+    margin-bottom: 8px;
+    vertical-align: top;
+    padding-top: 4px;
+}
+
+.settingField {
+    margin-left: 6px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.shadow_inlay {
+    text-shadow: -1px -1px 2px black;
+}
+
+.shadow_gray {
+    text-shadow: 1px 1px 2px #808080;
+}
+
+.shadow_white {
+    text-shadow: 1px 1px 1px #e3e3e3;
+}
+
+.shadow_inlay_hard {
+    text-shadow: -1px -1px 1px black;
+}
+
+.shadow_default {
+    text-shadow: 1px 1px 1px black;
+}
+
+.box_inlay {
+    background-color: rgba(215, 215, 215, 0.5);
+    
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    
+    box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.25) inset;
+    -webkit-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
+    -moz-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
+    -o-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
+    -ms-box-shadow: inset 1px 1px 4px 1px rgba(0,0,0,0.25);
+}
+
 #preload {
     position: fixed;
     float: left;
@@ -232,10 +345,6 @@ a:hover {
     background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(185,184,184,1) 100%);
     background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
     background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
-}
-
-.clickable {
-    cursor: pointer;
 }
 
 #help {
@@ -472,13 +581,6 @@ a:hover {
     padding-left: 3px;
 }
 
-#sheetNewRaid {
-    left: 0px;
-    top: 0px;
-    position: fixed;
-    display: none;
-}
-
 #version {
     font-size: 10px;
     font-family: Helvetica, Verdana, Arial, sans-serif;
@@ -495,69 +597,4 @@ a:hover {
     top: 470px;
     right: 4px;
     white-space: nowrap;
-}
-
-input[type=text] {
-    background-color: #ccc;
-    border: 1px solid #aaa;
-    color: #fefefe;
-    padding: 2px;
-}
-
-input[type=password] {
-    background-color: #ccc;
-    border: 1px solid #aaa;
-    color: #fefefe;
-    padding: 2px;
-}
-
-input[type=password]:disabled {
-    background-color: #ddd;
-    border: 1px solid #ddd;
-}
-
-textarea {
-    background-color: #ccc;
-    border: 1px solid #aaa;
-    color: #fefefe;
-    padding: 2px 4px;
-}
-
-.tabs {
-    width: 47px;
-    height: 220px;
-    float: left;
-    background-repeat: no-repeat;
-}
-
-.tab_icon {
-    width: 32px;
-    height: 32px;
-    margin-left: 2px;
-    margin-top: 5px;
-}
-
-.settingLine {
-    min-height: 20px;    
-    vertical-align: top;
-}
-
-.settingNewSection {
-    margin-top: 15px;
-}
-
-.settingLabel {
-    width: 200px;
-    display: inline-block;
-    clear: left;
-    margin-bottom: 8px;
-    vertical-align: top;
-    padding-top: 4px;
-}
-
-.settingField {
-    margin-left: 6px;
-    margin-bottom: 8px;
-    vertical-align: top;
-    display: inline-block;
 }

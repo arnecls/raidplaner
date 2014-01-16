@@ -14,7 +14,6 @@
         "raidlist.css",
         "profile.css",
         "tooltip.css",
-        "shadow.css",
         "sheet.css",
         "settings.css");
         
