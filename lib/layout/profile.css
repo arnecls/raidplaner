@@ -39,20 +39,6 @@
     padding: 0px;
 }
 
-#profile .tabs {
-    width: 47px;
-    height: 220px;
-    float: left;
-    background-repeat: no-repeat;
-}
-
-#profile .tab_icon {
-    width: 32px;
-    height: 32px;
-    margin-left: 2px;
-    margin-top: 5px;
-}
-
 #profile .characters {
     background-image: url(images/block_01.png);
 }
@@ -476,48 +462,18 @@
     overflow: hidden;
 }
 
-#profilesettings .settinglabel {
-    width: 170px;
-    max-width: 160px;
-    float: left;
-    display: inline-block;
-    clear: left;
-    margin-bottom: 8px;
-    vertical-align: top;
-}
-
 #profilesettings .labeldisabled {
     color: #aaa;
 }
 
-#profilesettings .settingField {
-    margin-left: 6px;
-    margin-bottom: 8px;
-    vertical-align: top;
-    float: left;
-    display: inline-block;
-}
-
 #profilesettings input[type=password] {
-    background-color: #ccc;
-    border: 1px solid #aaa;
-    color: #fefefe;
-    padding: 2px;
     width: 140px;
     margin-top: 0px;
     margin-bottom: 4px;
 }
 
-#profilesettings input[type=password]:disabled {
-    background-color: #ddd;
-    border: 1px solid #ddd;
-}
 
 #profilesettings textarea {
-    background-color: #ccc;
-    border: 1px solid #aaa;
-    color: #fefefe;
-    padding: 2px 4px;
     width: 280px;
     max-width: 280px;
     height: 43px;

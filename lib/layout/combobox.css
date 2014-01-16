@@ -5,6 +5,11 @@
     position: relative; /* for absolute positioning of .combobox_list */
 }
 
+.combobox input {
+    border: 0;
+    background-color: transparent;
+}
+
 .combobox_value {
     display: inline-block;
     overflow: hidden;
