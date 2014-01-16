@@ -72,25 +72,21 @@
 #profile .icon_characters_off {
     background-image: url(images/icon_users_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
 }
 
 #profile .icon_settings_off {
     background-image: url(images/icon_settings_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
 }
 
 #profile .icon_characters_off:hover {
     background-image: url(images/icon_users_off.png);
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #profile .icon_settings_off:hover {
     background-image: url(images/icon_settings_off.png);
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #characters {    
@@ -541,12 +537,16 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -o-border-radius: 4px;
-    -ms-border-radius: 4px; 
+    -ms-border-radius: 4px;   
+    text-align: center;
 }
 
 #profile_hashing .pglabel {
+    display: inline-block;
+    text-align: center;
+    float: left;
     width: 150px;
-    line-height: 23px;
+    line-height: 23px; 
     color: #aaa;
 }
 
@@ -565,6 +565,10 @@
 }
 
 #profile_strprogress .pglabel {
+    display: inline-block;
+    text-align: center;
+    float: left;
+    line-height: 16px;
     width: 140px;
     color: #aaa;
 }

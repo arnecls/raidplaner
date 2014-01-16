@@ -32,6 +32,11 @@ a:hover {
     text-decoration: underline;
 }
 
+.ui-button {
+    font-size: 11px;
+    height: 22px;
+}
+
 #preload {
     position: fixed;
     float: left;
@@ -211,12 +216,6 @@ a:hover {
     background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(185,184,184,1) 100%);
     background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
     background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
-}
-
-.button {
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
 }
 
 .clickable {
@@ -410,7 +409,7 @@ a:hover {
     height: 100%;
     width: 100%;
     opacity: 0.4;
-    filter: Alpha(opacity=40);
+    z-index: 10;
 }
 
 #ajaxblocker {
@@ -433,7 +432,6 @@ a:hover {
     margin-top: -50px; 
     background-color: white;
     opacity: 1.0;
-    filter: Alpha(opacity=100);
     padding: 20px;
 }
 
@@ -446,7 +444,6 @@ a:hover {
     height: 100%;
     width: 100%;
     opacity: 0.75;
-    filter: Alpha(opacity=75);
 }
 
 #prompt_text {

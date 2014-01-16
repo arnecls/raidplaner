@@ -287,61 +287,51 @@
 #settings .icon_users_off {
     background-image: url(images/icon_users_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
 }
 
 #settings .icon_locations_off {
     background-image: url(images/icon_locations_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
 }
 
 #settings .icon_settings_off {
     background-image: url(images/icon_settings_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
 }
 
 #settings .icon_stats_off {
     background-image: url(images/icon_stats_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
 }
 
 #settings .icon_about_off {
     background-image: url(images/icon_about_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
 }
 
 #settings .icon_users_off:hover {
     background-image: url(images/icon_users_off.png);
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #settings .icon_locations_off:hover {
     background-image: url(images/icon_locations_off.png);
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #settings .icon_settings_off:hover {
     background-image: url(images/icon_settings_off.png);
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #settings .icon_stats_off:hover {
     background-image: url(images/icon_stats_off.png);
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #settings .icon_about_off:hover {
     background-image: url(images/icon_about_off.png);
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #locationsettings .location {

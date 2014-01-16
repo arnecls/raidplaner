@@ -52,34 +52,28 @@
 #raiddetail .icon_setup_off {
     background-image: url(images/icon_raid_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
 }
 
 #raiddetail .icon_setup_off:hover {
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #raiddetail .icon_slackers_off {
     background-image: url(images/icon_users_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
 }
 
 #raiddetail .icon_slackers_off:hover {
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #raiddetail .icon_settings_off {
     background-image: url(images/icon_settings_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
 }
 
 #raiddetail .icon_settings_off:hover {
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #slackers_badge {
@@ -95,7 +89,6 @@
     top: 17px;
     left: 0px;
     text-align: center;
-    filter: inherit;
 }
 
 #slackers_badge:empty {
@@ -258,7 +251,7 @@
     position: absolute;
     top: 8px;
     left: 8px;
-    z-index: 30;
+    z-index: 10;
 }
 
 #tooltip .switch_role_up:hover {
@@ -273,7 +266,7 @@
     position: absolute;
     top: 40px;
     left: 8px;
-    z-index: 30;
+    z-index: 10;
 }
 
 #tooltip .switch_role_down:hover {

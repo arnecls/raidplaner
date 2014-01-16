@@ -208,6 +208,11 @@
     visibility: hidden;
 }
 
+#calendarFunctions .button {
+    width: 32px;
+    margin-right: 4px;
+}
+
 #tooltip .comment .submit {
     position: relative;
     top: 5px;
