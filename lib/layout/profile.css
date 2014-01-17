@@ -10,33 +10,10 @@
     float: left;
 }
 
-#profile h1 {
-    margin-left: 0px;
-    margin-bottom: 10px;
-    margin-right: 0px;
-    margin-top: 0px;
-    border-left-width: 0px;
-    border-bottom-width: 1px;
-    border-right-width: 0px;
-    border-top-width: 0px;
-    border-bottom-color: #989898;
-    border-bottom-style: dotted;
-    height: 20px;
-    font-weight: bold;
-    font-size: 16px;
-    color: #7d7d7d;
-    padding: 0px;
+#characters {    
 }
 
-#profile h2 {
-    margin-left: 0px;
-    margin-bottom: 10px;
-    margin-right: 0px;
-    margin-top: 0px;
-    font-weight: bold;
-    font-size: 1.5em;
-    color: #000;
-    padding: 0px;
+#profilesettings {
 }
 
 #profile .characters {
@@ -73,14 +50,6 @@
 #profile .icon_settings_off:hover {
     background-image: url(images/icon_settings_off.png);
     opacity: 1.0;
-}
-
-#characters {    
-    padding-left: 15px;
-    padding-top: 4px;
-    height: 410px;
-    width: 900px;
-    overflow: hidden;    
 }
 
 #charlist {
@@ -303,119 +272,15 @@
     text-align: left;
 }
 
-#attendance .count {
-    position: relative;
+#attendance .bar_part {    
+    display: inline-block;
+    height: 26px;
     font-size: 14px;
-    right: 5px;
-    top: 4px;
-}
-
-#attendance .ok {    
-    display: inline-block;
-    height: 26px;
-    color: #00AA00;
-    
-    background: linear-gradient(to bottom, rgba(117,225,111,1) 0%,rgba(79,217,73,1) 100%); 
-    background: -webkit-linear-gradient(top, rgba(117,225,111,1) 0%,rgba(79,217,73,1) 100%);
-    background: -moz-linear-gradient(top, rgba(117,225,111,1) 0%, rgba(79,217,73,1) 100%);
-    background: -o-linear-gradient(top, rgba(117,225,111,1) 0%,rgba(79,217,73,1) 100%);
-    background: -ms-linear-gradient(top, rgba(117,225,111,1) 0%,rgba(79,217,73,1) 100%);
-}
-
-#attendance .available {
-    display: inline-block;
-    height: 26px;
-    color: #888822;
-    
-    background: linear-gradient(to bottom, rgba(214,206,147,1) 0%,rgba(200,189,108,1) 100%);
-    background: -webkit-linear-gradient(top, rgba(214,206,147,1) 0%,rgba(200,189,108,1) 100%);
-    background: -moz-linear-gradient(top, rgba(214,206,147,1) 0%, rgba(200,189,108,1) 100%);
-    background: -o-linear-gradient(top, rgba(214,206,147,1) 0%,rgba(200,189,108,1) 100%);
-    background: -ms-linear-gradient(top, rgba(214,206,147,1) 0%,rgba(200,189,108,1) 100%);
-}
-
-#attendance .unavailable {
-    display: inline-block;
-    height: 26px;
-    color: #AA6666;
-    
-    background: linear-gradient(to bottom, rgba(205,158,157,1) 0%,rgba(189,129,127,1) 100%);
-    background: -webkit-linear-gradient(top, rgba(205,158,157,1) 0%,rgba(189,129,127,1) 100%);
-    background: -moz-linear-gradient(top, rgba(205,158,157,1) 0%, rgba(189,129,127,1) 100%);
-    background: -o-linear-gradient(top, rgba(205,158,157,1) 0%,rgba(189,129,127,1) 100%);
-    background: -ms-linear-gradient(top, rgba(205,158,157,1) 0%,rgba(189,129,127,1) 100%);
-}
-
-#attendance .missed {
-    display: inline-block;
-    height: 26px;
-    color: #777777;
-    
-    background: linear-gradient(to bottom, rgba(177,177,177,1) 0%,rgba(154,154,154,1) 100%);
-    background: -webkit-linear-gradient(top, rgba(177,177,177,1) 0%,rgba(154,154,154,1) 100%);
-    background: -moz-linear-gradient(top, rgba(177,177,177,1) 0%, rgba(154,154,154,1) 100%);
-    background: -o-linear-gradient(top, rgba(177,177,177,1) 0%,rgba(154,154,154,1) 100%);
-    background: -ms-linear-gradient(top, rgba(177,177,177,1) 0%,rgba(154,154,154,1) 100%);
-}
-
-#attendance .role_tank {
-    display: inline-block;
-    height: 26px;
-    color: #998855;
-
-    background: linear-gradient(to bottom, rgba(255,212,127,1) 0%,rgba(204,175,102,1) 100%);
-    background: -webkit-linear-gradient(top, rgba(255,212,127,1) 0%,rgba(204,175,102,1) 100%);
-    background: -moz-linear-gradient(top, rgba(255,212,127,1) 0%, rgba(204,175,102,1) 100%);
-    background: -o-linear-gradient(top, rgba(255,212,127,1) 0%,rgba(204,175,102,1) 100%);
-    background: -ms-linear-gradient(top, rgba(255,212,127,1) 0%,rgba(204,175,102,1) 100%);
-}
-
-#attendance .role_heal {
-    display: inline-block;
-    height: 26px;
-    color: #AAAAAA;
-
-    background: linear-gradient(to bottom, rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
-    background: -webkit-linear-gradient(top, rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
-    background: -moz-linear-gradient(top, rgba(222,246,247,1) 0%, rgba(187,242,255,1) 100%);
-    background: -o-linear-gradient(top, rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
-    background: -ms-linear-gradient(top, rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
-}
-
-#attendance .role_melee {
-    display: inline-block;
-    height: 26px;
-    color: #888822;
-    
-    background: linear-gradient(to bottom, rgba(255,71,50,1) 0%,rgba(178,80,67,1) 100%);
-    background: -webkit-linear-gradient(top, rgba(255,71,50,1) 0%,rgba(178,80,67,1) 100%);
-    background: -moz-linear-gradient(top, rgba(255,71,50,1) 0%, rgba(178,80,67,1) 100%);
-    background: -o-linear-gradient(top, rgba(255,71,50,1) 0%,rgba(178,80,67,1) 100%);
-    background: -ms-linear-gradient(top, rgba(255,71,50,1) 0%,rgba(178,80,67,1) 100%);
-}
-
-#attendance .role_range {
-    display: inline-block;
-    height: 26px;
-    color: #998855;
-    
-    background: linear-gradient(to bottom, rgba(187,255,116,1) 0%,rgba(131,178,82,1) 100%);
-    background: -webkit-linear-gradient(top, rgba(187,255,116,1) 0%,rgba(131,178,82,1) 100%);
-    background: -moz-linear-gradient(top, rgba(187,255,116,1) 0%, rgba(131,178,82,1) 100%);
-    background: -o-linear-gradient(top, rgba(187,255,116,1) 0%,rgba(131,178,82,1) 100%);
-    background: -ms-linear-gradient(top, rgba(187,255,116,1) 0%,rgba(131,178,82,1) 100%);
-}
-
-#attendance .role_support {
-    display: inline-block;
-    height: 26px;
-    color: #998855;
-    
-    background: linear-gradient(to bottom, rgba(245,167,255,1) 0%,rgba(180,151,229,1) 100%);
-    background: -webkit-linear-gradient(top, rgba(245,167,255,1) 0%,rgba(180,151,229,1) 100%);
-    background: -moz-linear-gradient(top, rgba(245,167,255,1) 0%, rgba(180,151,229,1) 100%);
-    background: -o-linear-gradient(top, rgba(245,167,255,1) 0%,rgba(180,151,229,1) 100%);
-    background: -ms-linear-gradient(top, rgba(245,167,255,1) 0%,rgba(180,151,229,1) 100%);
+    line-height: 26px;
+    color: rgba(0,0,0,0.5);
+    text-align: right;
+    vertical-align: middle;
+    padding-right: 10px;
 }
 
 #attendance .box {
@@ -452,14 +317,6 @@
     display: inline-block;
     position: relative;
     margin-left: 0px;
-}
-
-#profilesettings {
-    padding-left: 15px;
-    padding-top: 15px;
-    height: 410px;
-    width: 900px;
-    overflow: hidden;
 }
 
 #profilesettings .labeldisabled {
@@ -530,13 +387,20 @@
 }
 
 #profilesettings .datepicker {
-    background-color: #ccc;
+    background-color: rgba(96,96,96,0.1);
     border: 1px solid #aaa;
-    width: 128px;
+    width: 144px;
+    display: inline-block;
+}
+
+#profilesettings .datepicker_icon {
     display: inline-block;
     background-image: url(images/ui-icons_222222_256x240.png);
     background-repeat: no-repeat;
-    padding-left: 16px;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    top: 2px;
 }
 
 #profilesettings .datepicker_field {
@@ -546,8 +410,14 @@
     border: 0px;
     margin: 0px;
     padding: 2px;
-    background-color: #ccc;
+    background-color: transparent;
     color: #222;
+    
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    -ms-box-shadow: none;
 }
 
 #tooltip .class_select {

@@ -43,6 +43,14 @@
     clear: both;
 }
 
+#sheet_body .filltext {
+    display: inline-block;
+    text-align: center; 
+    color: #fff;
+    font-size: 11px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+}
+
 #sheet_body select {
     border-color: #4d4d4d;
     border-width: 1px;

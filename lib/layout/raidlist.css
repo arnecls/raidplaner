@@ -14,24 +14,6 @@
     width: 980px;
 }
 
-#raidlist h1 {
-    margin-left: 0px;
-    margin-bottom: 10px;
-    margin-right: 0px;
-    margin-top: 0px;
-    border-left-width: 0px;
-    border-bottom-width: 1px;
-    border-right-width: 0px;
-    border-top-width: 0px;
-    border-bottom-color: #989898;
-    border-bottom-style: dotted;
-    height: 20px;
-    font-weight: bold;
-    font-size: 16px;
-    color: #7d7d7d;
-    padding: 0px;
-}
-
 #raidlist .raidSlot {
     display: inline-block;
     background-repeat: no-repeat;
