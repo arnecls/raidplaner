@@ -264,11 +264,11 @@ textarea {
 }
 
 .gradient_role_heal {
-    background: linear-gradient(to bottom,   rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
-    background: -webkit-linear-gradient(top, rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
-    background: -moz-linear-gradient(top,    rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
-    background: -o-linear-gradient(top,      rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
-    background: -ms-linear-gradient(top,     rgba(222,246,247,1) 0%,rgba(187,242,255,1) 100%);
+    background: linear-gradient(to bottom,   rgba(222,246,247,1) 0%,rgba(139, 205, 236, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(222,246,247,1) 0%,rgba(139, 205, 236, 1) 100%);
+    background: -moz-linear-gradient(top,    rgba(222,246,247,1) 0%,rgba(139, 205, 236, 1) 100%);
+    background: -o-linear-gradient(top,      rgba(222,246,247,1) 0%,rgba(139, 205, 236, 1) 100%);
+    background: -ms-linear-gradient(top,     rgba(222,246,247,1) 0%,rgba(139, 205, 236, 1) 100%);
 }
 
 .gradient_role_melee {
