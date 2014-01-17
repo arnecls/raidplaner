@@ -549,3 +549,33 @@
     background-color: #ccc;
     color: #222;
 }
+
+#tooltip .class_select {
+    width: 50px;
+    margin: 5px;
+    line-height: 12px;
+    font-size: 9px;
+    float: left;
+    text-align: center;
+}
+
+#tooltip .class_selected {
+    width: 32px;
+    height: 32px;
+    margin: 5px;
+    float: left;
+}
+
+#tooltip .multi_selected {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #888;
+}
+
+#tooltip .shuffle {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: 5px;
+    vertical-align: top;
+}

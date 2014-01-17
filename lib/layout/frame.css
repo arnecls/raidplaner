@@ -1,0 +1,194 @@
+#body {
+    text-align: center;
+    display: block;
+    height: 576px;
+    width: 1024px;
+
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);    
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(185,184,184,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(185,184,184,1) 100%);
+}
+
+#appwindow {
+    position: relative;
+    margin: 0 auto 0 auto;    
+    display: block;
+    height: 768px;
+    width: 1024px;
+    overflow: visible;
+}
+
+#appwindow.portalmode {
+    position: absolute!important;
+    top: 0px!important;
+    left: 0px!important;
+    margin: 0px!important;
+    display: block;
+    height: 768px;
+    width: 1024px;
+    overflow: visible;
+}
+
+#logo {
+    display: block;
+    height: 140px;
+    width: 1024px;
+    background-repeat: no-repeat;
+    background-color: black;
+}
+
+#menu {
+    display: block;
+    height: 45px;
+    width: 1024px;
+    
+    border-top: 1px solid #2A2A2A;
+    border-bottom: 1px solid #666;
+    margin-bottom: 5px;
+    
+    background: linear-gradient(to bottom, rgba(45,45,45,1) 0%,rgba(93,93,93,1) 100%);
+    background: -moz-linear-gradient(top, rgba(45,45,45,1) 0%, rgba(93,93,93,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(45,45,45,1) 0%,rgba(93,93,93,1) 100%);
+    background: -o-linear-gradient(top, rgba(45,45,45,1) 0%,rgba(93,93,93,1) 100%);
+    background: -ms-linear-gradient(top, rgba(45,45,45,1) 0%,rgba(93,93,93,1) 100%);
+}
+
+#menu .menu_button {
+    display: inline-block;
+    height: 45px;
+    width: 160px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 45px;
+    color: white;
+    cursor: pointer;
+}
+
+#menu .on {
+    background: linear-gradient(to bottom, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -moz-linear-gradient(top, rgba(55,55,55,1) 0%, rgba(129,129,129,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -o-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -ms-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    
+    box-shadow: inset -2px 0px 5px 0px rgba(0,0,0,0.4);
+    -webkit-box-shadow: inset -2px 0px 5px 0px rgba(0,0,0,0.4);
+    -moz-box-shadow: inset -2px 0px 5px 0px rgba(0,0,0,0.4);
+    -o-box-shadow: inset -2px 0px 5px 0px rgba(0,0,0,0.4);
+    -ms-box-shadow: inset -2px 0px 5px 0px rgba(0,0,0,0.4);
+}
+
+#menu .menu_button:hover {
+    background: linear-gradient(to bottom, rgba(60,60,60,1) 0%,rgba(142,142,142,1) 100%);
+    background: -moz-linear-gradient(top, rgba(60,60,60,1) 0%, rgba(142,142,142,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(60,60,60,1) 0%,rgba(142,142,142,1) 100%);
+    background: -o-linear-gradient(top, rgba(60,60,60,1) 0%,rgba(142,142,142,1) 100%);
+    background: -ms-linear-gradient(top, rgba(60,60,60,1) 0%,rgba(142,142,142,1) 100%);
+}
+
+#menu .on:hover {
+    background: linear-gradient(to bottom, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -moz-linear-gradient(top, rgba(55,55,55,1) 0%, rgba(129,129,129,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -o-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+    background: -ms-linear-gradient(top, rgba(55,55,55,1) 0%,rgba(129,129,129,1) 100%);
+}
+
+#menu .menu_button .icon {
+    float: left;
+    background-repeat: no-repeat;
+    background-position: 8px 8px;
+    width: 45px;
+    height: 45px;
+}
+
+#menu .menu_button .text {
+    float: left;
+    width: 100px;
+    height: 45px;
+    padding-right: 15px;
+}
+
+#menu .indicator {
+    display: none;
+    position: relative;
+    top: 37px;
+    left: 66px;
+    width: 0px;
+    height: 0px;
+    border-bottom: 14px solid white;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+}
+
+#menu .on .indicator {
+    display: block;
+}
+
+#button_login .icon {
+    background-image: url(images/menu_user.png);
+}
+
+#button_register .icon {
+    background-image: url(images/menu_register.png);
+}
+
+#button_calendar .icon {
+    background-image: url(images/menu_calendar.png);
+}
+
+#button_raid .icon {
+    background-image: url(images/menu_raid.png);
+}
+
+#button_profile .icon {
+    background-image: url(images/menu_user.png);
+}
+
+#button_settings_users .icon {
+    background-image: url(images/menu_settings.png);
+}
+
+#help {
+    position: relative;
+    display: inline-block;
+    padding: 0px;
+    margin-right: 10px;
+    margin-top: 10px;
+    height: 40px;
+    float: right;
+}
+
+#help .button_help {
+    height: 24px;
+    width: 28px;
+}
+
+#menu .logout {
+    position: relative;
+    display: inline-block;
+    padding: 0px;
+    margin-right: 10px;
+    margin-top: 10px;
+    height: 40px;
+    float: right;
+}
+
+#menu .logout .button_logout {
+    height: 24px;
+}
+
+#version {
+    font-size: 10px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    color: #a0a0a0;
+    position: relative;
+    float: right;
+    display: inline-block;
+    top: -26px;
+    right: 26px;
+}

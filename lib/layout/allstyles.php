@@ -9,6 +9,8 @@
         "jquery-ui-1.10.3.custom.min.css",
         "default.css",
         "combobox.css",
+        "frame.css",
+        "login.css",
         "calendar.css",
         "raid.css",
         "raidlist.css",

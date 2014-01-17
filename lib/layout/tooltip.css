@@ -71,108 +71,11 @@
     border-top: 10px solid transparent;
 }
 
-#info_text .textstatusok {
-    color: #00ff00;
-    display: inline;
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-#info_text .textstatusabsent {
-    color: #ff4b48;
-    display: inline;
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-#info_text .textstatuswait {
-    color: #ffff00;
-    display: inline;
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-#info_text a {
+#tooltip a {
     color: #ccc;
     text-decoration: underline;
 }
 
-#info_text a:hover {
+#tooltip a:hover {
     text-decoration: none;
-}
-
-#tooltip .textstatus {
-    color: #ccc;
-    display: inline;    
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-#info_text .icon {
-    display: block;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    height: 64px;
-    float: left;
-    width: 64px;
-}
-
-#info_text .location {
-    font-weight: bold;
-    font-size: 16px;
-    margin-right: 10px;
-    max-width: 250px;
-}
-
-#info_text .time {
-    font-style: italic;
-    font-size: 10px;
-    color: #ccc;
-}
-
-#info_text .textBlock {
-    float: left;
-}
-
-#info_text .description {
-    margin-top: 10px;
-    margin-bottom: 15px;
-    display: block;
-    max-width: 250px;
-}
-
-#info_text .functions {
-    clear: left;
-    margin-top: 10px;
-    white-space: nowrap;
-}
-
-#info_text .class_select {
-    width: 50px;
-    margin: 5px;
-    line-height: 12px;
-    font-size: 9px;
-    float: left;
-    text-align: center;
-}
-
-#info_text .class_selected {
-    width: 32px;
-    height: 32px;
-    margin: 5px;
-    float: left;
-}
-
-#info_text .multi_selected {
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #888;
-}
-
-#info_text .shuffle {
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    margin: 5px;
-    vertical-align: top;
 }
