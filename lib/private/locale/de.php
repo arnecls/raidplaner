@@ -18,7 +18,10 @@
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
         $gLocale[ "Healer" ]                   = "Heiler";
-        $gLocale[ "Damage" ]                   = "Schaden";
+        $gLocale[ "Damage" ]                   = "Kämpfer";
+        $gLocale[ "Melee" ]                    = "Nahkämpfer";
+        $gLocale[ "Range" ]                    = "Fernkämpfer";
+        $gLocale[ "Support" ]                  = "Unterstützung";
 
         // Pre-loading checks
         $gLocale[ "ContinueNoUpdate" ]         = "Ohne Aktualisierung fortfahren";
@@ -96,8 +99,8 @@
         $gLocale[ "Sun" ]                      = "So";
         $gLocale[ "NotSignedUp" ]              = "Nicht angemeldet";
         $gLocale[ "Absent" ]                   = "Abgemeldet";
-        $gLocale[ "QueuedAs" ]                 = "Auf der Warteliste als ";
-        $gLocale[ "Raiding" ]                  = "Aufgestellt als ";
+        $gLocale[ "Benched" ]                  = "Auf der Warteliste";
+        $gLocale[ "RaidingAs" ]                = "Aufgestellt als";
         $gLocale[ "WhyAbsent" ]                = "Bitte teile uns mit warum du abwesend bist.";
         $gLocale[ "SetAbsent" ]                = "Ich bin abwesend";
         $gLocale[ "Comment" ]                  = "Kommentar";

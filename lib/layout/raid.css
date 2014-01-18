@@ -344,15 +344,16 @@
 }
 
 #raiddetail .roleList {
-    margin-right: 12px;
-    height: 380px;
+    margin-right: 14px;
+    height: 350px;
     float: left;
     overflow: visible;
 }
 
 #raiddetail .attendance_count {
-    color: #ccc;
+    color: #bbb;
     font-size: 12px;
+    font-weight: normal;
     vertical-align: text-top;   
 }
 
@@ -471,23 +472,31 @@
 
 #absent_drop {
     display: none;
-    float: left;
-    height: 18px;
+    position: absolute;
+    bottom: -28px;
+    height: 22px;
     width: 740px;
-    padding-top:4px;
-    margin-left: 60px;
-    margin-top: 23px;    
+        
     background-color: rgb(200,182,182);
     color: rgb(200,152,152);
-    box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);    
+    
+    text-align: center;
+    vertical-align: middle;
+    line-height: 22px;
     font-size: 13px;
     font-weight: bold;
+    
+    box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
+    -webkit-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
+    -moz-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
+    -o-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
+    -ms-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
+    
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -o-border-radius: 4px;
     -ms-border-radius: 4px; 
-    text-align: center;
 }
 
 #absent_drop.absent_hover {

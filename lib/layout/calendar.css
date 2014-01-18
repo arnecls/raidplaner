@@ -213,41 +213,55 @@
     margin-right: 4px;
 }
 
-#tooltip .textstatusok {
-    color: #00ff00;
-    display: inline;
+#tooltip .attendstatus {
+    display: inline-block;
+    border-radius: 4px;
     font-size: 12px;
     white-space: nowrap;
+    height: 22px;
+    line-height: 22px;
+    vertical-align: middle;
+    padding: 0 8px 0 8px;
 }
 
-#tooltip .textstatusabsent {
-    color: #ff4b48;
-    display: inline;
-    font-size: 12px;
-    white-space: nowrap;
+#tooltip .attendtext {
+    float: left;
 }
 
-#tooltip .textstatuswait {
-    color: #ffff00;
-    display: inline;
-    font-size: 12px;
-    white-space: nowrap;
+#tooltip .attendedrole {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    top: -5px;
+    left: 6px;
 }
 
-#tooltip .textstatus {
-    color: #ccc;
-    display: inline;    
-    font-size: 12px;
-    white-space: nowrap;
+#tooltip .statuswait {
+    background-color: rgba(177, 179, 133, 0.4);
+    color: rgba(255,255,0,1);
+}
+
+#tooltip .statusok {
+}
+
+#tooltip .statusabsent {
+    background-color: rgba(184, 97, 97, 0.6);
+    color: #f00;
+}
+
+#tooltip .status {
+    color: rgba(255,255,255,0.5);
+    background-color: rgba(128,128,128,0.4);
 }
 
 #tooltip .icon {
     display: block;
+    width: 64px;
+    height: 64px;
     margin-bottom: 10px;
     margin-right: 10px;
-    height: 64px;
     float: left;
-    width: 64px;
 }
 
 #tooltip .location {

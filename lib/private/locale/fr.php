@@ -23,6 +23,9 @@
         $gLocale[ "Tank" ]                     = "Tank";
         $gLocale[ "Healer" ]                   = "Heal";
         $gLocale[ "Damage" ]                   = "Dps";
+        $gLocale[ "Melee" ]                    = null;
+        $gLocale[ "Range" ]                    = null;
+        $gLocale[ "Support" ]                  = null;
 
         // Pre-loading checks
         $gLocale[ "ContinueNoUpdate" ]         = "Poursuivre sans mettre à jour";
@@ -99,9 +102,9 @@
         $gLocale[ "Sat" ]                      = "Sa";
         $gLocale[ "Sun" ]                      = "Di";
         $gLocale[ "NotSignedUp" ]              = "Pas inscrit";
-        $gLocale[ "Absent" ]                   = "Absent";
-        $gLocale[ "QueuedAs" ]                 = "Inscrit en tant que ";
-        $gLocale[ "Raiding" ]                  = "Raideur en tant que ";
+        $gLocale[ "Absent" ]                   = null;
+        $gLocale[ "Benched" ]                  = null;
+        $gLocale[ "RaidingAs" ]                = null;
         $gLocale[ "WhyAbsent" ]                = "Merci de nous dire pourquoi vous serez absent.";
         $gLocale[ "SetAbsent" ]                = "Mettre absent";
         $gLocale[ "Comment" ]                  = "Commentaire";
