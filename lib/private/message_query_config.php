@@ -7,8 +7,6 @@ function msgQueryConfig( $aRequest )
     global $gRoles;
     global $gClasses;
     global $gGroupSizes;
-    global $gRoleImages;
-    global $gRoleColumnCount;
     global $gLocale;
 
     $Out = Out::getInstance();
@@ -16,14 +14,11 @@ function msgQueryConfig( $aRequest )
 
     $Config = array();
 
-    $Config["GroupSizes"] = array();
-    $Config["RoleNames"] = array();
     $Config["RoleIdx"] = array();
-    $Config["RoleIdents"] = array();
-    $Config["RoleImages"] = $gRoleImages;
-    $Config["RoleColumnCount"] = $gRoleColumnCount;
+    $Config["Roles"] = array();
     $Config["ClassIdx"] = array();
     $Config["Classes"] = array();
+    $Config["GroupSizes"] = array();
     $Config["ClassMode"] = $gClassMode;    
 
     // Groups
@@ -36,12 +31,24 @@ function msgQueryConfig( $aRequest )
     reset($gGroupSizes);
 
     // Roles
+    
+    reset($gRoles);
 
-    for ( $i=0; list($RoleIdent,$RoleName) = each($gRoles); ++$i )
+    while ( list($RoleIdent,$RoleConfig) = each($gRoles) )
     {
-        $Config["RoleNames"][$RoleIdent] = $RoleName;
-        $Config["RoleIdx"][$RoleIdent] = $i;
-        $Config["RoleIdents"][$i] = $RoleIdent;
+        $Config["RoleIdx"][$RoleIdent] = $RoleConfig[0];
+        
+        $Flags = (PHP_VERSION_ID >= 50400) ? ENT_COMPAT | ENT_XHTML : ENT_COMPAT;
+        $RoleText = (isset($gLocale[$RoleConfig[2]]))
+            ? htmlentities($gLocale[$RoleConfig[2]], $Flags, 'UTF-8')
+            : "LOCA_MISSING_".$RoleConfig[2];
+            
+        array_push( $Config["Roles"], array(
+            "ident"   => $RoleIdent,
+            "columns" => $RoleConfig[1],
+            "text"    => $RoleText,
+            "style"   => $RoleConfig[3]
+        ));
     }
 
     reset($gRoles);
@@ -51,8 +58,8 @@ function msgQueryConfig( $aRequest )
     for ( $i=0; list($ClassIdent,$ClassConfig) = each($gClasses); ++$i )
     {
         $Config["ClassIdx"][$ClassIdent] = $i;
+        
         $Flags = (PHP_VERSION_ID >= 50400) ? ENT_COMPAT | ENT_XHTML : ENT_COMPAT;
-
         $ClassText = (isset($gLocale[$ClassConfig[0]]))
             ? htmlentities($gLocale[$ClassConfig[0]], $Flags, 'UTF-8')
             : "";

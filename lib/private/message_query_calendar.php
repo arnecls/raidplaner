@@ -108,9 +108,10 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
 
         if ( !isset($RaidInfo[$Data["RaidId"]]) )
         {
-            for ( $i=0; $i < sizeof($gRoles); ++$i )
+            foreach ( $gRoles as $Role )
             {
-                $RaidInfo[$Data["RaidId"]]["role".$i] = 0;
+                $RoleIdx = $Role[0];
+                $RaidInfo[$Data["RaidId"]]["role".$RoleIdx] = 0;
             }
 
             $RaidInfo[$Data["RaidId"]]["bench"] = 0;

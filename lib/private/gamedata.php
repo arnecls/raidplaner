@@ -14,18 +14,21 @@
     // Check if constraints are matched
     // Data ranges
     
-    assert( sizeof($gRoles) <= 5 );
     assert( ($gClassMode == "single") || ($gClassMode == "multi") );
     
     // Max num columns
     
     $ColSum = 0;
-    foreach ( $gRoleColumnCount as $Cols )
+    $MaxRoleId = 0;
+    foreach ( $gRoles as $Role )
     {
-        $ColSum += $Cols;
+        $ColSum += $Role[1];
+        $MaxRoleId = max($MaxRoleId, $Role[0]);
     }
     
-    assert( $ColSum == 6 ); // 6 columns, no more, no less.
+    assert( $MaxRoleId = sizeof($gRoles)-1 ); // Number of items in gRoles must equal max id
+    assert( $MaxRoleId < 5);                  // Only 5 roles supported
+    assert( $ColSum == 6 );                   // 6 columns, no more, no less.
     
     // Groupsize = sum of slots
     

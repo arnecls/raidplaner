@@ -5,9 +5,6 @@
     // By default this is World of Warcraft.
     //
     // *** HANDLE WITH CARE IF YOUR RAIDPLANER IS ALREADY IN USE ***
-    //
-    // If your profiles are displaying messed up data after a change, you should run the repair tool
-    // from the setup utility. This will happen when changing the order of $gRoles.
     // -----------------------------------------------------------------------------------------------
     
     // You can choose between different class modes which will change the way classes and roles
@@ -20,82 +17,53 @@
     // "multi"  : Final Fantasy 14 style job system
     //            Each character may have one or more class(es) with one predefined role each.
     
-    $gClassMode = "single";
+    $gClassMode = "multi";
     
     // -----------------------------------------------------------------------------------------------
     
-    // You can define different roles for your raids.
-    // This can be tank/heal/dmg or range, melee, support, etc.
-    // You can define up to 5 roles.
+    // You can define different roles for your raids based on your needs.
+    // There are 5 different roles available and you can use up to 5 different roles simultaneously.
+    // To add a new role, simply add a line of the following form to the array below:
     //
-    // Role ident => Localization string (must be present in all files in lib/private/locale)
+    // Identifier => Array( Id, Number of columns, Localization string, role image )
     //
-    // The order of the roles defined here will be the order presentation in the Raid detail sheet.
-    // If you change the order of these items on an already active raidplaner instance (with
-    // registered users and/or attends) you will have to change all role fields the database, too.
+    // - Identifier is used for internal referencing (e.g. from the $gClasses array)
+    // - The order of this array defines the display in raid view (the first role is the left most role).
+    //   Keep this in mind when modifying $gGroupSizes
+    // - The first number is used to store roles in the database. Make sure this number does not change!
+    // - The second number defines how many columns should be displayed for this role in raid view.
+    //   The sum of these numbers has to be 6.
+    // - The localization string can be looked up in one of the files in lib/private/locale and will
+    //   be shown every time the name of a role is displayed.
+    // - The last string refers to the style to be used for this role. The following styles are available:
+    //
+    //   role_tank    : resembles a shield (yellow)
+    //   role_heal    : resembles a cross (blue/white)
+    //   role_melee   : resembles two crossed swords (orange/red)
+    //   role_range   : resembles a bow (green)
+    //   role_support : resembles a player with aura (violet/pink)
     
     $gRoles = Array(
-        "tank"  => "Tank",
-        "heal"  => "Healer",
-        "dmg"   => "Damage"
+        "tank" => Array(0, 1, "Tank",   "role_tank"),
+        "heal" => Array(1, 1, "Healer", "role_heal"),
+        "dmg"  => Array(2, 4, "Damage", "role_melee"),
     );
     
-    // -----------------------------------------------------------------------------------------------
-    
-    // Empty roles slots will be displayed in with a certain image.
-    // These images are named "role_*.png" and can be found in "lib/layout/images".
-    // The order of the images here have to match the order of $gRoles.
-    //
-    // Available images are:
-    // - role_tank
-    // - role_heal
-    // - role_support
-    // - role_melee
-    // - role_range    
-    
-    $gRoleImages = Array(
-        "role_tank",
-        "role_heal",
-        "role_melee"
-    );
     
     // -----------------------------------------------------------------------------------------------
     
-    // The raid view always shows 6 columns.
-    // This variable defines how many columns are to be shown for which role.
-    // The numbers in this array have to sum up to 6.
-    // The order of the numbers here matches the order of $gRoles.
+    // You can define the classes available in yuor game here.
+    // To add a new role, simply add a line of the following form to the array below:
     //
-    // ColumnSize = Array(columns for Role1, columns for Role2,...)
-    
-    $gRoleColumnCount = Array(1,1,4);
-    
-    // -----------------------------------------------------------------------------------------------
-    
-    // Your game will either support different group sizes or you will want to set a maximum
-    // amount of players for a raid. You can set these values here.
-    // You can choose the size when creating a raid.
+    // Identifier => Array( Localization string, Default role, Array(role, role, ...) )
     //
-    // Size => Array(Players for role1, players for role2, ...)
-    //
-    // The numbers in the array have to sum up to match the size given.
-    // The order of the numbers here matches the order of $gRoles.
-    
-    $gGroupSizes = Array(
-        5  => Array(1,1,3),
-        10 => Array(2,3,5),
-        25 => Array(2,6,17),
-        40 => Array(1,1,38)
-    );
-    
-    // -----------------------------------------------------------------------------------------------
-    
-    // You can define the classes available in oyur game here.
-    //
-    // Class ident => Array( Localization string, Default role, Allowed roles array )
-    //
-    // Class ident is also mapped to a png image in "themes/icons/<iconset>/classes[big|small]"
-    // The "empty" class must always be present and first in list.
+    // - Identifier is used for internal referencing and to map the class to an image in 
+    //   themes/iconset/<current iconset>/raids<big/small>/<Identifier>.png
+    // - The localization string can be looked up in one of the files in lib/private/locale and will
+    //   be shown every time the name of a class is displayed.
+    // - The default role has to be an identifier from $gRoles
+    // - The last array has to contain at least the default role and all other roles this class can
+    //   be played as. Again this have to be identifiers from $gRoles.
     
     $gClasses = Array(
         "empty"         => Array( "",            "dmg",  Array("dmg") ),
@@ -110,5 +78,26 @@
         "shaman"        => Array( "Shaman",      "dmg",  Array("dmg","heal") ),
         "warlock"       => Array( "Warlock",     "dmg",  Array("dmg") ),
         "warrior"       => Array( "Warrior",     "tank", Array("dmg","tank") )
+    );
+    
+    // -----------------------------------------------------------------------------------------------
+    
+    // Your game will either support different group sizes or you will want to set a maximum
+    // group size for your raids. You can configure these group sizes here by defining how many players
+    // of which role are required to build a group.
+    // To add a new role, simply add a line of the following form to the array below:
+    //
+    // Size => Array(Players for role1, players for role2, ...)
+    //
+    // - Size is used when choosing a group size and defines the total amount of players
+    // - The numbers in the array have to sum up to match the given group size.
+    // - The order of the numbers here matche the order of columns in the raid view. Keep in mind that
+    //   the meaning of each number changes when changing to order of $gRoles.
+    
+    $gGroupSizes = Array(
+        5  => Array(1,1,3),
+        10 => Array(2,3,5),
+        25 => Array(2,6,17),
+        40 => Array(1,1,38)
     );
 ?>

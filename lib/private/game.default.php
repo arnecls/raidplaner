@@ -1,19 +1,14 @@
 <?php
+    // This file contains a valid configuration for World of Warcraft and is used
+    // as a default if values in confg/config.game.php.
+
+    $gClassMode = "single";
+    
     $gRoles = Array(
-        "tank" => "Tank",
-        "heal" => "Healer",
-        "dmg"  => "Damage"
+        "tank" => Array(0, 1, "Tank",   "role_tank"),
+        "heal" => Array(1, 1, "Healer", "role_heal"),
+        "dmg"  => Array(2, 4, "Damage", "role_melee"),
     );
-    
-    $gRoleImages = Array(
-        "slot_role4.png",
-        "slot_role2.png",
-        "slot_role1.png"
-    );
-    
-    $gRoleColumnCount = Array(1,1,4);
-    
-    $gClassMode = "wow";
     
     $gClasses = Array(
         "empty"         => Array( "",            "dmg",  Array("dmg") ),

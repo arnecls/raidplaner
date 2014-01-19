@@ -114,8 +114,9 @@ function msgRaidupdate( $aRequest )
         // Random player will be converted to "real" player, i.e. they loose their
         // negative pseudo-id.
 
-        for ( $RoleIdx=0; $RoleIdx < sizeof($gRoles); ++$RoleIdx )
+        foreach ( $gRoles as $Role )
         {
+            $RoleIdx = $Role[0];
             if ( isset($aRequest["role".($RoleIdx+1)]) )
             {
                 $NumAttends = 0;

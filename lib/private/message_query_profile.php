@@ -126,28 +126,22 @@ function msgQueryProfile( $aRequest )
 
         // Initialize roles
 
-        $RoleKeys = array_keys($gRoles);
-
-        foreach ( $RoleKeys as $RoleKey )
+        foreach ( $gRoles as $Role )
         {
-            $AttendanceData[$RoleKey] = 0;
+            $AttendanceData["role".$Role[0]] = 0;
         }
 
         // Pull data
 
-        $AttendanceQuery->loop( function($Data) use (&$AttendanceData, $RoleKeys)
+        $AttendanceQuery->loop( function($Data) use (&$AttendanceData)
         {
             if ( $Data["Status"] != "undecided" )
-                $AttendanceData[ $Data["Status"] ] += $Data["Count"];
+                $AttendanceData[$Data["Status"]] += $Data["Count"];
 
             if ( $Data["Status"] == "ok" )
             {
                 $RoleIdx = intval($Data["Role"]);
-                if ( $RoleIdx < sizeof($RoleKeys) )
-                {
-                    $ResolvedRole = $RoleKeys[ $RoleIdx ];
-                    $AttendanceData[ $ResolvedRole ] += $Data["Count"];
-                }
+                $AttendanceData["role".$RoleIdx] += $Data["Count"];
             }
         });
 
