@@ -19,7 +19,7 @@
     font-size: 10px;
     font-family: Helvetica, Verdana, Arial, sans-serif; 
     line-height: 1.5em;
-    z-index: 20;
+    z-index: 30;
 }
 
 #tooltip_arrow {

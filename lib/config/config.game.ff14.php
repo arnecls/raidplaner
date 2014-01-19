@@ -68,23 +68,23 @@
     
     $gClasses = Array(
         "empty"       => Array( 0,  "",            "dmg",  Array("dmg") ),
-        "arcanist"    => Array( 1,  "Arcanist",    "dmg",  Array("dmg") ),
         "archer"      => Array( 2,  "Archer",      "dmg",  Array("dmg") ),
         "bard"        => Array( 3,  "Bard",        "dmg",  Array("dmg") ),
         "blackmage"   => Array( 4,  "Blackmage",   "dmg",  Array("dmg") ),
+        "theumaturge" => Array( 15, "Theumaturge", "dmg",  Array("dmg") ),
         "conjurer"    => Array( 5,  "Conjurer",    "heal", Array("heal") ),
+        "whitemage"   => Array( 17, "Whitemage",   "heal", Array("heal") ),
         "dragoon"     => Array( 6,  "Dragoon",     "dmg",  Array("dmg") ),
-        "gladiator"   => Array( 7,  "Gladiator",   "tank", Array("tank") ),
         "lancer"      => Array( 8,  "Lancer",      "dmg",  Array("dmg") ),
+        "paladin"     => Array( 11, "Paladin",     "tank", Array("tank") ),
+        "gladiator"   => Array( 7,  "Gladiator",   "tank", Array("tank") ),
+        "warrior"     => Array( 16, "Warrior",     "tank", Array("tank") ),
         "marauder"    => Array( 9,  "Marauder",    "tank", Array("tank") ),
         "monk"        => Array( 10, "Monk",        "dmg",  Array("dmg") ),
-        "paladin"     => Array( 11, "Paladin",     "tank", Array("tank") ),
         "pugilist"    => Array( 12, "Pugilist",    "dmg",  Array("dmg") ),
+        "arcanist"    => Array( 1,  "Arcanist",    "dmg",  Array("dmg") ),
         "scholar"     => Array( 13, "Scholar",     "heal", Array("heal") ),
-        "summoner"    => Array( 14, "Summoner",    "dmg",  Array("dmg") ),
-        "theumaturge" => Array( 15, "Theumaturge", "dmg",  Array("dmg") ),
-        "warrior"     => Array( 16, "Warrior",     "tank", Array("tank") ),
-        "whitemage"   => Array( 17, "Whitemage",   "heal", Array("heal") )
+        "summoner"    => Array( 14, "Summoner",    "dmg",  Array("dmg") )
     );
     
     // -----------------------------------------------------------------------------------------------

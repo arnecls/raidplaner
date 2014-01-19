@@ -2,14 +2,9 @@
 
     require_once(dirname(__FILE__)."/tools_site.php");
 
-    // Raidplaner defaults
-    // See config/config.game.php for details of the different fields
-    
-    require_once(dirname(__FILE__)."/game.default.php");
-    
     // Load the custom config
             
-    include_once(dirname(__FILE__)."/../config/config.game.php");
+    require_once(dirname(__FILE__)."/../config/config.game.php");
         
     // Check if constraints are matched
     // Data ranges
