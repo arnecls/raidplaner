@@ -54,21 +54,23 @@ function msgQueryConfig( $aRequest )
     reset($gRoles);
 
     // Classes
+    
+    reset($gClasses);
 
-    for ( $i=0; list($ClassIdent,$ClassConfig) = each($gClasses); ++$i )
+    while ( list($ClassIdent,$ClassConfig) = each($gClasses) )
     {
-        $Config["ClassIdx"][$ClassIdent] = $i;
+        $Config["ClassIdx"][$ClassIdent] = $ClassConfig[0];
         
         $Flags = (PHP_VERSION_ID >= 50400) ? ENT_COMPAT | ENT_XHTML : ENT_COMPAT;
-        $ClassText = (isset($gLocale[$ClassConfig[0]]))
-            ? htmlentities($gLocale[$ClassConfig[0]], $Flags, 'UTF-8')
+        $ClassText = (isset($gLocale[$ClassConfig[1]]))
+            ? htmlentities($gLocale[$ClassConfig[1]], $Flags, 'UTF-8')
             : "";
 
         array_push( $Config["Classes"], array(
             "ident"        => $ClassIdent,
             "text"         => $ClassText,
-            "defaultRole"  => $ClassConfig[1],
-            "roles"        => $ClassConfig[2]
+            "defaultRole"  => $ClassConfig[2],
+            "roles"        => $ClassConfig[3]
         ));
     }
 

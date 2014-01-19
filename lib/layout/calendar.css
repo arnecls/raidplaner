@@ -292,6 +292,7 @@
     clear: left;
     margin-top: 10px;
     white-space: nowrap;
+    margin-bottom: 2px;
 }
 
 #tooltip .comment .submit {

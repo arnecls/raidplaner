@@ -1,7 +1,7 @@
 <?php
     if ( defined("LOCALE_MAIN") )
     {
-        // Classes
+        // Classes WoW
         $gLocale[ "Deathknight" ]              = "Todesritter";
         $gLocale[ "Druid" ]                    = "Druide";
         $gLocale[ "Hunter" ]                   = "Jäger";
@@ -13,6 +13,26 @@
         $gLocale[ "Shaman" ]                   = "Schamane";
         $gLocale[ "Warlock" ]                  = "Hexenmeister";
         $gLocale[ "Warrior" ]                  = "Krieger";
+        $gLocale[ "Random" ]                   = "Unbekannt";
+        
+        // Classes FF14        
+        $gLocale[ "Arcanist" ]                 = "Hermetiker";
+        $gLocale[ "Archer" ]                   = "Waldläufer";
+        $gLocale[ "Bard" ]                     = "Barde";
+        $gLocale[ "Blackmage" ]                = "Schwarzmagier";
+        $gLocale[ "Conjurer" ]                 = "Druide";
+        $gLocale[ "Dragoon" ]                  = "Dragoon";
+        $gLocale[ "Gladiator" ]                = "Gladiator";
+        $gLocale[ "Lancer" ]                   = "Pikenier";
+        $gLocale[ "Marauder" ]                 = "Marodeur";
+        $gLocale[ "Monk" ]                     = "Mönch";
+        $gLocale[ "Paladin" ]                  = "Paladin";
+        $gLocale[ "Pugilist" ]                 = "Faustkämpfer";
+        $gLocale[ "Scholar" ]                  = "Gelehrter";
+        $gLocale[ "Summoner" ]                 = "Beschwörer";
+        $gLocale[ "Theumaturge" ]              = "Thaumaturg";
+        $gLocale[ "Warrior" ]                  = "Krieger";
+        $gLocale[ "Whitemage" ]                = "Weißmagier";
         $gLocale[ "Random" ]                   = "Unbekannt";
 
         // Roles
