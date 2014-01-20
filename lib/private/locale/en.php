@@ -30,7 +30,7 @@
         $gLocale[ "Pugilist" ]                 = "Pugilist";
         $gLocale[ "Scholar" ]                  = "Scholar";
         $gLocale[ "Summoner" ]                 = "Summoner";
-        $gLocale[ "Theumaturge" ]              = "Thematurge";
+        $gLocale[ "Thaumaturge" ]              = "Thematurge";
         $gLocale[ "Warrior" ]                  = "Warrior";
         $gLocale[ "Whitemage" ]                = "White mage";
         $gLocale[ "Random" ]                   = "Unknown";

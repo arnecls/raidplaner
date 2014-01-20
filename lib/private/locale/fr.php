@@ -20,24 +20,24 @@
         $gLocale[ "Random" ]                   = null;
         
         // Classes FF14        
-        $gLocale[ "Arcanist" ]                 = null;
-        $gLocale[ "Archer" ]                   = null;
-        $gLocale[ "Bard" ]                     = null;
-        $gLocale[ "Blackmage" ]                = null;
-        $gLocale[ "Conjurer" ]                 = null;
-        $gLocale[ "Dragoon" ]                  = null;
-        $gLocale[ "Gladiator" ]                = null;
-        $gLocale[ "Lancer" ]                   = null;
-        $gLocale[ "Marauder" ]                 = null;
-        $gLocale[ "Monk" ]                     = null;
-        $gLocale[ "Paladin" ]                  = null;
-        $gLocale[ "Pugilist" ]                 = null;
-        $gLocale[ "Scholar" ]                  = null;
-        $gLocale[ "Summoner" ]                 = null;
-        $gLocale[ "Theumaturge" ]              = null;
-        $gLocale[ "Warrior" ]                  = null;
-        $gLocale[ "Whitemage" ]                = null;
-        $gLocale[ "Random" ]                   = null;
+        $gLocale[ "Arcanist" ]                 = "Arcaniste";
+        $gLocale[ "Archer" ]                   = "Archer";
+        $gLocale[ "Bard" ]                     = "Barde";
+        $gLocale[ "Blackmage" ]                = "Mage Noir";
+        $gLocale[ "Conjurer" ]                 = "Élémentaliste";
+        $gLocale[ "Dragoon" ]                  = "Chevalier Dragon";
+        $gLocale[ "Gladiator" ]                = "Gladiateur";
+        $gLocale[ "Lancer" ]                   = "Maître d'Hast";
+        $gLocale[ "Marauder" ]                 = "Maraudeur";
+        $gLocale[ "Monk" ]                     = "Moine";
+        $gLocale[ "Paladin" ]                  = "Paladin";
+        $gLocale[ "Pugilist" ]                 = "Pugiliste";
+        $gLocale[ "Scholar" ]                  = "Érudit";
+        $gLocale[ "Summoner" ]                 = "Invocateur";
+        $gLocale[ "Thaumaturge" ]              = "Occultiste";
+        $gLocale[ "Warrior" ]                  = "Guerrier";
+        $gLocale[ "Whitemage" ]                = "Mage Blanc";
+        $gLocale[ "Random" ]                   = "Aléatoire";
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
