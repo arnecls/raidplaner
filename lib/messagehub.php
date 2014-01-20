@@ -29,17 +29,14 @@
     include_once("private/message_user_create.php");
     include_once("private/message_user_link.php");
 
-    $ValidUser = validUser();
+    UserProxy::getInstance(true);
     $Out = Out::getInstance();
 
     header("Content-type: application/json");
     header("Cache-Control: no-cache, max-age=0, s-maxage=0");
 
-    $Settings = Settings::getInstance();
-
     if ( isset($_REQUEST["Action"]) )
     {
-
         switch ( strtolower($_REQUEST["Action"]) )
         {
         case "query_locale":
@@ -79,12 +76,14 @@
             break;
 
         case "query_calendar":
+            $Settings = Settings::getInstance();
             lockOldRaids( $Settings->Property["LockRaids"]["IntValue"] );
             purgeOldRaids( $Settings->Property["PurgeRaids"]["IntValue"] );
             msgQueryCalendar( $_REQUEST );
             break;
 
         case "raid_list":
+            $Settings = Settings::getInstance();
             lockOldRaids( $Settings->Property["LockRaids"]["IntValue"] );
             purgeOldRaids( $Settings->Property["PurgeRaids"]["IntValue"] );
             msgRaidList( $_REQUEST );
