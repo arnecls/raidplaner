@@ -1,17 +1,3 @@
-
-
-#preload {
-    position: fixed;
-    float: left;
-    left:0px;
-    top:100%;
-}
-
-#preload img {
-    width: 1px;
-    height: 1px;
-}
-
 #loginform {
     width: 200px;
     height: 200px;

@@ -31,7 +31,7 @@
     overflow: visible;
 }
 
-#logo {
+#banner {
     display: block;
     height: 140px;
     width: 1024px;
@@ -168,7 +168,7 @@
     width: 28px;
 }
 
-#menu .logout {
+#logout {
     position: relative;
     display: inline-block;
     padding: 0px;
@@ -178,7 +178,7 @@
     float: right;
 }
 
-#menu .logout .button_logout {
+#logout .button_logout {
     height: 24px;
 }
 

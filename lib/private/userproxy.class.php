@@ -66,17 +66,6 @@
             beginSession();
             $this->SiteId = dechex(crc32(dirname(__FILE__)));
 
-            if (isset($_REQUEST["logout"]))
-            {
-                // explicit "logout"
-
-                $this->resetUser();
-
-                $this->setSessionCookie(null);
-
-                return; // ### return, logout ###
-            }
-
             if (isset($_SESSION["User"]))
             {
                 // Session says user is still logged in
@@ -90,22 +79,11 @@
                 }
             }
 
-            // No "logout" and no exisiting session
-            // Try to login via request or session cookie
+            // Try to login via session cookie
 
             $LoginUser = null;
 
-            if (isset($_REQUEST["user"]) &&
-
-                isset($_REQUEST["pass"]))
-            {
-                // Explicit "login"
-
-                $LoginUser = array( "Login"    => $_REQUEST["user"],
-                                    "Password" => $_REQUEST["pass"],
-                                    "Cookie"   => false );
-            }
-            else if ( isset($_COOKIE[self::$mStickyCookieName.$this->SiteId]) )
+            if ( isset($_COOKIE[self::$mStickyCookieName.$this->SiteId]) )
             {
                 // Login via cookie
                 // Reconstruct login data from cookie + database hash
@@ -154,7 +132,7 @@
 
         // --------------------------------------------------------------------------------------------
 
-        private function resetUser()
+        public function resetUser()
         {
             $this->UserGroup     = "none";
             $this->UserId        = 0;
@@ -181,7 +159,7 @@
             $Connector  = Connector::getInstance();
 
             $OtkQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET OneTimeKey = :Key ".
-                                            "WHERE AND UserId = :UserId LIMIT 1" );
+                                            "WHERE UserId = :UserId LIMIT 1" );
 
             $OtkQuery->bindValue( ":Key",     $OneTimeKey, PDO::PARAM_STR );
             $OtkQuery->bindValue( ":UserId",  $aUserId,    PDO::PARAM_INT );
@@ -231,7 +209,7 @@
 
         // --------------------------------------------------------------------------------------------
 
-        private function setSessionCookie( $aData )
+        public function setSessionCookie( $aData )
         {
             $ServerName = "";
             $ServerPath = "";
@@ -565,7 +543,7 @@
 
         // --------------------------------------------------------------------------------------------
 
-        private function processLoginRequest( $aLoginUser, $aAllowAutoLogin )
+        public function processLoginRequest( $aLoginUser, $aAllowAutoLogin )
         {
             $Connector = Connector::getInstance();
             $UserData = null;
@@ -588,7 +566,6 @@
                 // to fetch any updated/newly created data
 
                 $UserQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` ".
-
                                                   "WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
 
                 $UserQuery->bindValue(":UserId", $ExternalUser->UserId, PDO::PARAM_INT );
@@ -597,11 +574,9 @@
 
                 if ($UserData == null)
                     return false; // ### return, not registered ###
-
             }
             else
             {
-
                 // Try to login by $aLoginUser
 
                 $PasswordCheckOk = false;
@@ -628,9 +603,7 @@
                             // In this case we encrypt locally via php.
 
                             $UserId = (($UserData["BindingActive"] == "false") || ($UserData["ExternalBinding"] == "none"))
-
                                 ? $UserData["UserId"]
-
                                 : $UserData["ExternalId"];
 
                             $PasswordCheckOk = $this->validateCleartextPassword( $aLoginUser["Password"], $UserId, $UserData["ExternalBinding"] );
@@ -644,9 +617,7 @@
                             // to reset the key
 
                             $this->invalidateOneTimeKey( $UserData["UserId"] );
-
                             $HashedStoredPassword = hash("sha256", $UserData["OneTimeKey"].$UserData["Password"]);
-
                             $PasswordCheckOk = ($aLoginUser["Password"] == $HashedStoredPassword);
                         }
                     }
@@ -988,6 +959,34 @@
 
     UserProxy::initBindings();
 
+    // --------------------------------------------------------------------------------------------
+    
+    function msgLogin($aRequest)
+    {
+        $LoginUser = array( "Login"    => $aRequest["user"],
+                            "Password" => $aRequest["pass"],
+                            "Cookie"   => false );
+                            
+        $Proxy = UserProxy::getInstance();
+        
+        if ( !$Proxy->processLoginRequest($LoginUser, false) )
+        {
+            msgLogout();
+            
+            $Out = Out::getInstance();
+            $Out->pushError(L("InvalidCredentials"));
+        }
+    }
+    
+    // --------------------------------------------------------------------------------------------
+
+    function msgLogout()
+    {
+        $Proxy = UserProxy::getInstance();
+        $Proxy->resetUser();
+        $Proxy->setSessionCookie(null);
+    }
+    
     // --------------------------------------------------------------------------------------------
 
     function msgQueryUser($aRequest)

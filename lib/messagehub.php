@@ -61,6 +61,14 @@
         case "query_credentials_id":
             msgQueryLocalCredentialsById( $_REQUEST );
             break;
+            
+        case "login":
+            msgLogin( $_REQUEST );
+            break;
+            
+        case "logout":
+            msgLogout( $_REQUEST );
+            break;
 
         case "raid_attend":
             msgRaidAttend( $_REQUEST );

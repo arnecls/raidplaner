@@ -19,11 +19,6 @@
         die();
     }
 
-    // Init user and start session
-
-    require_once("lib/private/userproxy.class.php");
-    UserProxy::getInstance(true);
-
     // Site framework
 
     loadSiteSettings();
@@ -51,81 +46,13 @@
                 echo "<script type=\"text/javascript\" src=\"lib/script/raidplaner.js?version=".$gSite["Version"]."\"></script>";
             }
         ?>
-
-        <?php // Notify of failed login
-
-            if ( isset($_REQUEST["user"]) && isset($_REQUEST["pass"]) && !registeredUser() )
-            {
-                echo "<script type=\"text/javascript\">gAfterInit = function() { notify(L(\"WrongPassword\")); };</script>";
-            }
-        ?>
-
     </head>
 
-    <body style="background: <?php echo $gSite["BGColor"] ?> <?php echo ($gSite["Background"] == "none") ? "none" : "url(themes/backgrounds/".$gSite["Background"].")" ?> <?php echo $gSite["BGRepeat"] ?>">
+    <body>
         <div id="appwindow"<?php if ($gSite["PortalMode"]) echo " class=\"portalmode\""; ?>>
-            <?php
-                if (strtolower($gSite["Banner"]) != "disable")
-                {
-                    $BannerImage = (strtolower($gSite["Banner"]) != "none")
-
-                        ? "url(themes/banner/".$gSite["Banner"].")"
-                        : "none";
-
-                    if ( $gSite["BannerLink"] == "" )
-                        echo "<div id=\"logo\" style=\"background-image: ".$BannerImage."\"></div>";
-                    else
-                        echo "<a id=\"logo\" href=\"".$gSite["BannerLink"]."\" style=\"background-image: ".$BannerImage.")\"></a>";
-                }
-            ?>
-
-            <div id="menu">
-                <?php if (registeredUser()) { ?>
-
-                <span class="logout">
-                    <?php if ($gSite["Logout"]) { ?>
-                    <form id="logout" method="post" action="index.php">
-                        <input type="hidden" name="nocheck"/>
-                        <input type="hidden" name="logout"/>
-                        <button onclick="return onLogOut()" class="button_logout"><?php echo L("Logout"); ?></button>
-                    </form>
-                    <?php } ?>
-                </span>
-                <?php if ($gSite["HelpLink"] != "") { ?>
-                <span id="help">
-                    <button onclick="openLink('<?php echo $gSite["HelpLink"] ?>')" class="button_help"></button>
-                </span>
-                <?php } ?>
-                <span id="button_calendar" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Calendar"); ?></div><div class="indicator"></div></span>
-                <span id="button_raid" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Raid"); ?></div><div class="indicator"></div></span>
-                <span id="button_profile" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Profile"); ?></div><div class="indicator"></div></span>
-
-                    <?php if ( validAdmin() ) { ?>
-                <span id="button_settings_users" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Settings"); ?></div><div class="indicator"></div></span>
-                    <?php } ?>
-
-                <?php } else { ?>
-
-                <span id="button_login" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Login"); ?></div><div class="indicator"></div></span>
-                    <?php if ( ALLOW_REGISTRATION ) { ?>
-                <span id="button_register" class="menu_button"><div class="icon"></div><div class="text"><?php echo L("Register"); ?></div><div class="indicator"></div></span>
-                    <?php } ?>
-
-                <?php } ?>
-            </div>
-
-            <div id="body">
-                <?php
-
-                    if ( !validUser() && registeredUser() )
-                    {
-                        echo "<div id=\"lockMessage\">";
-                        echo L("AccountIsLocked")."<br/>";
-                        echo L("ContactAdminToUnlock");
-                        echo "</div>";
-                    }
-                ?>
-            </div>
+            <div id="banner"></div>
+            <div id="menu"></div>
+            <div id="body"></div>
 
             <span id="version"><?php echo "version ".intVal($gSite["Version"] / 100).".".intVal(($gSite["Version"] % 100) / 10).".".intVal($gSite["Version"] % 10).(($gSite["Version"] - intval($gSite["Version"]) > 0) ? chr(round(($gSite["Version"] - intval($gSite["Version"])) * 10) + ord("a")-1) : ""); ?></span>
         </div>
@@ -139,22 +66,13 @@
                 <?php echo L("Busy"); ?>
             </div>
         </div>
-
-        <?php if ( registeredUser() ) { ?>
-        
         <div id="tooltip">
             <div id="tooltip_arrow"></div>
             <div id="info_text"></div>
         </div>
-
         <div id="sheetoverlay">
             <div id="closesheet" class="clickable"></div>
             <div id="sheet_body"></div>
         </div>
-
-        <?php } else { ?>
-        <div id="preload"><?php include("lib/private/resources.php"); ?></div>
-        <?php } ?>
-
     </body>
 </html>
