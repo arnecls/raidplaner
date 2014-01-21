@@ -17,35 +17,35 @@
         $gLocale[ "Shaman" ]                   = "Shaman";
         $gLocale[ "Warlock" ]                  = "Warlock";
         $gLocale[ "Warrior" ]                  = "Warrior";
-        $gLocale[ "Random" ]                   = null;
+        $gLocale[ "Random" ]                   = "Nieznana";
         
         // Classes FF14        
-        $gLocale[ "Arcanist" ]                 = null;
-        $gLocale[ "Archer" ]                   = null;
-        $gLocale[ "Bard" ]                     = null;
-        $gLocale[ "Blackmage" ]                = null;
-        $gLocale[ "Conjurer" ]                 = null;
-        $gLocale[ "Dragoon" ]                  = null;
-        $gLocale[ "Gladiator" ]                = null;
-        $gLocale[ "Lancer" ]                   = null;
-        $gLocale[ "Marauder" ]                 = null;
-        $gLocale[ "Monk" ]                     = null;
-        $gLocale[ "Paladin" ]                  = null;
-        $gLocale[ "Pugilist" ]                 = null;
-        $gLocale[ "Scholar" ]                  = null;
-        $gLocale[ "Summoner" ]                 = null;
-        $gLocale[ "Theumaturge" ]              = null;
-        $gLocale[ "Warrior" ]                  = null;
-        $gLocale[ "Whitemage" ]                = null;
-        $gLocale[ "Random" ]                   = null;
+        $gLocale[ "Arcanist" ]                 = "Arcanist";
+        $gLocale[ "Archer" ]                   = "Archer";
+        $gLocale[ "Bard" ]                     = "Bard";
+        $gLocale[ "Blackmage" ]                = "Blackmage";
+        $gLocale[ "Conjurer" ]                 = "Conjurer";
+        $gLocale[ "Dragoon" ]                  = "Dragoon";
+        $gLocale[ "Gladiator" ]                = "Gladiator";
+        $gLocale[ "Lancer" ]                   = "Lancer";
+        $gLocale[ "Marauder" ]                 = "Marauder";
+        $gLocale[ "Monk" ]                     = "Monk";
+        $gLocale[ "Paladin" ]                  = "Paladin";
+        $gLocale[ "Pugilist" ]                 = "Pugilist";
+        $gLocale[ "Scholar" ]                  = "Scholar";
+        $gLocale[ "Summoner" ]                 = "Summoner";
+        $gLocale[ "Theumaturge" ]              = "Theumaturge";
+        $gLocale[ "Warrior" ]                  = "Warrior";
+        $gLocale[ "Whitemage" ]                = "Whitemage";
+        $gLocale[ "Random" ]                   = "Nieznana";
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
         $gLocale[ "Healer" ]                   = "Healer";
         $gLocale[ "Damage" ]                   = "Dps";
-        $gLocale[ "Melee" ]                    = null;
-        $gLocale[ "Range" ]                    = null;
-        $gLocale[ "Support" ]                  = null;
+        $gLocale[ "Melee" ]                    = "Melee";
+        $gLocale[ "Range" ]                    = "Range";
+        $gLocale[ "Support" ]                  = "Support";
 
         // Pre-loading checks
         $gLocale[ "ContinueNoUpdate" ]         = "Kontynuuj bez aktualizacji";
@@ -73,7 +73,7 @@
         $gLocale[ "UnappliedChanges" ]         = "Czy chcesz pominąć wprowadzone zmiany?";
         $gLocale[ "DiscardChanges" ]           = "Tak";
         $gLocale[ "to" ]                       = "do";
-        $gLocale[ "PHPVersionWarning" ]        = null;
+        $gLocale[ "PHPVersionWarning" ]        = "Raidplaner od wersji 1.1.0 wymaga PHP w wersji 5.3 lub nowszej.<br/>Niestety twój serwer wymaga aktualizacji :(";
 
         // Login und user registration
         $gLocale[ "Login" ]                    = "Zaloguj";
@@ -123,17 +123,16 @@
         $gLocale[ "Sun" ]                      = "Ni";
         $gLocale[ "NotSignedUp" ]              = "Nie zapisany";
         $gLocale[ "Absent" ]                   = "Nieobecny";
-        $gLocale[ "Benched" ]                  = null;
-        $gLocale[ "RaidingAs" ]                = null;
+        $gLocale[ "Benched" ]                  = "Na liście oczekujących";
+        $gLocale[ "RaidingAs" ]                = "Potwierdzony jako";
         $gLocale[ "WhyAbsent" ]                = "Napisz dlaczego będziesz nieobecny/a.";
         $gLocale[ "SetAbsent" ]                = "Zapisz jako nieobecny";
         $gLocale[ "Comment" ]                  = "Komentarz";
         $gLocale[ "SaveComment" ]              = "Zapisz komentarz";
-        $gLocale[ "RepeatOnce" ]               = null;
-        $gLocale[ "RepeatDay" ]                = null;
-        $gLocale[ "RepeatWeek" ]               = null;
-        $gLocale[ "RepeatMonth" ]              = null;
-        $gLocale[ "ClearVacation" ]            = null;
+        $gLocale[ "RepeatOnce" ]               = "Nie powtarzaj";
+        $gLocale[ "RepeatDay" ]                = "razy, co dzień";
+        $gLocale[ "RepeatWeek" ]               = "razy, co tydzień";
+        $gLocale[ "RepeatMonth" ]              = "razy, co miesiąc";
 
         // Raid
         $gLocale[ "Raid" ]                     = "Rajd";
@@ -160,10 +159,10 @@
         $gLocale[ "SetupBy" ]                  = "Obecny";
         $gLocale[ "AbsentBy" ]                 = "Nieobecny";
         $gLocale[ "SwitchChar" ]               = "Zmieniono postać";
-        $gLocale[ "RaidNotFound" ]             = null;
-        $gLocale[ "RaidSetup" ]                = null;
-        $gLocale[ "LinkToRaid" ]               = null;
-        $gLocale[ "Switch" ]                   = null;
+        $gLocale[ "RaidNotFound" ]             = "Nie znaleziono rajdu";
+        $gLocale[ "RaidSetup" ]                = "Ustawienia rajdu";
+        $gLocale[ "LinkToRaid" ]               = "Link do rajdu";
+        $gLocale[ "Switch" ]                   = "Przełącznik"; //????
 
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
@@ -185,15 +184,16 @@
         $gLocale[ "OldPasswordEmpty" ]         = "Stare hasło nie może być puste.";
         $gLocale[ "AdminPassword" ]            = "Hasło administratora";
         $gLocale[ "AdminPasswordEmpty" ]       = "Hasło administratora nie może być puste.";
-        $gLocale[ "WrongPassword" ]            = null;
+        $gLocale[ "WrongPassword" ]            = "Nieprawidłowe dane logowania";
         $gLocale[ "PasswordLocked" ]           = "Hasło nie może być zmienione.";
         $gLocale[ "PasswordChanged" ]          = "Hasło zostało zmienione.";
-        $gLocale[ "UserNotFound" ]             = null;
-        $gLocale[ "VacationStart" ]            = null;
-        $gLocale[ "VacationEnd" ]              = null;
-        $gLocale[ "NoStartDate" ]              = null;
-        $gLocale[ "NoEndDate" ]                = null;
-        $gLocale[ "VacationMessage" ]          = null;
+        $gLocale[ "UserNotFound" ]             = "Nie znaleziono użytkownika";
+        $gLocale[ "VacationStart" ]            = "Pierwszy dzień urlopu";
+        $gLocale[ "VacationEnd" ]              = "Ostatni dzień urlopu";
+        $gLocale[ "NoStartDate" ]              = "Wprowadź pierwszy dzień urlopu";
+        $gLocale[ "NoEndDate" ]                = "Wprowadź ostatni dzień urlopu";
+        $gLocale[ "VacationMessage" ]          = "Wiadomość urlopowa";
+        $gLocale[ "ClearVacation" ]            = "Usuń dane o urlopie";
 
         // Settings
         $gLocale[ "Settings" ]                 = "Ustawienia";
@@ -345,21 +345,22 @@
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Wczytaj grupy używając powyższych ustawień";
-        $gLocale[ "AutoMemberLogin" ]          = null;
-        $gLocale[ "AutoLeadLogin" ]            = null
+        $gLocale[ "AutoMemberLogin" ]          = "Grupy \"Użytkowników\"";
+        $gLocale[ "AutoLeadLogin" ]            = "Grupy \"Rajd Liderów\"";
         $gLocale[ "ReloadFailed" ]             = "Wczytywanie nie powiodło się";
-        $gLocale[ "LoadSettings" ]             = null;
-        $gLocale[ "BindingBasePath" ]          = null;
-        $gLocale[ "RetrievalFailed" ]          = null;
-        $gLocale[ "RetrievalOk" ]              = null;
-        $gLocale[ "NotExisting" ]              = null;
-        $gLocale[ "AllowAutoLogin" ]           = null;
-        $gLocale[ "NoValidConfig" ]            = null;
-        $gLocale[ "CookieNote" ]               = null;
-        $gLocale[ "PostToForum" ]              = null;
-        $gLocale[ "PostAsUser" ]               = null;
-        $gLocale[ "DisablePosting" ]           = null;
-        $gLocale[ "NoUsersFound" ]             = null;
+        $gLocale[ "LoadSettings" ]             = "Uzyskaj ustawienia automatycznie";
+        $gLocale[ "BindingBasePath" ]          = "Wprowadź ścieżkę do katalogu, w którym znajduje się powiązana strona, relatywnie do '".$_SERVER["DOCUMENT_ROOT"]."'.";
+        $gLocale[ "RetrievalFailed" ]          = "Automatyczne wykrywanie nie powiodło się";
+        $gLocale[ "RetrievalOk" ]              = "Automatyczne wykrywanie powiodło się";
+        $gLocale[ "NotExisting" ]              = "nie istnieje";
+        $gLocale[ "AllowAutoLogin" ]           = "Zezwól na automatyczne logowanie";
+        $gLocale[ "NoValidConfig" ]            = "Nie znaleziono odpowiedniego pliku konfiguracyjnego";
+        $gLocale[ "CookieNote" ]               = "Automatyczne logowanie wymaga, aby Raidplaner został zainstalowany w podkatalogu powiązanej strony. ".
+                                                 "Konieczna może być zmiana tej ścieżki w konfiguracji powiązanej strony.";
+        $gLocale[ "PostToForum" ]              = "Ogłaszaj nowe rajdy na tym forum";
+        $gLocale[ "PostAsUser" ]               = "Ogłaszaj nowe rajdy, jako ten użytkownik";
+        $gLocale[ "DisablePosting" ]           = "Nie twórz postów";
+        $gLocale[ "NoUsersFound" ]             = "Nie znaleziono użytkownika";
 
         // PHPBB3
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";
@@ -387,7 +388,7 @@
         $gLocale[ "vb3_UserEmpty" ]             = "Nazwa użytkownika vBulletin nie może być pusta.";
         $gLocale[ "vb3_PasswordEmpty" ]         = "Hasło bazy danych vBulletin nie powinno być puste.";
         $gLocale[ "vb3_DBPasswordsMatch" ]      = "Hasło bazy danych vBulletin zostało powtórzone niepoprawnie.";
-        $gLocale[ "vb3_CookieEx" ]              = null;
+        $gLocale[ "vb3_CookieEx" ]              = "Prefix ciasteczka vBulletin";
 
         // MyBB
         $gLocale[ "mybb_Binding" ]              = "MyBB 1.6+";
@@ -415,7 +416,7 @@
         $gLocale[ "vanilla_UserEmpty" ]         = "Nazwa użytkownika Vanilla nie może być pusta.";
         $gLocale[ "vanilla_PasswordEmpty" ]     = "Hasło bazy danych Vanilla nie powinno być puste.";
         $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Hasło bazy danych Vanilla zostało powtórzone niepoprawnie.";
-        $gLocale[ "vanilla_CookieEx" ]          = null;
+        $gLocale[ "vanilla_CookieEx" ]          = "Nazwa ciasteczka, metoda haszowania (np. md5), salt ciasteczka";
 
         // Joomla
         $gLocale[ "jml3_Binding" ]              = "Joomla 3.x";
@@ -425,7 +426,7 @@
         $gLocale[ "jml3_UserEmpty" ]            = "Nazwa użytkownika Joomla nie może być pusta.";
         $gLocale[ "jml3_PasswordEmpty" ]        = "Hasło bazy danych Joomla nie powinno być puste.";
         $gLocale[ "jml3_DBPasswordsMatch" ]     = "Hasło bazy danych Joomla zostało powtórzone niepoprawnie.";
-        $gLocale[ "jml3_CookieEx" ]             = null;
+        $gLocale[ "jml3_CookieEx" ]             = "Sekret Joomla3";
 
         // Drupal
         $gLocale[ "drupal_Binding" ]            = "Drupal 7.6+";
@@ -435,7 +436,7 @@
         $gLocale[ "drupal_UserEmpty" ]          = "Nazwa użytkownika Drupal nie może być pusta.";
         $gLocale[ "drupal_PasswordEmpty" ]      = "Hasło bazy danych Drupal nie powinno być puste.";
         $gLocale[ "drupal_DBPasswordsMatch" ]   = "Hasło bazy danych Drupal zostało powtórzone niepoprawnie.";
-        $gLocale[ "drupal_CookieEx" ]           = null;
+        $gLocale[ "drupal_CookieEx" ]           = "Domyślny adres URL do Drupal";
 
         // Wordpress
         $gLocale[ "wp_Binding" ]                = "Wordpress 3.x";
@@ -445,6 +446,6 @@
         $gLocale[ "wp_UserEmpty" ]              = "Nazwa użytkownika Wordpress nie może być pusta.";
         $gLocale[ "wp_PasswordEmpty" ]          = "Hasło bazy danych Wordpress nie powinno być puste.";
         $gLocale[ "wp_DBPasswordsMatch" ]       = "Hasło bazy danych Wordpress zostało powtórzone niepoprawnie.";
-        $gLocale[ "wp_CookieEx" ]               = null;
+        $gLocale[ "wp_CookieEx" ]               = "LOGGED_IN_KEY + LOGGED_IN_SALT";
     }
 ?>
