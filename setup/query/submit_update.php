@@ -2,6 +2,7 @@
     require_once(dirname(__FILE__)."/../../lib/private/connector.class.php");
     require_once(dirname(__FILE__)."/../../lib/config/config.php");
     @include_once(dirname(__FILE__)."/../../lib/config/config.vb3.php");
+    require_once(dirname(__FILE__)."/tools_install.php");
 
     function doUpgrade( $a_Statement)
     {
@@ -306,8 +307,8 @@
     {
         echo "<div class=\"update_version\">".L("UpdateFrom")." 1.0.0 ".L("UpdateTo")." 1.1.0";
 
-        $Updates = Array( "Multi class support" => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Class` `Class` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
-                          "Class attendance"    => "ALTER TABLE  `".RP_TABLE_PREFIX."Attendance` ADD `Class` TINYINT(2) NOT NULL DEFAULT '0' AFTER `Role`;" );
+        $Updates = Array( "Multi class support" => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Class` `Class` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
+                          "Class attendance"    => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD `Class` TINYINT(2) NOT NULL DEFAULT '0' AFTER `Role`;" );
         
         // Timezone fix
         
@@ -332,6 +333,88 @@
         }
         
         doUpgrade( $Updates );
+                
+        // Gameconfig update
+        
+        echo "<div class=\"update_step\">Gameconfig update";
+        $GameConfig = dirname(__FILE__)."/../../lib/private/gameconfig.php";
+
+        if (file_exists($GameConfig))
+        {
+            if (UpdateGameConfig110($GameConfig))            
+                echo "<div class=\"update_step_ok\">OK</div>";
+            else
+                echo "<div class=\"database_error\">".L("FailedGameconfig")."</div>";
+        }
+        else
+        {
+            echo "<div class=\"update_step_warning\">".L("GameconfigNotFound")." (lib/private/gameconfig.php).</div>";
+        }
+
+        echo "</div>";
+        
+        // Class field update
+        
+        /*echo "<div class=\"update_step\">Class names to ids";
+        
+        include_once(dirname(__FILE__)."/../../lib/config/config.game.php");
+        
+        $Success = true;
+        $ClassIdents = array_keys($gClasses);
+        
+        $CharQuery = $Connector->prepare("SELECT CharacterId, Class FROM `".RP_TABLE_PREFIX."Character`");
+        $CharQuery->setErrorsAsHTML(true);
+        
+        $CharQuery->loop( function($CharData) use (&$Connector, $ClassIdents, $gClasses, &$Success)
+        {
+            $ClassNames = explode(":", $CharData["Class"]);
+            $ClassIds = Array();
+            
+            // Try map class name to index as good as possible.
+            // If the ident is not found use a close sounding name
+                        
+            foreach($ClassNames as $ClassName)
+            {
+                if (isset($gClasses[$ClassName]))
+                {
+                    array_push($ClassIds, $gClasses[$ClassName][0]);
+                }
+                else
+                {
+                    $BestIdent = $ClassIdents[0];
+                    $BestDist = PHP_INT_MAX;
+                    
+                    foreach ($ClassIdents as $NewIdent)
+                    {
+                        $Dist = levenshtein($NewIdent, $ClassName);
+                        if ($Dist < $BestDist)
+                        {
+                            $BestDist = $Dist;
+                            $BestIdent = $NewIdent;
+                        }
+                    }
+                    
+                    array_push($ClassIds, $gClasses[$BestIdent][0]);
+                }                    
+            }
+            
+            // Update character
+            
+            $CharUpdate = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Character` SET Class=:Classes WHERE CharacterId=:CharId LIMIT 1");
+            
+            $CharUpdate->setErrorsAsHTML(true);
+            $CharUpdate->bindValue(":Classes", implode(":",$ClassIds), PDO::PARAM_STR);
+            $CharUpdate->bindValue(":CharId", $CharData["CharacterId"], PDO::PARAM_INT);
+            
+            $Success = $Success && $CharUpdate->execute();
+        });
+        
+        if ($Success)
+            echo "<div class=\"update_step_ok\">OK</div>";
+        
+        echo "</div>";*/
+        
+        // Finish
 
         echo "</div>";
     }

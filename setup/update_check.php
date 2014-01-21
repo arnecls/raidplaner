@@ -80,7 +80,7 @@
         </div>
     <?php
         }
-        else if ($Version != $CurrentVersion)
+        else //if ($Version != $CurrentVersion)
         {
     ?>
 
@@ -111,7 +111,7 @@
 </div>
 <div class="bottom_navigation">
     <div class="button_back" style="background-image: url(layout/install_white.png)"><?php echo L("Back"); ?></div>
-    <?php if ($Version != $CurrentVersion) { ?>
+    <?php /*if ($Version != $CurrentVersion)*/ { ?>
     <div class="button_next" style="background-image: url(layout/update_white.png)"><?php echo L("Continue"); ?></div>
     <?php } ?>
 
