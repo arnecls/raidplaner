@@ -28,8 +28,22 @@
     include_once("private/message_settings_update.php");
     include_once("private/message_user_create.php");
     include_once("private/message_user_link.php");
+    
+    // Init user first (if required)
 
-    UserProxy::getInstance(true);
+    switch ( strtolower($_REQUEST["Action"]) )
+    {
+    case "try_auto_login":        
+        UserProxy::getInstance(true);
+        break;
+        
+    default:
+        UserProxy::getInstance();
+        break;
+    }
+    
+    // Process message
+        
     $Out = Out::getInstance();
 
     header("Content-type: application/json");
@@ -39,6 +53,9 @@
     {
         switch ( strtolower($_REQUEST["Action"]) )
         {
+        case "try_auto_login":
+            break;
+            
         case "query_locale":
             msgQueryLocale( $_REQUEST );
             break;

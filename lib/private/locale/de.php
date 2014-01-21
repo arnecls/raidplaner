@@ -180,7 +180,7 @@
         $gLocale[ "OldPasswordEmpty" ]         = "Das alte Passwort darf nicht leer sein.";
         $gLocale[ "AdminPassword" ]            = "Administrator passwort";
         $gLocale[ "AdminPasswordEmpty" ]       = "Das Administrator Passwort darf nicht leer sein.";
-        $gLocale[ "WrongPassword" ]            = "Ungültige Logindaten";
+        $gLocale[ "WrongPassword" ]            = "Ungültiges Passwort";
         $gLocale[ "PasswordLocked" ]           = "Passwort kann nicht verändert werden.";
         $gLocale[ "PasswordChanged" ]          = "Das Passwort wurde geändert.";
         $gLocale[ "UserNotFound" ]             = "Benutzer konnte nicht gefunden werden.";
@@ -190,6 +190,7 @@
         $gLocale[ "NoEndDate" ]                = "Bitte gebe den letzten Tag deines Urlaubs an.";
         $gLocale[ "VacationMessage" ]          = "Urlaubsbenachrichtigung";
         $gLocale[ "ClearVacation" ]            = "Urlaubsdaten löschen";
+        $gLocale[ "InvalidSession" ]           = "Ungültige Sessiondaten.";
 
         // Settings
         $gLocale[ "Settings" ]                 = "Einstellungen";

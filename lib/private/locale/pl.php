@@ -195,6 +195,7 @@
         $gLocale[ "NoStartDate" ]              = null;
         $gLocale[ "NoEndDate" ]                = null;
         $gLocale[ "VacationMessage" ]          = null;
+        $gLocale[ "InvalidSession" ]           = null;
 
         // Settings
         $gLocale[ "Settings" ]                 = "Ustawienia";

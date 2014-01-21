@@ -382,7 +382,7 @@
                             // Revert user info to database values
 
                             $UserInfo->UserId = $ExternalUserId;
-                            $UserInfo->BindingName = $Binding->BindingName;
+                            $UserInfo->BindingName = $Binding->GetName();
 
                             return $UserInfo;
                         }
@@ -974,7 +974,7 @@
             msgLogout();
             
             $Out = Out::getInstance();
-            $Out->pushError(L("InvalidCredentials"));
+            $Out->pushError(L("WrongPassword"));
         }
     }
     
