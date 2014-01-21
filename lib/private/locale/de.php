@@ -321,6 +321,8 @@
         $gLocale[ "UpdateErrors" ]             = "Fehler während des Updates";
         $gLocale[ "ReportedErrors" ]           = "Die folgenden Fehler wurden während des updates gemeldet.";
         $gLocale[ "PartiallyUpdated" ]         = "Dies kann auf eine bereits (teilweise) upgedatete Datenbank hinweisen.";
+        $gLocale[ "GameconfigNotFound" ]       = "Die Datei gameconfig.php konnte nicht gefunden werden.";
+        $gLocale[ "FailedGameconfig" ]         = "Die Datei gameconfig.php konnte nicht in das neue Format übertragen werden.";
 
         // Repair
         $gLocale[ "Repair" ]                   = "Datenbank Inkonsistenzen reparieren";

@@ -23,6 +23,7 @@
     include_once("private/message_query_settings.php");
     include_once("private/message_query_credentials.php");
     include_once("private/message_query_config.php");
+    include_once("private/message_query_user.php");
     include_once("private/message_profile_update.php");
     include_once("private/message_comment_update.php");
     include_once("private/message_settings_update.php");

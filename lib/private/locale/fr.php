@@ -324,6 +324,8 @@
         $gLocale[ "UpdateErrors" ]             = "Erreurs de mise à jour";
         $gLocale[ "ReportedErrors" ]           = "Les erreurs suivants ont été signalées pendant la mise à jour.";
         $gLocale[ "PartiallyUpdated" ]         = "Cela pourra avoir des répercussions sur une base de données (partiellement) mise à jour.";
+        $gLocale[ "GameconfigNotFound" ]       = null;
+        $gLocale[ "FailedGameconfig" ]         = null;
 
         // Repair
         $gLocale[ "Repair" ]                   = "Réparer les irrégularités de la base de données";

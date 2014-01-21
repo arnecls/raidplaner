@@ -320,6 +320,8 @@
         $gLocale[ "UpdateErrors" ]             = "Update errors";
         $gLocale[ "ReportedErrors" ]           = "The following errors were reported during update.";
         $gLocale[ "PartiallyUpdated" ]         = "This may hint on an already (partially) updated database.";
+        $gLocale[ "GameconfigNotFound" ]       = "The file gameconfig.php could not be found.";
+        $gLocale[ "FailedGameconfig" ]         = "The file gameconfig.php could not be translated into the new format.";
 
         // Repair
         $gLocale[ "Repair" ]                   = "Repaire database inconsistencies";
