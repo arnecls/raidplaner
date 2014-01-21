@@ -86,7 +86,7 @@ function msgProfileupdate( $aRequest )
                 $RaidsQuery->bindValue(":Start", $aRequest["vacationStart"], PDO::PARAM_INT);
                 $RaidsQuery->bindValue(":End", $aRequest["vacationEnd"], PDO::PARAM_INT);
 
-                $RaidsQuery->loop(function($RaidData)
+                $RaidsQuery->loop(function($RaidData) use (&$Connector, $UserId, $VacationMessage)
                 {
                     $AbsentQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
                         "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
