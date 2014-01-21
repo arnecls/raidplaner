@@ -165,7 +165,6 @@
         $gLocale[ "Switch" ]                   = null;
 
         // Profile
-
         $gLocale[ "Profile" ]                  = "Profil";
         $gLocale[ "History" ]                  = "Historique des raids";
         $gLocale[ "Characters" ]               = "Vos personnages";
@@ -195,7 +194,6 @@
         $gLocale[ "NoEndDate" ]                = null;
         $gLocale[ "VacationMessage" ]          = null;
         $gLocale[ "ClearVacation" ]            = null;
-        $gLocale[ "InvalidSession" ]           = null;
 
         // Settings
         $gLocale[ "Settings" ]                 = "Réglages";

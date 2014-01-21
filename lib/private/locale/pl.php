@@ -166,7 +166,6 @@
         $gLocale[ "Switch" ]                   = null;
 
         // Profile
-
         $gLocale[ "Profile" ]                  = "Profil";
         $gLocale[ "History" ]                  = "Historia rajdów";
         $gLocale[ "Characters" ]               = "Twoje postacie";
@@ -195,7 +194,6 @@
         $gLocale[ "NoStartDate" ]              = null;
         $gLocale[ "NoEndDate" ]                = null;
         $gLocale[ "VacationMessage" ]          = null;
-        $gLocale[ "InvalidSession" ]           = null;
 
         // Settings
         $gLocale[ "Settings" ]                 = "Ustawienia";

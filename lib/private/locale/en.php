@@ -190,7 +190,6 @@
         $gLocale[ "NoEndDate" ]                = "Please enter the last day of your vacation.";
         $gLocale[ "VacationMessage" ]          = "Vacation message";
         $gLocale[ "ClearVacation" ]            = "Clear vacation data";
-        $gLocale[ "InvalidSession" ]           = "Invalid session data";
 
         // Settings
         $gLocale[ "Settings" ]                 = "Settings";
