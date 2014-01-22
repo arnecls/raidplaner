@@ -323,6 +323,8 @@
         $gLocale[ "PartiallyUpdated" ]         = "This may hint on an already (partially) updated database.";
         $gLocale[ "GameconfigNotFound" ]       = "The file gameconfig.php could not be found.";
         $gLocale[ "FailedGameconfig" ]         = "The file gameconfig.php could not be translated into the new format.";
+        $gLocale[ "RemoveAndLaunch" ]          = "Delete setup and start";
+        $gLocale[ "FailedRemoveSetup" ]        = "The setup folder could not be deleted.";
 
         // Repair
         $gLocale[ "Repair" ]                   = "Repaire database inconsistencies";

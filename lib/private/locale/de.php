@@ -324,6 +324,8 @@
         $gLocale[ "PartiallyUpdated" ]         = "Dies kann auf eine bereits (teilweise) upgedatete Datenbank hinweisen.";
         $gLocale[ "GameconfigNotFound" ]       = "Die Datei gameconfig.php konnte nicht gefunden werden.";
         $gLocale[ "FailedGameconfig" ]         = "Die Datei gameconfig.php konnte nicht in das neue Format übertragen werden.";
+        $gLocale[ "RemoveAndLaunch" ]          = "Setup löschen und loslegen";
+        $gLocale[ "FailedRemoveSetup" ]        = "Der Setup-Ordner konnte nicht gelöscht werden.";
 
         // Repair
         $gLocale[ "Repair" ]                   = "Datenbank Inkonsistenzen reparieren";

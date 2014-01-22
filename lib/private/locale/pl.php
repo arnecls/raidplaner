@@ -327,6 +327,8 @@
         $gLocale[ "PartiallyUpdated" ]         = "Może to świadczyć o częściowo zaktualizowanej bazie danych.";
         $gLocale[ "GameconfigNotFound" ]       = null;
         $gLocale[ "FailedGameconfig" ]         = null;
+        $gLocale[ "RemoveAndLaunch" ]          = null;
+        $gLocale[ "FailedRemoveSetup" ]        = null;
 
         // Repair
         $gLocale[ "Repair" ]                   = "Napraw niespójną bazę danych";
