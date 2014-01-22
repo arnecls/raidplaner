@@ -14,7 +14,7 @@
             {        
                 $.ajax({
                     type     : "POST",
-                    url      : "query/cleanup.php",
+                    url      : "../lib/private/clear_setup.php",
                     dataType : "json",
                     async    : true,
                     data     : null,
