@@ -7,7 +7,27 @@
 
     header("Content-type: application/json");
     
-    if (!@unlink(dirname(__FILE__)."/../../setup"))
+    $SetupDir = realpath(dirname(__FILE__)."/../../setup");
+    
+    function DelTree( $aFolder) 
+    { 
+        $Files = array_diff(scandir($aFolder), array('.','..'));
+        
+        foreach ($Files as $File) 
+        {
+            $FullPath = $aFolder.DIRECTORY_SEPARATOR.$File;
+            $Success = (is_dir($FullPath))
+                ? DelTree($FullPath)
+                : @unlink($FullPath);
+                
+            if (!$Success)
+                return false;
+        }
+        
+        return @rmdir($aFolder); 
+    }     
+    
+    if (!DelTree(dirname(__FILE__)."/../../setup"))
     {
         $Out->pushError(L("FailedRemoveSetup"));
     }
