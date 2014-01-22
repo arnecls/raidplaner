@@ -307,7 +307,7 @@
         $gLocale[ "UseClearText" ]             = "Wysyłaj niezakodowane hasła (nie zalecane)";
 
         // Install/Update
-        $gLocale[ "SetupComplete" ]            = "Instalacja zakończona";
+        $gLocale[ "SecurityWarning" ]          = null;
         $gLocale[ "UpdateComplete" ]           = "Aktualizacja zakończona";
         $gLocale[ "RaidplanerSetupDone" ]      = "Raidplanner został poprawnie skonfigurowany.";
         $gLocale[ "DeleteSetupFolder" ]        = "Zalecane jest usunięcie katalogu \"setup\" i zabezpieczenie następujących katalogów (np. przez htaccess):";

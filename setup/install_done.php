@@ -41,23 +41,21 @@
     });
 </script>
 
-<h2><?php echo L("SetupComplete"); ?></h2>
+<h2><?php echo L("SecurityWarning"); ?></h2>
 <?php
 
     echo L("RaidplanerSetupDone")."<br/>";
     echo L("DeleteSetupFolder")."<br/>";
-    echo "<br/>";
-    echo "lib / private<br/>";
-    echo "lib / config<br/>";
-    echo "<br/>";
+?>
+
+<button id="remove" class="clear"><?php echo L("RemoveAndLaunch"); ?></button>
+<br/>
+
+<?php
     echo L("ThankYou")."<br/>";
     echo L("VisitBugtracker");
     echo "<a href=\"https://github.com/arnecls/raidplaner/issues\">GitHub</a>."
 ?>
-
-<br/>
-<br/>
-<button id="remove" style="height: 32px"><?php echo L("RemoveAndLaunch"); ?></button>
 
 </div>
 <div class="bottom_navigation">

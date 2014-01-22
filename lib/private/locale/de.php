@@ -304,12 +304,12 @@
         $gLocale[ "UseClearText" ]             = "Übertragung von Klartext Passwörtern (nicht empfohlen)";
 
         // Install/Update
-        $gLocale[ "SetupComplete" ]            = "Installation abgeschlossen";
+        $gLocale[ "SecurityWarning" ]          = "Sicherheitswarnung";
         $gLocale[ "UpdateComplete" ]           = "Update abgeschlossen";
         $gLocale[ "RaidplanerSetupDone" ]      = "Der Raidplaner ist jetzt erfolgreich konfiguriert.";
-        $gLocale[ "DeleteSetupFolder" ]        = "Du solltest nun den \"setup\" Ordner löschen und die folgenden Ordner (durch z.B. htaccess) schützen:";
+        $gLocale[ "DeleteSetupFolder" ]        = "Falls nicht mehr benötigt solltest nun den \"setup\" Ordner löschen um ungewollte Änderungen an deiner Installation zu verhindern.";
         $gLocale[ "ThankYou" ]                 = "Danke das du den packedpixel Raidplaner verwendest.";
-        $gLocale[ "VisitBugtracker" ]          = "Bei Fehlern oder Ideen für neue Features besuche bitte unseren Bugtracker unter ";
+        $gLocale[ "VisitBugtracker" ]          = "Bei Fehlern oder Ideen für neue Features besuche bitte den Bugtracker auf ";
         $gLocale[ "VersionDetection" ]         = "Versionserkennung und Update";
         $gLocale[ "VersionDetectProgress" ]    = "Setup versucht die aktuelle Version zu erkennen.";
         $gLocale[ "ChooseManually" ]           = "Wenn die erkannte Version nicht der installierten Version entspricht kann die korrekte Version manuell ausgewählt werden.";
@@ -326,7 +326,7 @@
         $gLocale[ "FailedGameconfig" ]         = "Die Datei gameconfig.php konnte nicht in das neue Format übertragen werden.";
         $gLocale[ "RemoveAndLaunch" ]          = "Setup löschen und loslegen";
         $gLocale[ "FailedRemoveSetup" ]        = "Der Setup-Ordner konnte nicht gelöscht werden.";
-
+        
         // Repair
         $gLocale[ "Repair" ]                   = "Datenbank Inkonsistenzen reparieren";
         $gLocale[ "GameconfigProblems" ]       = "Durch Veränderungen in der lib/config/config.game.php können ungütige Datenbankeinträge entstehen (z.B. Charaktere mit ungütigen Rollen).";

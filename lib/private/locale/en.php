@@ -303,12 +303,12 @@
         $gLocale[ "UseClearText" ]             = "Submit cleartext password (not recommended)";
 
         // Install/Update
-        $gLocale[ "SetupComplete" ]            = "Setup complete";
+        $gLocale[ "SecurityWarning" ]          = "Security warning";
         $gLocale[ "UpdateComplete" ]           = "Update complete";
         $gLocale[ "RaidplanerSetupDone" ]      = "Raidplaner has been successfully set up.";
-        $gLocale[ "DeleteSetupFolder" ]        = "You should now delete the \"setup\" folder and secure the following folders (e.g. by htaccess):";
+        $gLocale[ "DeleteSetupFolder" ]        = "If no longer needed, you should now delete the \"setup\" folder to avoid unwanted changes to your installtion.";
         $gLocale[ "ThankYou" ]                 = "Thank you for using packedpixel Raidplaner.";
-        $gLocale[ "VisitBugtracker" ]          = "If you encounter any bugs or if you have feature requests, please visit our bugtracker at ";
+        $gLocale[ "VisitBugtracker" ]          = "If you encounter any bugs or if you have feature requests, please visit the bugtracker at ";
         $gLocale[ "VersionDetection" ]         = "Version detection and update";
         $gLocale[ "VersionDetectProgress" ]    = "Setup will try to detect your current version.";
         $gLocale[ "ChooseManually" ]           = "If the detected version does not match your installed version you may always choose manually, too.";

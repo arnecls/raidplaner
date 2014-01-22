@@ -307,7 +307,7 @@
         $gLocale[ "UseClearText" ]             = "Soumettre le mot de passe en texte clair (non recommandé)";
 
         // Install/Update
-        $gLocale[ "SetupComplete" ]            = "Installation terminée";
+        $gLocale[ "SecurityWarning" ]          = null;
         $gLocale[ "UpdateComplete" ]           = "Mise à jour terminée";
         $gLocale[ "RaidplanerSetupDone" ]      = "Le raidplaner a bien été installé.";
         $gLocale[ "DeleteSetupFolder" ]        = "Vous devriez maintenant effacer le dossier \"setup\" et sécuriser les dossiers suivant (ex par htaccess):";
