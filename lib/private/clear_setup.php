@@ -4,10 +4,7 @@
     require_once(dirname(__FILE__)."/out.class.php");
 
     $Out = Out::getInstance();
-
     header("Content-type: application/json");
-    
-    $SetupDir = realpath(dirname(__FILE__)."/../../setup");
     
     function DelTree( $aFolder) 
     { 
@@ -27,9 +24,10 @@
         return @rmdir($aFolder); 
     }     
     
-    if (!DelTree(dirname(__FILE__)."/../../setup"))
+    if (!DelTree(realpath(dirname(__FILE__)."/../../setup")))
     {
         $Out->pushError(L("FailedRemoveSetup"));
+        $Out->pushError(error_get_last()["message"]);
     }
     
     $Out->flushJSON();
