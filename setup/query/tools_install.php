@@ -92,7 +92,6 @@
               `IntValue` int(11) NOT NULL,
               `TextValue` varchar(255) NOT NULL,
               PRIMARY KEY (`UserSettingId`),
-              UNIQUE KEY `Unique_Name` (`Name`),
               KEY `UserId` (`UserId`),
               FULLTEXT KEY `Name` (`Name`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );

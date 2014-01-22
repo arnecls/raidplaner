@@ -80,11 +80,14 @@ function msgProfileupdate( $aRequest )
                 // Update all raids in this time that exist now and are not yet attended
 
                 $RaidsQuery = $Connector->prepare("SELECT RaidId FROM `".RP_TABLE_PREFIX."Raid` ".
-                   "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (RaidId) ".
-                   "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) AND `".RP_TABLE_PREFIX."Attendance`.UserId IS NULL");
+                    "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (RaidId) ".
+                    "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) ".
+                    "AND (`".RP_TABLE_PREFIX."Attendance`.UserId IS NULL OR `".RP_TABLE_PREFIX."Attendance`.UserId != :UserId) ".
+                    "GROUP BY RaidId" );
 
                 $RaidsQuery->bindValue(":Start", $aRequest["vacationStart"], PDO::PARAM_INT);
                 $RaidsQuery->bindValue(":End", $aRequest["vacationEnd"], PDO::PARAM_INT);
+                $RaidsQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
 
                 $RaidsQuery->loop(function($RaidData) use (&$Connector, $UserId, $VacationMessage)
                 {
