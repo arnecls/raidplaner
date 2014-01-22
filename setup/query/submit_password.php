@@ -10,7 +10,7 @@
     $Out = Out::getInstance();
     $Connector = Connector::getInstance();
 
-    $TestQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE UserId=1 LIMIT 1" );
+    $TestQuery = $Connector->prepare( "SELECT Login FROM `".RP_TABLE_PREFIX."User` WHERE UserId=1 LIMIT 1" );
 
     try
     {
@@ -22,18 +22,20 @@
         if ( $TestQuery->getAffectedRows() == 0 )
         {
             $NewAdmin = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."User` ".
-                "VALUES(1, 'admin', 0, 'none', 'true', 'admin', :Password, :Salt, '', '', FROM_UNIXTIME(:Now));");
+                "VALUES(1, 'admin', 0, 'none', 'true', :Name, :Password, :Salt, '', '', FROM_UNIXTIME(:Now));");
 
+            $NewAdmin->BindValue(":Name", $_REQUEST["name"], PDO::PARAM_STR);
             $NewAdmin->BindValue(":Password", $HashedPassword, PDO::PARAM_STR);
             $NewAdmin->BindValue(":Salt", $Salt, PDO::PARAM_STR);
             $NewAdmin->BindValue(":Now", time(), PDO::PARAM_STR);
 
             $NewAdmin->execute(true);
         }
-
         else
         {
-            $UpdateAdmin = $Connector->exec( "UPDATE `".RP_TABLE_PREFIX."User` SET `Password`= :Password, `Salt`= :Salt WHERE UserId=1 LIMIT 1;" );
+            $UpdateAdmin = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET `Login`= :Name, `Password`= :Password, `Salt`= :Salt WHERE UserId=1 LIMIT 1;" );
+            
+            $UpdateAdmin->BindValue(":Name", $_REQUEST["name"], PDO::PARAM_STR);
             $UpdateAdmin->BindValue(":Password", $HashedPassword, PDO::PARAM_STR);
             $UpdateAdmin->BindValue(":Salt", $Salt, PDO::PARAM_STR);
 

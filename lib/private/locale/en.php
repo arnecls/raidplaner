@@ -289,6 +289,7 @@
         $gLocale[ "ConnectionTestOk" ]         = "Connection test succeeded";
 
         // Registration and admin
+        $gLocale[ "AdminName" ]                = "Name of the admin user";
         $gLocale[ "AdminPassword" ]            = "Password for the admin user";
         $gLocale[ "AdminPasswordSetup"]        = "The administrator (login name \"admin\") is a user that always has all available rights.";
         $gLocale[ "AdminNotMoveable"]          = "The admin user cannot be renamed or moved into a different group.";

@@ -293,6 +293,7 @@
         $gLocale[ "ConnectionTestOk" ]         = "Test połączenia zakończony sukcesem";
 
         // Registration and admin
+        $gLocale[ "AdminName" ]                = null;
         $gLocale[ "AdminPassword" ]            = "Hasło administratora";
         $gLocale[ "AdminPasswordSetup"]        = "Administrator (nazwa użytkownika \"admin\") jest użytkownikiem posiadającym zawsze wszystkie uprawnienia.";
         $gLocale[ "AdminNotMoveable"]          = "Nazwa konta administratora nie może być zmieniona, a konto nie może zostać przypisane do innej grupy.";
