@@ -473,7 +473,7 @@
                     $Info = $Binding->getUserInfoById($aExternalId);
                     if ( $Info != null )
                     {
-                        $Candidates[$Binding->BindingName] = $Info;
+                        $Candidates[$Binding->getName()] = $Info;
                     }
                 }
             }
@@ -495,7 +495,7 @@
                     $Info = $Binding->getUserInfoByName($aUserName);
                     if ( $Info != null )
                     {
-                        $Candidates[$Binding->BindingName] = $Info;
+                        $Candidates[$Binding->getName()] = $Info;
                     }
                 }
             }
@@ -951,7 +951,7 @@
                 }
             }
 
-            return $Success;
+            return true;
         }
     }
 

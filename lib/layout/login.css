@@ -108,7 +108,7 @@
     float:left;
 }
 
-#strength {
+#strprogress .progress {
     display: inline-block;
     height: 16px;
     background-color: #ccc;
@@ -135,7 +135,19 @@
     -ms-border-radius: 4px;
 }
 
-#hashprogress {
+#hashing .pglabel {
+    position: absolute;
+    display: inline-block;
+    width: 200px;
+    line-height: 16px;
+    font-size: 10px;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    color: #888;
+    text-align:center;
+    float:left;
+}
+
+#hashing .progress {
     display: inline-block;
     height: 16px;
     background-color: #666;

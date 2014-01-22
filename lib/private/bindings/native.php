@@ -155,12 +155,19 @@
         {
             return self::$HashMethod;
         }
+        
+        // -------------------------------------------------------------------------
+
+        public static function nativeHash( $aPassword, $aSalt, $aMethod )
+        {
+            return hash("sha256", sha1($aPassword).$aSalt);
+        }
 
         // -------------------------------------------------------------------------
 
         public function hash( $aPassword, $aSalt, $aMethod )
         {
-            return hash("sha256", sha1($aPassword).$aSalt);
+            return self::nativeHash($aPassword, $aSalt, $aMethod);
         }
     }
 ?>

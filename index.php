@@ -8,8 +8,7 @@
 
     // Old browser check
 
-    if ( !isset($_REQUEST["nocheck"]) )
-        include_once("oldbrowser.php");
+    include_once("oldbrowser.php");
 
     // Update or setup required check
 
