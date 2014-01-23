@@ -40,67 +40,135 @@ function msgProfileupdate( $aRequest )
         }
 
         // Update vacation settings
-
-        $SettingQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd' OR Name = 'VacationMessage')");
-        $SettingQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-
-        if ( $SettingQuery->execute() )
+        
+        $VacationQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."UserSetting` WHERE ".
+            "UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd' OR Name = 'VacationMessage')");
+            
+        $VacationQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+        
+        $VacationData = Array();
+        $VacationQuery->loop( function($aData) use (&$VacationData) {
+            $VacationData[$aData["Name"]] = $aData;
+        });
+        
+        $StartChanged   = isset($VacationData["VacationStart"]) && ($VacationData["VacationStart"]["IntValue"] != $aRequest["vacationStart"]);        
+        $EndChanged     = isset($VacationData["VacationEnd"]) && ($VacationData["VacationEnd"]["IntValue"] != $aRequest["vacationEnd"]);                          
+        $MessageChanged = isset($VacationData["VacationMessage"]) && ($VacationData["VacationMessage"]["TextValue"] != $aRequest["vacationMessage"]);
+        
+        // Remove vacation from all affected raids if times have changed
+        
+        if ($StartChanged || $EndChanged)
         {
-            if ($aRequest["vacationStart"] != null)
+            $RevokeQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Raid` LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (RaidId) ".
+                "SET `".RP_TABLE_PREFIX."Attendance`.Status = 'undecided', Comment = '' ".
+                "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) ".
+                "AND `".RP_TABLE_PREFIX."Attendance`.Status = 'unavailable' AND `".RP_TABLE_PREFIX."Attendance`.UserId = :UserId");
+                
+            $RevokeQuery->bindValue(":Start",  max($VacationData["VacationStart"]["IntValue"], time()), PDO::PARAM_INT);
+            $RevokeQuery->bindValue(":End",    $VacationData["VacationEnd"]["IntValue"], PDO::PARAM_INT);
+            $RevokeQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            
+            $RevokeQuery->execute();
+        }
+        
+        $StartChanged   = $StartChanged   || (!isset($VacationData["VacationStart"]) && ($aRequest["vacationStart"] != null));
+        $EndChanged     = $EndChanged     || (!isset($VacationData["VacationEnd"]) && ($aRequest["vacationEnd"] != null));
+        $MessageChanged = $MessageChanged || (!isset($VacationData["VacationMessage"]) && ($aRequest["vacationMessage"] != null)); 
+        
+        // Remove vacation settings if no data has been passed
+        
+        if ($aRequest["vacationStart"] == null)
+        {      
+            $DropOldQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd' OR Name = 'VacationMessage')");
+            
+            $DropOldQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $DropOldQuery->execute();
+        }
+        else if ($StartChanged || $EndChanged || $MessageChanged)
+        {
+            // Create or update start date
+            
+            if ( isset($VacationData["VacationStart"]) )
             {
-                // Update times
-
+                $StartQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."UserSetting` SET IntValue = :Time WHERE UserSettingId = :SettingId LIMIT 1");
+                $StartQuery->bindValue(":SettingId", $VacationData["VacationStart"]["UserSettingId"], PDO::PARAM_INT);
+            }
+            else
+            {
                 $StartQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, IntValue) VALUES (:UserId, 'VacationStart', :Time)");
                 $StartQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                $StartQuery->bindValue(":Time", $aRequest["vacationStart"], PDO::PARAM_INT);
-
-                $StartQuery->execute();
-
+            }
+            
+            $StartQuery->bindValue(":Time", $aRequest["vacationStart"], PDO::PARAM_INT);
+            $StartQuery->execute();
+            
+            // Create or update end date
+            
+            if ( isset($VacationData["VacationEnd"]) )
+            {
+                $EndQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."UserSetting` SET IntValue = :Time WHERE UserSettingId = :SettingId LIMIT 1");
+                $EndQuery->bindValue(":SettingId", $VacationData["VacationEnd"]["UserSettingId"], PDO::PARAM_INT);
+            }
+            else
+            {
                 $EndQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, IntValue) VALUES (:UserId, 'VacationEnd', :Time)");
                 $EndQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                $EndQuery->bindValue(":Time", $aRequest["vacationEnd"], PDO::PARAM_INT);
+            }
 
-                $EndQuery->execute();
+            $EndQuery->bindValue(":Time", $aRequest["vacationEnd"], PDO::PARAM_INT);
+            $EndQuery->execute();
 
-                // Update message
+            // Update or create message
 
-                $VacationMessage = "";
+            if ( isset($VacationData["VacationMessage"]) )
+            {
+                $MessageQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."UserSetting` SET TextValue = :Message WHERE UserSettingId = :SettingId LIMIT 1");
+                $MessageQuery->bindValue(":SettingId", $VacationData["VacationMessage"]["UserSettingId"], PDO::PARAM_INT);
+            }
+            else
+            {
+                $MessageQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, TextValue) VALUES (:UserId, 'VacationMessage', :Message)");
+                $MessageQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);                
+            }
 
-                if ($aRequest["vacationMessage"] != null)
+            $VacationMessage = ($aRequest["vacationMessage"] == null) ? "" : $aRequest["vacationMessage"];
+            
+            $MessageQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
+            $MessageQuery->execute();
+            
+            // Update all raids in that time to "undecided"
+
+            $RaidsQuery = $Connector->prepare("SELECT RaidId, AttendanceId FROM `".RP_TABLE_PREFIX."Raid` ".
+                "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(RaidId) ".
+                "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) ".
+                "AND (UserId = :UserId OR UserId IS NULL)");
+
+            $RaidsQuery->bindValue(":Start", $aRequest["vacationStart"], PDO::PARAM_INT);
+            $RaidsQuery->bindValue(":End", $aRequest["vacationEnd"], PDO::PARAM_INT);
+            $RaidsQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            
+            $RaidsQuery->loop(function($RaidData) use (&$Connector, $UserId, $VacationMessage)
+            {
+                if ($RaidData["AttendanceId"] != null)
                 {
-                    $VacationMessage = $aRequest["vacationMessage"];
-
-                    $MessageQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name, TextValue) VALUES (:UserId, 'VacationMessage', :Message)");
-                    $MessageQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                    $MessageQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
-
-                    $MessageQuery->execute();
+                    $AbsentQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` ".
+                        "SET Comment = :Message".(($StartChanged || $EndChanged) ? ", Status='unavailable' " : " ").
+                        "WHERE AttendanceId = :AttendanceId LIMIT 1");
+                    
+                    $AbsentQuery->bindValue(":AttendanceId", $RaidData["AttendanceId"], PDO::PARAM_INT);
                 }
-
-                // Update all raids in this time that exist now and are not yet attended
-
-                $RaidsQuery = $Connector->prepare("SELECT RaidId FROM `".RP_TABLE_PREFIX."Raid` ".
-                    "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (RaidId) ".
-                    "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) ".
-                    "AND (`".RP_TABLE_PREFIX."Attendance`.UserId IS NULL OR `".RP_TABLE_PREFIX."Attendance`.UserId != :UserId) ".
-                    "GROUP BY RaidId" );
-
-                $RaidsQuery->bindValue(":Start", $aRequest["vacationStart"], PDO::PARAM_INT);
-                $RaidsQuery->bindValue(":End", $aRequest["vacationEnd"], PDO::PARAM_INT);
-                $RaidsQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-
-                $RaidsQuery->loop(function($RaidData) use (&$Connector, $UserId, $VacationMessage)
+                else
                 {
                     $AbsentQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
                         "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
-
+                    
                     $AbsentQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
                     $AbsentQuery->bindValue(":RaidId", $RaidData["RaidId"], PDO::PARAM_INT);
-                    $AbsentQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
-
-                    $AbsentQuery->execute();
-                });
-            }
+                }
+                
+                $AbsentQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
+                $AbsentQuery->execute();
+            });
         }
 
         // Update characters
