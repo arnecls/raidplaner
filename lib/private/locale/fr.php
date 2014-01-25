@@ -17,7 +17,7 @@
         $gLocale[ "Shaman" ]                   = "chaman";
         $gLocale[ "Warlock" ]                  = "Démoniste";
         $gLocale[ "Warrior" ]                  = "Guerrier";
-        $gLocale[ "Random" ]                   = null;
+        $gLocale[ "Random" ]                   = "Inconnu";
         
         // Classes FF14        
         $gLocale[ "Arcanist" ]                 = "Arcaniste";
@@ -43,9 +43,9 @@
         $gLocale[ "Tank" ]                     = "Tank";
         $gLocale[ "Healer" ]                   = "Heal";
         $gLocale[ "Damage" ]                   = "Dps";
-        $gLocale[ "Melee" ]                    = null;
-        $gLocale[ "Range" ]                    = null;
-        $gLocale[ "Support" ]                  = null;
+        $gLocale[ "Melee" ]                    = "Corps à corps";
+		$gLocale[ "Range" ]                    = "Distance";
+		$gLocale[ "Support" ]                  = "Support";
 
         // Pre-loading checks
         $gLocale[ "ContinueNoUpdate" ]         = "Poursuivre sans mettre à jour";
@@ -73,7 +73,7 @@
         $gLocale[ "UnappliedChanges" ]         = "Voulez-vous annuler les modifications non sauvegardées?";
         $gLocale[ "DiscardChanges" ]           = "Oui annuler";
         $gLocale[ "to" ]                       = "à";
-        $gLocale[ "PHPVersionWarning" ]        = null;
+        $gLocale[ "PHPVersionWarning" ]        = "La version 1.1.0 PHP 5.3 ou supérieur est requise pour le Raidplaner.<br/>Désolé mais le serveur nécessite une mise à jour :(";
 
         // Login und user registration
         $gLocale[ "Login" ]                    = "Connexion";
@@ -122,17 +122,17 @@
         $gLocale[ "Sat" ]                      = "Sa";
         $gLocale[ "Sun" ]                      = "Di";
         $gLocale[ "NotSignedUp" ]              = "Pas inscrit";
-        $gLocale[ "Absent" ]                   = null;
-        $gLocale[ "Benched" ]                  = null;
-        $gLocale[ "RaidingAs" ]                = null;
+        $gLocale[ "Absent" ]                   = "Absent";
+		$gLocale[ "Benched" ]                  = "En liste d'attente";
+		$gLocale[ "RaidingAs" ]                = "Raid en tant que";
         $gLocale[ "WhyAbsent" ]                = "Merci de nous dire pourquoi vous serez absent.";
         $gLocale[ "SetAbsent" ]                = "Mettre absent";
         $gLocale[ "Comment" ]                  = "Commentaire";
         $gLocale[ "SaveComment" ]              = "Sauvegarder le commentaire";
-        $gLocale[ "RepeatOnce" ]               = null;
-        $gLocale[ "RepeatDay" ]                = null;
-        $gLocale[ "RepeatWeek" ]               = null;
-        $gLocale[ "RepeatMonth" ]              = null;
+        $gLocale[ "RepeatOnce" ]               = "Ne pas répéter";
+		$gLocale[ "RepeatDay" ]                = "Période, quotidienne";
+		$gLocale[ "RepeatWeek" ]               = "Période, hebdomadaire";
+		$gLocale[ "RepeatMonth" ]              = "Période, mensuel";
 
         // Raid
         $gLocale[ "Raid" ]                     = "Raid";
@@ -159,10 +159,10 @@
         $gLocale[ "SetupBy" ]                  = "Validé";
         $gLocale[ "AbsentBy" ]                 = "Noté Absent";
         $gLocale[ "SwitchChar" ]               = "Changé de personnage";
-        $gLocale[ "RaidNotFound" ]             = null;
-        $gLocale[ "RaidSetup" ]                = null;
-        $gLocale[ "LinkToRaid" ]               = null;
-        $gLocale[ "Switch" ]                   = null;
+        $gLocale[ "RaidNotFound" ]             = "Le raid n'a pas pu être trouvé.";
+		$gLocale[ "RaidSetup" ]                = "Configuration du raid";
+		$gLocale[ "LinkToRaid" ]               = "Lien vers le raid";
+		$gLocale[ "Switch" ]                   = "Changement";
 
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
@@ -184,16 +184,16 @@
         $gLocale[ "OldPasswordEmpty" ]         = "L'ancien mot de passe ne peut pas être vide.";
         $gLocale[ "AdminPassword" ]            = "Mot de passe administrateur";
         $gLocale[ "AdminPasswordEmpty" ]       = "Le mot de passe de l'administrateur ne peut pas être vide.";
-        $gLocale[ "WrongPassword" ]            = null;
+        $gLocale[ "WrongPassword" ]            = "Mauvais mot de passe.";
         $gLocale[ "PasswordLocked" ]           = "Le mot de passe ne peut pas être modifié.";
         $gLocale[ "PasswordChanged" ]          = "Le mot de passe a été modifié.";
-        $gLocale[ "UserNotFound" ]             = null;
-        $gLocale[ "VacationStart" ]            = null;
-        $gLocale[ "VacationEnd" ]              = null;
-        $gLocale[ "NoStartDate" ]              = null;
-        $gLocale[ "NoEndDate" ]                = null;
-        $gLocale[ "VacationMessage" ]          = null;
-        $gLocale[ "ClearVacation" ]            = null;
+        $gLocale[ "UserNotFound" ]             = "Utilisateur non trouvé.";
+		$gLocale[ "VacationStart" ]            = "Premier jour de vacance";
+		$gLocale[ "VacationEnd" ]              = "Dernier jour de vacance";
+		$gLocale[ "NoStartDate" ]              = "Entrez votre premier jour de vacance s'il vous plait.";
+		$gLocale[ "NoEndDate" ]                = "Entrez votre dernier jour de vacance s'il vous plait.";
+		$gLocale[ "VacationMessage" ]          = "Message d'absence";
+		$gLocale[ "ClearVacation" ]            = "Supprimer les données de vacances";
 
         // Settings
         $gLocale[ "Settings" ]                 = "Réglages";
@@ -293,7 +293,7 @@
         $gLocale[ "ConnectionTestOk" ]         = "Test de connexion réussi";
 
         // Registration and admin
-        $gLocale[ "AdminName" ]                = null;
+        $gLocale[ "AdminName" ]                = "Nom de l'administrateur";
         $gLocale[ "AdminPassword" ]            = "Mot de passe de l'administrateur";
         $gLocale[ "AdminPasswordSetup"]        = "L'administrateur (login name \"admin\") est un utilisateur qui a toujours toutes les autorisations.";
         $gLocale[ "AdminNotMoveable"]          = "L'administrateur ne peut pas être renommé ou déplacé dans un groupe différent.";
@@ -307,7 +307,7 @@
         $gLocale[ "UseClearText" ]             = "Soumettre le mot de passe en texte clair (non recommandé)";
 
         // Install/Update
-        $gLocale[ "SecurityWarning" ]          = null;
+        $gLocale[ "SecurityWarning" ]          = "Alerte de sécurité";
         $gLocale[ "UpdateComplete" ]           = "Mise à jour terminée";
         $gLocale[ "RaidplanerSetupDone" ]      = "Le raidplaner a bien été installé.";
         $gLocale[ "DeleteSetupFolder" ]        = "Vous devriez maintenant effacer le dossier \"setup\" et sécuriser les dossiers suivant (ex par htaccess):";
@@ -325,10 +325,10 @@
         $gLocale[ "UpdateErrors" ]             = "Erreurs de mise à jour";
         $gLocale[ "ReportedErrors" ]           = "Les erreurs suivants ont été signalées pendant la mise à jour.";
         $gLocale[ "PartiallyUpdated" ]         = "Cela pourra avoir des répercussions sur une base de données (partiellement) mise à jour.";
-        $gLocale[ "GameconfigNotFound" ]       = null;
-        $gLocale[ "FailedGameconfig" ]         = null;
-        $gLocale[ "RemoveAndLaunch" ]          = null;
-        $gLocale[ "FailedRemoveSetup" ]        = null;
+        $gLocale[ "GameconfigNotFound" ]       = "Le fichier gameconfig.php n'a pas été trouvé.";
+		$gLocale[ "FailedGameconfig" ]         = "Le fichier gameconfig.php n'a pas pus être transformé dans le nouveau format.";
+		$gLocale[ "RemoveAndLaunch" ]          = "Supprimer et relancer la configuration";
+		$gLocale[ "FailedRemoveSetup" ]        = "Le dossier de configuration n'a pu être trouvé.";
 
         // Repair
         $gLocale[ "Repair" ]                   = "Réparer les irrégularités de la base de données";
@@ -350,21 +350,22 @@
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Charger les groupes utilisant ces réglages";
-        $gLocale[ "AutoMemberLogin" ]          = null;
-        $gLocale[ "AutoLeadLogin" ]            = null;
+		$gLocale[ "AutoMemberLogin" ]          = "\"Membres\" Groupes:";
+		$gLocale[ "AutoLeadLogin" ]            = "\"Raidlead\" Groupes:";
         $gLocale[ "ReloadFailed" ]             = "Rechargement échoué";
-        $gLocale[ "LoadSettings" ]             = null;
-        $gLocale[ "BindingBasePath" ]          = null;
-        $gLocale[ "RetrievalFailed" ]          = null;
-        $gLocale[ "RetrievalOk" ]              = null;
-        $gLocale[ "NotExisting" ]              = null;
-        $gLocale[ "AllowAutoLogin" ]           = null;
-        $gLocale[ "NoValidConfig" ]            = null;
-        $gLocale[ "CookieNote" ]               = null;
-        $gLocale[ "PostToForum" ]              = null;
-        $gLocale[ "PostAsUser" ]               = null;
-        $gLocale[ "DisablePosting" ]           = null;
-        $gLocale[ "NoUsersFound" ]             = null;
+		$gLocale[ "LoadSettings" ]             = "Rapatriement des options automatique";
+		$gLocale[ "BindingBasePath" ]          = "Veuillez renseigner le chemin d'installation de la liaison relative à '".$_SERVER["DOCUMENT_ROOT"]."'.";
+		$gLocale[ "RetrievalFailed" ]          = "Échec du rapatriement automatique ";
+		$gLocale[ "RetrievalOk" ]              = "Rapatriement des données effectué avec succès";
+		$gLocale[ "NotExisting" ]              = "n’existe pas";
+		$gLocale[ "AllowAutoLogin" ]           = "Autoriser la connexion automatique";
+		$gLocale[ "NoValidConfig" ]            = "Pas de fichier de configuration valide trouvé.";
+		$gLocale[ "CookieNote" ]               = "La connexion automatique requiert que le raidplanner soit installé dans un sous-dossier de liaison avec les cookies. ".
+                                                 "Le chemin doit être changé dans la configuration des liaisons.";
+		$gLocale[ "PostToForum" ]              = "Poster un nouveau raid sur le forum";
+		$gLocale[ "PostAsUser" ]               = "Poster un nouveau raid sur cet utilisateur";
+		$gLocale[ "DisablePosting" ]           = "Ne pas créer de post";
+		$gLocale[ "NoUsersFound" ]             = "Utilisateur introuvable";
 
         // PHPBB3
         $gLocale[ "phpbb3_Binding" ]            = "PHPBB 3.x";
