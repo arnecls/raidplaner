@@ -107,7 +107,7 @@ function msgQuerySettings( $aRequest )
         $StateCounts = array( "undecided" => 0, "available" => 0, "unavailable" => 0, "ok" => 0 );
         $Attendances = Array();
 
-        $Attendance->loop( function($Data) use (&$Connector, &$UserId, &$NumRaidsRemain, &$MainCharName, &$StateCounts, &$Attendances)
+        $Attendance->loop( function($Data) use (&$gGame, &$Connector, &$UserId, &$NumRaidsRemain, &$MainCharName, &$StateCounts, &$Attendances)
         {
             if ( $UserId != $Data["UserId"] )
             {
@@ -139,7 +139,7 @@ function msgQuerySettings( $aRequest )
                 // Fetch number of attendable raids
 
                 $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
-                    "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING LocationId ".
+                    "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
                     "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game" );
 
                 $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
