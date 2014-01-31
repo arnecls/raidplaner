@@ -30,7 +30,7 @@
         $gLocale[ "Pugilist" ]                 = "Pugilist";
         $gLocale[ "Scholar" ]                  = "Scholar";
         $gLocale[ "Summoner" ]                 = "Summoner";
-        $gLocale[ "Theumaturge" ]              = "Thematurge";
+        $gLocale[ "Thaumaturge" ]              = "Thematurge";
         $gLocale[ "Warrior" ]                  = "Warrior";
         $gLocale[ "Whitemage" ]                = "White mage";
         $gLocale[ "Random" ]                   = "Unknown";
@@ -180,7 +180,7 @@
         $gLocale[ "OldPasswordEmpty" ]         = "The old password must not be empty.";
         $gLocale[ "AdminPassword" ]            = "Administrator password";
         $gLocale[ "AdminPasswordEmpty" ]       = "The administrator password must not be empty.";
-        $gLocale[ "WrongPassword" ]            = "Invalid login credentials";
+        $gLocale[ "WrongPassword" ]            = "Invalid password";
         $gLocale[ "PasswordLocked" ]           = "Password cannot be changed.";
         $gLocale[ "PasswordChanged" ]          = "The password has been changed.";
         $gLocale[ "UserNotFound" ]             = "User could not be found.";
@@ -289,6 +289,7 @@
         $gLocale[ "ConnectionTestOk" ]         = "Connection test succeeded";
 
         // Registration and admin
+        $gLocale[ "AdminName" ]                = "Name of the admin user";
         $gLocale[ "AdminPassword" ]            = "Password for the admin user";
         $gLocale[ "AdminPasswordSetup"]        = "The administrator (login name \"admin\") is a user that always has all available rights.";
         $gLocale[ "AdminNotMoveable"]          = "The admin user cannot be renamed or moved into a different group.";
@@ -302,12 +303,12 @@
         $gLocale[ "UseClearText" ]             = "Submit cleartext password (not recommended)";
 
         // Install/Update
-        $gLocale[ "SetupComplete" ]            = "Setup complete";
+        $gLocale[ "SecurityWarning" ]          = "Security warning";
         $gLocale[ "UpdateComplete" ]           = "Update complete";
         $gLocale[ "RaidplanerSetupDone" ]      = "Raidplaner has been successfully set up.";
-        $gLocale[ "DeleteSetupFolder" ]        = "You should now delete the \"setup\" folder and secure the following folders (e.g. by htaccess):";
+        $gLocale[ "DeleteSetupFolder" ]        = "If no longer needed, you should now delete the \"setup\" folder to avoid unwanted changes to your installtion.";
         $gLocale[ "ThankYou" ]                 = "Thank you for using packedpixel Raidplaner.";
-        $gLocale[ "VisitBugtracker" ]          = "If you encounter any bugs or if you have feature requests, please visit our bugtracker at ";
+        $gLocale[ "VisitBugtracker" ]          = "If you encounter any bugs or if you have feature requests, please visit the bugtracker at ";
         $gLocale[ "VersionDetection" ]         = "Version detection and update";
         $gLocale[ "VersionDetectProgress" ]    = "Setup will try to detect your current version.";
         $gLocale[ "ChooseManually" ]           = "If the detected version does not match your installed version you may always choose manually, too.";
@@ -320,6 +321,10 @@
         $gLocale[ "UpdateErrors" ]             = "Update errors";
         $gLocale[ "ReportedErrors" ]           = "The following errors were reported during update.";
         $gLocale[ "PartiallyUpdated" ]         = "This may hint on an already (partially) updated database.";
+        $gLocale[ "GameconfigNotFound" ]       = "The file gameconfig.php could not be found.";
+        $gLocale[ "FailedGameconfig" ]         = "The file gameconfig.php could not be translated into the new format.";
+        $gLocale[ "RemoveAndLaunch" ]          = "Delete setup and start";
+        $gLocale[ "FailedRemoveSetup" ]        = "The setup folder could not be deleted.";
 
         // Repair
         $gLocale[ "Repair" ]                   = "Repaire database inconsistencies";

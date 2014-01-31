@@ -14,6 +14,7 @@ function checkPasswordForm( a_NextPage )
     }
 
     var parameter = {
+        name     : $("#name").val(),
         password : $("#password").val()
     };
 

@@ -71,7 +71,7 @@
         "archer"      => Array( 1,  "Archer",      "dmg",  Array("dmg") ),
         "bard"        => Array( 2,  "Bard",        "dmg",  Array("dmg") ),
         "blackmage"   => Array( 3,  "Blackmage",   "dmg",  Array("dmg") ),
-        "theumaturge" => Array( 4,  "Theumaturge", "dmg",  Array("dmg") ),
+        "thaumaturge" => Array( 4,  "Thaumaturge", "dmg",  Array("dmg") ),
         "conjurer"    => Array( 5,  "Conjurer",    "heal", Array("heal") ),
         "whitemage"   => Array( 6,  "Whitemage",   "heal", Array("heal") ),
         "dragoon"     => Array( 7,  "Dragoon",     "dmg",  Array("dmg") ),

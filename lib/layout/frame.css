@@ -31,7 +31,7 @@
     overflow: visible;
 }
 
-#logo {
+#banner {
     display: block;
     height: 140px;
     width: 1024px;
@@ -59,6 +59,7 @@
     display: inline-block;
     height: 45px;
     width: 160px;
+    margin-right: 2px;
     font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 14px;
     text-align: center;
@@ -168,7 +169,7 @@
     width: 28px;
 }
 
-#menu .logout {
+#logout {
     position: relative;
     display: inline-block;
     padding: 0px;
@@ -178,7 +179,7 @@
     float: right;
 }
 
-#menu .logout .button_logout {
+#logout .button_logout {
     height: 24px;
 }
 

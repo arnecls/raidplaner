@@ -7,7 +7,7 @@
 <script type="text/javascript">
     $(document).ready( function() {
         $(".button_back").click( function() { open("update_check.php"); });
-        $(".button_next").click( function() { open("index.php"); });
+        $(".button_next").click( function() { open("install_done.php"); });
     });
 </script>
 

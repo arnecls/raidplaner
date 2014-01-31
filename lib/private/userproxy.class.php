@@ -66,17 +66,6 @@
             beginSession();
             $this->SiteId = dechex(crc32(dirname(__FILE__)));
 
-            if (isset($_REQUEST["logout"]))
-            {
-                // explicit "logout"
-
-                $this->resetUser();
-
-                $this->setSessionCookie(null);
-
-                return; // ### return, logout ###
-            }
-
             if (isset($_SESSION["User"]))
             {
                 // Session says user is still logged in
@@ -90,22 +79,11 @@
                 }
             }
 
-            // No "logout" and no exisiting session
-            // Try to login via request or session cookie
+            // Try to login via session cookie
 
             $LoginUser = null;
 
-            if (isset($_REQUEST["user"]) &&
-
-                isset($_REQUEST["pass"]))
-            {
-                // Explicit "login"
-
-                $LoginUser = array( "Login"    => $_REQUEST["user"],
-                                    "Password" => $_REQUEST["pass"],
-                                    "Cookie"   => false );
-            }
-            else if ( isset($_COOKIE[self::$mStickyCookieName.$this->SiteId]) )
+            if ( isset($_COOKIE[self::$mStickyCookieName.$this->SiteId]) )
             {
                 // Login via cookie
                 // Reconstruct login data from cookie + database hash
@@ -154,7 +132,7 @@
 
         // --------------------------------------------------------------------------------------------
 
-        private function resetUser()
+        public function resetUser()
         {
             $this->UserGroup     = "none";
             $this->UserId        = 0;
@@ -181,7 +159,7 @@
             $Connector  = Connector::getInstance();
 
             $OtkQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET OneTimeKey = :Key ".
-                                            "WHERE AND UserId = :UserId LIMIT 1" );
+                                            "WHERE UserId = :UserId LIMIT 1" );
 
             $OtkQuery->bindValue( ":Key",     $OneTimeKey, PDO::PARAM_STR );
             $OtkQuery->bindValue( ":UserId",  $aUserId,    PDO::PARAM_INT );
@@ -231,7 +209,7 @@
 
         // --------------------------------------------------------------------------------------------
 
-        private function setSessionCookie( $aData )
+        public function setSessionCookie( $aData )
         {
             $ServerName = "";
             $ServerPath = "";
@@ -404,7 +382,7 @@
                             // Revert user info to database values
 
                             $UserInfo->UserId = $ExternalUserId;
-                            $UserInfo->BindingName = $Binding->BindingName;
+                            $UserInfo->BindingName = $Binding->GetName();
 
                             return $UserInfo;
                         }
@@ -495,7 +473,7 @@
                     $Info = $Binding->getUserInfoById($aExternalId);
                     if ( $Info != null )
                     {
-                        $Candidates[$Binding->BindingName] = $Info;
+                        $Candidates[$Binding->getName()] = $Info;
                     }
                 }
             }
@@ -517,7 +495,7 @@
                     $Info = $Binding->getUserInfoByName($aUserName);
                     if ( $Info != null )
                     {
-                        $Candidates[$Binding->BindingName] = $Info;
+                        $Candidates[$Binding->getName()] = $Info;
                     }
                 }
             }
@@ -565,7 +543,7 @@
 
         // --------------------------------------------------------------------------------------------
 
-        private function processLoginRequest( $aLoginUser, $aAllowAutoLogin )
+        public function processLoginRequest( $aLoginUser, $aAllowAutoLogin )
         {
             $Connector = Connector::getInstance();
             $UserData = null;
@@ -588,7 +566,6 @@
                 // to fetch any updated/newly created data
 
                 $UserQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` ".
-
                                                   "WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
 
                 $UserQuery->bindValue(":UserId", $ExternalUser->UserId, PDO::PARAM_INT );
@@ -597,11 +574,9 @@
 
                 if ($UserData == null)
                     return false; // ### return, not registered ###
-
             }
             else
             {
-
                 // Try to login by $aLoginUser
 
                 $PasswordCheckOk = false;
@@ -628,9 +603,7 @@
                             // In this case we encrypt locally via php.
 
                             $UserId = (($UserData["BindingActive"] == "false") || ($UserData["ExternalBinding"] == "none"))
-
                                 ? $UserData["UserId"]
-
                                 : $UserData["ExternalId"];
 
                             $PasswordCheckOk = $this->validateCleartextPassword( $aLoginUser["Password"], $UserId, $UserData["ExternalBinding"] );
@@ -644,9 +617,7 @@
                             // to reset the key
 
                             $this->invalidateOneTimeKey( $UserData["UserId"] );
-
                             $HashedStoredPassword = hash("sha256", $UserData["OneTimeKey"].$UserData["Password"]);
-
                             $PasswordCheckOk = ($aLoginUser["Password"] == $HashedStoredPassword);
                         }
                     }
@@ -980,7 +951,7 @@
                 }
             }
 
-            return $Success;
+            return true;
         }
     }
 
@@ -989,61 +960,33 @@
     UserProxy::initBindings();
 
     // --------------------------------------------------------------------------------------------
-
-    function msgQueryUser($aRequest)
+    
+    function msgLogin($aRequest)
     {
-        $Out = Out::getInstance();
-
-        if (registeredUser())
+        $LoginUser = array( "Login"    => $aRequest["user"],
+                            "Password" => $aRequest["pass"],
+                            "Cookie"   => false );
+                            
+        $Proxy = UserProxy::getInstance();
+        
+        if ( !$Proxy->processLoginRequest($LoginUser, false) )
         {
-            $CurrentUser = UserProxy::getInstance();
-
-            $CharacterIds = array();
-            $CharacterNames = array();
-            $CharacterClasses = array();
-            $CharacterRoles1 = array();
-            $CharacterRoles2 = array();
-            $Settings = array();
-
-            foreach( $CurrentUser->Characters as $Character )
-            {
-                array_push($CharacterIds, $Character->CharacterId);
-                array_push($CharacterNames, $Character->Name);
-                array_push($CharacterClasses, explode(":",$Character->ClassName));
-                array_push($CharacterRoles1, $Character->Role1);
-                array_push($CharacterRoles2, $Character->Role2);
-            }
-
-            $Out->pushValue("registeredUser", true);
-            $Out->pushValue("id", $CurrentUser->UserId);
-            $Out->pushValue("name", $CurrentUser->UserName);
-            $Out->pushValue("characterIds", $CharacterIds);
-            $Out->pushValue("characterNames", $CharacterNames);
-            $Out->pushValue("characterClass", $CharacterClasses);
-            $Out->pushValue("role1", $CharacterRoles1);
-            $Out->pushValue("role2", $CharacterRoles2);
-
-            $Out->pushValue("validUser", validUser());
-            $Out->pushValue("isRaidlead", validRaidlead());
-            $Out->pushValue("isAdmin", validAdmin());
-            $Out->pushValue("settings", $CurrentUser->Settings);
-
-            if (isset($_SESSION["Calendar"]))
-            {
-                $CalendarValues = array("month" => $_SESSION["Calendar"]["month"], "year" => $_SESSION["Calendar"]["year"]);
-                $Out->pushValue("calendar", $CalendarValues);
-            }
-            else
-            {
-                $Out->pushValue("calendar", null);
-            }
-        }
-        else
-        {
-            $Out->pushValue("registeredUser", false);
+            msgLogout();
+            
+            $Out = Out::getInstance();
+            $Out->pushError(L("WrongPassword"));
         }
     }
+    
+    // --------------------------------------------------------------------------------------------
 
+    function msgLogout()
+    {
+        $Proxy = UserProxy::getInstance();
+        $Proxy->resetUser();
+        $Proxy->setSessionCookie(null);
+    }
+    
     // --------------------------------------------------------------------------------------------
 
     function registeredUser()

@@ -152,6 +152,26 @@ div.bottom_navigation {
     right: 7px;
 }
 
+button.clear {
+    height: 32px;
+    margin: 20px 0 20px 0;
+    border: 2px solid #faa;
+    background-color: #fdd;
+    color: red;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+}
+
+button.clear:hover {
+    border: 2px solid #f00;
+    background-color: #fcc;
+}
+
 .icon_install {
     background-image: url(install_white.png);
 }

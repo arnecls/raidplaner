@@ -30,7 +30,7 @@
         $gLocale[ "Pugilist" ]                 = "Faustkämpfer";
         $gLocale[ "Scholar" ]                  = "Gelehrter";
         $gLocale[ "Summoner" ]                 = "Beschwörer";
-        $gLocale[ "Theumaturge" ]              = "Thaumaturg";
+        $gLocale[ "Thaumaturge" ]              = "Thaumaturg";
         $gLocale[ "Warrior" ]                  = "Krieger";
         $gLocale[ "Whitemage" ]                = "Weißmagier";
         $gLocale[ "Random" ]                   = "Unbekannt";
@@ -180,7 +180,7 @@
         $gLocale[ "OldPasswordEmpty" ]         = "Das alte Passwort darf nicht leer sein.";
         $gLocale[ "AdminPassword" ]            = "Administrator passwort";
         $gLocale[ "AdminPasswordEmpty" ]       = "Das Administrator Passwort darf nicht leer sein.";
-        $gLocale[ "WrongPassword" ]            = "Ungültige Logindaten";
+        $gLocale[ "WrongPassword" ]            = "Ungültiges Passwort";
         $gLocale[ "PasswordLocked" ]           = "Passwort kann nicht verändert werden.";
         $gLocale[ "PasswordChanged" ]          = "Das Passwort wurde geändert.";
         $gLocale[ "UserNotFound" ]             = "Benutzer konnte nicht gefunden werden.";
@@ -290,6 +290,7 @@
         $gLocale[ "ConnectionTestOk" ]         = "Verbindungstest erfolgreich";
 
         // Registration and admin
+        $gLocale[ "AdminName" ]                = "Name des Administrators";
         $gLocale[ "AdminPassword" ]            = "Passwort für den Administrator";
         $gLocale[ "AdminPasswordSetup"]        = "Der Administrator (Anmeldename \"admin\") ist ein Benutzer der immer alle verfügbaren Rechte besitzt.";
         $gLocale[ "AdminNotMoveable"]          = "Der Nutzer admin kann nicht umbenannt oder in eine andere Gruppe verschoben werden.";
@@ -303,12 +304,12 @@
         $gLocale[ "UseClearText" ]             = "Übertragung von Klartext Passwörtern (nicht empfohlen)";
 
         // Install/Update
-        $gLocale[ "SetupComplete" ]            = "Installation abgeschlossen";
+        $gLocale[ "SecurityWarning" ]          = "Sicherheitswarnung";
         $gLocale[ "UpdateComplete" ]           = "Update abgeschlossen";
         $gLocale[ "RaidplanerSetupDone" ]      = "Der Raidplaner ist jetzt erfolgreich konfiguriert.";
-        $gLocale[ "DeleteSetupFolder" ]        = "Du solltest nun den \"setup\" Ordner löschen und die folgenden Ordner (durch z.B. htaccess) schützen:";
+        $gLocale[ "DeleteSetupFolder" ]        = "Falls nicht mehr benötigt solltest nun den \"setup\" Ordner löschen um ungewollte Änderungen an deiner Installation zu verhindern.";
         $gLocale[ "ThankYou" ]                 = "Danke das du den packedpixel Raidplaner verwendest.";
-        $gLocale[ "VisitBugtracker" ]          = "Bei Fehlern oder Ideen für neue Features besuche bitte unseren Bugtracker unter ";
+        $gLocale[ "VisitBugtracker" ]          = "Bei Fehlern oder Ideen für neue Features besuche bitte den Bugtracker auf ";
         $gLocale[ "VersionDetection" ]         = "Versionserkennung und Update";
         $gLocale[ "VersionDetectProgress" ]    = "Setup versucht die aktuelle Version zu erkennen.";
         $gLocale[ "ChooseManually" ]           = "Wenn die erkannte Version nicht der installierten Version entspricht kann die korrekte Version manuell ausgewählt werden.";
@@ -321,7 +322,11 @@
         $gLocale[ "UpdateErrors" ]             = "Fehler während des Updates";
         $gLocale[ "ReportedErrors" ]           = "Die folgenden Fehler wurden während des updates gemeldet.";
         $gLocale[ "PartiallyUpdated" ]         = "Dies kann auf eine bereits (teilweise) upgedatete Datenbank hinweisen.";
-
+        $gLocale[ "GameconfigNotFound" ]       = "Die Datei gameconfig.php konnte nicht gefunden werden.";
+        $gLocale[ "FailedGameconfig" ]         = "Die Datei gameconfig.php konnte nicht in das neue Format übertragen werden.";
+        $gLocale[ "RemoveAndLaunch" ]          = "Setup löschen und loslegen";
+        $gLocale[ "FailedRemoveSetup" ]        = "Der Setup-Ordner konnte nicht gelöscht werden.";
+        
         // Repair
         $gLocale[ "Repair" ]                   = "Datenbank Inkonsistenzen reparieren";
         $gLocale[ "GameconfigProblems" ]       = "Durch Veränderungen in der lib/config/config.game.php können ungütige Datenbankeinträge entstehen (z.B. Charaktere mit ungütigen Rollen).";

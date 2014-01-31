@@ -12,22 +12,15 @@
     $ConfigFile = fopen( "../../lib/config/config.php", "w+" );
 
     fwrite( $ConfigFile, "<?php\n");
-
     fwrite( $ConfigFile, "\tdefine(\"SQL_HOST\", \"".$_REQUEST["host"]."\");\n");
-
     fwrite( $ConfigFile, "\tdefine(\"RP_DATABASE\", \"".$_REQUEST["database"]."\");\n");
     fwrite( $ConfigFile, "\tdefine(\"RP_USER\", \"".$_REQUEST["user"]."\");\n");
     fwrite( $ConfigFile, "\tdefine(\"RP_PASS\", \"".$_REQUEST["password"]."\");\n");
     fwrite( $ConfigFile, "\tdefine(\"RP_TABLE_PREFIX\", \"".$_REQUEST["prefix"]."\");\n");
-
     fwrite( $ConfigFile, "\tdefine(\"ALLOW_REGISTRATION\", ".$_REQUEST["register"].");\n");
-
     fwrite( $ConfigFile, "\tdefine(\"ALLOW_GROUP_SYNC\", ".$_REQUEST["groupsync"].");\n");
-
     fwrite( $ConfigFile, "\tdefine(\"PUBLIC_MODE\", ".$_REQUEST["public"].");\n");
-
     fwrite( $ConfigFile, "\tdefine(\"USE_CLEARTEXT_PASSWORDS\", ".$_REQUEST["cleartext"].");\n");
-
     fwrite( $ConfigFile, "?>");
 
     fclose( $ConfigFile );

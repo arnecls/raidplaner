@@ -19,7 +19,8 @@ function msgQueryConfig( $aRequest )
     $Config["ClassIdx"] = array();
     $Config["Classes"] = array();
     $Config["GroupSizes"] = array();
-    $Config["ClassMode"] = $gClassMode;    
+    $Config["ClassMode"] = $gClassMode;
+    $Config["AllowRegistration"] = defined("ALLOW_REGISTRATION") && ALLOW_REGISTRATION;
 
     // Groups
 

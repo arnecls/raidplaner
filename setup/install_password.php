@@ -1,6 +1,7 @@
 <?php
     define( "LOCALE_SETUP", true );
     require_once(dirname(__FILE__)."/../lib/private/locale.php");
+    require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
 ?>
 <?php readfile("layout/header.html"); ?>
 
@@ -27,6 +28,16 @@
 
 <br/>
 
+<?php
+    $Connector = Connector::getInstance();
+    
+    $NameQuery = $Connector->prepare( "SELECT Login FROM `".RP_TABLE_PREFIX."User` WHERE UserId=1 LIMIT 1" );    
+    $UserData = $NameQuery->fetchFirst();
+    
+    $AdminName = ($NameQuery->getAffectedRows() == 0) ? "admin" : $UserData["Login"];
+?>
+
+<input type="text" id="name" value="<?php echo $AdminName; ?>"/> <?php echo L("AdminName"); ?><br/>
 <input type="password" id="password"/> <?php echo L("AdminPassword"); ?><br/>
 <input type="password" id="password_check"/> <?php echo L("RepeatPassword"); ?><br/>
 

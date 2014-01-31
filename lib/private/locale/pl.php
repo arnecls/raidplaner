@@ -165,7 +165,6 @@
         $gLocale[ "Switch" ]                   = "Przełącznik"; //????
 
         // Profile
-
         $gLocale[ "Profile" ]                  = "Profil";
         $gLocale[ "History" ]                  = "Historia rajdów";
         $gLocale[ "Characters" ]               = "Twoje postacie";
@@ -294,6 +293,7 @@
         $gLocale[ "ConnectionTestOk" ]         = "Test połączenia zakończony sukcesem";
 
         // Registration and admin
+        $gLocale[ "AdminName" ]                = null;
         $gLocale[ "AdminPassword" ]            = "Hasło administratora";
         $gLocale[ "AdminPasswordSetup"]        = "Administrator (nazwa użytkownika \"admin\") jest użytkownikiem posiadającym zawsze wszystkie uprawnienia.";
         $gLocale[ "AdminNotMoveable"]          = "Nazwa konta administratora nie może być zmieniona, a konto nie może zostać przypisane do innej grupy.";
@@ -307,7 +307,7 @@
         $gLocale[ "UseClearText" ]             = "Wysyłaj niezakodowane hasła (nie zalecane)";
 
         // Install/Update
-        $gLocale[ "SetupComplete" ]            = "Instalacja zakończona";
+        $gLocale[ "SecurityWarning" ]          = null;
         $gLocale[ "UpdateComplete" ]           = "Aktualizacja zakończona";
         $gLocale[ "RaidplanerSetupDone" ]      = "Raidplanner został poprawnie skonfigurowany.";
         $gLocale[ "DeleteSetupFolder" ]        = "Zalecane jest usunięcie katalogu \"setup\" i zabezpieczenie następujących katalogów (np. przez htaccess):";
@@ -325,6 +325,10 @@
         $gLocale[ "UpdateErrors" ]             = "Błędy aktualizacji";
         $gLocale[ "ReportedErrors" ]           = "Poniższe błędy wystąpiły podczas próby aktualizacji.";
         $gLocale[ "PartiallyUpdated" ]         = "Może to świadczyć o częściowo zaktualizowanej bazie danych.";
+        $gLocale[ "GameconfigNotFound" ]       = null;
+        $gLocale[ "FailedGameconfig" ]         = null;
+        $gLocale[ "RemoveAndLaunch" ]          = null;
+        $gLocale[ "FailedRemoveSetup" ]        = null;
 
         // Repair
         $gLocale[ "Repair" ]                   = "Napraw niespójną bazę danych";

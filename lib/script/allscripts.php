@@ -13,22 +13,22 @@
         "crypto/sha512.js",
         "crypto/tripledes.js",
         "crypto/bcrypt.js",
+        "mobile.js",
+        "combobox.js",
+        "hash.js",
         "time.js",
         "messagehub.js",
-        "mobile.js",
-        "tooltip.js",
         "main.js",
-        "hash.js",
-        "calendar.js",
+        "menu.js",
+        "login.js",
+        "register.js",
+        "tooltip.js",
         "sheet.js",
+        "calendar.js",
         "raid.js",
         "raidlist.js",
         "profile.js",
-        "initmenu.js",
-        "combobox.js",
-        "settings.js",
-        "login.js",
-        "register.js" );
+        "settings.js" );
 
     if ( defined("SCRIPT_DEBUG") && SCRIPT_DEBUG )
     {

@@ -2,7 +2,6 @@
     require_once(dirname(__FILE__)."/../../lib/private/connector.class.php");
 
     function InstallDB($Prefix)
-
     {
         $Out = Out::getInstance();
         $Connector = Connector::getInstance();
@@ -28,7 +27,7 @@
               `UserId` int(10) unsigned NOT NULL,
               `Name` varchar(64) NOT NULL,
               `Mainchar` enum('true','false') NOT NULL DEFAULT 'false',
-              `Class` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+              `Class` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
               `Role1` tinyint(1) unsigned NOT NULL,
               `Role2` tinyint(1) unsigned NOT NULL,
               PRIMARY KEY (`CharacterId`),
@@ -93,7 +92,6 @@
               `IntValue` int(11) NOT NULL,
               `TextValue` varchar(255) NOT NULL,
               PRIMARY KEY (`UserSettingId`),
-              UNIQUE KEY `Unique_Name` (`Name`),
               KEY `UserId` (`UserId`),
               FULLTEXT KEY `Name` (`Name`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
@@ -158,5 +156,85 @@
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 110, '');" );
         else
             $Connector->exec( "UPDATE `".$Prefix."Setting` SET IntValue=110 WHERE Name='Version' LIMIT 1" );
+    }
+    
+    // ------------------------------------------------------------------------
+    
+    function UpdateGameConfig110($aGameConfig100)
+    {
+        $Icons = Array(
+            "slot_role1.png" => "role_melee",
+            "slot_role2.png" => "role_heal",
+            "slot_role3.png" => "role_support",
+            "slot_role4.png" => "role_tank",
+        );
+    
+        include_once($aGameConfig100);
+        $NewGameConfig = fopen(dirname(__FILE__)."/../../lib/config/config.game.php", "w");
+        
+        if ($NewGameConfig === false)
+            return false;
+        
+        fwrite($NewGameConfig, "<?php\n");
+        fwrite($NewGameConfig, "\t\$gClassMode = \"single\";\n\n");
+        
+        // Roles
+        
+        fwrite($NewGameConfig, "\t\$gRoles = Array(\n");
+        
+        reset($gRoles);
+        for($RoleIdx=0; list($Ident, $Loca) = each($gRoles); ++$RoleIdx)
+        {
+            $Style = (isset($Icons[strtolower($gRoleImages[$RoleIdx])]))
+                ? $Icons[strtolower($gRoleImages[$RoleIdx])]
+                : "role_range";
+                
+            fwrite($NewGameConfig, "\t\t\"".$Ident."\" => Array( ".$RoleIdx.", ".$gRoleColumnCount[$RoleIdx].", \"".$Loca."\", \"".$Style."\" ),\n");
+        }
+        
+        fwrite($NewGameConfig, "\t);\n\n");
+        
+        // Classes
+        
+        fwrite($NewGameConfig, "\t\$gClasses = Array(\n");
+        
+        reset($gClasses);
+        for ($ClassIdx=0; list($Ident, $Data) = each($gClasses); ++$ClassIdx)
+        {
+            $Roles = array();
+            foreach($Data[2] as $Role)
+            {
+                array_push($Roles, "\"".$Role."\"");    
+            }
+            
+            fwrite($NewGameConfig, "\t\t\"".$Ident."\" => Array( ".$ClassIdx.", \"".$Data[0]."\", \"".$Data[1]."\", Array(".implode(",", $Roles).") ),\n");
+        }
+        
+        fwrite($NewGameConfig, "\t);\n\n");
+        
+        // Group sizes
+        
+        fwrite($NewGameConfig, "\t\$gGroupSizes = Array(\n");
+        
+        reset($gGroupSizes);
+        while(list($Count,$Slots) = each($gGroupSizes))
+        {
+            fwrite($NewGameConfig, "\t\t".$Count." => Array(".implode(",", $Slots)."),\n");
+        }
+        
+        fwrite($NewGameConfig, "\t);\n");
+        
+        // Close
+        
+        fwrite($NewGameConfig, "?>\n");
+        fclose($NewGameConfig);
+        
+        unset($gRoles);
+        unset($gRoleImages);
+        unset($gRoleColumnCount);
+        unset($gClases);
+        unset($gGroupSizes);
+        
+        return true;
     }
 ?>

@@ -341,7 +341,7 @@
 
 #profile_hashing {
     position: absolute;
-    top: 472px;
+    top: 468px;
     right: 200px;
     width: 150px;
     height: 23px;
@@ -350,17 +350,39 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -o-border-radius: 4px;
-    -ms-border-radius: 4px;   
-    text-align: center;
+    -ms-border-radius: 4px;
 }
 
 #profile_hashing .pglabel {
+    position: absolute;
     display: inline-block;
     text-align: center;
-    float: left;
     width: 150px;
     line-height: 23px; 
     color: #aaa;
+    left: 0px;
+}
+
+#profile_hashing .pglabel {
+    position: absolute;
+    display: inline-block;
+    text-align: center;
+    width: 150px;
+    line-height: 23px; 
+    color: #aaa;
+    left: 0px;
+}
+
+#profile_hashing .progress {
+    display: inline-block;
+    height: 23px;
+    background-color: #666;
+    width: 0%; 
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    -ms-border-radius: 4px;
 }
 
 #profile_strprogress {
@@ -378,12 +400,24 @@
 }
 
 #profile_strprogress .pglabel {
+    position: absolute;
     display: inline-block;
     text-align: center;
     float: left;
     line-height: 16px;
     width: 140px;
     color: #aaa;
+}
+
+#profile_strprogress .progress {
+    display: inline-block;
+    height: 16px;
+    width: 0%; 
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    -ms-border-radius: 4px;
 }
 
 #profilesettings .datepicker {
