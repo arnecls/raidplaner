@@ -2,10 +2,12 @@
 
 function msgQuerySettings( $aRequest )
 {
-    $Out = Out::getInstance();
-
     if ( validAdmin() )
     {
+        global $gGame;
+        loadGameSettings();
+        
+        $Out = Out::getInstance();
         $Connector = Connector::getInstance();
 
         // Pass through parameter
@@ -93,10 +95,11 @@ function msgQuerySettings( $aRequest )
                                            "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
                                            "WHERE `".RP_TABLE_PREFIX."Character`.Mainchar = 'true' ".
                                            "AND `".RP_TABLE_PREFIX."Raid`.Start > `".RP_TABLE_PREFIX."User`.Created ".
-                                           "AND `".RP_TABLE_PREFIX."Raid`.Start < FROM_UNIXTIME(:Now) ".
+                                           "AND `".RP_TABLE_PREFIX."Raid`.Start < FROM_UNIXTIME(:Now) AND Game = :Game ".
                                            "GROUP BY UserId, `Status` ORDER BY Name" );
 
         $Attendance->bindValue( ":Now", time(), PDO::PARAM_INT );
+        $Attendance->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
 
         $UserId = 0;
         $NumRaidsRemain = 0;
@@ -136,10 +139,12 @@ function msgQuerySettings( $aRequest )
                 // Fetch number of attendable raids
 
                 $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
-                                              "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now)" );
+                    "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING LocationId ".
+                    "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game" );
 
                 $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
                 $Raids->bindValue( ":Created", $Data["CreatedUTC"], PDO::PARAM_INT );
+                $Raids->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
 
                 $RaidCountData = $Raids->fetchFirst();
                 $NumRaidsRemain = ($RaidCountData == null) ? 0 : $RaidCountData["NumberOfRaids"];
@@ -173,6 +178,7 @@ function msgQuerySettings( $aRequest )
     }
     else
     {
+        $Out = Out::getInstance();
         $Out->pushError(L("AccessDenied"));
     }
 }

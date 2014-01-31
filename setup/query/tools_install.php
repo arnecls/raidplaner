@@ -25,6 +25,7 @@
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."Character` (
               `CharacterId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `UserId` int(10) unsigned NOT NULL,
+              `Game` char(4) NOT NULL,
               `Name` varchar(64) NOT NULL,
               `Mainchar` enum('true','false') NOT NULL DEFAULT 'false',
               `Class` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -36,6 +37,7 @@
 
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."Location` (
               `LocationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+              `Game` char(4) NOT NULL,
               `Name` varchar(128) NOT NULL,
               `Image` varchar(255) NOT NULL,
               PRIMARY KEY (`LocationId`)
@@ -50,11 +52,8 @@
               `End` datetime NOT NULL,
               `Mode` enum('manual','overbook','attend','all') NOT NULL,
               `Description` text NOT NULL,
-              `SlotsRole1` tinyint(2) unsigned NOT NULL,
-              `SlotsRole2` tinyint(2) unsigned  NOT NULL,
-              `SlotsRole3` tinyint(2) unsigned  NOT NULL,
-              `SlotsRole4` tinyint(2) unsigned  NOT NULL,
-              `SlotsRole5` tinyint(2) unsigned  NOT NULL,
+              `ColumnRoles` varchar(24) NOT NULL,
+              `ColumnCount` varchar(12) NOT NULL,
               PRIMARY KEY (`RaidId`),
               KEY `LocationId` (`LocationId`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );

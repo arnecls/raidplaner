@@ -14,11 +14,11 @@ function msgRaidAttend( $aRequest )
 
         $ChangeAllowed = true;
         $RaidInfo = Array();
-        $Role = 0;
+        $Role = "";
 
         // Check if locked
 
-        $LockCheckQuery = $Connector->prepare("SELECT Stage,Mode,SlotsRole1,SlotsRole2,SlotsRole3,SlotsRole4,SlotsRole5 FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
+        $LockCheckQuery = $Connector->prepare("SELECT Stage, Mode, SlotRoles, SlotCount FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
         $LockCheckQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
 
         $RaidInfo = $LockCheckQuery->fetchFirst();
@@ -54,7 +54,11 @@ function msgRaidAttend( $aRequest )
 
             if ( $ChangeAllowed )
             {
-                $MaxSlotCount = $RaidInfo["SlotsRole".($Role+1)];
+                $RoleCounts = array_combine(
+                    explode(":", $RaidInfo["SlotRoles"]), 
+                    explode(":", $RaidInfo["SlotCount"]));
+                 
+                $MaxSlotCount = $RoleCounts[$Role];
 
                 $CheckQuery = $Connector->prepare("SELECT UserId FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId AND RaidId = :RaidId LIMIT 1");
                 $CheckQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
@@ -69,14 +73,14 @@ function msgRaidAttend( $aRequest )
                     if ( $ChangeComment  )
                     {
                         $AttendQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                        "CharacterId = :CharacterId, Status = :Status, Role = :Role, Comment = :Comment, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
-                                                        "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
+                            "CharacterId = :CharacterId, Status = :Status, Role = :Role, Comment = :Comment, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
+                            "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
                     }
                     else
                     {
                         $AttendQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                        "CharacterId = :CharacterId, Status = :Status, Role = :Role, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
-                                                        "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
+                            "CharacterId = :CharacterId, Status = :Status, Role = :Role, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
+                            "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
 
                     }
                 }
@@ -85,12 +89,12 @@ function msgRaidAttend( $aRequest )
                     if ( $ChangeComment )
                     {
                         $AttendQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment, LastUpdate ) ".
-                                                        "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, :Comment, FROM_UNIXTIME(:Timestamp) )" );
+                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, :Comment, FROM_UNIXTIME(:Timestamp) )" );
                     }
                     else
                     {
                         $AttendQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment, LastUpdate) ".
-                                                        "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, '', FROM_UNIXTIME(:Timestamp) )" );
+                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, '', FROM_UNIXTIME(:Timestamp) )" );
                     }
                 }
 

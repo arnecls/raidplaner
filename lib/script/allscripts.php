@@ -37,7 +37,7 @@
 
         foreach ( $Loader_files as $File )
         {
-            echo "<script type=\"text/javascript\" src=\"lib/script/".$File."?version=".$gSite["Version"]."\"></script>\n";
+            echo "<script type=\"text/javascript\" src=\"lib/script/".$File."?version=".$gVersion."\"></script>\n";
         }
     }
     else

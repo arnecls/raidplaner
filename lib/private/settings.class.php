@@ -38,6 +38,7 @@ class Settings
         $Query->loop( function($Data) use (&$Property)
         {
             $Property[$Data["Name"]] = Array(
+                "Name"      => $Data["Name"],
                 "IntValue"  => intval($Data["IntValue"]),
                 "TextValue" => $Data["TextValue"]
             );

@@ -143,10 +143,15 @@ function getVacationData($aRequest)
     return $Ranges;
 }
 
+// -----------------------------------------------------------------------------
+
 function msgProfileupdate( $aRequest )
 {
     if ( validUser() )
     {
+        global $gGame;
+        loadGameSettings();
+                
         $UserId = UserProxy::getInstance()->UserId;
 
         if ( validAdmin() && isset($aRequest["userId"]) && ($aRequest["userId"]!=0) )
@@ -358,13 +363,14 @@ function msgProfileupdate( $aRequest )
             if ( $CharId == 0 )
             {
                 // Insert new character
-
+                
                 $InsertChar = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Character` ".
-                    "( UserId, Name, Class, Mainchar, Role1, Role2 ) ".
-                    "VALUES ( :UserId, :Name, :Class, :Mainchar, :Role1, :Role2 )" );
+                    "( UserId, Name, Game, Class, Mainchar, Role1, Role2 ) ".
+                    "VALUES ( :UserId, :Name, :Game, :Class, :Mainchar, :Role1, :Role2 )" );
                                                     
                 $InsertChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
                 $InsertChar->bindValue( ":Name", requestToXML( $aRequest["name"][$CharIndex], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
+                $InsertChar->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
                 $InsertChar->bindValue( ":Class", $Classes, PDO::PARAM_STR );
                 $InsertChar->bindValue( ":Mainchar", $aRequest["mainChar"][$CharIndex], PDO::PARAM_STR );
                 $InsertChar->bindValue( ":Role1", $aRequest["role1"][$CharIndex], PDO::PARAM_STR );

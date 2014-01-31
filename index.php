@@ -4,7 +4,7 @@
     define("SCRIPT_DEBUG", true);
 
     require_once("lib/private/locale.php");
-    require_once("lib/private/gamedata.php");
+    require_once("lib/private/tools_site.php");
 
     // Old browser check
 
@@ -12,7 +12,7 @@
 
     // Update or setup required check
 
-    if ( !file_exists("lib/config/config.php") || !checkVersion($gSite["Version"]) )
+    if ( !file_exists("lib/config/config.php") || !checkVersion($gVersion) )
     {
         include_once("runsetup.php");
         die();

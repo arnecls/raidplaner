@@ -25,10 +25,12 @@ function getCalStartDay()
 
 function msgQueryCalendar( $aRequest )
 {
-    $Out = Out::getInstance();
-
     if (validUser())
     {
+        global $gGame;
+        loadGameSettings();
+        
+        $Out = Out::getInstance();
         $Connector = Connector::getInstance();
 
         $ListRaidQuery = $Connector->prepare(  "Select ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.*, ".
@@ -41,6 +43,7 @@ function msgQueryCalendar( $aRequest )
                                             "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING (RaidId) ".
                                             "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING (CharacterId) ".
                                             "WHERE ".RP_TABLE_PREFIX."Raid.Start >= FROM_UNIXTIME(:Start) AND ".RP_TABLE_PREFIX."Raid.Start <= FROM_UNIXTIME(:End) ".
+                                            "AND ".RP_TABLE_PREFIX."Location.Game = :Game ".
                                             "ORDER BY ".RP_TABLE_PREFIX."Raid.Start, ".RP_TABLE_PREFIX."Raid.RaidId" );
 
         // Calculate the correct start end end times
@@ -69,8 +72,9 @@ function msgQueryCalendar( $aRequest )
 
         // Query and return
 
-        $ListRaidQuery->bindValue(":Start", $StartUTC, PDO::PARAM_INT);
-        $ListRaidQuery->bindValue(":End",   $EndUTC,   PDO::PARAM_INT);
+        $ListRaidQuery->bindValue(":Start", $StartUTC,        PDO::PARAM_INT);
+        $ListRaidQuery->bindValue(":End",   $EndUTC,          PDO::PARAM_INT);
+        $ListRaidQuery->bindValue(":Game",  $gGame["GameId"], PDO::PARAM_STR);
 
         $_SESSION["Calendar"]["month"] = intval($aRequest["Month"]);
         $_SESSION["Calendar"]["year"]  = intval($aRequest["Year"]);
@@ -86,6 +90,7 @@ function msgQueryCalendar( $aRequest )
     }
     else
     {
+        $Out = Out::getInstance();
         $Out->pushError(L("AccessDenied"));
     }
 }
@@ -94,35 +99,31 @@ function msgQueryCalendar( $aRequest )
 
 function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
 {
-    global $gRoles;
     $Out = Out::getInstance();
 
     $RaidData = Array();
-    $RaidInfo = Array();
+    $RoleInfo = Array();
 
-    $aQueryResult->loop( function($Data) use (&$gRoles, &$RaidData, &$RaidInfo)
+    $aQueryResult->loop( function($Data) use (&$RaidData, &$RoleInfo)
     {
         array_push($RaidData, $Data);
+        $RaidId = $Data["RaidId"];
 
         // Create used slot counts
 
-        if ( !isset($RaidInfo[$Data["RaidId"]]) )
-        {
-            foreach ( $gRoles as $Role )
-            {
-                $RoleIdx = $Role[0];
-                $RaidInfo[$Data["RaidId"]]["role".$RoleIdx] = 0;
-            }
-
-            $RaidInfo[$Data["RaidId"]]["bench"] = 0;
-        }
-
+        if ( !isset($RoleInfo[$RaidId]) )
+            $RoleInfo[$RaidId] = Array();
+        
         // Count used slots
 
         if ( ($Data["Status"] == "ok") ||
              ($Data["Status"] == "available") )
         {
-            ++$RaidInfo[$Data["RaidId"]]["role".$Data["Role"]];
+            $Role = $Data["Role"];
+            if ( isset($RoleInfo[$RaidId][$Role]) )
+                ++$RoleInfo[$RaidId][$Role];
+            else
+                $RoleInfo[$RaidId][$Role] = 0;
         }
     });
 
@@ -135,8 +136,9 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
     for ( $DataIdx=0; $DataIdx < $RaidDataCount; ++$DataIdx )
     {
         $Data = $RaidData[$DataIdx];
+        $RaidId = $Data["RaidId"];
 
-        if ( $LastRaidId != $Data["RaidId"] )
+        if ( $LastRaidId != $RaidId )
         {
             // If no user assigned for this raid
             // or row belongs to this user
@@ -148,7 +150,7 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
             if ( ($IsCorrectUser) ||
                  ($Data["UserId"] == NULL) ||
                  ($DataIdx+1 == $RaidDataCount) ||
-                 ($RaidData[$DataIdx+1]["RaidId"] != $Data["RaidId"]) )
+                 ($RaidData[$DataIdx+1]["RaidId"] != $RaidId) )
             {
                 $Status = "notset";
                 $AttendanceIndex = 0;
@@ -167,8 +169,9 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
                 $EndDate   = getdate($Data["EndUTC"]);
 
                 $Raid = Array(
-                    "id"              => $Data["RaidId"],
+                    "id"              => $RaidId,
                     "location"        => $Data["Name"],
+                    "game"            => $Data["Game"],
                     "stage"           => $Data["Stage"],
                     "size"            => $Data["Size"],
                     "startDate"       => $StartDate["year"]."-".leadingZero10($StartDate["mon"])."-".leadingZero10($StartDate["mday"]),
@@ -181,17 +184,24 @@ function parseRaidQuery( $aRequest, $aQueryResult, $aLimit )
                     "attendanceIndex" => $AttendanceIndex,
                     "comment"         => $Comment,
                     "role"            => $Role,
+                    "slotMax"         => Array(),
+                    "slotCount"       => Array()
                 );
-
-                for ( $i=0; $i < sizeof($gRoles); ++$i )
+                
+                $Roles = explode(":",$Data["SlotRoles"]);
+                $Count = explode(":",$Data["SlotCount"]);
+                
+                for ( $i=0; $i < sizeof($Roles); ++$i )
                 {
-                    $Raid["role".$i."Slots"] = $Data["SlotsRole".($i+1)];
-                    $Raid["role".$i]         = $RaidInfo[$Data["RaidId"]]["role".$i];
+                    $RoleId = $Roles[$i];
+                    
+                    $Raid["slotMax"][$RoleId] = $Count[$i];
+                    $Raid["slotCount"][$RoleId] = (isset($RoleInfo[$RaidId][$RoleId])) ? $RoleInfo[$RaidId][$RoleId] : 0;
                 }
 
                 array_push($Raids, $Raid);
 
-                $LastRaidId = $Data["RaidId"];
+                $LastRaidId = $RaidId;
                 ++$NumRaids;
 
                 if ( ($aLimit > 0) && ($NumRaids == $aLimit) )

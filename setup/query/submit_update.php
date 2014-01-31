@@ -307,9 +307,16 @@
     {
         echo "<div class=\"update_version\">".L("UpdateFrom")." 1.0.0 ".L("UpdateTo")." 1.1.0";
 
-        $Updates = Array( "Multi class support" => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Class` `Class` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
-                          "Class attendance"    => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD `Class` TINYINT(2) NOT NULL DEFAULT '0' AFTER `Role`;",
-                          "User settings fix"   => "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` DROP INDEX `Unique_Name`;" );
+        $Updates = Array( "Multi class support"   => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Class` `Class` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
+                          "Class attendance"      => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD `Class` TINYINT(2) NOT NULL DEFAULT '0' AFTER `Role`;",
+                          "User settings fix"     => "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` DROP INDEX `Unique_Name`;",
+                          "Game bound locations"  => "ALTER TABLE `".RP_TABLE_PREFIX."Location` ADD `Game` CHAR(4) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `LocationId`;",
+                          "Game bound characters" => "ALTER TABLE `".RP_TABLE_PREFIX."Character` ADD `Game` CHAR(4) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `UserId`;",
+                          "New role ids"          => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Role1` `Role1` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL, ".
+                                                     "CHANGE `Role2` `Role2` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;".
+                                                     "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CHANGE  `Role` `Role` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
+                          "Raid column storage"   => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `ColumnRoles` VARCHAR(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `Description`, ".
+                                                     "ADD `ColumnCount` VARCHAR(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `ColumnRoles`;" );
         
         // Timezone fix
         
@@ -339,8 +346,10 @@
         
         echo "<div class=\"update_step\">Gameconfig update";
         $GameConfig = dirname(__FILE__)."/../../lib/private/gameconfig.php";
+        
+        // TODO create a game with id "conv" -> "World of Warcraft (converted)" if gameconfig does not match wow3 or wow4
 
-        if (file_exists($GameConfig))
+        /*if (file_exists($GameConfig))
         {
             if (UpdateGameConfig110($GameConfig))            
                 echo "<div class=\"update_step_ok\">OK</div>";
@@ -350,70 +359,23 @@
         else
         {
             echo "<div class=\"update_step_warning\">".L("GameconfigNotFound")." (lib/private/gameconfig.php).</div>";
-        }
+        }*/
 
         echo "</div>";
         
-        // Class field update
+        // Convert attendance roles, character roles
+        // TODO
         
-        /*echo "<div class=\"update_step\">Class names to ids";
+        // Set location game, character game
+        // TODO
         
-        include_once(dirname(__FILE__)."/../../lib/config/config.game.php");
+        // Convert raid slot count
+        // TODO
         
-        $Success = true;
-        $ClassIdents = array_keys($gClasses);
+        // Drop old raid slot count 
+        // TODO
         
-        $CharQuery = $Connector->prepare("SELECT CharacterId, Class FROM `".RP_TABLE_PREFIX."Character`");
-        $CharQuery->setErrorsAsHTML(true);
-        
-        $CharQuery->loop( function($CharData) use (&$Connector, $ClassIdents, $gClasses, &$Success)
-        {
-            $ClassNames = explode(":", $CharData["Class"]);
-            $ClassIds = Array();
-            
-            // Try map class name to index as good as possible.
-            // If the ident is not found use a close sounding name
-                        
-            foreach($ClassNames as $ClassName)
-            {
-                if (isset($gClasses[$ClassName]))
-                {
-                    array_push($ClassIds, $gClasses[$ClassName][0]);
-                }
-                else
-                {
-                    $BestIdent = $ClassIdents[0];
-                    $BestDist = PHP_INT_MAX;
-                    
-                    foreach ($ClassIdents as $NewIdent)
-                    {
-                        $Dist = levenshtein($NewIdent, $ClassName);
-                        if ($Dist < $BestDist)
-                        {
-                            $BestDist = $Dist;
-                            $BestIdent = $NewIdent;
-                        }
-                    }
-                    
-                    array_push($ClassIds, $gClasses[$BestIdent][0]);
-                }                    
-            }
-            
-            // Update character
-            
-            $CharUpdate = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Character` SET Class=:Classes WHERE CharacterId=:CharId LIMIT 1");
-            
-            $CharUpdate->setErrorsAsHTML(true);
-            $CharUpdate->bindValue(":Classes", implode(":",$ClassIds), PDO::PARAM_STR);
-            $CharUpdate->bindValue(":CharId", $CharData["CharacterId"], PDO::PARAM_INT);
-            
-            $Success = $Success && $CharUpdate->execute();
-        });
-        
-        if ($Success)
-            echo "<div class=\"update_step_ok\">OK</div>";
-        
-        echo "</div>";*/
+        // "ALTER TABLE `raids_Raid` DROP `SlotsRole1`, DROP `SlotsRole2`, DROP `SlotsRole3`, DROP `SlotsRole4`, DROP `SlotsRole5`;";
         
         // Finish
 

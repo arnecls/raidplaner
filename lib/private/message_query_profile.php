@@ -2,12 +2,12 @@
 
 function msgQueryProfile( $aRequest )
 {
-    global $gRoles;
-    global $gClassMode;
-    $Out = Out::getInstance();
-
     if ( validUser() )
     {
+        global $gGame;
+        loadGameSettings();
+        
+        $Out = Out::getInstance();
         $UserId = UserProxy::getInstance()->UserId;
 
         if ( validAdmin() && isset($aRequest["userId"]) && ($aRequest["userId"]!=0) )
@@ -73,10 +73,11 @@ function msgQueryProfile( $aRequest )
         else
         {
             $CharacterQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Character` ".
-                                                "WHERE UserId = :UserId ".
-                                                "ORDER BY Mainchar, Name" );
+                "WHERE UserId = :UserId AND Game = :Game".
+                "ORDER BY Mainchar, Name" );
 
             $CharacterQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $CharacterQuery->bindValue(":Game", $gGame["GameId"], PDO::PARAM_STR);
 
             $CharacterQuery->loop( function($Row) use (&$Characters)
             {
@@ -98,10 +99,14 @@ function msgQueryProfile( $aRequest )
         // Total raid count
 
         $NumRaids = 0;
-        $RaidsQuery = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now)" );
+        $RaidsQuery = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
+            "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
+            "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game" );
+        
         $RaidsQuery->bindValue( ":Now", time(), PDO::PARAM_INT );
         $RaidsQuery->bindValue( ":Created", $CreatedUTC, PDO::PARAM_STR );
-
+        $RaidsQuery->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
+        
         $Data = $RaidsQuery->fetchFirst();
         if ($Data != null)
             $NumRaids = $Data["NumberOfRaids"];
@@ -109,39 +114,41 @@ function msgQueryProfile( $aRequest )
         // Load attendance
 
         $AttendanceQuery = $Connector->prepare(  "Select `Status`, `Role`, COUNT(*) AS `Count` ".
-                                            "FROM `".RP_TABLE_PREFIX."Attendance` ".
-                                            "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) ".
-                                            "WHERE UserId = :UserId AND Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) ".
-                                            "GROUP BY `Status`, `Role` ORDER BY Status" );
+            "FROM `".RP_TABLE_PREFIX."Attendance` ".
+            "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) ".
+            "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
+            "WHERE UserId = :UserId AND Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game ".
+            "GROUP BY `Status`, `Role` ORDER BY Status" );
 
         $AttendanceQuery->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
         $AttendanceQuery->bindValue( ":Created", $CreatedUTC, PDO::PARAM_INT );
         $AttendanceQuery->bindValue( ":Now", time(), PDO::PARAM_INT );
+        $AttendanceQuery->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
 
         $AttendanceData = array(
             "raids"       => $NumRaids,
             "available"   => 0,
             "unavailable" => 0,
-            "ok"          => 0 );
-
-        // Initialize roles
-
-        foreach ( $gRoles as $Role )
-        {
-            $AttendanceData["role".$Role[0]] = 0;
-        }
+            "ok"          => 0,
+            "roles"       => Array() );
 
         // Pull data
 
         $AttendanceQuery->loop( function($Data) use (&$AttendanceData)
         {
-            if ( $Data["Status"] != "undecided" )
-                $AttendanceData[$Data["Status"]] += $Data["Count"];
-
-            if ( $Data["Status"] == "ok" )
+            if ($Data["Status"] != "undecided")
             {
-                $RoleIdx = intval($Data["Role"]);
-                $AttendanceData["role".$RoleIdx] += $Data["Count"];
+                $AttendanceData[$Data["Status"]] += $Data["Count"];
+            }
+            
+            if ($Data["Status"] == "ok")
+            {
+                $RoleId = $Data["Role"];                
+                if (isset($AttendanceData["roles"][$RoleId]))
+                    $AttendanceData["roles"][$RoleId] += $Data["Count"];
+                else
+                    $AttendanceData["roles"][$RoleId] = $Data["Count"];
+                
             }
         });
 
@@ -149,6 +156,7 @@ function msgQueryProfile( $aRequest )
     }
     else
     {
+        $Out = Out::getInstance();
         $Out->pushError(L("AccessDenied"));
     }
 }

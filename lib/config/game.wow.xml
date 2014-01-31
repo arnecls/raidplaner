@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<game>
+    <id>wow</id>
+    <name>World of Warcraft</name>
+    <classmode>single</classmode>
+    
+    <roles>
+        <role id="tnk" loca="Tank" style="role_tank"/>
+        <role id="med" loca="Healer" style="role_heal"/>
+        <role id="dmg" loca="Damage"  style="role_melee"/>
+    </roles>
+    
+    <classes>
+        <class id="dkn" loca="Deathknight" style="deathknight">
+            <role id="tnk" default="true"/>
+            <role id="dmg"/>
+        </class>
+        
+        <class id="dru" loca="Druid" style="druid">
+            <role id="med" default="true"/>
+            <role id="dmg"/>
+            <role id="tnk"/>
+        </class>
+        
+        <class id="hun" loca="Hunter" style="hunter">
+            <role id="dmg" default="true"/>
+        </class>
+        
+        <class id="mag" loca="Mage" style="mage">
+            <role id="dmg" default="true"/>
+        </class>
+        
+        <class id="mon" loca="Monk" style="monk">
+            <role id="med" default="true"/>
+            <role id="dmg"/>
+            <role id="tnk"/>
+        </class>
+        
+        <class id="pal" loca="Paladin" style="paladin">
+            <role id="med" default="true"/>
+            <role id="dmg"/>
+            <role id="tnk"/>
+        </class>
+        
+        <class id="pri" loca="Priest" style="priest">
+            <role id="med" default="true"/>
+            <role id="dmg"/>
+        </class>
+        
+        <class id="rog" loca="Rogue" style="rogue">
+            <role id="dmg" default="true"/>
+        </class>
+        
+        <class id="sha" loca="Shaman" style="shaman">
+            <role id="dmg" default="true"/>
+            <role id="med"/>
+        </class>
+        
+        <class id="wlk" loca="Warlock" style="warlock">
+            <role id="dmg" default="true"/>
+        </class>
+        
+        <class id="war" loca="Warrior" style="warrior">
+            <role id="tnk" default="true"/>
+            <role id="dmg"/>
+        </class>
+    </classes>
+    
+    <raidview>
+        <slots role="tnk" order="1" columns="1"/>
+        <slots role="med" order="2" columns="1"/>
+        <slots role="dmg" order="3" columns="*"/>
+    </raidview>
+    
+    <groups>
+        <group count="5">
+            <role id="tnk" count="1"/>
+            <role id="med" count="1"/>
+            <role id="dmg" count="*"/>
+        </group>
+        
+        <group count="10">
+            <role id="tnk" count="2"/>
+            <role id="med" count="3"/>
+            <role id="dmg" count="*"/>
+        </group>
+        
+        <group count="25">
+            <role id="tnk" count="2"/>
+            <role id="med" count="6"/>
+            <role id="dmg" count="*"/>
+        </group>
+    </groups>
+</game>

@@ -32,6 +32,10 @@
                 $StartDate    = getdate($Data["StartUTC"]);
                 $EndDate      = getdate($Data["EndUTC"]);
                 $EndTimestamp = $Data["EndUTC"];
+                
+                $Slots = array_combine(
+                    explode(":",$Data["SlotRoles"]), 
+                    explode(":",$Data["SlotCount"]));
 
                 $Out->pushValue("raidId", $Data["RaidId"]);
                 $Out->pushValue("locationid", $Data["LocationId"]);
@@ -45,7 +49,7 @@
                 $Out->pushValue("endDate", intval($EndDate["year"])."-".leadingZero10($EndDate["mon"])."-".leadingZero10($EndDate["mday"]));
                 $Out->pushValue("end", leadingZero10($EndDate["hours"]).":".leadingZero10($EndDate["minutes"]));
                 $Out->pushValue("description", $Data["Description"]);
-                $Out->pushValue("slots", Array($Data["SlotsRole1"], $Data["SlotsRole2"], $Data["SlotsRole3"], $Data["SlotsRole4"], $Data["SlotsRole5"]));
+                $Out->pushValue("slots", $Slots);
                 $Attendees = Array();
 
                 $MaxAttendanceId = 1;

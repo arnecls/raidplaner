@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<game>
+    <id>ff14</id>
+    <name>Final Fantasy XIV</name>
+    <classmode>multi</classmode>
+    
+    <roles>
+        <role id="tnk" loca="Tank" style="role_tank"/>
+        <role id="med" loca="Healer" style="role_heal"/>
+        <role id="dmg" loca="Damage"  style="role_melee"/>
+    </roles>
+    
+    <classes>
+        <class id="arc" loca="Archer" style="archer">
+            <role id="dmg"/>
+        </class>
+        
+        <class id="brd" loca="Bard" style="bard">
+            <role id="dmg"/>
+        </class>
+        
+        <class id="bmg" loca="Blackmage" style="blackmage">
+            <role id="dmg"/>
+        </class>
+        
+        <class id="tau" loca="Thaumaturge" style="thaumaturge">
+            <role id="dmg"/>
+        </class>
+        
+        <class id="con" loca="Conjurer" style="conjurer">
+            <role id="med"/>
+        </class>
+        
+        <class id="wmg" loca="Whitemage" style="whitemage">
+            <role id="med"/>
+        </class>
+        
+        <class id="dra" loca="Dragoon" style="dragoon">
+            <role id="dmg"/>
+        </class>
+        
+        <class id="lan" loca="Lancer" style="lancer">
+            <role id="dmg"/>
+        </class>
+        
+        <class id="pal" loca="Paladin" style="paladin">
+            <role id="tnk"/>
+        </class>
+        
+        <class id="gla" loca="Gladiator" style="gladiator">
+            <role id="tnk"/>
+        </class>
+        
+        <class id="war" loca="Warrior" style="warrior">
+            <role id="tnk"/>
+        </class>
+        
+        <class id="mar" loca="Marauder" style="marauder">
+            <role id="tnk"/>
+        </class>
+        
+        <class id="mnk" loca="Monk" style="monk">
+            <role id="dmg"/>
+        </class>
+        
+        <class id="pug" loca="Pugilist" style="pugilist">
+            <role id="dmg"/>
+        </class>
+        
+        <class id="arc" loca="Arcanist" style="arcanist">
+            <role id="dmg"/>
+        </class>
+        
+        <class id="sch" loca="Scholar" style="Scholar">
+            <role id="med"/>
+        </class>
+        
+        <class id="sum" loca="Summoner" style="summoner">
+            <role id="dmg"/>
+        </class>
+    </classes>
+    
+    <raidview>
+        <slots role="tnk" order="1" columns="1"/>
+        <slots role="med" order="2" columns="1"/>
+        <slots role="dmg" order="3" columns="*"/>
+    </raidview>
+    
+    <groups>
+        <group count="4">
+            <role id="tnk" count="1"/>
+            <role id="med" count="1"/>
+            <role id="dmg" count="*"/>
+        </group>
+        
+        <group count="8">
+            <role id="tnk" count="2"/>
+            <role id="med" count="2"/>
+            <role id="dmg" count="*"/>
+        </group>
+        
+        <group count="24">
+            <role id="tnk" count="6"/>
+            <role id="med" count="6"/>
+            <role id="dmg" count="*"/>
+        </group>
+    </groups>
+</game>

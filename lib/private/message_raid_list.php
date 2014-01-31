@@ -2,10 +2,12 @@
 
     function msgRaidList( $aRequest )
     {
-        $Out = Out::getInstance();
-
         if (validUser())
         {
+            global $gGame;            
+            loadGameSettings();
+            
+            $Out = Out::getInstance();
             $Connector = Connector::getInstance();
 
             // Get next 6 raids
@@ -20,9 +22,12 @@
                                                  "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(RaidId) ".
                                                  "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING (CharacterId) ".
                                                  "WHERE ".RP_TABLE_PREFIX."Raid.Start >= FROM_UNIXTIME(:Start) ".
+                                                 "AND ".RP_TABLE_PREFIX."Location.Game = :Game ".
                                                  "ORDER BY ".RP_TABLE_PREFIX."Raid.Start, ".RP_TABLE_PREFIX."Raid.RaidId" );
 
             $NextRaidQuery->bindValue( ":Start", mktime(0,0,0), PDO::PARAM_INT );
+            $NextRaidQuery->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
+            
             parseRaidQuery( $aRequest, $NextRaidQuery, 6 );
 
             // Load raid history
@@ -32,10 +37,12 @@
                                                     "UNIX_TIMESTAMP(".RP_TABLE_PREFIX."Raid.End) AS EndUTC ".
                                                     "FROM `".RP_TABLE_PREFIX."Raid` ".
                                                     "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
-                                                    "WHERE ".RP_TABLE_PREFIX."Raid.Start < FROM_UNIXTIME(:Start)".
+                                                    "WHERE ".RP_TABLE_PREFIX."Raid.Start < FROM_UNIXTIME(:Start) ".
+                                                    "AND ".RP_TABLE_PREFIX."Location.Game = :Game ".
                                                     "ORDER BY Start DESC LIMIT ".intval($aRequest["offset"]).", ".intval($aRequest["count"]) );
 
             $RaidHistoryQuery->bindValue( ":Start", mktime(0,0,0), PDO::PARAM_INT );
+            $RaidHistoryQuery->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
 
             $RaidList = Array();
             $RaidHistoryQuery->loop( function($Data) use (&$RaidList)
@@ -63,6 +70,7 @@
         }
         else
         {
+            $Out = Out::getInstance();
             $Out->pushError(L("AccessDenied"));
         }
     }
