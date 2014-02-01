@@ -1,13 +1,15 @@
 <?php
     function msgRaidDetail( $aRequest )
     {
-        $Out = Out::getInstance();
-
         if (validUser())
         {
-            $Out->pushValue("show", $aRequest["showPanel"]);
-
+            global $gGame;
+            loadGameSettings();
+            
+            $Out = Out::getInstance();
             $Connector = Connector::getInstance();
+            
+            $Out->pushValue("show", $aRequest["showPanel"]);
 
             $ListRaidQuery = $Connector->prepare("SELECT ".RP_TABLE_PREFIX."Raid.*, ".RP_TABLE_PREFIX."Location.Name AS LocationName, ".RP_TABLE_PREFIX."Location.Image AS LocationImage, ".
                                               RP_TABLE_PREFIX."Attendance.AttendanceId, ".RP_TABLE_PREFIX."Attendance.UserId, ".RP_TABLE_PREFIX."Attendance.CharacterId, ".
@@ -56,7 +58,7 @@
 
                 if ( $Data["UserId"] != NULL )
                 {
-                    $ListRaidQuery->loop(function($Data) use (&$Connector, &$MaxAttendanceId, &$Participants, &$Attendees)
+                    $ListRaidQuery->loop(function($Data) use (&$gGame, &$Connector, &$MaxAttendanceId, &$Participants, &$Attendees)
                     {
                         // Track max attendance id to give undecided players (without a comment) a distinct one.
                         $MaxAttendanceId = Max($MaxAttendanceId,$Data["AttendanceId"]);
@@ -77,14 +79,18 @@
 
                                 $CharQuery = $Connector->prepare("SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
                                                                  "FROM `".RP_TABLE_PREFIX."Character` LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
-                                                                 "WHERE UserId = :UserId ".
+                                                                 "WHERE UserId = :UserId AND Game = :Game ".
                                                                  "ORDER BY Mainchar, CharacterId ASC" );
 
                                 $CharQuery->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
+                                $CharQuery->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
+                                
                                 $CharData = $CharQuery->fetchFirstOfLoop();
 
                                 if ( ($CharData != null) && ($CharData["CharacterId"] != null) )
                                 {
+                                    $Classes = explode(":",$CharData["Class"]);
+                                    
                                     $AttendeeData = Array(
                                         "id"          => $Data["AttendanceId"], // AttendanceId to support random players (userId 0)
                                         "hasId"       => true,
@@ -93,8 +99,8 @@
                                         "charid"      => $CharData["CharacterId"],
                                         "name"        => $CharData["Name"],
                                         "mainchar"    => $CharData["Mainchar"],
-                                        "classname"   => explode(":",$CharData["Class"]),
-                                        "activeclass" => 0,
+                                        "classname"   => $Classes,
+                                        "activeclass" => $Classes[0],
                                         "role"        => $CharData["Role1"],
                                         "role1"       => $CharData["Role1"],
                                         "role2"       => $CharData["Role2"],
@@ -133,8 +139,8 @@
                                     "charid"      => 0,
                                     "name"        => $Data["Comment"],
                                     "mainchar"    => false,
-                                    "classname"   => Array("random"),
-                                    "activeclass" => 0,
+                                    "classname"   => Array("___"),
+                                    "activeclass" => "___",
                                     "role"        => $Data["Role"],
                                     "role1"       => $Data["Role"],
                                     "role2"       => $Data["Role"],
@@ -170,10 +176,12 @@
 
                             $CharQuery = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
                                                             "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
-                                                            "WHERE UserId = :UserId ".
+                                                            "WHERE UserId = :UserId AND Game = :Game ".
                                                             "ORDER BY Mainchar, CharacterId ASC" );
 
                             $CharQuery->bindValue( ":UserId", $Data["UserId"], PDO::PARAM_INT );
+                            $CharQuery->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
+                            
                             $CharQuery->loop( function($CharData) use (&$AttendeeData)
                             {
                                 $Character = Array(
@@ -199,7 +207,7 @@
                                                     "FROM `".RP_TABLE_PREFIX."User` ".
                                                     "WHERE `Group` != \"none\"" );
 
-                $AllUsersQuery->loop(function($User) use (&$Connector, &$MaxAttendanceId, &$EndTimestamp, &$Participants, &$Attendees)
+                $AllUsersQuery->loop(function($User) use (&$gGame, &$Connector, &$MaxAttendanceId, &$EndTimestamp, &$Participants, &$Attendees)
                 {
                     if ( !in_array( intval($User["UserId"]), $Participants ) )
                     {
@@ -208,11 +216,13 @@
 
                         $CharQuery = $Connector->prepare(  "SELECT ".RP_TABLE_PREFIX."Character.*, ".RP_TABLE_PREFIX."User.Login AS UserName ".
                                                         "FROM `".RP_TABLE_PREFIX."Character` LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
-                                                        "WHERE UserId = :UserId AND Created < FROM_UNIXTIME(:RaidEnd) ".
+                                                        "WHERE UserId = :UserId AND Created < FROM_UNIXTIME(:RaidEnd) AND Game = :Game ".
                                                         "ORDER BY Mainchar, CharacterId ASC" );
 
                         $CharQuery->bindValue( ":UserId", $User["UserId"], PDO::PARAM_INT );
                         $CharQuery->bindValue( ":RaidEnd", $EndTimestamp, PDO::PARAM_INT );
+                        $CharQuery->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
+                        
                         $UserData = $CharQuery->fetchFirstOfLoop();
 
                         if ( $UserData != null )
@@ -221,6 +231,8 @@
                             // that is not in use (for this raid).
 
                             ++$MaxAttendanceId;
+                            
+                            $Classes = explode(":",$UserData["Class"]);
 
                             $AttendeeData = Array(
                                 "id"          => $MaxAttendanceId,
@@ -230,8 +242,8 @@
                                 "charid"      => $UserData["CharacterId"],
                                 "name"        => $UserData["Name"],
                                 "mainchar"    => $UserData["Mainchar"],
-                                "classname"   => explode(":",$UserData["Class"]),
-                                "activeclass" => 0,
+                                "classname"   => $Classes,
+                                "activeclass" => $Classes[0],
                                 "role"        => $UserData["Role1"],
                                 "role1"       => $UserData["Role1"],
                                 "role2"       => $UserData["Role2"],
@@ -269,6 +281,7 @@
         }
         else
         {
+            $Out = Out::getInstance();
             $Out->pushError(L("AccessDenied"));
         }
     }

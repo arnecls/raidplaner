@@ -170,6 +170,9 @@
                 
                 foreach($Config->roles->role as $Role)
                 {
+                    if (strlen(strval($Role["id"])) != 3)
+                        throw new Exception("Role ids must be exactly 3 characters long. ".strval($Role["id"])." does not match this rule.");
+                        
                     $gGame["Roles"][strval($Role["id"])] = Array(
                         "id"    => strval($Role["id"]),
                         "name"  => strval($Role["loca"]),
@@ -181,6 +184,9 @@
                 
                 foreach($Config->classes->class as $Class)
                 {
+                    if (strlen(strval($Class["id"])) != 3)
+                        throw new Exception("Class ids must be exactly 3 characters long. ".strval($Class["id"])." does not match this rule.");
+                    
                     $ClassData = Array(
                         "id"          => strval($Class["id"]),
                         "name"        => strval($Class["loca"]),
