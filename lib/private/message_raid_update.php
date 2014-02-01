@@ -154,7 +154,7 @@ function msgRaidupdate( $aRequest )
                              (($Flags & PlayerFlagCharId) != 0) )
                         {
                             // Undecided set-up
-
+                            
                             $UpdateSlot = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
                                 "( CharacterId, Class, UserId, RaidId, Status, Role, Comment ) ".
                                 "VALUES ( :CharId, :Class, :UserId, :RaidId, :Status, :Role, :Comment )" );
@@ -163,20 +163,32 @@ function msgRaidupdate( $aRequest )
                             $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_STR);
                             $UpdateSlot->bindValue( ":UserId", $UserId, PDO::PARAM_INT);
                             $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
+                        }
+                        else if ( (($Flags & PlayerFlagComment) != 0) &&
+                                  (($Flags & PlayerFlagCharId) != 0) )
+                        {
+                            // Undecied absent
+                        
+                            $UpdateSlot = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
+                                "( CharacterId, Class, UserId, RaidId, Status, Role, Comment ) ".
+                                "VALUES ( :CharId, :Class, :UserId, :RaidId, :Status, :Role, :Comment )" );
 
+                            $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_STR);
+                            $UpdateSlot->bindValue( ":UserId", $UserId, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
                         }
                         else if ( ($Flags & PlayerFlagName) != 0 )
                         {
                             // Random player. Set name.
-
+                            
                             $UpdateSlot = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
                                 "( CharacterId, UserId, RaidId, Status, Class, Role, Comment ) ".
                                 "VALUES ( 0, 0, :RaidId, :Status, :Class, :Role, :Name )" );
 
                             $UpdateSlot->bindValue( ":Name", $Name, PDO::PARAM_STR);
-                            $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_STR);
+                            $UpdateSlot->bindValue( ":Class", "___", PDO::PARAM_STR);
                         }
-
                         else
                         {
                             $Out = Out::getInstance();

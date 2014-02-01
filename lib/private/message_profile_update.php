@@ -312,8 +312,9 @@ function msgProfileupdate( $aRequest )
         
         // Update characters
 
-        $CharacterQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId ORDER BY Name");
+        $CharacterQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId AND Game = :Game ORDER BY Name");
         $CharacterQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+        $CharacterQuery->bindValue(":Game", $gGame["GameId"], PDO::PARAM_STR);
 
         $ValidCharacterIds = array();
         $UpdatedCharacteIds = array();

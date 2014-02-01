@@ -4,6 +4,9 @@ function msgRaidAttend( $aRequest )
 {
     if (validUser())
     {
+        global $gGame;
+        
+        loadGameSettings();
         $Connector = Connector::getInstance();
 
         $AttendanceIdx = intval( $aRequest["attendanceIndex"] );
@@ -15,6 +18,7 @@ function msgRaidAttend( $aRequest )
         $ChangeAllowed = true;
         $RaidInfo = Array();
         $Role = "";
+        $Class = "";
 
         // Check if locked
 
@@ -34,8 +38,10 @@ function msgRaidAttend( $aRequest )
 
             if ( $AttendanceIdx > 0)
             {
-                $CheckQuery = $Connector->prepare("SELECT UserId, Class, Role1 FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharacterId LIMIT 1");
+                $CheckQuery = $Connector->prepare("SELECT UserId, Class, Role1 FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharacterId AND Game = :Game LIMIT 1");
+                
                 $CheckQuery->bindValue(":CharacterId", $AttendanceIdx, PDO::PARAM_INT);
+                $CheckQuery->bindValue(":Game", $gGame["GameId"], PDO::PARAM_INT);
 
                 $CharacterInfo = $CheckQuery->fetchFirst();
 
@@ -55,12 +61,6 @@ function msgRaidAttend( $aRequest )
 
             if ( $ChangeAllowed )
             {
-                $RoleCounts = array_combine(
-                    explode(":", $RaidInfo["SlotRoles"]), 
-                    explode(":", $RaidInfo["SlotCount"]));
-                 
-                $MaxSlotCount = $RoleCounts[$Role];
-
                 $CheckQuery = $Connector->prepare("SELECT UserId FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId AND RaidId = :RaidId LIMIT 1");
                 $CheckQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
                 $CheckQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
@@ -143,9 +143,16 @@ function msgRaidAttend( $aRequest )
                 $AttendQuery->bindValue(":Timestamp",   time(),       PDO::PARAM_INT);
 
                 if ( $AttendQuery->execute() &&
+                     ($Role != "") &&
                      ($RaidInfo["Mode"] == "attend") &&
                      ($Status == "ok") )
                 {
+                    $RoleCounts = array_combine(
+                        explode(":", $RaidInfo["SlotRoles"]), 
+                        explode(":", $RaidInfo["SlotCount"]));
+                     
+                    $MaxSlotCount = $RoleCounts[$Role];
+                
                     // Check constraints for auto-attend
                     // This fixes a rare race condition where two (or more) players attend
                     // the last available slot at the same time.
