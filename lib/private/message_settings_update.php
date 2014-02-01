@@ -106,6 +106,7 @@ function msgSettingsupdate( $aRequest )
         $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "RaidMode", $aRequest["raidMode"] );
         $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "Site", $aRequest["site"] );
         $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "Theme", $aRequest["theme"] );
+        $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "GameConfig", $aRequest["game"] );
         $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "HelpPage", $aRequest["helpPage"] );
 
         if ( $QueryString != "" )

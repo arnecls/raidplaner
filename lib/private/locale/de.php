@@ -224,6 +224,7 @@
         $gLocale[ "DefaultRaidSize" ]          = "Voreingestellte Raidgröße";
         $gLocale[ "BannerPage" ]               = "Link für Seitenbanner";
         $gLocale[ "HelpPage" ]                 = "Link für Hilfe";
+        $gLocale[ "Game" ]                     = "Spiel";
         $gLocale[ "Theme" ]                    = "Thema";
         $gLocale[ "RaidSetupStyle" ]           = "Anmeldeform";
         $gLocale[ "RaidModeManual" ]           = "Aufstellung durch Raidleiter";

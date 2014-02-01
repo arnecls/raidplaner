@@ -58,16 +58,19 @@ function msgQueryProfile( $aRequest )
         {
             foreach ( UserProxy::getInstance()->Characters as $Data )
             {
-                $Character = Array(
-                    "id"        => $Data->CharacterId,
-                    "name"      => $Data->Name,
-                    "classname" => explode(":", $Data->ClassName),
-                    "mainchar"  => $Data->IsMainChar,
-                    "role1"     => $Data->Role1,
-                    "role2"     => $Data->Role2
-                );
-
-                array_push($Characters, $Character);
+                if ( $Data->Game == $gGame["GameId"])
+                {
+                    $Character = Array(
+                        "id"        => $Data->CharacterId,
+                        "name"      => $Data->Name,
+                        "classname" => explode(":", $Data->ClassName),
+                        "mainchar"  => $Data->IsMainChar,
+                        "role1"     => $Data->Role1,
+                        "role2"     => $Data->Role2
+                    );
+    
+                    array_push($Characters, $Character);
+                }
             }
         }
         else

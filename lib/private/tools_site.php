@@ -143,7 +143,7 @@
             "Groups"        => Array()
         );
         
-        $ConfigFile = realpath(dirname(__FILE__)."/../config/game.".$gSite["GameConfig"].".xml");
+        $ConfigFile = realpath(dirname(__FILE__)."/../../themes/games/".$gSite["GameConfig"].".xml");
         
         if ( !file_exists($ConfigFile) )
         {

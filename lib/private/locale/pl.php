@@ -228,6 +228,7 @@
         $gLocale[ "DefaultRaidSize" ]          = "Domyślny rozmiar rajdów";
         $gLocale[ "BannerPage" ]               = "Link do baneru";
         $gLocale[ "HelpPage" ]                 = "Link do pomocy";
+        $gLocale[ "Game" ]                     = "Gra";
         $gLocale[ "Theme" ]                    = "Motyw";
         $gLocale[ "RaidSetupStyle" ]           = "Sposób zapisów";
         $gLocale[ "RaidModeManual" ]           = "Przez rajd lidera";

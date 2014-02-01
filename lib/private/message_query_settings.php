@@ -52,6 +52,41 @@ function msgQuerySettings( $aRequest )
         });
 
         $Out->pushValue("setting", $Settings);
+        
+        // Load games
+        
+        $GameFiles = scandir( "../themes/games" );
+        $Games = Array();
+        
+        foreach ( $GameFiles as $GameFileName )
+        {
+            try
+            {
+                if (strpos($GameFileName,".xml") > 0)
+                {
+                    $Game = @new SimpleXMLElement( file_get_contents("../themes/games/".$GameFileName) );
+                    $SimpleGameFileName = substr($GameFileName, 0, strrpos($GameFileName, "."));
+                    
+                    if ($Game->name != "")
+                        $GameName = strval($Game->name);
+                    else
+                        $GameName = str_replace("_", " ", $SimpleGameFileName);
+
+                    array_push($Games, Array(
+                        "name" => $GameName,
+                        "id"   => strtolower($Game->id),
+                        "file" => $SimpleGameFileName
+                    ));
+                }
+            }
+            catch (Exception $e)
+            {
+                $Out->pushError("Error parsing gameconfig ".$GameFileName.": ".$e->getMessage());
+            }
+        }
+
+        $Out->pushValue("game", $Games);
+
 
         // Load themes
 
@@ -62,19 +97,24 @@ function msgQuerySettings( $aRequest )
         {
             try
             {
-                if (strpos($ThemeFileName,".") > 0)
+                if (strpos($ThemeFileName,".xml") > 0)
                 {
                     $Theme = @new SimpleXMLElement( file_get_contents("../themes/themes/".$ThemeFileName) );
                     $SimpleThemeFileName = substr($ThemeFileName, 0, strrpos($ThemeFileName, "."));
-
+                    
+                    $SupportedGames = (isset($Theme->games)) 
+                        ? explode(",",strtolower($Theme->games))
+                        : "wow";
+                    
                     if ($Theme->name != "")
-                        $ThemeName = $Theme->name;
+                        $ThemeName = strval($Theme->name);
                     else
                         $ThemeName = str_replace("_", " ", $SimpleThemeFileName);
 
                     array_push($Themes, Array(
-                        "name" => $ThemeName,
-                        "file" => $SimpleThemeFileName
+                        "name"  => $ThemeName,
+                        "games" => $SupportedGames,
+                        "file"  => $SimpleThemeFileName
                     ));
                 }
             }
