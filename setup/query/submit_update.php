@@ -320,7 +320,7 @@
         
         // Timezone fix
         
-        /*$Connector = Connector::getInstance();
+        $Connector = Connector::getInstance();
         $ConnectorNonUTC = new Connector(SQL_HOST, RP_DATABASE, RP_USER, RP_PASS, false, false);
         
         $RaidDateQuery = $ConnectorNonUTC->prepare("SELECT UNIX_TIMESTAMP(Start) AS Timestamp FROM `".RP_TABLE_PREFIX."Raid` LIMIT 1");
@@ -344,11 +344,12 @@
             }
         }
         
-        doUpgrade( $Updates );*/
+        doUpgrade( $Updates );
                 
         // Default convert values
         
         $Game = "wow";
+        $GameFile = "wow";
         $RoleIdxToId = Array("tnk", "med", "dmg");
         $ClassNameToId = Array(
             "deathknight"   => "dkt",
@@ -371,10 +372,15 @@
         
         if (file_exists($GameConfig))
         {
-            if (UpdateGameConfig110($GameConfig, $ClassNameToId, $RoleIdxToId, $Game))            
+            if (UpdateGameConfig110($GameConfig, $ClassNameToId, $RoleIdxToId, $Game))
+            {          
                 echo "<div class=\"update_step_ok\">OK</div>";
+                $GameFile = "legacy";
+            }
             else
+            {
                 echo "<div class=\"database_error\">".L("FailedGameconfig")."</div>";
+            }
         }
         else
         {
@@ -383,9 +389,23 @@
 
         echo "</div>";        
         
+        // Insert game setting
+        
+        echo "<div class=\"update_step\">Game setting";
+        
+        $GameSettingQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Setting` (Name,TextValue) VALUES ('GameConfig', :Game)");
+        
+        $GameSettingQuery->setErrorsAsHTML(true);
+        $GameSettingQuery->bindValue(":Game", $GameFile, PDO::PARAM_STR);
+        
+        if ($GameSettingQuery->execute())
+            echo "<div class=\"update_step_ok\">OK</div>";
+            
+        echo "</div>";
+        
         // Set location game, character game
         
-        /*echo "<div class=\"update_step\">Game binding";
+        echo "<div class=\"update_step\">Game binding";
         
         $SetGameQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Location` SET Game = :Game; UPDATE `".RP_TABLE_PREFIX."Character` SET Game = :Game;");
         
@@ -402,16 +422,17 @@
         echo "<div class=\"update_step\">New Role ids";
         
         $RoleQueryString = "";
-        for ($i=0; $i<sizeof($RoleIdxToId) ++$i)
+        for ($i=0; $i<sizeof($RoleIdxToId); ++$i)
         {
-            $RoleQueryString .= "UPDATE `".RP_TABLE_PREFIX."Character` SET Role = :Role".$i." WHERE Role = ".$i.";";
+            $RoleQueryString .= "UPDATE `".RP_TABLE_PREFIX."Character` SET Role1 = :Role".$i." WHERE Role1 = ".$i.";";
+            $RoleQueryString .= "UPDATE `".RP_TABLE_PREFIX."Character` SET Role2 = :Role".$i." WHERE Role2 = ".$i.";";
             $RoleQueryString .= "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Role = :Role".$i." WHERE Role = ".$i.";";
         }
         
         $RolesQuery = $Connector->prepare($RoleQueryString);
         $RolesQuery->setErrorsAsHTML(true);
         
-        for ($i=0; $i<sizeof($RoleIdxToId) ++$i)
+        for ($i=0; $i<sizeof($RoleIdxToId); ++$i)
         {
             $RolesQuery->bindValue(":Role".$i, $RoleIdxToId[$i], PDO::PARAM_STR);
         }
@@ -432,10 +453,10 @@
         }
         reset($ClassNameToId);
         
-        $ClassQueryString = $Connector->prepare($RoleQueryString);
-        $ClassQueryString->setErrorsAsHTML(true);
+        $ClassQuery = $Connector->prepare($ClassQueryString);
+        $ClassQuery->setErrorsAsHTML(true);
         
-        if ($ClassQueryString->execute())
+        if ($ClassQuery->execute())
             echo "<div class=\"update_step_ok\">OK</div>";
             
         echo "</div>";
@@ -448,23 +469,29 @@
         $AllRaidsQuery->setErrorsAsHTML(true);
         
         $SlotRoles = implode(":", $RoleIdxToId);
+        $NumErrors = 0;
         
-        $AllRaidsQuery->loop(function($aRaid)
+        $AllRaidsQuery->loop(function($aRaid) use (&$Connector, $RoleIdxToId, $SlotRoles, &$NumErrors)
         {
-            $UpdateRaidQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Raid` SET SlotRoles = :Roles, SlotCount = :Count WHERE Raid = :RaidId LIMIT 1");
+            $UpdateRaidQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Raid` SET SlotRoles = :Roles, SlotCount = :Count WHERE RaidId = :RaidId LIMIT 1");
             
             $SlotCount = Array();
             for ($i=0; $i<sizeof($RoleIdxToId) && $i<5; ++$i)
             {
                 array_push($SlotCount, intval($aRaid["SlotsRole".($i+1)]));
-            }           
+            }
             
             $UpdateRaidQuery->setErrorsAsHTML(true);
             $UpdateRaidQuery->bindValue(":Roles", $SlotRoles, PDO::PARAM_STR);
             $UpdateRaidQuery->bindValue(":Count", implode(":",$SlotCount), PDO::PARAM_STR);
             $UpdateRaidQuery->bindValue(":RaidId", $aRaid["RaidId"], PDO::PARAM_INT);
-        });        
+            
+            if (!$UpdateRaidQuery->execute())
+                ++$NumErrors;
+        });
         
+        if ($NumErrors == 0)
+            echo "<div class=\"update_step_ok\">OK</div>";
         echo "</div>";
                 
         // Drop old slots
@@ -477,7 +504,7 @@
         if ($DropOldSlotsQuery->execute())
             echo "<div class=\"update_step_ok\">OK</div>";
             
-        echo "</div>";*/
+        echo "</div>";
         
         // Finish
 
