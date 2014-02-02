@@ -2,7 +2,7 @@
 <game>
     <id>wow</id>
     <name>World of Warcraft</name>
-    <theme>wow</theme>
+    <family>wow</family>
     <classmode>single</classmode>
     
     <roles>

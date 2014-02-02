@@ -73,9 +73,9 @@ function msgQuerySettings( $aRequest )
                         $GameName = str_replace("_", " ", $SimpleGameFileName);
 
                     array_push($Games, Array(
-                        "name"  => $GameName,
-                        "theme" => strval($Game->theme),
-                        "file"  => $SimpleGameFileName
+                        "name"   => $GameName,
+                        "family" => strval($Game->family),
+                        "file"   => $SimpleGameFileName
                     ));
                 }
             }
@@ -102,8 +102,8 @@ function msgQuerySettings( $aRequest )
                     $Theme = @new SimpleXMLElement( file_get_contents("../themes/themes/".$ThemeFileName) );
                     $SimpleThemeFileName = substr($ThemeFileName, 0, strrpos($ThemeFileName, "."));
                     
-                    $SupportedGames = (isset($Theme->games)) 
-                        ? explode(",",strtolower($Theme->games))
+                    $Family = (isset($Theme->family)) 
+                        ? explode(",",strtolower($Theme->family))
                         : "wow";
                     
                     if ($Theme->name != "")
@@ -112,9 +112,9 @@ function msgQuerySettings( $aRequest )
                         $ThemeName = str_replace("_", " ", $SimpleThemeFileName);
 
                     array_push($Themes, Array(
-                        "name"  => $ThemeName,
-                        "games" => $SupportedGames,
-                        "file"  => $SimpleThemeFileName
+                        "name"   => $ThemeName,
+                        "family" => $Family,
+                        "file"   => $SimpleThemeFileName
                     ));
                 }
             }

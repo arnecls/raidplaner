@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <theme>
     <name>Portal integration</name>
-    <games>ff14</games>
+    <family>ff14</family>
     <banner>disable</banner>
     <bgimage>none</bgimage>
     <bgcolor>none</bgcolor>

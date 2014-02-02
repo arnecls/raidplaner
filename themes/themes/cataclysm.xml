@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <theme>
     <name>Cataclysm</name>
-    <games>wow</games>
+    <family>wow</family>
     <banner>cataclysm.jpg</banner>
     <bgimage>cataclysm.jpg</bgimage>
     <bgrepeat>repeat-x</bgrepeat>

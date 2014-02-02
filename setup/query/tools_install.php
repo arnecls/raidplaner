@@ -294,7 +294,7 @@
         fwrite($NewGameConfig, "<game>\n");
         fwrite($NewGameConfig, "\t<id>rp10</id>\n");
         fwrite($NewGameConfig, "\t<name>Raidplaner 1.0.x</name>\n");
-        fwrite($NewGameConfig, "\t<theme>wow</theme>\n");
+        fwrite($NewGameConfig, "\t<family>wow</family>\n");
         fwrite($NewGameConfig, "\t<classmode>single</classmode>\n");
         
         // Roles

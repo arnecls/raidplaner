@@ -2,6 +2,7 @@
 <game>
     <id>wowp</id>
     <name>World of Warcraft (pro)</name>
+    <family>wow</family>
     <classmode>single</classmode>
     
     <roles>

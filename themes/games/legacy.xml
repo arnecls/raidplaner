@@ -2,7 +2,7 @@
 <game>
 	<id>rp10</id>
 	<name>Raidplaner 1.0.x</name>
-	<theme>wow</theme>
+	<family>wow</family>
 	<classmode>single</classmode>
 
 	<roles>

@@ -135,7 +135,7 @@
         
         $gGame = Array(
             "GameId"        => "none",
-            "Theme"         => "wow",
+            "Family"        => "wow",
             "ClassMode"     => "single",
             "Roles"         => Array(),
             "Classes"       => Array(),
@@ -159,7 +159,7 @@
                 // General
                 
                 $gGame["GameId"] = strtolower($Config->id);
-                $gGame["Theme"] = strtolower($Config->theme);
+                $gGame["Family"] = strtolower($Config->family);
                 $gGame["ClassMode"] = strtolower($Config->classmode);
                 
                 if (strlen($gGame["GameId"]) > 4)
