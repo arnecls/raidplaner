@@ -135,6 +135,7 @@
         
         $gGame = Array(
             "GameId"        => "none",
+            "Theme"         => "wow",
             "ClassMode"     => "single",
             "Roles"         => Array(),
             "Classes"       => Array(),
@@ -158,7 +159,11 @@
                 // General
                 
                 $gGame["GameId"] = strtolower($Config->id);
+                $gGame["Theme"] = strtolower($Config->theme);
                 $gGame["ClassMode"] = strtolower($Config->classmode);
+                
+                if (strlen($gGame["GameId"]) > 4)
+                    throw new Exception("Game ids must be at least 1 and can be at most 4 characters long. ".$gGame["GameId"]." does not match this rule.");
                 
                 if (($gGame["ClassMode"] != "single") && 
                     ($gGame["ClassMode"] != "multi"))

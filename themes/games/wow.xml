@@ -2,6 +2,7 @@
 <game>
     <id>wow</id>
     <name>World of Warcraft</name>
+    <theme>wow</theme>
     <classmode>single</classmode>
     
     <roles>
@@ -11,7 +12,7 @@
     </roles>
     
     <classes>
-        <class id="dkn" loca="Deathknight" style="deathknight">
+        <class id="dkt" loca="Deathknight" style="deathknight">
             <role id="tnk" default="true"/>
             <role id="dmg"/>
         </class>

@@ -2,6 +2,7 @@
 <game>
     <id>ff14</id>
     <name>Final Fantasy XIV</name>
+    <theme>ff14</theme>
     <classmode>multi</classmode>
     
     <roles>

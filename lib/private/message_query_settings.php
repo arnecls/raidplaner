@@ -73,9 +73,9 @@ function msgQuerySettings( $aRequest )
                         $GameName = str_replace("_", " ", $SimpleGameFileName);
 
                     array_push($Games, Array(
-                        "name" => $GameName,
-                        "id"   => strtolower($Game->id),
-                        "file" => $SimpleGameFileName
+                        "name"  => $GameName,
+                        "theme" => strval($Game->theme),
+                        "file"  => $SimpleGameFileName
                     ));
                 }
             }

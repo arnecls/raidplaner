@@ -308,27 +308,31 @@
         echo "<div class=\"update_version\">".L("UpdateFrom")." 1.0.0 ".L("UpdateTo")." 1.1.0";
 
         $Updates = Array( "Multi class support"   => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Class` `Class` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
-                          "Class attendance"      => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD `Class` TINYINT(2) NOT NULL DEFAULT '0' AFTER `Role`;",
+                          "Class attendance"      => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD `Class` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `Role`;",
                           "User settings fix"     => "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` DROP INDEX `Unique_Name`;",
                           "Game bound locations"  => "ALTER TABLE `".RP_TABLE_PREFIX."Location` ADD `Game` CHAR(4) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `LocationId`;",
                           "Game bound characters" => "ALTER TABLE `".RP_TABLE_PREFIX."Character` ADD `Game` CHAR(4) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `UserId`;",
-                          "New role ids"          => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Role1` `Role1` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL, ".
-                                                     "CHANGE `Role2` `Role2` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;".
-                                                     "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CHANGE  `Role` `Role` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
-                          "Raid column storage"   => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `ColumnRoles` VARCHAR(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `Description`, ".
-                                                     "ADD `ColumnCount` VARCHAR(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `ColumnRoles`;" );
+                          "Raid column storage"   => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `SlotRoles` VARCHAR(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `Description`;".
+                                                     "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `SlotCount` VARCHAR(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `SlotRoles`;",
+                          "Roles by identifier"   => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CHANGE `Role` `Role` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;".
+                                                     "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Role1` `Role1` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;".
+                                                     "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Role2` `Role2` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;"   );
         
         // Timezone fix
         
-        $Connector = Connector::getInstance();
+        /*$Connector = Connector::getInstance();
         $ConnectorNonUTC = new Connector(SQL_HOST, RP_DATABASE, RP_USER, RP_PASS, false, false);
         
         $RaidDateQuery = $ConnectorNonUTC->prepare("SELECT UNIX_TIMESTAMP(Start) AS Timestamp FROM `".RP_TABLE_PREFIX."Raid` LIMIT 1");
+        $RaidDateQuery->setErrorsAsHTML(true);
+        
         $RaidNonUTC = $RaidDateQuery->fetchFirst();
         
         if ( $RaidNonUTC != null )
         {        
             $RaidDateQuery = $Connector->prepare("SELECT UNIX_TIMESTAMP(Start) AS Timestamp FROM `".RP_TABLE_PREFIX."Raid` LIMIT 1");
+            $RaidDateQuery->setErrorsAsHTML(true);
+            
             $Raid = $RaidDateQuery->fetchFirst();
         
             if ($Raid != null)
@@ -340,18 +344,34 @@
             }
         }
         
-        doUpgrade( $Updates );
+        doUpgrade( $Updates );*/
                 
+        // Default convert values
+        
+        $Game = "wow";
+        $RoleIdxToId = Array("tnk", "med", "dmg");
+        $ClassNameToId = Array(
+            "deathknight"   => "dkt",
+            "druid"         => "dru",
+            "hunter"        => "hun",
+            "mage"          => "mag",
+            "monk"          => "mon",
+            "paladin"       => "pal",
+            "priest"        => "pri",
+            "rogue"         => "rog",
+            "shaman"        => "sha",
+            "warlock"       => "wlk",
+            "warrior"       => "war" 
+        );
+        
         // Gameconfig update
         
         echo "<div class=\"update_step\">Gameconfig update";
         $GameConfig = dirname(__FILE__)."/../../lib/private/gameconfig.php";
         
-        // TODO create a game with id "conv" -> "World of Warcraft (converted)" if gameconfig does not match wow3 or wow4
-
-        /*if (file_exists($GameConfig))
+        if (file_exists($GameConfig))
         {
-            if (UpdateGameConfig110($GameConfig))            
+            if (UpdateGameConfig110($GameConfig, $ClassNameToId, $RoleIdxToId, $Game))            
                 echo "<div class=\"update_step_ok\">OK</div>";
             else
                 echo "<div class=\"database_error\">".L("FailedGameconfig")."</div>";
@@ -359,23 +379,105 @@
         else
         {
             echo "<div class=\"update_step_warning\">".L("GameconfigNotFound")." (lib/private/gameconfig.php).</div>";
-        }*/
+        }
 
-        echo "</div>";
-        
-        // Convert attendance roles, character roles
-        // TODO
+        echo "</div>";        
         
         // Set location game, character game
-        // TODO
         
-        // Convert raid slot count
-        // TODO
+        /*echo "<div class=\"update_step\">Game binding";
         
-        // Drop old raid slot count 
-        // TODO
+        $SetGameQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Location` SET Game = :Game; UPDATE `".RP_TABLE_PREFIX."Character` SET Game = :Game;");
         
-        // "ALTER TABLE `raids_Raid` DROP `SlotsRole1`, DROP `SlotsRole2`, DROP `SlotsRole3`, DROP `SlotsRole4`, DROP `SlotsRole5`;";
+        $SetGameQuery->setErrorsAsHTML(true);
+        $SetGameQuery->bindValue(":Game", $Game, PDO::PARAM_STR);
+        
+        if ($SetGameQuery->execute())
+            echo "<div class=\"update_step_ok\">OK</div>";
+            
+        echo "</div>";
+        
+        // Convert roles
+        
+        echo "<div class=\"update_step\">New Role ids";
+        
+        $RoleQueryString = "";
+        for ($i=0; $i<sizeof($RoleIdxToId) ++$i)
+        {
+            $RoleQueryString .= "UPDATE `".RP_TABLE_PREFIX."Character` SET Role = :Role".$i." WHERE Role = ".$i.";";
+            $RoleQueryString .= "UPDATE `".RP_TABLE_PREFIX."Attendance` SET Role = :Role".$i." WHERE Role = ".$i.";";
+        }
+        
+        $RolesQuery = $Connector->prepare($RoleQueryString);
+        $RolesQuery->setErrorsAsHTML(true);
+        
+        for ($i=0; $i<sizeof($RoleIdxToId) ++$i)
+        {
+            $RolesQuery->bindValue(":Role".$i, $RoleIdxToId[$i], PDO::PARAM_STR);
+        }
+        
+        if ($RolesQuery->execute())
+            echo "<div class=\"update_step_ok\">OK</div>";
+            
+        echo "</div>";
+        
+        // Convert classes
+        
+        echo "<div class=\"update_step\">New class ids";
+        
+        $ClassQueryString = "";
+        while (list($Name, $ClassId) = each($ClassNameToId))
+        {
+            $ClassQueryString .= "UPDATE `".RP_TABLE_PREFIX."Character` SET Class = '".$ClassId."' WHERE Class = '".$Name."';";
+        }
+        reset($ClassNameToId);
+        
+        $ClassQueryString = $Connector->prepare($RoleQueryString);
+        $ClassQueryString->setErrorsAsHTML(true);
+        
+        if ($ClassQueryString->execute())
+            echo "<div class=\"update_step_ok\">OK</div>";
+            
+        echo "</div>";
+        
+        // Convert raid slot data
+        
+        echo "<div class=\"update_step\">Convert old slot data";
+        
+        $AllRaidsQuery = $Connector->prepare("SELECT RaidId, SlotsRole1, SlotsRole2, SlotsRole3, SlotsRole4, SlotsRole5 FROM `".RP_TABLE_PREFIX."Raid`");
+        $AllRaidsQuery->setErrorsAsHTML(true);
+        
+        $SlotRoles = implode(":", $RoleIdxToId);
+        
+        $AllRaidsQuery->loop(function($aRaid)
+        {
+            $UpdateRaidQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Raid` SET SlotRoles = :Roles, SlotCount = :Count WHERE Raid = :RaidId LIMIT 1");
+            
+            $SlotCount = Array();
+            for ($i=0; $i<sizeof($RoleIdxToId) && $i<5; ++$i)
+            {
+                array_push($SlotCount, intval($aRaid["SlotsRole".($i+1)]));
+            }           
+            
+            $UpdateRaidQuery->setErrorsAsHTML(true);
+            $UpdateRaidQuery->bindValue(":Roles", $SlotRoles, PDO::PARAM_STR);
+            $UpdateRaidQuery->bindValue(":Count", implode(":",$SlotCount), PDO::PARAM_STR);
+            $UpdateRaidQuery->bindValue(":RaidId", $aRaid["RaidId"], PDO::PARAM_INT);
+        });        
+        
+        echo "</div>";
+                
+        // Drop old slots
+        
+        echo "<div class=\"update_step\">Drop old slot data";
+        
+        $DropOldSlotsQuery = $Connector->prepare("ALTER TABLE `".RP_TABLE_PREFIX."Raid` DROP `SlotsRole1`, DROP `SlotsRole2`, DROP `SlotsRole3`, DROP `SlotsRole4`, DROP `SlotsRole5`;");
+        $DropOldSlotsQuery->setErrorsAsHTML(true);
+        
+        if ($DropOldSlotsQuery->execute())
+            echo "<div class=\"update_step_ok\">OK</div>";
+            
+        echo "</div>";*/
         
         // Finish
 
