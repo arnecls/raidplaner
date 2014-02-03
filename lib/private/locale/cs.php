@@ -13,11 +13,35 @@
         $gLocale[ "Shaman" ]                   = "Shaman";
         $gLocale[ "Warlock" ]                  = "Warlock";
         $gLocale[ "Warrior" ]                  = "Warrior";
+        $gLocale[ "Random" ]                   = null;
+        
+        // Classes FF14        
+        $gLocale[ "Arcanist" ]                 = null;
+        $gLocale[ "Archer" ]                   = null;
+        $gLocale[ "Bard" ]                     = null;
+        $gLocale[ "Blackmage" ]                = null;
+        $gLocale[ "Conjurer" ]                 = null;
+        $gLocale[ "Dragoon" ]                  = null;
+        $gLocale[ "Gladiator" ]                = null;
+        $gLocale[ "Lancer" ]                   = null;
+        $gLocale[ "Marauder" ]                 = null;
+        $gLocale[ "Monk" ]                     = null;
+        $gLocale[ "Paladin" ]                  = null;
+        $gLocale[ "Pugilist" ]                 = null;
+        $gLocale[ "Scholar" ]                  = null;
+        $gLocale[ "Summoner" ]                 = null;
+        $gLocale[ "Thaumaturge" ]              = null;
+        $gLocale[ "Warrior" ]                  = null;
+        $gLocale[ "Whitemage" ]                = null;
+        $gLocale[ "Random" ]                   = null;
         
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
         $gLocale[ "Healer" ]                   = "Healer";
         $gLocale[ "Damage" ]                   = "Damage";
+        $gLocale[ "Melee" ]                    = null;
+        $gLocale[ "Range" ]                    = null;
+        $gLocale[ "Support" ]                  = null;
         
         // Pre-loading checks
         $gLocale[ "ContinueNoUpdate" ]         = "Pokračovat bez aktualizace";
@@ -45,6 +69,7 @@
         $gLocale[ "UnappliedChanges" ]         = "Opravdu chcete zahodit neuložené změny?";
         $gLocale[ "DiscardChanges" ]           = "Ano, zahodit";
         $gLocale[ "to" ]                       = "to";
+        $gLocale[ "PHPVersionWarning" ]        = null;
         
         // Login und user registration
         $gLocale[ "Login" ]                    = "Přihlásit se";
@@ -100,6 +125,10 @@
         $gLocale[ "SetAbsent" ]                = "Nastavit na neúčast";
         $gLocale[ "Comment" ]                  = "Komentář";
         $gLocale[ "SaveComment" ]              = "Uložit komentář";
+        $gLocale[ "RepeatOnce" ]               = null;
+        $gLocale[ "RepeatDay" ]                = null;
+        $gLocale[ "RepeatWeek" ]               = null;
+        $gLocale[ "RepeatMonth" ]              = null;
         
         // Raid
         $gLocale[ "Raid" ]                     = "Raid";
@@ -126,6 +155,10 @@
         $gLocale[ "SetupBy" ]                  = "Zůčastnil se";
         $gLocale[ "AbsentBy" ]                 = "Nezůčastnil se";
         $gLocale[ "SwitchChar" ]               = "Vyměnil postavu";
+        $gLocale[ "RaidNotFound" ]             = null;
+        $gLocale[ "RaidSetup" ]                = null;
+        $gLocale[ "LinkToRaid" ]               = null;
+        $gLocale[ "Switch" ]                   = null;
         
         // Profile        
         $gLocale[ "Profile" ]                  = "Profil";
@@ -150,6 +183,13 @@
         $gLocale[ "WrongPassword" ]            = "Špatné heslo";
         $gLocale[ "PasswordLocked" ]           = "Heslo nemůže být změněno.";
         $gLocale[ "PasswordChanged" ]          = "Heslo bylo změněno.";
+        $gLocale[ "UserNotFound" ]             = null;
+        $gLocale[ "VacationStart" ]            = null;
+        $gLocale[ "VacationEnd" ]              = null;
+        $gLocale[ "NoStartDate" ]              = null;
+        $gLocale[ "NoEndDate" ]                = null;
+        $gLocale[ "VacationMessage" ]          = null;
+        $gLocale[ "ClearVacation" ]            = null;
                 
         // Settings
         $gLocale[ "Settings" ]                 = "Nastavení";
@@ -184,6 +224,7 @@
         $gLocale[ "DefaultRaidSize" ]          = "Výchozí velikost raidu";
         $gLocale[ "BannerPage" ]               = "Page banner link";
         $gLocale[ "HelpPage" ]                 = "Help link";
+        $gLocale[ "Game" ]                     = null;
         $gLocale[ "Theme" ]                    = "Theme";
         $gLocale[ "RaidSetupStyle" ]           = "Attendance style";        
         $gLocale[ "RaidModeManual" ]           = "Setup by raidlead";
@@ -249,6 +290,7 @@
         $gLocale[ "ConnectionTestOk" ]         = "Connection test succeeded";
         
         // Registration and admin
+        $gLocale[ "AdminName" ]                = null;
         $gLocale[ "AdminPassword" ]            = "Password for the admin user";
         $gLocale[ "AdminPasswordSetup"]        = "The administrator (login name \"admin\") is a user that always has all available rights.";
         $gLocale[ "AdminNotMoveable"]          = "The admin user cannot be renamed or moved into a different group.";
@@ -280,6 +322,10 @@
         $gLocale[ "UpdateErrors" ]             = "Update errors";
         $gLocale[ "ReportedErrors" ]           = "The following errors were reported during update.";
         $gLocale[ "PartiallyUpdated" ]         = "This may hint on an already (partially) updated database.";
+        $gLocale[ "GameconfigNotFound" ]       = null;
+        $gLocale[ "FailedGameconfig" ]         = null;
+        $gLocale[ "RemoveAndLaunch" ]          = null;
+        $gLocale[ "FailedRemoveSetup" ]        = null;
         
         // Repair
         $gLocale[ "Repair" ]                   = "Repaire database inconsistencies";
@@ -304,87 +350,104 @@
         $gLocale[ "AutoMemberLogin" ]          = "Users of the following, selected group(s) log in as \"members\":";
         $gLocale[ "AutoLeadLogin" ]            = "Users of the following, selected group(s) log in as \"raidleads\":";
         $gLocale[ "ReloadFailed" ]             = "Reload failed";
+        $gLocale[ "LoadSettings" ]             = null;
+        $gLocale[ "BindingBasePath" ]          = null;
+        $gLocale[ "RetrievalFailed" ]          = null;
+        $gLocale[ "RetrievalOk" ]              = null;
+        $gLocale[ "NotExisting" ]              = null;
+        $gLocale[ "AllowAutoLogin" ]           = null;
+        $gLocale[ "NoValidConfig" ]            = null;
+        $gLocale[ "CookieNote" ]               = null;
+        $gLocale[ "PostToForum" ]              = null;
+        $gLocale[ "PostAsUser" ]               = null;
+        $gLocale[ "DisablePosting" ]           = null;
+        $gLocale[ "NoUsersFound" ]             = null;
         
         
         // PHPBB3        
-        $gLocale[ "PHPBB3Binding" ]            = "PHPBB3";
-        $gLocale[ "PHPBB3ConfigFile" ]         = "PHPBB3 konfigurační soubor";
-        $gLocale[ "PHPBB3Database" ]           = "PHPBB3 databáze";
-        $gLocale[ "PHPBB3DatabaseEmpty" ]      = "PHPBB3 jméno databáze nesmí být prázdné.";
-        $gLocale[ "PHPBB3UserEmpty" ]          = "PHPBB3 uživatelské jméno nesmí být prázdné";
-        $gLocale[ "PHPBB3PasswordEmpty" ]      = "PHPBB3 heslo databáze nesmí být prázdné.";
-        $gLocale[ "PHPBB3DBPasswordsMatch" ]   = "PHPBB3 heslo databáze nesouhlasí.";
-        
-        // EQDKP
-        $gLocale[ "EQDKPBinding" ]             = "EQDKP";
-        $gLocale[ "EQDKPConfigFile" ]          = "EQDKP konfigurační soubor";
-        $gLocale[ "EQDKPDatabase" ]            = "EQDKP databáze";
-        $gLocale[ "EQDKPDatabaseEmpty" ]       = "EQDKP jméno databáze nesmí být prázdné.";
-        $gLocale[ "EQDKPUserEmpty" ]           = "EQDKP uživatelské jméno nesmí být prázdné";
-        $gLocale[ "EQDKPPasswordEmpty" ]       = "EQDKP heslo databáze nesmí být prázdné.";
-        $gLocale[ "EQDKPDBPasswordsMatch" ]    = "EQDKP heslo databáze nesouhlasí.";
-        
-        // vBulletin
-        $gLocale[ "VBulletinBinding" ]         = "vBulletin3";
-        $gLocale[ "VBulletinConfigFile" ]      = "vBulletin konfigurační soubor";
-        $gLocale[ "VBulletinDatabase" ]        = "vBulletin databáze";
-        $gLocale[ "VBulletinDatabaseEmpty" ]   = "vBulletin jméno databáze nesmí být prázdné.";
-        $gLocale[ "VBulletinUserEmpty" ]       = "vBulletin uživatelské jméno nesmí být prázdné";
-        $gLocale[ "VBulletinPasswordEmpty" ]   = "vBulletin heslo databáze nesmí být prázdné.";
-        $gLocale[ "VBulletinDBPasswordsMatch" ]= "vBulletin heslo databáze nesouhlasí.";
+        $gLocale[ "phpbb3_Binding" ]            = "PHPBB3";
+        $gLocale[ "phpbb3_ConfigFile" ]         = "PHPBB3 konfigurační soubor";
+        $gLocale[ "phpbb3_Database" ]           = "PHPBB3 databáze";
+        $gLocale[ "phpbb3_DatabaseEmpty" ]      = "PHPBB3 jméno databáze nesmí být prázdné.";
+        $gLocale[ "phpbb3_UserEmpty" ]          = "PHPBB3 uživatelské jméno nesmí být prázdné";
+        $gLocale[ "phpbb3_PasswordEmpty" ]      = "PHPBB3 heslo databáze nesmí být prázdné.";
+        $gLocale[ "phpbb3_DBPasswordsMatch" ]   = "PHPBB3 heslo databáze nesouhlasí.";
+                                                
+        // EQDKP                                
+        $gLocale[ "eqdkp_Binding" ]             = "EQDKP";
+        $gLocale[ "eqdkp_ConfigFile" ]          = "EQDKP konfigurační soubor";
+        $gLocale[ "eqdkp_Database" ]            = "EQDKP databáze";
+        $gLocale[ "eqdkp_DatabaseEmpty" ]       = "EQDKP jméno databáze nesmí být prázdné.";
+        $gLocale[ "eqdkp_UserEmpty" ]           = "EQDKP uživatelské jméno nesmí být prázdné";
+        $gLocale[ "eqdkp_PasswordEmpty" ]       = "EQDKP heslo databáze nesmí být prázdné.";
+        $gLocale[ "eqdkp_DBPasswordsMatch" ]    = "EQDKP heslo databáze nesouhlasí.";
+                                                
+        // vBulletin                            
+        $gLocale[ "vb3_Binding" ]               = "vBulletin3";
+        $gLocale[ "vb3_ConfigFile" ]            = "vBulletin konfigurační soubor";
+        $gLocale[ "vb3_Database" ]              = "vBulletin databáze";
+        $gLocale[ "vb3_DatabaseEmpty" ]         = "vBulletin jméno databáze nesmí být prázdné.";
+        $gLocale[ "vb3_UserEmpty" ]             = "vBulletin uživatelské jméno nesmí být prázdné";
+        $gLocale[ "vb3_PasswordEmpty" ]         = "vBulletin heslo databáze nesmí být prázdné.";
+        $gLocale[ "vb3_DBPasswordsMatch" ]      = "vBulletin heslo databáze nesouhlasí.";
+        $gLocale[ "vb3_CookieEx" ]              = null;
         
         // MyBB
-        $gLocale[ "MyBBBinding" ]              = "MyBB";
-        $gLocale[ "MyBBConfigFile" ]           = "MyBB konfigurační soubor";
-        $gLocale[ "MyBBDatabase" ]             = "MyBB databáze";
-        $gLocale[ "MyBBDatabaseEmpty" ]        = "MyBB jméno databáze nesmí být prázdné.";
-        $gLocale[ "MyBBUserEmpty" ]            = "MyBB uživatelské jméno nesmí být prázdné";
-        $gLocale[ "MyBBPasswordEmpty" ]        = "MyBB heslo databáze nesmí být prázdné.";
-        $gLocale[ "MyBBDBPasswordsMatch" ]     = "MyBB heslo databáze nesouhlasí.";
+        $gLocale[ "mybb_Binding" ]              = "MyBB";
+        $gLocale[ "mybb_ConfigFile" ]           = "MyBB konfigurační soubor";
+        $gLocale[ "mybb_Database" ]             = "MyBB databáze";
+        $gLocale[ "mybb_DatabaseEmpty" ]        = "MyBB jméno databáze nesmí být prázdné.";
+        $gLocale[ "mybb_UserEmpty" ]            = "MyBB uživatelské jméno nesmí být prázdné";
+        $gLocale[ "mybb_PasswordEmpty" ]        = "MyBB heslo databáze nesmí být prázdné.";
+        $gLocale[ "mybb_DBPasswordsMatch" ]     = "MyBB heslo databáze nesouhlasí.";
         
         // SMF
-        $gLocale[ "SMFBinding" ]               = "SMF";
-        $gLocale[ "SMFConfigFile" ]            = "SMF konfigurační soubor";
-        $gLocale[ "SMFDatabase" ]              = "SMF databáze";
-        $gLocale[ "SMFDatabaseEmpty" ]         = "SMF jméno databáze nesmí být prázdné.";
-        $gLocale[ "SMFUserEmpty" ]             = "SMF uživatelské jméno nesmí být prázdné";
-        $gLocale[ "SMFPasswordEmpty" ]         = "SMF heslo databáze nesmí být prázdné.";
-        $gLocale[ "SMFDBPasswordsMatch" ]      = "SMF heslo databáze nesouhlasí.";
+        $gLocale[ "smf_Binding" ]               = "SMF";
+        $gLocale[ "smf_ConfigFile" ]            = "SMF konfigurační soubor";
+        $gLocale[ "smf_Database" ]              = "SMF databáze";
+        $gLocale[ "smf_DatabaseEmpty" ]         = "SMF jméno databáze nesmí být prázdné.";
+        $gLocale[ "smf_UserEmpty" ]             = "SMF uživatelské jméno nesmí být prázdné";
+        $gLocale[ "smf_PasswordEmpty" ]         = "SMF heslo databáze nesmí být prázdné.";
+        $gLocale[ "smf_DBPasswordsMatch" ]      = "SMF heslo databáze nesouhlasí.";
         
         // Vanilla
-        $gLocale[ "VanillaBinding" ]           = "Vanilla";
-        $gLocale[ "VanillaConfigFile" ]        = "Vanilla konfigurační soubor";
-        $gLocale[ "VanillaDatabase" ]          = "Vanilla databáze";
-        $gLocale[ "VanillaDatabaseEmpty" ]     = "Vanilla jméno databáze nesmí být prázdné.";
-        $gLocale[ "VanillaUserEmpty" ]         = "Vanilla uživatelské jméno nesmí být prázdné";
-        $gLocale[ "VanillaPasswordEmpty" ]     = "Vanilla heslo databáze nesmí být prázdné.";
-        $gLocale[ "VanillaDBPasswordsMatch" ]  = "Vanilla heslo databáze nesouhlasí.";
+        $gLocale[ "vanilla_Binding" ]           = "Vanilla";
+        $gLocale[ "vanilla_ConfigFile" ]        = "Vanilla konfigurační soubor";
+        $gLocale[ "vanilla_Database" ]          = "Vanilla databáze";
+        $gLocale[ "vanilla_DatabaseEmpty" ]     = "Vanilla jméno databáze nesmí být prázdné.";
+        $gLocale[ "vanilla_UserEmpty" ]         = "Vanilla uživatelské jméno nesmí být prázdné";
+        $gLocale[ "vanilla_PasswordEmpty" ]     = "Vanilla heslo databáze nesmí být prázdné.";
+        $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Vanilla heslo databáze nesouhlasí.";
+        $gLocale[ "vanilla_CookieEx" ]          = null
         
         // Joomla
-        $gLocale[ "JoomlaBinding" ]            = "Joomla3";
-        $gLocale[ "JoomlaConfigFile" ]         = "Joomla3 konfigurační soubor";
-        $gLocale[ "JoomlaDatabase" ]           = "Joomla3 databáze";
-        $gLocale[ "JoomlaDatabaseEmpty" ]      = "Joomla3 jméno databáze nesmí být prázdné.";
-        $gLocale[ "JoomlaUserEmpty" ]          = "Joomla3 uživatelské jméno nesmí být prázdné";
-        $gLocale[ "JoomlaPasswordEmpty" ]      = "Joomla3 heslo databáze nesmí být prázdné.";
-        $gLocale[ "JoomlaDBPasswordsMatch" ]   = "Joomla3 heslo databáze nesouhlasí.";
+        $gLocale[ "jml3_Binding" ]              = "Joomla3";
+        $gLocale[ "jml3_ConfigFile" ]           = "Joomla3 konfigurační soubor";
+        $gLocale[ "jml3_Database" ]             = "Joomla3 databáze";
+        $gLocale[ "jml3_DatabaseEmpty" ]        = "Joomla3 jméno databáze nesmí být prázdné.";
+        $gLocale[ "jml3_UserEmpty" ]            = "Joomla3 uživatelské jméno nesmí být prázdné";
+        $gLocale[ "jml3_PasswordEmpty" ]        = "Joomla3 heslo databáze nesmí být prázdné.";
+        $gLocale[ "jml3_DBPasswordsMatch" ]     = "Joomla3 heslo databáze nesouhlasí.";
+        $gLocale[ "jml3_CookieEx" ]             = null;
         
         // Drupal
-        $gLocale[ "DrupalBinding" ]            = "Drupal";
-        $gLocale[ "DrupalConfigFile" ]         = "Drupal ckonfigurační soubor";
-        $gLocale[ "DrupalDatabase" ]           = "Drupal databáze";
-        $gLocale[ "DrupalDatabaseEmpty" ]      = "Drupal jméno databáze nesmí být prázdné.";
-        $gLocale[ "DrupalUserEmpty" ]          = "Drupal uživatelské jméno nesmí být prázdné";
-        $gLocale[ "DrupalPasswordEmpty" ]      = "Drupal heslo databáze nesmí být prázdné.";
-        $gLocale[ "DrupalDBPasswordsMatch" ]   = "Drupal heslo databáze nesouhlasí.";
+        $gLocale[ "drupal_Binding" ]            = "Drupal";
+        $gLocale[ "drupal_ConfigFile" ]         = "Drupal ckonfigurační soubor";
+        $gLocale[ "drupal_Database" ]           = "Drupal databáze";
+        $gLocale[ "drupal_DatabaseEmpty" ]      = "Drupal jméno databáze nesmí být prázdné.";
+        $gLocale[ "drupal_UserEmpty" ]          = "Drupal uživatelské jméno nesmí být prázdné";
+        $gLocale[ "drupal_PasswordEmpty" ]      = "Drupal heslo databáze nesmí být prázdné.";
+        $gLocale[ "drupal_DBPasswordsMatch" ]   = "Drupal heslo databáze nesouhlasí.";
+        $gLocale[ "drupal_CookieEx" ]           = null;
         
         // Wordpress
-        $gLocale[ "WpBinding" ]                = "Wordpress";
-        $gLocale[ "WpConfigFile" ]             = "Wordpress konfigurační soubor";
-        $gLocale[ "WpDatabase" ]               = "Wordpress databáze";
-        $gLocale[ "WpDatabaseEmpty" ]          = "Wordpress jméno databáze nesmí být prázdné.";
-        $gLocale[ "WpUserEmpty" ]              = "Wordpress uživatelské jméno nesmí být prázdné";
-        $gLocale[ "WpPasswordEmpty" ]          = "Wordpress heslo databáze nesmí být prázdné.";
-        $gLocale[ "WpDBPasswordsMatch" ]       = "Wordpress heslo databáze nesouhlasí.";
+        $gLocale[ "wp_Binding" ]                = "Wordpress";
+        $gLocale[ "wp_ConfigFile" ]             = "Wordpress konfigurační soubor";
+        $gLocale[ "wp_Database" ]               = "Wordpress databáze";
+        $gLocale[ "wp_DatabaseEmpty" ]          = "Wordpress jméno databáze nesmí být prázdné.";
+        $gLocale[ "wp_UserEmpty" ]              = "Wordpress uživatelské jméno nesmí být prázdné";
+        $gLocale[ "wp_PasswordEmpty" ]          = "Wordpress heslo databáze nesmí být prázdné.";
+        $gLocale[ "wp_DBPasswordsMatch" ]       = "Wordpress heslo databáze nesouhlasí.";
+        $gLocale[ "wp_CookieEx" ]               = null;
     }
 ?>

@@ -273,7 +273,6 @@
         $gLocale[ "PDONotFound" ]              = "PHP wurde nicht mit PDO konfiguriert";
         $gLocale[ "PDOMySQLModule" ]           = "PDO MySQL Treiber";
         $gLocale[ "PDOMySQLNotFound" ]         = "PDO MySQL Treiber nicht gefunden";
-
         $gLocale[ "PHPRequirements" ]          = "Der Raidplaner benötigt eine PHP 5.2 Installation die mit der mcrypt und PDO Erweiterung Konfiguriert wurde.";
 
         // Database setup
@@ -449,7 +448,6 @@
         $gLocale[ "wp_UserEmpty" ]              = "Wordpress Benutzer darf nicht leer sein";
         $gLocale[ "wp_PasswordEmpty" ]          = "Wordpress Datenbank Passwort darf nicht leer sein.";
         $gLocale[ "wp_DBPasswordsMatch" ]       = "Wordpress Datenbank-Passwörter stimmen nicht überein.";
-
         $gLocale[ "wp_CookieEx" ]               = "LOGGED_IN_KEY gefolgt von LOGGED_IN_SALT";
     }
 ?>
