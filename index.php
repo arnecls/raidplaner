@@ -32,7 +32,7 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
         <link rel="icon" href="favicon.png" type="image/png"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/allstyles.php<?php if (STYLE_DEBUG) echo "?debug"; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/allstyles.php?v=<?php echo $gSite["Version"].((STYLE_DEBUG) ? "&debug" : ""); ?>"/>
 
         <?php // Load scripts
 
@@ -42,7 +42,7 @@
             }
             else
             {
-                echo "<script type=\"text/javascript\" src=\"lib/script/raidplaner.js?version=".$gSite["Version"]."\"></script>";
+                echo "<script type=\"text/javascript\" src=\"lib/script/raidplaner.js?v=".$gSite["Version"]."\"></script>";
             }
         ?>
     </head>
