@@ -333,9 +333,7 @@
 		$gLocale[ "FailedRemoveSetup" ]        = "Le dossier de configuration n'a pu être trouvé.";
 
         // Repair
-        $gLocale[ "Repair" ]                   = "Réparer les irrégularités de la base de données";
-        $gLocale[ "GameconfigProblems" ]       = "En modifiant lib/config/config.game.php des irrégularités dans la base de données peuvent apparaître (ex : personnages avec des rôles invalides).";
-        $gLocale[ "RepairTheseProblems" ]      = "Ce script règle le problème du mieux possible.";
+        $gLocale[ "Repair" ]                   = null;
         $gLocale[ "RepairDone" ]               = "Réparation effectuée.";
         $gLocale[ "BrokenDatabase" ]           = "La base de données semble être corrompue";
         $gLocale[ "EnsureValidDatabase" ]      = "Assurer une base de données valide";
@@ -349,6 +347,12 @@
         $gLocale[ "StrayCharacters" ]          = "Personnages effacés";
         $gLocale[ "StrayUsers" ]               = "Utilisateurs effacés";
         $gLocale[ "StrayBindings" ]            = "Utilisateurs invalides";
+        $gLocale[ "RepairCharacters" ]         = null;
+        $gLocale[ "TransferGameconfig" ]       = null;
+        $gLocale[ "MergeGames" ]               = null;
+        $gLocale[ "SourceGame" ]               = null;
+        $gLocale[ "TargetGame" ]               = null;
+        $gLocale[ "ChooseRepairs" ]            = null;
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Charger les groupes utilisant ces réglages";

@@ -329,9 +329,7 @@
         $gLocale[ "FailedRemoveSetup" ]        = null;
         
         // Repair
-        $gLocale[ "Repair" ]                   = "Repaire database inconsistencies";
-        $gLocale[ "GameconfigProblems" ]       = "By changing the lib/gameconfig.php inconsistent database entries can be created (e.g. characters with invalid roles).";
-        $gLocale[ "RepairTheseProblems" ]      = "This script fixes these problems as good as possible.";
+        $gLocale[ "Repair" ]                   = null;
         $gLocale[ "RepairDone" ]               = "Repair done.";
         $gLocale[ "BrokenDatabase" ]           = "Database seems to be broken";
         $gLocale[ "EnsureValidDatabase" ]      = "Ensure a valid database";        
@@ -345,6 +343,12 @@
         $gLocale[ "StrayCharacters" ]          = "Deleted characters";
         $gLocale[ "StrayUsers" ]               = "Deleted users";
         $gLocale[ "StrayBindings" ]            = "Invalid users";
+        $gLocale[ "RepairCharacters" ]         = null;
+        $gLocale[ "TransferGameconfig" ]       = null;
+        $gLocale[ "MergeGames" ]               = null;
+        $gLocale[ "SourceGame" ]               = null;
+        $gLocale[ "TargetGame" ]               = null;
+        $gLocale[ "ChooseRepairs" ]            = null;
         
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Load groups using these settings";

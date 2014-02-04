@@ -1,5 +1,4 @@
 function checkConfigForm( a_OnSuccess, a_Parameter )
-
 {
     if ( $("#password").val().length == 0 )
     {

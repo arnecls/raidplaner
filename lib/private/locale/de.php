@@ -329,9 +329,7 @@
         $gLocale[ "FailedRemoveSetup" ]        = "Der Setup-Ordner konnte nicht gelöscht werden.";
         
         // Repair
-        $gLocale[ "Repair" ]                   = "Datenbank Inkonsistenzen reparieren";
-        $gLocale[ "GameconfigProblems" ]       = "Durch Veränderungen in der lib/config/config.game.php können ungütige Datenbankeinträge entstehen (z.B. Charaktere mit ungütigen Rollen).";
-        $gLocale[ "RepairTheseProblems" ]      = "Dieses Script behebt diese Probleme so gut wie möglich.";
+        $gLocale[ "Repair" ]                   = "Reparatur";
         $gLocale[ "RepairDone" ]               = "Reparatur abgeschlossen.";
         $gLocale[ "BrokenDatabase" ]           = "Die Datenbank scheint defekt zu sein";
         $gLocale[ "EnsureValidDatabase" ]      = "Korrektheit der Datenbank sicherstellen";
@@ -345,6 +343,12 @@
         $gLocale[ "StrayCharacters" ]          = "Gelöschte Charaktere";
         $gLocale[ "StrayUsers" ]               = "Gelöschte Benutzer";
         $gLocale[ "StrayBindings" ]            = "Ungütige Benutzer";
+        $gLocale[ "RepairCharacters" ]         = "Repariere ungültige Charaktere";
+        $gLocale[ "TransferGameconfig" ]       = "Konvertiere gameconfig.php erneut (Raidplaner 1.0.x)";
+        $gLocale[ "MergeGames" ]               = "Füge zwei Spiele zusammen";
+        $gLocale[ "SourceGame" ]               = "Quelle (wird verändert)";
+        $gLocale[ "TargetGame" ]               = "Ziel";
+        $gLocale[ "ChooseRepairs" ]            = "Wähle eine oder mehrere Reparaturen die ausgeführt werden sollen.";
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Lade Gruppen mit den angegebenen Verbindungsdaten";

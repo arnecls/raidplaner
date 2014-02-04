@@ -333,9 +333,7 @@
         $gLocale[ "FailedRemoveSetup" ]        = null;
 
         // Repair
-        $gLocale[ "Repair" ]                   = "Napraw niespójną bazę danych";
-        $gLocale[ "GameconfigProblems" ]       = "Zmiany w pliku lib/config/config.game.php mogą wywołać niespójność bazy danych (np. postacie z nieprawidłowym przypisaniem ról).";
-        $gLocale[ "RepairTheseProblems" ]      = "Ten skrypt postara się naprawić te błędy w jak największym stopniu.";
+        $gLocale[ "Repair" ]                   = null;
         $gLocale[ "RepairDone" ]               = "Naprawa zakończona.";
         $gLocale[ "BrokenDatabase" ]           = "Baza danych wygląda na nienaprawialną";
         $gLocale[ "EnsureValidDatabase" ]      = "Upewnij się czy baza danych jest poprawna";
@@ -349,6 +347,12 @@
         $gLocale[ "StrayCharacters" ]          = "Usunięte postacie";
         $gLocale[ "StrayUsers" ]               = "Usunięci użytkownicy";
         $gLocale[ "StrayBindings" ]            = "Nieprawidłowe powiązania";
+        $gLocale[ "RepairCharacters" ]         = null;
+        $gLocale[ "TransferGameconfig" ]       = null;
+        $gLocale[ "MergeGames" ]               = null;
+        $gLocale[ "SourceGame" ]               = null;
+        $gLocale[ "TargetGame" ]               = null;
+        $gLocale[ "ChooseRepairs" ]            = null;
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Wczytaj grupy używając powyższych ustawień";

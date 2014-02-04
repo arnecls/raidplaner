@@ -329,9 +329,7 @@
         $gLocale[ "FailedRemoveSetup" ]        = "The setup folder could not be deleted.";
 
         // Repair
-        $gLocale[ "Repair" ]                   = "Repaire database inconsistencies";
-        $gLocale[ "GameconfigProblems" ]       = "By changing the lib/config/config.game.php inconsistent database entries can be created (e.g. characters with invalid roles).";
-        $gLocale[ "RepairTheseProblems" ]      = "This script fixes these problems as good as possible.";
+        $gLocale[ "Repair" ]                   = "Repair";
         $gLocale[ "RepairDone" ]               = "Repair done.";
         $gLocale[ "BrokenDatabase" ]           = "Database seems to be broken";
         $gLocale[ "EnsureValidDatabase" ]      = "Ensure a valid database";
@@ -345,6 +343,12 @@
         $gLocale[ "StrayCharacters" ]          = "Deleted characters";
         $gLocale[ "StrayUsers" ]               = "Deleted users";
         $gLocale[ "StrayBindings" ]            = "Invalid users";
+        $gLocale[ "RepairCharacters" ]         = "Repair invalid characters";
+        $gLocale[ "TransferGameconfig" ]       = "Convert gameconfig.php again (Raidplaner 1.0.x)";
+        $gLocale[ "MergeGames" ]               = "Merge two games";
+        $gLocale[ "SourceGame" ]               = "Source (gets changed)";
+        $gLocale[ "TargetGame" ]               = "Target";
+        $gLocale[ "ChooseRepairs" ]            = "Choose one or multiple repairs to be executed.";
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Load groups using these settings";
