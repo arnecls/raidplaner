@@ -118,7 +118,7 @@
 #raiddetail .raidcomment {
     height: 64px;
     width: 300px;
-    top: 0px;
+    top: 10px;
     right: 36px;
     position: absolute;
     font-size: 11px;
@@ -214,6 +214,12 @@
 
 #tooltip .switch_button {
     width: 110px;
+}
+
+
+#tooltip .absent_button {
+    width: 110px;
+    margin-top: 5px;
 }
 
 #tooltip .player_info {

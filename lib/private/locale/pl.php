@@ -163,6 +163,7 @@
         $gLocale[ "RaidSetup" ]                = "Ustawienia rajdu";
         $gLocale[ "LinkToRaid" ]               = "Link do rajdu";
         $gLocale[ "Switch" ]                   = "Przełącznik"; //????
+        $gLocale[ "Retire" ]                   = null;
 
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";

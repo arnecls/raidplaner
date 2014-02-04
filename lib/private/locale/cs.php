@@ -159,6 +159,7 @@
         $gLocale[ "RaidSetup" ]                = null;
         $gLocale[ "LinkToRaid" ]               = null;
         $gLocale[ "Switch" ]                   = null;
+        $gLocale[ "Retire" ]                   = null;
         
         // Profile        
         $gLocale[ "Profile" ]                  = "Profil";

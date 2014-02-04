@@ -159,6 +159,7 @@
         $gLocale[ "RaidSetup" ]                = "Raid setup";
         $gLocale[ "LinkToRaid" ]               = "Link to raid";
         $gLocale[ "Switch" ]                   = "Switch";
+        $gLocale[ "Retire" ]                   = "Absent";
 
         // Profile
         $gLocale[ "Profile" ]                  = "Profile";
