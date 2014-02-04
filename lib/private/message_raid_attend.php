@@ -151,12 +151,12 @@ function msgRaidAttend( $aRequest )
                         explode(":", $RaidInfo["SlotRoles"]), 
                         explode(":", $RaidInfo["SlotCount"]));
                      
-                    $MaxSlotCount = $RoleCounts[$Role];
+                    $MaxSlotCount = intval($RoleCounts[$Role]);
                 
                     // Check constraints for auto-attend
                     // This fixes a rare race condition where two (or more) players attend
                     // the last available slot at the same time.
-
+                    
                     $AttendenceQuery = $Connector->prepare("SELECT AttendanceId ".
                                                            "FROM `".RP_TABLE_PREFIX."Attendance` ".
                                                            "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
@@ -183,7 +183,6 @@ function msgRaidAttend( $aRequest )
                         $FixQuery->execute();
                     }
                 }
-
             }
             else
             {
