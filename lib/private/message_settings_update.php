@@ -91,7 +91,7 @@ function msgSettingsupdate( $aRequest )
 
         $QueryString = "";
         $BindValues = array();
-
+        
         // Generate settings update query
 
         $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "PurgeRaids", $aRequest["purgeTime"] );

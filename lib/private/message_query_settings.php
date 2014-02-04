@@ -71,11 +71,18 @@ function msgQuerySettings( $aRequest )
                         $GameName = strval($Game->name);
                     else
                         $GameName = str_replace("_", " ", $SimpleGameFileName);
+                    
+                    $Groups = Array();
+                    foreach($Game->groups->group as $Group)
+                    {
+                        array_push($Groups, intval($Group["count"]));
+                    }
 
                     array_push($Games, Array(
                         "name"   => $GameName,
                         "family" => strval($Game->family),
-                        "file"   => $SimpleGameFileName
+                        "file"   => $SimpleGameFileName,
+                        "groups" => $Groups
                     ));
                 }
             }
