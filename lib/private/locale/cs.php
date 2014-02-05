@@ -423,7 +423,7 @@
         $gLocale[ "vanilla_UserEmpty" ]         = "Vanilla uživatelské jméno nesmí být prázdné";
         $gLocale[ "vanilla_PasswordEmpty" ]     = "Vanilla heslo databáze nesmí být prázdné.";
         $gLocale[ "vanilla_DBPasswordsMatch" ]  = "Vanilla heslo databáze nesouhlasí.";
-        $gLocale[ "vanilla_CookieEx" ]          = null
+        $gLocale[ "vanilla_CookieEx" ]          = null;
         
         // Joomla
         $gLocale[ "jml3_Binding" ]              = "Joomla3";

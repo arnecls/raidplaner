@@ -1,7 +1,7 @@
 <?php
     define( "LOCALE_SETUP", true );
     require_once(dirname(__FILE__)."/../lib/private/locale.php");
-    require_once(dirname(__FILE__)."/query/tools_install.php");
+    require_once(dirname(__FILE__)."/query/tools_repair.php");
 ?>
 <?php readfile("layout/header.html"); ?>
 
@@ -21,15 +21,9 @@
     {
         echo "<div class=\"update_step\">".L("RepairDatabase");
         
-        echo "</div>";
-    }
-    
-    // Repair stray characters and invalid classes/roles
-    
-    if (isset($_REQUEST["char"]))
-    {
-        echo "<div class=\"update_step\">".L("RepairCharacters");
+        ValidateTableLayout();
         
+        echo "<div class=\"update_step_ok\">OK</div>";
         echo "</div>";
     }
     
@@ -69,6 +63,15 @@
     if (isset($_REQUEST["merge"]))
     {
         echo "<div class=\"update_step\">".L("MergeGames");
+        
+        echo "</div>";
+    }
+    
+    // Repair stray characters and invalid classes/roles
+    
+    if (isset($_REQUEST["char"]))
+    {
+        echo "<div class=\"update_step\">".L("RepairCharacters");
         
         echo "</div>";
     }
