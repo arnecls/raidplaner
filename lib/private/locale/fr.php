@@ -353,6 +353,7 @@
         $gLocale[ "SourceGame" ]               = null;
         $gLocale[ "TargetGame" ]               = null;
         $gLocale[ "ChooseRepairs" ]            = null;
+        $gLocale[ "Fixing" ]                   = null;
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Charger les groupes utilisant ces réglages";

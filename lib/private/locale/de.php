@@ -349,6 +349,7 @@
         $gLocale[ "SourceGame" ]               = "Quelle (wird verändert)";
         $gLocale[ "TargetGame" ]               = "Ziel";
         $gLocale[ "ChooseRepairs" ]            = "Wähle eine oder mehrere Reparaturen die ausgeführt werden sollen.";
+        $gLocale[ "Fixing" ]                   = "Korrigiere";
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Lade Gruppen mit den angegebenen Verbindungsdaten";
