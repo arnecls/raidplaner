@@ -28,7 +28,6 @@ function msgQueryProfile( $aRequest )
 
         if ($Data != null)
         {
-
             $Out->pushValue("userid", $UserId);
             $Out->pushValue("name", $Data["Login"]);
             $Out->pushValue("bindingActive", $Data["BindingActive"] == "true");
@@ -76,7 +75,7 @@ function msgQueryProfile( $aRequest )
         else
         {
             $CharacterQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Character` ".
-                "WHERE UserId = :UserId AND Game = :Game".
+                "WHERE UserId = :UserId AND Game = :Game ".
                 "ORDER BY Mainchar, Name" );
 
             $CharacterQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
