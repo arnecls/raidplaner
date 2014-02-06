@@ -72,7 +72,7 @@
             <role id="dmg"/>
         </class>
         
-        <class id="sch" loca="Scholar" style="Scholar">
+        <class id="sch" loca="Scholar" style="scholar">
             <role id="med"/>
         </class>
         
