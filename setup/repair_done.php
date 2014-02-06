@@ -64,6 +64,9 @@
     {
         echo "<div class=\"update_step\">".L("MergeGames");
         
+        if (MergeGames($_REQUEST["source"], $_REQUEST["target"]))
+            echo "<div class=\"update_step_ok\">OK</div>";
+        
         echo "</div>";
     }
     

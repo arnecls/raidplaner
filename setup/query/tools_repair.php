@@ -194,7 +194,7 @@
             if ($aClassName != null)
             {
                 $Diff += levenshtein($Class["name"], $aClassName);
-                if ($NameDist == 0)
+                if ($Diff == 0)
                 {
                     $BestMatch = $Class;
                     break; // ### break, match by loca ###
@@ -231,31 +231,31 @@
         $aClassId = $BestMatch["id"];
         
         if ($aRole1Id != "")
-            FindFittingRole($BestMatch, $aRole1Id, null, null);
+            FindFittingRole($BestMatch["roles"], $aRole1Id, null, null);
         
         if ($aRole2Id != "")
-            FindFittingRole($BestMatch, $aRole2Id, null, null);
+            FindFittingRole($BestMatch["roles"], $aRole2Id, null, null);
         
         return true; 
     }
     
     // -------------------------------------------------------------------------
     
-    function FindFittingRole($aClass, &$aRoleId, $aRoleName, $aRoleStyle)
+    function FindFittingRole($aRoles, &$aRoleId, $aRoleName, $aRoleStyle)
     {
         $BestDiff  = PHP_INT_MAX;
         $BestMatch = null;
         
-        foreach($aClass["roles"] as $Role)
+        foreach($aRoles as $Role)
         {
             $Diff = 0;
             
             if ($aRoleName != null)
             {
                 $Diff += levenshtein($Role["name"], $aRoleName);
-                if ($NameDist == 0)
+                if ($Diff == 0)
                 {
-                    $BestMatch = $Class;
+                    $BestMatch = $Role;
                     break; // ### break, match by loca ###
                 }
             }
@@ -288,7 +288,7 @@
     
     // -------------------------------------------------------------------------
     
-    function GenerateClassList($aGameFile, &$aGameId, &$aGameMode)
+    function GenerateClassList($aGameFile, &$aGameId, &$aGameMode, &$aRoles)
     {
         $Game = @new SimpleXMLElement( file_get_contents($aGameFile) );
         
@@ -296,11 +296,11 @@
         $aGameMode = strval($Game->classmode);
         
         $Classes = Array();
-        $Roles   = Array();
+        $aRoles  = Array();
         
         foreach($Game->roles->role as $Role)
         {
-            $Roles[strval($Role["id"])] = Array(
+            $aRoles[strval($Role["id"])] = Array(
                 "id"    => strval($Role["id"]),
                 "name"  => strval($Role["loca"]),
                 "style" => strval($Role["style"])
@@ -312,7 +312,7 @@
             $ClassRoles = Array();
             foreach($Class->role as $Role)
             {
-                $ClassRoles[strval($Role["id"])] = $Roles[strval($Role["id"])];
+                $ClassRoles[strval($Role["id"])] = $aRoles[strval($Role["id"])];
             }
             
             $Classes[strval($Class["id"])] = Array(
@@ -415,7 +415,8 @@
                 {
                     $GameId = "";
                     $GameMode = "";
-                    $Classes = GenerateClassList($GameDir."/".$GameFileName, $GameId, $GameMode);
+                    $Roles = Array();
+                    $Classes = GenerateClassList($GameDir."/".$GameFileName, $GameId, $GameMode, $Roles);
                     
                     $Games[$GameId] = $Classes;
                     $GameModes[$GameId] = $GameMode;
@@ -473,7 +474,8 @@
                 {
                     // In singleclass scenarios we need to check class and roles
                     
-                    $ClassId = explode(":", $ClassId)[0]; // force only one class
+                    $ClassIds = explode(":", $ClassId);
+                    $ClassId = $ClassIds[0]; // force only one class
                     
                     if (!ContainsClass($Game, $ClassId))
                     {
@@ -486,13 +488,13 @@
                         
                         if (!ContainsRole($Class, $Role1Id))
                         {
-                            FindFittingRole($Class, $Role1Id, null, null);
+                            FindFittingRole($Class["roles"], $Role1Id, null, null);
                             $RequiresFix = true;
                         }
                            
                         if (!ContainsRole($Class, $Role2Id))
                         {
-                            FindFittingRole($Class, $Role2Id, null, null);
+                            FindFittingRole($Class["roles"], $Role2Id, null, null);
                             $RequiresFix = true;
                         }
                     }
@@ -527,6 +529,110 @@
     
     function MergeGames($aSourceFile, $aTargetFile)
     {
+        if ($aSourceFile == $aTargetFile)
+        {
+            echo "<div class=\"update_step_error\">".L("SameGame")."</div>";
+            return false; // ### return, same game ###
+        }
         
+        // Try to load both files
+        
+        $SourceGameId = "";
+        $TargetGameId = "";
+        $SourceGameMode = "";
+        $TargetGameMode = "";
+        $SourceClasses = Array();
+        $TargetClasses = Array();
+        $SourceRoles = Array();
+        $TargetRoles = Array();
+            
+        try
+        {
+            $GameDir = dirname(__FILE__)."/../../themes/games";
+            
+            $SourceClasses = GenerateClassList($GameDir."/".$aSourceFile.".xml", $SourceGameId, $SourceGameMode, $SourceRoles);
+            $TargetClasses = GenerateClassList($GameDir."/".$aTargetFile.".xml", $TargetGameId, $TargetGameMode, $TargetRoles);            
+        }
+        catch (Exception $e)
+        {
+            echo "<div class=\"update_step_error\">Error parsing files: ".$e->getMessage()."</div>";
+            return false; // ### return, invalid gameconfig ###
+        }
+        
+        // Convert all characters
+        
+        $Connector = Connector::getInstance();
+        $Characters = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Character` WHERE Game=:SourceGame");
+        
+        $Characters->setErrorsAsHTML(true);
+        $Characters->bindValue(":SourceGame", $SourceGameId, PDO::PARAM_STR);
+        
+        $NumCharactersFixed = 0;
+        
+        $Characters->loop(function($aRow) use ($Connector, &$NumCharactersFixed, $SourceGameMode, $SourceGameId, &$SourceClasses, &$SourceRoles, $TargetGameMode, $TargetGameId, &$TargetClasses, &$TargetRoles)
+        {
+            $ClassIds = explode(":", $aRow["Class"]);
+            $ClassId = $ClassIds[0];
+            $Role1Id = $aRow["Role1"];
+            $Role2Id = $aRow["Role2"];
+            
+            if ($SourceGameMode == "multi")
+            {
+                foreach($ClassIds as &$Id)
+                {
+                    $ClassInfo = $SourceClasses[$Id];
+                    $Roles = array_keys($ClassInfo["roles"]);
+                    $RoleId = $Roles[0];
+                    
+                    FindFittingRole($TargetRoles, $RoleId, $SourceRoles[$RoleId]["name"], $SourceRoles[$RoleId]["style"]);
+                    FindFittingClass($TargetClasses, $Id, $RoleId, $RoleId, $ClassInfo["name"], $ClassInfo["style"]);              
+                }
+                
+                $ClassId = ($TargetGameMode == "multi") ? implode(":", $ClassIds) : $ClassIds[0];
+                $Roles = array_keys($TargetClasses[$ClassId]["roles"]);
+                $Role1Id = $Roles[0];
+                $Role2Id = $Roles[0];
+            }
+            else
+            {
+                $ClassInfo = $SourceClasses[$ClassId];
+                
+                FindFittingRole($TargetRoles, $Role1Id, $SourceRoles[$Role1Id]["name"], $SourceRoles[$Role1Id]["style"]);
+                FindFittingRole($TargetRoles, $Role2Id, $SourceRoles[$Role2Id]["name"], $SourceRoles[$Role2Id]["style"]);
+                    
+                FindFittingClass($TargetClasses, $ClassId, $Role1Id, $Role2Id, $ClassInfo["name"], $ClassInfo["style"]);
+            }
+            
+            // Set the new values
+            
+            $CharUpdate = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Character` SET Class=:Class, Role1=:Role1, Role2=:Role2, Game=:TargetGame WHERE CharacterId=:CharId LIMIT 1");
+            
+            $CharUpdate->setErrorsAsHTML(true);
+            $CharUpdate->bindValue(":CharId", $aRow["CharacterId"], PDO::PARAM_INT);
+            $CharUpdate->bindValue(":Class", $ClassId, PDO::PARAM_STR);
+            $CharUpdate->bindValue(":Role1", $Role1Id, PDO::PARAM_STR);
+            $CharUpdate->bindValue(":Role2", $Role2Id, PDO::PARAM_STR);
+            $CharUpdate->bindValue(":TargetGame", $TargetGameId, PDO::PARAM_STR);
+            
+            if ($CharUpdate->execute())
+                ++$NumCharactersFixed;
+        });
+        
+        echo "<div class=\"update_step_warning\">".L("Merged")." ".$NumCharactersFixed." ".L("Characters")."</div>";
+        
+        // Convert all locations
+        
+        $Locations = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Location` SET Game=:TargetGame WHERE Game=:SourceGame");
+        
+        $Locations->setErrorsAsHTML(true);
+        $Locations->bindValue(":SourceGame", $SourceGameId, PDO::PARAM_STR);
+        $Locations->bindValue(":TargetGame", $TargetGameId, PDO::PARAM_STR);
+        
+        if ($Locations->execute())
+        {
+            echo "<div class=\"update_step_warning\">".L("Merged")." ".$Locations->getAffectedRows()." ".L("Locations")."</div>";
+        }
+        
+        return true;
     }
 ?>

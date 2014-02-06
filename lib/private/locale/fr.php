@@ -356,6 +356,11 @@
         $gLocale[ "Fixing" ]                   = null;
         $gLocale[ "StrayChars" ]               = null;
         $gLocale[ "StrayAttends" ]             = null;
+        $gLocale[ "InvalidCharacters" ]        = null;
+        $gLocale[ "SameGame" ]                 = null;   
+        $gLocale[ "Merged" ]                   = null; 
+        $gLocale[ "Locations" ]                = null; 
+        $gLocale[ "Characters" ]               = null; 
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Charger les groupes utilisant ces réglages";

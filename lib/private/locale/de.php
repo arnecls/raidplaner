@@ -352,8 +352,11 @@
         $gLocale[ "Fixing" ]                   = "Korrigiere";
         $gLocale[ "StrayChars" ]               = "Verwaiste Charaktere";
         $gLocale[ "StrayAttends" ]             = "Verwaiste Anmeldungen";
-
-        
+        $gLocale[ "InvalidCharacters" ]        = "Fehlerhafte Charaktere";
+        $gLocale[ "SameGame" ]                 = "Beide Spiele sind identisch";  
+        $gLocale[ "Merged" ]                   = "Konvertiert:"; 
+        $gLocale[ "Locations" ]                = "Orte"; 
+        $gLocale[ "Characters" ]               = "Charaktere";    
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Lade Gruppen mit den angegebenen Verbindungsdaten";

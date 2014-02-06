@@ -352,6 +352,11 @@
         $gLocale[ "Fixing" ]                   = "Fixing";
         $gLocale[ "StrayChars" ]               = "Orphaned characters";
         $gLocale[ "StrayAttends" ]             = "Orphaned attends";
+        $gLocale[ "InvalidCharacters" ]        = "Invalid characters";
+        $gLocale[ "SameGame" ]                 = "Both games are identical";   
+        $gLocale[ "Merged" ]                   = "Converted:"; 
+        $gLocale[ "Locations" ]                = "Locations"; 
+        $gLocale[ "Characters" ]               = "Characters"; 
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Load groups using these settings";

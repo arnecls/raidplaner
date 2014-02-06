@@ -49,7 +49,8 @@ function msgRaidAttend( $aRequest )
                 {
                     $ChangeAllowed &= ($CharacterInfo["UserId"] == $UserId );
                     $Role = $CharacterInfo["Role1"];
-                    $Class = explode(":",$CharacterInfo["Class"])[0];
+                    $Classes = explode(":",$CharacterInfo["Class"]);
+                    $Class = $Classes[0];
                 }
                 else
                 {
