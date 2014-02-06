@@ -531,7 +531,7 @@
     {
         if ($aSourceFile == $aTargetFile)
         {
-            echo "<div class=\"update_step_error\">".L("SameGame")."</div>";
+            echo "<div class=\"update_step_warning\">".L("SameGame")."</div>";
             return false; // ### return, same game ###
         }
         

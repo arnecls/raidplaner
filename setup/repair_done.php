@@ -22,6 +22,7 @@
         echo "<div class=\"update_step\">".L("RepairDatabase");
         
         ValidateTableLayout();
+        InstallDefaultSettings(RP_TABLE_PREFIX);
         
         echo "<div class=\"update_step_ok\">OK</div>";
         echo "</div>";
