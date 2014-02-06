@@ -163,7 +163,7 @@
 		$gLocale[ "RaidSetup" ]                = "Configuration du raid";
 		$gLocale[ "LinkToRaid" ]               = "Lien vers le raid";
 		$gLocale[ "Switch" ]                   = "Changement";
-        $gLocale[ "Retire" ]                   = null;
+        $gLocale[ "Retire" ]                   = "Absent";
 
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
