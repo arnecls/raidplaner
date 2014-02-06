@@ -89,7 +89,7 @@
 
                 foreach (parent::errorInfo() as $ErrorLine)
                 {
-                    $Out->pushError($ErrorLine);
+                    $Out->pushError(strval($ErrorLine));
                 }
 
                 $Out->writeJSONandStop();

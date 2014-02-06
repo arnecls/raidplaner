@@ -163,6 +163,7 @@
 		$gLocale[ "RaidSetup" ]                = "Configuration du raid";
 		$gLocale[ "LinkToRaid" ]               = "Lien vers le raid";
 		$gLocale[ "Switch" ]                   = "Changement";
+        $gLocale[ "Retire" ]                   = null;
 
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
@@ -228,6 +229,7 @@
         $gLocale[ "DefaultRaidSize" ]          = "Format du raid par défaut";
         $gLocale[ "BannerPage" ]               = "Lien de la bannière de page";
         $gLocale[ "HelpPage" ]                 = "Lien de la page de l'Aide";
+        $gLocale[ "Game" ]                     = "Jeu";
         $gLocale[ "Theme" ]                    = "Theme";
         $gLocale[ "RaidSetupStyle" ]           = "Type de validation";
         $gLocale[ "RaidModeManual" ]           = "par le raidlead";

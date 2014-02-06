@@ -2,9 +2,10 @@
 
 function msgQueryLocations( $aRequest )
 {
-    loadSiteSettings();
-    
     global $gSite;
+    global $gGame;
+    
+    loadGameSettings();
     $Out = Out::getInstance();
 
     if ( validRaidlead() )
@@ -13,7 +14,9 @@ function msgQueryLocations( $aRequest )
 
         // Locations
 
-        $ListLocations = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Location` ORDER BY Name");
+        $ListLocations = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Location` WHERE Game = :Game ORDER BY Name");
+        
+        $ListLocations->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
 
         $Locations = Array();
         $ListLocations->loop( function($Data) use (&$Locations)

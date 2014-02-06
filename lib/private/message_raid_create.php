@@ -4,9 +4,10 @@ function msgRaidCreate( $aRequest )
 {
     if ( validRaidlead() )
     {
-        global $gGroupSizes, $gSite;
+        global $gGame;
+        
+        loadGameSettings();
         $Connector = Connector::getInstance();
-
         $LocationId = $aRequest["locationId"];
 
         // Create location
@@ -14,10 +15,11 @@ function msgRaidCreate( $aRequest )
         if ( $LocationId == 0 )
         {
             $NewLocationQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Location`".
-                                                    "(Name, Image) VALUES (:Name, :Image)");
+                                                    "(Game, Name, Image) VALUES (:Game, :Name, :Image)");
 
             $NewLocationQuery->bindValue(":Name", requestToXML( $aRequest["locationName"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
             $NewLocationQuery->bindValue(":Image", $aRequest["raidImage"], PDO::PARAM_STR );
+            $NewLocationQuery->bindValue(":Game", $gGame["GameId"], PDO::PARAM_STR );
 
             if (!$NewLocationQuery->execute())
                 return; // ### return, location could not be created ###
@@ -29,37 +31,6 @@ function msgRaidCreate( $aRequest )
 
         if ( $LocationId != 0 )
         {
-            // Get the default sizes
-
-            if ( isset($gGroupSizes[$aRequest["locationSize"]]) )
-            {
-                // Sizes are defined in gameconfig
-                $DefaultSizes = $gGroupSizes[$aRequest["locationSize"]];
-            }
-            else
-            {
-                // Sizes are not defined in gameconfig
-                // Equally distribute, last role gets remaining slots
-
-                $NumRoles = sizeof($gRoles);
-                $DefaultSizes = Array();
-                $SlotsUsed = 0;
-                $RaidSize = intval($aRequest["locationSize"]);
-
-                for ($i=0; $i<$NumRoles-1; ++$i)
-                {
-                    $DefaultSizes[$i] = intval($RaidSize / $NumRoles);
-                    $SlotsUsed += $DefaultSizes[$i];
-                }
-
-                $DefaultSizes[$NumRoles-1] = $RaidSize - $SlotsUsed;
-            }
-
-            // Assure array contains entries for all 5 roles
-
-            while (sizeof($DefaultSizes) < 5)
-                array_push($DefaultSizes, 0);
-
             // First raid time calculation
 
             $StartHour   = intval($aRequest["startHour"]);
@@ -132,12 +103,16 @@ function msgRaidCreate( $aRequest )
 
             $Repeat = max(0, intval($aRequest["repeat"])) + 1; // repeat at least once
 
+            $GroupInfo = $gGame["Groups"][$aRequest["locationSize"]];            
+            $SlotRoles = implode(":", array_keys($GroupInfo));
+            $SlotCount = implode(":", $GroupInfo);
+            
             for ($rc=0; $rc<$Repeat; ++$rc)
             {
                 $NewRaidQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Raid` ".
-                                                    "(LocationId, Size, Start, End, Mode, Description, SlotsRole1, SlotsRole2, SlotsRole3, SlotsRole4, SlotsRole5 ) ".
+                                                    "(LocationId, Size, Start, End, Mode, Description, SlotRoles, SlotCount ) ".
                                                     "VALUES (:LocationId, :Size, FROM_UNIXTIME(:Start), FROM_UNIXTIME(:End), :Mode, :Description, ".
-                                                    ":SlotsRole1, :SlotsRole2, :SlotsRole3, :SlotsRole4, :SlotsRole5)");
+                                                    ":SlotRoles, :SlotCount)");
 
                 $StartDateTime = mktime($StartHour, $StartMinute, 0, $StartMonth, $StartDay, $StartYear);
                 $EndDateTime   = mktime($EndHour, $EndMinute, 0, $EndMonth, $EndDay, $EndYear);
@@ -153,18 +128,12 @@ function msgRaidCreate( $aRequest )
                 $NewRaidQuery->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
                 $NewRaidQuery->bindValue(":Mode",        $aRequest["mode"], PDO::PARAM_STR);
                 $NewRaidQuery->bindValue(":Description", requestToXML( $aRequest["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
-
-                // Set role sizes
-
-                $NewRaidQuery->bindValue(":SlotsRole1", $DefaultSizes[0], PDO::PARAM_INT);
-                $NewRaidQuery->bindValue(":SlotsRole2", $DefaultSizes[1], PDO::PARAM_INT);
-                $NewRaidQuery->bindValue(":SlotsRole3", $DefaultSizes[2], PDO::PARAM_INT);
-                $NewRaidQuery->bindValue(":SlotsRole4", $DefaultSizes[3], PDO::PARAM_INT);
-                $NewRaidQuery->bindValue(":SlotsRole5", $DefaultSizes[4], PDO::PARAM_INT);
+                $NewRaidQuery->bindValue(":SlotRoles",   $SlotRoles, PDO::PARAM_STR);
+                $NewRaidQuery->bindValue(":SlotCount",   $SlotCount, PDO::PARAM_STR);
 
                 $NewRaidQuery->execute();
                 $RaidId = $Connector->lastInsertId();
-
+                
                 // Set vacation attendances
 
                 while (list($UserId, $Settings) = each($VactionUsers))

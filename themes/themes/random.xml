@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <theme>
     <name>Randomized</name>
+    <family>wow</family>
     <banner>cataclysm.jpg</banner>
     <bgimage>cataclysm.jpg</bgimage>
     <bgrepeat>repeat-x</bgrepeat>

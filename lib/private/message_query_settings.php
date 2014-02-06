@@ -2,10 +2,12 @@
 
 function msgQuerySettings( $aRequest )
 {
-    $Out = Out::getInstance();
-
     if ( validAdmin() )
     {
+        global $gGame;
+        loadGameSettings();
+        
+        $Out = Out::getInstance();
         $Connector = Connector::getInstance();
 
         // Pass through parameter
@@ -50,6 +52,48 @@ function msgQuerySettings( $aRequest )
         });
 
         $Out->pushValue("setting", $Settings);
+        
+        // Load games
+        
+        $GameFiles = scandir( "../themes/games" );
+        $Games = Array();
+        
+        foreach ( $GameFiles as $GameFileName )
+        {
+            try
+            {
+                if (strpos($GameFileName,".xml") > 0)
+                {
+                    $Game = @new SimpleXMLElement( file_get_contents("../themes/games/".$GameFileName) );
+                    $SimpleGameFileName = substr($GameFileName, 0, strrpos($GameFileName, "."));
+                    
+                    if ($Game->name != "")
+                        $GameName = strval($Game->name);
+                    else
+                        $GameName = str_replace("_", " ", $SimpleGameFileName);
+                    
+                    $Groups = Array();
+                    foreach($Game->groups->group as $Group)
+                    {
+                        array_push($Groups, intval($Group["count"]));
+                    }
+
+                    array_push($Games, Array(
+                        "name"   => $GameName,
+                        "family" => strval($Game->family),
+                        "file"   => $SimpleGameFileName,
+                        "groups" => $Groups
+                    ));
+                }
+            }
+            catch (Exception $e)
+            {
+                $Out->pushError("Error parsing gameconfig ".$GameFileName.": ".$e->getMessage());
+            }
+        }
+
+        $Out->pushValue("game", $Games);
+
 
         // Load themes
 
@@ -60,19 +104,24 @@ function msgQuerySettings( $aRequest )
         {
             try
             {
-                if (strpos($ThemeFileName,".") > 0)
+                if (strpos($ThemeFileName,".xml") > 0)
                 {
                     $Theme = @new SimpleXMLElement( file_get_contents("../themes/themes/".$ThemeFileName) );
                     $SimpleThemeFileName = substr($ThemeFileName, 0, strrpos($ThemeFileName, "."));
-
+                    
+                    $Family = (isset($Theme->family)) 
+                        ? explode(",",strtolower($Theme->family))
+                        : "wow";
+                    
                     if ($Theme->name != "")
-                        $ThemeName = $Theme->name;
+                        $ThemeName = strval($Theme->name);
                     else
                         $ThemeName = str_replace("_", " ", $SimpleThemeFileName);
 
                     array_push($Themes, Array(
-                        "name" => $ThemeName,
-                        "file" => $SimpleThemeFileName
+                        "name"   => $ThemeName,
+                        "family" => $Family,
+                        "file"   => $SimpleThemeFileName
                     ));
                 }
             }
@@ -93,10 +142,11 @@ function msgQuerySettings( $aRequest )
                                            "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
                                            "WHERE `".RP_TABLE_PREFIX."Character`.Mainchar = 'true' ".
                                            "AND `".RP_TABLE_PREFIX."Raid`.Start > `".RP_TABLE_PREFIX."User`.Created ".
-                                           "AND `".RP_TABLE_PREFIX."Raid`.Start < FROM_UNIXTIME(:Now) ".
+                                           "AND `".RP_TABLE_PREFIX."Raid`.Start < FROM_UNIXTIME(:Now) AND Game = :Game ".
                                            "GROUP BY UserId, `Status` ORDER BY Name" );
 
         $Attendance->bindValue( ":Now", time(), PDO::PARAM_INT );
+        $Attendance->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
 
         $UserId = 0;
         $NumRaidsRemain = 0;
@@ -104,7 +154,7 @@ function msgQuerySettings( $aRequest )
         $StateCounts = array( "undecided" => 0, "available" => 0, "unavailable" => 0, "ok" => 0 );
         $Attendances = Array();
 
-        $Attendance->loop( function($Data) use (&$Connector, &$UserId, &$NumRaidsRemain, &$MainCharName, &$StateCounts, &$Attendances)
+        $Attendance->loop( function($Data) use (&$gGame, &$Connector, &$UserId, &$NumRaidsRemain, &$MainCharName, &$StateCounts, &$Attendances)
         {
             if ( $UserId != $Data["UserId"] )
             {
@@ -136,10 +186,12 @@ function msgQuerySettings( $aRequest )
                 // Fetch number of attendable raids
 
                 $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
-                                              "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now)" );
+                    "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
+                    "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game" );
 
                 $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
                 $Raids->bindValue( ":Created", $Data["CreatedUTC"], PDO::PARAM_INT );
+                $Raids->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
 
                 $RaidCountData = $Raids->fetchFirst();
                 $NumRaidsRemain = ($RaidCountData == null) ? 0 : $RaidCountData["NumberOfRaids"];
@@ -173,6 +225,7 @@ function msgQuerySettings( $aRequest )
     }
     else
     {
+        $Out = Out::getInstance();
         $Out->pushError(L("AccessDenied"));
     }
 }

@@ -4,6 +4,9 @@ function msgRaidAttend( $aRequest )
 {
     if (validUser())
     {
+        global $gGame;
+        
+        loadGameSettings();
         $Connector = Connector::getInstance();
 
         $AttendanceIdx = intval( $aRequest["attendanceIndex"] );
@@ -14,11 +17,12 @@ function msgRaidAttend( $aRequest )
 
         $ChangeAllowed = true;
         $RaidInfo = Array();
-        $Role = 0;
+        $Role = "";
+        $Class = "";
 
         // Check if locked
 
-        $LockCheckQuery = $Connector->prepare("SELECT Stage,Mode,SlotsRole1,SlotsRole2,SlotsRole3,SlotsRole4,SlotsRole5 FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
+        $LockCheckQuery = $Connector->prepare("SELECT Stage, Mode, SlotRoles, SlotCount FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
         $LockCheckQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
 
         $RaidInfo = $LockCheckQuery->fetchFirst();
@@ -34,8 +38,10 @@ function msgRaidAttend( $aRequest )
 
             if ( $AttendanceIdx > 0)
             {
-                $CheckQuery = $Connector->prepare("SELECT UserId, Role1 FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharacterId LIMIT 1");
+                $CheckQuery = $Connector->prepare("SELECT UserId, Class, Role1 FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharacterId AND Game = :Game LIMIT 1");
+                
                 $CheckQuery->bindValue(":CharacterId", $AttendanceIdx, PDO::PARAM_INT);
+                $CheckQuery->bindValue(":Game", $gGame["GameId"], PDO::PARAM_INT);
 
                 $CharacterInfo = $CheckQuery->fetchFirst();
 
@@ -43,6 +49,7 @@ function msgRaidAttend( $aRequest )
                 {
                     $ChangeAllowed &= ($CharacterInfo["UserId"] == $UserId );
                     $Role = $CharacterInfo["Role1"];
+                    $Class = explode(":",$CharacterInfo["Class"])[0];
                 }
                 else
                 {
@@ -54,8 +61,6 @@ function msgRaidAttend( $aRequest )
 
             if ( $ChangeAllowed )
             {
-                $MaxSlotCount = $RaidInfo["SlotsRole".($Role+1)];
-
                 $CheckQuery = $Connector->prepare("SELECT UserId FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId AND RaidId = :RaidId LIMIT 1");
                 $CheckQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
                 $CheckQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
@@ -69,14 +74,14 @@ function msgRaidAttend( $aRequest )
                     if ( $ChangeComment  )
                     {
                         $AttendQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                        "CharacterId = :CharacterId, Status = :Status, Role = :Role, Comment = :Comment, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
-                                                        "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
+                            "CharacterId = :CharacterId, Status = :Status, Class = :Class, Role = :Role, Comment = :Comment, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
+                            "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
                     }
                     else
                     {
                         $AttendQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                        "CharacterId = :CharacterId, Status = :Status, Role = :Role, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
-                                                        "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
+                            "CharacterId = :CharacterId, Status = :Status, Class = :Class, Role = :Role, LastUpdate = FROM_UNIXTIME(:Timestamp) ".
+                            "WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1" );
 
                     }
                 }
@@ -84,13 +89,13 @@ function msgRaidAttend( $aRequest )
                 {
                     if ( $ChangeComment )
                     {
-                        $AttendQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment, LastUpdate ) ".
-                                                        "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, :Comment, FROM_UNIXTIME(:Timestamp) )" );
+                        $AttendQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Class, Role, Comment, LastUpdate ) ".
+                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Class, :Role, :Comment, FROM_UNIXTIME(:Timestamp) )" );
                     }
                     else
                     {
-                        $AttendQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Role, Comment, LastUpdate) ".
-                                                        "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, '', FROM_UNIXTIME(:Timestamp) )" );
+                        $AttendQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` ( CharacterId, UserId, RaidId, Status, Class, Role, Comment, LastUpdate) ".
+                            "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Class, :Role, '', FROM_UNIXTIME(:Timestamp) )" );
                     }
                 }
 
@@ -133,26 +138,32 @@ function msgRaidAttend( $aRequest )
                 $AttendQuery->bindValue(":RaidId",      $RaidId,      PDO::PARAM_INT);
                 $AttendQuery->bindValue(":UserId",      $UserId,      PDO::PARAM_INT);
                 $AttendQuery->bindValue(":Status",      $Status,      PDO::PARAM_STR);
-                $AttendQuery->bindValue(":Role",        $Role,        PDO::PARAM_INT);
+                $AttendQuery->bindValue(":Role",        $Role,        PDO::PARAM_STR);
+                $AttendQuery->bindValue(":Class",       $Class,       PDO::PARAM_STR);
                 $AttendQuery->bindValue(":Timestamp",   time(),       PDO::PARAM_INT);
 
                 if ( $AttendQuery->execute() &&
-
+                     ($Role != "") &&
                      ($RaidInfo["Mode"] == "attend") &&
-
                      ($Status == "ok") )
                 {
+                    $RoleCounts = array_combine(
+                        explode(":", $RaidInfo["SlotRoles"]), 
+                        explode(":", $RaidInfo["SlotCount"]));
+                     
+                    $MaxSlotCount = intval($RoleCounts[$Role]);
+                
                     // Check constraints for auto-attend
                     // This fixes a rare race condition where two (or more) players attend
                     // the last available slot at the same time.
-
+                    
                     $AttendenceQuery = $Connector->prepare("SELECT AttendanceId ".
                                                            "FROM `".RP_TABLE_PREFIX."Attendance` ".
                                                            "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
                                                            "ORDER BY AttendanceId DESC LIMIT :MaxCount" );
 
                     $AttendenceQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
-                    $AttendenceQuery->bindValue(":RoleId", $Role, PDO::PARAM_INT);
+                    $AttendenceQuery->bindValue(":RoleId", $Role, PDO::PARAM_STR);
                     $AttendenceQuery->bindValue(":MaxCount", $MaxSlotCount, PDO::PARAM_INT);
 
                     $LastAttend = $AttendenceQuery->fetchFirst();
@@ -166,13 +177,12 @@ function msgRaidAttend( $aRequest )
                                                         "AND AttendanceId > :FirstId" );
 
                         $FixQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
-                        $FixQuery->bindValue(":RoleId", $Role, PDO::PARAM_INT);
+                        $FixQuery->bindValue(":RoleId", $Role, PDO::PARAM_STR);
                         $FixQuery->bindValue(":FirstId", $LastAttend["AttendanceId"], PDO::PARAM_INT);
 
                         $FixQuery->execute();
                     }
                 }
-
             }
             else
             {

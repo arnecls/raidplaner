@@ -9,6 +9,7 @@
     class CharacterInfo
     {
         public $CharacterId;
+        public $Game;
         public $Name;
         public $ClassName;
         public $IsMainChar;
@@ -682,6 +683,7 @@
                     $Character = new CharacterInfo();
 
                     $Character->CharacterId = $Row["CharacterId"];
+                    $Character->Game        = $Row["Game"];
                     $Character->Name        = $Row["Name"];
                     $Character->ClassName   = $Row["Class"];
                     $Character->IsMainChar  = $Row["Mainchar"] == "true";

@@ -4,7 +4,7 @@
     define("SCRIPT_DEBUG", true);
 
     require_once("lib/private/locale.php");
-    require_once("lib/private/gamedata.php");
+    require_once("lib/private/tools_site.php");
 
     // Old browser check
 
@@ -12,7 +12,7 @@
 
     // Update or setup required check
 
-    if ( !file_exists("lib/config/config.php") || !checkVersion($gSite["Version"]) )
+    if ( !file_exists("lib/config/config.php") || !checkVersion($gVersion) )
     {
         include_once("runsetup.php");
         die();
@@ -32,7 +32,7 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
         <link rel="icon" href="favicon.png" type="image/png"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/allstyles.php<?php if (STYLE_DEBUG) echo "?debug"; ?>"/>
+        <link rel="stylesheet" type="text/css" href="lib/layout/allstyles.php?v=<?php echo $gSite["Version"].((STYLE_DEBUG) ? "&debug" : ""); ?>"/>
 
         <?php // Load scripts
 
@@ -42,7 +42,7 @@
             }
             else
             {
-                echo "<script type=\"text/javascript\" src=\"lib/script/raidplaner.js?version=".$gSite["Version"]."\"></script>";
+                echo "<script type=\"text/javascript\" src=\"lib/script/raidplaner.js?v=".$gSite["Version"]."\"></script>";
             }
         ?>
     </head>

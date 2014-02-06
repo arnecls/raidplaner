@@ -11,10 +11,11 @@ define("PlayerFlagJustName", PlayerFlagName | PlayerFlagModified);
 
 function msgRaidupdate( $aRequest )
 {
-    global $gRoles;
-
     if ( validRaidlead() )
     {
+        global $gGame;
+        
+        loadGameSettings();
         $Connector = Connector::getInstance();
 
         // The whole update is packed into one transaction.
@@ -52,7 +53,7 @@ function msgRaidupdate( $aRequest )
                                                "Start = FROM_UNIXTIME(:Start), End = FROM_UNIXTIME(:End), ".
                                                "Description = :Description, ".
                                                "Mode = :Mode, ".
-                                               "SlotsRole1 = :SlotsRole1, SlotsRole2 = :SlotsRole2, SlotsRole3 = :SlotsRole3, SlotsRole4 = :SlotsRole4, SlotsRole5 = :SlotsRole5 ".
+                                               "SlotRoles = :SlotRoles, SlotCount = :SlotCount ".
                                                "WHERE RaidId = :RaidId" );
 
         $StartDateTime = mktime(intval($aRequest["startHour"]), intval($aRequest["startMinute"]), 0, intval($aRequest["startMonth"]), intval($aRequest["startDay"]), intval($aRequest["startYear"]) );
@@ -71,19 +72,8 @@ function msgRaidupdate( $aRequest )
         $UpdateRaidQuery->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
         $UpdateRaidQuery->bindValue(":Mode",        $aRequest["mode"], PDO::PARAM_STR);
         $UpdateRaidQuery->bindValue(":Description", requestToXML( $aRequest["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
-
-        $SlotSizes = Array(
-            intval($aRequest["slotsRole"][0]), intval($aRequest["slotsRole"][1]), intval($aRequest["slotsRole"][2]),
-            intval($aRequest["slotsRole"][3]), intval($aRequest["slotsRole"][4])
-        );
-
-        // upload slot sizes
-
-        $UpdateRaidQuery->bindValue(":SlotsRole1", $SlotSizes[0], PDO::PARAM_INT);
-        $UpdateRaidQuery->bindValue(":SlotsRole2", $SlotSizes[1], PDO::PARAM_INT);
-        $UpdateRaidQuery->bindValue(":SlotsRole3", $SlotSizes[2], PDO::PARAM_INT);
-        $UpdateRaidQuery->bindValue(":SlotsRole4", $SlotSizes[3], PDO::PARAM_INT);
-        $UpdateRaidQuery->bindValue(":SlotsRole5", $SlotSizes[4], PDO::PARAM_INT);
+        $UpdateRaidQuery->bindValue(":SlotRoles",   implode(":",$aRequest["slotRoles"]), PDO::PARAM_STR);
+        $UpdateRaidQuery->bindValue(":SlotCount",   implode(":",$aRequest["slotCount"]), PDO::PARAM_STR);
 
         if (!$UpdateRaidQuery->execute())
         {
@@ -99,7 +89,7 @@ function msgRaidupdate( $aRequest )
         for ( $i=0; $i<$NumRemoved; ++$i )
         {
             $RemoveSlot = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` ".
-                                               "WHERE AttendanceId = :AttendanceId AND CharacterId = 0 AND UserId = 0" );
+                "WHERE AttendanceId = :AttendanceId AND CharacterId = 0 AND UserId = 0" );
 
             $RemoveSlot->bindValue( ":AttendanceId", $aRequest["removed"][$i], PDO::PARAM_INT );
 
@@ -114,13 +104,12 @@ function msgRaidupdate( $aRequest )
         // Random player will be converted to "real" player, i.e. they loose their
         // negative pseudo-id.
 
-        foreach ( $gRoles as $Role )
+        foreach( $gGame["Roles"] as $Role )
         {
-            $RoleIdx = $Role[0];
-            if ( isset($aRequest["role".($RoleIdx+1)]) )
+            if ( isset($aRequest["role_".$Role["id"]]) )
             {
                 $NumAttends = 0;
-                $AttendsForRole = $aRequest["role".($RoleIdx+1)];
+                $AttendsForRole = $aRequest["role_".$Role["id"]];
 
                 // Attendances are passed in the form [id,status,id,status, … ]
                 // So we iterate with a stride of 2
@@ -143,8 +132,8 @@ function msgRaidupdate( $aRequest )
 
                     if ( ($Flags & PlayerFlagCharId) != 0 )
                     {
-                        $CharId = intVal($AttendsForRole[$AttendIdx++]);
-                        $ActiveClass = intVal($AttendsForRole[$AttendIdx++]); 
+                        $CharId = intval($AttendsForRole[$AttendIdx++]);
+                        $ActiveClass = $AttendsForRole[$AttendIdx++]; 
                     }
                     
                     if ( ($Flags & PlayerFlagUserId) != 0 )
@@ -165,28 +154,41 @@ function msgRaidupdate( $aRequest )
                              (($Flags & PlayerFlagCharId) != 0) )
                         {
                             // Undecided set-up
-
+                            
                             $UpdateSlot = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
-                                                               "( CharacterId, Class, UserId, RaidId, Status, Role, Comment ) ".
-                                                               "VALUES ( :CharId, :Class, :UserId, :RaidId, :Status, :Role, :Comment )" );
+                                "( CharacterId, Class, UserId, RaidId, Status, Role, Comment ) ".
+                                "VALUES ( :CharId, :Class, :UserId, :RaidId, :Status, :Role, :Comment )" );
 
                             $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
-                            $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_STR);
                             $UpdateSlot->bindValue( ":UserId", $UserId, PDO::PARAM_INT);
                             $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
+                        }
+                        else if ( (($Flags & PlayerFlagComment) != 0) &&
+                                  (($Flags & PlayerFlagCharId) != 0) )
+                        {
+                            // Undecied absent
+                        
+                            $UpdateSlot = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
+                                "( CharacterId, Class, UserId, RaidId, Status, Role, Comment ) ".
+                                "VALUES ( :CharId, :Class, :UserId, :RaidId, :Status, :Role, :Comment )" );
 
+                            $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_STR);
+                            $UpdateSlot->bindValue( ":UserId", $UserId, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
                         }
                         else if ( ($Flags & PlayerFlagName) != 0 )
                         {
                             // Random player. Set name.
-
+                            
                             $UpdateSlot = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."Attendance` ".
-                                                               "( CharacterId, UserId, RaidId, Status, Role, Comment ) ".
-                                                               "VALUES ( 0, 0, :RaidId, :Status, :Role, :Name )" );
+                                "( CharacterId, UserId, RaidId, Status, Class, Role, Comment ) ".
+                                "VALUES ( 0, 0, :RaidId, :Status, :Class, :Role, :Name )" );
 
                             $UpdateSlot->bindValue( ":Name", $Name, PDO::PARAM_STR);
+                            $UpdateSlot->bindValue( ":Class", "___", PDO::PARAM_STR);
                         }
-
                         else
                         {
                             $Out = Out::getInstance();
@@ -204,31 +206,31 @@ function msgRaidupdate( $aRequest )
                             // Used when setting up an absent player
 
                             $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                               "Status = :Status, CharacterId = :CharId, Class = :Class, Comment = :Comment, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
-                                                               "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
+                                "Status = :Status, CharacterId = :CharId, Class = :Class, Comment = :Comment, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
+                                "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
 
                             $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
                             $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
-                            $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_STR);
                         }
                         else if ( ($Flags & PlayerFlagCharId) != 0 )
                         {
                             // Used when changing a character
 
                             $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                               "Status = :Status, CharacterId = :CharId, Class = :Class, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
-                                                               "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
+                                "Status = :Status, CharacterId = :CharId, Class = :Class, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
+                                "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
 
                             $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
-                            $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_STR);
                         }
                         else if ( (($Flags & PlayerFlagComment) != 0) )
                         {
                             // Used when setting a player to absent
 
                             $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                               "Status = :Status, Comment = :Comment, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
-                                                               "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
+                                "Status = :Status, Comment = :Comment, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
+                                "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
 
                             $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
                         }
@@ -237,18 +239,18 @@ function msgRaidupdate( $aRequest )
                             // Used when changing the name of a random player
 
                             $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                               "Status = :Status, Role = :Role, Comment = :Name, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
-                                                               "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
+                                "Status = :Status, Role = :Role, Comment = :Name, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
+                                "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
 
-                            $UpdateSlot->bindValue( ":Name",         $Name, PDO::PARAM_STR);
+                            $UpdateSlot->bindValue( ":Name", Name, PDO::PARAM_STR);
                         }
                         else
                         {
                             // Existing player, update
 
                             $UpdateSlot = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."Attendance` SET ".
-                                                               "Status = :Status, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
-                                                               "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
+                                "Status = :Status, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
+                                "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
                         }
 
                         $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
@@ -258,7 +260,7 @@ function msgRaidupdate( $aRequest )
 
                     $UpdateSlot->bindValue( ":Status", $Status, PDO::PARAM_STR);
                     $UpdateSlot->bindValue( ":RaidId", $aRequest["id"], PDO::PARAM_INT);
-                    $UpdateSlot->bindValue( ":Role",   $RoleIdx, PDO::PARAM_INT);
+                    $UpdateSlot->bindValue( ":Role",   $Role["id"], PDO::PARAM_STR);
 
                     if (!$UpdateSlot->execute())
                     {
@@ -276,7 +278,7 @@ function msgRaidupdate( $aRequest )
             // Mode "all" means all players are either "ok" or "unavailable"
 
             $AttendenceQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET Status = \"ok\" ".
-                                                "WHERE RaidId = :RaidId AND Status = \"available\"" );
+                "WHERE RaidId = :RaidId AND Status = \"available\"" );
 
             $AttendenceQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
 
@@ -289,8 +291,10 @@ function msgRaidupdate( $aRequest )
         else if ( $aRequest["mode"] != "overbook" )
         {
             // Assure there not more "ok" players than allowed by slot size
-
-            for ( $RoleId=0; $RoleId<sizeof($SlotSizes); ++$RoleId )
+            
+            $SlotSizes = array_combine($aRequest["slotRoles"], $aRequest["slotCount"]);
+            
+            foreach( $aRequest["slotRoles"] as $RoleId)
             {
                 if ( $SlotSizes[$RoleId] > 0 )
                 {
@@ -300,8 +304,8 @@ function msgRaidupdate( $aRequest )
                                                            "ORDER BY AttendanceId DESC LIMIT :MaxCount" );
 
                     $AttendenceQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
-                    $AttendenceQuery->bindValue(":RoleId", $RoleId, PDO::PARAM_INT);
-                    $AttendenceQuery->bindValue(":MaxCount", $SlotSizes[$RoleId], PDO::PARAM_INT);
+                    $AttendenceQuery->bindValue(":RoleId", $RoleId, PDO::PARAM_STR);
+                    $AttendenceQuery->bindValue(":MaxCount", intval($SlotSizes[$RoleId]), PDO::PARAM_INT);
 
                     $LastAttend = $AttendenceQuery->fetchFirst();
 
@@ -314,7 +318,7 @@ function msgRaidupdate( $aRequest )
                                                          "AND AttendanceId > :FirstId" );
 
                         $FixQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
-                        $FixQuery->bindValue(":RoleId", $RoleId, PDO::PARAM_INT);
+                        $FixQuery->bindValue(":RoleId", $RoleId, PDO::PARAM_STR);
                         $FixQuery->bindValue(":FirstId", $LastAttend["AttendanceId"], PDO::PARAM_INT);
 
                         if (!$FixQuery->execute())

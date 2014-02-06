@@ -13,8 +13,8 @@
               `RaidId` int(10) unsigned NOT NULL,
               `LastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
               `Status` enum('ok','available','unavailable','undecided') NOT NULL,
-              `Role` tinyint(1) unsigned NOT NULL,
-              `Class` tinyint(2) NOT NULL DEFAULT '0',
+              `Role` char(3) NOT NULL,
+              `Class` char(3) NOT NULL,
               `Comment` text NOT NULL,
               PRIMARY KEY (`AttendanceId`),
               KEY `UserId` (`UserId`),
@@ -25,17 +25,19 @@
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."Character` (
               `CharacterId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `UserId` int(10) unsigned NOT NULL,
+              `Game` char(4) NOT NULL,
               `Name` varchar(64) NOT NULL,
               `Mainchar` enum('true','false') NOT NULL DEFAULT 'false',
-              `Class` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-              `Role1` tinyint(1) unsigned NOT NULL,
-              `Role2` tinyint(1) unsigned NOT NULL,
+              `Class` varchar(128) NOT NULL,
+              `Role1` char(3) NOT NULL,
+              `Role2` char(3) NOT NULL,
               PRIMARY KEY (`CharacterId`),
               KEY `UserId` (`UserId`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
 
         $Connector->exec( "CREATE TABLE IF NOT EXISTS `".$Prefix."Location` (
               `LocationId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+              `Game` char(4) NOT NULL,
               `Name` varchar(128) NOT NULL,
               `Image` varchar(255) NOT NULL,
               PRIMARY KEY (`LocationId`)
@@ -50,11 +52,8 @@
               `End` datetime NOT NULL,
               `Mode` enum('manual','overbook','attend','all') NOT NULL,
               `Description` text NOT NULL,
-              `SlotsRole1` tinyint(2) unsigned NOT NULL,
-              `SlotsRole2` tinyint(2) unsigned  NOT NULL,
-              `SlotsRole3` tinyint(2) unsigned  NOT NULL,
-              `SlotsRole4` tinyint(2) unsigned  NOT NULL,
-              `SlotsRole5` tinyint(2) unsigned  NOT NULL,
+              `SlotRoles` varchar(24) NOT NULL,
+              `SlotCount` varchar(12) NOT NULL,
               PRIMARY KEY (`RaidId`),
               KEY `LocationId` (`LocationId`)
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
@@ -73,7 +72,7 @@
               `UserId` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `Group` enum('admin','raidlead','member','none') NOT NULL,
               `ExternalId` int(10) unsigned NOT NULL,
-              `ExternalBinding` CHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+              `ExternalBinding` char(10) NOT NULL,
               `BindingActive` enum('true','false') NOT NULL DEFAULT 'true',
               `Login` varchar(255) NOT NULL,
               `Password` char(128) NOT NULL,
@@ -146,6 +145,9 @@
         if ( !in_array("Theme", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Theme', 0, 'cataclysm');" );
 
+        if ( !in_array("GameConfig", $ExistingSettings) )
+            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('GameConfig', 0, 'wow');" );
+
         if ( !in_array("TimeFormat", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('TimeFormat', 24, '');" );
 
@@ -160,74 +162,230 @@
     
     // ------------------------------------------------------------------------
     
-    function UpdateGameConfig110($aGameConfig100)
+    function RemoveLast($aCandidates, $aString)
     {
-        $Icons = Array(
-            "slot_role1.png" => "role_melee",
-            "slot_role2.png" => "role_heal",
-            "slot_role3.png" => "role_support",
-            "slot_role4.png" => "role_tank",
-        );
+        for ($i = strlen($aString)-1; $i>0; --$i)
+        {
+            if ( in_array($aString[$i], $aCandidates) )
+            {
+                return substr($aString, 0, $i).substr($aString, $i+1);
+            }
+        }
+        
+        return $aString;
+    }
     
+    // ------------------------------------------------------------------------
+    
+    function StripDuplicates($aString)
+    {
+        $Result = $aString[0];
+        $Last = $aString[0];
+        $Chars = Array($Last);
+        
+        for ($i=1; $i<strlen($aString); ++$i)
+        {
+            if (($aString[$i] != $Last) && !in_array($aString[$i], $Chars))
+            {
+                $Result .= $aString[$i];
+                array_push($Chars, $aString[$i]);
+            }
+               
+            $Last = $aString[$i];
+        }
+                
+        return $Result;
+    }
+    
+    // ------------------------------------------------------------------------
+    
+    function IsAlternating($aString, $aChars)
+    {
+        $State = in_array($aString[0], $aChars);
+        for ($i=1; $i<strlen($aString); ++$i)
+        {
+            $NewState = in_array($aString[$i], $aChars);
+            if ($NewState == $State)
+                return false;
+                
+            $State = $NewState;
+        }
+        
+        return true;
+    }
+    
+    // ------------------------------------------------------------------------
+    
+    function BuildXCC($aName, $aCount)
+    {
+        $Id = StripDuplicates(strtolower($aName));
+        
+        while (strlen($Id) < $aCount)
+        {
+            $Id .= "_";
+        }
+        
+        if (strlen($Id) == 3)
+            return $Id;
+        
+        $Replace = Array("a","e","i","o","u"); 
+         
+        if (IsAlternating(substr($Id,0,$aCount+1), $Replace))
+            return substr($Id,0,$aCount);
+        
+        while (strlen($Id) > $aCount)
+        {
+            $Reduced = RemoveLast($Replace, $Id);            
+            $Id = ($Reduced == $Id) 
+                ? substr($Reduced, 0, $aCount)
+                : $Reduced;
+        }
+        
+        return $Id;
+    }
+    
+    // ------------------------------------------------------------------------
+    
+    function MakeUnqiue($aId, $aFullName, $aNames)
+    {
+        if (!in_array($aId, $aNames))
+            return $aId;
+            
+        $UniqueId = $aId;
+        $CharIdx = intval(strlen($UniqueId) / 2);
+        $CandidateIdx = strlen($aFullName)-1;
+        
+        $UniqueId[strlen($UniqueId)-1] = $aFullName[$CandidateIdx];
+        
+        while ((in_array($UniqueId, $aNames)) && ($CandidateIdx > 0))
+        {
+            $UniqueId[$CharIdx] = $aFullName[$CandidateIdx];
+            --$CandidateIdx;
+        }
+            
+        return $UniqueId;
+    }
+    
+    // ------------------------------------------------------------------------
+    
+    function UpdateGameConfig110($aGameConfig100, &$aClassNameToId, &$aRoleIdxToId, &$aGame )
+    {
+        $StyleMappings = Array(
+            "images/roles/slot_role1.png" => "role_melee",
+            "images/roles/slot_role2.png" => "role_heal",
+            "images/roles/slot_role3.png" => "role_support",
+            "images/roles/slot_role4.png" => "role_tank",
+        );
+        
         include_once($aGameConfig100);
-        $NewGameConfig = fopen(dirname(__FILE__)."/../../lib/config/config.game.php", "w");
+        $NewGameConfig = fopen(dirname(__FILE__)."/../../themes/games/legacy.xml", "w");
         
         if ($NewGameConfig === false)
             return false;
         
-        fwrite($NewGameConfig, "<?php\n");
-        fwrite($NewGameConfig, "\t\$gClassMode = \"single\";\n\n");
+        $RoleNameToId   = Array();
+        $aRoleIdxToId   = Array();
+        $aClassNameToId = Array();
+        $aGame = "rp10";
+        
+        // Header
+        
+        fwrite($NewGameConfig, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        fwrite($NewGameConfig, "<game>\n");
+        fwrite($NewGameConfig, "\t<id>rp10</id>\n");
+        fwrite($NewGameConfig, "\t<name>Raidplaner 1.0.x</name>\n");
+        fwrite($NewGameConfig, "\t<family>wow</family>\n");
+        fwrite($NewGameConfig, "\t<classmode>single</classmode>\n");
         
         // Roles
         
-        fwrite($NewGameConfig, "\t\$gRoles = Array(\n");
+        fwrite($NewGameConfig, "\n\t<roles>\n");
         
-        reset($gRoles);
-        for($RoleIdx=0; list($Ident, $Loca) = each($gRoles); ++$RoleIdx)
+        $RoleIdx = 0;
+        while (list($Name, $Loca) = each($gRoles))
         {
-            $Style = (isset($Icons[strtolower($gRoleImages[$RoleIdx])]))
-                ? $Icons[strtolower($gRoleImages[$RoleIdx])]
-                : "role_range";
+            $RoleId = BuildXCC($Loca, 3);
+            $RoleId = MakeUnqiue($RoleId, $Loca, $aRoleIdxToId);
+               
+            $Style = (isset($StyleMappings[$gRoleImages[$RoleIdx]]))
+                ? $StyleMappings[$gRoleImages[$RoleIdx]]
+                : "role_support";
                 
-            fwrite($NewGameConfig, "\t\t\"".$Ident."\" => Array( ".$RoleIdx.", ".$gRoleColumnCount[$RoleIdx].", \"".$Loca."\", \"".$Style."\" ),\n");
+            fwrite($NewGameConfig, "\t\t<role id=\"".$RoleId."\" loca=\"".$Loca."\" style=\"".$Style."\"/>\n");
+            
+            array_push($aRoleIdxToId, $RoleId);
+            $RoleNameToId[$Name] = $RoleId;
+            
+            ++$RoleIdx;
         }
         
-        fwrite($NewGameConfig, "\t);\n\n");
+        fwrite($NewGameConfig, "\t</roles>\n");
         
         // Classes
         
-        fwrite($NewGameConfig, "\t\$gClasses = Array(\n");
+        fwrite($NewGameConfig, "\n\t<classes>\n");
         
-        reset($gClasses);
-        for ($ClassIdx=0; list($Ident, $Data) = each($gClasses); ++$ClassIdx)
+        $RoleIdx = 0;
+        while (list($Name, $ClassDesc) = each($gClasses))
         {
-            $Roles = array();
-            foreach($Data[2] as $Role)
+            if ($Name == "empty") continue;
+                
+            $ClassId = BuildXCC($Name, 3);
+            $ClassId = MakeUnqiue($ClassId, $Name, array_values($aClassNameToId));
+                        
+            $aClassNameToId[$Name] = $ClassId;
+                
+            fwrite($NewGameConfig, "\t\t<class id=\"".$ClassId."\" loca=\"".$ClassDesc[0]."\" style=\"".$Name."\">\n");
+            
+            foreach($ClassDesc[2] as $RoleName)
             {
-                array_push($Roles, "\"".$Role."\"");    
+                if ($RoleName == $ClassDesc[1])
+                    fwrite($NewGameConfig, "\t\t\t<role id=\"".$RoleNameToId[$RoleName]."\" default=\"true\"/>\n");
+                else
+                    fwrite($NewGameConfig, "\t\t\t<role id=\"".$RoleNameToId[$RoleName]."\"/>\n");
             }
             
-            fwrite($NewGameConfig, "\t\t\"".$Ident."\" => Array( ".$ClassIdx.", \"".$Data[0]."\", \"".$Data[1]."\", Array(".implode(",", $Roles).") ),\n");
+            fwrite($NewGameConfig, "\t\t</class>\n");
         }
         
-        fwrite($NewGameConfig, "\t);\n\n");
+        fwrite($NewGameConfig, "\t</classes>\n");
         
-        // Group sizes
+        // Raidview
         
-        fwrite($NewGameConfig, "\t\$gGroupSizes = Array(\n");
+        fwrite($NewGameConfig, "\n\t<raidview>\n");
         
-        reset($gGroupSizes);
-        while(list($Count,$Slots) = each($gGroupSizes))
+        $RoleIdx = 0;
+        foreach($gRoleColumnCount as $Count)
         {
-            fwrite($NewGameConfig, "\t\t".$Count." => Array(".implode(",", $Slots)."),\n");
+            fwrite($NewGameConfig, "\t\t<slots role=\"".$aRoleIdxToId[$RoleIdx]."\" order=\"".($RoleIdx+1)."\" columns=\"".$Count."\"/>\n");
+            ++$RoleIdx;
         }
         
-        fwrite($NewGameConfig, "\t);\n");
+        fwrite($NewGameConfig, "\t</raidview>\n");
         
-        // Close
+        // Groups
         
-        fwrite($NewGameConfig, "?>\n");
-        fclose($NewGameConfig);
+        fwrite($NewGameConfig, "\n\t<groups>\n");
+        
+        while(list($Size, $RoleCount) = each($gGroupSizes))
+        {
+            fwrite($NewGameConfig, "\t\t<group count=\"".$Size."\">\n");
+            
+            $RoleIdx = 0;
+            foreach($RoleCount as $Count)
+            {
+                fwrite($NewGameConfig, "\t\t\t<role id=\"".$aRoleIdxToId[$RoleIdx]."\" count=\"".$Count."\"/>\n");
+                ++$RoleIdx;
+            }
+            
+            fwrite($NewGameConfig, "\t\t</group>\n");
+        }
+        
+        fwrite($NewGameConfig, "\t</groups>\n");
+        
+        // Clean up
+        
+        fwrite($NewGameConfig, "</game>\n");
         
         unset($gRoles);
         unset($gRoleImages);

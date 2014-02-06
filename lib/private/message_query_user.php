@@ -9,6 +9,7 @@ function msgQueryUser($aRequest)
         $CurrentUser = UserProxy::getInstance();
 
         $CharacterIds = array();
+        $CharacterGames = array();
         $CharacterNames = array();
         $CharacterClasses = array();
         $CharacterRoles1 = array();
@@ -18,6 +19,7 @@ function msgQueryUser($aRequest)
         foreach( $CurrentUser->Characters as $Character )
         {
             array_push($CharacterIds, $Character->CharacterId);
+            array_push($CharacterGames, $Character->Game);
             array_push($CharacterNames, $Character->Name);
             array_push($CharacterClasses, explode(":",$Character->ClassName));
             array_push($CharacterRoles1, $Character->Role1);
@@ -28,6 +30,7 @@ function msgQueryUser($aRequest)
         $Out->pushValue("id", $CurrentUser->UserId);
         $Out->pushValue("name", $CurrentUser->UserName);
         $Out->pushValue("characterIds", $CharacterIds);
+        $Out->pushValue("characterGames", $CharacterGames);
         $Out->pushValue("characterNames", $CharacterNames);
         $Out->pushValue("characterClass", $CharacterClasses);
         $Out->pushValue("role1", $CharacterRoles1);

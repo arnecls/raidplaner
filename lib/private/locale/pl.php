@@ -163,6 +163,7 @@
         $gLocale[ "RaidSetup" ]                = "Ustawienia rajdu";
         $gLocale[ "LinkToRaid" ]               = "Link do rajdu";
         $gLocale[ "Switch" ]                   = "Przełącznik"; //????
+        $gLocale[ "Retire" ]                   = null;
 
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
@@ -228,6 +229,7 @@
         $gLocale[ "DefaultRaidSize" ]          = "Domyślny rozmiar rajdów";
         $gLocale[ "BannerPage" ]               = "Link do baneru";
         $gLocale[ "HelpPage" ]                 = "Link do pomocy";
+        $gLocale[ "Game" ]                     = "Gra";
         $gLocale[ "Theme" ]                    = "Motyw";
         $gLocale[ "RaidSetupStyle" ]           = "Sposób zapisów";
         $gLocale[ "RaidModeManual" ]           = "Przez rajd lidera";

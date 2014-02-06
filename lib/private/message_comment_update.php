@@ -31,7 +31,7 @@ function msgCommentupdate( $aRequest )
                                                 "VALUES ( :CharacterId, :UserId, :RaidId, :Status, :Role, :Comment )" );
 
                 $UpdateQuery->bindValue(":CharacterId", 0, PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":Role",        0, PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":Role",        "", PDO::PARAM_STR);
                 $UpdateQuery->bindValue(":Status",      "undecided", PDO::PARAM_STR);
             }
 
