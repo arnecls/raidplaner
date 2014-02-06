@@ -378,7 +378,8 @@
         $StrayAttends = $Connector->prepare("SELECT AttendanceId FROM `".RP_TABLE_PREFIX."Attendance` ".
             "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(CharacterId) ".
             "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) ".
-            "WHERE `".RP_TABLE_PREFIX."Attendance`.UserId != 0 AND (`".RP_TABLE_PREFIX."Character`.CharacterId IS NULL OR `".RP_TABLE_PREFIX."Raid`.RaidId IS NULL)");
+            "WHERE `".RP_TABLE_PREFIX."Attendance`.UserId != 0 AND `".RP_TABLE_PREFIX."Character`.CharacterId != 0 ".
+            "AND (`".RP_TABLE_PREFIX."Character`.CharacterId IS NULL OR `".RP_TABLE_PREFIX."Raid`.RaidId IS NULL)");
         
         $AttendanceIds = Array();
         $StrayAttends->setErrorsAsHTML(true);
