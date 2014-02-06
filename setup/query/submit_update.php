@@ -9,7 +9,7 @@
         $Connector = Connector::getInstance();
         $Connector->beginTransaction();
 
-        while ( list($Name, $Query) = each($a_Statement) )
+        foreach ( $a_Statement as $Name => $Query )
         {
             echo "<div class=\"update_step\">".$Name;
 
@@ -447,11 +447,10 @@
         echo "<div class=\"update_step\">New class ids";
         
         $ClassQueryString = "";
-        while (list($Name, $ClassId) = each($ClassNameToId))
+        foreach ($ClassNameToId as $Name => $ClassId)
         {
             $ClassQueryString .= "UPDATE `".RP_TABLE_PREFIX."Character` SET Class = '".$ClassId."' WHERE Class = '".$Name."';";
         }
-        reset($ClassNameToId);
         
         $ClassQuery = $Connector->prepare($ClassQueryString);
         $ClassQuery->setErrorsAsHTML(true);

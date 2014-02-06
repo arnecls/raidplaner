@@ -108,7 +108,7 @@
                 $Groups = array();
                 $Roles = unserialize($Option["option_value"]);
 
-                while (list($Role,$Options) = each($Roles))
+                foreach ($Roles as $Role => $Options)
                 {
                     array_push( $Groups, array(
                         "id"   => strtolower($Role),

@@ -136,7 +136,7 @@ function msgRaidCreate( $aRequest )
                 
                 // Set vacation attendances
 
-                while (list($UserId, $Settings) = each($VactionUsers))
+                foreach ($VactionUsers as $UserId => $Settings)
                 {
                     if ( ($StartDateTime >= $Settings["Start"]) && ($StartDateTime <= $Settings["End"]) )
                     {
@@ -151,8 +151,6 @@ function msgRaidCreate( $aRequest )
                         $AbsentQuery->execute();
                     }
                 }
-
-                reset($VactionUsers);
 
                 // Post raids to forum
 

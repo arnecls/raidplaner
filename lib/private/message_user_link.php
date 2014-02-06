@@ -35,7 +35,7 @@ function tryGetUserLink( $UserId )
 
             $Filtered = array();
 
-            while( list($BindingName, $UserInfo) = each($Candidates) )
+            foreach( $Candidates as $BindingName => $UserInfo )
             {
                 if ( $UserInfo->UserName == $UserData["Login"] )
                 {
@@ -47,8 +47,6 @@ function tryGetUserLink( $UserId )
 
             if ( sizeof($Filtered) > 0 )
                 $Candidates = $Filtered;
-            else
-                reset($Candidates);
         }
 
         // Use the first match. Having multiple matches is very unlikely as two (or more)
@@ -56,7 +54,9 @@ function tryGetUserLink( $UserId )
 
         if ( sizeof($Candidates) > 0 )
         {
+            reset($Candidates);
             list($BindingName, $UserInfo) = each($Candidates); // fetch the first entry
+            
             return $UserInfo; // ### return, success ###
         }
     }
@@ -72,6 +72,7 @@ function tryGetUserLink( $UserId )
 
     if ( sizeof($Candidates) > 1 )
     {
+        reset($Candidates);
         list($BindingName, $UserInfo) = each($Candidates); // first entry is "none"
         list($BindingName, $UserInfo) = each($Candidates); // this is the first external binding
 

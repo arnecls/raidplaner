@@ -62,7 +62,7 @@
             $i = 0;
             echo ($IsIndexedArray) ? '[' : '{';
 
-            while( list($Name,$Value) = each($Root) )
+            foreach( $Root as  $Name => $Value )
             {
                 if ($i > 0) echo ',';
 
@@ -133,7 +133,7 @@
             if (!$IsIndexedArray)
                 echo "<".$aTagName.">";
 
-            while( list($Name,$Value) = each($Root) )
+            foreach( $Root as $Name => $Value )
             {
                 if (is_array($Value))
                 {

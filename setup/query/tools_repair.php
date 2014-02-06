@@ -13,8 +13,7 @@
         
         $TablesRemain = Array();
         
-        reset($gDatabaseLayout);
-        while(list($Name, $Rows) = each($gDatabaseLayout))
+        foreach($gDatabaseLayout as $Name => $Rows)
         {
             array_push($TablesRemain, RP_TABLE_PREFIX.$Name);
         }
@@ -140,16 +139,388 @@
     
     // -------------------------------------------------------------------------
     
-    function ValidateClassesAndRoles()
+    function FindFittingGame($Games, &$aGameId, &$aClassId, &$aRole1Id, &$aRole2Id)
     {
+        $BestDiff  = PHP_INT_MAX;
+        $BestMatch = null;
         
+        foreach ($Games as $Id => $Game)
+        {
+            $Diff = levenshtein($Id, $aGameId);
+            
+            if (!ContainsClass($Game, $aClassId))
+            {
+                $Diff += ceil(strlen($aGameId) / 2);
+            }
+            else
+            {
+                if ( !ContainsRole($Game[$aClassId], $aRole1Id) )
+                    ++$Diff;
+                    
+                if ( !ContainsRole($Game[$aClassId], $aRole2Id) )
+                    ++$Diff;
+            }
+            
+            if ($Diff < $BestDiff)
+            {
+                $BestDiff  = $Diff;
+                $BestMatch = $Id;
+            }
+            
+            if ($BestDiff == 0)
+                break; // ### break, full match ###
+        }
+        
+        if ($BestMatch == null)
+            return false; // ### return, no classes ###
+       
+        $aGameId = $BestMatch;
+        FindFittingClass($Games[$aGameId], $aClassId, $aRole1Id, $aRole2Id, null, null);
+        
+        return true; 
     }
     
     // -------------------------------------------------------------------------
     
-    function ClearStrayUserData()
+    function FindFittingClass($aClasses, &$aClassId, &$aRole1Id, &$aRole2Id, $aClassName, $aClassStyle)
     {
+        $BestDiff  = PHP_INT_MAX;
+        $BestMatch = null;
         
+        foreach($aClasses as $Class)
+        {
+            $Diff = 0;
+            
+            if ($aClassName != null)
+            {
+                $Diff += levenshtein($Class["name"], $aClassName);
+                if ($NameDist == 0)
+                {
+                    $BestMatch = $Class;
+                    break; // ### break, match by loca ###
+                }
+            }
+            
+            if ($aClassStyle != null)
+            {
+                if ($Class["style"] != $aClassStyle)
+                    $Diff += ceil(strlen($aClassId) / 2);
+            }
+            
+            $Diff += levenshtein($Class["id"], $aClassId);
+            
+            if (($aRole1Id != "") && !ContainsRole($Class, $aRole1Id))
+                ++$Diff;
+                
+            if (($aRole2Id != "") && !ContainsRole($Class, $aRole2Id))
+                ++$Diff;
+                
+            if ($Diff < $BestDiff)
+            {
+                $BestDiff  = $Diff;
+                $BestMatch = $Class;
+            }
+            
+            if ($BestDiff == 0)
+                break; // ### break, full match ###
+        }
+        
+        if ($BestMatch == null)
+            return false; // ### return, no classes ###
+       
+        $aClassId = $BestMatch["id"];
+        
+        if ($aRole1Id != "")
+            FindFittingRole($BestMatch, $aRole1Id, null, null);
+        
+        if ($aRole2Id != "")
+            FindFittingRole($BestMatch, $aRole2Id, null, null);
+        
+        return true; 
+    }
+    
+    // -------------------------------------------------------------------------
+    
+    function FindFittingRole($aClass, &$aRoleId, $aRoleName, $aRoleStyle)
+    {
+        $BestDiff  = PHP_INT_MAX;
+        $BestMatch = null;
+        
+        foreach($aClass["roles"] as $Role)
+        {
+            $Diff = 0;
+            
+            if ($aRoleName != null)
+            {
+                $Diff += levenshtein($Role["name"], $aRoleName);
+                if ($NameDist == 0)
+                {
+                    $BestMatch = $Class;
+                    break; // ### break, match by loca ###
+                }
+            }
+            
+            if ($aRoleStyle != null)
+            {
+                if ($Role["style"] != $aRoleStyle)
+                    $Diff += ceil(strlen($aRoleId) / 2);
+            }
+            
+            $Diff += levenshtein($Role["id"], $aRoleId);
+                
+            if ($Diff < $BestDiff)
+            {
+                $BestDiff  = $Diff;
+                $BestMatch = $Role;
+            }
+            
+            if ($BestDiff == 0)
+                break; // ### break, full match ###
+        }
+        
+        if ($BestMatch == null)
+            return false; // ### return, no roles ###
+        
+        $aRoleId = $Role["id"];
+        
+        return true;
+    }
+    
+    // -------------------------------------------------------------------------
+    
+    function GenerateClassList($aGameFile, &$aGameId, &$aGameMode)
+    {
+        $Game = @new SimpleXMLElement( file_get_contents($aGameFile) );
+        
+        $aGameId = strval($Game->id);
+        $aGameMode = strval($Game->classmode);
+        
+        $Classes = Array();
+        $Roles   = Array();
+        
+        foreach($Game->roles->role as $Role)
+        {
+            $Roles[strval($Role["id"])] = Array(
+                "id"    => strval($Role["id"]),
+                "name"  => strval($Role["loca"]),
+                "style" => strval($Role["style"])
+            );
+        }
+                            
+        foreach($Game->classes->class as $Class)
+        {
+            $ClassRoles = Array();
+            foreach($Class->role as $Role)
+            {
+                $ClassRoles[strval($Role["id"])] = $Roles[strval($Role["id"])];
+            }
+            
+            $Classes[strval($Class["id"])] = Array(
+                "id"    => strval($Class["id"]),
+                "name"  => strval($Class["loca"]), 
+                "style" => strval($Class["style"]),
+                "roles" => $ClassRoles
+            );
+        }
+        
+        return $Classes;
+    }
+    
+    // -------------------------------------------------------------------------
+    
+    function ContainsRole($Class, $RoleId)
+    {
+        return isset($Class["roles"][$RoleId]);
+    }
+    
+    // -------------------------------------------------------------------------
+    
+    function ContainsClass($Game, $ClassId)
+    {
+        return isset($Game[$ClassId]);
+    }
+    
+    // -------------------------------------------------------------------------
+    
+    function ValidateCharacters()
+    {
+        $Connector = Connector::getInstance();
+        
+        // Characters without a user
+        
+        $StrayChars = $Connector->prepare("SELECT CharacterId FROM `".RP_TABLE_PREFIX."Character` ".
+            "LEFT JOIN `".RP_TABLE_PREFIX."User` USING(UserId) ".
+            "WHERE `".RP_TABLE_PREFIX."User`.UserId IS NULL");
+        
+        $CharacterIds = Array();
+        $StrayChars->setErrorsAsHTML(true);
+        $StrayChars->loop( function($aRow) use (&$CharacterIds)
+        {
+            array_push($CharacterIds, intval($aRow["CharacterId"])); 
+        });
+                
+        if (sizeof($CharacterIds) > 0)
+        {
+            echo "<div class=\"update_step_warning\">".L("Fixing")." ".sizeof($CharacterIds)." ".L("StrayChars")."</div>";
+            
+            foreach($CharacterIds as $CharId)
+            {
+                $Drop = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharId LIMIT 1");
+                
+                $Drop->setErrorsAsHTML(true);
+                $Drop->bindValue(":CharId", $CharId, PDO::PARAM_INT);                
+                $Drop->execute();
+            }            
+        }
+        
+        // Attends without a character or raid
+        
+        $StrayAttends = $Connector->prepare("SELECT AttendanceId FROM `".RP_TABLE_PREFIX."Attendance` ".
+            "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(CharacterId) ".
+            "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) ".
+            "WHERE `".RP_TABLE_PREFIX."Attendance`.UserId != 0 AND (`".RP_TABLE_PREFIX."Character`.CharacterId IS NULL OR `".RP_TABLE_PREFIX."Raid`.RaidId IS NULL)");
+        
+        $AttendanceIds = Array();
+        $StrayAttends->setErrorsAsHTML(true);
+        $StrayAttends->loop( function($aRow) use (&$AttendanceIds) {
+            array_push($AttendanceIds, intval($aRow["AttendanceId"])); 
+        });
+                
+        if (sizeof($AttendanceIds) > 0)
+        {
+            echo "<div class=\"update_step_warning\">".L("Fixing")." ".sizeof($AttendanceIds)." ".L("StrayAttends")."</div>";
+            
+            foreach($AttendanceIds as $AttId)
+            {
+                $Drop = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE AttendanceId = :AttId LIMIT 1");
+                
+                $Drop->setErrorsAsHTML(true);
+                $Drop->bindValue(":AttId", $AttId, PDO::PARAM_INT);                
+                $Drop->execute();
+            }
+        }
+        
+        // Get Class information per game
+        
+        $GameDir = dirname(__FILE__)."/../../themes/games";
+        $GameFiles = scandir( $GameDir );
+        $Games = Array();
+        $GameModes = Array();
+        
+        foreach ( $GameFiles as $GameFileName )
+        {
+            try
+            {
+                if (strpos($GameFileName,".xml") > 0)
+                {
+                    $GameId = "";
+                    $GameMode = "";
+                    $Classes = GenerateClassList($GameDir."/".$GameFileName, $GameId, $GameMode);
+                    
+                    $Games[$GameId] = $Classes;
+                    $GameModes[$GameId] = $GameMode;
+                }
+            }
+            catch (Exception $e)
+            {
+                echo "<div class=\"update_step_error\">Error parsing ".$GameFileName.": ".$e->getMessage()."</div>";
+            }
+        }
+        
+        // Fix any invalid roles
+        
+        $CharactersFixed = 0;
+        $CharacterQuery = $Connector->prepare("SELECT CharacterId, Game, Class, Role1, Role2 FROM `".RP_TABLE_PREFIX."Character`");
+     
+        $CharacterQuery->setErrorsAsHTML(true);
+        $CharacterQuery->loop( function($aRow) use ($Connector, &$CharactersFixed, &$Games, &$GameModes) 
+        {
+            $GameId  = $aRow["Game"];            
+            $ClassId = $aRow["Class"];
+            $Role1Id = $aRow["Role1"];
+            $Role2Id = $aRow["Role2"];
+            $RequiresFix = false;
+                
+            if (!isset($Games[$GameId]))
+            {
+                FindFittingGame($Games, $GameId, $ClassId, $Role1Id, $Role2Id);
+                $RequiresFix = true;
+            }
+            else
+            {
+                $Game = $Games[$GameId];
+                $MultiClass = $GameModes[$GameId] == "multi";
+                
+                if ($MultiClass)
+                {
+                    // In multiclass scenarios, we only need to check the class, but all of them
+                    
+                    $ClassIds = explode(":", $ClassId);
+                    
+                    foreach($ClassIds as &$Id)
+                    {
+                        if (!ContainsClass($Game, $Id))
+                        {
+                            $NoRole = "";
+                            FindFittingClass($Game, $Id, $NoRole, $NoRole, null, null);
+                            $RequiresFix = true;
+                        }
+                    }
+                    
+                    $ClassId = implode(":",$ClassIds);
+                }
+                else
+                {
+                    // In singleclass scenarios we need to check class and roles
+                    
+                    $ClassId = explode(":", $ClassId)[0]; // force only one class
+                    
+                    if (!ContainsClass($Game, $ClassId))
+                    {
+                        FindFittingClass($Game, $ClassId, $Role1Id, $Role2Id, null, null);
+                        $RequiresFix = true;
+                    }
+                    else
+                    {                
+                        $Class = $Game[$ClassId];
+                        
+                        if (!ContainsRole($Class, $Role1Id))
+                        {
+                            FindFittingRole($Class, $Role1Id, null, null);
+                            $RequiresFix = true;
+                        }
+                           
+                        if (!ContainsRole($Class, $Role2Id))
+                        {
+                            FindFittingRole($Class, $Role2Id, null, null);
+                            $RequiresFix = true;
+                        }
+                    }
+                }
+            }
+            
+            // Update if necessary
+                
+            if ($RequiresFix)
+            {
+                $Fix = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Character` SET Game=:Game, Class=:Class, Role1=:Role1, Role2=:Role2 WHERE CharacterId=:CharId LIMIT 1");
+            
+                $Fix->setErrorsAsHTML(true);
+                $Fix->bindValue(":CharId", $aRow["CharacterId"], PDO::PARAM_INT);
+                $Fix->bindValue(":Game",  $GameId,  PDO::PARAM_STR);
+                $Fix->bindValue(":Class", $ClassId, PDO::PARAM_STR);
+                $Fix->bindValue(":Role1", $Role1Id, PDO::PARAM_STR);
+                $Fix->bindValue(":Role2", $Role2Id, PDO::PARAM_STR);
+                
+                $Fix->execute();
+                ++$CharactersFixed;
+            }
+        });
+        
+        if ($CharactersFixed > 0)
+        {
+            echo "<div class=\"update_step_warning\">".L("Fixing")." ".$CharactersFixed." ".L("InvalidCharacters")."</div>";
+        }
     }
     
     // -------------------------------------------------------------------------

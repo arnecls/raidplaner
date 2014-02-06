@@ -350,6 +350,8 @@
         $gLocale[ "TargetGame" ]               = "Target";
         $gLocale[ "ChooseRepairs" ]            = "Choose one or multiple repairs to be executed.";
         $gLocale[ "Fixing" ]                   = "Fixing";
+        $gLocale[ "StrayChars" ]               = "Orphaned characters";
+        $gLocale[ "StrayAttends" ]             = "Orphaned attends";
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Load groups using these settings";

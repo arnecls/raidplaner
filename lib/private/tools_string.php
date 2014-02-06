@@ -35,7 +35,7 @@ function xmlentities( $aString, $aCompat, $aCharset )
     $TranslationTable["]"] = xmlSpecialChar("]");
     $TranslationTable["'"] = xmlSpecialChar("'");
 
-    while ( list($Key,$Value) = each($HtmlTranslationTable) )
+    foreach ( $HtmlTranslationTable as $Key => $Value )
     {
          $TranslationTable[$Value] = xmlSpecialChar($Key);
     }

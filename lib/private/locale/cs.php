@@ -350,6 +350,8 @@
         $gLocale[ "TargetGame" ]               = null;
         $gLocale[ "ChooseRepairs" ]            = null;
         $gLocale[ "Fixing" ]                   = null;
+        $gLocale[ "StrayChars" ]               = null;
+        $gLocale[ "StrayAttends" ]             = null;
         
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Load groups using these settings";

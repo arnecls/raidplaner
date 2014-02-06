@@ -249,8 +249,7 @@
         $Out = Out::getInstance();
         $Connector = Connector::getInstance();
                 
-        reset($gDatabaseLayout);
-        while(list($Name, $Rows) = each($gDatabaseLayout))
+        foreach($gDatabaseLayout as $Name => $Rows)
         {
             $QueryString = "CREATE TABLE IF NOT EXISTS `".$Prefix.$Name."` (";
             $FirstRow = true;
@@ -472,7 +471,7 @@
         fwrite($NewGameConfig, "\n\t<roles>\n");
         
         $RoleIdx = 0;
-        while (list($Name, $Loca) = each($gRoles))
+        foreach ($gRoles as $Name => $Loca)
         {
             $RoleId = BuildXCC($Loca, 3);
             $RoleId = MakeUnqiue($RoleId, $Loca, $aRoleIdxToId);
@@ -496,7 +495,7 @@
         fwrite($NewGameConfig, "\n\t<classes>\n");
         
         $RoleIdx = 0;
-        while (list($Name, $ClassDesc) = each($gClasses))
+        foreach ($gClasses as $Name => $ClassDesc)
         {
             if ($Name == "empty") continue;
                 
@@ -537,7 +536,7 @@
         
         fwrite($NewGameConfig, "\n\t<groups>\n");
         
-        while(list($Size, $RoleCount) = each($gGroupSizes))
+        foreach($gGroupSizes as $Size => $RoleCount)
         {
             fwrite($NewGameConfig, "\t\t<group count=\"".$Size."\">\n");
             

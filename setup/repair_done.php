@@ -73,6 +73,9 @@
     {
         echo "<div class=\"update_step\">".L("RepairCharacters");
         
+        ValidateCharacters();
+        echo "<div class=\"update_step_ok\">OK</div>";
+        
         echo "</div>";
     }
 

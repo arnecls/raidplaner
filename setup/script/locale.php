@@ -7,7 +7,7 @@
 var gLocale = {
     <?php
         $first = true;
-        while (list($Key, $Value) = each($gLocale))
+        foreach ($gLocale as $Key => $Value)
         {
             if ($first)
 

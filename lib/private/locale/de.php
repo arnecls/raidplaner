@@ -350,6 +350,10 @@
         $gLocale[ "TargetGame" ]               = "Ziel";
         $gLocale[ "ChooseRepairs" ]            = "Wähle eine oder mehrere Reparaturen die ausgeführt werden sollen.";
         $gLocale[ "Fixing" ]                   = "Korrigiere";
+        $gLocale[ "StrayChars" ]               = "Verwaiste Charaktere";
+        $gLocale[ "StrayAttends" ]             = "Verwaiste Anmeldungen";
+
+        
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Lade Gruppen mit den angegebenen Verbindungsdaten";
