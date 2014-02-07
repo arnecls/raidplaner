@@ -95,7 +95,7 @@
                     loadSiteSettings();
     
                     $LocationQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Location` WHERE LocationId = :LocationId LIMIT 1");
-                    $LocationQuery->bindValue(":LocationId", $LocationId, PDO::PARAM_INT);
+                    $LocationQuery->bindValue(":LocationId", intval($LocationId), PDO::PARAM_INT);
                     $LocationData = $LocationQuery->fetchFirst();
                 }
     
@@ -122,10 +122,10 @@
                     $StartDateTime += $aRequest["startOffset"] * 60;
                     $EndDateTime   += $aRequest["endOffset"] * 60;
     
-                    $NewRaidQuery->bindValue(":LocationId",  $LocationId, PDO::PARAM_INT);
-                    $NewRaidQuery->bindValue(":Size",        $aRequest["locationSize"], PDO::PARAM_INT);
-                    $NewRaidQuery->bindValue(":Start",       $StartDateTime, PDO::PARAM_INT);
-                    $NewRaidQuery->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
+                    $NewRaidQuery->bindValue(":LocationId",  intval( $LocationId), PDO::PARAM_INT);
+                    $NewRaidQuery->bindValue(":Size",        intval($aRequest["locationSize"]), PDO::PARAM_INT);
+                    $NewRaidQuery->bindValue(":Start",       intval($StartDateTime), PDO::PARAM_INT);
+                    $NewRaidQuery->bindValue(":End",         intval($EndDateTime), PDO::PARAM_INT);
                     $NewRaidQuery->bindValue(":Mode",        $aRequest["mode"], PDO::PARAM_STR);
                     $NewRaidQuery->bindValue(":Description", requestToXML( $aRequest["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
                     $NewRaidQuery->bindValue(":SlotRoles",   $SlotRoles, PDO::PARAM_STR);
@@ -144,8 +144,8 @@
                             $AbsentQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
                                                                "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
     
-                            $AbsentQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                            $AbsentQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+                            $AbsentQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                            $AbsentQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
                             $AbsentQuery->bindValue(":Message", $Settings["Message"], PDO::PARAM_STR);
     
                             $AbsentQuery->execute();
@@ -157,7 +157,7 @@
                     if (sizeof($PostTargets) > 0)
                     {
                         $RaidQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId=:RaidId LIMIT 1");
-                        $RaidQuery->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
+                        $RaidQuery->bindValue(":RaidId", intval( $RaidId), PDO::PARAM_INT);
                         $RaidData = $RaidQuery->fetchFirst();
                         
                         $MessageData = Binding::generateMessage($RaidData, $LocationData);
@@ -202,9 +202,11 @@
                 }
     
                 // reload calendar
+                
+                $Session = Session::get();
     
-                $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : $aRequest["month"];
-                $ShowYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : $aRequest["year"];
+                $ShowMonth = ( isset($Session["Calendar"]) && isset($Session["Calendar"]["month"]) ) ? $Session["Calendar"]["month"] : $aRequest["month"];
+                $ShowYear  = ( isset($Session["Calendar"]) && isset($Session["Calendar"]["year"]) )  ? $Session["Calendar"]["year"]  : $aRequest["year"];
     
                 msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
             }

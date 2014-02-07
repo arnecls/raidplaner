@@ -61,7 +61,7 @@
         "Session" => Array(
             new Column("SessionId",    "int",       10,     Array("unsigned", "NOT NULL", "AUTO_INCREMENT")),
             new Column("UserId",       "int",       10,     Array("NOT NULL")),
-            new Column("SessionName",  "char",      64,     Array("NOT NULL")),
+            new Column("SessionName",  "char",      40,     Array("NOT NULL")),
             new Column("IpAddress",    "char",      40,     Array("NOT NULL")),
             new Column("Expires",      "timestamp", null,   Array("DEFAULT CURRENT_TIMESTAMP")),
             new Column("Data",         "text",      null,   Array("NOT NULL")),
@@ -90,7 +90,6 @@
             new Column("Password",         "char",     128,                                        Array("NOT NULL")),
             new Column("Salt",             "char",     64,                                         Array("NOT NULL")),
             new Column("OneTimeKey",       "char",     32,                                         Array("NOT NULL")),
-            new Column("SessionKey",       "char",     32,                                         Array("NOT NULL")),
             new Column("Created",          "datetime", null,                                       Array("NOT NULL")),
             new Key(   "primary",          "UserId"),
             new Key(   "",                 "ExternalId")

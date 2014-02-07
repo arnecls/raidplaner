@@ -23,7 +23,7 @@
             // Check if locked
     
             $LockCheckQuery = $Connector->prepare("SELECT Stage, Mode, SlotRoles, SlotCount FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
-            $LockCheckQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+            $LockCheckQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
     
             $RaidInfo = $LockCheckQuery->fetchFirst();
     
@@ -40,8 +40,8 @@
                 {
                     $CheckQuery = $Connector->prepare("SELECT UserId, Class, Role1 FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharacterId AND Game = :Game LIMIT 1");
                     
-                    $CheckQuery->bindValue(":CharacterId", $AttendanceIdx, PDO::PARAM_INT);
-                    $CheckQuery->bindValue(":Game", $gGame["GameId"], PDO::PARAM_INT);
+                    $CheckQuery->bindValue(":CharacterId", intval($AttendanceIdx), PDO::PARAM_INT);
+                    $CheckQuery->bindValue(":Game", intval($gGame["GameId"]), PDO::PARAM_INT);
     
                     $CharacterInfo = $CheckQuery->fetchFirst();
     
@@ -63,8 +63,8 @@
                 if ( $ChangeAllowed )
                 {
                     $CheckQuery = $Connector->prepare("SELECT UserId FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId AND RaidId = :RaidId LIMIT 1");
-                    $CheckQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                    $CheckQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+                    $CheckQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                    $CheckQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
                     $CheckQuery->execute();
     
                     $AttendQuery = null;
@@ -132,16 +132,16 @@
                     if ( $ChangeComment )
                     {
                         $Comment = requestToXML( $aRequest["comment"], ENT_COMPAT, "UTF-8" );
-                        $AttendQuery->bindValue(":Comment", $Comment, PDO::PARAM_INT);
+                        $AttendQuery->bindValue(":Comment", intval($Comment), PDO::PARAM_INT);
                     }
     
-                    $AttendQuery->bindValue(":CharacterId", $CharacterId, PDO::PARAM_INT);
-                    $AttendQuery->bindValue(":RaidId",      $RaidId,      PDO::PARAM_INT);
-                    $AttendQuery->bindValue(":UserId",      $UserId,      PDO::PARAM_INT);
-                    $AttendQuery->bindValue(":Status",      $Status,      PDO::PARAM_STR);
-                    $AttendQuery->bindValue(":Role",        $Role,        PDO::PARAM_STR);
-                    $AttendQuery->bindValue(":Class",       $Class,       PDO::PARAM_STR);
-                    $AttendQuery->bindValue(":Timestamp",   time(),       PDO::PARAM_INT);
+                    $AttendQuery->bindValue(":CharacterId", intval($CharacterId), PDO::PARAM_INT);
+                    $AttendQuery->bindValue(":RaidId",      intval($RaidId),      PDO::PARAM_INT);
+                    $AttendQuery->bindValue(":UserId",      intval($UserId),      PDO::PARAM_INT);
+                    $AttendQuery->bindValue(":Status",      $Status,              PDO::PARAM_STR);
+                    $AttendQuery->bindValue(":Role",        $Role,                PDO::PARAM_STR);
+                    $AttendQuery->bindValue(":Class",       $Class,               PDO::PARAM_STR);
+                    $AttendQuery->bindValue(":Timestamp",   time(),               PDO::PARAM_INT);
     
                     if ( $AttendQuery->execute() &&
                          ($Role != "") &&
@@ -163,9 +163,9 @@
                                                                "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
                                                                "ORDER BY AttendanceId DESC LIMIT :MaxCount" );
     
-                        $AttendenceQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+                        $AttendenceQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
                         $AttendenceQuery->bindValue(":RoleId", $Role, PDO::PARAM_STR);
-                        $AttendenceQuery->bindValue(":MaxCount", $MaxSlotCount, PDO::PARAM_INT);
+                        $AttendenceQuery->bindValue(":MaxCount", intval($MaxSlotCount), PDO::PARAM_INT);
     
                         $LastAttend = $AttendenceQuery->fetchFirst();
     
@@ -177,9 +177,9 @@
                                                             "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
                                                             "AND AttendanceId > :FirstId" );
     
-                            $FixQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+                            $FixQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
                             $FixQuery->bindValue(":RoleId", $Role, PDO::PARAM_STR);
-                            $FixQuery->bindValue(":FirstId", $LastAttend["AttendanceId"], PDO::PARAM_INT);
+                            $FixQuery->bindValue(":FirstId", intval($LastAttend["AttendanceId"]), PDO::PARAM_INT);
     
                             $FixQuery->execute();
                         }
@@ -200,12 +200,14 @@
             // reload calendar
     
             $RaidQuery = $Connector->prepare("SELECT Start FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
-            $RaidQuery->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
+            $RaidQuery->bindValue(":RaidId", intval( $RaidId), PDO::PARAM_INT);
     
             $RaidData = $RaidQuery->fetchFirst();
+            
+            $Session = Session::get();
     
-            $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : intval( substr( $RaidData["Start"], 5, 2 ) );
-            $ShowYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : intval( substr( $RaidData["Start"], 0, 4 ) );
+            $ShowMonth = ( isset($Session["Calendar"]) && isset($Session["Calendar"]["month"]) ) ? $Session["Calendar"]["month"] : intval( substr( $RaidData["Start"], 5, 2 ) );
+            $ShowYear  = ( isset($Session["Calendar"]) && isset($Session["Calendar"]["year"]) )  ? $Session["Calendar"]["year"]  : intval( substr( $RaidData["Start"], 0, 4 ) );
     
             msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
         }

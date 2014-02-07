@@ -220,7 +220,7 @@
                     {
                         $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Salt = :Salt WHERE UserId = :UserId LIMIT 1");
 
-                        $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
+                        $UpdateUser->bindValue(":UserId", intval($UserData["UserId"]), PDO::PARAM_INT);
                         $UpdateUser->bindValue(":Salt", $VbUserSalt[$UserData["ExternalId"]], PDO::PARAM_STR);
                         $UpdateUser->setErrorsAsHTML(true);
 
@@ -254,7 +254,7 @@
                 $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Password=:Password, BindingActive='false' ".
                                                   "WHERE UserId= :UserId LIMIT 1");
 
-                $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
+                $UpdateUser->bindValue(":UserId", intval($UserData["UserId"]), PDO::PARAM_INT);
                 $UpdateUser->bindValue(":Password", hash("sha256", $UserData["Password"].$UserData["Salt"]), PDO::PARAM_STR);
                 $UpdateUser->setErrorsAsHTML(true);
 
@@ -306,6 +306,18 @@
     function upgrade_100()
     {
         echo "<div class=\"update_version\">".L("UpdateFrom")." 1.0.0 ".L("UpdateTo")." 1.1.0";
+        
+        $SessionTableCreate = "CREATE TABLE `".RP_TABLE_PREFIX."Session` (
+            `SessionId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                `UserId` int(10) NOT NULL,
+                `SessionName` char(40) NOT NULL,
+                `IpAddress` char(40) NOT NULL,
+                `Expires` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                `Data` text NOT NULL,
+                PRIMARY KEY (`SessionId`),
+                UNIQUE KEY `SessionName` (`SessionName`),
+                KEY `UserId` (`UserId`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
 
         $Updates = Array( "Multi class support"   => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Class` `Class` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
                           "Class attendance"      => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD `Class` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `Role`;",
@@ -316,7 +328,19 @@
                                                      "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `SlotCount` VARCHAR(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `SlotRoles`;",
                           "Roles by identifier"   => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CHANGE `Role` `Role` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;".
                                                      "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Role1` `Role1` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;".
-                                                     "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Role2` `Role2` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;"   );
+                                                     "ALTER TABLE `".RP_TABLE_PREFIX."Character` CHANGE `Role2` `Role2` CHAR(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;",
+                          "New session handling"  => "ALTER TABLE `".RP_TABLE_PREFIX."User` DROP SessionKey;".
+                                                     "CREATE TABLE `".RP_TABLE_PREFIX."Session` (
+                                                        `SessionId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                                        `UserId` int(10) NOT NULL,
+                                                        `SessionName` char(40) NOT NULL,
+                                                        `IpAddress` char(40) NOT NULL,
+                                                        `Expires` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                                        `Data` text NOT NULL,
+                                                        PRIMARY KEY (`SessionId`),
+                                                        UNIQUE KEY `SessionName` (`SessionName`),
+                                                        KEY `UserId` (`UserId`)
+                                                     ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;" );
         
         // Timezone fix
         
@@ -483,7 +507,7 @@
             $UpdateRaidQuery->setErrorsAsHTML(true);
             $UpdateRaidQuery->bindValue(":Roles", $SlotRoles, PDO::PARAM_STR);
             $UpdateRaidQuery->bindValue(":Count", implode(":",$SlotCount), PDO::PARAM_STR);
-            $UpdateRaidQuery->bindValue(":RaidId", $aRaid["RaidId"], PDO::PARAM_INT);
+            $UpdateRaidQuery->bindValue(":RaidId", intval($aRaid["RaidId"]), PDO::PARAM_INT);
             
             if (!$UpdateRaidQuery->execute())
                 ++$NumErrors;

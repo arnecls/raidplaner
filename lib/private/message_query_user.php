@@ -40,11 +40,12 @@
             $Out->pushValue("isRaidlead", validRaidlead());
             $Out->pushValue("isAdmin", validAdmin());
             $Out->pushValue("settings", $CurrentUser->Settings);
+            
+            $Session = Session::get();
     
-            if (isset($_SESSION["Calendar"]))
+            if (isset($Session["Calendar"]))
             {
-                $CalendarValues = array("month" => $_SESSION["Calendar"]["month"], "year" => $_SESSION["Calendar"]["year"]);
-                $Out->pushValue("calendar", $CalendarValues);
+                $Out->pushValue("calendar", $Session["Calendar"]);
             }
             else
             {

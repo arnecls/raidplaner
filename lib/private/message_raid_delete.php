@@ -11,7 +11,7 @@
             $Connector->beginTransaction();
     
             $DeleteRaidQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1" );
-            $DeleteRaidQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
+            $DeleteRaidQuery->bindValue(":RaidId", intval($aRequest["id"]), PDO::PARAM_INT);
     
             if (!$DeleteRaidQuery->execute())
             {
@@ -22,7 +22,7 @@
             // Delete attendance
     
             $DeleteAttendanceQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE RaidId = :RaidId" );
-            $DeleteAttendanceQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
+            $DeleteAttendanceQuery->bindValue(":RaidId", intval($aRequest["id"]), PDO::PARAM_INT);
     
             if (!$DeleteAttendanceQuery->execute())
             {
@@ -32,8 +32,10 @@
     
             $Connector->commit();
     
-            $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : $aRequest["month"];
-            $ShowYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : $aRequest["year"];
+            $Session = Session::get();
+            
+            $ShowMonth = ( isset($Session["Calendar"]) && isset($Session["Calendar"]["month"]) ) ? $Session["Calendar"]["month"] : $aRequest["month"];
+            $ShowYear  = ( isset($Session["Calendar"]) && isset($Session["Calendar"]["year"]) )  ? $Session["Calendar"]["year"]  : $aRequest["year"];
     
             msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
         }

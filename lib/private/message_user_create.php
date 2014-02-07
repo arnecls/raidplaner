@@ -7,7 +7,7 @@
     
         if ( ALLOW_REGISTRATION )
         {
-            $Salt = UserProxy::generateKey128();
+            $Salt = UserProxy::generateKey32();
             $NativeBinding = new NativeBinding();
             
             $HashedPassword = $NativeBinding->hash( $aRequest["pass"], $Salt, "none" );

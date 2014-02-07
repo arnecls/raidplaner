@@ -368,7 +368,7 @@
                 $Drop = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Character` WHERE CharacterId = :CharId LIMIT 1");
                 
                 $Drop->setErrorsAsHTML(true);
-                $Drop->bindValue(":CharId", $CharId, PDO::PARAM_INT);                
+                $Drop->bindValue(":CharId", intval($CharId), PDO::PARAM_INT);                
                 $Drop->execute();
             }            
         }
@@ -396,7 +396,7 @@
                 $Drop = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE AttendanceId = :AttId LIMIT 1");
                 
                 $Drop->setErrorsAsHTML(true);
-                $Drop->bindValue(":AttId", $AttId, PDO::PARAM_INT);                
+                $Drop->bindValue(":AttId", intval($AttId), PDO::PARAM_INT);                
                 $Drop->execute();
             }
         }
@@ -509,7 +509,7 @@
                 $Fix = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Character` SET Game=:Game, Class=:Class, Role1=:Role1, Role2=:Role2 WHERE CharacterId=:CharId LIMIT 1");
             
                 $Fix->setErrorsAsHTML(true);
-                $Fix->bindValue(":CharId", $aRow["CharacterId"], PDO::PARAM_INT);
+                $Fix->bindValue(":CharId", intval($aRow["CharacterId"]), PDO::PARAM_INT);
                 $Fix->bindValue(":Game",  $GameId,  PDO::PARAM_STR);
                 $Fix->bindValue(":Class", $ClassId, PDO::PARAM_STR);
                 $Fix->bindValue(":Role1", $Role1Id, PDO::PARAM_STR);
@@ -609,7 +609,7 @@
             $CharUpdate = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Character` SET Class=:Class, Role1=:Role1, Role2=:Role2, Game=:TargetGame WHERE CharacterId=:CharId LIMIT 1");
             
             $CharUpdate->setErrorsAsHTML(true);
-            $CharUpdate->bindValue(":CharId", $aRow["CharacterId"], PDO::PARAM_INT);
+            $CharUpdate->bindValue(":CharId", intval($aRow["CharacterId"]), PDO::PARAM_INT);
             $CharUpdate->bindValue(":Class", $ClassId, PDO::PARAM_STR);
             $CharUpdate->bindValue(":Role1", $Role1Id, PDO::PARAM_STR);
             $CharUpdate->bindValue(":Role2", $Role2Id, PDO::PARAM_STR);

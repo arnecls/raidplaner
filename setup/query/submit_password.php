@@ -22,7 +22,7 @@
         if ( $TestQuery->getAffectedRows() == 0 )
         {
             $NewAdmin = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."User` ".
-                "VALUES(1, 'admin', 0, 'none', 'true', :Name, :Password, :Salt, '', '', FROM_UNIXTIME(:Now));");
+                "VALUES(1, 'admin', 0, 'none', 'true', :Name, :Password, :Salt, '', FROM_UNIXTIME(:Now));");
 
             $NewAdmin->BindValue(":Name", $_REQUEST["name"], PDO::PARAM_STR);
             $NewAdmin->BindValue(":Password", $HashedPassword, PDO::PARAM_STR);

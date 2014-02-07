@@ -298,7 +298,7 @@
                                           "LEFT JOIN `".MYBB_TABLE_PREFIX."banned` USING(uid) ".
                                           "WHERE uid = :UserId LIMIT 1");
 
-            $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
+            $UserQuery->BindValue( ":UserId", intval($aUserId), PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
             return ($UserData != null)
@@ -335,7 +335,7 @@
             try
             {
                 $UserQuery = $Connector->prepare("SELECT username FROM `".MYBB_TABLE_PREFIX."users` WHERE uid=:UserId LIMIT 1");
-                $UserQuery->BindValue( ":UserId", MYBB_POSTAS, PDO::PARAM_INT );
+                $UserQuery->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
 
                 $UserData = $UserQuery->fetchFirst();
 
@@ -345,9 +345,9 @@
                                                    "(fid, uid, subject, username, dateline, lastpost, lastposter, lastposteruid, visible) VALUES ".
                                                    "(:ForumId, :UserId, :Subject, :Username, :Now, :Now, :Username, :UserId, 1)");
 
-                $ThreadQuery->BindValue( ":ForumId", MYBB_POSTTO, PDO::PARAM_INT );
-                $ThreadQuery->BindValue( ":UserId", MYBB_POSTAS, PDO::PARAM_INT );
-                $ThreadQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
+                $ThreadQuery->BindValue( ":ForumId", intval(MYBB_POSTTO), PDO::PARAM_INT );
+                $ThreadQuery->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
+                $ThreadQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
                 $ThreadQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
                 $ThreadQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
 
@@ -360,10 +360,10 @@
                                               "(tid, fid, uid, username, dateline, subject, message, visible) VALUES ".
                                               "(:ThreadId, :ForumId, :UserId, :Username, :Now, :Subject, :Text, 1)");
 
-                $PostQuery->BindValue( ":ThreadId", $ThreadId, PDO::PARAM_INT );
-                $PostQuery->BindValue( ":ForumId", MYBB_POSTTO, PDO::PARAM_INT );
-                $PostQuery->BindValue( ":UserId", MYBB_POSTAS, PDO::PARAM_INT );
-                $PostQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
+                $PostQuery->BindValue( ":ThreadId", intval($ThreadId), PDO::PARAM_INT );
+                $PostQuery->BindValue( ":ForumId", intval(MYBB_POSTTO), PDO::PARAM_INT );
+                $PostQuery->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
+                $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
                 $PostQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
 
                 $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
@@ -378,8 +378,8 @@
                                                          "SET firstpost = :PostId ".
                                                          "WHERE tid = :ThreadId LIMIT 1");
 
-                $ThreadFinishQuery->BindValue( ":ThreadId", $ThreadId, PDO::PARAM_INT );
-                $ThreadFinishQuery->BindValue( ":PostId", $PostId, PDO::PARAM_INT );
+                $ThreadFinishQuery->BindValue( ":ThreadId", intval($ThreadId), PDO::PARAM_INT );
+                $ThreadFinishQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
 
                 $ThreadFinishQuery->execute(true);
                 $Connector->commit();

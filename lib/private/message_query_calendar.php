@@ -72,12 +72,16 @@
     
             // Query and return
     
-            $ListRaidQuery->bindValue(":Start", $StartUTC,        PDO::PARAM_INT);
-            $ListRaidQuery->bindValue(":End",   $EndUTC,          PDO::PARAM_INT);
-            $ListRaidQuery->bindValue(":Game",  $gGame["GameId"], PDO::PARAM_STR);
+            $ListRaidQuery->bindValue(":Start", intval($StartUTC), PDO::PARAM_INT);
+            $ListRaidQuery->bindValue(":End",   intval($EndUTC),   PDO::PARAM_INT);
+            $ListRaidQuery->bindValue(":Game",  $gGame["GameId"],  PDO::PARAM_STR);
     
-            $_SESSION["Calendar"]["month"] = intval($aRequest["Month"]);
-            $_SESSION["Calendar"]["year"]  = intval($aRequest["Year"]);
+            $Session = Session::get();
+            
+            $Session["Calendar"] = Array( 
+                "month" => intval($aRequest["Month"]),
+                "year"  => intval($aRequest["Year"])
+            );
     
             $Out->pushValue("startDay", $StartDate["mday"]);
             $Out->pushValue("startMonth", $StartDate["mon"]);

@@ -152,7 +152,7 @@
                                           "FROM `".WP_TABLE_PREFIX."usermeta` ".
                                           "WHERE user_id = :UserId AND meta_key = \"wp_capabilities\" LIMIT 1");
 
-            $MetaQuery->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
+            $MetaQuery->bindValue(":UserId", intval($aUserId), PDO::PARAM_INT);
 
             $MetaQuery->loop(function($MetaData) use (&$AssigedGroup, $MemberGroups, $RaidleadGroups)
             {
@@ -268,7 +268,7 @@
                                           "FROM `".WP_TABLE_PREFIX."users` ".
                                           "WHERE ID = :UserId LIMIT 1");
 
-            $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
+            $UserQuery->BindValue( ":UserId", intval($aUserId), PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
             return ($UserData != null)

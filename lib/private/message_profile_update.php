@@ -10,7 +10,7 @@
         $VacationQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."UserSetting` WHERE ".
             "UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd') LIMIT 2");
                 
-        $VacationQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+        $VacationQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
         
         $VacationData = Array();
         $VacationQuery->loop( function($aData) use (&$VacationData) {
@@ -171,7 +171,7 @@
                     // change the password of the given id. ChangePassword does a check
                     // for validity (e.g. only admin may change other user's passwords)
     
-                    $Salt = UserProxy::generateKey128();
+                    $Salt = UserProxy::generateKey32();
                     $HashedPassword = NativeBinding::nativeHash( $aRequest["newPass"], $Salt, "none" );
     
                     if ( !UserProxy::changePassword($UserId, $HashedPassword, $Salt) )
@@ -201,9 +201,9 @@
                     "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) ".
                     "AND `".RP_TABLE_PREFIX."Attendance`.Status = 'unavailable' AND `".RP_TABLE_PREFIX."Attendance`.UserId = :UserId");
                     
-                $RevokeQuery->bindValue(":Start",  max($RevokeRange[0], time()), PDO::PARAM_INT);
-                $RevokeQuery->bindValue(":End",    max($RevokeRange[1], time()), PDO::PARAM_INT);
-                $RevokeQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                $RevokeQuery->bindValue(":Start", max(intval($RevokeRange[0]), time()), PDO::PARAM_INT);
+                $RevokeQuery->bindValue(":End", max(intval($RevokeRange[1]), time()), PDO::PARAM_INT);
+                $RevokeQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
                 $RevokeQuery->execute();
             }
             
@@ -216,10 +216,10 @@
                     "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) ".
                     "AND UserId = :UserId AND Status = 'unavailable'");
     
-                $UpdateQuery->bindValue(":Start",   $UpdateRange[0], PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":End",     $UpdateRange[1], PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":UserId",  $UserId, PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":Start", intval($UpdateRange[0]), PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":End", intval($UpdateRange[1]), PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":Message", intval($VacationMessage), PDO::PARAM_INT);
                 $UpdateQuery->execute();
             }
             
@@ -234,10 +234,10 @@
                     "WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) ".
                     "AND UserId = :UserId");
     
-                $UpdateQuery->bindValue(":Start",   $NewRange[0], PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":End",     $NewRange[1], PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":UserId",  $UserId, PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
+                $UpdateQuery->bindValue(":Start",   intval($NewRange[0]), PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":End",     intval($NewRange[1]), PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":UserId",  intval($UserId),      PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":Message", $VacationMessage,     PDO::PARAM_STR);
                 $UpdateQuery->execute();
                 
                 // Find all reaids the do not have an attendance record
@@ -247,9 +247,9 @@
                     "AND (UserId != :UserId OR UserId IS NULL) ".
                     "GROUP BY RaidId");
                     
-                $AffectedQuery->bindValue(":Start",   $NewRange[0], PDO::PARAM_INT);
-                $AffectedQuery->bindValue(":End",     $NewRange[1], PDO::PARAM_INT);
-                $AffectedQuery->bindValue(":UserId",  $UserId, PDO::PARAM_INT);
+                $AffectedQuery->bindValue(":Start",  intval($NewRange[0]), PDO::PARAM_INT);
+                $AffectedQuery->bindValue(":End",    intval($NewRange[1]), PDO::PARAM_INT);
+                $AffectedQuery->bindValue(":UserId", intval($UserId),      PDO::PARAM_INT);
                 
                 $AffectedQuery->loop(function($aRaid) use (&$Connector, $UserId, $VacationMessage )
                 {
@@ -259,9 +259,9 @@
                         "(UserId, RaidId, Status, Comment) ".
                         "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
                     
-                    $InsertQuery->bindValue(":UserId",  $UserId, PDO::PARAM_INT);
-                    $InsertQuery->bindValue(":RaidId",  $aRaid["RaidId"], PDO::PARAM_INT);
-                    $InsertQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
+                    $InsertQuery->bindValue(":UserId",  intval($UserId),          PDO::PARAM_INT);
+                    $InsertQuery->bindValue(":RaidId",  intval($aRaid["RaidId"]), PDO::PARAM_INT);
+                    $InsertQuery->bindValue(":Message", $VacationMessage,         PDO::PARAM_STR);
                     $InsertQuery->execute();
                 });
             }
@@ -276,7 +276,7 @@
                     $RemoveQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE ".
                         "UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd' OR Name = 'VacationMessage') LIMIT 3");
                         
-                    $RemoveQuery->bindValue(":UserId",  $UserId, PDO::PARAM_INT);
+                    $RemoveQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
                     $RemoveQuery->execute();
                 }
             }
@@ -289,9 +289,9 @@
                         "UPDATE `".RP_TABLE_PREFIX."UserSetting` SET IntValue = :End WHERE UserId = :UserId AND Name = 'VacationEnd' LIMIT 1;".
                         "UPDATE `".RP_TABLE_PREFIX."UserSetting` SET TextValue = :Message WHERE UserId = :UserId AND Name = 'VacationMessage' LIMIT 1;");
                         
-                    $UpdateQuery->bindValue(":UserId",  $UserId, PDO::PARAM_INT);
-                    $UpdateQuery->bindValue(":Start",   $aRequest["vacationStart"], PDO::PARAM_INT);
-                    $UpdateQuery->bindValue(":End",     $aRequest["vacationEnd"], PDO::PARAM_INT);
+                    $UpdateQuery->bindValue(":UserId",  intval($UserId), PDO::PARAM_INT);
+                    $UpdateQuery->bindValue(":Start",   intval($aRequest["vacationStart"]), PDO::PARAM_INT);
+                    $UpdateQuery->bindValue(":End",     intval($aRequest["vacationEnd"]), PDO::PARAM_INT);
                     $UpdateQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
                     $UpdateQuery->execute();
                 }
@@ -302,9 +302,9 @@
                         "INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (IntValue, UserId, Name) VALUES (:End, :UserId, 'VacationEnd');".
                         "INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (TextValue, UserId, Name) VALUES (:Message, :UserId, 'VacationMessage');");
                      
-                    $InsertQuery->bindValue(":UserId",  $UserId, PDO::PARAM_INT);
-                    $InsertQuery->bindValue(":Start",   $aRequest["vacationStart"], PDO::PARAM_INT);
-                    $InsertQuery->bindValue(":End",     $aRequest["vacationEnd"], PDO::PARAM_INT);
+                    $InsertQuery->bindValue(":UserId",  intval($UserId), PDO::PARAM_INT);
+                    $InsertQuery->bindValue(":Start",   intval($aRequest["vacationStart"]), PDO::PARAM_INT);
+                    $InsertQuery->bindValue(":End",     intval($aRequest["vacationEnd"]), PDO::PARAM_INT);
                     $InsertQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
                     $InsertQuery->execute();
                 }
@@ -313,7 +313,7 @@
             // Update characters
     
             $CharacterQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId AND Game = :Game ORDER BY Name");
-            $CharacterQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $CharacterQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
             $CharacterQuery->bindValue(":Game", $gGame["GameId"], PDO::PARAM_STR);
     
             $ValidCharacterIds = array();
@@ -369,7 +369,7 @@
                         "( UserId, Name, Game, Class, Mainchar, Role1, Role2 ) ".
                         "VALUES ( :UserId, :Name, :Game, :Class, :Mainchar, :Role1, :Role2 )" );
                                                         
-                    $InsertChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+                    $InsertChar->bindValue( ":UserId", intval($UserId), PDO::PARAM_INT );
                     $InsertChar->bindValue( ":Name", requestToXML( $aRequest["name"][$CharIndex], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
                     $InsertChar->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
                     $InsertChar->bindValue( ":Class", $Classes, PDO::PARAM_STR );
@@ -393,8 +393,8 @@
                         "SET Class = :Class, Mainchar = :Mainchar, Role1 = :Role1, Role2 = :Role2 ".
                         "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
     
-                    $UpdateChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
-                    $UpdateChar->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
+                    $UpdateChar->bindValue( ":UserId", intval($UserId), PDO::PARAM_INT );
+                    $UpdateChar->bindValue( ":CharacterId", intval($CharId), PDO::PARAM_INT );
                     $UpdateChar->bindValue( ":Class", $Classes, PDO::PARAM_STR );
                     $UpdateChar->bindValue( ":Mainchar", $aRequest["mainChar"][$CharIndex], PDO::PARAM_STR );
                     $UpdateChar->bindValue( ":Role1", $aRequest["role1"][$CharIndex], PDO::PARAM_STR );
@@ -420,11 +420,11 @@
                 $DropAttendance = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` ".
                     "WHERE CharacterId = :CharacterId AND UserId = :UserId" );
     
-                $DropChar->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
-                $DropChar->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
+                $DropChar->bindValue( ":UserId", intval($UserId), PDO::PARAM_INT );
+                $DropChar->bindValue( ":CharacterId", intval($CharId), PDO::PARAM_INT );
     
-                $DropAttendance->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
-                $DropAttendance->bindValue( ":CharacterId", $CharId, PDO::PARAM_INT );
+                $DropAttendance->bindValue( ":UserId", intval($UserId), PDO::PARAM_INT );
+                $DropAttendance->bindValue( ":CharacterId", intval($CharId), PDO::PARAM_INT );
     
                 if ( !$DropChar->execute() )
                 {

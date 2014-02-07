@@ -1,6 +1,7 @@
 <?php
     require_once(dirname(__FILE__)."/connector.class.php");
     require_once(dirname(__FILE__)."/settings.class.php");
+    require_once(dirname(__FILE__)."/session.class.php");
     
     $gVersion = 110.0;
 
@@ -281,23 +282,6 @@
 
     // ---------------------------------------------------------------
 
-    function beginSession()
-    {
-        ini_set("session.use_trans_sid",    0);
-        ini_set("session.use_cookies",      1);
-        ini_set("session.use_only_cookies", 1);
-        ini_set("session.cookie_httponly",  1);
-        ini_set("session.hash_function",    1);
-        ini_set("session.bug_compat_42",    0);
-
-        $SiteId = dechex(crc32(dirname(__FILE__)));
-
-        session_name("ppx_raidplaner_".$SiteId);
-        session_start();
-    }
-
-    // ---------------------------------------------------------------
-
     function checkVersion($aSiteVersion)
     {
         try
@@ -328,7 +312,7 @@
                                                    "Stage = 'locked'".
                                                    "WHERE Start < FROM_UNIXTIME(:Time) AND Stage = 'open'" );
 
-            $UpdateRaidQuery->bindValue(":Time", time() + $aSeconds, PDO::PARAM_INT);
+            $UpdateRaidQuery->bindValue(":Time", intval(time() + $aSeconds), PDO::PARAM_INT);
             $UpdateRaidQuery->execute();
         }
     }
@@ -343,7 +327,7 @@
                                            "WHERE ".RP_TABLE_PREFIX."Raid.End < FROM_UNIXTIME(:Time)" );
 
         $Timestamp = time() - $aSeconds;
-        $DropRaidQuery->bindValue( ":Time", $Timestamp, PDO::PARAM_INT );
+        $DropRaidQuery->bindValue( ":Time", intval($Timestamp), PDO::PARAM_INT );
         $DropRaidQuery->execute();
     }
 ?>

@@ -346,7 +346,7 @@
                                           "LEFT JOIN `".VANILLA_TABLE_PREFIX."Role` USING(RoleID) ".
                                           "WHERE `".VANILLA_TABLE_PREFIX."User`.UserID = :UserId");
 
-            $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
+            $UserQuery->BindValue( ":UserId", intval($aUserId), PDO::PARAM_INT );
 
             $Roles = array();
             $UserData = null;
@@ -431,9 +431,9 @@
                                               "(ForeignID, CategoryID, InsertUserID, Format, Name, Body, DateInserted) VALUES ".
                                               "('stub', :ForumId, :UserId, 'Html', :Subject, :Text, FROM_UNIXTIME(:Now))");
 
-                $PostQuery->BindValue( ":ForumId", VANILLA_POSTTO, PDO::PARAM_INT );
-                $PostQuery->BindValue( ":UserId", VANILLA_POSTAS, PDO::PARAM_INT );
-                $PostQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
+                $PostQuery->BindValue( ":ForumId", intval(VANILLA_POSTTO), PDO::PARAM_INT );
+                $PostQuery->BindValue( ":UserId", intval(VANILLA_POSTAS), PDO::PARAM_INT );
+                $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
 
                 $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
                 $PostQuery->BindValue( ":Text", $aMessage, PDO::PARAM_STR );

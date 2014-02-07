@@ -10,8 +10,8 @@
             $UserId = UserProxy::getInstance()->UserId;
     
             $CheckQuery = $Connector->prepare("SELECT UserId FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId AND RaidId = :RaidId LIMIT 1");
-            $CheckQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-            $CheckQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+            $CheckQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+            $CheckQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
     
             if ( $CheckQuery->execute() )
             {
@@ -35,8 +35,8 @@
                     $UpdateQuery->bindValue(":Status",      "undecided", PDO::PARAM_STR);
                 }
     
-                $UpdateQuery->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":UserId",  $UserId, PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":RaidId", intval( $RaidId), PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":UserId", intval( $UserId), PDO::PARAM_INT);
                 $UpdateQuery->bindValue(":Comment", requestToXML( $aRequest["comment"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
     
                 $UpdateQuery->execute();
@@ -45,11 +45,13 @@
             // reload calendar
     
             $RaidQuery = $Connector->prepare("SELECT Start FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
-            $RaidQuery->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
+            $RaidQuery->bindValue(":RaidId", intval( $RaidId), PDO::PARAM_INT);
             $RaidData = $RaidQuery->fetchFirst();
+            
+            $Session = Session::get();
     
-            $ShowMonth = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["month"]) ) ? $_SESSION["Calendar"]["month"] : intval( substr( $RaidData["Start"], 5, 2 ) );
-            $ShowYear  = ( isset($_SESSION["Calendar"]) && isset($_SESSION["Calendar"]["year"]) )  ? $_SESSION["Calendar"]["year"]  : intval( substr( $RaidData["Start"], 0, 4 ) );
+            $ShowMonth = ( isset($Session["Calendar"]) && isset($Session["Calendar"]["month"]) ) ? $Session["Calendar"]["month"] : intval( substr( $RaidData["Start"], 5, 2 ) );
+            $ShowYear  = ( isset($Session["Calendar"]) && isset($Session["Calendar"]["year"]) )  ? $Session["Calendar"]["year"]  : intval( substr( $RaidData["Start"], 0, 4 ) );
     
             msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
         }

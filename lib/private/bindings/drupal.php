@@ -175,7 +175,7 @@
                                               "LEFT OUTER JOIN `".DRUPAL_TABLE_PREFIX."users_roles` USING(uid) ".
                                               "WHERE uid = :UserId");
 
-            $GroupQuery->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
+            $GroupQuery->bindValue(":UserId", intval($aUserId), PDO::PARAM_INT);
 
             $GroupQuery->loop(function($Group) use (&$AssignedGroup)
 
@@ -290,7 +290,7 @@
                                                  "FROM `".DRUPAL_TABLE_PREFIX."users` ".
                                                  "WHERE uid = :UserId LIMIT 1");
 
-            $UserQuery->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
+            $UserQuery->bindValue(":UserId", intval($aUserId), PDO::PARAM_INT);
             $UserData = $UserQuery->fetchFirst();
 
             return ($UserData != null)

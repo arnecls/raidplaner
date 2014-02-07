@@ -6,7 +6,7 @@
         $UserProxy = UserProxy::getInstance();
     
         $UserQuery = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` WHERE UserId=:UserId LIMIT 1");
-        $UserQuery->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+        $UserQuery->bindValue( ":UserId", intval($UserId), PDO::PARAM_INT );
         $UserData = $UserQuery->fetchFirst();
     
         if ( $UserData == null )
