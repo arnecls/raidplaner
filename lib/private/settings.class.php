@@ -1,51 +1,51 @@
 <?php
 
-require_once(dirname(__FILE__)."/connector.class.php");
-
-class Settings
-{
-    private static $mInstance = NULL;
-    public $Property = Array();
-
-    // --------------------------------------------------------------------------------------------
-
-    public function __construct()
+    require_once(dirname(__FILE__)."/connector.class.php");
+    
+    class Settings
     {
-        $this->update();
-    }
-
-    // --------------------------------------------------------------------------------------------
-
-    public static function getInstance()
-    {
-        if (self::$mInstance == NULL)
+        private static $mInstance = NULL;
+        public $Property = Array();
+    
+        // --------------------------------------------------------------------------------------------
+    
+        public function __construct()
         {
-            self::$mInstance = new Settings();
+            $this->update();
         }
-
-        return self::$mInstance;
-    }
-
-    // --------------------------------------------------------------------------------------------
-
-    public function update()
-    {
-        $Connector = Connector::getInstance();
-        $Query = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Setting` ORDER BY Name" );
-
-        $Property = array();
-
-        $Query->loop( function($Data) use (&$Property)
+    
+        // --------------------------------------------------------------------------------------------
+    
+        public static function getInstance()
         {
-            $Property[$Data["Name"]] = Array(
-                "Name"      => $Data["Name"],
-                "IntValue"  => intval($Data["IntValue"]),
-                "TextValue" => $Data["TextValue"]
-            );
-        });
-
-        $this->Property = $Property;
+            if (self::$mInstance == NULL)
+            {
+                self::$mInstance = new Settings();
+            }
+    
+            return self::$mInstance;
+        }
+    
+        // --------------------------------------------------------------------------------------------
+    
+        public function update()
+        {
+            $Connector = Connector::getInstance();
+            $Query = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Setting` ORDER BY Name" );
+    
+            $Property = array();
+    
+            $Query->loop( function($Data) use (&$Property)
+            {
+                $Property[$Data["Name"]] = Array(
+                    "Name"      => $Data["Name"],
+                    "IntValue"  => intval($Data["IntValue"]),
+                    "TextValue" => $Data["TextValue"]
+                );
+            });
+    
+            $this->Property = $Property;
+        }
     }
-}
 
 ?>

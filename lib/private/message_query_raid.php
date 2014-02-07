@@ -1,4 +1,5 @@
 <?php
+
     function msgRaidDetail( $aRequest )
     {
         if (validUser())

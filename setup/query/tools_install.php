@@ -1,151 +1,7 @@
 <?php
     require_once(dirname(__FILE__)."/../../lib/private/connector.class.php");
-    
-    class Column 
-    {
-        public $Name;
-        public $Type;
-        public $Size;
-        public $Options;
-        
-        // ---------------------------------------------------------------------
-        
-        public function __construct($aName, $aType, $aSize, $aOptions)
-        {
-            $this->Name = $aName;
-            $this->Type = $aType;
-            $this->Size = $aSize;
-            $this->Options = $aOptions;
-            
-            if (is_array($aSize))
-            {
-                $this->Size = "";
-                $FirstValue = true;
-                
-                foreach($aSize as $EnumValue)
-                {
-                    $this->Size .= (($FirstValue) ? "" : ",")."'".$EnumValue."'";
-                    $FirstValue = false;
-                }
-            }
-        }
-        
-        // ---------------------------------------------------------------------
-        
-        public function CreateText()
-        {
-            $Line = "`".$this->Name."` ".$this->Type;
-            
-            if ($this->Size != null)
-                $Line .= "(".$this->Size.")";
-               
-            if ($this->Options != null)
-                $Line .= " ".implode(" ", $this->Options);
-            
-            return $Line;
-        }
-        
-        // ---------------------------------------------------------------------
-        
-        public function AlterText($aTable)
-        {
-            $Line = "ALTER TABLE `".$aTable."` CHANGE `".$this->Name."` `".$this->Name."` ".$this->Type;
-            
-            if ($this->Size != null)
-                $Line .= "(".$this->Size.")";
-               
-            if ($this->Options != null)
-                $Line .= " ".implode(" ", $this->Options);
-            
-            return $Line;
-        }
-        
-        // ---------------------------------------------------------------------
-        
-        public function AddText($aTable)
-        {
-            $Line = "ALTER TABLE `".$aTable."` ADD `".$this->Name."` ".$this->Type;
-            
-            if ($this->Size != null)
-                $Line .= "(".$this->Size.")";
-               
-            if ($this->Options != null)
-                $Line .= " ".implode(" ", $this->Options);
-            
-            return $Line;
-        }
-        
-        // ---------------------------------------------------------------------
-                
-        public function HasType($aSQLType)
-        {
-            $Type = $this->Type;
-            
-            if ($this->Size != null)
-                $Type .= "(".$this->Size.")";
-                
-            if (in_array("unsigned", $this->Options))
-                $Type .= " unsigned";
-            
-            return $Type == $aSQLType;
-        }
-        
-        // ---------------------------------------------------------------------
-        
-        public function IsNull($aState)
-        {
-            return ($aState == !in_array("NOT NULL", $this->Options)) || 
-                   ($aState == (!$this->Type == "timestamp"));
-        }
-        
-        // ---------------------------------------------------------------------
-        
-        public function HasDefault($aDefaultValue)
-        {
-            return ($aDefaultValue == null) || 
-                   in_array("DEFAULT ".$aDefaultValue, $this->Options) || 
-                   in_array("DEFAULT '".$aDefaultValue."'", $this->Options);
-        }
-        
-        // ---------------------------------------------------------------------
-        
-        public function HasExtra($aExtra)
-        {
-            return ($aExtra == null) || in_array($aExtra, $this->Options) || in_array(strtoupper($aExtra), $this->Options); 
-        }
-    }
-    
-    // -------------------------------------------------------------------------
-    
-    class Key
-    {
-        public $Name;
-        public $Type;
-        
-        public function __construct($aType, $aName)
-        {
-            $this->Name = $aName;
-            $this->Type = $aType;
-        }
-        
-        public function CreateText()
-        {
-            switch($this->Type)
-            {
-            case "primary":
-                return "PRIMARY KEY (`".$this->Name."`)";
-                
-            case "fulltext":
-                return "FULLTEXT KEY `".$this->Name."` (`".$this->Name."`)";
-                
-            case "unique";
-                return "UNIQUE KEY `Unique_".$this->Name."` (`".$this->Name."`)";
-            
-            default:
-                return "KEY `".$this->Name."` (`".$this->Name."`)";
-            }
-        }
-    }
+    require_once(dirname(__FILE__)."/column.class.php");
+    require_once(dirname(__FILE__)."/key.class.php");
     
     // -------------------------------------------------------------------------
     
@@ -188,18 +44,30 @@
         ),
         
         "Raid" => Array(
-            new Column("RaidId",       "int",      10,                                         Array("unsigned", "NOT NULL", "AUTO_INCREMENT")),
-            new Column("LocationId",   "int",      10,                                         Array("unsigned", "NOT NULL")),
-            new Column("Stage",        "enum",     Array('open','locked','canceled'),          Array("NOT NULL", "DEFAULT 'open'")),
-            new Column("Size",         "tinyint",  2,                                          Array("unsigned", "NOT NULL")),
-            new Column("Start",        "datetime", null,                                       Array("NOT NULL")),
-            new Column("End",          "datetime", null,                                       Array("NOT NULL")),
-            new Column("Mode",         "enum",     Array('manual','overbook','attend','all'),  Array("NOT NULL")),
-            new Column("Description",  "text",     null,                                       Array("NOT NULL")),
-            new Column("SlotRoles",    "varchar",  24,                                         Array("NOT NULL")),
-            new Column("SlotCount",    "varchar",  12,                                         Array("NOT NULL")),
+            new Column("RaidId",       "int",       10,                                         Array("unsigned", "NOT NULL", "AUTO_INCREMENT")),
+            new Column("LocationId",   "int",       10,                                         Array("unsigned", "NOT NULL")),
+            new Column("Stage",        "enum",      Array('open','locked','canceled'),          Array("NOT NULL", "DEFAULT 'open'")),
+            new Column("Size",         "tinyint",   2,                                          Array("unsigned", "NOT NULL")),
+            new Column("Start",        "datetime",  null,                                       Array("NOT NULL")),
+            new Column("End",          "datetime",  null,                                       Array("NOT NULL")),
+            new Column("Mode",         "enum",      Array('manual','overbook','attend','all'),  Array("NOT NULL")),
+            new Column("Description",  "text",      null,                                       Array("NOT NULL")),
+            new Column("SlotRoles",    "varchar",   24,                                         Array("NOT NULL")),
+            new Column("SlotCount",    "varchar",   12,                                         Array("NOT NULL")),
             new Key(   "primary",      "RaidId"),
             new Key(   "",             "LocationId")
+        ),
+        
+        "Session" => Array(
+            new Column("SessionId",    "int",       10,     Array("unsigned", "NOT NULL", "AUTO_INCREMENT")),
+            new Column("UserId",       "int",       10,     Array("NOT NULL")),
+            new Column("SessionName",  "char",      64,     Array("NOT NULL")),
+            new Column("IpAddress",    "char",      40,     Array("NOT NULL")),
+            new Column("Expires",      "timestamp", null,   Array("DEFAULT CURRENT_TIMESTAMP")),
+            new Column("Data",         "text",      null,   Array("NOT NULL")),
+            new Key(   "primary",      "SessionId"),
+            new Key(   "unique",       "SessionName"),
+            new Key(   "",             "UserId"),
         ),
         
         "Setting" => Array(
