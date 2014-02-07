@@ -16,7 +16,7 @@
     {
         $TestQuery->fetchFirst(true);
 
-        $Salt = md5(mcrypt_create_iv(2048, MCRYPT_RAND));
+        $Salt = md5(openssl_random_pseudo_bytes(2048));
         $HashedPassword = hash("sha256", sha1($_REQUEST["password"]).$Salt);
 
         if ( $TestQuery->getAffectedRows() == 0 )

@@ -272,13 +272,11 @@
         $gLocale[ "FTPClientHelp" ]            = "W celu uzykania informacji na temat zmiany uprawnień, sprawdź pliki pomocy twojego klienta FTP.";
         $gLocale[ "OutdatedPHP" ]              = "Nieaktualna wersja PHP";
         $gLocale[ "PHPVersion" ]               = "Wersja PHP";
-        $gLocale[ "McryptModule" ]             = "Moduł mcrypt";
-        $gLocale[ "McryptNotFound" ]           = "Mcrypt nie został skonfigurowany z PHP";
         $gLocale[ "PDOModule" ]                = "Moduł PDO";
         $gLocale[ "PDONotFound" ]              = "PDO nie został skonfigurowany z PHP";
         $gLocale[ "PDOMySQLModule" ]           = "Sterownik PDO MySQL";
         $gLocale[ "PDOMySQLNotFound" ]         = "Sterownik PDO MySQL nie został odnaleziony";
-        $gLocale[ "PHPRequirements" ]          = "Raidplanner wymaga zainstalowanego PHP 5.2 z modułami mcrypt i PDO.";
+        $gLocale[ "PHPRequirements" ]          = "Raidplanner wymaga zainstalowanego PHP 5.3 z modułami PDO.";
 
         // Database setup
         $gLocale[ "ConfigureDatabase" ]        = "Skonfiguruj bazę danych z której korzystać będzie raidplanner.";

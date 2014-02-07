@@ -268,13 +268,11 @@
         $gLocale[ "FTPClientHelp" ]            = "On how to change permissions, please consult your FTP client's helpfiles.";
         $gLocale[ "OutdatedPHP" ]              = "Outdated PHP version";
         $gLocale[ "PHPVersion" ]               = "PHP version";
-        $gLocale[ "McryptModule" ]             = "mcrypt module";
-        $gLocale[ "McryptNotFound" ]           = "Mcrypt not configured with PHP";
         $gLocale[ "PDOModule" ]                = "PDO module";
         $gLocale[ "PDONotFound" ]              = "PDO not configured with PHP";
         $gLocale[ "PDOMySQLModule" ]           = "PDO MySQL driver";
         $gLocale[ "PDOMySQLNotFound" ]         = "PDO MySQL driver not found";
-        $gLocale[ "PHPRequirements" ]          = "The raidplaner needs a PHP 5.2 installation configured with the mcrypt and PDO extensions.";
+        $gLocale[ "PHPRequirements" ]          = "The raidplaner needs a PHP 5.3 installation configured with PDO extensions.";
 
         // Database setup
         $gLocale[ "ConfigureDatabase" ]        = "Please configure the database the raidplaner will place it's data into.";
