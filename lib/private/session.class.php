@@ -109,7 +109,7 @@
         
         // ---------------------------------------------------------------------
         
-        public function offsetGet( $aOffset )
+        public function &offsetGet( $aOffset )
         {
             return $this->Data[$aOffset];
         }
@@ -206,39 +206,6 @@
                     $ServerUsesHttps = isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] != "") && ($_SERVER["HTTPS"] != null) && ($_SERVER["HTTPS"] != "off");
                     setcookie( self::GetCookieName(), $SessionName, $Expires, $ServerPath, $ServerName, $ServerUsesHttps, true );
                     
-                    return self::$Instance; // ### return, new session ###
-                }
-            }
-            catch(Exception $e)
-            {
-                return null;
-            }
-        }
-        
-        // ---------------------------------------------------------------------
-        
-        public static function createForAPI($aExpiresInSec=3600)
-        {
-            if (self::IsActive())
-                return null; // ### return, session already active ###
-                
-            try
-            {
-                $Connector = Connector::getInstance();
-                $CreateSession = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Session` (UserId, SessionName, IpAddress, Expires, Data) ".
-                    "VALUES (0, :Name, :Ip, FROM_UNIXTIME(:Expires), :Data)");
-                
-                $SessionName = self::generateKey40();
-                $Expires = time() + $aExpiresInSec;
-                            
-                $CreateSession->bindValue(":Name",    $SessionName,            PDO::PARAM_STR);
-                $CreateSession->bindValue(":Ip",      $_SERVER["REMOTE_ADDR"], PDO::PARAM_STR);
-                $CreateSession->bindValue(":Expires", intval($Expires),       PDO::PARAM_INT);
-                $CreateSession->bindValue(":Data",    serialize(Array()),      PDO::PARAM_STR);  
-                
-                if ($CreateSession->execute())
-                {
-                    self::$Instance = new Session($SessionName);
                     return self::$Instance; // ### return, new session ###
                 }
             }

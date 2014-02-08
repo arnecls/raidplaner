@@ -73,7 +73,7 @@
         $gLocale[ "UnappliedChanges" ]         = "Voulez-vous annuler les modifications non sauvegardées?";
         $gLocale[ "DiscardChanges" ]           = "Oui annuler";
         $gLocale[ "to" ]                       = "à";
-        $gLocale[ "PHPVersionWarning" ]        = "La version 1.1.0 PHP 5.3 ou supérieur est requise pour le Raidplaner.<br/>Désolé mais le serveur nécessite une mise à jour :(";
+        $gLocale[ "PHPVersionWarning" ]        = "La version 1.1.0 PHP 5.3.4 ou supérieur est requise pour le Raidplaner.<br/>Désolé mais le serveur nécessite une mise à jour :(";
 
         // Login und user registration
         $gLocale[ "Login" ]                    = "Connexion";
@@ -231,6 +231,7 @@
         $gLocale[ "HelpPage" ]                 = "Lien de la page de l'Aide";
         $gLocale[ "Game" ]                     = "Jeu";
         $gLocale[ "Theme" ]                    = "Theme";
+        $gLocale[ "ApiPrivate" ]               = null;
         $gLocale[ "RaidSetupStyle" ]           = "Type de validation";
         $gLocale[ "RaidModeManual" ]           = "par le raidlead";
         $gLocale[ "RaidModeOverbook" ]         = "Par raidlead avec surréservation";

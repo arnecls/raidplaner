@@ -227,6 +227,7 @@
         $gLocale[ "HelpPage" ]                 = "Help link";
         $gLocale[ "Game" ]                     = null;
         $gLocale[ "Theme" ]                    = "Theme";
+        $gLocale[ "ApiPrivate" ]               = null;
         $gLocale[ "RaidSetupStyle" ]           = "Attendance style";        
         $gLocale[ "RaidModeManual" ]           = "Setup by raidlead";
         $gLocale[ "RaidModeOverbook" ]         = "By raidlead with overbooking";

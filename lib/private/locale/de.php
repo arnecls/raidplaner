@@ -69,7 +69,7 @@
         $gLocale[ "UnappliedChanges" ]         = "Möchtest du die ungesicherten Änderungen verwerfen?";
         $gLocale[ "DiscardChanges" ]           = "Ja, verwerfen";
         $gLocale[ "to" ]                       = "bis";
-        $gLocale[ "PHPVersionWarning" ]        = "Seit Raidplaner Version 1.1.0 wird PHP 5.3 oder besser benötigt.<br/>Es tut mir leid, aber dein Server benötigt ein Update :(";
+        $gLocale[ "PHPVersionWarning" ]        = "Seit Raidplaner Version 1.1.0 wird PHP 5.3.4 oder besser benötigt.<br/>Es tut mir leid, aber dein Server benötigt ein Update :(";
 
         // Login und user registration
         $gLocale[ "Login" ]                    = "Anmelden";
@@ -227,6 +227,7 @@
         $gLocale[ "HelpPage" ]                 = "Link für Hilfe";
         $gLocale[ "Game" ]                     = "Spiel";
         $gLocale[ "Theme" ]                    = "Thema";
+        $gLocale[ "ApiPrivate" ]               = "API token (privat)";
         $gLocale[ "RaidSetupStyle" ]           = "Anmeldeform";
         $gLocale[ "RaidModeManual" ]           = "Aufstellung durch Raidleiter";
         $gLocale[ "RaidModeOverbook" ]         = "Durch Raidleiter mit Überbuchen";

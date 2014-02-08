@@ -189,7 +189,13 @@
 
         if ( !in_array("StartOfWeek", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('StartOfWeek', 1, '');" );
-
+            
+        if ( !in_array("ApiPrivate", $ExistingSettings) )
+        {
+            $PrivateToken = dechex(crc32(openssl_random_pseudo_bytes(2048))).dechex(crc32(openssl_random_pseudo_bytes(2048)));
+            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('ApiPrivate', 0, '".$PrivateToken."');" );
+        }
+        
         if ( !in_array("Version", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 110, '');" );
         else

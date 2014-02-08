@@ -1,4 +1,5 @@
 <?php
+    require_once(dirname(__FILE__)."/api.php");
 
     function msgQuerySettings( $aRequest )
     {
@@ -36,22 +37,21 @@
             $Out->pushValue("user", $Users);
     
             // Load settings
+            
+            $Settings = Settings::getInstance();
+            $SettingsJS = Array();
+            Api::getPrivateToken();
     
-            $SettingQuery = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."Setting` ORDER BY Name");
-    
-            $Settings = Array();
-            $SettingQuery->loop(function($Data) use (&$Settings)
+            foreach($Settings->getProperties() as $Name => $Data)
             {
-                $SettingData = Array(
-                    "name"      => $Data["Name"],
+                array_push($SettingsJS, Array(
+                    "name"      => $Name,
                     "intValue"  => $Data["IntValue"],
                     "textValue" => $Data["TextValue"]
-                );
+                ));
+            }
     
-                array_push($Settings, $SettingData);
-            });
-    
-            $Out->pushValue("setting", $Settings);
+            $Out->pushValue("setting", $SettingsJS);
             
             // Load games
             

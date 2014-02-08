@@ -80,56 +80,27 @@
             $Connector = Connector::getInstance();
     
             // Update settings
-    
-            $ExistingSettings = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Setting`" );
-    
-            $CurrentValues = array();
-            $ExistingSettings->loop( function($Data) use (&$CurrentValues)
-            {
-                $CurrentValues[$Data["Name"]] = array( "number" => $Data["IntValue"], "text" => $Data["TextValue"] );
-            });
-    
-            $QueryString = "";
-            $BindValues = array();
             
-            // Generate settings update query
-    
-            $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "PurgeRaids", $aRequest["purgeTime"] );
-            $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "LockRaids", $aRequest["lockTime"] );
-            $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "TimeFormat", $aRequest["timeFormat"] );
-            $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "StartOfWeek", $aRequest["startOfWeek"] );
-            $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "RaidStartHour", $aRequest["raidStartHour"] );
-            $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "RaidStartMinute", $aRequest["raidStartMinute"] );
-            $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "RaidEndHour", $aRequest["raidEndHour"] );
-            $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "RaidEndMinute", $aRequest["raidEndMinute"] );
-            $QueryString .= generateQueryStringInt( $CurrentValues, $BindValues, "RaidSize", $aRequest["raidSize"] );
-            $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "RaidMode", $aRequest["raidMode"] );
-            $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "Site", $aRequest["site"] );
-            $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "Theme", $aRequest["theme"] );
-            $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "GameConfig", $aRequest["game"] );
-            $QueryString .= generateQueryStringText( $CurrentValues, $BindValues, "HelpPage", $aRequest["helpPage"] );
-    
-            if ( $QueryString != "" )
-            {
-                $SettingsUpdate = $Connector->prepare( $QueryString );
-    
-                foreach( $BindValues as $BindData )
-                {
-                    $SettingsUpdate->bindValue( $BindData[0], $BindData[1], $BindData[2] );
-                }
-    
-                $Connector->beginTransaction();
-    
-                if ( !$SettingsUpdate->execute() )
-                {
-                    $Connector->rollBack();
-                }
-                else
-                {
-                    $Connector->commit();
-                }
-            }
-    
+            $Settings = Settings::getInstance();
+            
+            $Settings["PurgeRaids"]["IntValue"]      = $aRequest["purgeTime"];
+            $Settings["LockRaids"]["IntValue"]       = $aRequest["lockTime"];
+            $Settings["TimeFormat"]["IntValue"]      = $aRequest["timeFormat"];
+            $Settings["StartOfWeek"]["IntValue"]     = $aRequest["startOfWeek"];
+            $Settings["RaidStartHour"]["IntValue"]   = $aRequest["raidStartHour"];
+            $Settings["RaidStartMinute"]["IntValue"] = $aRequest["raidStartMinute"];
+            $Settings["RaidEndHour"]["IntValue"]     = $aRequest["raidEndHour"];
+            $Settings["RaidEndMinute"]["IntValue"]   = $aRequest["raidEndMinute"];
+            $Settings["RaidSize"]["IntValue"]        = $aRequest["raidSize"];            
+            
+            $Settings["RaidMode"]["TextValue"]       = $aRequest["raidMode"];
+            $Settings["Site"]["TextValue"]           = $aRequest["site"];
+            $Settings["Theme"]["TextValue"]          = $aRequest["theme"];
+            $Settings["GameConfig"]["TextValue"]     = $aRequest["game"];
+            $Settings["HelpPage"]["TextValue"]       = $aRequest["helpPage"];
+            
+            $Settings->serialize();
+                
             // Update locations
     
             $ExistingLocations = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."Location`" );

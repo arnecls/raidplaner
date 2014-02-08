@@ -46,9 +46,9 @@
         $gSite["StartOfWeek"] = 1;
         $gSite["GameConfig"]  = "wow";
 
-        foreach($Settings->Property as $Data)
+        foreach($Settings->getProperties() as $Name => $Data)
         {
-            switch( $Data["Name"] )
+            switch( $Name )
             {
             case "Site":
                 $gSite["BannerLink"] = $Data["TextValue"];

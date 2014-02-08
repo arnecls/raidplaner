@@ -94,15 +94,15 @@
 
         case "query_calendar":
             $Settings = Settings::getInstance();
-            lockOldRaids( $Settings->Property["LockRaids"]["IntValue"] );
-            purgeOldRaids( $Settings->Property["PurgeRaids"]["IntValue"] );
+            lockOldRaids( $Settings["LockRaids"]["IntValue"] );
+            purgeOldRaids( $Settings["PurgeRaids"]["IntValue"] );
             msgQueryCalendar( $_REQUEST );
             break;
 
         case "raid_list":
             $Settings = Settings::getInstance();
-            lockOldRaids( $Settings->Property["LockRaids"]["IntValue"] );
-            purgeOldRaids( $Settings->Property["PurgeRaids"]["IntValue"] );
+            lockOldRaids( $Settings["LockRaids"]["IntValue"] );
+            purgeOldRaids( $Settings["PurgeRaids"]["IntValue"] );
             msgRaidList( $_REQUEST );
             break;
 
