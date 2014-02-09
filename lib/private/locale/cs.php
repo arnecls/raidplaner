@@ -144,7 +144,7 @@
         $gLocale[ "DeleteRaid" ]               = "Smazat raid";
         $gLocale[ "ConfirmRaidDelete" ]        = "Opravdu chcete smazat tento raid?";
         $gLocale[ "Players" ]                  = "Hráči";
-        $gLocale[ "RequiredForRole" ]          = "Required for role";
+        $gLocale[ "RequiredForRole" ]          = "Vyžadovaných pro roli";
         $gLocale[ "AbsentPlayers" ]            = "Nepřítomní hráči";
         $gLocale[ "UndecidedPlayers" ]         = "Nerozhodnutí hráči";
         $gLocale[ "AbsentNoReason" ]           = "Důvod neúčasti nezdělen.";
@@ -205,28 +205,28 @@
         $gLocale[ "LinkUser" ]                 = "Synchronize user";
         $gLocale[ "SyncFailed" ]               = "Failed to synchronize.</br>No fitting user found.";
         $gLocale[ "EditForeignCharacters" ]    = "Edit characters for";
-        $gLocale[ "ConfirmDeleteLocation" ]    = "Do you really want to delete this location?";
-        $gLocale[ "NoteDeleteRaidsToo" ]       = "This will also delete all raids at this location.";
-        $gLocale[ "DeleteRaids" ]              = "Delete raids";
-        $gLocale[ "DeleteLocationRaids" ]      = "Delete location and raids";
+        $gLocale[ "ConfirmDeleteLocation" ]    = "Opravdu chcete smazat toto místo?";
+        $gLocale[ "NoteDeleteRaidsToo" ]       = "Toto také smaže všechny raidy v tomto místě.";
+        $gLocale[ "DeleteRaids" ]              = "Smazat raidy";
+        $gLocale[ "DeleteLocationRaids" ]      = "Smazat místa a raidy";
         $gLocale[ "LockRaids" ]                = "Uzamknout raidy";
         $gLocale[ "AfterDone" ]                = "poté co raid skončí";
         $gLocale[ "BeforeStart" ]              = "než raid začne";
-        $gLocale[ "Seconds" ]                  = "Second(s)";
-        $gLocale[ "Minutes" ]                  = "Minute(s)";
-        $gLocale[ "Hours" ]                    = "Hour(s)";
-        $gLocale[ "Days" ]                     = "Day(s)";
-        $gLocale[ "Weeks" ]                    = "Week(s)";
-        $gLocale[ "Month" ]                    = "Month";
+        $gLocale[ "Seconds" ]                  = "Vteřin(u)";
+        $gLocale[ "Minutes" ]                  = "Minut(u)";
+        $gLocale[ "Hours" ]                    = "Hodin(u)";
+        $gLocale[ "Days" ]                     = "Den/Dnů";
+        $gLocale[ "Weeks" ]                    = "Týden/Týdnů";
+        $gLocale[ "Month" ]                    = "Měsíc(e)";
         $gLocale[ "TimeFormat" ]               = "Formát času";
-        $gLocale[ "StartOfWeek" ]              = "Week starts on";
+        $gLocale[ "StartOfWeek" ]              = "Začátek týdne";
         $gLocale[ "DefaultStartTime" ]         = "Výchozí čas začátku raidu";
         $gLocale[ "DefaultEndTime" ]           = "Výchozí čas konce raidu";
         $gLocale[ "DefaultRaidSize" ]          = "Výchozí velikost raidu";
         $gLocale[ "BannerPage" ]               = "Page banner link";
         $gLocale[ "HelpPage" ]                 = "Help link";
         $gLocale[ "Game" ]                     = null;
-        $gLocale[ "Theme" ]                    = "Theme";
+        $gLocale[ "Theme" ]                    = "Vzhled";
         $gLocale[ "RaidSetupStyle" ]           = "Attendance style";        
         $gLocale[ "RaidModeManual" ]           = "Setup by raidlead";
         $gLocale[ "RaidModeOverbook" ]         = "By raidlead with overbooking";
@@ -252,8 +252,8 @@
         // Menu
         $gLocale[ "Install" ]                  = "Instalovat";
         $gLocale[ "Update" ]                   = "Aktualizovat";
-        $gLocale[ "EditBindings" ]             = "Edit bindings";
-        $gLocale[ "EditConfig" ]               = "Edit configuration";
+        $gLocale[ "EditBindings" ]             = "Upravit propojení";
+        $gLocale[ "EditConfig" ]               = "Upravit konfiguraci";
         $gLocale[ "ResetPassword" ]            = "Nastavit heslo administrátora";
         $gLocale[ "RepairDatabase" ]           = "Opravit databázi";
                         
@@ -277,18 +277,18 @@
         $gLocale[ "PHPRequirements" ]          = "The raidplaner needs a PHP 5.2 installation configured with the mcrypt and PDO extensions.";
         
         // Database setup
-        $gLocale[ "ConfigureDatabase" ]        = "Please configure the database the raidplaner will place it's data into.";
+        $gLocale[ "ConfigureDatabase" ]        = "Prosím nakonfigurujte databázi, do které bude Raidplaner ukládat data.";
         $gLocale[ "SameAsForumDatabase" ]      = "If you want to bind the raidplaner to a third party forum the raidplaner database must be on the same server as the forum's database.";
         $gLocale[ "EnterPrefix" ]              = "If the database is already in use by another installation you can enter a prefix to avoid name conflicts.";
-        $gLocale[ "DatabaseHost" ]             = "Database host";
+        $gLocale[ "DatabaseHost" ]             = "host databáze";
         $gLocale[ "RaidplanerDatabase" ]       = "Raidplaner database";
-        $gLocale[ "UserWithDBPermissions" ]    = "User with permissions for that database";
-        $gLocale[ "UserPassword" ]             = "Password for that user";
-        $gLocale[ "RepeatPassword" ]           = "Please repeat the password";
-        $gLocale[ "TablePrefix" ]              = "Prefix for tables in the database";
+        $gLocale[ "UserWithDBPermissions" ]    = "Uživatelské jméno";
+        $gLocale[ "UserPassword" ]             = "Heslo";
+        $gLocale[ "RepeatPassword" ]           = "Prosím, zadejte znovu heslo";
+        $gLocale[ "TablePrefix" ]              = "Prefix tabulek v databázi";
         $gLocale[ "VerifySettings" ]           = "Verify these settings";
-        $gLocale[ "ConnectionTestFailed" ]     = "Connection test failed";
-        $gLocale[ "ConnectionTestOk" ]         = "Connection test succeeded";
+        $gLocale[ "ConnectionTestFailed" ]     = "Test připojení selhal";
+        $gLocale[ "ConnectionTestOk" ]         = "Test připojení byl úspěšný";
         
         // Registration and admin
         $gLocale[ "AdminName" ]                = null;
@@ -305,9 +305,9 @@
         $gLocale[ "UseClearText" ]             = "Submit cleartext password (not recommended)";
         
         // Install/Update
-        $gLocale[ "SetupComplete" ]            = "Setup complete";
-        $gLocale[ "UpdateComplete" ]           = "Update complete";
-        $gLocale[ "RaidplanerSetupDone" ]      = "Raidplaner has been successfully set up.";
+        $gLocale[ "SetupComplete" ]            = "Nastavení je hotovo";
+        $gLocale[ "UpdateComplete" ]           = "Aktualizace je hotova";
+        $gLocale[ "RaidplanerSetupDone" ]      = "Raidplaner byl úspěšně nastaven.";
         $gLocale[ "DeleteSetupFolder" ]        = "You should now delete the \"setup\" folder and secure the following folders (e.g. by htaccess):";
         $gLocale[ "ThankYou" ]                 = "Thank you for using packedpixel Raidplaner.";
         $gLocale[ "VisitBugtracker" ]          = "If you encounter any bugs or if you have feature requests, please visit our bugtracker at ";
