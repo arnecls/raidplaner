@@ -29,15 +29,14 @@
         $gLocale[ "Gladiator" ]                = "Gladiateur";
         $gLocale[ "Lancer" ]                   = "Maître d'Hast";
         $gLocale[ "Marauder" ]                 = "Maraudeur";
-        $gLocale[ "Monk" ]                     = "Moine";
-        $gLocale[ "Paladin" ]                  = "Paladin";
+        $gLocale[ "Monk_FF14" ]                = "Moine";
+        $gLocale[ "Paladin_FF14" ]             = "Paladin";
         $gLocale[ "Pugilist" ]                 = "Pugiliste";
         $gLocale[ "Scholar" ]                  = "Érudit";
         $gLocale[ "Summoner" ]                 = "Invocateur";
         $gLocale[ "Thaumaturge" ]              = "Occultiste";
-        $gLocale[ "Warrior" ]                  = "Guerrier";
+        $gLocale[ "Warrior_FF14" ]             = "Guerrier";
         $gLocale[ "Whitemage" ]                = "Mage Blanc";
-        $gLocale[ "Random" ]                   = "Aléatoire";
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";

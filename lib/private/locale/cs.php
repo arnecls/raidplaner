@@ -25,15 +25,14 @@
         $gLocale[ "Gladiator" ]                = null;
         $gLocale[ "Lancer" ]                   = null;
         $gLocale[ "Marauder" ]                 = null;
-        $gLocale[ "Monk" ]                     = null;
-        $gLocale[ "Paladin" ]                  = null;
+        $gLocale[ "Monk_FF14" ]                = null;
+        $gLocale[ "Paladin_FF14" ]             = null;
         $gLocale[ "Pugilist" ]                 = null;
         $gLocale[ "Scholar" ]                  = null;
         $gLocale[ "Summoner" ]                 = null;
         $gLocale[ "Thaumaturge" ]              = null;
-        $gLocale[ "Warrior" ]                  = null;
+        $gLocale[ "Warrior_FF14" ]             = null;
         $gLocale[ "Whitemage" ]                = null;
-        $gLocale[ "Random" ]                   = null;
         
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";

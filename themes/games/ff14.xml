@@ -44,7 +44,7 @@
             <role id="dmg"/>
         </class>
         
-        <class id="pal" loca="Paladin" style="paladin">
+        <class id="pal" loca="Paladin_FF14" style="paladin">
             <role id="tnk"/>
         </class>
         
@@ -52,7 +52,7 @@
             <role id="tnk"/>
         </class>
         
-        <class id="war" loca="Warrior" style="warrior">
+        <class id="war" loca="Warrior_FF14" style="warrior">
             <role id="tnk"/>
         </class>
         
@@ -60,7 +60,7 @@
             <role id="tnk"/>
         </class>
         
-        <class id="mnk" loca="Monk" style="monk">
+        <class id="mnk" loca="Monk_FF14" style="monk">
             <role id="dmg"/>
         </class>
         
