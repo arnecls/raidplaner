@@ -1,4 +1,6 @@
 <?php
+    // Translation by Kamentixan
+    // Návrhy a chyby posílejte na kamenitxan@me.com
     if ( defined("LOCALE_MAIN") )
     {        
         // Classes
@@ -13,35 +15,35 @@
         $gLocale[ "Shaman" ]                   = "Shaman";
         $gLocale[ "Warlock" ]                  = "Warlock";
         $gLocale[ "Warrior" ]                  = "Warrior";
-        $gLocale[ "Random" ]                   = null;
+        $gLocale[ "Random" ]                   = "Náhodný";
         
         // Classes FF14        
-        $gLocale[ "Arcanist" ]                 = null;
-        $gLocale[ "Archer" ]                   = null;
-        $gLocale[ "Bard" ]                     = null;
-        $gLocale[ "Blackmage" ]                = null;
-        $gLocale[ "Conjurer" ]                 = null;
-        $gLocale[ "Dragoon" ]                  = null;
-        $gLocale[ "Gladiator" ]                = null;
-        $gLocale[ "Lancer" ]                   = null;
-        $gLocale[ "Marauder" ]                 = null;
-        $gLocale[ "Monk" ]                     = null;
-        $gLocale[ "Paladin" ]                  = null;
-        $gLocale[ "Pugilist" ]                 = null;
-        $gLocale[ "Scholar" ]                  = null;
-        $gLocale[ "Summoner" ]                 = null;
-        $gLocale[ "Thaumaturge" ]              = null;
-        $gLocale[ "Warrior" ]                  = null;
-        $gLocale[ "Whitemage" ]                = null;
-        $gLocale[ "Random" ]                   = null;
+        $gLocale[ "Arcanist" ]                 = "Arcanist";
+        $gLocale[ "Archer" ]                   = "Archer";
+        $gLocale[ "Bard" ]                     = "Bard";
+        $gLocale[ "Blackmage" ]                = "Blackmage";
+        $gLocale[ "Conjurer" ]                 = "Conjurer";
+        $gLocale[ "Dragoon" ]                  = "Dragoon";
+        $gLocale[ "Gladiator" ]                = "Gladiator";
+        $gLocale[ "Lancer" ]                   = "Lancer";
+        $gLocale[ "Marauder" ]                 = "Marauder";
+        $gLocale[ "Monk" ]                     = "Monk";
+        $gLocale[ "Paladin" ]                  = "Paladin";
+        $gLocale[ "Pugilist" ]                 = "Pugilist";
+        $gLocale[ "Scholar" ]                  = "Scholar";
+        $gLocale[ "Summoner" ]                 = "Summoner";
+        $gLocale[ "Thaumaturge" ]              = "Thaumaturge";
+        $gLocale[ "Warrior" ]                  = "Warrior";
+        $gLocale[ "Whitemage" ]                = "Whitemage";
+        $gLocale[ "Random" ]                   = "Náhodný";
         
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
         $gLocale[ "Healer" ]                   = "Healer";
         $gLocale[ "Damage" ]                   = "Damage";
-        $gLocale[ "Melee" ]                    = null;
-        $gLocale[ "Range" ]                    = null;
-        $gLocale[ "Support" ]                  = null;
+        $gLocale[ "Melee" ]                    = "Melee";
+        $gLocale[ "Range" ]                    = "Range";
+        $gLocale[ "Support" ]                  = "Support";
         
         // Pre-loading checks
         $gLocale[ "ContinueNoUpdate" ]         = "Pokračovat bez aktualizace";
