@@ -137,7 +137,10 @@
             {
                 if (is_array($Value))
                 {
-                    $this->writeXML($Name, $Value);
+                    if (is_numeric($Name))
+                        $this->writeXML("Element", $Value);
+                    else
+                        $this->writeXML($Name, $Value);
                     continue; // ### continue, nested array ###
 
                 }

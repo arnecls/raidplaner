@@ -10,26 +10,32 @@
         case "help":
             $Out->pushValue("description", "Help page.");
             
-            $Out->pushValue("parameters", Array(
-                "topic" => "Show help on a given topic."
-            ));
-            
-            $Out->pushValue("topics", Array(
+            $Out->pushValue("values", Array(
                 "help"     => "Help on help.",
+                "format"   => "Help on result format.",
                 "location" => "Help on querying locations.",
                 "raid"     => "Help on querying raid data.",
                 "stats"    => "Help on querying statistics.",
             ));
             break;
             
+        case "format":
+            $Out->pushValue("description", "Result format. Defaults to json.");
+            $Out->pushValue("values", Array(
+                "json" => "Return result as JSON.",
+                "xml"  => "Return result as XML."
+            ));
+            break;
+            
+            
         case "location":
-            $Out->pushValue("description", "Get a list of available locations.");
+            $Out->pushValue("description", "Query value. Get a list of available locations.");
             $Out->pushValue("parameters", Array(
             ));
             break;
             
         case "raid":
-            $Out->pushValue("description", "Get information about raids.");
+            $Out->pushValue("description", "Query value. Get information about raids.");
             $Out->pushValue("parameters", Array(
                 "start"     => "Only return raids starting after this UTC timestamp. Default: 0.",
                 "end"       => "Only return raids starting before this UTC timestamp. Default: PHP_INT_MAX.",
@@ -47,7 +53,7 @@
             break;
             
         case "statistic":
-            $Out->pushValue("description", "Get user statistics.");
+            $Out->pushValue("description", "Query value. Get user statistics.");
             $Out->pushValue("parameters", Array(
                 "start"     => "Only count raids starting after this UTC timestamp. Default: 0.",
                 "end"       => "Only count raids starting before this UTC timestamp. Default: PHP_INT_MAX.",
