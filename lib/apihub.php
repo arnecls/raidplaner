@@ -63,7 +63,7 @@
             switch( strtolower($_REQUEST["query"]))
             {
             case "location":
-                api_query_location();
+                $Out->pushValue("result", api_query_location());
                 break;
             
             case "raid":
@@ -81,7 +81,7 @@
                     "canceled"  => getParam("canceled", false),
                     "attends"   => getParam("attends", false),
                 ); 
-                api_query_raid($aParameter);
+                $Out->pushValue("result", api_query_raid($aParameter));
                 break;
                 
             case "statistic":
@@ -91,7 +91,8 @@
                     "raids" => getParam("raids", ""),
                     "users" => getParam("users", ""),
                 );
-                api_query_statistic($aParameter);
+                
+                $Out->pushValue("result", api_query_statistic($aParameter));
                 break;
                 
             default:
