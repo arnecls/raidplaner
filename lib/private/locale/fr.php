@@ -230,7 +230,7 @@
         $gLocale[ "HelpPage" ]                 = "Lien de la page de l'Aide";
         $gLocale[ "Game" ]                     = "Jeu";
         $gLocale[ "Theme" ]                    = "Theme";
-        $gLocale[ "ApiPrivate" ]               = null;
+        $gLocale[ "ApiPrivate" ]               = "API token (privé)";
         $gLocale[ "RaidSetupStyle" ]           = "Type de validation";
         $gLocale[ "RaidModeManual" ]           = "par le raidlead";
         $gLocale[ "RaidModeOverbook" ]         = "Par raidlead avec surréservation";
@@ -331,7 +331,7 @@
 		$gLocale[ "FailedRemoveSetup" ]        = "Le dossier de configuration n'a pu être trouvé.";
 
         // Repair
-        $gLocale[ "Repair" ]                   = null;
+        $gLocale[ "Repair" ]                   = "Réparer";
         $gLocale[ "RepairDone" ]               = "Réparation effectuée.";
         $gLocale[ "BrokenDatabase" ]           = "La base de données semble être corrompue";
         $gLocale[ "EnsureValidDatabase" ]      = "Assurer une base de données valide";
@@ -345,20 +345,20 @@
         $gLocale[ "StrayCharacters" ]          = "Personnages effacés";
         $gLocale[ "StrayUsers" ]               = "Utilisateurs effacés";
         $gLocale[ "StrayBindings" ]            = "Utilisateurs invalides";
-        $gLocale[ "RepairCharacters" ]         = null;
-        $gLocale[ "TransferGameconfig" ]       = null;
-        $gLocale[ "MergeGames" ]               = null;
-        $gLocale[ "SourceGame" ]               = null;
-        $gLocale[ "TargetGame" ]               = null;
-        $gLocale[ "ChooseRepairs" ]            = null;
-        $gLocale[ "Fixing" ]                   = null;
-        $gLocale[ "StrayChars" ]               = null;
-        $gLocale[ "StrayAttends" ]             = null;
-        $gLocale[ "InvalidCharacters" ]        = null;
-        $gLocale[ "SameGame" ]                 = null;   
-        $gLocale[ "Merged" ]                   = null; 
-        $gLocale[ "Locations" ]                = null; 
-        $gLocale[ "Characters" ]               = null; 
+        $gLocale[ "RepairCharacters" ]         = "Réparer personnages non valide";
+        $gLocale[ "TransferGameconfig" ]       = "Convertir gameconfig.php encore (Raidplaner 1.0.x)";
+        $gLocale[ "MergeGames" ]               = "Fusionner deux jeux";
+        $gLocale[ "SourceGame" ]               = "Source (changée)";
+        $gLocale[ "TargetGame" ]               = "Cible";
+        $gLocale[ "ChooseRepairs" ]            = "Choisir une ou plusieurs réparations pour être exécutées.";
+        $gLocale[ "Fixing" ]                   = "Fixer";
+        $gLocale[ "StrayChars" ]               = "Personnage orphelins";
+        $gLocale[ "StrayAttends" ]             = "Attentes orphelines";
+        $gLocale[ "InvalidCharacters" ]        = "Personnage invalide";
+        $gLocale[ "SameGame" ]                 = "Les deux jeux sont identiques";   
+        $gLocale[ "Merged" ]                   = "Converti:"; 
+        $gLocale[ "Locations" ]                = "Localisation"; 
+        $gLocale[ "Characters" ]               = "Personnages"; 
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Charger les groupes utilisant ces réglages";
