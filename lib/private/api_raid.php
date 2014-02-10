@@ -246,7 +246,7 @@
                     "Class"            => $aRaidRow["Class"],
                     "Comment"          => $aRaidRow["Comment"],
                     "CharacterName"    => $aRaidRow["CharacterName"],
-                    "CharacterClasses" => $aRaidRow["CharacterClasses"],
+                    "CharacterClasses" => explode(":",$aRaidRow["CharacterClasses"]),
                     "CharacterIsMain"  => $aRaidRow["CharacterIsMain"],
                     "CharacterRole1"   => $aRaidRow["CharacterRole1"],
                     "CharacterRole2"   => $aRaidRow["CharacterRole2"],
