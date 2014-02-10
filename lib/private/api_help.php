@@ -38,10 +38,9 @@
             $Out->pushValue("description", "Query value. Get information about raids.");
             $Out->pushValue("parameters", Array(
                 "start"     => "Only return raids starting after this UTC timestamp. Default: 0.",
-                "end"       => "Only return raids starting before this UTC timestamp. Default: PHP_INT_MAX.",
-                "after"     => "Only return raids beginning after this hour (24h format). Default: 0.",
-                "before"    => "Only return raids beginning before this hour (24h format). Default: 0.",
+                "end"       => "Only return raids starting before this UTC timestamp. Default: 0x7FFFFFFF.",
                 "limit"     => "Maximum number of raids to return. Passing 0 returns all raids. Default: 10.",
+                "offset"    => "Number of raids to skip if a limit is set. Default: 0.",
                 "location"  => "Comma separated list of location names. Only returns raids on these locations. Default: empty.",
                 "full"      => "Include raids that have all slots set. Default: true.",
                 "free"      => "Include raids that do not have all slots set. Default: true.",

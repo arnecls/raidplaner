@@ -128,10 +128,17 @@
 
         public function writeXML($aTagName, $aArray = null)
         {
-            $Root = ($aArray == null) 
+            $Root = ($aArray === null) 
                 ? $this->Data 
                 : $aArray;
                 
+            if (($Root === null) || 
+                (is_array($Root) && (sizeof($Root) == 0)))
+            {
+                echo "<".$aTagName."/>";
+                return;
+            }
+            
             $IsIndexedArray = $this->IsIndexed($Root);
             
             if (!$IsIndexedArray)
