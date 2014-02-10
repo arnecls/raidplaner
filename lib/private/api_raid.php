@@ -246,10 +246,9 @@
                     "Class"            => $aRaidRow["Class"],
                     "Comment"          => $aRaidRow["Comment"],
                     "CharacterName"    => $aRaidRow["CharacterName"],
-                    "CharacterClasses" => explode(":",$aRaidRow["CharacterClasses"]),
                     "CharacterIsMain"  => $aRaidRow["CharacterIsMain"],
-                    "CharacterRole1"   => $aRaidRow["CharacterRole1"],
-                    "CharacterRole2"   => $aRaidRow["CharacterRole2"],
+                    "CharacterClasses" => explode(":",$aRaidRow["CharacterClasses"]),
+                    "CharacterRoles"   => Array($aRaidRow["CharacterRole1"], $aRaidRow["CharacterRole2"]),
                 );
                 
                 array_push($Raid["Attends"], $Attend);
