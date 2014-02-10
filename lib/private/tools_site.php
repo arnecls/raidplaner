@@ -1,22 +1,12 @@
 <?php
     require_once(dirname(__FILE__)."/connector.class.php");
+    require_once(dirname(__FILE__)."/settings.class.php");
+    require_once(dirname(__FILE__)."/session.class.php");
+    
+    $gVersion = 110.0;
 
-    $gSite = Array(
-        "Version"     => 110.0,
-        "Theme"       => "defaults",
-        "BannerLink"  => "",
-        "HelpLink"    => "",
-        "Logout"      => true,
-        "Banner"      => "cataclysm.jpg",
-        "Background"  => "flower.png",
-        "BGColor"     => "#898989",
-        "BGRepeat"    => "repeat-xy",
-        "Iconset"     => "wow",
-        "Styles"      => array(),
-        "PortalMode"  => false,
-        "TimeFormat"  => 24,
-        "StartOfWeek" => 1
-    );
+    $gSite = null;
+    $gGame = null;
 
     // ---------------------------------------------------------------
 
@@ -31,12 +21,16 @@
     function loadSiteSettings()
     {
         global $gSite;
+        global $gVersion;
+        
+        if ($gSite != null)
+            return; // ### return, already initialized ###
 
         $Out = Out::getInstance();
         $Connector = Connector::getInstance();
-        $Settings = $Connector->prepare("Select `Name`, `TextValue`, `IntValue` FROM `".RP_TABLE_PREFIX."Setting`");
-
+        $Settings = Settings::getInstance();
         
+        $gSite["Version"]     = $gVersion;
         $gSite["Theme"]       = "";
         $gSite["BannerLink"]  = "";
         $gSite["HelpLink"]    = "";
@@ -50,13 +44,18 @@
         $gSite["PortalMode"]  = false;
         $gSite["TimeFormat"]  = 24;
         $gSite["StartOfWeek"] = 1;
+        $gSite["GameConfig"]  = "wow";
 
-        $Settings->loop( function($Data) use (&$gSite)
+        foreach($Settings->getProperties() as $Name => $Data)
         {
-            switch( $Data["Name"] )
+            switch( $Name )
             {
             case "Site":
                 $gSite["BannerLink"] = $Data["TextValue"];
+                break;
+                
+            case "GameConfig":
+                $gSite["GameConfig"] = $Data["TextValue"];
                 break;
 
             case "HelpPage":
@@ -64,9 +63,8 @@
                 break;
 
             case "Theme":
-                $ThemeFile = dirname(__FILE__)."/../../themes/themes/".$Data["TextValue"].".xml";
-                
                 $gSite["Theme"] = $Data["TextValue"];
+                $ThemeFile = realpath(dirname(__FILE__)."/../../themes/themes/".$Data["TextValue"].".xml");
                 
                 if ( file_exists($ThemeFile) )
                 {
@@ -104,7 +102,7 @@
                     }
                     catch(Exception $e)
                     {
-                        $Out->pushError("Error parsing themefile ".$Data["TextValue"].": ".$e->getMessage());
+                        $Out->pushError("Error parsing themefile ".$ThemeFile.": ".$e->getMessage());
                     }
                 }
                 break;
@@ -120,24 +118,166 @@
             default:
                 break;
             };
-        });
+        }
     }
 
     // ---------------------------------------------------------------
 
-    function beginSession()
+    function loadGameSettings()
     {
-        ini_set("session.use_trans_sid",    0);
-        ini_set("session.use_cookies",      1);
-        ini_set("session.use_only_cookies", 1);
-        ini_set("session.cookie_httponly",  1);
-        ini_set("session.hash_function",    1);
-        ini_set("session.bug_compat_42",    0);
-
-        $SiteId = dechex(crc32(dirname(__FILE__)));
-
-        session_name("ppx_raidplaner_".$SiteId);
-        session_start();
+        global $gSite;
+        global $gGame;
+        
+        if ($gGame != null)
+            return; // ### return, already initialized ###
+            
+        loadSiteSettings();
+        $Out = Out::getInstance();
+        
+        $gGame = Array(
+            "GameId"        => "none",
+            "Family"        => "wow",
+            "ClassMode"     => "single",
+            "Roles"         => Array(),
+            "Classes"       => Array(),
+            "RaidView"      => Array(),
+            "RaidViewOrder" => Array(),
+            "Groups"        => Array()
+        );
+        
+        $ConfigFile = realpath(dirname(__FILE__)."/../../themes/games/".$gSite["GameConfig"].".xml");
+        
+        if ( !file_exists($ConfigFile) )
+        {
+            $Out->pushError("Gameconfig file ".$ConfigFile." not found.");
+        }
+        else
+        {
+            try
+            {
+                $Config = @new SimpleXMLElement( file_get_contents($ConfigFile) );
+                
+                // General
+                
+                $gGame["GameId"] = strtolower($Config->id);
+                $gGame["Family"] = strtolower($Config->family);
+                $gGame["ClassMode"] = strtolower($Config->classmode);
+                
+                if (strlen($gGame["GameId"]) > 4)
+                    throw new Exception("Game ids must be at least 1 and can be at most 4 characters long. ".$gGame["GameId"]." does not match this rule.");
+                
+                if (($gGame["ClassMode"] != "single") && 
+                    ($gGame["ClassMode"] != "multi"))
+                {
+                    throw new Exception("Classmode must either be single or multi.");
+                }
+                
+                // Roles
+                
+                foreach($Config->roles->role as $Role)
+                {
+                    if (strlen(strval($Role["id"])) != 3)
+                        throw new Exception("Role ids must be exactly 3 characters long. ".strval($Role["id"])." does not match this rule.");
+                        
+                    $gGame["Roles"][strval($Role["id"])] = Array(
+                        "id"    => strval($Role["id"]),
+                        "name"  => strval($Role["loca"]),
+                        "style" => strval($Role["style"])
+                    );
+                }
+                
+                // Classes
+                
+                foreach($Config->classes->class as $Class)
+                {
+                    if (strlen(strval($Class["id"])) != 3)
+                        throw new Exception("Class ids must be exactly 3 characters long. ".strval($Class["id"])." does not match this rule.");
+                    
+                    $ClassData = Array(
+                        "id"          => strval($Class["id"]),
+                        "name"        => strval($Class["loca"]),
+                        "style"       => strval($Class["style"]),
+                        "roles"       => Array(),
+                        "defaultRole" => strval($Class->role[0]["id"])
+                    );
+                    
+                    foreach($Class->role as $Role)
+                    {
+                        if (!isset($gGame["Roles"][strval($Role["id"])]))
+                            throw new Exception("Unknown role ".$Role["id"]." used in class ".$Class["id"].".");
+                        
+                        array_push($ClassData["roles"], strval($Role["id"]));
+                        if ($Role["default"] == "true")
+                            $ClassData["defaultRole"] = strval($Role["id"]);
+                    }
+                    
+                    $gGame["Classes"][strval($Class["id"])] = $ClassData;
+                }
+                
+                // Raidview
+                
+                $ColsUsed = 0;
+                $MaxNumCols = 6;
+                $Order = Array();
+                
+                foreach($Config->raidview->slots as $Slot)
+                {
+                    $Columns = ($Slot["columns"] == "*") 
+                        ? $MaxNumCols - $ColsUsed
+                        : intval($Slot["columns"]);
+                                        
+                    $gGame["RaidView"][strval($Slot["role"])] = $Columns;
+                    
+                    if (isset($Slot["order"]))
+                        array_push($Order, intval($Slot["order"]).":".strval($Slot["role"]));
+                    else
+                        array_push($Order, sizeof($gGame["RaidViewOrder"]).":".strval($Slot["role"]));
+                    
+                    $ColsUsed += $Columns;
+                }
+                
+                sort($Order);
+                
+                foreach($Order as &$Role)
+                {
+                    array_push($gGame["RaidViewOrder"], substr($Role, strpos($Role, ":")+1));
+                }
+                
+                if ($ColsUsed != $MaxNumCols)
+                    throw new Exception("The raidview must contain exactly ".$MaxNumCols." columns. ".$ColsUsed." columns have been configured.");
+                    
+                // Groups
+                
+                foreach($Config->groups->group as $Group)
+                {
+                    $GroupData = Array();
+                    $GroupSize = intval($Group["count"]);
+                    $SlotsUsed = 0;
+                    
+                    foreach($Group->role as $Role)
+                    {
+                        if (!isset($gGame["Roles"][strval($Role["id"])]))
+                            throw new Exception("Unknown role ".$Role["id"]." used in group (".$GroupSize.").");
+                        
+                        $Count = ($Role["count"] == "*")
+                            ? $GroupSize - $SlotsUsed
+                            : intval($Role["count"]);
+                            
+                        $GroupData[strval($Role["id"])] = $Count;                        
+                        $SlotsUsed += $Count;
+                    }
+                    
+                    if ($SlotsUsed != $GroupSize)
+                        throw new Exception("Group size ".$GroupSize." contains ".$SlotsUsed." slots.");
+                    
+                    $gGame["Groups"][$GroupSize] = $GroupData;
+                }
+            }
+            catch(Exception $e)
+            {
+                $Out->pushError("Error parsing gameconfig file ".$ConfigFile.":\n\n".$e->getMessage());
+            }
+        }
     }
 
     // ---------------------------------------------------------------
@@ -172,7 +312,7 @@
                                                    "Stage = 'locked'".
                                                    "WHERE Start < FROM_UNIXTIME(:Time) AND Stage = 'open'" );
 
-            $UpdateRaidQuery->bindValue(":Time", time() + $aSeconds, PDO::PARAM_INT);
+            $UpdateRaidQuery->bindValue(":Time", intval(time() + $aSeconds), PDO::PARAM_INT);
             $UpdateRaidQuery->execute();
         }
     }
@@ -187,7 +327,7 @@
                                            "WHERE ".RP_TABLE_PREFIX."Raid.End < FROM_UNIXTIME(:Time)" );
 
         $Timestamp = time() - $aSeconds;
-        $DropRaidQuery->bindValue( ":Time", $Timestamp, PDO::PARAM_INT );
+        $DropRaidQuery->bindValue( ":Time", intval($Timestamp), PDO::PARAM_INT );
         $DropRaidQuery->execute();
     }
 ?>

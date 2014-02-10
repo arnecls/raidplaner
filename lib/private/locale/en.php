@@ -25,15 +25,14 @@
         $gLocale[ "Gladiator" ]                = "Gladiator";
         $gLocale[ "Lancer" ]                   = "Lancer";
         $gLocale[ "Marauder" ]                 = "Marauder";
-        $gLocale[ "Monk" ]                     = "Monk";
-        $gLocale[ "Paladin" ]                  = "Paladin";
+        $gLocale[ "Monk_FF14" ]                = "Monk";
+        $gLocale[ "Paladin_FF14" ]             = "Paladin";
         $gLocale[ "Pugilist" ]                 = "Pugilist";
         $gLocale[ "Scholar" ]                  = "Scholar";
         $gLocale[ "Summoner" ]                 = "Summoner";
         $gLocale[ "Thaumaturge" ]              = "Thematurge";
-        $gLocale[ "Warrior" ]                  = "Warrior";
+        $gLocale[ "Warrior_FF14" ]             = "Warrior";
         $gLocale[ "Whitemage" ]                = "White mage";
-        $gLocale[ "Random" ]                   = "Unknown";
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
@@ -69,7 +68,7 @@
         $gLocale[ "UnappliedChanges" ]         = "Do you want to discard unapplied changes?";
         $gLocale[ "DiscardChanges" ]           = "Yes, discard";
         $gLocale[ "to" ]                       = "to";
-        $gLocale[ "PHPVersionWarning" ]        = "As of Raidplaner version 1.1.0 PHP 5.3 or better is required.<br/>I'm sorry but your server requires an update :(";
+        $gLocale[ "PHPVersionWarning" ]        = "As of Raidplaner version 1.1.0 PHP 5.3.4 or better is required.<br/>I'm sorry but your server requires an update :(";
 
         // Login und user registration
         $gLocale[ "Login" ]                    = "Login";
@@ -159,6 +158,7 @@
         $gLocale[ "RaidSetup" ]                = "Raid setup";
         $gLocale[ "LinkToRaid" ]               = "Link to raid";
         $gLocale[ "Switch" ]                   = "Switch";
+        $gLocale[ "Retire" ]                   = "Absent";
 
         // Profile
         $gLocale[ "Profile" ]                  = "Profile";
@@ -224,7 +224,9 @@
         $gLocale[ "DefaultRaidSize" ]          = "Default raid size";
         $gLocale[ "BannerPage" ]               = "Page banner link";
         $gLocale[ "HelpPage" ]                 = "Help link";
+        $gLocale[ "Game" ]                     = "Game";
         $gLocale[ "Theme" ]                    = "Theme";
+        $gLocale[ "ApiPrivate" ]               = "API token (private)";
         $gLocale[ "RaidSetupStyle" ]           = "Attendance style";
         $gLocale[ "RaidModeManual" ]           = "Setup by raidlead";
         $gLocale[ "RaidModeOverbook" ]         = "By raidlead with overbooking";
@@ -266,13 +268,11 @@
         $gLocale[ "FTPClientHelp" ]            = "On how to change permissions, please consult your FTP client's helpfiles.";
         $gLocale[ "OutdatedPHP" ]              = "Outdated PHP version";
         $gLocale[ "PHPVersion" ]               = "PHP version";
-        $gLocale[ "McryptModule" ]             = "mcrypt module";
-        $gLocale[ "McryptNotFound" ]           = "Mcrypt not configured with PHP";
         $gLocale[ "PDOModule" ]                = "PDO module";
         $gLocale[ "PDONotFound" ]              = "PDO not configured with PHP";
         $gLocale[ "PDOMySQLModule" ]           = "PDO MySQL driver";
         $gLocale[ "PDOMySQLNotFound" ]         = "PDO MySQL driver not found";
-        $gLocale[ "PHPRequirements" ]          = "The raidplaner needs a PHP 5.2 installation configured with the mcrypt and PDO extensions.";
+        $gLocale[ "PHPRequirements" ]          = "The raidplaner needs a PHP 5.3 installation configured with PDO extensions.";
 
         // Database setup
         $gLocale[ "ConfigureDatabase" ]        = "Please configure the database the raidplaner will place it's data into.";
@@ -327,9 +327,7 @@
         $gLocale[ "FailedRemoveSetup" ]        = "The setup folder could not be deleted.";
 
         // Repair
-        $gLocale[ "Repair" ]                   = "Repaire database inconsistencies";
-        $gLocale[ "GameconfigProblems" ]       = "By changing the lib/config/config.game.php inconsistent database entries can be created (e.g. characters with invalid roles).";
-        $gLocale[ "RepairTheseProblems" ]      = "This script fixes these problems as good as possible.";
+        $gLocale[ "Repair" ]                   = "Repair";
         $gLocale[ "RepairDone" ]               = "Repair done.";
         $gLocale[ "BrokenDatabase" ]           = "Database seems to be broken";
         $gLocale[ "EnsureValidDatabase" ]      = "Ensure a valid database";
@@ -343,6 +341,20 @@
         $gLocale[ "StrayCharacters" ]          = "Deleted characters";
         $gLocale[ "StrayUsers" ]               = "Deleted users";
         $gLocale[ "StrayBindings" ]            = "Invalid users";
+        $gLocale[ "RepairCharacters" ]         = "Repair invalid characters";
+        $gLocale[ "TransferGameconfig" ]       = "Convert gameconfig.php again (Raidplaner 1.0.x)";
+        $gLocale[ "MergeGames" ]               = "Merge two games";
+        $gLocale[ "SourceGame" ]               = "Source (gets changed)";
+        $gLocale[ "TargetGame" ]               = "Target";
+        $gLocale[ "ChooseRepairs" ]            = "Choose one or multiple repairs to be executed.";
+        $gLocale[ "Fixing" ]                   = "Fixing";
+        $gLocale[ "StrayChars" ]               = "Orphaned characters";
+        $gLocale[ "StrayAttends" ]             = "Orphaned attends";
+        $gLocale[ "InvalidCharacters" ]        = "Invalid characters";
+        $gLocale[ "SameGame" ]                 = "Both games are identical";   
+        $gLocale[ "Merged" ]                   = "Converted:"; 
+        $gLocale[ "Locations" ]                = "Locations"; 
+        $gLocale[ "Characters" ]               = "Characters"; 
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Load groups using these settings";

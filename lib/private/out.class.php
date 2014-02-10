@@ -48,21 +48,23 @@
                 return false;
 
             $Keys = array_keys($aArray);
-            return (sizeof($Keys) == 0) || ($Keys[0] === 0);
+            return (sizeof($Keys) == 0) || (is_numeric($Keys[0]));
         }
 
         // --------------------------------------------------------------------------------------------
 
         public function writeJSON($aArray = null)
         {
-            $Root = ($aArray == null) ? $this->Data : $aArray;
+            $Root = ($aArray == null) 
+                ? $this->Data 
+                : $aArray;
 
             $IsIndexedArray = $this->IsIndexed($Root);
 
             $i = 0;
             echo ($IsIndexedArray) ? '[' : '{';
 
-            while( list($Name,$Value) = each($Root) )
+            foreach( $Root as  $Name => $Value )
             {
                 if ($i > 0) echo ',';
 
@@ -126,52 +128,55 @@
 
         public function writeXML($aTagName, $aArray = null)
         {
-            $Root = ($aArray == null) ? $this->Data : $aArray;
-
-            $IsIndexedArray = ($aTagName == "") || (($aArray != null) && $this->IsIndexed($Root));
-
+            $Root = ($aArray == null) 
+                ? $this->Data 
+                : $aArray;
+                
+            $IsIndexedArray = $this->IsIndexed($Root);
+            
             if (!$IsIndexedArray)
                 echo "<".$aTagName.">";
-
-            while( list($Name,$Value) = each($Root) )
+                
+            foreach( $Root as $Name => $Value )
             {
+                $InnerTagName = ($IsIndexedArray) 
+                    ? $aTagName
+                    : $Name;
+                    
                 if (is_array($Value))
                 {
-                    $this->writeXML($Name, $Value);
-                    continue; // ### continue, nested array ###
-
+                    $this->writeXML($InnerTagName, $Value);
                 }
-
-                $InnerTag = ($IsIndexedArray) ? $aTagName : $Name;
-                echo "<".$InnerTag.">";
-
-                if ($Value === null)
+                else 
                 {
-                    // do nothing
-                }
-                else if (is_numeric($Value))
-                {
-                    echo $Value;
-                }
-                else if (($Value === true) || ($Value == "true"))
-                {
-                    echo 'true';
-                }
-                else if (($Value === false) || ($Value == "false"))
-                {
-                    echo 'false';
-                }
-                else
-                {
+                    echo "<".$InnerTagName.">";
 
-                    echo xmlentities($Value, ENT_COMPAT, "UTF-8");
-                }
+                    if ($Value === null)
+                    {
+                        // do nothing
+                    }
+                    else if (is_numeric($Value))
+                    {
+                        echo $Value;
+                    }
+                    else if (($Value === true) || ($Value == "true"))
+                    {
+                        echo 'true';
+                    }
+                    else if (($Value === false) || ($Value == "false"))
+                    {
+                        echo 'false';
+                    }
+                    else
+                    {
+                        echo xmlentities($Value, ENT_COMPAT, "UTF-8");
+                    }
 
-                echo "</".$InnerTag.">";
+                    echo "</".$InnerTagName.">";
+                }
             }
 
             if (!$IsIndexedArray)
-
                 echo "</".$aTagName.">";
         }
 

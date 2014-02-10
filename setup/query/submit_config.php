@@ -31,11 +31,11 @@
 
     // Create tables if necessary
 
-    InstallDB($_REQUEST["prefix"]);
+    InstallDB(RP_TABLE_PREFIX);
 
     // Add default values for settings table
 
-    InstallDefaultSettings($_REQUEST["prefix"]);
+    InstallDefaultSettings(RP_TABLE_PREFIX);
     $Out->flushXML("");
 
     echo "</database>";

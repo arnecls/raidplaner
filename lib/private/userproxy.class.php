@@ -9,6 +9,7 @@
     class CharacterInfo
     {
         public $CharacterId;
+        public $Game;
         public $Name;
         public $ClassName;
         public $IsMainChar;
@@ -20,12 +21,10 @@
     // and provides functions for user authentication, modification, etc.
     class UserProxy
     {
-        private static $mInstance = null;
-        private static $mStickyLifeTime = 604800; // 60 * 60 * 24 * 7; // 1 week
-        private static $mStickyCookieName = "ppx_raidplaner_sticky_";
-        private static $mCryptName = "rijndael-256";
-        private static $mBindings;
-        private static $mBindingsByName;
+        private static $Instance = null;
+        private static $StickyLifeTime = 2592000; // 30 Days           
+        private static $Bindings;
+        private static $BindingsByName;
 
         public $UserId     = 0;
         public $UserName   = "";
@@ -38,8 +37,8 @@
         
         public static function registerInstance($aPluginInstance)
         {
-            array_push(self::$mBindings, $aPluginInstance);
-            self::$mBindingsByName[$aPluginInstance->getName()] = $aPluginInstance;
+            array_push(self::$Bindings, $aPluginInstance);
+            self::$BindingsByName[$aPluginInstance->getName()] = $aPluginInstance;
         }
         
         // --------------------------------------------------------------------------------------------
@@ -47,11 +46,11 @@
         public static function initBindings()
         {
             $NativeBinding = new NativeBinding();
-            self::$mBindings = array(
+            self::$Bindings = array(
                 $NativeBinding // native has to be first
             );
 
-            self::$mBindingsByName[$NativeBinding->getName()] = $NativeBinding;            
+            self::$BindingsByName[$NativeBinding->getName()] = $NativeBinding;            
             PluginRegistry::ForEachPlugin(function($PluginInstance) {
                 UserProxy::registerInstance($PluginInstance);
             });
@@ -61,62 +60,14 @@
 
         public function __construct($aAllowAutoLogin)
         {
-            assert(self::$mInstance == NULL);
+            assert(self::$Instance == NULL);
+            
+            // 1. Try to reactive from a running session
+            // 2. Try auto login via external cookie if requested
 
-            beginSession();
-            $this->SiteId = dechex(crc32(dirname(__FILE__)));
-
-            if (isset($_SESSION["User"]))
+            if ( !$this->reactivateFromSession() && !$this->processLoginRequest(null, $aAllowAutoLogin) )
             {
-                // Session says user is still logged in
-                // Check if session matches database
-
-                if ( $this->checkSessionCookie() )
-                {
-                    $this->updateCharacters();
-                    $this->updateSettings();
-                    return; // ### return, valid user ###
-                }
-            }
-
-            // Try to login via session cookie
-
-            $LoginUser = null;
-
-            if ( isset($_COOKIE[self::$mStickyCookieName.$this->SiteId]) )
-            {
-                // Login via cookie
-                // Reconstruct login data from cookie + database hash
-
-                $Connector  = Connector::getInstance();
-                $CookieData = $this->getSessionCookieData( $_COOKIE[self::$mStickyCookieName.$this->SiteId] );
-
-                $UserQuery = $Connector->prepare( "SELECT SessionKey FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
-
-                $UserQuery->bindValue(":UserId", $CookieData["UserId"], PDO::PARAM_INT );
-                $UserData  = $UserQuery->fetchFirst();
-
-                if ($UserData != null)
-                {
-                    $LoginData = self::decryptData($UserData["SessionKey"], $CookieData["InitVector"], $CookieData["Data"]);
-
-                    if ( $LoginData !== false )
-                    {
-                        $LoginUser = array( "Login"     => $LoginData["Login"],
-                                            "Password"  => $LoginData["Password"],
-                                            "Cookie"    => true );
-                    }
-                }
-            }
-
-            // Check if login was requested (direct or indirect)
-            // Process all available bindings in their order of registration
-
-            if ( !$this->processLoginRequest($LoginUser, $aAllowAutoLogin) )
-            {
-                // All checks failed -> logout
-
-                $this->resetUser();
+                 $this->resetUser();
             }
         }
 
@@ -124,10 +75,10 @@
 
         public static function getInstance($aAllowAutoLogin=false)
         {
-            if (self::$mInstance == NULL)
-                self::$mInstance = new UserProxy($aAllowAutoLogin);
+            if (self::$Instance == NULL)
+                self::$Instance = new UserProxy($aAllowAutoLogin);
 
-            return self::$mInstance;
+            return self::$Instance;
         }
 
         // --------------------------------------------------------------------------------------------
@@ -139,63 +90,37 @@
             $this->UserName      = "";
             $this->Characters    = array();
             $this->Settings      = array();
-
-            unset($_SESSION["User"]);
-            unset($_SESSION["Calendar"]);
+            
+            Session::release();
         }
 
         // --------------------------------------------------------------------------------------------
 
-        public static function generateKey128()
+        public static function generateKey32()
         {
-            return md5(mcrypt_create_iv(2048, MCRYPT_RAND));
+            return md5(openssl_random_pseudo_bytes(2048));
         }
 
         // --------------------------------------------------------------------------------------------
 
         public function invalidateOneTimeKey( $aUserId )
         {
-            $OneTimeKey = self::generateKey128();
+            $OneTimeKey = self::generateKey32();
             $Connector  = Connector::getInstance();
 
             $OtkQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET OneTimeKey = :Key ".
                                             "WHERE UserId = :UserId LIMIT 1" );
 
-            $OtkQuery->bindValue( ":Key",     $OneTimeKey, PDO::PARAM_STR );
-            $OtkQuery->bindValue( ":UserId",  $aUserId,    PDO::PARAM_INT );
+            $OtkQuery->bindValue( ":Key",     $OneTimeKey,      PDO::PARAM_STR );
+            $OtkQuery->bindValue( ":UserId",  intval($aUserId), PDO::PARAM_INT );
             $OtkQuery->execute();
-        }
-
-        // --------------------------------------------------------------------------------------------
-
-        private static function encryptData( $aKey, $aData )
-        {
-            $CryptDesc  = mcrypt_module_open( self::$mCryptName, "", MCRYPT_MODE_CBC, "" );
-            $InitVector = mcrypt_create_iv( mcrypt_enc_get_iv_size($CryptDesc), MCRYPT_RAND );
-
-            $CryptedData = mcrypt_encrypt( self::$mCryptName, $aKey, serialize($aData), MCRYPT_MODE_CBC, $InitVector );
-            mcrypt_module_close($CryptDesc);
-
-            return Array(base64_encode($InitVector), base64_encode($CryptedData));
-        }
-
-        // --------------------------------------------------------------------------------------------
-
-        private static function decryptData( $aKey, $aInitVector, $aData )
-        {
-            $CryptDesc = mcrypt_module_open( self::$mCryptName, "", MCRYPT_MODE_CBC, "" );
-
-            $DecryptedData = mcrypt_decrypt( self::$mCryptName, $aKey, base64_decode($aData), MCRYPT_MODE_CBC, base64_decode($aInitVector) );
-            mcrypt_module_close($CryptDesc);
-
-            return @unserialize($DecryptedData);
         }
 
         // --------------------------------------------------------------------------------------------
 
         private function validateCleartextPassword( $aPassword, $aUserId, $aBindingName )
         {
-            $Binding  = self::$mBindingsByName[$aBindingName];
+            $Binding  = self::$BindingsByName[$aBindingName];
             $UserInfo = $Binding->getUserInfoById($aUserId);
 
             if ($UserInfo == null)
@@ -209,67 +134,31 @@
 
         // --------------------------------------------------------------------------------------------
 
-        public function setSessionCookie( $aData )
+        private function reactivateFromSession()
         {
-            $ServerName = "";
-            $ServerPath = "";
-            $ServerUsesHttps = isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] != "") && ($_SERVER["HTTPS"] != null) && ($_SERVER["HTTPS"] != "off");
-
-            if ( $aData == null )
+            $Session = Session::get();
+            
+            if ( $Session != null )
             {
-                setcookie( self::$mStickyCookieName.$this->SiteId, null, 0, $ServerPath, $ServerName, $ServerUsesHttps, true );
-            }
-            else
-            {
-                setcookie( self::$mStickyCookieName.$this->SiteId, $aData, time()+self::$mStickyLifeTime, $ServerPath, $ServerName, $ServerUsesHttps, true );
-            }
-        }
-
-        // --------------------------------------------------------------------------------------------
-
-        private function getSessionCookieData( $aCookieData )
-        {
-            $PackedData = explode(",", $aCookieData);
-            return Array( "UserId" => $PackedData[0], "InitVector" => $PackedData[1], "Data" => $PackedData[2] );
-        }
-
-        // --------------------------------------------------------------------------------------------
-
-        private function checkSessionCookie()
-        {
-            $this->UserGroup = "none";
-
-            if ( isset($_SESSION["User"]) )
-            {
-                // Get the cookie data from the current session.
-                // This test is weaker than the cookie based authentication which does a full
-                // login. This function is ment to be used at each messsage hub call and must
-                // this be fast.
-
-                $CookieData = $this->getSessionCookieData( $_SESSION["User"] );
-
                 $Connector = Connector::getInstance();
-                $UserQuery = $Connector->prepare("SELECT Login, Password, `Group`, SessionKey FROM `".RP_TABLE_PREFIX."User` ".
-                                                 "WHERE UserId = :UserId LIMIT 1");
+                $UserQuery = $Connector->prepare("SELECT Login, Password, `Group` FROM `".RP_TABLE_PREFIX."User` ".
+                    "WHERE UserId = :UserId LIMIT 1");
 
-                $UserQuery->bindValue(":UserId", $CookieData["UserId"], PDO::PARAM_INT);
+                $UserQuery->bindValue(":UserId", intval($Session->GetUserId()), PDO::PARAM_INT);
                 $UserData = $UserQuery->fetchFirst();
 
                 if ( $UserData != null )
                 {
-                    $LoginData = self::decryptData($UserData["SessionKey"], $CookieData["InitVector"], $CookieData["Data"]);
                     $this->UserGroup = $UserData["Group"];
-                    $this->UserId    = $CookieData["UserId"];
+                    $this->UserId    = $Session->GetUserId();
                     $this->UserName  = $UserData["Login"];
-
-                    if ($LoginData !== false)
-                    {
-                        return ($LoginData["Login"]    == $UserData["Login"]) &&
-                               ($LoginData["Password"] == $UserData["Password"]) &&
-                               ($LoginData["Remote"]   == $_SERVER["REMOTE_ADDR"]);
-
-                        // ### return, valid session cookie ###
-                    }
+                    
+                    $this->updateCharacters();
+                    $this->updateSettings();
+                    
+                    $Session->refresh();
+                    
+                    return true;
                 }
             }
 
@@ -288,7 +177,7 @@
                 // By using the external id we prevent creating the same
                 // user twice after an external rename.
 
-                $OneTimeKey = self::generateKey128();
+                $OneTimeKey = self::generateKey32();
                 $IsLocalInfo = $aUserInfo->BindingName == "none"; // In this case UserId != ExternalUserId (!)
 
                 $UpdateUserQuery = $this->updateUserMirror( $aUserInfo, $IsLocalInfo, $OneTimeKey );
@@ -317,12 +206,10 @@
                 if (defined("USE_CLEARTEXT_PASSWORDS") && USE_CLEARTEXT_PASSWORDS)
                     $HashMethod = "cleartext";
                 else
-                    $HashMethod = self::$mBindingsByName[$aUserInfo->PassBinding]->getMethodFromPass($aUserInfo->Password);
+                    $HashMethod = self::$BindingsByName[$aUserInfo->PassBinding]->getMethodFromPass($aUserInfo->Password);
 
                 return Array( "salt"   => $aUserInfo->Salt,
-
                               "key"    => $OneTimeKey,
-
                               "method" => $HashMethod );
 
                 // ### return, found user ###
@@ -337,7 +224,7 @@
         {
             // Iterate all bindings and search for the given user
 
-            foreach( self::$mBindings as $Binding )
+            foreach( self::$Bindings as $Binding )
             {
                 if ( $Binding->isActive() )
                 {
@@ -354,7 +241,7 @@
                         $UserQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` ".
                                                           "WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
 
-                        $UserQuery->bindValue(":UserId", $UserInfo->UserId, PDO::PARAM_INT );
+                        $UserQuery->bindValue(":UserId", intval($UserInfo->UserId), PDO::PARAM_INT );
                         $UserQuery->bindValue(":Binding", $UserInfo->BindingName, PDO::PARAM_STR );
 
                         // The query might fail if the user is not yet registered
@@ -401,7 +288,7 @@
         {
             // Iterate all bindings and search for the given user
 
-            foreach( self::$mBindings as $Binding )
+            foreach( self::$Bindings as $Binding )
             {
                 if ( $Binding->isActive() )
                 {
@@ -425,9 +312,9 @@
         {
             // Iterate all bindings and search for the given user
 
-            if (isset(self::$mBindingsByName[$aBindingName]))
+            if (isset(self::$BindingsByName[$aBindingName]))
             {
-                $Binding = self::$mBindingsByName[$aBindingName];
+                $Binding = self::$BindingsByName[$aBindingName];
                 if ( $Binding->isActive() )
                 {
 
@@ -448,7 +335,7 @@
 
         public function getUserInfoById( $aBindingName, $aExternalId )
         {
-            $Binding = self::$mBindingsByName[$aBindingName];
+            $Binding = self::$BindingsByName[$aBindingName];
 
             if ( $Binding->isActive() )
             {
@@ -465,7 +352,7 @@
         {
             $Candidates = array();
 
-            foreach( self::$mBindings as $Binding )
+            foreach( self::$Bindings as $Binding )
             {
                 if ( $Binding->isActive() )
                 {
@@ -487,7 +374,7 @@
         {
             $Candidates = array();
 
-            foreach( self::$mBindings as $Binding )
+            foreach( self::$Bindings as $Binding )
             {
                 if ( $Binding->isActive() )
                 {
@@ -510,8 +397,9 @@
             $Connector = Connector::getInstance();
 
             $UserQuery = $Connector->prepare( "SELECT OneTimeKey, Password, ExternalBinding, BindingActive, ExternalId ".
-                                              "FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
-            $UserQuery->bindValue(":UserId", $this->UserId, PDO::PARAM_INT );
+                "FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
+            
+            $UserQuery->bindValue(":UserId", intval($this->UserId), PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
             if ($UserData != null)
@@ -566,9 +454,9 @@
                 // to fetch any updated/newly created data
 
                 $UserQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` ".
-                                                  "WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
+                    "WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
 
-                $UserQuery->bindValue(":UserId", $ExternalUser->UserId, PDO::PARAM_INT );
+                $UserQuery->bindValue(":UserId", intval($ExternalUser->UserId), PDO::PARAM_INT );
                 $UserQuery->bindValue(":Binding", $ExternalUser->BindingName, PDO::PARAM_STR );
                 $UserData = $UserQuery->fetchFirst();
 
@@ -588,38 +476,27 @@
 
                 if ($UserData != null)
                 {
-                    if ( $aLoginUser["Cookie"] )
+                    if ( defined("USE_CLEARTEXT_PASSWORDS") && USE_CLEARTEXT_PASSWORDS )
                     {
-                        // User logged in using the encrypted cookie data.
-                        // In this case just check the password.
+                        // User logged in using a cleartext password.
+                        // In this case we encrypt locally via php.
 
-                        $PasswordCheckOk = ($aLoginUser["Password"] == $UserData["Password"]);
+                        $UserId = (($UserData["BindingActive"] == "false") || ($UserData["ExternalBinding"] == "none"))
+                            ? $UserData["UserId"]
+                            : $UserData["ExternalId"];
+
+                        $PasswordCheckOk = $this->validateCleartextPassword( $aLoginUser["Password"], $UserId, $UserData["ExternalBinding"] );
                     }
                     else
                     {
-                        if ( defined("USE_CLEARTEXT_PASSWORDS") && USE_CLEARTEXT_PASSWORDS )
-                        {
-                            // User logged in using a cleartext password.
-                            // In this case we encrypt locally via php.
+                        // User logged in using one-time-key authentication
+                        // In this case we get a HMAC based password and need
 
-                            $UserId = (($UserData["BindingActive"] == "false") || ($UserData["ExternalBinding"] == "none"))
-                                ? $UserData["UserId"]
-                                : $UserData["ExternalId"];
+                        // to reset the key
 
-                            $PasswordCheckOk = $this->validateCleartextPassword( $aLoginUser["Password"], $UserId, $UserData["ExternalBinding"] );
-                        }
-                        else
-                        {
-
-                            // User logged in using one-time-key authentication
-                            // In this case we get a HMAC based password and need
-
-                            // to reset the key
-
-                            $this->invalidateOneTimeKey( $UserData["UserId"] );
-                            $HashedStoredPassword = hash("sha256", $UserData["OneTimeKey"].$UserData["Password"]);
-                            $PasswordCheckOk = ($aLoginUser["Password"] == $HashedStoredPassword);
-                        }
+                        $this->invalidateOneTimeKey( $UserData["UserId"] );
+                        $HashedStoredPassword = hash("sha256", $UserData["OneTimeKey"].$UserData["Password"]);
+                        $PasswordCheckOk = ($aLoginUser["Password"] == $HashedStoredPassword);
                     }
                 }
 
@@ -631,19 +508,6 @@
             // Update the current user entry to fix the external data binding (password, etc.)
             // and create a new session key while at it.
 
-            $SessionKey = $this->updateSession( $UserData );
-
-            // Encrypt session cookie
-
-            $Data = array( "Login"    => $UserData["Login"],
-                           "Password" => $UserData["Password"],
-                           "Remote"   => $_SERVER["REMOTE_ADDR"] );
-
-            $CookieData = intval($UserData["UserId"]).",".implode(",",self::encryptData($SessionKey, $Data));
-
-            // Now query and set the session variables
-
-            $_SESSION["User"] = $CookieData;
             $this->UserGroup  = $UserData["Group"];
             $this->UserId     = $UserData["UserId"];
             $this->UserName   = $UserData["Login"];
@@ -651,15 +515,17 @@
             $this->updateCharacters();
             $this->updateSettings();
 
-            // Process sticky cookie
-            // The sticky cookie stores the encrypted "credentials" part of the session
-
-            if ( (isset($_REQUEST["sticky"]) && ($_REQUEST["sticky"] == "true")) ||
-                 (isset($_COOKIE[self::$mStickyCookieName.$this->SiteId])) )
+            // Set the expiration time to a higher value when logging in as "sticky"
+            
+            if ( (isset($_REQUEST["sticky"]) && ($_REQUEST["sticky"] == "true")) )
             {
-                $this->setSessionCookie($CookieData);
+                $Session = Session::create($this->UserId, self::$StickyLifeTime);
             }
-
+            else
+            {
+                $Session = Session::create($this->UserId);
+            }
+            
             return true; // ### return, logged in ###
         }
 
@@ -674,7 +540,7 @@
                                                        "WHERE UserId = :UserId ".
                                                        "ORDER BY Mainchar, Name" );
 
-                $CharacterQuery->bindValue(":UserId", $this->UserId, PDO::PARAM_INT);
+                $CharacterQuery->bindValue(":UserId", intval($this->UserId), PDO::PARAM_INT);
 
                 $Characters = array();
                 $CharacterQuery->loop( function($Row) use (&$Characters)
@@ -682,6 +548,7 @@
                     $Character = new CharacterInfo();
 
                     $Character->CharacterId = $Row["CharacterId"];
+                    $Character->Game        = $Row["Game"];
                     $Character->Name        = $Row["Name"];
                     $Character->ClassName   = $Row["Class"];
                     $Character->IsMainChar  = $Row["Mainchar"] == "true";
@@ -703,9 +570,9 @@
             {
                 $Connector = Connector::getInstance();
                 $SettingQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."UserSetting` ".
-                                                     "WHERE UserId = :UserId" );
+                    "WHERE UserId = :UserId" );
 
-                $SettingQuery->bindValue(":UserId", $this->UserId, PDO::PARAM_INT);
+                $SettingQuery->bindValue(":UserId", intval($this->UserId), PDO::PARAM_INT);
 
                 $Settings = array();
 
@@ -737,19 +604,19 @@
                 // User does not exist, so we can create one
 
                 $UserQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."User` ".
-                                                 "(`Group`, ExternalId, ExternalBinding, BindingActive, Login, Password, Salt, Created, OneTimeKey, SessionKey) ".
-                                                 "VALUES (:Group, :ExternalUserId, :Binding, :Active, :Login, :Password, :Salt, FROM_UNIXTIME(:Created), '', '')");
+                    "(`Group`, ExternalId, ExternalBinding, BindingActive, Login, Password, Salt, Created, OneTimeKey) ".
+                    "VALUES (:Group, :ExternalUserId, :Binding, :Active, :Login, :Password, :Salt, FROM_UNIXTIME(:Created), '')");
 
                 $Active = ($aBindingName != "none") ? "true" : "false";
 
-                $UserQuery->bindValue(":Group",          $aGroup,             PDO::PARAM_STR);
-                $UserQuery->bindValue(":ExternalUserId", $aExternalUserId,    PDO::PARAM_INT);
-                $UserQuery->bindValue(":Binding",        $aBindingName,       PDO::PARAM_STR);
-                $UserQuery->bindValue(":Active",         $Active,             PDO::PARAM_STR);
-                $UserQuery->bindValue(":Login",          strtolower($aLogin), PDO::PARAM_STR);
-                $UserQuery->bindValue(":Password",       $aHashedPassword,    PDO::PARAM_STR);
-                $UserQuery->bindValue(":Salt",           $aSalt,              PDO::PARAM_STR);
-                $UserQuery->bindValue(":Created",        time(),              PDO::PARAM_INT);
+                $UserQuery->bindValue(":Group",          $aGroup,                  PDO::PARAM_STR);
+                $UserQuery->bindValue(":ExternalUserId", intval($aExternalUserId), PDO::PARAM_INT);
+                $UserQuery->bindValue(":Binding",        $aBindingName,            PDO::PARAM_STR);
+                $UserQuery->bindValue(":Active",         $Active,                  PDO::PARAM_STR);
+                $UserQuery->bindValue(":Login",          strtolower($aLogin),      PDO::PARAM_STR);
+                $UserQuery->bindValue(":Password",       $aHashedPassword,         PDO::PARAM_STR);
+                $UserQuery->bindValue(":Salt",           $aSalt,                   PDO::PARAM_STR);
+                $UserQuery->bindValue(":Created",        time(),                   PDO::PARAM_INT);
 
                 $UserQuery->execute();
                 return $Connector->lastInsertId(); // ### return, inserted ###
@@ -762,7 +629,6 @@
 
         public function updateUserMirror( &$UserInfo, $aIsStoredLocally, $aKey )
         {
-
             // TODO: $UserInfo->UserId referres to UserId when updating a local user
             //       and ExternalUserId otherwise. This is inconvenient.
 
@@ -774,30 +640,34 @@
                 // Local users don't change externally, so just update the key
 
                 $MirrorQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET OneTimeKey = :Key ".
-                                                   "WHERE UserId = :UserId LIMIT 1" );
+                    "WHERE UserId = :UserId LIMIT 1" );
 
-                $MirrorQuery->bindValue( ":Key",    $aKey,             PDO::PARAM_STR );
-                $MirrorQuery->bindValue( ":UserId", $UserInfo->UserId, PDO::PARAM_INT );
+                $MirrorQuery->bindValue( ":Key",    $aKey, PDO::PARAM_STR );
+                $MirrorQuery->bindValue( ":UserId", intval($UserInfo->UserId), PDO::PARAM_INT );
             }
             else
             {
-                if (!isset(self::$mBindingsByName[$UserInfo->PassBinding]))
+                $UserIsBound = true;
+                
+                if (!isset(self::$BindingsByName[$UserInfo->PassBinding]))
                 {
                     $Out->pushError($UserInfo->PassBinding." binding did not register correctly.");
                 }
                 else
                 {
-                    $Binding = self::$mBindingsByName[$UserInfo->PassBinding];
+                    $Binding = self::$BindingsByName[$UserInfo->PassBinding];
 
                     if ($Binding->isActive())
                     {
                         $ExternalInfo = $Binding->getUserInfoById($UserInfo->UserId);
-                        if ( $ExternalInfo != null )
+                        if ( $ExternalInfo == null )
+                            $UserIsBound = false;
+                        else
                             $UserInfo = $ExternalInfo;
-
                     }
                     else
                     {
+                        $UserIsBound = false;
                         $Out->pushError($UserInfo->PassBinding." binding has been disabled.");
                     }
                 }
@@ -807,98 +677,23 @@
                 $SyncGroup = !defined("ALLOW_GROUP_SYNC") || ALLOW_GROUP_SYNC;
 
                 $MirrorQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
-                                                   "Login = :Login, Password = :Password, Salt = :Salt, OneTimeKey = :Key".
-                                                   (($SyncGroup) ? ", `Group` = :Group " : " ").
-                                                   "WHERE ExternalBinding = :Binding AND ExternalId = :UserId LIMIT 1" );
+                    "Login = :Login, Password = :Password, BindingActive = :Active, Salt = :Salt, OneTimeKey = :Key".
+                    (($SyncGroup) ? ", `Group` = :Group " : " ").
+                    "WHERE ExternalBinding = :Binding AND ExternalId = :UserId LIMIT 1" );
 
-                $MirrorQuery->bindValue( ":Login",     $UserInfo->UserName,    PDO::PARAM_STR );
-                $MirrorQuery->bindValue( ":Password",  $UserInfo->Password,    PDO::PARAM_STR );
-                $MirrorQuery->bindValue( ":Salt",      $UserInfo->Salt,        PDO::PARAM_STR );
-                $MirrorQuery->bindValue( ":Key",       $aKey,                  PDO::PARAM_STR );
-                $MirrorQuery->bindValue( ":Binding",   $UserInfo->BindingName, PDO::PARAM_STR );
-                $MirrorQuery->bindValue( ":UserId",    $UserInfo->UserId,      PDO::PARAM_INT );
+                $MirrorQuery->bindValue( ":Login",     $UserInfo->UserName,             PDO::PARAM_STR );
+                $MirrorQuery->bindValue( ":Password",  $UserInfo->Password,             PDO::PARAM_STR );
+                $MirrorQuery->bindValue( ":Salt",      $UserInfo->Salt,                 PDO::PARAM_STR );
+                $MirrorQuery->bindValue( ":Key",       $aKey,                           PDO::PARAM_STR );
+                $MirrorQuery->bindValue( ":Binding",   $UserInfo->BindingName,          PDO::PARAM_STR );
+                $MirrorQuery->bindValue( ":Active",    $UserIsBound ? "true" : "false", PDO::PARAM_STR );
+                $MirrorQuery->bindValue( ":UserId",    intval($UserInfo->UserId),       PDO::PARAM_INT );
 
                 if ($SyncGroup)
-
-                    $MirrorQuery->bindValue( ":Group", $UserInfo->Group,       PDO::PARAM_STR );
+                    $MirrorQuery->bindValue( ":Group", $UserInfo->Group, PDO::PARAM_STR );
             }
 
             return $MirrorQuery;
-        }
-
-        // --------------------------------------------------------------------------------------------
-
-        private function updateSession( &$UserData )
-        {
-            $SessionKey = self::generateKey128();
-
-            $Connector = Connector::getInstance();
-
-            if ( ($UserData["ExternalBinding"] == "none") || ($UserData["BindingActive"] == "false"))
-            {
-                // Local user
-                // Just update the session key.
-
-                $SessionQuery = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET SessionKey = :Key ".
-                                                  "WHERE UserId = :UserId LIMIT 1" );
-
-                $SessionQuery->bindValue( ":UserId", $UserData["UserId"], PDO::PARAM_INT );
-
-                $SessionQuery->bindValue( ":Key",    $SessionKey,         PDO::PARAM_STR );
-                $SessionQuery->execute();
-
-                // To avoid re-fetching, update $UserData
-
-                $UserData["SessionKey"] = $SessionKey;
-            }
-            else
-            {
-                $ExternalUserInfo = self::$mBindingsByName[$UserData["ExternalBinding"]]->getUserInfoById($UserData["ExternalId"]);
-
-                if ($ExternalUserInfo == null)
-                {
-                    // Convert to local user
-                    // Update the session key and disable the binding.
-
-                    $ConvertQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` ".
-                                                     "SET SessionKey = :Key, BindingActive='false' ".
-                                                     "WHERE UserId = :UserId LIMIT 1" );
-
-                    $ConvertQuery->bindValue( ":UserId", $UserData["UserId"], PDO::PARAM_INT );
-
-                    $ConvertQuery->bindValue( ":Key",    $SessionKey,         PDO::PARAM_STR );
-                    $ConvertQuery->execute();
-
-                    // To avoid re-fetching, update $UserData
-
-                    $UserData["SessionKey"]    = $SessionKey;
-                    $UserData["BindingActive"] = "false";
-                }
-                else
-                {
-                    // Update binding
-                    // Update the session key and validate the binding as active.
-                    // Login has to be synced to cover user renaming.
-
-                    $UpdateQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
-                                                    "Login = :Login, SessionKey = :Key, BindingActive='true' ".
-                                                    "WHERE UserId = :UserId LIMIT 1" );
-
-                    $UpdateQuery->bindValue( ":UserId", $UserData["UserId"],         PDO::PARAM_INT );
-                    $UpdateQuery->bindValue( ":Login",  $ExternalUserInfo->UserName, PDO::PARAM_STR );
-                    $UpdateQuery->bindValue( ":Key",    $SessionKey,                 PDO::PARAM_STR );
-                    $UpdateQuery->execute();
-
-                    // To avoid re-fetching, update $UserData
-
-                    $UserData["Login"]         = $ExternalUserInfo->UserName;
-                    $UserData["SessionKey"]    = $SessionKey;
-                    $UserData["BindingActive"] = "true";
-                }
-
-            }
-
-            return $SessionKey;
         }
 
         // --------------------------------------------------------------------------------------------
@@ -913,44 +708,16 @@
             // Change password to new values.
             // Only accounts with an inactive binding may be changed.
 
-            $SessionKey = self::generateKey128();
-
             $Connector = Connector::getInstance();
             $UpdateQuery  = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET ".
-                                                "ExternalBinding = 'none', Password = :Password, Salt = :Salt, SessionKey = :Key ".
+                                                "ExternalBinding = 'none', Password = :Password, Salt = :Salt ".
                                                 "WHERE UserId = :UserId AND (BindingActive='false' OR ExternalBinding='none') LIMIT 1");
 
-            $UpdateQuery->bindValue(":UserId",   $aUserId,         PDO::PARAM_INT);
+            $UpdateQuery->bindValue(":UserId",   intval($aUserId), PDO::PARAM_INT);
             $UpdateQuery->bindValue(":Password", $aHashedPassword, PDO::PARAM_STR);
             $UpdateQuery->bindValue(":Salt",     $aSalt,           PDO::PARAM_STR);
-            $UpdateQuery->bindValue(":Key",      $SessionKey,      PDO::PARAM_STR);
 
-            if ( $UpdateQuery->execute() && $IsCurrentUser )
-            {
-                // Fetch login name for user (might not be current)
-
-                $LoginQuery = $Connector->prepare("SELECT Login FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId");
-                $LoginQuery->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
-
-                $UserData = $LoginQuery->fetchFirst();
-
-                // update cookie data
-                // both session and sticky cookie have to be updated
-
-                if ($UserData != null)
-                {
-                    $Data = array( "Login"    => $UserData["Login"],
-                                   "Password" => $aHashedPassword,
-                                   "Remote"   => $_SERVER["REMOTE_ADDR"] );
-
-                    $CookieData = intval($aUserId).",".implode(",",self::encryptData($SessionKey, $Data));
-                    $_SESSION["User"] = $CookieData;
-
-                    if ( isset($_COOKIE[self::$mStickyCookieName.self::$mInstance->SiteId]) )
-                        $this->setSessionCookie($CookieData);
-                }
-            }
-
+            $UpdateQuery->execute();
             return true;
         }
     }
@@ -964,8 +731,7 @@
     function msgLogin($aRequest)
     {
         $LoginUser = array( "Login"    => $aRequest["user"],
-                            "Password" => $aRequest["pass"],
-                            "Cookie"   => false );
+                            "Password" => $aRequest["pass"] );
                             
         $Proxy = UserProxy::getInstance();
         
@@ -984,7 +750,6 @@
     {
         $Proxy = UserProxy::getInstance();
         $Proxy->resetUser();
-        $Proxy->setSessionCookie(null);
     }
     
     // --------------------------------------------------------------------------------------------
@@ -992,7 +757,7 @@
     function registeredUser()
     {
         UserProxy::getInstance();
-        return isset($_SESSION["User"]);
+        return Session::isActive();
     }
 
     // --------------------------------------------------------------------------------------------
@@ -1000,7 +765,7 @@
     function validUser()
     {
         $Group = UserProxy::getInstance()->UserGroup;
-        return isset($_SESSION["User"]) && ($Group != "none");
+        return Session::isActive() && ($Group != "none");
     }
 
     // --------------------------------------------------------------------------------------------
@@ -1008,7 +773,7 @@
     function validRaidlead()
     {
         $Group = UserProxy::getInstance()->UserGroup;
-        return isset($_SESSION["User"]) && (($Group == "raidlead") || ($Group == "admin"));
+        return Session::isActive() && (($Group == "raidlead") || ($Group == "admin"));
     }
 
     // --------------------------------------------------------------------------------------------
@@ -1016,6 +781,6 @@
     function validAdmin()
     {
         $Group = UserProxy::getInstance()->UserGroup;
-        return isset($_SESSION["User"]) && ($Group == "admin");
+        return Session::isActive() && ($Group == "admin");
     }
 ?>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+    <name>Portal integration</name>
+    <family>ff14</family>
+    <banner>disable</banner>
+    <bgimage>none</bgimage>
+    <bgcolor>none</bgcolor>
+    <portalmode>true</portalmode>
+    <logout>false</logout>
+    <iconset>ff14</iconset>
+</theme>

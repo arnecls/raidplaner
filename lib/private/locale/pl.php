@@ -29,15 +29,14 @@
         $gLocale[ "Gladiator" ]                = "Gladiator";
         $gLocale[ "Lancer" ]                   = "Lancer";
         $gLocale[ "Marauder" ]                 = "Marauder";
-        $gLocale[ "Monk" ]                     = "Monk";
-        $gLocale[ "Paladin" ]                  = "Paladin";
+        $gLocale[ "Monk_FF14" ]                = "Monk";
+        $gLocale[ "Paladin_FF14" ]             = "Paladin";
         $gLocale[ "Pugilist" ]                 = "Pugilist";
         $gLocale[ "Scholar" ]                  = "Scholar";
         $gLocale[ "Summoner" ]                 = "Summoner";
         $gLocale[ "Theumaturge" ]              = "Theumaturge";
-        $gLocale[ "Warrior" ]                  = "Warrior";
+        $gLocale[ "Warrior_FF14" ]             = "Warrior";
         $gLocale[ "Whitemage" ]                = "Whitemage";
-        $gLocale[ "Random" ]                   = "Nieznana";
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
@@ -73,7 +72,7 @@
         $gLocale[ "UnappliedChanges" ]         = "Czy chcesz pominąć wprowadzone zmiany?";
         $gLocale[ "DiscardChanges" ]           = "Tak";
         $gLocale[ "to" ]                       = "do";
-        $gLocale[ "PHPVersionWarning" ]        = "Raidplaner od wersji 1.1.0 wymaga PHP w wersji 5.3 lub nowszej.<br/>Niestety twój serwer wymaga aktualizacji :(";
+        $gLocale[ "PHPVersionWarning" ]        = "Raidplaner od wersji 1.1.0 wymaga PHP w wersji 5.3.4 lub nowszej.<br/>Niestety twój serwer wymaga aktualizacji :(";
 
         // Login und user registration
         $gLocale[ "Login" ]                    = "Zaloguj";
@@ -163,6 +162,7 @@
         $gLocale[ "RaidSetup" ]                = "Ustawienia rajdu";
         $gLocale[ "LinkToRaid" ]               = "Link do rajdu";
         $gLocale[ "Switch" ]                   = "Przełącznik"; //????
+        $gLocale[ "Retire" ]                   = null;
 
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
@@ -228,7 +228,9 @@
         $gLocale[ "DefaultRaidSize" ]          = "Domyślny rozmiar rajdów";
         $gLocale[ "BannerPage" ]               = "Link do baneru";
         $gLocale[ "HelpPage" ]                 = "Link do pomocy";
+        $gLocale[ "Game" ]                     = "Gra";
         $gLocale[ "Theme" ]                    = "Motyw";
+        $gLocale[ "ApiPrivate" ]               = null;
         $gLocale[ "RaidSetupStyle" ]           = "Sposób zapisów";
         $gLocale[ "RaidModeManual" ]           = "Przez rajd lidera";
         $gLocale[ "RaidModeOverbook" ]         = "Przez raid lidera z nadmiarem";
@@ -270,13 +272,11 @@
         $gLocale[ "FTPClientHelp" ]            = "W celu uzykania informacji na temat zmiany uprawnień, sprawdź pliki pomocy twojego klienta FTP.";
         $gLocale[ "OutdatedPHP" ]              = "Nieaktualna wersja PHP";
         $gLocale[ "PHPVersion" ]               = "Wersja PHP";
-        $gLocale[ "McryptModule" ]             = "Moduł mcrypt";
-        $gLocale[ "McryptNotFound" ]           = "Mcrypt nie został skonfigurowany z PHP";
         $gLocale[ "PDOModule" ]                = "Moduł PDO";
         $gLocale[ "PDONotFound" ]              = "PDO nie został skonfigurowany z PHP";
         $gLocale[ "PDOMySQLModule" ]           = "Sterownik PDO MySQL";
         $gLocale[ "PDOMySQLNotFound" ]         = "Sterownik PDO MySQL nie został odnaleziony";
-        $gLocale[ "PHPRequirements" ]          = "Raidplanner wymaga zainstalowanego PHP 5.2 z modułami mcrypt i PDO.";
+        $gLocale[ "PHPRequirements" ]          = "Raidplanner wymaga zainstalowanego PHP 5.3 z modułami PDO.";
 
         // Database setup
         $gLocale[ "ConfigureDatabase" ]        = "Skonfiguruj bazę danych z której korzystać będzie raidplanner.";
@@ -331,9 +331,7 @@
         $gLocale[ "FailedRemoveSetup" ]        = null;
 
         // Repair
-        $gLocale[ "Repair" ]                   = "Napraw niespójną bazę danych";
-        $gLocale[ "GameconfigProblems" ]       = "Zmiany w pliku lib/config/config.game.php mogą wywołać niespójność bazy danych (np. postacie z nieprawidłowym przypisaniem ról).";
-        $gLocale[ "RepairTheseProblems" ]      = "Ten skrypt postara się naprawić te błędy w jak największym stopniu.";
+        $gLocale[ "Repair" ]                   = null;
         $gLocale[ "RepairDone" ]               = "Naprawa zakończona.";
         $gLocale[ "BrokenDatabase" ]           = "Baza danych wygląda na nienaprawialną";
         $gLocale[ "EnsureValidDatabase" ]      = "Upewnij się czy baza danych jest poprawna";
@@ -347,6 +345,20 @@
         $gLocale[ "StrayCharacters" ]          = "Usunięte postacie";
         $gLocale[ "StrayUsers" ]               = "Usunięci użytkownicy";
         $gLocale[ "StrayBindings" ]            = "Nieprawidłowe powiązania";
+        $gLocale[ "RepairCharacters" ]         = null;
+        $gLocale[ "TransferGameconfig" ]       = null;
+        $gLocale[ "MergeGames" ]               = null;
+        $gLocale[ "SourceGame" ]               = null;
+        $gLocale[ "TargetGame" ]               = null;
+        $gLocale[ "ChooseRepairs" ]            = null;
+        $gLocale[ "Fixing" ]                   = null;
+        $gLocale[ "StrayChars" ]               = null;
+        $gLocale[ "StrayAttends" ]             = null;
+        $gLocale[ "InvalidCharacters" ]        = null;
+        $gLocale[ "SameGame" ]                 = null;   
+        $gLocale[ "Merged" ]                   = null; 
+        $gLocale[ "Locations" ]                = null; 
+        $gLocale[ "Characters" ]               = null; 
 
         // Plugin setup
         $gLocale[ "LoadGroups" ]               = "Wczytaj grupy używając powyższych ustawień";

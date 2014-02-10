@@ -16,13 +16,13 @@
     {
         $TestQuery->fetchFirst(true);
 
-        $Salt = md5(mcrypt_create_iv(2048, MCRYPT_RAND));
+        $Salt = md5(openssl_random_pseudo_bytes(2048));
         $HashedPassword = hash("sha256", sha1($_REQUEST["password"]).$Salt);
 
         if ( $TestQuery->getAffectedRows() == 0 )
         {
             $NewAdmin = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."User` ".
-                "VALUES(1, 'admin', 0, 'none', 'true', :Name, :Password, :Salt, '', '', FROM_UNIXTIME(:Now));");
+                "VALUES(1, 'admin', 0, 'none', 'true', :Name, :Password, :Salt, '', FROM_UNIXTIME(:Now));");
 
             $NewAdmin->BindValue(":Name", $_REQUEST["name"], PDO::PARAM_STR);
             $NewAdmin->BindValue(":Password", $HashedPassword, PDO::PARAM_STR);

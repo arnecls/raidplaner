@@ -7,7 +7,6 @@
     require_once(dirname(__FILE__)."/private/tools_string.php");
     require_once(dirname(__FILE__)."/private/tools_site.php");
     require_once(dirname(__FILE__)."/private/settings.class.php");
-    require_once(dirname(__FILE__)."/private/gamedata.php");
     require_once(dirname(__FILE__)."/private/out.class.php");
 
     include_once("private/message_query_calendar.php");
@@ -95,15 +94,15 @@
 
         case "query_calendar":
             $Settings = Settings::getInstance();
-            lockOldRaids( $Settings->Property["LockRaids"]["IntValue"] );
-            purgeOldRaids( $Settings->Property["PurgeRaids"]["IntValue"] );
+            lockOldRaids( $Settings["LockRaids"]["IntValue"] );
+            purgeOldRaids( $Settings["PurgeRaids"]["IntValue"] );
             msgQueryCalendar( $_REQUEST );
             break;
 
         case "raid_list":
             $Settings = Settings::getInstance();
-            lockOldRaids( $Settings->Property["LockRaids"]["IntValue"] );
-            purgeOldRaids( $Settings->Property["PurgeRaids"]["IntValue"] );
+            lockOldRaids( $Settings["LockRaids"]["IntValue"] );
+            purgeOldRaids( $Settings["PurgeRaids"]["IntValue"] );
             msgRaidList( $_REQUEST );
             break;
 

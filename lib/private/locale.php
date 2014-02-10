@@ -44,7 +44,7 @@
         global $gLocale;
         $EncodedLocale = array();
 
-        while ( list( $Key, $Value) = each($gLocale) )
+        foreach ( $gLocale as $Key => $Value )
         {
             if ($Value != null)
             {
