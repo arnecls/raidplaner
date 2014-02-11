@@ -90,7 +90,7 @@
     
                 $LocationData = null;
     
-                if ( sizeof($PostTargets) > 0 )
+                if ( count($PostTargets) > 0 )
                 {
                     loadSiteSettings();
     
@@ -154,7 +154,7 @@
     
                     // Post raids to forum
     
-                    if (sizeof($PostTargets) > 0)
+                    if (count($PostTargets) > 0)
                     {
                         $RaidQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId=:RaidId LIMIT 1");
                         $RaidQuery->bindValue(":RaidId", intval( $RaidId), PDO::PARAM_INT);

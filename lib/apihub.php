@@ -45,6 +45,14 @@
             case "location":
                 $Out->pushValue("result", api_query_location());
                 break;
+                
+            case "user":
+                $Parameter = Array(
+                    "users" => getParam("users", ""),
+                    "games" => getParam("games", "")
+                );
+                $Out->pushValue("result", api_query_user($Parameter));
+                break;
             
             case "raid":
                 $Parameter = Array(

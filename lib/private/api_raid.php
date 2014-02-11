@@ -3,32 +3,6 @@
     
     // -------------------------------------------------------------------------
     
-    function api_filter_raid($aRaid, $aFetchFull, $aFetchFree)
-    {
-        if (sizeof($aRaid) > 0)
-        {
-            $RaidFull = true;
-            $RaidFree = false;
-            
-            foreach($aRaid["Slots"] as $Role => $Max)
-            {
-                $RoleLimitReached = $aRaid["SetToRaid"][$Role] >= $Max;                        
-                $RaidFull = $RaidFull && $RoleLimitReached;
-                $RaidFree = $RaidFree || !$RoleLimitReached;
-            }
-        
-            if (($aFetchFull && $RaidFull) ||
-                ($aFetchFree && $RaidFree))
-            {                
-                return true;
-            }
-        }
-        
-        return false;
-    }
-    
-    // -------------------------------------------------------------------------
-    
     $gApiHelp["raid"] = Array(
         "description" => "Query value. Get information about raids.",
         "parameters"  => Array(
@@ -45,6 +19,8 @@
             "attends"   => "Return list of attended players, too. Default: false.",    
         )
     );
+    
+    // -------------------------------------------------------------------------
     
     function api_query_raid($aParameter)
     {
@@ -88,17 +64,43 @@
             $TableQuery .= "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING (LocationId) ";
             
             $Locations = explode(",",$aLocation);
+            $LocationById = Array();
+            $LocationByName = Array();
             $LocationConditions = Array();
+            
+            // Sort into ids and names
             
             foreach($Locations as $Location)
             {
                 if (is_numeric($Location))
-                    array_push($LocationConditions, "`".RP_TABLE_PREFIX."Raid`.LocationId=?");
+                    array_push($LocationById, intval($Location));
                 else
-                    array_push($LocationConditions, "`".RP_TABLE_PREFIX."Location`.Name=?");
-                
-                array_push($Parameters, $Location);
+                    array_push($LocationByName, $Location);
             }
+            
+            // Build id based condition
+            
+            if (count($LocationById) == 1)
+            {
+                array_push($LocationConditions, "`".RP_TABLE_PREFIX."Location`.LocationId=?");
+                array_push($Parameters, $LocationById[0]);
+            }
+            else if (count($LocationById) > 1)
+            {
+                array_push($LocationConditions, "`".RP_TABLE_PREFIX."Location`.LocationId IN (".implode(",",$LocationById).")");
+            }
+            
+            // Build name based condition
+            
+            if (count($LocationByName) == 1)
+            {
+                array_push($LocationConditions, "`".RP_TABLE_PREFIX."Location`.Name=?");
+                array_push($Parameters, $LocationByName[0]);
+            }
+            else if (count($LocationByName) > 1)
+            {
+                array_push($LocationConditions, "`".RP_TABLE_PREFIX."Location`.Name IN ('".implode("','",$LocationByName)."')");
+            }            
             
             array_push($Conditions, $LocationConditions);
         }
@@ -159,7 +161,7 @@
         // Build where part
         
         $WhereString = "";        
-        if (sizeof($Conditions) > 0)
+        if (count($Conditions) > 0)
         {
             foreach($Conditions as &$Part)
             {
@@ -292,5 +294,31 @@
             array_push($Result, $Raid);
     
         return $Result;
+    }
+    
+    // -------------------------------------------------------------------------
+    
+    function api_filter_raid($aRaid, $aFetchFull, $aFetchFree)
+    {
+        if (count($aRaid) > 0)
+        {
+            $RaidFull = true;
+            $RaidFree = false;
+            
+            foreach($aRaid["Slots"] as $Role => $Max)
+            {
+                $RoleLimitReached = $aRaid["SetToRaid"][$Role] >= $Max;                        
+                $RaidFull = $RaidFull && $RoleLimitReached;
+                $RaidFree = $RaidFree || !$RoleLimitReached;
+            }
+        
+            if (($aFetchFull && $RaidFull) ||
+                ($aFetchFree && $RaidFree))
+            {                
+                return true;
+            }
+        }
+        
+        return false;
     }
 ?>

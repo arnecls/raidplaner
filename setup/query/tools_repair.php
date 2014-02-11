@@ -359,9 +359,9 @@
             array_push($CharacterIds, intval($aRow["CharacterId"])); 
         });
                 
-        if (sizeof($CharacterIds) > 0)
+        if (count($CharacterIds) > 0)
         {
-            echo "<div class=\"update_step_warning\">".L("Fixing")." ".sizeof($CharacterIds)." ".L("StrayChars")."</div>";
+            echo "<div class=\"update_step_warning\">".L("Fixing")." ".count($CharacterIds)." ".L("StrayChars")."</div>";
             
             foreach($CharacterIds as $CharId)
             {
@@ -387,9 +387,9 @@
             array_push($AttendanceIds, intval($aRow["AttendanceId"])); 
         });
                 
-        if (sizeof($AttendanceIds) > 0)
+        if (count($AttendanceIds) > 0)
         {
-            echo "<div class=\"update_step_warning\">".L("Fixing")." ".sizeof($AttendanceIds)." ".L("StrayAttends")."</div>";
+            echo "<div class=\"update_step_warning\">".L("Fixing")." ".count($AttendanceIds)." ".L("StrayAttends")."</div>";
             
             foreach($AttendanceIds as $AttId)
             {

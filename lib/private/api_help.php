@@ -1,5 +1,7 @@
 <?php
 
+    // -------------------------------------------------------------------------
+    
     $gApiHelp["help"] = Array(
         "description" => "Help page.",
         "values"      => Array(

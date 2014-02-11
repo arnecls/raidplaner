@@ -22,10 +22,10 @@
 
         public static function ForEachPlugin($aFunction)
         {
-            if (sizeof(self::$Classes) == 0)
+            if (count(self::$Classes) == 0)
                 return;
 
-            if (sizeof(self::$Instances) == 0)
+            if (count(self::$Instances) == 0)
                 self::Init();
 
             foreach(self::$Instances as $PluginInstance)
@@ -47,7 +47,7 @@
         {
             $FileParts = explode(".",$PluginFile);
 
-            if (strtolower($FileParts[sizeof($FileParts)-1]) == "php")
+            if (strtolower($FileParts[count($FileParts)-1]) == "php")
                 require_once dirname(__FILE__)."/bindings/".$PluginFile;
 
         }

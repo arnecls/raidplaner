@@ -23,7 +23,7 @@
             "new" => Array(), 
             "update" => Array(), 
             "revoke" => Array(),
-            "SettingsFound" => sizeof($VacationData) > 0
+            "SettingsFound" => count($VacationData) > 0
         );
             
         // No existing vacation?
@@ -32,7 +32,7 @@
         $NewStart = $aRequest["vacationStart"];
         $NewEnd   = $aRequest["vacationEnd"];
         
-        if (sizeof($VacationData) == 0)
+        if (count($VacationData) == 0)
         {
             if (($NewStart == null) || ($NewEnd == null))
                 return $Ranges; // ### return, no vacation set ###
@@ -268,10 +268,10 @@
                
             // Update user settings
                 
-            if ((sizeof($Ranges["new"]) == 0) && 
-                (sizeof($Ranges["update"]) == 0))
+            if ((count($Ranges["new"]) == 0) && 
+                (count($Ranges["update"]) == 0))
             {
-                if (sizeof($Ranges["revoke"]) > 0)
+                if (count($Ranges["revoke"]) > 0)
                 {
                     $RemoveQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE ".
                         "UserId = :UserId AND (Name = 'VacationStart' OR Name = 'VacationEnd' OR Name = 'VacationMessage') LIMIT 3");
@@ -324,7 +324,7 @@
                 array_push( $ValidCharacterIds, $Data["CharacterId"] );
             });
     
-            $NumCharacters = (isset($aRequest["charId"]) && is_array($aRequest["charId"])) ? sizeof($aRequest["charId"]) : 0;
+            $NumCharacters = (isset($aRequest["charId"]) && is_array($aRequest["charId"])) ? count($aRequest["charId"]) : 0;
     
             // Sanity check mainchar
     
@@ -359,7 +359,7 @@
                 $CharId = $aRequest["charId"][$CharIndex];
                 
                 $ClassArray = $aRequest["charClass"][$CharIndex];
-                $Classes = (sizeof($ClassArray) == 1) ? $ClassArray[0] : implode(":", $ClassArray);
+                $Classes = (count($ClassArray) == 1) ? $ClassArray[0] : implode(":", $ClassArray);
     
                 if ( $CharId == 0 )
                 {
