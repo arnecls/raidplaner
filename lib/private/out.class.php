@@ -48,7 +48,7 @@
                 return false;
 
             $Keys = array_keys($aArray);
-            return (sizeof($Keys) == 0) || (is_numeric($Keys[0]));
+            return (count($Keys) == 0) || (is_numeric($Keys[0]));
         }
 
         // --------------------------------------------------------------------------------------------
@@ -133,7 +133,7 @@
                 : $aArray;
                 
             if (($Root === null) || 
-                (is_array($Root) && (sizeof($Root) == 0)))
+                (is_array($Root) && (count($Root) == 0)))
             {
                 echo "<".$aTagName."/>";
                 return;
