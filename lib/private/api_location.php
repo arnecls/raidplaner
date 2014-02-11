@@ -1,6 +1,12 @@
 <?php
     require_once dirname(__FILE__)."/connector.class.php";
     
+    $gApiHelp["location"] = Array(
+        "description" => "Query value. Get a list of available locations.",
+        "parameters"  => Array(
+        )
+    );
+    
     function api_query_location()
     {
         $Connector = Connector::getInstance();

@@ -1,5 +1,7 @@
 <?php
 
+    $gApiHelp = Array();
+
     require_once(dirname(__FILE__)."/tools_site.php");
     require_once(dirname(__FILE__)."/api_help.php");
     require_once(dirname(__FILE__)."/api_raid.php");

@@ -1,6 +1,51 @@
 <?php
     require_once dirname(__FILE__)."/connector.class.php";
     
+    // -------------------------------------------------------------------------
+    
+    function api_filter_raid($aRaid, $aFetchFull, $aFetchFree)
+    {
+        if (sizeof($aRaid) > 0)
+        {
+            $RaidFull = true;
+            $RaidFree = false;
+            
+            foreach($aRaid["Slots"] as $Role => $Max)
+            {
+                $RoleLimitReached = $aRaid["SetToRaid"][$Role] >= $Max;                        
+                $RaidFull = $RaidFull && $RoleLimitReached;
+                $RaidFree = $RaidFree || !$RoleLimitReached;
+            }
+        
+            if (($aFetchFull && $RaidFull) ||
+                ($aFetchFree && $RaidFree))
+            {                
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    // -------------------------------------------------------------------------
+    
+    $gApiHelp["raid"] = Array(
+        "description" => "Query value. Get information about raids.",
+        "parameters"  => Array(
+            "start"     => "Only return raids starting after this UTC timestamp. Default: 0.",
+            "end"       => "Only return raids starting before this UTC timestamp. Default: 0x7FFFFFFF.",
+            "limit"     => "Maximum number of raids to return. Passing 0 returns all raids. Default: 10.",
+            "offset"    => "Number of raids to skip if a limit is set. Default: 0.",
+            "location"  => "Comma separated list of location ids. Only returns raids on these locations. Default: empty.",
+            "full"      => "Include raids that have all slots set. Default: true.",
+            "free"      => "Include raids that do not have all slots set. Default: true.",
+            "open"      => "Include raids that are open for registration. Default: true.",
+            "closed"    => "Include raids that are closed for registration. Default: false.",
+            "canceled"  => "Include raids that have been canceled. Default: false.",
+            "attends"   => "Return list of attended players, too. Default: false.",    
+        )
+    );
+    
     function api_query_raid($aParameter)
     {
         // Assemble paramters
@@ -47,7 +92,11 @@
             
             foreach($Locations as $Location)
             {
-                array_push($LocationConditions, "`".RP_TABLE_PREFIX."Location`.Name=?");
+                if (is_numeric($Location))
+                    array_push($LocationConditions, "`".RP_TABLE_PREFIX."Raid`.LocationId=?");
+                else
+                    array_push($LocationConditions, "`".RP_TABLE_PREFIX."Location`.Name=?");
+                
                 array_push($Parameters, $Location);
             }
             
@@ -69,7 +118,6 @@
                 "`".RP_TABLE_PREFIX."Attendance`.Comment",
                 
                 "`".RP_TABLE_PREFIX."User`.UserId",
-                "`".RP_TABLE_PREFIX."User`.Login AS UserName",
                 "`".RP_TABLE_PREFIX."User`.ExternalBinding AS BindingId",
                 "`".RP_TABLE_PREFIX."User`.ExternalId AS BoundUserId",
                 
@@ -161,24 +209,8 @@
         {
             if ($aRaidRow["RaidId"] != $LastRaidId)
             {
-                if (sizeof($Raid) > 0)
-                {
-                    $RaidFull = true;
-                    $RaidFree = false;
-                    
-                    foreach($Raid["Slots"] as $Role => $Max)
-                    {
-                        $RoleLimitReached = $Raid["SetToRaid"][$Role] >= $Max;                        
-                        $RaidFull = $RaidFull && $RoleLimitReached;
-                        $RaidFree = $RaidFree || !$RoleLimitReached;
-                    }
-                
-                    if (($aFetchFull && $RaidFull) ||
-                        ($aFetchFree && $RaidFree))
-                    {                
-                        array_push($Result, $Raid);
-                    }
-                }
+                if (api_filter_raid($Raid, $aFetchFull, $aFetchFree))
+                   array_push($Result, $Raid);
                 
                 // Generate Raid
                                 
@@ -238,7 +270,6 @@
             {
                 $Attend = Array(
                     "UserId"           => $aRaidRow["UserId"],
-                    "UserName"         => $aRaidRow["UserName"],
                     "BindingId"        => $aRaidRow["BindingId"],
                     "BoundUserId"      => $aRaidRow["BoundUserId"],
                     "Status"           => $aRaidRow["Status"],
@@ -257,25 +288,9 @@
         
         // Add remaining raid
         
-        if (sizeof($Raid) > 0)
-        {
-            $RaidFull = true;
-            $RaidFree = false;
-            
-            foreach($Raid["Slots"] as $Role => $Max)
-            {
-                $RoleLimitReached = $Raid["SetToRaid"][$Role] >= $Max;                        
-                $RaidFull = $RaidFull && $RoleLimitReached;
-                $RaidFree = $RaidFree || !$RoleLimitReached;
-            }
-        
-            if (($aFetchFull && $RaidFull) ||
-                ($aFetchFree && $RaidFree))
-            {                
-                array_push($Result, $Raid);
-            }
-        }
-        
+        if (api_filter_raid($Raid, $aFetchFull, $aFetchFree))
+            array_push($Result, $Raid);
+    
         return $Result;
     }
 ?>
