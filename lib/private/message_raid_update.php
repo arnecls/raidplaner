@@ -84,7 +84,7 @@
             // Remove the attends marked for delete.
             // Only random player attends can be removed.
     
-            $NumRemoved = (isset($aRequest["removed"])) ? sizeof($aRequest["removed"]) : 0;
+            $NumRemoved = (isset($aRequest["removed"])) ? count($aRequest["removed"]) : 0;
     
             for ( $i=0; $i<$NumRemoved; ++$i )
             {
@@ -114,7 +114,7 @@
                     // Attendances are passed in the form [id,status,id,status, … ]
                     // So we iterate with a stride of 2
     
-                    for ( $AttendIdx=0; $AttendIdx < sizeof($AttendsForRole); )
+                    for ( $AttendIdx=0; $AttendIdx < count($AttendsForRole); )
                     {
                         $UpdateSlot = null;
     

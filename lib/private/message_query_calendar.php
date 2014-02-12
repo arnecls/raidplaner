@@ -132,7 +132,7 @@
         });
     
         $LastRaidId = -1;
-        $RaidDataCount = sizeof($RaidData);
+        $RaidDataCount = count($RaidData);
     
         $NumRaids = 0;
         $Raids = Array();
@@ -195,7 +195,7 @@
                     $Roles = explode(":",$Data["SlotRoles"]);
                     $Count = explode(":",$Data["SlotCount"]);
                     
-                    for ( $i=0; $i < sizeof($Roles); ++$i )
+                    for ( $i=0; $i < count($Roles); ++$i )
                     {
                         $RoleId = $Roles[$i];
                         

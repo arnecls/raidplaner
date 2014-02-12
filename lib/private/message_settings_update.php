@@ -118,7 +118,7 @@
     
             if (isset($aRequest["locationIds"]))
             {
-                for ( $i=0; $i < sizeof($aRequest["locationIds"]); ++$i )
+                for ( $i=0; $i < count($aRequest["locationIds"]); ++$i )
                 {
                     $LocationId      = intval($aRequest["locationIds"][$i]);
                     $CurrentLocation = $CurrentValues[$LocationId];

@@ -1,66 +1,58 @@
 <?php
 
+    // -------------------------------------------------------------------------
+    
+    $gApiHelp["help"] = Array(
+        "description" => "Help page.",
+        "values"      => Array(
+            "help"     => "Help on help.",
+            "format"   => "Help on result format.",
+            "query"    => "Help on queries.",
+            "location" => "Help on querying locations.",
+            "raid"     => "Help on querying raid data.",
+            "stats"    => "Help on querying statistics.",
+        )
+    );
+
+    // -------------------------------------------------------------------------
+    
+    $gApiHelp["query"] = Array(
+        "description" => "Main query selector.",
+        "values"      => Array(
+            "location" => "Querying locations.",
+            "raid"     => "Querying raid data.",
+            "stats"    => "Querying statistics.",
+        )
+    );
+    
+    // -------------------------------------------------------------------------
+
+    $gApiHelp["format"] = Array(
+        "description" => "Result format. Defaults to json.",
+        "values"      => Array(
+            "json" => "Return result as JSON.",
+            "xml"  => "Return result as XML.",
+        )
+    );
+    
+    // -------------------------------------------------------------------------
+
     function api_help($aRequest)
     {
+        global $gApiHelp;        
         $Out = Out::getInstance();
+        $Topic = strtolower($aRequest["help"]);
         
-        switch(strtolower($aRequest["help"]))
+        if (isset($gApiHelp[$Topic]))
         {
-        default:
-        case "help":
-            $Out->pushValue("description", "Help page.");
-            
-            $Out->pushValue("values", Array(
-                "help"     => "Help on help.",
-                "format"   => "Help on result format.",
-                "location" => "Help on querying locations.",
-                "raid"     => "Help on querying raid data.",
-                "stats"    => "Help on querying statistics.",
-            ));
-            break;
-            
-        case "format":
-            $Out->pushValue("description", "Result format. Defaults to json.");
-            $Out->pushValue("values", Array(
-                "json" => "Return result as JSON.",
-                "xml"  => "Return result as XML."
-            ));
-            break;
-            
-            
-        case "location":
-            $Out->pushValue("description", "Query value. Get a list of available locations.");
-            $Out->pushValue("parameters", Array(
-            ));
-            break;
-            
-        case "raid":
-            $Out->pushValue("description", "Query value. Get information about raids.");
-            $Out->pushValue("parameters", Array(
-                "start"     => "Only return raids starting after this UTC timestamp. Default: 0.",
-                "end"       => "Only return raids starting before this UTC timestamp. Default: PHP_INT_MAX.",
-                "after"     => "Only return raids beginning after this hour (24h format). Default: 0.",
-                "before"    => "Only return raids beginning before this hour (24h format). Default: 0.",
-                "limit"     => "Maximum number of raids to return. Passing 0 returns all raids. Default: 10.",
-                "location"  => "Comma separated list of location names. Only returns raids on these locations. Default: empty.",
-                "full"      => "Include raids that have all slots set. Default: true.",
-                "free"      => "Include raids that do not have all slots set. Default: true.",
-                "open"      => "Include raids that are open for registration. Default: true.",
-                "closed"    => "Include raids that are closed for registration. Default: false.",
-                "canceled"  => "Include raids that have been canceled. Default: false.",
-                "attends"   => "Return list of attended players, too. Default: false.",    
-            ));
-            break;
-            
-        case "statistic":
-            $Out->pushValue("description", "Query value. Get user statistics.");
-            $Out->pushValue("parameters", Array(
-                "start"     => "Only count raids starting after this UTC timestamp. Default: 0.",
-                "end"       => "Only count raids starting before this UTC timestamp. Default: PHP_INT_MAX.",
-                "raids"     => "Comma separated list of raid ids to count. Empty counts all raids. Default: empty.",
-                "users"     => "Comma separated list of user names to include. Empty returns all users. Default: empty.",
-            ));
-            break;
+            foreach($gApiHelp[$Topic] as $Name => $Value)
+            {
+                $Out->pushValue($Name, $Value);
+            }
+        }
+        else
+        {
+            $Out->pushError("Unknown help topic.");
         }
     }
     

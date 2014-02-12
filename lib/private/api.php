@@ -1,10 +1,13 @@
 <?php
 
-    require_once(dirname(__FILE__)."/settings.class.php");
-    require_once(dirname(__FILE__)."/api_help.php");
+    $gApiHelp = Array();
+
+    require_once(dirname(__FILE__)."/tools_site.php");
     require_once(dirname(__FILE__)."/api_raid.php");
     require_once(dirname(__FILE__)."/api_location.php");
+    require_once(dirname(__FILE__)."/api_user.php");
     require_once(dirname(__FILE__)."/api_statistic.php");
+    require_once(dirname(__FILE__)."/api_help.php");
 
     class Api
     {

@@ -48,7 +48,7 @@
                 return false;
 
             $Keys = array_keys($aArray);
-            return (sizeof($Keys) == 0) || (is_numeric($Keys[0]));
+            return (count($Keys) == 0) || (is_numeric($Keys[0]));
         }
 
         // --------------------------------------------------------------------------------------------
@@ -128,10 +128,17 @@
 
         public function writeXML($aTagName, $aArray = null)
         {
-            $Root = ($aArray == null) 
+            $Root = ($aArray === null) 
                 ? $this->Data 
                 : $aArray;
                 
+            if (($Root === null) || 
+                (is_array($Root) && (count($Root) == 0)))
+            {
+                echo "<".$aTagName."/>";
+                return;
+            }
+            
             $IsIndexedArray = $this->IsIndexed($Root);
             
             if (!$IsIndexedArray)

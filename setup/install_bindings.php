@@ -167,7 +167,7 @@
             echo "</select><br/><br/>";
 
             $Users = $Binding->getUsersFromConfig();
-            $FoundUsers = ($Users != null) && (sizeof($Users) > 0);
+            $FoundUsers = ($Users != null) && (count($Users) > 0);
 
             echo L("PostAsUser")."<br/>";
             echo "<select id=\"".$Binding->getName()."_postas\"".$Disabled.">";

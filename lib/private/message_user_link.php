@@ -28,7 +28,7 @@
         {
             $Candidates = UserProxy::getAllUserInfosById($UserData["ExternalId"]);
     
-            if ( sizeof($Candidates) > 1 )
+            if ( count($Candidates) > 1 )
             {
                 // More than one binding, check the username and
                 // reduce the array to username matches
@@ -45,14 +45,14 @@
     
                 // If filtering was successfull, switch arrays
     
-                if ( sizeof($Filtered) > 0 )
+                if ( count($Filtered) > 0 )
                     $Candidates = $Filtered;
             }
     
             // Use the first match. Having multiple matches is very unlikely as two (or more)
             // forums need to have a user with the same username AND id.
     
-            if ( sizeof($Candidates) > 0 )
+            if ( count($Candidates) > 0 )
             {
                 reset($Candidates);
                 list($BindingName, $UserInfo) = each($Candidates); // fetch the first entry
@@ -70,7 +70,7 @@
         // This may lead to the wrong user, but searching by name is basically wild guessing anyway.
         // Note that there is always at least one candidate with the binding "none".
     
-        if ( sizeof($Candidates) > 1 )
+        if ( count($Candidates) > 1 )
         {
             reset($Candidates);
             list($BindingName, $UserInfo) = each($Candidates); // first entry is "none"

@@ -15,6 +15,33 @@
         if (file_exists($aFile))
             include_once($aFile);
     }
+    
+    // ---------------------------------------------------------------
+    
+    function getParam($aName, $aDefault)
+    {
+        return getParamFrom($_REQUEST, $aName, $aDefault);
+    }
+    
+    // ---------------------------------------------------------------
+    
+    function getParamFrom($aParameters, $aName, $aDefault)
+    {
+        $Value = (isset($aParameters[$aName])) ? $aParameters[$aName] : $aDefault;
+        switch(strtolower($Value))
+        {
+        case "true":
+            return true;
+            
+        case "false":
+            return false;
+            
+        default:
+            return (is_numeric($Value))
+                ? intval($Value)
+                : $Value;
+        }
+    }
 
     // ---------------------------------------------------------------
     
@@ -91,7 +118,7 @@
                         
                         if (isset($Theme->random))
                         {
-                            $Index = rand(0, sizeof($Theme->random));
+                            $Index = rand(0, count($Theme->random));
                             $Overwrite = $Theme->random[$Index];
                         
                             $gSite["Banner"]     = (isset($Overwrite->banner))   ? (string)$Overwrite->banner   : $gSite["Banner"];
@@ -231,7 +258,7 @@
                     if (isset($Slot["order"]))
                         array_push($Order, intval($Slot["order"]).":".strval($Slot["role"]));
                     else
-                        array_push($Order, sizeof($gGame["RaidViewOrder"]).":".strval($Slot["role"]));
+                        array_push($Order, count($gGame["RaidViewOrder"]).":".strval($Slot["role"]));
                     
                     $ColsUsed += $Columns;
                 }

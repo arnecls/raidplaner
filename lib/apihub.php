@@ -4,26 +4,6 @@
     require_once(dirname(__FILE__)."/private/api.php");
     require_once(dirname(__FILE__)."/private/out.class.php");
     
-    // Helper to handle request paramters   
-    
-    function getParam($aName, $aDefault)
-    {
-        $Value = (isset($_REQUEST[$aName])) ? $_REQUEST[$aName] : $aDefault;
-        switch(strtolower($Value))
-        {
-        case "true":
-            return true;
-            
-        case "false":
-            return false;
-            
-        default:
-            return (is_numeric($Value))
-                ? intval($Value)
-                : $Value;
-        }
-    }
-    
     // Generate response
     
     $Out = Out::getInstance();
@@ -65,14 +45,21 @@
             case "location":
                 $Out->pushValue("result", api_query_location());
                 break;
+                
+            case "user":
+                $Parameter = Array(
+                    "users" => getParam("users", ""),
+                    "games" => getParam("games", "")
+                );
+                $Out->pushValue("result", api_query_user($Parameter));
+                break;
             
             case "raid":
-                $aParameter = Array(
+                $Parameter = Array(
                     "start"     => getParam("start", 0),
-                    "end"       => getParam("end", PHP_INT_MAX),
-                    "after"     => getParam("after", 0),
-                    "before"    => getParam("before", 0),
+                    "end"       => getParam("end", 0x7FFFFFFF),
                     "limit"     => getParam("limit", 10),
+                    "offset"    => getParam("offset", 0),
                     "location"  => getParam("location", ""),
                     "full"      => getParam("full", true),
                     "free"      => getParam("free", true),
@@ -81,18 +68,18 @@
                     "canceled"  => getParam("canceled", false),
                     "attends"   => getParam("attends", false),
                 ); 
-                $Out->pushValue("result", api_query_raid($aParameter));
+                $Out->pushValue("result", api_query_raid($Parameter));
                 break;
                 
             case "statistic":
-                $aParameter = Array(
+                $Parameter = Array(
                     "start" => getParam("start", 0),
                     "end"   => getParam("end", PHP_INT_MAX),
                     "raids" => getParam("raids", ""),
                     "users" => getParam("users", ""),
                 );
                 
-                $Out->pushValue("result", api_query_statistic($aParameter));
+                $Out->pushValue("result", api_query_statistic($Parameter));
                 break;
                 
             default:

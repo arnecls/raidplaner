@@ -194,7 +194,7 @@
                 array_push($AffectedUsers, $UserData);
             });
 
-            if ( sizeof($AffectedUsers) > 0 )
+            if ( count($AffectedUsers) > 0 )
             {
 
                 // Update vbulletin users
@@ -446,7 +446,7 @@
         echo "<div class=\"update_step\">New Role ids";
         
         $RoleQueryString = "";
-        for ($i=0; $i<sizeof($RoleIdxToId); ++$i)
+        for ($i=0; $i<count($RoleIdxToId); ++$i)
         {
             $RoleQueryString .= "UPDATE `".RP_TABLE_PREFIX."Character` SET Role1 = :Role".$i." WHERE Role1 = ".$i.";";
             $RoleQueryString .= "UPDATE `".RP_TABLE_PREFIX."Character` SET Role2 = :Role".$i." WHERE Role2 = ".$i.";";
@@ -456,7 +456,7 @@
         $RolesQuery = $Connector->prepare($RoleQueryString);
         $RolesQuery->setErrorsAsHTML(true);
         
-        for ($i=0; $i<sizeof($RoleIdxToId); ++$i)
+        for ($i=0; $i<count($RoleIdxToId); ++$i)
         {
             $RolesQuery->bindValue(":Role".$i, $RoleIdxToId[$i], PDO::PARAM_STR);
         }
@@ -499,7 +499,7 @@
             $UpdateRaidQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Raid` SET SlotRoles = :Roles, SlotCount = :Count WHERE RaidId = :RaidId LIMIT 1");
             
             $SlotCount = Array();
-            for ($i=0; $i<sizeof($RoleIdxToId) && $i<5; ++$i)
+            for ($i=0; $i<count($RoleIdxToId) && $i<5; ++$i)
             {
                 array_push($SlotCount, intval($aRaid["SlotsRole".($i+1)]));
             }
