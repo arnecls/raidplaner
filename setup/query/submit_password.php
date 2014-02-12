@@ -1,8 +1,7 @@
 <?php
     header("Content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-    echo "<database>";
-
+    
     define( "LOCALE_SETUP", true );
     require_once("../../lib/private/connector.class.php");
     require_once("../../lib/config/config.php");
@@ -48,7 +47,5 @@
         $Out->pushError($Exception->getMessage());
     }
 
-    $Out->flushXML("");
-
-    echo "</database>";
+    $Out->flushXML("database");
 ?>
