@@ -11,6 +11,13 @@
     
     // -------------------------------------------------------------------------
     
+    function api_args_location($aRequest)
+    {
+        return Array();
+    }
+    
+    // -------------------------------------------------------------------------
+    
     function api_query_location()
     {
         $Connector = Connector::getInstance();

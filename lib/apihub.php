@@ -19,22 +19,21 @@
     }
     else
     {
-        $Validated = false;
+        $PublicQuery  = false;
+        $PrivateQuery = false;
+        $Parameter = call_user_func("api_args_".strtolower($_REQUEST["query"]), $_REQUEST);
         
         // Validate against public or private token
         
-        if (isset($_REQUEST["public"]))
+        if (isset($_REQUEST["token"]))
         {
-            $Validated = Api::testPublicToken($_REQUEST["public"]);
-        }        
-        else if (isset($_REQUEST["private"]))
-        {
-            $Validated = Api::testPrivateToken($_REQUEST["private"]);
+            $PublicQuery  = Api::testPublicToken($Parameter, $_REQUEST["token"]);
+            $PrivateQuery = Api::testPrivateToken($_REQUEST["token"]);
         }
         
         // Only execute requests if validated
         
-        if (!$Validated)
+        if (!$PublicQuery && !$PrivateQuery)
         {
             $Out->pushError("Validation failed.");
         }
@@ -47,38 +46,14 @@
                 break;
                 
             case "user":
-                $Parameter = Array(
-                    "users" => getParam("users", ""),
-                    "games" => getParam("games", "")
-                );
                 $Out->pushValue("result", api_query_user($Parameter));
                 break;
             
             case "raid":
-                $Parameter = Array(
-                    "start"     => getParam("start", 0),
-                    "end"       => getParam("end", 0x7FFFFFFF),
-                    "limit"     => getParam("limit", 10),
-                    "offset"    => getParam("offset", 0),
-                    "location"  => getParam("location", ""),
-                    "full"      => getParam("full", true),
-                    "free"      => getParam("free", true),
-                    "open"      => getParam("open", true),
-                    "closed"    => getParam("closed", false),
-                    "canceled"  => getParam("canceled", false),
-                    "attends"   => getParam("attends", false),
-                ); 
                 $Out->pushValue("result", api_query_raid($Parameter));
                 break;
                 
             case "statistic":
-                $Parameter = Array(
-                    "start" => getParam("start", 0),
-                    "end"   => getParam("end", PHP_INT_MAX),
-                    "raids" => getParam("raids", ""),
-                    "users" => getParam("users", ""),
-                );
-                
                 $Out->pushValue("result", api_query_statistic($Parameter));
                 break;
                 

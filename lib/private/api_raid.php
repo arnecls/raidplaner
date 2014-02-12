@@ -22,6 +22,25 @@
     
     // -------------------------------------------------------------------------
     
+    function api_args_raid($aRequest)
+    {
+        return Array(
+            "start"     => getParamFrom($aRequest, "start", 0),
+            "end"       => getParamFrom($aRequest, "end", 0x7FFFFFFF),
+            "limit"     => getParamFrom($aRequest, "limit", 10),
+            "offset"    => getParamFrom($aRequest, "offset", 0),
+            "location"  => getParamFrom($aRequest, "location", ""),
+            "full"      => getParamFrom($aRequest, "full", true),
+            "free"      => getParamFrom($aRequest, "free", true),
+            "open"      => getParamFrom($aRequest, "open", true),
+            "closed"    => getParamFrom($aRequest, "closed", false),
+            "canceled"  => getParamFrom($aRequest, "canceled", false),
+            "attends"   => getParamFrom($aRequest, "attends", false),
+        );
+    }
+    
+    // -------------------------------------------------------------------------
+    
     function api_query_raid($aParameter)
     {
         // Assemble paramters

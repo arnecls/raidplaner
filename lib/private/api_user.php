@@ -12,6 +12,16 @@
     
     // -------------------------------------------------------------------------
     
+    function api_args_user($aRequest)
+    {
+        return Array(
+            "users" => getParamFrom($aRequest, "users", ""),
+            "games" => getParamFrom($aRequest, "games", "")
+        );
+    }
+    
+    // -------------------------------------------------------------------------
+    
     function api_query_user($aParameter)
     {
         $aUsers = getParamFrom($aParameter, "users", "");

@@ -11,7 +11,7 @@
 
     class Api
     {
-        private static $PublicUpdateInterval = 2; // Seconds until new public key
+        private static $PublicUpdateInterval = 1800; // Seconds until new public key
     
         // ---------------------------------------------------------------------
                 
@@ -35,14 +35,14 @@
         
         // ---------------------------------------------------------------------
         
-        public static function getPublicToken()
+        public static function getPublicToken($aParameter)
         {
             $Settings = Settings::getInstance();
             
             if (!isset($Settings["ApiPublic"])) 
                 self::tryGeneratePublicToken();
             
-            return $Settings["ApiPublic"]["TextValue"];
+            return sha1(serialize($aParameter).$Settings["ApiPublic"]["TextValue"]);
         }
         
         // ---------------------------------------------------------------------
@@ -83,7 +83,7 @@
         
         // ---------------------------------------------------------------------
         
-        public static function testPublicToken($aToken)
+        public static function testPublicToken($aParameter, $aToken)
         {
             $Settings = Settings::getInstance();
             
@@ -91,21 +91,59 @@
             
             self::tryGeneratePublicToken();
             
-            if ($Settings["ApiPublic"]["TextValue"] == $aToken)
-                return true;
-                
+            // Check against current public hash
+            
+            $TestHash = sha1(serialize($aParameter).$Settings["ApiPublic"]["TextValue"]);            
+            if ($TestHash == $aToken)
+                return true; // ### return, success ###
+            
             // Make sure to test the timeout of old values (long-time update gap)
                 
-            return (isset($Settings["ApiPublicOld"]) &&
-                ($Settings["ApiPublicOld"]["IntValue"] + self::$PublicUpdateInterval > time()) &&
-                ($Settings["ApiPublicOld"]["TextValue"] == $aToken));
+            if (!isset($Settings["ApiPublicOld"]) ||
+                ($Settings["ApiPublicOld"]["IntValue"] + self::$PublicUpdateInterval > time()))
+            {
+                return false; // ### return, invalid old key ###
+            }
+            
+            // Old value is exisiting and valid, try hash this value
+               
+            $TestHash = sha1(serialize($aParameter).$Settings["ApiPublicOld"]["TextValue"]);                
+            return ($TestHash == $aToken);
         }
         
         // ---------------------------------------------------------------------
         
-        public static function queryLocations()
+        public static function argsLocation($aParameter)
+        {
+            return api_args_location($aParameter);
+        }
+        
+        // ---------------------------------------------------------------------
+        
+        public static function queryLocation()
         {
             return api_query_location();
+        }
+        
+        // ---------------------------------------------------------------------
+        
+        public static function argsUser($aParameter)
+        {
+            return api_args_user($aParameter);
+        }
+        
+        // ---------------------------------------------------------------------
+                
+        public static function queryUser($aParameter)
+        {
+            return api_query_user($aParameter);
+        }
+        
+        // ---------------------------------------------------------------------
+        
+        public static function argsRaid($aParameter)
+        {
+            return api_args_raid($aParameter);
         }
         
         // ---------------------------------------------------------------------
@@ -113,6 +151,13 @@
         public static function queryRaid($aParameter)
         {
             return api_query_raid($aParameter);
+        }
+        
+        // ---------------------------------------------------------------------
+        
+        public static function argsStatistic($aParameter)
+        {
+            return api_args_statistic($aParameter);
         }
         
         // ---------------------------------------------------------------------

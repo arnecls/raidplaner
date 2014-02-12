@@ -15,6 +15,18 @@
     
     // -------------------------------------------------------------------------
     
+    function api_args_statistic($aRequest)
+    {
+        return Array(
+            "start" => getParamFrom($aRequest, "start", 0),
+            "end"   => getParamFrom($aRequest, "end", PHP_INT_MAX),
+            "raids" => getParamFrom($aRequest, "raids", ""),
+            "users" => getParamFrom($aRequest, "users", ""),
+        );
+    }
+    
+    // -------------------------------------------------------------------------
+    
     function api_query_statistic($aParameter)
     {
         $aStart = getParamFrom($aParameter, "start", 0);
