@@ -113,7 +113,7 @@
         
         // ---------------------------------------------------------------------
         
-        public static function argsLocation($aParameter)
+        public static function normalizeArgsLocation($aParameter)
         {
             return api_args_location($aParameter);
         }
@@ -127,7 +127,7 @@
         
         // ---------------------------------------------------------------------
         
-        public static function argsUser($aParameter)
+        public static function normalizeArgsUser($aParameter)
         {
             return api_args_user($aParameter);
         }
@@ -141,7 +141,7 @@
         
         // ---------------------------------------------------------------------
         
-        public static function argsRaid($aParameter)
+        public static function normalizeArgsRaid($aParameter)
         {
             return api_args_raid($aParameter);
         }
@@ -155,7 +155,7 @@
         
         // ---------------------------------------------------------------------
         
-        public static function argsStatistic($aParameter)
+        public static function normalizeArgsStatistic($aParameter)
         {
             return api_args_statistic($aParameter);
         }
