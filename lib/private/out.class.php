@@ -48,7 +48,11 @@
                 return false;
 
             $Keys = array_keys($aArray);
-            return (count($Keys) == 0) || (is_numeric($Keys[0]));
+			$NumKeys = count($Keys);
+			
+            return ($NumKeys == 0) || 
+				(($NumKeys == 1) && (is_numeric($Keys[0]))) ||
+				(($NumKeys > 1) && is_numeric($Keys[0]) && is_numeric($Keys[1]) && ($Keys[1]-$Keys[0]==1));
         }
 
         // --------------------------------------------------------------------------------------------
@@ -67,7 +71,6 @@
             foreach( $Root as  $Name => $Value )
             {
                 if ($i > 0) echo ',';
-
                 if (!$IsIndexedArray) echo '"'.$Name.'":';
 
                 if ($Value === null)
