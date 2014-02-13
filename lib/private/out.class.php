@@ -50,9 +50,20 @@
             $Keys = array_keys($aArray);
 			$NumKeys = count($Keys);
 			
-            return ($NumKeys == 0) || 
-				(($NumKeys == 1) && (is_numeric($Keys[0]))) ||
-				(($NumKeys > 1) && is_numeric($Keys[0]) && is_numeric($Keys[1]) && ($Keys[1]-$Keys[0]==1));
+			if ($NumKeys == 0)
+				return true;
+			
+			$PrevKey = -1;
+			foreach($Keys as $Key)
+			{
+				if (!is_numeric($Key))
+					return false;
+					
+				if ($Key - $PrevKey != 1)
+					return false;
+			}
+			
+			return true;
         }
 
         // --------------------------------------------------------------------------------------------
