@@ -345,7 +345,7 @@
         $gLocale[ "StrayCharacters" ]          = "Usunięte postacie";
         $gLocale[ "StrayUsers" ]               = "Usunięci użytkownicy";
         $gLocale[ "StrayBindings" ]            = "Nieprawidłowe powiązania";
-        $gLocale[ "RepairCharacters" ]         = "Napraw niepoprawne postacie;
+        $gLocale[ "RepairCharacters" ]         = "Napraw niepoprawne postacie";
         $gLocale[ "TransferGameconfig" ]       = "Aktualizuj gameconfig.php (Raidplaner 1.0.x)";
         $gLocale[ "MergeGames" ]               = "Połącz dwie gry";
         $gLocale[ "SourceGame" ]               = "Źródło";
