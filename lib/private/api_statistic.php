@@ -10,6 +10,7 @@
             "end"       => "Only count raids starting before this UTC timestamp. Default: now.",
             "raids"     => "Comma separated list of raid ids to count. Empty counts all raids. Default: empty.",
             "users"     => "Comma separated list of user names to include. Empty returns all users. Default: empty.",
+            "games"     => "Comma separated list of game ids. Only returns statistics for these games. Default: empty",
         )
     );
     
@@ -22,6 +23,7 @@
             "end"   => getParamFrom($aRequest, "end", PHP_INT_MAX),
             "raids" => getParamFrom($aRequest, "raids", ""),
             "users" => getParamFrom($aRequest, "users", ""),
+            "games" => getParamFrom($aRequest, "games", ""),
         );
     }
     
@@ -33,18 +35,23 @@
         $aEnd   = getParamFrom($aParameter, "end",   time());
         $aRaids = getParamFrom($aParameter, "raids", "");
         $aUsers = getParamFrom($aParameter, "users", "");
+        $aGames = getParamFrom($aParameter, "games", "");
         
         $Conditions = Array(
             "`".RP_TABLE_PREFIX."Character`.Mainchar = 'true'",
-            "`".RP_TABLE_PREFIX."Raid`.Start > `".RP_TABLE_PREFIX."User`.Created",
-            "`".RP_TABLE_PREFIX."Raid`.Start > FROM_UNIXTIME(?)",
-            "`".RP_TABLE_PREFIX."Raid`.Start < FROM_UNIXTIME(?)",
+            "(`".RP_TABLE_PREFIX."Raid`.RaidId IS NULL OR ".
+                "(`".RP_TABLE_PREFIX."Raid`.Start > `".RP_TABLE_PREFIX."User`.Created AND ".
+                "`".RP_TABLE_PREFIX."Raid`.Start > FROM_UNIXTIME(?) AND ".
+                "`".RP_TABLE_PREFIX."Raid`.Start < FROM_UNIXTIME(?)))",
         );
         
         $Parameters = Array(
             $aStart,
             $aEnd,
         );
+        
+        $GamesCondition = "";
+        $GamesParameter = Array();
         
         // Filter users
         
@@ -65,7 +72,7 @@
             }
         }
         
-        // Filter games
+        // Filter raids
         
         if ($aRaids != "")
         {
@@ -84,6 +91,26 @@
             }
         }
         
+        // Filter games
+        
+        if ($aGames != "")
+        {
+            $Games = explode(",", $aGames);
+            $GameByLoc = Array();
+            $GameByChar = Array();
+            
+            foreach($Games as $Game)
+            {
+                array_push($GameByLoc, "`".RP_TABLE_PREFIX."Location`.Game=?");                
+                array_push($GameByChar, "`".RP_TABLE_PREFIX."Character`.Game=?");                
+                array_push($Parameters, $Game);
+                array_push($GamesParameter, $Game);
+            }
+            
+            array_push($Conditions, $GameByChar);
+            $GamesCondition = implode(" OR ", $GameByLoc);
+        }
+        
         // Build where clause
         
         $WhereString = "";        
@@ -95,30 +122,34 @@
                     $Part = "(".implode(" OR ", $Part).")";
             }
             
-            $WhereString = " WHERE ".implode(" AND ",$Conditions);
+            $WhereString = " WHERE ".implode(" AND ",$Conditions)." ";
         }
         
         // Query attendances
-    
-        $Connector = Connector::getInstance();
-        $AttendanceQuery = $Connector->prepare( "SELECT ".
+        
+        $QueryString = "SELECT ".
+            "`".RP_TABLE_PREFIX."User`.UserId, ".
             "`".RP_TABLE_PREFIX."Character`.Name, ".
             "`".RP_TABLE_PREFIX."Attendance`.Status, ".
             "`".RP_TABLE_PREFIX."Attendance`.Role, ".
-            "`".RP_TABLE_PREFIX."User`.UserId, ".
             "UNIX_TIMESTAMP(`".RP_TABLE_PREFIX."User`.Created) AS CreatedUTC, ".
             "COUNT(*) AS Count ".
             "FROM `".RP_TABLE_PREFIX."User` ".
-            "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(UserId) ".
-            "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) ".
             "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
+            "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(CharacterId) ".
+            "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) ".
+            "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
             $WhereString.
-            "GROUP BY UserId, `Status` ORDER BY Name" );
+            "GROUP BY `".RP_TABLE_PREFIX."User`.UserId, `".RP_TABLE_PREFIX."Attendance`.Status ";
+            
+        //Out::getInstance()->pushValue("debug", $QueryString);
+    
+        $Connector = Connector::getInstance();
+        $AttendanceQuery = $Connector->prepare( $QueryString );
 
         foreach($Parameters as $Index => $Value)
         {
-            //Out::getInstance()->pushValue("query", $Value);
-            if (is_null($Value))
+            if (is_numeric($Value))
                 $AttendanceQuery->bindValue($Index+1, intval($Value), PDO::PARAM_INT);
             else
                 $AttendanceQuery->bindValue($Index+1, strval($Value), PDO::PARAM_STR);
@@ -131,7 +162,7 @@
         $Attendances = Array();
         $Roles = Array();
 
-        $AttendanceQuery->loop( function($Data) use ($Connector, &$UserId, &$NumRaidsRemain, &$MainCharName, &$StateCounts, &$Attendances, &$Roles, $aEnd)
+        $AttendanceQuery->loop( function($Data) use ($Connector, &$UserId, &$NumRaidsRemain, &$MainCharName, &$StateCounts, &$Attendances, &$Roles, $GamesCondition, $GamesParameter, $aEnd)
         {
             if ( $UserId != $Data["UserId"] )
             {
@@ -163,26 +194,35 @@
                 $MainCharName = $Data["Name"];
 
                 // Fetch number of attendable raids
-
-                $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
+                
+                $RaidQueryString = "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
                     "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
-                    "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:End)" );
-
-                $Raids->bindValue( ":End",     $aEnd,                       PDO::PARAM_INT );
-                $Raids->bindValue( ":Created", intval($Data["CreatedUTC"]), PDO::PARAM_INT );
-
+                    "WHERE Start > FROM_UNIXTIME(?) AND Start < FROM_UNIXTIME(?) ".
+                    (($GamesCondition == "") ? "" : "AND (".$GamesCondition.")");
+                    
+                $Raids = $Connector->prepare( $RaidQueryString );
+                    
+                $Raids->bindValue( 1, intval($Data["CreatedUTC"]), PDO::PARAM_INT );
+                $Raids->bindValue( 2, $aEnd,                       PDO::PARAM_INT );
+                
+                foreach($GamesParameter as $Index => $Value)
+                    $Raids->bindValue($Index+3, strval($Value), PDO::PARAM_STR);
+                                
                 $RaidCountData = $Raids->fetchFirst();
                 $NumRaidsRemain = ($RaidCountData == null) ? 0 : $RaidCountData["NumberOfRaids"];
             }
-
-            $StateCounts[$Data["Status"]] += $Data["Count"];
             
-            if (!isset($Roles[$Data["Role"]]))
-                $Roles[$Data["Role"]] = 1;
-            else
-                ++$Roles[$Data["Role"]];
-            
-            $NumRaidsRemain -= $Data["Count"];
+            if ($Data["Status"] != null)
+            {
+                $StateCounts[$Data["Status"]] += $Data["Count"];
+                
+                if (!isset($Roles[$Data["Role"]]))
+                    $Roles[$Data["Role"]] = 1;
+                else
+                    ++$Roles[$Data["Role"]];
+                
+                $NumRaidsRemain -= $Data["Count"];
+            }
         });
 
         // Push last user

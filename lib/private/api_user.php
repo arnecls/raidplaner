@@ -6,7 +6,9 @@
     $gApiHelp["location"] = Array(
         "description" => "Query value. Get a list of available characters per user.",
         "parameters"  => Array(
-            "users" => "Comma separated list of user ids to fetch. Default: empty",
+            "users"   => "Comma separated list of user ids to fetch. Default: empty",
+            "games"   => "Comma separated list of game ids. Only returns characters for these games. Default: empty",
+            "current" => "Set to true to only return the currently logged in user. Default: false",
         )
     );
     
@@ -15,8 +17,9 @@
     function api_args_user($aRequest)
     {
         return Array(
-            "users" => getParamFrom($aRequest, "users", ""),
-            "games" => getParamFrom($aRequest, "games", "")
+            "users"   => getParamFrom($aRequest, "users", ""),
+            "games"   => getParamFrom($aRequest, "games", ""),
+            "current" => getParamFrom($aRequest, "current", false),
         );
     }
     
@@ -24,15 +27,16 @@
     
     function api_query_user($aParameter)
     {
-        $aUsers = getParamFrom($aParameter, "users", "");
-        $aGames = getParamFrom($aParameter, "games", "");
+        $aUsers   = getParamFrom($aParameter, "users", "");
+        $aGames   = getParamFrom($aParameter, "games", "");
+        $aCurrent = getParamFrom($aParameter, "current", false);
         
         $Parameters = Array();
         $Conditions = Array();
         
         // Filter users
         
-        if ($aUsers != "")
+        if (!$aCurrent && ($aUsers != ""))
         {
             $Users = explode(",", $aUsers);
             foreach($Users as &$UserId)
@@ -47,6 +51,16 @@
             {
                 array_push($Conditions, "UserId IN (".implode(",",$Users).")");
             }
+        }
+        
+        if ($aCurrent)
+        {
+            $Session = Session::get();
+            if ($Session === null)
+                return Array(); // no user logged in
+                
+            array_push($Conditions, "UserId=?");
+            array_push($Parameters, $Session->getUserId());
         }
         
         // Filter games
@@ -76,13 +90,13 @@
                     $Part = "(".implode(" OR ", $Part).")";
             }
             
-            $WhereString = " WHERE ".implode(" AND ",$Conditions);
+            $WhereString = "WHERE ".implode(" AND ",$Conditions)." ";
         }
         
         // Run query
         
         $Connector = Connector::getInstance();
-        $UserQuery = $Connector->prepare("SELECT `".RP_TABLE_PREFIX."Character`.* FROM `".RP_TABLE_PREFIX."User` ".
+        $UserQuery = $Connector->prepare("SELECT `".RP_TABLE_PREFIX."User`.UserId AS _UserId, `".RP_TABLE_PREFIX."Character`.* FROM `".RP_TABLE_PREFIX."User` ".
             "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
             $WhereString.
             "ORDER BY UserId,Name,Game");
@@ -90,7 +104,7 @@
         foreach($Parameters as $Index => $Value)
         {
             //Out::getInstance()->pushValue("query", $Value);
-            if (is_null($Value))
+            if (is_numeric($Value))
                 $UserQuery->bindValue($Index+1, intval($Value), PDO::PARAM_INT);
             else
                 $UserQuery->bindValue($Index+1, strval($Value), PDO::PARAM_STR);
@@ -104,14 +118,14 @@
         
         $UserQuery->loop(function($UserRow) use (&$LastUserId, &$Result, &$User) 
         {            
-            if ($LastUserId != $UserRow["UserId"])
+            if ($LastUserId != $UserRow["_UserId"])
             {
                 if (count($User) > 0)
                 {
                     array_push($Result, $User);
                 }
                 
-                $LastUserId = $UserRow["UserId"];
+                $LastUserId = $UserRow["_UserId"];
                 $User = Array(
                     "Id"         => $LastUserId,
                     "Characters" => Array()

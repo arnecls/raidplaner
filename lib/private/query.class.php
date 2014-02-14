@@ -16,6 +16,8 @@
             $this->OutputHTML = false;
         }
 
+        // --------------------------------------------------------------------------------------------
+
         public function setErrorsAsHTML($aEnable)
         {
             $this->OutputHTML = $aEnable;

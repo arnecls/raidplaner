@@ -11,6 +11,7 @@
             "limit"     => "Maximum number of raids to return. Passing 0 returns all raids. Default: 10.",
             "offset"    => "Number of raids to skip if a limit is set. Default: 0.",
             "location"  => "Comma separated list of location ids. Only returns raids on these locations. Default: empty.",
+            "games"     => "Comma separated list of game ids. Only returns raids for these games. Default: empty",
             "full"      => "Include raids that have all slots set. Default: true.",
             "free"      => "Include raids that do not have all slots set. Default: true.",
             "open"      => "Include raids that are open for registration. Default: true.",
@@ -30,6 +31,7 @@
             "limit"     => getParamFrom($aRequest, "limit", 10),
             "offset"    => getParamFrom($aRequest, "offset", 0),
             "location"  => getParamFrom($aRequest, "location", ""),
+            "games"     => getParamFrom($aRequest, "games", ""),
             "full"      => getParamFrom($aRequest, "full", true),
             "free"      => getParamFrom($aRequest, "free", true),
             "open"      => getParamFrom($aRequest, "open", true),
@@ -50,6 +52,7 @@
         $aLimit         = getParamFrom($aParameter, "limit",    10);
         $aOffset        = getParamFrom($aParameter, "offset",   0);
         $aLocation      = getParamFrom($aParameter, "location", "");
+        $aGames         = getParamFrom($aParameter, "games",    "");
         $aFetchFull     = getParamFrom($aParameter, "full",     true);
         $aFetchFree     = getParamFrom($aParameter, "free",     true);
         $aFetchOpen     = getParamFrom($aParameter, "open",     true);
@@ -74,14 +77,13 @@
             $aStart, $aEnd
         );
         
-        $TableQuery = " FROM `".RP_TABLE_PREFIX."Raid` ";
-        
+        $TableQuery  = " FROM `".RP_TABLE_PREFIX."Raid` ";
+        $TableQuery .= "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING (LocationId) ";
+            
         // Merge locations if required
         
         if ($aLocation != "")
-        {
-            $TableQuery .= "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING (LocationId) ";
-            
+        {            
             $Locations = explode(",",$aLocation);
             $LocationById = Array();
             $LocationByName = Array();
@@ -177,6 +179,22 @@
             array_push($Conditions, $StatusConditions);
         }
         
+        // Filter games
+        
+        if ($aGames != "")
+        {
+            $Games = explode(",", $aGames);
+            $GameOptions = Array();
+            
+            foreach($Games as $Game)
+            {
+                array_push($GameOptions, "`".RP_TABLE_PREFIX."Location`.Game=?");
+                array_push($Parameters, $Game);
+            }
+            
+            array_push($Conditions, $GameOptions);
+        }
+        
         // Build where part
         
         $WhereString = "";        
@@ -214,7 +232,7 @@
         foreach($Parameters as $Index => $Value)
         {
             //Out::getInstance()->pushValue("query", $Value);
-            if (is_null($Value))
+            if (is_numeric($Value))
                 $RaidQuery->bindValue($Index+1, intval($Value), PDO::PARAM_INT);
             else
                 $RaidQuery->bindValue($Index+1, strval($Value), PDO::PARAM_STR);

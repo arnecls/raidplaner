@@ -42,7 +42,7 @@
             switch( strtolower($_REQUEST["query"]))
             {
             case "location":
-                $Out->pushValue("result", api_query_location());
+                $Out->pushValue("result", api_query_location($Parameter));
                 break;
                 
             case "user":
