@@ -61,6 +61,8 @@
 					
 				if ($Key - $PrevKey != 1)
 					return false;
+					
+                $PrevKey = $Key;
 			}
 			
 			return true;
