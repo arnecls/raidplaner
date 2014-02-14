@@ -157,11 +157,11 @@
         $gLocale[ "AbsentMessage" ]            = "Podaj powód dlaczego gracz będzie nieobecny.<br/>Wiadomość będzie poprzedzona twoim loginem.";
         $gLocale[ "SetupBy" ]                  = "Obecny";
         $gLocale[ "AbsentBy" ]                 = "Nieobecny";
-        $gLocale[ "SwitchChar" ]               = "Zmieniono postać";
+        $gLocale[ "SwitchChar" ]               = "Zmieniono rolę";
         $gLocale[ "RaidNotFound" ]             = "Nie znaleziono rajdu";
         $gLocale[ "RaidSetup" ]                = "Ustawienia rajdu";
         $gLocale[ "LinkToRaid" ]               = "Link do rajdu";
-        $gLocale[ "Switch" ]                   = "Przełącznik"; //????
+        $gLocale[ "Switch" ]                   = "Zmień rolę";
         $gLocale[ "Retire" ]                   = "Nieobecny";
 
         // Profile

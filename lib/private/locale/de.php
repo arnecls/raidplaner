@@ -33,7 +33,6 @@
         $gLocale[ "Thaumaturge" ]              = "Thaumaturg";
         $gLocale[ "Warrior_FF14" ]             = "Krieger";
         $gLocale[ "Whitemage" ]                = "Weißmagier";
-        $gLocale[ "Random" ]                   = "Unbekannt";
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
