@@ -38,7 +38,7 @@
         $aGames = getParamFrom($aParameter, "games", "");
         
         $Conditions = Array(
-            "`".RP_TABLE_PREFIX."Character`.Mainchar = 'true'",
+            "(`".RP_TABLE_PREFIX."Character`.Mainchar = 'true' OR `".RP_TABLE_PREFIX."Character`.Mainchar IS NULL)",
             "(`".RP_TABLE_PREFIX."Raid`.RaidId IS NULL OR ".
                 "(`".RP_TABLE_PREFIX."Raid`.Start > `".RP_TABLE_PREFIX."User`.Created AND ".
                 "`".RP_TABLE_PREFIX."Raid`.Start > FROM_UNIXTIME(?) AND ".
@@ -97,7 +97,9 @@
         {
             $Games = explode(",", $aGames);
             $GameByLoc = Array();
-            $GameByChar = Array();
+            $GameByChar = Array(
+                "`".RP_TABLE_PREFIX."Character`.Game IS NULL"
+            );
             
             foreach($Games as $Game)
             {
@@ -135,8 +137,8 @@
             "UNIX_TIMESTAMP(`".RP_TABLE_PREFIX."User`.Created) AS CreatedUTC, ".
             "COUNT(*) AS Count ".
             "FROM `".RP_TABLE_PREFIX."User` ".
-            "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
-            "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(CharacterId) ".
+            "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(UserId) ".
+            "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(CharacterId) ".
             "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) ".
             "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
             $WhereString.
@@ -212,14 +214,19 @@
                 $NumRaidsRemain = ($RaidCountData == null) ? 0 : $RaidCountData["NumberOfRaids"];
             }
             
+            Out::getInstance()->pushValue("debug", $Data["Status"]);
+            
             if ($Data["Status"] != null)
             {
                 $StateCounts[$Data["Status"]] += $Data["Count"];
                 
-                if (!isset($Roles[$Data["Role"]]))
-                    $Roles[$Data["Role"]] = 1;
-                else
-                    ++$Roles[$Data["Role"]];
+                if ($Data["Role"] != null)
+                {
+                    if (!isset($Roles[$Data["Role"]]))
+                        $Roles[$Data["Role"]] = 1;
+                    else
+                        ++$Roles[$Data["Role"]];
+                }
                 
                 $NumRaidsRemain -= $Data["Count"];
             }
