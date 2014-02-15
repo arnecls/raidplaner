@@ -2,6 +2,7 @@
     require_once(dirname(__FILE__)."/connector.class.php");
     require_once(dirname(__FILE__)."/settings.class.php");
     require_once(dirname(__FILE__)."/session.class.php");
+    require_once(dirname(__FILE__)."/random.class.php");
     
     $gVersion = 110.0;
 

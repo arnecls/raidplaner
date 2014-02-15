@@ -5,7 +5,7 @@
 
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
-
+    
     // Old browser check
 
     include_once("oldbrowser.php");

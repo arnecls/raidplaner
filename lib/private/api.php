@@ -21,8 +21,8 @@
             
             if (!isset($Settings["ApiPrivate"])) 
             {
-                $PrivateToken = dechex(crc32(openssl_random_pseudo_bytes(2048))).
-                    dechex(crc32(openssl_random_pseudo_bytes(2048)));
+                $PrivateToken = dechex(crc32(Random::getBytes(2048))).
+                    dechex(crc32(Random::getBytes(2048)));
                 
                 $Settings["ApiPrivate"] = Array(
                     "IntValue"  => 0,
@@ -53,7 +53,7 @@
             
             if ($Settings["ApiPublic"]["IntValue"] < time()) 
             {
-                $PublicToken = md5(openssl_random_pseudo_bytes(2048));
+                $PublicToken = md5(Random::getBytes(2048));
                 
                 // Store old token so that running requests don't fail
                 

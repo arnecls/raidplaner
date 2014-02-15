@@ -270,8 +270,6 @@
         $gLocale[ "FTPClientHelp" ]            = "On how to change permissions, please consult your FTP client's helpfiles.";
         $gLocale[ "OutdatedPHP" ]              = "Zastaralá verze PHP";
         $gLocale[ "PHPVersion" ]               = "Verze PHP";
-        $gLocale[ "McryptModule" ]             = "Modul mcrypt";
-        $gLocale[ "McryptNotFound" ]           = "Mcrypt není nakonfigurován s PHP";
         $gLocale[ "PDOModule" ]                = "Modul PDO";
         $gLocale[ "PDONotFound" ]              = "PDO není nakonfigurováno s PHP";
         $gLocale[ "PDOMySQLModule" ]           = "PDO MySQL driver";

@@ -98,7 +98,7 @@
 
         public static function generateKey32()
         {
-            return md5(openssl_random_pseudo_bytes(2048));
+            return md5(Random::getBytes(2048));
         }
 
         // --------------------------------------------------------------------------------------------

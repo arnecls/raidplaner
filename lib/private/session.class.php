@@ -1,6 +1,7 @@
 <?php
     
     require_once dirname(__FILE__)."/connector.class.php";
+    require_once dirname(__FILE__)."/random.class.php";
     
     class Session implements ArrayAccess
     {
@@ -143,7 +144,7 @@
         
         private static function generateKey40()
         {
-            return sha1(openssl_random_pseudo_bytes(2048));
+            return sha1(Random::getBytes(2048));
         }
         
         // ---------------------------------------------------------------------
