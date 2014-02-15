@@ -38,7 +38,8 @@
         $aGames = getParamFrom($aParameter, "games", "");
         
         $Conditions = Array(
-            "(`".RP_TABLE_PREFIX."Character`.Mainchar = 'true' OR `".RP_TABLE_PREFIX."Character`.Mainchar IS NULL)",
+            "(`".RP_TABLE_PREFIX."Character`.Mainchar IS NULL OR ".
+                "`".RP_TABLE_PREFIX."Character`.Mainchar = 'true')",
             "(`".RP_TABLE_PREFIX."Raid`.RaidId IS NULL OR ".
                 "(`".RP_TABLE_PREFIX."Raid`.Start > `".RP_TABLE_PREFIX."User`.Created AND ".
                 "`".RP_TABLE_PREFIX."Raid`.Start > FROM_UNIXTIME(?) AND ".
@@ -97,20 +98,21 @@
         {
             $Games = explode(",", $aGames);
             $GameByLoc = Array();
-            $GameByChar = Array(
-                "`".RP_TABLE_PREFIX."Character`.Game IS NULL"
-            );
+            $GameByChar = Array();
             
             foreach($Games as $Game)
             {
                 array_push($GameByLoc, "`".RP_TABLE_PREFIX."Location`.Game=?");                
                 array_push($GameByChar, "`".RP_TABLE_PREFIX."Character`.Game=?");                
                 array_push($Parameters, $Game);
+                array_push($Parameters, $Game);
                 array_push($GamesParameter, $Game);
             }
             
-            array_push($Conditions, $GameByChar);
             $GamesCondition = implode(" OR ", $GameByLoc);
+            
+            array_push($GameByChar, "(`".RP_TABLE_PREFIX."Character`.CharacterId IS NULL AND (`raids_Location`.Game IS NULL OR ".$GamesCondition."))");
+            array_push($Conditions, $GameByChar);
         }
         
         // Build where clause
@@ -144,7 +146,7 @@
             $WhereString.
             "GROUP BY `".RP_TABLE_PREFIX."User`.UserId, `".RP_TABLE_PREFIX."Attendance`.Status ";
             
-        //Out::getInstance()->pushValue("debug", $QueryString);
+        Out::getInstance()->pushValue("debug", $QueryString);
     
         $Connector = Connector::getInstance();
         $AttendanceQuery = $Connector->prepare( $QueryString );
