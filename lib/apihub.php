@@ -14,7 +14,7 @@
     }
     else if (!isset($_REQUEST["query"]))
     {
-        $Out->pushError("You must at least provide the parameter `query` and either a `public` or the `private` token.");
+        $Out->pushError("You must at least provide the parameter `query` and a `token`.");
         $Out->pushError("You can also pass `help` with a topic to see a list of available parameters.");
     }
     else
