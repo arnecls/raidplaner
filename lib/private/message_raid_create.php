@@ -80,7 +80,7 @@
                 // Prepare posting raids to forum
     
                 $PostTargets = array();
-                PluginRegistry::ForEachPlugin(function($PluginInstance) use (&$PostTargets)
+                PluginRegistry::ForEachBinding(function($PluginInstance) use (&$PostTargets)
                 {
                     if ($PluginInstance->isActive() && $PluginInstance->postRequested())
                     {
@@ -174,6 +174,13 @@
                             Out::getInstance()->pushError($Exception->getMessage());
                         }
                     }
+                    
+                    // Call plugins
+                    
+                    PluginRegistry::ForEachPlugin(function($PluginInstance) use ($RaidId)
+                    {
+                        $PluginInstance->onRaidCreate($RaidId); 
+                    });
     
                     // Increment start/end
     

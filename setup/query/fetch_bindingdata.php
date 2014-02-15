@@ -32,7 +32,7 @@
     else
     {
 
-        PluginRegistry::ForEachPlugin( function($PluginInstance) use ($BindingName, $Out)
+        PluginRegistry::ForEachBinding( function($PluginInstance) use ($BindingName, $Out)
         {
             if ($PluginInstance->getName() == $BindingName)
             {

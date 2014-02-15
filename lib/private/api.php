@@ -9,12 +9,18 @@
     require_once(dirname(__FILE__)."/api_statistic.php");
     require_once(dirname(__FILE__)."/api_help.php");
 
+    // The functions used in this file can safely be used by plugins or other
+    // raidplaner extensions. API modifications will be avoided if possible and
+    // documented if necessary.
     class Api
     {
         private static $PublicUpdateInterval = 1800; // Seconds until new public key
-    
+        private static $Plugins = Array();
+        
         // ---------------------------------------------------------------------
-                
+        
+        // Returns the private token. If no token has been created, yet a new
+        // token will be generated.     
         public static function getPrivateToken()
         {
             $Settings = Settings::getInstance();
@@ -35,6 +41,8 @@
         
         // ---------------------------------------------------------------------
         
+        // Returns a public token for the passed parameter set. This token is
+        // guaranteed to be valid for Api::$PublicUpdateInterval seconds.     
         public static function getPublicToken($aParameter)
         {
             $Settings = Settings::getInstance();
@@ -47,6 +55,10 @@
         
         // ---------------------------------------------------------------------
         
+        // Try to generate a new public token. This function is called by
+        // Api::testPublicToken, but there might be situations where you want
+        // to genreate a new token manually.
+        // This function takes Api::$PublicUpdateInterval into account.
         public static function tryGeneratePublicToken()
         {
             $Settings = Settings::getInstance();
@@ -76,6 +88,7 @@
         
         // ---------------------------------------------------------------------
         
+        // Test if the given token equals the private token.
         public static function testPrivateToken($aToken)
         {
             return self::getPrivateToken() == $aToken;
@@ -83,6 +96,9 @@
         
         // ---------------------------------------------------------------------
         
+        // Test if the given public tokan is valid for a given set of
+        // parameters. This function will call Api::tryGeneratePublicToken to
+        // assure the public token lifetime.
         public static function testPublicToken($aParameter, $aToken)
         {
             $Settings = Settings::getInstance();
@@ -113,6 +129,9 @@
         
         // ---------------------------------------------------------------------
         
+        // Filter the given set of parameters so that only known location
+        // parameters are included. Missing location parameters will be added
+        // with their default value.
         public static function normalizeArgsLocation($aParameter)
         {
             return api_args_location($aParameter);
@@ -120,13 +139,18 @@
         
         // ---------------------------------------------------------------------
         
-        public static function queryLocation()
+        // Returns a list of locations. This function is the PHP equivalent to
+        // apihub.php?query=location. A token does not need to be passed.
+        public static function queryLocation($aParameter)
         {
-            return api_query_location();
+            return api_query_location($aParameter);
         }
         
         // ---------------------------------------------------------------------
         
+        // Filter the given set of parameters so that only known user
+        // parameters are included. Missing user parameters will be added
+        // with their default value.
         public static function normalizeArgsUser($aParameter)
         {
             return api_args_user($aParameter);
@@ -134,6 +158,8 @@
         
         // ---------------------------------------------------------------------
                 
+        // Returns a list of users. This function is the PHP equivalent to
+        // apihub.php?query=user. A token does not need to be passed.
         public static function queryUser($aParameter)
         {
             return api_query_user($aParameter);
@@ -141,6 +167,9 @@
         
         // ---------------------------------------------------------------------
         
+        // Filter the given set of parameters so that only known raid
+        // parameters are included. Missing raid parameters will be added
+        // with their default value.
         public static function normalizeArgsRaid($aParameter)
         {
             return api_args_raid($aParameter);
@@ -148,6 +177,8 @@
         
         // ---------------------------------------------------------------------
         
+        // Returns a list of raids. This function is the PHP equivalent to
+        // apihub.php?query=raid. A token does not need to be passed.
         public static function queryRaid($aParameter)
         {
             return api_query_raid($aParameter);
@@ -155,6 +186,9 @@
         
         // ---------------------------------------------------------------------
         
+        // Filter the given set of parameters so that only known statistic
+        // parameters are included. Missing statistic parameters will be added
+        // with their default value.
         public static function normalizeArgsStatistic($aParameter)
         {
             return api_args_statistic($aParameter);
@@ -162,6 +196,8 @@
         
         // ---------------------------------------------------------------------
         
+        // Returns a list of user statistics. This function is the PHP equivalent
+        // to apihub.php?query=statistic. A token does not need to be passed.
         public static function queryStatistic($aParameter)
         {
             return api_query_statistic($aParameter);

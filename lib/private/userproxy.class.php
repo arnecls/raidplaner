@@ -51,7 +51,7 @@
             );
 
             self::$BindingsByName[$NativeBinding->getName()] = $NativeBinding;            
-            PluginRegistry::ForEachPlugin(function($PluginInstance) {
+            PluginRegistry::ForEachBinding(function($PluginInstance) {
                 UserProxy::registerInstance($PluginInstance);
             });
         }

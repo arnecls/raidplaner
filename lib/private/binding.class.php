@@ -54,7 +54,6 @@
 
     // Common interface for forum/cms bindings
     abstract class Binding
-
     {
         private $mConnector;
 

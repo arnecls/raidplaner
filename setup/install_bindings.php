@@ -9,7 +9,7 @@
 
     $gBindings = array();
 
-    PluginRegistry::ForEachPlugin( function($PluginInstance) use (&$gBindings)
+    PluginRegistry::ForEachBinding( function($PluginInstance) use (&$gBindings)
     {
         array_push($gBindings, $PluginInstance);
     });

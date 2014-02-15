@@ -12,7 +12,7 @@
 
     echo "<test>";
 
-    PluginRegistry::ForEachPlugin( function($PluginInstance) use ($Out)
+    PluginRegistry::ForEachBinding( function($PluginInstance) use ($Out)
     {
         $Binding = $PluginInstance->getName();
 

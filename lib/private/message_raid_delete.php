@@ -5,6 +5,14 @@
         if ( validRaidlead() )
         {
             $Connector = Connector::getInstance();
+            
+            // Call plugins
+            
+            $RaidId = intval($aRequest["id"]);        
+            PluginRegistry::ForEachPlugin(function($PluginInstance) use ($RaidId)
+            {
+                $PluginInstance->onRaidRemove($RaidId); 
+            });
     
             // Delete raid
     
