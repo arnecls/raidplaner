@@ -219,7 +219,7 @@
                 $UpdateQuery->bindValue(":Start", intval($UpdateRange[0]), PDO::PARAM_INT);
                 $UpdateQuery->bindValue(":End", intval($UpdateRange[1]), PDO::PARAM_INT);
                 $UpdateQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":Message", intval($VacationMessage), PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
                 $UpdateQuery->execute();
             }
             
