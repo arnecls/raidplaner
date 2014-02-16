@@ -52,12 +52,6 @@
     position: relative;
 }
 
-#calendar .vacation {
-    border-top: 1px solid rgba(255,0,0,0.5);
-    height: 76px;
-    max-height: 76px;
-}
-
 #calendar .dayOfMonth {
     color: #d2d2d2;
     font-size: 24px;
@@ -70,36 +64,32 @@
     color: #7d7d7d;
 }
 
+#calendar .vacation {
+    border-top: 2px solid rgba(255,0,0,0.2);
+}
+
+#calendar .vacation_today {
+    border-top: 2px solid rgba(255,0,0,1)!important;
+}
+
 #calendar .today {
-    border-style: solid;
-    border-color: #b88e8e;
-    border-width: 1px;
+    border: 1px solid #b88e8e;
     vertical-align: top;
     background-color: rgba(215, 215, 210, 0.4);
     padding: 3px;
 }
 
 #calendar .day {
-    border-right-color: #9a9a9a;
-    border-bottom-color: #9a9a9a;
-    border-bottom-style: dotted;
-    border-right-style: dotted;
-    border-bottom-width: 1px;
-    border-right-width: 1px;
+    border-right: 1px dotted #9a9a9a;
+    border-bottom: 1px dotted #9a9a9a;
     vertical-align: top;
     padding: 3px;
 }
 
 #calendar .dayFirst {
-    border-right-color: #9a9a9a;
-    border-bottom-color: #9a9a9a;
-    border-bottom-style: dotted;
-    border-right-style: dotted;
-    border-bottom-width: 1px;
-    border-right-width: 1px;
-    border-left-color: #9a9a9a;
-    border-left-style: dotted;
-    border-left-width: 1px;
+    border-right: 1px dotted #9a9a9a;
+    border-bottom: 1px dotted #9a9a9a;
+    border-left: 1px dotted #9a9a9a;
     vertical-align: top;
     padding: 3px;
 }
