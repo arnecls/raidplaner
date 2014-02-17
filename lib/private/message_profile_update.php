@@ -190,7 +190,7 @@
             // Update vacation settings
             
             $Ranges = getVacationData($aRequest);
-            $VacationMessage = ($aRequest["vacationMessage"] == null) ? "" : $aRequest["vacationMessage"];
+            $VacationMessage = ($aRequest["vacationMessage"] == null) ? "" : requestToXML( $aRequest["vacationMessage"], ENT_COMPAT, "UTF-8" );
             
             // Revoke ranges that have been removed
             

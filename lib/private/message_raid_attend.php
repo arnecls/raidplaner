@@ -132,7 +132,7 @@
                     if ( $ChangeComment )
                     {
                         $Comment = requestToXML( $aRequest["comment"], ENT_COMPAT, "UTF-8" );
-                        $AttendQuery->bindValue(":Comment", intval($Comment), PDO::PARAM_INT);
+                        $AttendQuery->bindValue(":Comment", $Comment, PDO::PARAM_STR);
                     }
     
                     $AttendQuery->bindValue(":CharacterId", intval($CharacterId), PDO::PARAM_INT);
