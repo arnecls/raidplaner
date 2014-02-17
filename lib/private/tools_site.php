@@ -151,18 +151,9 @@
 
     // ---------------------------------------------------------------
 
-    function loadGameSettings()
+    function loadGame($aConfigFileName)
     {
-        global $gSite;
-        global $gGame;
-        
-        if ($gGame != null)
-            return; // ### return, already initialized ###
-            
-        loadSiteSettings();
-        $Out = Out::getInstance();
-        
-        $gGame = Array(
+        $Game = Array(
             "GameId"        => "none",
             "Family"        => "wow",
             "ClassMode"     => "single",
@@ -173,7 +164,7 @@
             "Groups"        => Array()
         );
         
-        $ConfigFile = realpath(dirname(__FILE__)."/../../themes/games/".$gSite["GameConfig"].".xml");
+        $ConfigFile = realpath(dirname(__FILE__)."/../../themes/games/".$aConfigFileName.".xml");
         
         if ( !file_exists($ConfigFile) )
         {
@@ -187,15 +178,15 @@
                 
                 // General
                 
-                $gGame["GameId"] = strtolower($Config->id);
-                $gGame["Family"] = strtolower($Config->family);
-                $gGame["ClassMode"] = strtolower($Config->classmode);
+                $Game["GameId"] = strtolower($Config->id);
+                $Game["Family"] = strtolower($Config->family);
+                $Game["ClassMode"] = strtolower($Config->classmode);
                 
-                if (strlen($gGame["GameId"]) > 4)
-                    throw new Exception("Game ids must be at least 1 and can be at most 4 characters long. ".$gGame["GameId"]." does not match this rule.");
+                if (strlen($Game["GameId"]) > 4)
+                    throw new Exception("Game ids must be at least 1 and can be at most 4 characters long. ".$Game["GameId"]." does not match this rule.");
                 
-                if (($gGame["ClassMode"] != "single") && 
-                    ($gGame["ClassMode"] != "multi"))
+                if (($Game["ClassMode"] != "single") && 
+                    ($Game["ClassMode"] != "multi"))
                 {
                     throw new Exception("Classmode must either be single or multi.");
                 }
@@ -207,7 +198,7 @@
                     if (strlen(strval($Role["id"])) != 3)
                         throw new Exception("Role ids must be exactly 3 characters long. ".strval($Role["id"])." does not match this rule.");
                         
-                    $gGame["Roles"][strval($Role["id"])] = Array(
+                    $Game["Roles"][strval($Role["id"])] = Array(
                         "id"    => strval($Role["id"]),
                         "name"  => strval($Role["loca"]),
                         "style" => strval($Role["style"])
@@ -231,7 +222,7 @@
                     
                     foreach($Class->role as $Role)
                     {
-                        if (!isset($gGame["Roles"][strval($Role["id"])]))
+                        if (!isset($Game["Roles"][strval($Role["id"])]))
                             throw new Exception("Unknown role ".$Role["id"]." used in class ".$Class["id"].".");
                         
                         array_push($ClassData["roles"], strval($Role["id"]));
@@ -239,7 +230,7 @@
                             $ClassData["defaultRole"] = strval($Role["id"]);
                     }
                     
-                    $gGame["Classes"][strval($Class["id"])] = $ClassData;
+                    $Game["Classes"][strval($Class["id"])] = $ClassData;
                 }
                 
                 // Raidview
@@ -254,12 +245,12 @@
                         ? $MaxNumCols - $ColsUsed
                         : intval($Slot["columns"]);
                                         
-                    $gGame["RaidView"][strval($Slot["role"])] = $Columns;
+                    $Game["RaidView"][strval($Slot["role"])] = $Columns;
                     
                     if (isset($Slot["order"]))
                         array_push($Order, intval($Slot["order"]).":".strval($Slot["role"]));
                     else
-                        array_push($Order, count($gGame["RaidViewOrder"]).":".strval($Slot["role"]));
+                        array_push($Order, count($Game["RaidViewOrder"]).":".strval($Slot["role"]));
                     
                     $ColsUsed += $Columns;
                 }
@@ -268,7 +259,7 @@
                 
                 foreach($Order as &$Role)
                 {
-                    array_push($gGame["RaidViewOrder"], substr($Role, strpos($Role, ":")+1));
+                    array_push($Game["RaidViewOrder"], substr($Role, strpos($Role, ":")+1));
                 }
                 
                 if ($ColsUsed != $MaxNumCols)
@@ -284,7 +275,7 @@
                     
                     foreach($Group->role as $Role)
                     {
-                        if (!isset($gGame["Roles"][strval($Role["id"])]))
+                        if (!isset($Game["Roles"][strval($Role["id"])]))
                             throw new Exception("Unknown role ".$Role["id"]." used in group (".$GroupSize.").");
                         
                         $Count = ($Role["count"] == "*")
@@ -298,7 +289,7 @@
                     if ($SlotsUsed != $GroupSize)
                         throw new Exception("Group size ".$GroupSize." contains ".$SlotsUsed." slots.");
                     
-                    $gGame["Groups"][$GroupSize] = $GroupData;
+                    $Game["Groups"][$GroupSize] = $GroupData;
                 }
             }
             catch(Exception $e)
@@ -306,6 +297,24 @@
                 $Out->pushError("Error parsing gameconfig file ".$ConfigFile.":\n\n".$e->getMessage());
             }
         }
+        
+        return $Game;
+    }
+    
+    // ---------------------------------------------------------------
+
+    function loadGameSettings()
+    {
+        global $gSite;
+        global $gGame;
+        
+        if ($gGame != null)
+            return; // ### return, already initialized ###
+            
+        loadSiteSettings();
+        $Out = Out::getInstance();
+        
+        $gGame = loadGame($gSite["GameConfig"]);
     }
 
     // ---------------------------------------------------------------

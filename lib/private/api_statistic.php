@@ -37,6 +37,8 @@
         $aUsers = getParamFrom($aParameter, "users", "");
         $aGames = getParamFrom($aParameter, "games", "");
         
+        // Build query
+        
         $Conditions = Array(
             "(`".RP_TABLE_PREFIX."Character`.Mainchar IS NULL OR ".
                 "`".RP_TABLE_PREFIX."Character`.Mainchar = 'true')",

@@ -31,6 +31,23 @@
         $aGames   = getParamFrom($aParameter, "games", "");
         $aCurrent = getParamFrom($aParameter, "current", false);
         
+        // load gameconfigs
+        
+        $GameFiles = scandir( dirname(__FILE__)."/../../themes/games" );
+        $Games = Array();
+        
+        foreach ( $GameFiles as $GameFileName )
+        {
+            $ExtPos = strpos($GameFileName,".xml");
+            if ($ExtPos > 0)
+            {
+                $Game = loadGame(substr($GameFileName,0,$ExtPos));
+                $Games[$Game["GameId"]] = $Game;
+            }
+        }        
+        
+        // Build query
+        
         $Parameters = Array();
         $Conditions = Array();
         
@@ -116,7 +133,7 @@
         $LastUserId = 0;
         $User = Array();
         
-        $UserQuery->loop(function($UserRow) use (&$LastUserId, &$Result, &$User) 
+        $UserQuery->loop(function($UserRow) use (&$LastUserId, &$Result, &$User, &$Games) 
         {            
             if ($LastUserId != $UserRow["_UserId"])
             {
@@ -134,12 +151,38 @@
             
             if ($UserRow["CharacterId"] != null)
             {
+                $Game = $Games[$UserRow["Game"]];
+                $Classes = explode(":",$UserRow["Class"]);
+                $Roles = Array();
+                
+                if ($Game["ClassMode"] == "single")
+                {
+                    // Single class mode -> Roles are in database
+                    
+                    array_push($Roles, $UserRow["Role1"]);
+                    if ($UserRow["Role1"] != $UserRow["Role2"])
+                        array_push($Roles, $UserRow["Role2"]);
+                }
+                else
+                {
+                    // Multi class mode -> Roles are attached to class
+                    
+                    foreach($Classes as $ClassId)
+                    {
+                        foreach($Game["Classes"][$ClassId]["roles"] as $RoleId)
+                        {
+                            if (!in_array($RoleId, $Roles))
+                                array_push($Roles, $RoleId);
+                        }
+                    }
+                }
+            
                 array_push($User["Characters"], Array(
                     "Name"       => $UserRow["Name"],
                     "Game"       => $UserRow["Game"],
                     "IsMainChar" => $UserRow["Mainchar"] == "true",
-                    "Classes"    => explode(":",$UserRow["Class"]),
-                    "Roles"      => Array($UserRow["Role1"], $UserRow["Role2"])
+                    "Classes"    => $Classes,
+                    "Roles"      => $Roles
                 ));
             }
         });

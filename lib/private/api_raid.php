@@ -265,17 +265,18 @@
                     "Slots"       => array_combine(explode(":", $aRaidRow["SlotRoles"]), explode(":", $aRaidRow["SlotCount"])),
                     "SetToRaid"   => Array(),
                     "Available"   => Array(),
-                    "Absent"      => Array(),
+                    "Absent"      => 0,
                 );
                 
                 if ($aAddAttends)
+                {
                     $Raid["Attends"]  = Array();
-                    
+                }                
+                   
                 foreach($Raid["Slots"] as $Role => $Max)
                 {
                     $Raid["SetToRaid"][$Role] = 0;
                     $Raid["Available"][$Role] = 0;
-                    $Raid["Absent"][$Role]    = 0;
                 }
             }
             
@@ -293,12 +294,12 @@
                     break;
                 
                 case "undecided":
-                    // TODO: Undecided are only those with a comment
+                    // TODO: Need to query all available users to return undecided
                     break;
                     
                 case "unavailable":
                 default:
-                    ++$Raid["Absent"][$aRaidRow["Role"]];
+                    ++$Raid["Absent"];
                     break;
                 }
             }
