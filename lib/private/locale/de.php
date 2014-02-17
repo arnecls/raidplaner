@@ -232,6 +232,7 @@
         $gLocale[ "RaidModeOverbook" ]         = "Durch Raidleiter mit Überbuchen";
         $gLocale[ "RaidModeAttend" ]           = "Aufstellung nach Anmeldung";
         $gLocale[ "RaidModeAll" ]              = "Nur Liste";
+        $gLocale[ "RaidModeOptOut" ]           = "Alle Spieler anmelden";
         $gLocale[ "UpdateCheck" ]              = "Suche nach Updates";
         $gLocale[ "UpToDate" ]                 = "Dieser Raidplaner ist aktuell.";
         $gLocale[ "NewVersionAvailable" ]      = "Es ist eine neue Version verfügbar:";

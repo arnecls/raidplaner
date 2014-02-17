@@ -236,6 +236,7 @@
         $gLocale[ "RaidModeOverbook" ]         = "Przez raid lidera z nadmiarem";
         $gLocale[ "RaidModeAttend" ]           = "Automatyczny";
         $gLocale[ "RaidModeAll" ]              = "Tylko lista";
+        $gLocale[ "RaidModeOptOut" ]           = null;
         $gLocale[ "UpdateCheck" ]              = "Sprawdź aktualizacje";
         $gLocale[ "UpToDate" ]                 = "Raidplanner jest aktualny.";
         $gLocale[ "NewVersionAvailable" ]      = "Dostępna jest nowa wersja:";

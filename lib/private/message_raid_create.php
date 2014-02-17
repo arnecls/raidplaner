@@ -98,6 +98,23 @@
                     $LocationQuery->bindValue(":LocationId", intval($LocationId), PDO::PARAM_INT);
                     $LocationData = $LocationQuery->fetchFirst();
                 }
+                
+                // Get opt-out list
+                
+                $AutoAttendUsers = Array();
+                
+                if (strtolower($aRequest["mode"] == "optout"))
+                {
+                    $UserQuery = $Connector->prepare("SELECT UserId, CharacterId, Class, Role1 FROM `".RP_TABLE_PREFIX."User` ".
+                        "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
+                        "WHERE Mainchar='true' AND Game=:Game");
+                        
+                    $UserQuery->bindValue(":Game", $gGame["GameId"], PDO::PARAM_STR);
+                    $UserQuery->loop(function($aUser) use (&$AutoAttendUsers)
+                    {
+                        array_push($AutoAttendUsers, $aUser);
+                    });
+                }
     
                 // Create raids(s)
     
@@ -106,6 +123,8 @@
                 $GroupInfo = $gGame["Groups"][$aRequest["locationSize"]];            
                 $SlotRoles = implode(":", array_keys($GroupInfo));
                 $SlotCount = implode(":", $GroupInfo);
+                $RaidMode  = ($aRequest["mode"] == "optout") ? "manual" : $aRequest["mode"];
+    
                 
                 for ($rc=0; $rc<$Repeat; ++$rc)
                 {
@@ -121,12 +140,13 @@
     
                     $StartDateTime += $aRequest["startOffset"] * 60;
                     $EndDateTime   += $aRequest["endOffset"] * 60;
-    
+                    
+                    
                     $NewRaidQuery->bindValue(":LocationId",  intval( $LocationId), PDO::PARAM_INT);
                     $NewRaidQuery->bindValue(":Size",        intval($aRequest["locationSize"]), PDO::PARAM_INT);
                     $NewRaidQuery->bindValue(":Start",       intval($StartDateTime), PDO::PARAM_INT);
                     $NewRaidQuery->bindValue(":End",         intval($EndDateTime), PDO::PARAM_INT);
-                    $NewRaidQuery->bindValue(":Mode",        $aRequest["mode"], PDO::PARAM_STR);
+                    $NewRaidQuery->bindValue(":Mode",        $RaidMode, PDO::PARAM_STR);
                     $NewRaidQuery->bindValue(":Description", requestToXML( $aRequest["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
                     $NewRaidQuery->bindValue(":SlotRoles",   $SlotRoles, PDO::PARAM_STR);
                     $NewRaidQuery->bindValue(":SlotCount",   $SlotCount, PDO::PARAM_STR);
@@ -134,13 +154,45 @@
                     $NewRaidQuery->execute();
                     $RaidId = $Connector->lastInsertId();
                     
+                    // Attend players when mode is optout
+                    
+                    if (count($AutoAttendUsers > 0))
+                    {
+                        foreach($AutoAttendUsers as $User)
+                        {
+                            $UserId = intval($User["UserId"]);
+                            if (isset($VactionUsers[$UserId]) &&
+                                (($StartDateTime >= $VactionUsers[$UserId]["Start"]) && ($StartDateTime <= $VactionUsers[$UserId]["End"])))
+                            {
+                                continue; // ### continue, user is on vacation ###
+                            }
+                            
+                            $Classes = explode(":", $User["Class"]);
+                            $ClassId = $Classes[0];
+                            
+                            $RoleId = ($gGame["ClassMode"] == "multi")
+                                ? $gGame["Classes"][$ClassId]["roles"][0]
+                                : $User["Role1"];
+                            
+                            $AttendQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, CharacterId, Class, Role, Status) ".
+                                                               "VALUES (:UserId, :RaidId, :CharId, :Class, :Role, 'available')");
+    
+                            $AttendQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                            $AttendQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
+                            $AttendQuery->bindValue(":CharId", intval($User["CharacterId"]), PDO::PARAM_INT);
+                            $AttendQuery->bindValue(":Class", $ClassId, PDO::PARAM_STR);
+                            $AttendQuery->bindValue(":Role", $RoleId, PDO::PARAM_STR);
+    
+                            $AttendQuery->execute();
+                        }
+                    }
+                    
                     // Set vacation attendances
     
                     foreach ($VactionUsers as $UserId => $Settings)
                     {
                         if ( ($StartDateTime >= $Settings["Start"]) && ($StartDateTime <= $Settings["End"]) )
                         {
-    
                             $AbsentQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
                                                                "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
     

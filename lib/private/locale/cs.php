@@ -233,7 +233,8 @@
         $gLocale[ "RaidModeManual" ]           = "Setup by raidlead";
         $gLocale[ "RaidModeOverbook" ]         = "By raidlead with overbooking";
         $gLocale[ "RaidModeAttend" ]           = "Setup by attend";
-        $gLocale[ "RaidModeAll" ]              = "Just list";                    
+        $gLocale[ "RaidModeAll" ]              = "Just list";
+        $gLocale[ "RaidModeOptOut" ]           = null;
         $gLocale[ "UpdateCheck" ]              = "Zkontrolovat aktualizace";
         $gLocale[ "UpToDate" ]                 = "Raidplaner je aktuální.";
         $gLocale[ "NewVersionAvailable" ]      = "Nová verze je dostupná:";

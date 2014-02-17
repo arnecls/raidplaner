@@ -236,6 +236,7 @@
         $gLocale[ "RaidModeOverbook" ]         = "Par raidlead avec surréservation";
         $gLocale[ "RaidModeAttend" ]           = "par l'inscription";
         $gLocale[ "RaidModeAll" ]              = "juste une liste";
+        $gLocale[ "RaidModeOptOut" ]           = null;
         $gLocale[ "UpdateCheck" ]              = "Vérifier les mises à jour";
         $gLocale[ "UpToDate" ]                 = "Ce raidplanner est à jour.";
         $gLocale[ "NewVersionAvailable" ]      = "Il y a une nouvelle version disponible:";
