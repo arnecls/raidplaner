@@ -10,6 +10,7 @@
             "end"       => "Only return raids starting before this UTC timestamp. Default: 0x7FFFFFFF.",
             "limit"     => "Maximum number of raids to return. Passing 0 returns all raids. Default: 10.",
             "offset"    => "Number of raids to skip if a limit is set. Default: 0.",
+            "raid"      => "Comma separated list of raid ids. Only returns the given raids. Default: empty.",
             "location"  => "Comma separated list of location ids. Only returns raids on these locations. Default: empty.",
             "games"     => "Comma separated list of game ids. Only returns raids for these games. Default: empty",
             "full"      => "Include raids that have all slots set. Default: true.",
@@ -30,6 +31,7 @@
             "end"       => getParamFrom($aRequest, "end", 0x7FFFFFFF),
             "limit"     => getParamFrom($aRequest, "limit", 10),
             "offset"    => getParamFrom($aRequest, "offset", 0),
+            "raid"      => getParamFrom($aRequest, "raid", ""),
             "location"  => getParamFrom($aRequest, "location", ""),
             "games"     => getParamFrom($aRequest, "games", ""),
             "full"      => getParamFrom($aRequest, "full", true),
@@ -51,6 +53,7 @@
         $aEnd           = getParamFrom($aParameter, "end",      0x7FFFFFFF);
         $aLimit         = getParamFrom($aParameter, "limit",    10);
         $aOffset        = getParamFrom($aParameter, "offset",   0);
+        $aRaid          = getParamFrom($aParameter, "raid",     "");
         $aLocation      = getParamFrom($aParameter, "location", "");
         $aGames         = getParamFrom($aParameter, "games",    "");
         $aFetchFull     = getParamFrom($aParameter, "full",     true);
@@ -80,6 +83,29 @@
         $TableQuery  = " FROM `".RP_TABLE_PREFIX."Raid` ";
         $TableQuery .= "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING (LocationId) ";
             
+        
+        // Specific raids
+        
+        if ($aRaid != "")
+        {
+            $Raids = explode(",",$aRaid);
+            
+            foreach($Raids as &$RaidId)
+            {
+                $RaidId = intval($RaidId);
+            }
+                        
+            if (count($Raids) == 1)
+            {
+                array_push($Conditions, "`".RP_TABLE_PREFIX."Raid`.RaidId=?");
+                array_push($Parameters, $Raids[0]);
+            }
+            else if (count($Raids) > 1)
+            {
+                array_push($Conditions, "`".RP_TABLE_PREFIX."Raid`.RaidId IN (".implode(",",$Raids).")");
+            }
+        }    
+        
         // Merge locations if required
         
         if ($aLocation != "")

@@ -476,6 +476,13 @@
     display: inline-block;
 }
 
+#exportButton {
+    position: absolute;
+    top: 470px;
+    right: 200px;
+    white-space: nowrap;
+}
+
 #absent_drop {
     display: none;
     position: absolute;

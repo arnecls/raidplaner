@@ -7,6 +7,7 @@
         "values"      => Array(
             "help"     => "Help on help.",
             "format"   => "Help on result format.",
+            "as"       => "Help on downloading results.",
             "query"    => "Help on queries.",
             "location" => "Help on querying locations.",
             "raid"     => "Help on querying raid data.",
@@ -33,6 +34,13 @@
             "json" => "Return result as JSON.",
             "xml"  => "Return result as XML.",
         )
+    );
+    
+    // -------------------------------------------------------------------------
+
+    $gApiHelp["as"] = Array(
+        "description" => "Trigger a download of the result instead of returning the contents.",
+        "values"      => "Pass the filename to generate."
     );
     
     // -------------------------------------------------------------------------

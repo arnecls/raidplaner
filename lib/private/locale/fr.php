@@ -163,7 +163,8 @@
 		$gLocale[ "LinkToRaid" ]               = "Lien vers le raid";
 		$gLocale[ "Switch" ]                   = "Changement";
         $gLocale[ "Retire" ]                   = "Absent";
-
+        $gLocale[ "ExportXML" ]                = null;
+        
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
         $gLocale[ "History" ]                  = "Historique des raids";

@@ -161,6 +161,7 @@
         $gLocale[ "LinkToRaid" ]               = "Link to raid";
         $gLocale[ "Switch" ]                   = "Switch";
         $gLocale[ "Retire" ]                   = "Absent";
+        $gLocale[ "ExportXML" ]                = null;
         
         // Profile        
         $gLocale[ "Profile" ]                  = "Profil";

@@ -19,21 +19,22 @@
     }
     else
     {
-        $PublicQuery  = false;
-        $PrivateQuery = false;
+        $Authenticated = false;
         $Parameter = call_user_func("api_args_".strtolower($_REQUEST["query"]), $_REQUEST);
         
         // Validate against public or private token
+        // If no token is given, try to validate the currently logged in user.
         
         if (isset($_REQUEST["token"]))
         {
-            $PublicQuery  = Api::testPublicToken($Parameter, $_REQUEST["token"]);
-            $PrivateQuery = Api::testPrivateToken($_REQUEST["token"]);
+            $Authenticated = 
+                Api::testPrivateToken($_REQUEST["token"]) || 
+                Api::testPublicToken($Parameter, $_REQUEST["token"]);
         }
         
         // Only execute requests if validated
         
-        if (!$PublicQuery && !$PrivateQuery)
+        if (!$Authenticated)
         {
             $Out->pushError("Validation failed.");
         }
@@ -65,6 +66,11 @@
     }
     
     // Output response
+    
+    if (isset($_REQUEST["as"]))
+    {
+        header('Content-Disposition: attachment; filename="'.$_REQUEST["as"].'"');
+    }
     
     header("Cache-Control: no-cache, max-age=0, s-maxage=0");
     

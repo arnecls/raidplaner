@@ -273,6 +273,12 @@
                 });
 
                 $Out->pushValue("attendee", $Attendees);
+                
+                $ExportParameter = Api::normalizeArgsRaid(Array(
+                    "raid"    => intval($aRequest["id"]),
+                    "attends" => true,
+                ));                                
+                $Out->pushValue("token", Api::getPublicToken($ExportParameter));
             }
 
             if ( validRaidlead() )

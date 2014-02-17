@@ -85,11 +85,11 @@
 
         public function resetUser()
         {
-            $this->UserGroup     = "none";
-            $this->UserId        = 0;
-            $this->UserName      = "";
-            $this->Characters    = array();
-            $this->Settings      = array();
+            $this->UserGroup  = "none";
+            $this->UserId     = 0;
+            $this->UserName   = "";
+            $this->Characters = array();
+            $this->Settings   = array();
             
             Session::release();
         }

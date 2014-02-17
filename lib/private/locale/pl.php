@@ -163,7 +163,8 @@
         $gLocale[ "LinkToRaid" ]               = "Link do rajdu";
         $gLocale[ "Switch" ]                   = "Zmień rolę";
         $gLocale[ "Retire" ]                   = "Nieobecny";
-
+        $gLocale[ "ExportXML" ]                = null;
+        
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
         $gLocale[ "History" ]                  = "Historia rajdów";
