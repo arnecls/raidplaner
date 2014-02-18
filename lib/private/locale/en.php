@@ -159,7 +159,10 @@
         $gLocale[ "LinkToRaid" ]               = "Link to raid";
         $gLocale[ "Switch" ]                   = "Switch";
         $gLocale[ "Retire" ]                   = "Absent";
-        $gLocale[ "ExportXML" ]                = "Raid as XML";
+        $gLocale[ "Export" ]                   = "Export";
+        $gLocale[ "ExportFile" ]               = "File";
+        $gLocale[ "ExportClipboard" ]          = "Clipboard";
+        $gLocale[ "CopyOk" ]                   = "Text has been copied to clipboard.";
        
         // Profile
         $gLocale[ "Profile" ]                  = "Profile";
