@@ -37,7 +37,15 @@
         $gLocale[ "Thaumaturge" ]              = "Occultiste";
         $gLocale[ "Warrior_FF14" ]             = "Guerrier";
         $gLocale[ "Whitemage" ]                = "Mage Blanc";
-
+        
+        // Classes Wildstar
+        $gLocale[ "Warrior_wstar" ]            = "Guerrier";
+        $gLocale[ "Esper" ]                    = "Esper";
+        $gLocale[ "Spellslinger" ]             = "Arcanero";
+        $gLocale[ "Stalker" ]                  = "Rôdeur";
+        $gLocale[ "Medic" ]                    = "Toubib";
+        $gLocale[ "Engineer" ]                 = "Ingénieur";
+        
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
         $gLocale[ "Healer" ]                   = "Heal";
