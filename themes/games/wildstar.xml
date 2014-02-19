@@ -57,14 +57,20 @@
         </group>
         
         <group count="10">
-            <role id="tnk" count="2"/>
-            <role id="med" count="3"/>
+            <role id="tnk" count="1"/>
+            <role id="med" count="2"/>
             <role id="dmg" count="*"/>
         </group>
         
-        <group count="25">
+        <group count="20">
             <role id="tnk" count="2"/>
             <role id="med" count="6"/>
+            <role id="dmg" count="*"/>
+        </group>
+        
+        <group count="40">
+            <role id="tnk" count="4"/>
+            <role id="med" count="10"/>
             <role id="dmg" count="*"/>
         </group>
     </groups>
