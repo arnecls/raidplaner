@@ -245,7 +245,7 @@
         
         // Build order part
         
-        $OrderString = " ORDER BY `".RP_TABLE_PREFIX."Raid`.RaidId";
+        $OrderString = " ORDER BY `".RP_TABLE_PREFIX."Raid`.Start, `".RP_TABLE_PREFIX."Raid`.RaidId ";
         
         // Execute query
         

@@ -28,7 +28,7 @@
     
     function getParamFrom($aParameters, $aName, $aDefault)
     {
-        $Value = (isset($aParameters[$aName])) ? $aParameters[$aName] : $aDefault;
+        $Value = (($aParameters != null) && isset($aParameters[$aName])) ? $aParameters[$aName] : $aDefault;
         switch(strtolower($Value))
         {
         case "true":
@@ -42,6 +42,21 @@
                 ? intval($Value)
                 : $Value;
         }
+    }
+
+    // ---------------------------------------------------------------
+    
+    function getBaseURL()
+    {
+        $Protocol = (strpos($_SERVER["SERVER_PROTOCOL"], "https") !== false) ? "https://" : "http://";
+        $Host = $_SERVER["SERVER_NAME"].(($_SERVER["SERVER_PORT"] == 80) ? "" : ":".$_SERVER["SERVER_PORT"]);
+        
+        $LibIdx = strpos($_SERVER["REQUEST_URI"], "lib/");
+        $Path   = ($LibIdx !== false) 
+            ? substr($_SERVER["REQUEST_URI"], 0, $LibIdx)
+            : substr($_SERVER["REQUEST_URI"], 0, strrpos($_SERVER["REQUEST_URI"],"/")+1);
+        
+        return $Protocol.$Host.$Path;      
     }
 
     // ---------------------------------------------------------------

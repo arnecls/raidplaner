@@ -127,7 +127,7 @@
         public function flushXML($aTagName)
         {
 
-            $this->WriteXML($aTagName);
+            $this->writeXML($aTagName);
             $this->Data = Array();
         }
 
@@ -135,7 +135,7 @@
 
         public function writeXMLandStop($aTagName)
         {
-            $this->WriteXML($aTagName);
+            $this->writeXML($aTagName);
             die();
 
         }
