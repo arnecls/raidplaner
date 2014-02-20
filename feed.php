@@ -42,9 +42,9 @@
             ? $_REQUEST["timezone"] 
             : date_default_timezone_get();
     
-        date_default_timezone_set('UTC');
-        
         // Query API
+        
+        date_default_timezone_set("UTC");
         
         $Parameters = Array(
             "start"    => time() - 24 * 60 * 60,
@@ -57,8 +57,6 @@
         $Locations = Api::queryLocation(null);
         $Raids     = Api::queryRaid($Parameters);
         
-        // Location lookup table
-        
         $LocationName = Array();
         foreach($Locations as $Location)
         {
@@ -67,15 +65,13 @@
         
         // Generate RSS content
         
+        date_default_timezone_set($Timezone);
+            
         foreach($Raids as $Raid)
         {
-            date_default_timezone_set($Timezone);
-    
             $Start = date("H:i", intval($Raid["Start"]));
             $End   = date("H:i", intval($Raid["End"]));
             
-            date_default_timezone_set('UTC');
-    
             $Out->pushValue("item", Array(
                 "title"       => $LocationName[$Raid["LocationId"]]. " (".$Raid["Size"].")",
                 "description" => "Status: ".$Raid["Status"]."\nFrom ".$Start." to ".$End."\n".$Raid["Description"],
