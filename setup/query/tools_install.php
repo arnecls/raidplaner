@@ -33,7 +33,8 @@
             new Column("Role1",        "char",     3,                      Array("NOT NULL")),
             new Column("Role2",        "char",     3,                      Array("NOT NULL")),
             new Key(   "primary",      "CharacterId"),
-            new Key(   "",             "UserId")
+            new Key(   "",             "UserId"),
+            new Key(   "",             "Game")
         ),
         
         "Location" => Array(
@@ -41,7 +42,8 @@
             new Column("Game",         "char",     4,      Array("NOT NULL")),
             new Column("Name",         "varchar",  128,    Array("NOT NULL")),
             new Column("Image",        "varchar",  255,    Array("NOT NULL")),
-            new Key(   "primary",      "LocationId")
+            new Key(   "primary",      "LocationId"),
+            new Key(   "",             "Game")
         ),
         
         "Raid" => Array(
@@ -56,7 +58,8 @@
             new Column("SlotRoles",    "varchar",   24,                                         Array("NOT NULL")),
             new Column("SlotCount",    "varchar",   12,                                         Array("NOT NULL")),
             new Key(   "primary",      "RaidId"),
-            new Key(   "",             "LocationId")
+            new Key(   "",             "LocationId"),
+            new Key(   "",             "Start")
         ),
         
         "Session" => Array(
