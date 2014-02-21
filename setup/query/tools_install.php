@@ -21,6 +21,10 @@
             new Key(   "",             "UserId"),
             new Key(   "",             "CharacterId"),
             new Key(   "",             "RaidId"),
+            new Key(   "",             "Status"),
+            new Key(   "",             "UserId,Status"),
+            new Key(   "",             "UserId,CharacterId"),
+
         ),
         
         "Character" => Array(
@@ -34,7 +38,8 @@
             new Column("Role2",        "char",     3,                      Array("NOT NULL")),
             new Key(   "primary",      "CharacterId"),
             new Key(   "",             "UserId"),
-            new Key(   "",             "Game")
+            new Key(   "",             "Game"),
+            new Key(   "",             "Game,UserId")
         ),
         
         "Location" => Array(
