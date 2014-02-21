@@ -156,8 +156,7 @@
                     $this->updateCharacters();
                     $this->updateSettings();
                     
-                    $Session->refresh();
-                    
+                    $Session->refresh();                    
                     return true;
                 }
             }

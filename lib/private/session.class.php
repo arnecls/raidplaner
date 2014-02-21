@@ -36,7 +36,7 @@
             $this->UserId = $SessionData["UserId"];
             $this->Expires = $SessionData["Expires"];
             $this->Data = unserialize($SessionData["Data"]);
-            $this->IsDirty = false;            
+            $this->IsDirty = false;
         }
         
         // ---------------------------------------------------------------------
@@ -66,11 +66,7 @@
             
                 if ($UpdateData->execute())
                 {
-                    $CookieName = self::getCookieName();            
-                    if (isset($_COOKIE[$CookieName]))
-                    {
-                        setcookie($CookieName, $SessionName, $this->Expires);
-                    }
+                    self::updateCookie($SessionName, $this->Expires);
                 }
             }
         }
@@ -149,6 +145,16 @@
         
         // ---------------------------------------------------------------------
         
+        private static function updateCookie($aSessionName, $aExpires)
+        {
+            $ServerName      = "";
+            $ServerPath      = "";
+            $ServerUsesHttps = isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] != "") && ($_SERVER["HTTPS"] != null) && ($_SERVER["HTTPS"] != "off");
+            setcookie( self::GetCookieName(), $aSessionName, $aExpires, $ServerPath, $ServerName, $ServerUsesHttps, true );
+        }
+        
+        // ---------------------------------------------------------------------
+        
         public static function isActive()
         {
             return self::$Instance != null;
@@ -178,7 +184,7 @@
         
         // ---------------------------------------------------------------------
         
-        public static function create($aUserId, $aExpiresInSec=3600)
+        public static function create($aUserId, $aExpiresInSec=null)
         {
             if (self::IsActive())
                 return null; // ### return, session already active ###
@@ -190,7 +196,7 @@
                     "VALUES (:UserId, :Name, :Ip, FROM_UNIXTIME(:Expires), :Data)");
                 
                 $SessionName = self::generateKey40();
-                $Expires = time() + $aExpiresInSec;
+                $Expires = time() + (($aExpiresInSec === null) ? self::$SessionTimeOut : $aExpiresInSec);
                             
                 $CreateSession->bindValue(":UserId",  intval($aUserId),        PDO::PARAM_INT);
                 $CreateSession->bindValue(":Name",    $SessionName,            PDO::PARAM_STR);
@@ -200,13 +206,9 @@
                 
                 if ($CreateSession->execute())
                 {
-                    self::$Instance = new Session($SessionName);
-                    
-                    $ServerName      = "";
-                    $ServerPath      = "";
-                    $ServerUsesHttps = isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] != "") && ($_SERVER["HTTPS"] != null) && ($_SERVER["HTTPS"] != "off");
-                    setcookie( self::GetCookieName(), $SessionName, $Expires, $ServerPath, $ServerName, $ServerUsesHttps, true );
-                    
+                    self::$Instance = new Session($SessionName);                    
+                    self::updateCookie($SessionName, $Expires); 
+                                       
                     return self::$Instance; // ### return, new session ###
                 }
             }
@@ -233,11 +235,7 @@
             self::$Instance->Data = null;
             self::$Instance->IsDirty = false;
             
-            $CookieName = self::GetCookieName();
-            
-            if (isset($_COOKIE[$CookieName]))
-                unset($_COOKIE[$CookieName]);
-                
+            self::updateCookie(false, time()-3600);               
             self::$Instance = null;
         }
         
