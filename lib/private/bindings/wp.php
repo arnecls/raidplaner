@@ -8,6 +8,7 @@
         private static $Itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         private static $BindingName = "wp";
 
+        public static $HashMethod_md5  = "wp_md5";
         public static $HashMethod_md5r = "wp_md5r";
 
         // -------------------------------------------------------------------------
@@ -362,7 +363,7 @@
                 $Hash = md5($Hash.$aPassword, true);
             } while (--$Count);
 
-            return '$H$'.self::$Itoa64[$CountB2].$Salt.self::encode64($Hash,16);
+            return '$P$'.self::$Itoa64[$CountB2].$Salt.self::encode64($Hash,16);
         }
 
         // -------------------------------------------------------------------------

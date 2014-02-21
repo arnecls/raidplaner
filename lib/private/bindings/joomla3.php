@@ -298,8 +298,8 @@
         {
             switch($aMethod)
             {
-            case self::$HashMethod_MD5s:
-                return md5($aPassword.$aSalt);
+            case self::$HashMethodMD5s:
+                return md5($aPassword.$aSalt).":".$aSalt;
             
             default:
                 return crypt($aPassword,$aSalt);
