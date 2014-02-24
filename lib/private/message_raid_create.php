@@ -170,6 +170,10 @@
                     
                     if (count($AutoAttendUsers > 0))
                     {
+                        $Status = (($RaidMode == "all") || ($RaidMode == "attend")) 
+                            ? "ok" 
+                            : "available"; 
+                            
                         foreach($AutoAttendUsers as $User)
                         {
                             $UserId = intval($User["UserId"]);
@@ -185,17 +189,23 @@
                             $RoleId = ($gGame["ClassMode"] == "multi")
                                 ? $gGame["Classes"][$ClassId]["roles"][0]
                                 : $User["Role1"];
-                            
+                                
                             $AttendQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, CharacterId, Class, Role, Status) ".
-                                                               "VALUES (:UserId, :RaidId, :CharId, :Class, :Role, 'available')");
+                                                               "VALUES (:UserId, :RaidId, :CharId, :Class, :Role, :Status)");
     
                             $AttendQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
                             $AttendQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
                             $AttendQuery->bindValue(":CharId", intval($User["CharacterId"]), PDO::PARAM_INT);
                             $AttendQuery->bindValue(":Class", $ClassId, PDO::PARAM_STR);
                             $AttendQuery->bindValue(":Role", $RoleId, PDO::PARAM_STR);
+                            $AttendQuery->bindValue(":Status", $Status, PDO::PARAM_STR);
     
                             $AttendQuery->execute();
+                        }
+                        
+                        if ($Status == "ok")
+                        {
+                            removeOverbooked($RaidId, $SlotRoles, $SlotCount);
                         }
                     }
                     
