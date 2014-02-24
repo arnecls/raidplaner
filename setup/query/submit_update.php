@@ -335,7 +335,12 @@
                                                      "ALTER TABLE `".RP_TABLE_PREFIX."Character` ADD INDEX GameUserId (`Game`,`UserId`);".
                                                      "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD INDEX (`Status`);".
                                                      "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD INDEX UserIdStatus (`UserId`,`Status`);".
-                                                     "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD INDEX UserIdCharacterId (`UserId`,`CharacterId`);",
+                                                     "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ADD INDEX UserIdCharacterId (`UserId`,`CharacterId`);".
+                                                     "ALTER TABLE `".RP_TABLE_PREFIX."Setting` DROP INDEX Name;".
+                                                     "ALTER TABLE `".RP_TABLE_PREFIX."Setting` ADD INDEX (`Name`);".
+                                                     "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` DROP INDEX Name;".
+                                                     "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` ADD INDEX (`Name`);".
+                                                     "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` ADD INDEX UserIdName (`UserId`,`Name`);",
                           "New session handling"  => "ALTER TABLE `".RP_TABLE_PREFIX."User` DROP SessionKey;".
                                                      "CREATE TABLE `".RP_TABLE_PREFIX."Session` (
                                                         `SessionId` int(10) unsigned NOT NULL AUTO_INCREMENT,

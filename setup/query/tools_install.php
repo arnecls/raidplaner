@@ -85,7 +85,7 @@
             new Column("IntValue",     "int",      11,     Array("NOT NULL")),
             new Column("TextValue",    "varchar",  255,    Array("NOT NULL")),
             new Key(   "primary",      "SettingId"),
-            new Key(   "fulltext",     "Name"),
+            new Key(   "",             "Name"),
             new Key(   "unique",       "Name")
         ),
         
@@ -112,7 +112,8 @@
             new Column("TextValue",        "varchar",  255,    Array("NOT NULL")),
             new Key(   "primary",          "UserSettingId"),
             new Key(   "",                 "UserId"),
-            new Key(   "fulltext",         "Name")
+            new Key(   "",                 "Name"),
+            new Key(   "",                 "UserId,Name")
         )
     );
     
