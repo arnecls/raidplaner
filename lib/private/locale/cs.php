@@ -204,6 +204,7 @@
         $gLocale[ "NoEndDate" ]                = "Prosím vložte poslední den vaší dovolené";
         $gLocale[ "VacationMessage" ]          = "Zpráva o dovolené";
         $gLocale[ "ClearVacation" ]            = "Smazat dovolenou";
+        $gLocale[ "AutoAttend" ]               = null;
                 
         // Settings
         $gLocale[ "Settings" ]                 = "Nastavení";

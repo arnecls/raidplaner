@@ -206,6 +206,7 @@
 		$gLocale[ "NoEndDate" ]                = "Entrez votre dernier jour de vacance s'il vous plait.";
 		$gLocale[ "VacationMessage" ]          = "Message d'absence";
 		$gLocale[ "ClearVacation" ]            = "Supprimer les données de vacances";
+        $gLocale[ "AutoAttend" ]               = null;
 
         // Settings
         $gLocale[ "Settings" ]                 = "Réglages";

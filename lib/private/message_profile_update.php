@@ -186,6 +186,32 @@
                     $Out->pushError(L("WrongPassword"));
                 }
             }
+            
+            // Update always log in
+            
+            if ($aRequest["autoAttend"] == "true")
+            {
+                $ExistsRequest = $Connector->prepare("SELECT UserSettingId FROM `".RP_TABLE_PREFIX."UserSetting` ".
+                    "WHERE UserId=:UserId and Name='AutoAttend' LIMIT 1");
+                    
+                $ExistsRequest->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                
+                if ($ExistsRequest->fetchFirst() == null)
+                {
+                    $AttendRequest = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name) VALUES (:UserId, 'AutoAttend')");
+                    
+                    $AttendRequest->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                    $AttendRequest->execute();
+                }
+            }
+            else
+            {
+                $RemoveQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE ".
+                        "UserId = :UserId AND (Name = 'AutoAttend') LIMIT 1");
+                        
+                $RemoveQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                $RemoveQuery->execute();
+            }
     
             // Update vacation settings
             

@@ -202,6 +202,7 @@
         $gLocale[ "NoEndDate" ]                = "Bitte gebe den letzten Tag deines Urlaubs an.";
         $gLocale[ "VacationMessage" ]          = "Urlaubsbenachrichtigung";
         $gLocale[ "ClearVacation" ]            = "Urlaubsdaten löschen";
+        $gLocale[ "AutoAttend" ]               = "Automatisch anmelden";
 
         // Settings
         $gLocale[ "Settings" ]                 = "Einstellungen";
