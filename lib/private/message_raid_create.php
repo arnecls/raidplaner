@@ -203,7 +203,7 @@
                             $AttendQuery->execute();
                         }
                         
-                        if ($Status == "ok")
+                        if ($RaidMode == "attend")
                         {
                             removeOverbooked($RaidId, $SlotRoles, $SlotCount);
                         }
