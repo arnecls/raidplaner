@@ -1,5 +1,6 @@
 <?php
     require_once(dirname(__FILE__)."/../../lib/private/connector.class.php");
+    require_once(dirname(__FILE__)."/../../lib/private/random.class.php");
     require_once(dirname(__FILE__)."/column.class.php");
     require_once(dirname(__FILE__)."/key.class.php");
     
@@ -20,6 +21,10 @@
             new Key(   "",             "UserId"),
             new Key(   "",             "CharacterId"),
             new Key(   "",             "RaidId"),
+            new Key(   "",             "Status"),
+            new Key(   "",             "UserId,Status"),
+            new Key(   "",             "UserId,CharacterId"),
+
         ),
         
         "Character" => Array(
@@ -32,7 +37,9 @@
             new Column("Role1",        "char",     3,                      Array("NOT NULL")),
             new Column("Role2",        "char",     3,                      Array("NOT NULL")),
             new Key(   "primary",      "CharacterId"),
-            new Key(   "",             "UserId")
+            new Key(   "",             "UserId"),
+            new Key(   "",             "Game"),
+            new Key(   "",             "Game,UserId")
         ),
         
         "Location" => Array(
@@ -40,7 +47,8 @@
             new Column("Game",         "char",     4,      Array("NOT NULL")),
             new Column("Name",         "varchar",  128,    Array("NOT NULL")),
             new Column("Image",        "varchar",  255,    Array("NOT NULL")),
-            new Key(   "primary",      "LocationId")
+            new Key(   "primary",      "LocationId"),
+            new Key(   "",             "Game")
         ),
         
         "Raid" => Array(
@@ -55,7 +63,8 @@
             new Column("SlotRoles",    "varchar",   24,                                         Array("NOT NULL")),
             new Column("SlotCount",    "varchar",   12,                                         Array("NOT NULL")),
             new Key(   "primary",      "RaidId"),
-            new Key(   "",             "LocationId")
+            new Key(   "",             "LocationId"),
+            new Key(   "",             "Start")
         ),
         
         "Session" => Array(
@@ -76,7 +85,7 @@
             new Column("IntValue",     "int",      11,     Array("NOT NULL")),
             new Column("TextValue",    "varchar",  255,    Array("NOT NULL")),
             new Key(   "primary",      "SettingId"),
-            new Key(   "fulltext",     "Name"),
+            new Key(   "",             "Name"),
             new Key(   "unique",       "Name")
         ),
         
@@ -103,7 +112,8 @@
             new Column("TextValue",        "varchar",  255,    Array("NOT NULL")),
             new Key(   "primary",          "UserSettingId"),
             new Key(   "",                 "UserId"),
-            new Key(   "fulltext",         "Name")
+            new Key(   "",                 "Name"),
+            new Key(   "",                 "UserId,Name")
         )
     );
     
@@ -192,7 +202,7 @@
             
         if ( !in_array("ApiPrivate", $ExistingSettings) )
         {
-            $PrivateToken = dechex(crc32(openssl_random_pseudo_bytes(2048))).dechex(crc32(openssl_random_pseudo_bytes(2048)));
+            $PrivateToken = dechex(crc32(Random::getBytes(2048))).dechex(crc32(Random::getBytes(2048)));
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('ApiPrivate', 0, '".$PrivateToken."');" );
         }
         

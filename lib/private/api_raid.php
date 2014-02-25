@@ -10,7 +10,9 @@
             "end"       => "Only return raids starting before this UTC timestamp. Default: 0x7FFFFFFF.",
             "limit"     => "Maximum number of raids to return. Passing 0 returns all raids. Default: 10.",
             "offset"    => "Number of raids to skip if a limit is set. Default: 0.",
+            "raid"      => "Comma separated list of raid ids. Only returns the given raids. Default: empty.",
             "location"  => "Comma separated list of location ids. Only returns raids on these locations. Default: empty.",
+            "games"     => "Comma separated list of game ids. Only returns raids for these games. Default: empty",
             "full"      => "Include raids that have all slots set. Default: true.",
             "free"      => "Include raids that do not have all slots set. Default: true.",
             "open"      => "Include raids that are open for registration. Default: true.",
@@ -22,6 +24,27 @@
     
     // -------------------------------------------------------------------------
     
+    function api_args_raid($aRequest)
+    {
+        return Array(
+            "start"     => getParamFrom($aRequest, "start", 0),
+            "end"       => getParamFrom($aRequest, "end", 0x7FFFFFFF),
+            "limit"     => getParamFrom($aRequest, "limit", 10),
+            "offset"    => getParamFrom($aRequest, "offset", 0),
+            "raid"      => getParamFrom($aRequest, "raid", ""),
+            "location"  => getParamFrom($aRequest, "location", ""),
+            "games"     => getParamFrom($aRequest, "games", ""),
+            "full"      => getParamFrom($aRequest, "full", true),
+            "free"      => getParamFrom($aRequest, "free", true),
+            "open"      => getParamFrom($aRequest, "open", true),
+            "closed"    => getParamFrom($aRequest, "closed", false),
+            "canceled"  => getParamFrom($aRequest, "canceled", false),
+            "attends"   => getParamFrom($aRequest, "attends", false),
+        );
+    }
+    
+    // -------------------------------------------------------------------------
+    
     function api_query_raid($aParameter)
     {
         // Assemble paramters
@@ -30,7 +53,9 @@
         $aEnd           = getParamFrom($aParameter, "end",      0x7FFFFFFF);
         $aLimit         = getParamFrom($aParameter, "limit",    10);
         $aOffset        = getParamFrom($aParameter, "offset",   0);
+        $aRaid          = getParamFrom($aParameter, "raid",     "");
         $aLocation      = getParamFrom($aParameter, "location", "");
+        $aGames         = getParamFrom($aParameter, "games",    "");
         $aFetchFull     = getParamFrom($aParameter, "full",     true);
         $aFetchFree     = getParamFrom($aParameter, "free",     true);
         $aFetchOpen     = getParamFrom($aParameter, "open",     true);
@@ -55,14 +80,36 @@
             $aStart, $aEnd
         );
         
-        $TableQuery = " FROM `".RP_TABLE_PREFIX."Raid` ";
+        $TableQuery  = " FROM `".RP_TABLE_PREFIX."Raid` ";
+        $TableQuery .= "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING (LocationId) ";
+            
+        
+        // Specific raids
+        
+        if ($aRaid != "")
+        {
+            $Raids = explode(",",$aRaid);
+            
+            foreach($Raids as &$RaidId)
+            {
+                $RaidId = intval($RaidId);
+            }
+                        
+            if (count($Raids) == 1)
+            {
+                array_push($Conditions, "`".RP_TABLE_PREFIX."Raid`.RaidId=?");
+                array_push($Parameters, $Raids[0]);
+            }
+            else if (count($Raids) > 1)
+            {
+                array_push($Conditions, "`".RP_TABLE_PREFIX."Raid`.RaidId IN (".implode(",",$Raids).")");
+            }
+        }    
         
         // Merge locations if required
         
         if ($aLocation != "")
-        {
-            $TableQuery .= "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING (LocationId) ";
-            
+        {            
             $Locations = explode(",",$aLocation);
             $LocationById = Array();
             $LocationByName = Array();
@@ -158,6 +205,22 @@
             array_push($Conditions, $StatusConditions);
         }
         
+        // Filter games
+        
+        if ($aGames != "")
+        {
+            $Games = explode(",", $aGames);
+            $GameOptions = Array();
+            
+            foreach($Games as $Game)
+            {
+                array_push($GameOptions, "`".RP_TABLE_PREFIX."Location`.Game=?");
+                array_push($Parameters, $Game);
+            }
+            
+            array_push($Conditions, $GameOptions);
+        }
+        
         // Build where part
         
         $WhereString = "";        
@@ -182,7 +245,7 @@
         
         // Build order part
         
-        $OrderString = " ORDER BY `".RP_TABLE_PREFIX."Raid`.RaidId";
+        $OrderString = " ORDER BY `".RP_TABLE_PREFIX."Raid`.Start, `".RP_TABLE_PREFIX."Raid`.RaidId ";
         
         // Execute query
         
@@ -195,7 +258,7 @@
         foreach($Parameters as $Index => $Value)
         {
             //Out::getInstance()->pushValue("query", $Value);
-            if (is_null($Value))
+            if (is_numeric($Value))
                 $RaidQuery->bindValue($Index+1, intval($Value), PDO::PARAM_INT);
             else
                 $RaidQuery->bindValue($Index+1, strval($Value), PDO::PARAM_STR);
@@ -228,17 +291,18 @@
                     "Slots"       => array_combine(explode(":", $aRaidRow["SlotRoles"]), explode(":", $aRaidRow["SlotCount"])),
                     "SetToRaid"   => Array(),
                     "Available"   => Array(),
-                    "Absent"      => Array(),
+                    "Absent"      => 0,
                 );
                 
                 if ($aAddAttends)
+                {
                     $Raid["Attends"]  = Array();
-                    
+                }                
+                   
                 foreach($Raid["Slots"] as $Role => $Max)
                 {
                     $Raid["SetToRaid"][$Role] = 0;
                     $Raid["Available"][$Role] = 0;
-                    $Raid["Absent"][$Role]    = 0;
                 }
             }
             
@@ -256,12 +320,12 @@
                     break;
                 
                 case "undecided":
-                    // TODO: Undecided are only those with a comment
+                    // TODO: Need to query all available users to return undecided
                     break;
                     
                 case "unavailable":
                 default:
-                    ++$Raid["Absent"][$aRaidRow["Role"]];
+                    ++$Raid["Absent"];
                     break;
                 }
             }

@@ -66,7 +66,8 @@ function ShowDBErrors(a_XMLData)
             Message += "\n" + $(this).text();
         });
 
-        return confirm(Message);
+        alert(Message);
+        return false;
     }
 
     return true;

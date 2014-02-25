@@ -1,5 +1,6 @@
 <?php
     require_once dirname(__FILE__)."/connector.class.php";
+    require_once dirname(__FILE__)."/tools_site.php";
 
     // Helper class for external bindings, so we don't have to use string
     // based associative arrays.
@@ -54,7 +55,6 @@
 
     // Common interface for forum/cms bindings
     abstract class Binding
-
     {
         private $mConnector;
 
@@ -211,11 +211,7 @@
                 switch (strtolower($TagData[0]))
                 {
                 case "url":
-                    $Protocol = (strpos($_SERVER["SERVER_PROTOCOL"], "https") !== false) ? "https://" : "http://";
-                    $Host = $_SERVER["SERVER_NAME"].(($_SERVER["SERVER_PORT"] == 80) ? "" : ":".$_SERVER["SERVER_PORT"]);
-                    $Path = substr($_SERVER["REQUEST_URI"], 0, strpos($_SERVER["REQUEST_URI"], "lib/"));
-                    
-                    $Parsed = $Protocol.$Host.$Path;
+                    $Parsed = getBaseURL();
                     break;
                 
                 case "location":

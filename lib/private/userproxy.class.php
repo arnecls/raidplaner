@@ -51,7 +51,7 @@
             );
 
             self::$BindingsByName[$NativeBinding->getName()] = $NativeBinding;            
-            PluginRegistry::ForEachPlugin(function($PluginInstance) {
+            PluginRegistry::ForEachBinding(function($PluginInstance) {
                 UserProxy::registerInstance($PluginInstance);
             });
         }
@@ -85,11 +85,11 @@
 
         public function resetUser()
         {
-            $this->UserGroup     = "none";
-            $this->UserId        = 0;
-            $this->UserName      = "";
-            $this->Characters    = array();
-            $this->Settings      = array();
+            $this->UserGroup  = "none";
+            $this->UserId     = 0;
+            $this->UserName   = "";
+            $this->Characters = array();
+            $this->Settings   = array();
             
             Session::release();
         }
@@ -98,7 +98,7 @@
 
         public static function generateKey32()
         {
-            return md5(openssl_random_pseudo_bytes(2048));
+            return md5(Random::getBytes(2048));
         }
 
         // --------------------------------------------------------------------------------------------
@@ -156,8 +156,7 @@
                     $this->updateCharacters();
                     $this->updateSettings();
                     
-                    $Session->refresh();
-                    
+                    $Session->refresh();                    
                     return true;
                 }
             }

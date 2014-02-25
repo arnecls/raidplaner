@@ -332,6 +332,14 @@
             }
     
             $Connector->commit();
+            
+            // Call plugins
+            
+            $RaidId = intval($aRequest["id"]);        
+            PluginRegistry::ForEachPlugin(function($PluginInstance) use ($RaidId)
+            {
+                $PluginInstance->onRaidModify($RaidId); 
+            });
     
             // reload detailed view
     

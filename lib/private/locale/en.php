@@ -33,6 +33,14 @@
         $gLocale[ "Thaumaturge" ]              = "Thematurge";
         $gLocale[ "Warrior_FF14" ]             = "Warrior";
         $gLocale[ "Whitemage" ]                = "White mage";
+        
+        // Classes Wildstar
+        $gLocale[ "Warrior_wstar" ]            = "Warrior";
+        $gLocale[ "Esper" ]                    = "Esper";
+        $gLocale[ "Spellslinger" ]             = "Spellslinger";
+        $gLocale[ "Stalker" ]                  = "Stalker";
+        $gLocale[ "Medic" ]                    = "Medic";
+        $gLocale[ "Engineer" ]                 = "Engineer";
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
@@ -159,7 +167,11 @@
         $gLocale[ "LinkToRaid" ]               = "Link to raid";
         $gLocale[ "Switch" ]                   = "Switch";
         $gLocale[ "Retire" ]                   = "Absent";
-
+        $gLocale[ "Export" ]                   = "Export";
+        $gLocale[ "ExportFile" ]               = "File";
+        $gLocale[ "ExportClipboard" ]          = "Clipboard";
+        $gLocale[ "CopyOk" ]                   = "Text has been copied to clipboard.";
+       
         // Profile
         $gLocale[ "Profile" ]                  = "Profile";
         $gLocale[ "History" ]                  = "Raid history";
@@ -190,6 +202,7 @@
         $gLocale[ "NoEndDate" ]                = "Please enter the last day of your vacation.";
         $gLocale[ "VacationMessage" ]          = "Vacation message";
         $gLocale[ "ClearVacation" ]            = "Clear vacation data";
+        $gLocale[ "AutoAttend" ]               = "Attend automatically";
 
         // Settings
         $gLocale[ "Settings" ]                 = "Settings";
@@ -232,6 +245,7 @@
         $gLocale[ "RaidModeOverbook" ]         = "By raidlead with overbooking";
         $gLocale[ "RaidModeAttend" ]           = "Setup by attend";
         $gLocale[ "RaidModeAll" ]              = "Just list";
+        $gLocale[ "RaidModeOptOut" ]           = "Attend all players";
         $gLocale[ "UpdateCheck" ]              = "Check for updates";
         $gLocale[ "UpToDate" ]                 = "This raidplaner is up to date.";
         $gLocale[ "NewVersionAvailable" ]      = "There is a new version available:";

@@ -33,7 +33,14 @@
         $gLocale[ "Thaumaturge" ]              = "Thaumaturg";
         $gLocale[ "Warrior_FF14" ]             = "Krieger";
         $gLocale[ "Whitemage" ]                = "Weißmagier";
-        $gLocale[ "Random" ]                   = "Unbekannt";
+        
+        // Classes Wildstar
+        $gLocale[ "Warrior_wstar" ]            = "Krieger";
+        $gLocale[ "Esper" ]                    = "Esper";
+        $gLocale[ "Spellslinger" ]             = "Arkanschütze";
+        $gLocale[ "Stalker" ]                  = "Meuchler";
+        $gLocale[ "Medic" ]                    = "Sanitäter";
+        $gLocale[ "Engineer" ]                 = "Techpionier";
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
@@ -160,7 +167,11 @@
         $gLocale[ "LinkToRaid" ]               = "Link zum Raid";
         $gLocale[ "Switch" ]                   = "Auswechseln";
         $gLocale[ "Retire" ]                   = "Abmelden";
-
+        $gLocale[ "Export" ]                   = "Exportieren";
+        $gLocale[ "ExportFile" ]               = "Datei";
+        $gLocale[ "ExportClipboard" ]          = "Zwischenablage";
+        $gLocale[ "CopyOk" ]                   = "Text wurde in die Zwischenablage exportiert.";
+        
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
         $gLocale[ "History" ]                  = "Vergangene Raids";
@@ -191,6 +202,7 @@
         $gLocale[ "NoEndDate" ]                = "Bitte gebe den letzten Tag deines Urlaubs an.";
         $gLocale[ "VacationMessage" ]          = "Urlaubsbenachrichtigung";
         $gLocale[ "ClearVacation" ]            = "Urlaubsdaten löschen";
+        $gLocale[ "AutoAttend" ]               = "Automatisch anmelden";
 
         // Settings
         $gLocale[ "Settings" ]                 = "Einstellungen";
@@ -233,6 +245,7 @@
         $gLocale[ "RaidModeOverbook" ]         = "Durch Raidleiter mit Überbuchen";
         $gLocale[ "RaidModeAttend" ]           = "Aufstellung nach Anmeldung";
         $gLocale[ "RaidModeAll" ]              = "Nur Liste";
+        $gLocale[ "RaidModeOptOut" ]           = "Alle Spieler anmelden";
         $gLocale[ "UpdateCheck" ]              = "Suche nach Updates";
         $gLocale[ "UpToDate" ]                 = "Dieser Raidplaner ist aktuell.";
         $gLocale[ "NewVersionAvailable" ]      = "Es ist eine neue Version verfügbar:";

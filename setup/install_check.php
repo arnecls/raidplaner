@@ -107,7 +107,7 @@
 
     // Plugin config files check
 
-    PluginRegistry::ForEachPlugin(function($PluginInstance) use (&$TestsFailed)
+    PluginRegistry::ForEachBinding(function($PluginInstance) use (&$TestsFailed)
     {
         $Binding = $PluginInstance->getName();
 

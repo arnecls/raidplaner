@@ -7,6 +7,7 @@
         "jquery-2.0.3.min.js",
         "jquery-ui-1.10.3.custom.min.js",
         "jquery.ba-hashchange.min.js",
+        "ZeroClipboard.min.js",
         "crypto/md5.js",
         "crypto/sha1.js",
         "crypto/sha256.js",

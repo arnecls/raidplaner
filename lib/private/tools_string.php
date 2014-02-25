@@ -1,5 +1,15 @@
 <?php
 
+    function getUTF8($aString)
+    {
+        $Encoding = mb_detect_encoding($aString);
+        return (($Encoding == "UTF-8") && mb_check_encoding($aString,"UTF-8"))
+            ? $aString
+            : mb_convert_encoding($aString, $Encoding, "UTF-8");
+    }
+
+    // -----------------------------------------------------------------------------
+    
     function xmlSpecialChar( $aChar )
     {
         $Utf8 = (mb_check_encoding($aChar,"UTF-8"))
@@ -7,7 +17,6 @@
             : mb_convert_encoding($aChar,"UTF-8");
     
         $Char = mb_convert_encoding($Utf8, "UCS-4BE", "UTF-8");
-    
         $Val = unpack("N",$Char);
     
         return "&#".$Val[1].";";
@@ -17,7 +26,7 @@
     
     function xmlentities( $aString, $aCompat, $aCharset )
     {
-        $ValidString = htmlentities($aString, $aCompat, $aCharset);
+        $ValidString = htmlentities(getUTF8($aString), $aCompat, $aCharset);
     
         // if the given charset did not work use fallback
     
@@ -65,6 +74,8 @@
             ? "0".$Number
             : $Number;
     }
+    
+    // -----------------------------------------------------------------------------
     
     function HTMLToBBCode($aString)
     {

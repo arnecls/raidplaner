@@ -1,5 +1,50 @@
 <?php
 
+    function removeOverbooked($aRaidId, $aSlotRoles, $aSlotCount)
+    {
+        $Connector = Connector::getInstance();
+    
+        $Roles = explode(":", $aSlotRoles);
+        $RoleCounts = array_combine($Roles, explode(":", $aSlotCount));
+        
+        foreach ($Roles as $Role)
+        { 
+            $MaxSlotCount = intval($RoleCounts[$Role]);
+        
+            // Check constraints for auto-attend
+            // This fixes a rare race condition where two (or more) players attend
+            // the last available slot at the same time.
+            
+            $AttendenceQuery = $Connector->prepare("SELECT AttendanceId ".
+                                                   "FROM `".RP_TABLE_PREFIX."Attendance` ".
+                                                   "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
+                                                   "ORDER BY AttendanceId DESC LIMIT :MaxCount" );
+        
+            $AttendenceQuery->bindValue(":RaidId", intval($aRaidId), PDO::PARAM_INT);
+            $AttendenceQuery->bindValue(":RoleId", $Role, PDO::PARAM_STR);
+            $AttendenceQuery->bindValue(":MaxCount", intval($MaxSlotCount), PDO::PARAM_INT);
+        
+            $LastAttend = $AttendenceQuery->fetchFirst();
+        
+            if ( $AttendenceQuery->getAffectedRows() == $MaxSlotCount )
+            {
+                // Fix the overhead
+        
+                $FixQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET Status = \"available\" ".
+                                                "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
+                                                "AND AttendanceId > :FirstId" );
+        
+                $FixQuery->bindValue(":RaidId", intval($aRaidId), PDO::PARAM_INT);
+                $FixQuery->bindValue(":RoleId", $Role, PDO::PARAM_STR);
+                $FixQuery->bindValue(":FirstId", intval($LastAttend["AttendanceId"]), PDO::PARAM_INT);
+        
+                $FixQuery->execute();
+            }
+        }
+    }
+    
+    // -------------------------------------------------------------------------
+
     function msgRaidAttend( $aRequest )
     {
         if (validUser())
@@ -132,7 +177,7 @@
                     if ( $ChangeComment )
                     {
                         $Comment = requestToXML( $aRequest["comment"], ENT_COMPAT, "UTF-8" );
-                        $AttendQuery->bindValue(":Comment", intval($Comment), PDO::PARAM_INT);
+                        $AttendQuery->bindValue(":Comment", $Comment, PDO::PARAM_STR);
                     }
     
                     $AttendQuery->bindValue(":CharacterId", intval($CharacterId), PDO::PARAM_INT);
@@ -148,41 +193,7 @@
                          ($RaidInfo["Mode"] == "attend") &&
                          ($Status == "ok") )
                     {
-                        $RoleCounts = array_combine(
-                            explode(":", $RaidInfo["SlotRoles"]), 
-                            explode(":", $RaidInfo["SlotCount"]));
-                         
-                        $MaxSlotCount = intval($RoleCounts[$Role]);
-                    
-                        // Check constraints for auto-attend
-                        // This fixes a rare race condition where two (or more) players attend
-                        // the last available slot at the same time.
-                        
-                        $AttendenceQuery = $Connector->prepare("SELECT AttendanceId ".
-                                                               "FROM `".RP_TABLE_PREFIX."Attendance` ".
-                                                               "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
-                                                               "ORDER BY AttendanceId DESC LIMIT :MaxCount" );
-    
-                        $AttendenceQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
-                        $AttendenceQuery->bindValue(":RoleId", $Role, PDO::PARAM_STR);
-                        $AttendenceQuery->bindValue(":MaxCount", intval($MaxSlotCount), PDO::PARAM_INT);
-    
-                        $LastAttend = $AttendenceQuery->fetchFirst();
-    
-                        if ( $AttendenceQuery->getAffectedRows() == $MaxSlotCount )
-                        {
-                            // Fix the overhead
-    
-                            $FixQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET Status = \"available\" ".
-                                                            "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
-                                                            "AND AttendanceId > :FirstId" );
-    
-                            $FixQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
-                            $FixQuery->bindValue(":RoleId", $Role, PDO::PARAM_STR);
-                            $FixQuery->bindValue(":FirstId", intval($LastAttend["AttendanceId"]), PDO::PARAM_INT);
-    
-                            $FixQuery->execute();
-                        }
+                        removeOverbooked($RaidId, $RaidInfo["SlotRoles"], $RaidInfo["SlotCount"]);
                     }
                 }
                 else

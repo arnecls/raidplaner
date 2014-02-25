@@ -186,11 +186,37 @@
                     $Out->pushError(L("WrongPassword"));
                 }
             }
+            
+            // Update always log in
+            
+            if ($aRequest["autoAttend"] == "true")
+            {
+                $ExistsRequest = $Connector->prepare("SELECT UserSettingId FROM `".RP_TABLE_PREFIX."UserSetting` ".
+                    "WHERE UserId=:UserId and Name='AutoAttend' LIMIT 1");
+                    
+                $ExistsRequest->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                
+                if ($ExistsRequest->fetchFirst() == null)
+                {
+                    $AttendRequest = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."UserSetting` (UserId, Name) VALUES (:UserId, 'AutoAttend')");
+                    
+                    $AttendRequest->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                    $AttendRequest->execute();
+                }
+            }
+            else
+            {
+                $RemoveQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."UserSetting` WHERE ".
+                        "UserId = :UserId AND (Name = 'AutoAttend') LIMIT 1");
+                        
+                $RemoveQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                $RemoveQuery->execute();
+            }
     
             // Update vacation settings
             
             $Ranges = getVacationData($aRequest);
-            $VacationMessage = ($aRequest["vacationMessage"] == null) ? "" : $aRequest["vacationMessage"];
+            $VacationMessage = ($aRequest["vacationMessage"] == null) ? "" : requestToXML( $aRequest["vacationMessage"], ENT_COMPAT, "UTF-8" );
             
             // Revoke ranges that have been removed
             
@@ -219,7 +245,7 @@
                 $UpdateQuery->bindValue(":Start", intval($UpdateRange[0]), PDO::PARAM_INT);
                 $UpdateQuery->bindValue(":End", intval($UpdateRange[1]), PDO::PARAM_INT);
                 $UpdateQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":Message", intval($VacationMessage), PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":Message", $VacationMessage, PDO::PARAM_STR);
                 $UpdateQuery->execute();
             }
             

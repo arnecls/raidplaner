@@ -14,27 +14,27 @@
     }
     else if (!isset($_REQUEST["query"]))
     {
-        $Out->pushError("You must at least provide the parameter `query` and either a `public` or the `private` token.");
+        $Out->pushError("You must at least provide the parameter `query` and a `token`.");
         $Out->pushError("You can also pass `help` with a topic to see a list of available parameters.");
     }
     else
     {
-        $Validated = false;
+        $Authenticated = false;
+        $Parameter = call_user_func("api_args_".strtolower($_REQUEST["query"]), $_REQUEST);
         
         // Validate against public or private token
+        // If no token is given, try to validate the currently logged in user.
         
-        if (isset($_REQUEST["public"]))
+        if (isset($_REQUEST["token"]))
         {
-            $Validated = Api::testPublicToken($_REQUEST["public"]);
-        }        
-        else if (isset($_REQUEST["private"]))
-        {
-            $Validated = Api::testPrivateToken($_REQUEST["private"]);
+            $Authenticated = 
+                Api::testPrivateToken($_REQUEST["token"]) || 
+                Api::testPublicToken($Parameter, $_REQUEST["token"]);
         }
         
         // Only execute requests if validated
         
-        if (!$Validated)
+        if (!$Authenticated)
         {
             $Out->pushError("Validation failed.");
         }
@@ -43,42 +43,18 @@
             switch( strtolower($_REQUEST["query"]))
             {
             case "location":
-                $Out->pushValue("result", api_query_location());
+                $Out->pushValue("result", api_query_location($Parameter));
                 break;
                 
             case "user":
-                $Parameter = Array(
-                    "users" => getParam("users", ""),
-                    "games" => getParam("games", "")
-                );
                 $Out->pushValue("result", api_query_user($Parameter));
                 break;
             
             case "raid":
-                $Parameter = Array(
-                    "start"     => getParam("start", 0),
-                    "end"       => getParam("end", 0x7FFFFFFF),
-                    "limit"     => getParam("limit", 10),
-                    "offset"    => getParam("offset", 0),
-                    "location"  => getParam("location", ""),
-                    "full"      => getParam("full", true),
-                    "free"      => getParam("free", true),
-                    "open"      => getParam("open", true),
-                    "closed"    => getParam("closed", false),
-                    "canceled"  => getParam("canceled", false),
-                    "attends"   => getParam("attends", false),
-                ); 
                 $Out->pushValue("result", api_query_raid($Parameter));
                 break;
                 
             case "statistic":
-                $Parameter = Array(
-                    "start" => getParam("start", 0),
-                    "end"   => getParam("end", PHP_INT_MAX),
-                    "raids" => getParam("raids", ""),
-                    "users" => getParam("users", ""),
-                );
-                
                 $Out->pushValue("result", api_query_statistic($Parameter));
                 break;
                 
@@ -90,6 +66,11 @@
     }
     
     // Output response
+    
+    if (isset($_REQUEST["as"]))
+    {
+        header('Content-Disposition: attachment; filename="'.$_REQUEST["as"].'"');
+    }
     
     header("Cache-Control: no-cache, max-age=0, s-maxage=0");
     

@@ -37,6 +37,14 @@
         $gLocale[ "Theumaturge" ]              = "Theumaturge";
         $gLocale[ "Warrior_FF14" ]             = "Warrior";
         $gLocale[ "Whitemage" ]                = "Whitemage";
+        
+        // Classes Wildstar
+        $gLocale[ "Warrior_wstar" ]            = "Warrior";
+        $gLocale[ "Esper" ]                    = "Esper";
+        $gLocale[ "Spellslinger" ]             = "Spellslinger";
+        $gLocale[ "Stalker" ]                  = "Stalker";
+        $gLocale[ "Medic" ]                    = "Medic";
+        $gLocale[ "Engineer" ]                 = "Engineer";
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
@@ -157,13 +165,17 @@
         $gLocale[ "AbsentMessage" ]            = "Podaj powód dlaczego gracz będzie nieobecny.<br/>Wiadomość będzie poprzedzona twoim loginem.";
         $gLocale[ "SetupBy" ]                  = "Obecny";
         $gLocale[ "AbsentBy" ]                 = "Nieobecny";
-        $gLocale[ "SwitchChar" ]               = "Zmieniono postać";
+        $gLocale[ "SwitchChar" ]               = "Zmieniono rolę";
         $gLocale[ "RaidNotFound" ]             = "Nie znaleziono rajdu";
         $gLocale[ "RaidSetup" ]                = "Ustawienia rajdu";
         $gLocale[ "LinkToRaid" ]               = "Link do rajdu";
-        $gLocale[ "Switch" ]                   = "Przełącznik"; //????
+        $gLocale[ "Switch" ]                   = "Zmień rolę";
         $gLocale[ "Retire" ]                   = "Nieobecny";
-
+        $gLocale[ "Export" ]                   = null;
+        $gLocale[ "ExportFile" ]               = null;
+        $gLocale[ "ExportClipboard" ]          = null;
+        $gLocale[ "CopyOk" ]                   = null;
+        
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
         $gLocale[ "History" ]                  = "Historia rajdów";
@@ -194,6 +206,7 @@
         $gLocale[ "NoEndDate" ]                = "Wprowadź ostatni dzień urlopu";
         $gLocale[ "VacationMessage" ]          = "Wiadomość urlopowa";
         $gLocale[ "ClearVacation" ]            = "Usuń dane o urlopie";
+        $gLocale[ "AutoAttend" ]               = null;
 
         // Settings
         $gLocale[ "Settings" ]                 = "Ustawienia";
@@ -236,6 +249,7 @@
         $gLocale[ "RaidModeOverbook" ]         = "Przez raid lidera z nadmiarem";
         $gLocale[ "RaidModeAttend" ]           = "Automatyczny";
         $gLocale[ "RaidModeAll" ]              = "Tylko lista";
+        $gLocale[ "RaidModeOptOut" ]           = null;
         $gLocale[ "UpdateCheck" ]              = "Sprawdź aktualizacje";
         $gLocale[ "UpToDate" ]                 = "Raidplanner jest aktualny.";
         $gLocale[ "NewVersionAvailable" ]      = "Dostępna jest nowa wersja:";
@@ -345,7 +359,7 @@
         $gLocale[ "StrayCharacters" ]          = "Usunięte postacie";
         $gLocale[ "StrayUsers" ]               = "Usunięci użytkownicy";
         $gLocale[ "StrayBindings" ]            = "Nieprawidłowe powiązania";
-        $gLocale[ "RepairCharacters" ]         = "Napraw niepoprawne postacie;
+        $gLocale[ "RepairCharacters" ]         = "Napraw niepoprawne postacie";
         $gLocale[ "TransferGameconfig" ]       = "Aktualizuj gameconfig.php (Raidplaner 1.0.x)";
         $gLocale[ "MergeGames" ]               = "Połącz dwie gry";
         $gLocale[ "SourceGame" ]               = "Źródło";

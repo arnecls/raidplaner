@@ -36,6 +36,14 @@
         $gLocale[ "Warrior_FF14" ]             = "Warrior";
         $gLocale[ "Whitemage" ]                = "Whitemage";
         
+        // Classes Wildstar
+        $gLocale[ "Warrior_wstar" ]            = "Warrior";
+        $gLocale[ "Esper" ]                    = "Esper";
+        $gLocale[ "Spellslinger" ]             = "Spellslinger";
+        $gLocale[ "Stalker" ]                  = "Stalker";
+        $gLocale[ "Medic" ]                    = "Medic";
+        $gLocale[ "Engineer" ]                 = "Engineer";
+        
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
         $gLocale[ "Healer" ]                   = "Healer";
@@ -161,6 +169,10 @@
         $gLocale[ "LinkToRaid" ]               = "Link to raid";
         $gLocale[ "Switch" ]                   = "Switch";
         $gLocale[ "Retire" ]                   = "Absent";
+        $gLocale[ "Export" ]                   = null;
+        $gLocale[ "ExportFile" ]               = null;
+        $gLocale[ "ExportClipboard" ]          = null;
+        $gLocale[ "CopyOk" ]                   = null;
         
         // Profile        
         $gLocale[ "Profile" ]                  = "Profil";
@@ -192,6 +204,7 @@
         $gLocale[ "NoEndDate" ]                = "Prosím vložte poslední den vaší dovolené";
         $gLocale[ "VacationMessage" ]          = "Zpráva o dovolené";
         $gLocale[ "ClearVacation" ]            = "Smazat dovolenou";
+        $gLocale[ "AutoAttend" ]               = null;
                 
         // Settings
         $gLocale[ "Settings" ]                 = "Nastavení";
@@ -233,7 +246,8 @@
         $gLocale[ "RaidModeManual" ]           = "Setup by raidlead";
         $gLocale[ "RaidModeOverbook" ]         = "By raidlead with overbooking";
         $gLocale[ "RaidModeAttend" ]           = "Setup by attend";
-        $gLocale[ "RaidModeAll" ]              = "Just list";                    
+        $gLocale[ "RaidModeAll" ]              = "Just list";
+        $gLocale[ "RaidModeOptOut" ]           = null;
         $gLocale[ "UpdateCheck" ]              = "Zkontrolovat aktualizace";
         $gLocale[ "UpToDate" ]                 = "Raidplaner je aktuální.";
         $gLocale[ "NewVersionAvailable" ]      = "Nová verze je dostupná:";
@@ -270,8 +284,6 @@
         $gLocale[ "FTPClientHelp" ]            = "On how to change permissions, please consult your FTP client's helpfiles.";
         $gLocale[ "OutdatedPHP" ]              = "Zastaralá verze PHP";
         $gLocale[ "PHPVersion" ]               = "Verze PHP";
-        $gLocale[ "McryptModule" ]             = "Modul mcrypt";
-        $gLocale[ "McryptNotFound" ]           = "Mcrypt není nakonfigurován s PHP";
         $gLocale[ "PDOModule" ]                = "Modul PDO";
         $gLocale[ "PDONotFound" ]              = "PDO není nakonfigurováno s PHP";
         $gLocale[ "PDOMySQLModule" ]           = "PDO MySQL driver";

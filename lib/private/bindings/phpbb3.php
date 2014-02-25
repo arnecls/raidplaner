@@ -263,8 +263,8 @@
             // Fetch cookie name
 
             $CookieQuery = $Connector->prepare("SELECT config_value ".
-                                            "FROM `".PHPBB3_TABLE_PREFIX."config` ".
-                                            "WHERE config_name = 'cookie_name' LIMIT 1");
+                "FROM `".PHPBB3_TABLE_PREFIX."config` ".
+                "WHERE config_name = 'cookie_name' LIMIT 1");
 
             $ConfigData = $CookieQuery->fetchFirst();
 
@@ -277,8 +277,8 @@
                 if (isset($_COOKIE[$CookieName]))
                 {
                     $UserQuery = $Connector->prepare("SELECT session_user_id ".
-                                                  "FROM `".PHPBB3_TABLE_PREFIX."sessions` ".
-                                                  "WHERE session_id = :sid LIMIT 1");
+                        "FROM `".PHPBB3_TABLE_PREFIX."sessions` ".
+                        "WHERE session_id = :sid LIMIT 1");
 
                     $UserQuery->BindValue( ":sid", $_COOKIE[$CookieName], PDO::PARAM_STR );
                     $UserData = $UserQuery->fetchFirst();
@@ -287,9 +287,8 @@
                     {
                         // Get user info by external id
 
-                        $UserId = $UserData["session_user_id"];
-
-                        $UserInfo = $this->getUserInfoById($UserId);
+                        $UserId = intval($UserData["session_user_id"]);
+                        $UserInfo = ($UserId == 1) ? null : $this->getUserInfoById($UserId);
                     }
                 }
             }

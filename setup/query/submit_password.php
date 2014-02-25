@@ -1,10 +1,10 @@
 <?php
     header("Content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-    echo "<database>";
-
+    
     define( "LOCALE_SETUP", true );
     require_once("../../lib/private/connector.class.php");
+    require_once("../../lib/private/random.class.php");
     require_once("../../lib/config/config.php");
 
     $Out = Out::getInstance();
@@ -16,7 +16,7 @@
     {
         $TestQuery->fetchFirst(true);
 
-        $Salt = md5(openssl_random_pseudo_bytes(2048));
+        $Salt = md5(Random::getBytes(2048));
         $HashedPassword = hash("sha256", sha1($_REQUEST["password"]).$Salt);
 
         if ( $TestQuery->getAffectedRows() == 0 )
@@ -48,7 +48,5 @@
         $Out->pushError($Exception->getMessage());
     }
 
-    $Out->flushXML("");
-
-    echo "</database>";
+    $Out->flushXML("database");
 ?>

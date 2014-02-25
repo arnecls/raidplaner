@@ -7,7 +7,7 @@
     require_once("../../lib/private/connector.class.php");
     require_once("../../lib/private/userproxy.class.php");
 
-    PluginRegistry::ForEachPlugin( function($PluginInstance)
+    PluginRegistry::ForEachBinding( function($PluginInstance)
     {
         $Binding = $PluginInstance->getName();
 
