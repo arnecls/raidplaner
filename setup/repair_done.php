@@ -38,7 +38,7 @@
         $RoleIdxToId = Array();
         $Game = "";
         
-        $GameConfig = dirname(__FILE__)."/../../lib/private/gameconfig.php";
+        $GameConfig = dirname(__FILE__)."/../lib/private/gameconfig.php";
             
         if (file_exists($GameConfig))
         {
