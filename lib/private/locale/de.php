@@ -57,7 +57,7 @@
         $gLocale[ "OlderBrowserFeatures" ]     = "Ältere Browser unterstützen nicht alle benötigten Funktionen oder stellen die Seite falsch dar.";
         $gLocale[ "DownloadNewBrowser" ]       = "Du solltest deinen Browser aktualisieren oder einen der folgenden Browser herunterladen.";
         $gLocale[ "RaidplanerNotConfigured" ]  = "Der Raidplaner ist noch nicht konfiguriert oder benötigt ein Update.";
-        $gLocale[ "PleaseRunSetup" ]           = "Bitte führe den <a href=\"setup\">Setup</a> aus oder befolge die Instruktionen für eine <a href=\"http://code.google.com/p/ppx-raidplaner/wiki/ManualSetup\">manuelle Installation</a>.";
+        $gLocale[ "PleaseRunSetup" ]           = "Bitte führe den <a href=\"setup\">Setup</a> aus oder befolge die Instruktionen für eine <a href=\"https://github.com/arnecls/raidplaner/wiki/Manual-Setup\">manuelle Installation</a>.";
 
         // General
         $gLocale[ "Reserved" ]                 = "Reserviert";
