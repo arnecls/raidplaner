@@ -169,10 +169,10 @@
         $gLocale[ "LinkToRaid" ]               = "Link to raid";
         $gLocale[ "Switch" ]                   = "Switch";
         $gLocale[ "Retire" ]                   = "Absent";
-        $gLocale[ "Export" ]                   = null;
-        $gLocale[ "ExportFile" ]               = null;
-        $gLocale[ "ExportClipboard" ]          = null;
-        $gLocale[ "CopyOk" ]                   = null;
+        $gLocale[ "Export" ]                   = "Export";
+        $gLocale[ "ExportFile" ]               = "Soubor";
+        $gLocale[ "ExportClipboard" ]          = "Schránka";
+        $gLocale[ "CopyOk" ]                   = "Text byl zkopírován do schránky";
         
         // Profile        
         $gLocale[ "Profile" ]                  = "Profil";
@@ -204,7 +204,7 @@
         $gLocale[ "NoEndDate" ]                = "Prosím vložte poslední den vaší dovolené";
         $gLocale[ "VacationMessage" ]          = "Zpráva o dovolené";
         $gLocale[ "ClearVacation" ]            = "Smazat dovolenou";
-        $gLocale[ "AutoAttend" ]               = null;
+        $gLocale[ "AutoAttend" ]               = "Účastnit se automaticky";
                 
         // Settings
         $gLocale[ "Settings" ]                 = "Nastavení";
@@ -241,13 +241,13 @@
         $gLocale[ "HelpPage" ]                 = "Odkaz na nápovědu";
         $gLocale[ "Game" ]                     = "Hra";
         $gLocale[ "Theme" ]                    = "Vzhled";
-        $gLocale[ "ApiPrivate" ]               = null;
+        $gLocale[ "ApiPrivate" ]               = "API token (private)";
         $gLocale[ "RaidSetupStyle" ]           = "Attendance style";        
         $gLocale[ "RaidModeManual" ]           = "Setup by raidlead";
         $gLocale[ "RaidModeOverbook" ]         = "By raidlead with overbooking";
         $gLocale[ "RaidModeAttend" ]           = "Setup by attend";
         $gLocale[ "RaidModeAll" ]              = "Just list";
-        $gLocale[ "RaidModeOptOut" ]           = null;
+        $gLocale[ "RaidModeOptOut" ]           = "Attend all players";
         $gLocale[ "UpdateCheck" ]              = "Zkontrolovat aktualizace";
         $gLocale[ "UpToDate" ]                 = "Raidplaner je aktuální.";
         $gLocale[ "NewVersionAvailable" ]      = "Nová verze je dostupná:";
@@ -471,7 +471,7 @@
         $gLocale[ "drupal_CookieEx" ]           = "Drupal base URL";
         
         // Wordpress
-         $gLocale[ "wp_Binding" ]                = "Wordpress 3.x";
+        $gLocale[ "wp_Binding" ]                = "Wordpress 3.x";
         $gLocale[ "wp_ConfigFile" ]             = "Wordpress konfigurační soubor";
         $gLocale[ "wp_Database" ]               = "Wordpress databáze";
         $gLocale[ "wp_DatabaseEmpty" ]          = "Wordpress jméno databáze nesmí být prázdné.";
