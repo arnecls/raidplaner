@@ -171,10 +171,10 @@
 		$gLocale[ "LinkToRaid" ]               = "Lien vers le raid";
 		$gLocale[ "Switch" ]                   = "Changement";
         $gLocale[ "Retire" ]                   = "Absent";
-        $gLocale[ "Export" ]                   = null;
-        $gLocale[ "ExportFile" ]               = null;
-        $gLocale[ "ExportClipboard" ]          = null;
-        $gLocale[ "CopyOk" ]                   = null;
+        $gLocale[ "Export" ]                   = "Exporter";
+        $gLocale[ "ExportFile" ]               = "Fichier";
+        $gLocale[ "ExportClipboard" ]          = "Presse-Papiers";
+        $gLocale[ "CopyOk" ]                   = "Texte a été copié dans le presse-papiers";
         
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
@@ -206,7 +206,7 @@
 		$gLocale[ "NoEndDate" ]                = "Entrez votre dernier jour de vacance s'il vous plait.";
 		$gLocale[ "VacationMessage" ]          = "Message d'absence";
 		$gLocale[ "ClearVacation" ]            = "Supprimer les données de vacances";
-        $gLocale[ "AutoAttend" ]               = null;
+        $gLocale[ "AutoAttend" ]               = "Inscription Automatique";
 
         // Settings
         $gLocale[ "Settings" ]                 = "Réglages";
@@ -249,7 +249,7 @@
         $gLocale[ "RaidModeOverbook" ]         = "Par raidlead avec surréservation";
         $gLocale[ "RaidModeAttend" ]           = "par l'inscription";
         $gLocale[ "RaidModeAll" ]              = "juste une liste";
-        $gLocale[ "RaidModeOptOut" ]           = null;
+        $gLocale[ "RaidModeOptOut" ]           = "Inscription de tous les joueurs";
         $gLocale[ "UpdateCheck" ]              = "Vérifier les mises à jour";
         $gLocale[ "UpToDate" ]                 = "Ce raidplanner est à jour.";
         $gLocale[ "NewVersionAvailable" ]      = "Il y a une nouvelle version disponible:";
