@@ -17,7 +17,7 @@
         $gLocale[ "Shaman" ]                   = "Shaman";
         $gLocale[ "Warlock" ]                  = "Warlock";
         $gLocale[ "Warrior" ]                  = "Warrior";
-        $gLocale[ "Random" ]                   = "Nieznana";
+        $gLocale[ "Random" ]                   = "Rezerwacja";
         
         // Classes FF14        
         $gLocale[ "Arcanist" ]                 = "Arcanist";
@@ -171,10 +171,10 @@
         $gLocale[ "LinkToRaid" ]               = "Link do rajdu";
         $gLocale[ "Switch" ]                   = "Zmień rolę";
         $gLocale[ "Retire" ]                   = "Nieobecny";
-        $gLocale[ "Export" ]                   = null;
-        $gLocale[ "ExportFile" ]               = null;
-        $gLocale[ "ExportClipboard" ]          = null;
-        $gLocale[ "CopyOk" ]                   = null;
+        $gLocale[ "Export" ]                   = "Eksport";
+        $gLocale[ "ExportFile" ]               = "Plik";
+        $gLocale[ "ExportClipboard" ]          = "Schowek";
+        $gLocale[ "CopyOk" ]                   = "Dane zostały skopiowane do schowka.";
         
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";
@@ -206,7 +206,7 @@
         $gLocale[ "NoEndDate" ]                = "Wprowadź ostatni dzień urlopu";
         $gLocale[ "VacationMessage" ]          = "Wiadomość urlopowa";
         $gLocale[ "ClearVacation" ]            = "Usuń dane o urlopie";
-        $gLocale[ "AutoAttend" ]               = null;
+        $gLocale[ "AutoAttend" ]               = "Potwierdzaj automatycznie";
 
         // Settings
         $gLocale[ "Settings" ]                 = "Ustawienia";
@@ -249,7 +249,7 @@
         $gLocale[ "RaidModeOverbook" ]         = "Przez raid lidera z nadmiarem";
         $gLocale[ "RaidModeAttend" ]           = "Automatyczny";
         $gLocale[ "RaidModeAll" ]              = "Tylko lista";
-        $gLocale[ "RaidModeOptOut" ]           = null;
+        $gLocale[ "RaidModeOptOut" ]           = "Powierdź wszystkich";
         $gLocale[ "UpdateCheck" ]              = "Sprawdź aktualizacje";
         $gLocale[ "UpToDate" ]                 = "Raidplanner jest aktualny.";
         $gLocale[ "NewVersionAvailable" ]      = "Dostępna jest nowa wersja:";
