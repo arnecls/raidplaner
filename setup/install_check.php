@@ -85,7 +85,7 @@
     else
     {
         ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
+        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")." (lib/config)</span>";
     }
 
     // Main config file check
@@ -102,7 +102,7 @@
     else
     {
         ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
+        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")." (lib/config/config.php)</span>";
     }
 
     // Plugin config files check
@@ -115,7 +115,7 @@
         {
             ++$TestsFailed;
             echo "<br/><span class=\"check_field\">".L($Binding."_ConfigFile")."</span>";
-            echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
+            echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")." (lib/config/config.".$Binding.".php)</span>";
         }
     });
 ?>

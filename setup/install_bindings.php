@@ -111,7 +111,7 @@
             echo "<button id=\"".$Binding->getName()."_loaddata\" onclick=\"LoadBindingData('".$Binding->getName()."')\"".$Disabled.">".L("LoadGroups")."</button><br/><br/>";
 
             echo "<div class=\"groups\" style=\"margin-right: 10px\">";
-            echo L("AutoMemberLogin")."<br/>";;
+            echo L("AutoMemberLogin")."<br/>";
             echo "<select id=\"".$Binding->getName()."_member\" multiple=\"multiple\" style=\"height: 5.5em\"".$Disabled.">";
 
             if ($Groups != null)
@@ -185,6 +185,11 @@
             }
 
             echo "</select>";
+        }
+        
+        if ( !$Binding->isConfigWriteable() )
+        {
+            echo "<div class=\"binding_warning\">".L("NotWriteable")." (lib/config/config.".$Binding->getName().".php)</div>";
         }
 
         echo "</div>";

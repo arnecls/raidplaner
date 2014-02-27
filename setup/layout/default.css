@@ -172,6 +172,23 @@ button.clear:hover {
     background-color: #fcc;
 }
 
+.binding_warning {
+    height: 32px;
+    margin: 20px 0 20px 0;
+    border: 2px solid #faa;
+    background-color: #fdd;
+    color: red;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 32px;
+    font-weight: bold;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+}
+
 .icon_install {
     background-image: url(install_white.png);
 }
