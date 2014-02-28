@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<theme>
-    <name>Cataclysm</name>
-    <banner>cataclysm.jpg</banner>
-    <bgimage>cataclysm.jpg</bgimage>
-    <bgrepeat>repeat-x</bgrepeat>
-    <bgcolor>#8a8a8a</bgcolor>
-</theme>

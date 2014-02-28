@@ -3,6 +3,7 @@
     require_once(dirname(__FILE__)."/tools_string.php");
     require_once(dirname(__FILE__)."/locale.php");
     require_once(dirname(__FILE__)."/out.class.php");
+    require_once(dirname(__FILE__)."/query.class.php");
 
     class Connector extends PDO
     {
@@ -13,15 +14,23 @@
 
         // --------------------------------------------------------------------------------------------
 
-        public function __construct($aHost, $aDatabase, $aUser, $aPass, $aRethrow = false)
+        public function __construct($aHost, $aDatabase, $aUser, $aPass, $aRethrow = false, $aSetTimezone = true)
         {
             try
             {
                 $this->mHost  = $aHost;
                 $this->mDatabase = $aDatabase;
-                parent::__construct("mysql:dbname=".$aDatabase.";host=".$aHost, $aUser, $aPass,
-                	array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-                    //array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8', time_zone = '+00:00'"));
+                
+                if ($aSetTimezone)
+                {
+                    parent::__construct("mysql:dbname=".$aDatabase.";host=".$aHost, $aUser, $aPass,
+                        array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8' COLLATE 'utf8_general_ci', time_zone = '+00:00'"));
+                }
+                else
+                {
+                    parent::__construct("mysql:dbname=".$aDatabase.";host=".$aHost, $aUser, $aPass,
+                        array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8' COLLATE 'utf8_general_ci'"));
+                }
             }
             catch (PDOException $Exception)
             {
@@ -33,7 +42,8 @@
                 {
                     $Out = Out::getInstance();
                     $Out->pushError("Database connection error");
-                    $Out->pushError($Exception->getMessage());                    
+                    $Out->pushError($Exception->getMessage());
+
                 }
             }
         }
@@ -42,7 +52,7 @@
 
         public static function getInstance( $aRethrow = false )
         {
-            require_once(dirname(__FILE__)."/../config/config.php");
+            @require_once(dirname(__FILE__)."/../config/config.php");
             return self::getExternInstance(SQL_HOST, RP_DATABASE, RP_USER, RP_PASS, $aRethrow);
         }
 
@@ -76,61 +86,16 @@
             if ($StatementObj === false)
             {
                 $Out = Out::getInstance();
-                
+
                 foreach (parent::errorInfo() as $ErrorLine)
                 {
-                    $Out->pushError($ErrorLine);
+                    $Out->pushError(strval($ErrorLine));
                 }
 
                 $Out->writeJSONandStop();
             }
 
-            return $StatementObj;
+            return new Query($StatementObj);
         }
-        
-        // --------------------------------------------------------------------------------------------
-        
-        public function exec($aStatement)
-        {
-            if (parent::exec($aStatement) === false)
-            {
-                $Out = Out::getInstance();
-                $Out->pushError(L("DatabaseError"));
-                
-                $ErrorInfo = $this->errorInfo();
-        
-                foreach($ErrorInfo as $Info)
-                {
-                    $Out->pushError($Info);
-                }
-            }
-        }
-    }
-    
-    // --------------------------------------------------------------------------------------------
-
-    function postErrorMessage( $aStatement )
-    {
-        $Out = Out::getInstance();
-        $Out->pushError(L("DatabaseError"));
-        
-        $ErrorInfo = $aStatement->errorInfo();
-        
-        foreach($ErrorInfo as $Info)
-        {
-            $Out->pushError($Info);
-        }
-    }
-    
-    // --------------------------------------------------------------------------------------------
-
-    function postHTMLErrorMessage( $aStatement )
-    {
-        $ErrorInfo = $aStatement->errorInfo();
-        echo "<div class=\"database_error\">";
-        echo "<div class=\"error_head\">".L("DatabaseError")."</div>";
-        echo "<div class=\"error_line error_line1\">".$ErrorInfo[0]."</div>";
-        echo "<div class=\"error_line error_line2\">".$ErrorInfo[2]."</div>";
-        echo "</div>";
     }
 ?>

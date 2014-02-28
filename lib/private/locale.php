@@ -1,7 +1,8 @@
 <?php
     require_once(dirname(__FILE__)."/tools_string.php");
+    require_once(dirname(__FILE__)."/out.class.php");
 
-    $gLocale = Array();
+    $gLocale = array();
 
     if ( !isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) )
     {
@@ -24,6 +25,8 @@
         }
     }
 
+    // -------------------------------------------------------------------------
+
     function L( $aKey )
     {
         global $gLocale;
@@ -32,5 +35,27 @@
             return "LOCA_MISSING_".$aKey;
 
         return $gLocale[$aKey];
+    }
+
+    // -------------------------------------------------------------------------
+
+    function msgQueryLocale( $aRequest )
+    {
+        global $gLocale;
+        $EncodedLocale = array();
+
+        foreach ( $gLocale as $Key => $Value )
+        {
+            if ($Value != null)
+            {
+                $Flags = (PHP_VERSION_ID >= 50400) ? ENT_COMPAT | ENT_XHTML : ENT_COMPAT;
+                $Flags = (PHP_VERSION_ID >= 50300) ? $Flags | ENT_IGNORE : $Flags;
+                
+                $Encoded = htmlentities(getUTF8($Value), $Flags, 'UTF-8');
+                $EncodedLocale[$Key] = $Encoded;
+            }
+        }
+
+        Out::getInstance()->pushValue("locale", $EncodedLocale);
     }
 ?>

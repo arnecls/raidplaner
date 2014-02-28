@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<game>
+    <id>wsta</id>
+    <name>Wildstar</name>
+    <family>wstar</family>
+    <classmode>single</classmode>
+    
+    <roles>
+        <role id="tnk" loca="Tank" style="role_tank"/>
+        <role id="med" loca="Healer" style="role_heal"/>
+        <role id="dmg" loca="Damage" style="role_melee"/>
+    </roles>
+    
+    <classes>
+        <class id="war" loca="Warrior_wstar" style="warrior">
+            <role id="tnk" default="true"/>
+            <role id="dmg"/>
+        </class>
+        
+        <class id="esp" loca="Esper" style="esper">
+            <role id="med"/>
+            <role id="dmg" default="true"/>
+        </class>
+        
+        <class id="spe" loca="Spellslinger" style="spellslinger">
+            <role id="dmg" default="true"/>
+            <role id="med"/>
+        </class>
+        
+        <class id="sta" loca="Stalker" style="stalker">
+            <role id="dmg" default="true"/>
+            <role id="tnk"/>
+        </class>
+        
+        <class id="med" loca="Medic" style="medic">
+            <role id="med" default="true"/>
+            <role id="dmg"/>
+        </class>
+        
+        <class id="eng" loca="Engineer" style="engineer">
+            <role id="dmg" default="true"/>
+            <role id="tnk"/>
+        </class>
+    </classes>
+    
+    <raidview>
+        <slots role="tnk" order="1" columns="1"/>
+        <slots role="med" order="2" columns="1"/>
+        <slots role="dmg" order="3" columns="*"/>
+    </raidview>
+    
+    <groups>
+        <group count="5">
+            <role id="tnk" count="1"/>
+            <role id="med" count="1"/>
+            <role id="dmg" count="*"/>
+        </group>
+        
+        <group count="10">
+            <role id="tnk" count="1"/>
+            <role id="med" count="2"/>
+            <role id="dmg" count="*"/>
+        </group>
+        
+        <group count="20">
+            <role id="tnk" count="2"/>
+            <role id="med" count="6"/>
+            <role id="dmg" count="*"/>
+        </group>
+        
+        <group count="40">
+            <role id="tnk" count="4"/>
+            <role id="med" count="10"/>
+            <role id="dmg" count="*"/>
+        </group>
+    </groups>
+</game>

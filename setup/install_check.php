@@ -1,6 +1,7 @@
 <?php
     define( "LOCALE_SETUP", true );
     require_once(dirname(__FILE__)."/../lib/private/locale.php");
+    require_once(dirname(__FILE__)."/../lib/private/userproxy.class.php");
 ?>
 <?php readfile("layout/header.html"); ?>
 
@@ -18,13 +19,12 @@
     echo L("ChangePermissions")."<br/>";
     echo L("FTPClientHelp")."<br/><br/>";
 
-    // Version check    
-    
-    echo "<br/><span class=\"check_field\">".L("PHPVersion")." (>= 5.2)</span>";
-    $Version = explode('.', phpversion());
+    // Version check
+
+    echo "<br/><span class=\"check_field\">".L("PHPVersion")." (>= 5.3.4)</span>";
     $TestsFailed = 0;
-    
-    if ( ($Version[0] > 5) || ($Version[0] == 5 && $Version[1] >= 2) )
+
+    if ( PHP_VERSION_ID >= 50304 )
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok");
     }
@@ -33,7 +33,7 @@
         ++$TestsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("OutdatedPHP");
     }
-        
+
     echo " (".phpversion().")</span>";
 
     // PDO check
@@ -41,7 +41,7 @@
     echo "<br/><span class=\"check_field\">".L("PDOModule")."</span>";
     $Extensions = get_loaded_extensions();
     $PDOInstalled = in_array("PDO", $Extensions);
-    
+
     if ( $PDOInstalled )
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
@@ -51,18 +51,18 @@
         ++$TestsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("PDONotFound")."</span>";
     }
-    
+
     // PDO MySQL check
 
     echo "<br/><span class=\"check_field\">".L("PDOMySQLModule")."</span>";
     $PDODriverInstalled = false;
-    
+
     if ( $PDOInstalled )
     {
         $Drivers = PDO::getAvailableDrivers();
         $PDODriverInstalled = in_array("mysql", $Drivers);
     }
-    
+
     if ($PDODriverInstalled)
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
@@ -72,25 +72,12 @@
         ++$TestsFailed;
         echo "<span class=\"check_result\" style=\"color: red\">".L("PDOMySQLNotFound")."</span>";
     }
-    
-    // MCrypt module check         
 
-    echo "<br/><span class=\"check_field\">".L("McryptModule")."</span>";
-    if ( in_array("mcrypt", $Extensions) )
-    {
-        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
-    }
-    else
-    {
-        ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("McryptNotFound")."</span>";
-    }
-    
     // Config folder check
 
     echo "<br/><br/><span class=\"check_field\">".L("ConfigFolder")."</span>";
     $ConfigFolderState = is_writable("../lib/config");
-    
+
     if ( $ConfigFolderState )
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
@@ -98,15 +85,16 @@
     else
     {
         ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
+        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")." (lib/config)</span>";
     }
-    
+
     // Main config file check
-    
+
     echo "<br/><span class=\"check_field\">".L("MainConfigFile")."</span>";
-    $ConfigFileState = (!file_exists("../lib/config/config.php") && $ConfigFolderState) || 
+    $ConfigFileState = (!file_exists("../lib/config/config.php") && $ConfigFolderState) ||
+
                         is_writable("../lib/config/config.php");
-    
+
     if ( $ConfigFileState )
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
@@ -114,136 +102,22 @@
     else
     {
         ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
+        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")." (lib/config/config.php)</span>";
     }
-    
-    // PHPBB3 config file check
 
-    echo "<br/><span class=\"check_field\">".L("PHPBB3ConfigFile")."</span>";
-    $PhpbbConfigFileState = (!file_exists("../lib/config/config.phpbb3.php") && $ConfigFolderState) || 
-                            is_writable("../lib/config/config.phpbb3.php");
-                        
-    if ( $PhpbbConfigFileState )
-    {
-        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
-    }
-    else
-    {
-        ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
-    }
-    
-    // EQDKP config file check
+    // Plugin config files check
 
-    echo "<br/><span class=\"check_field\">".L("EQDKPConfigFile")."</span>";
-    $EqdkpConfigFileState = (!file_exists("../lib/config/config.eqdkp.php") && $ConfigFolderState) || 
-                            is_writable("../lib/config/config.eqdkp.php");
-                        
-    if ( $EqdkpConfigFileState )
+    PluginRegistry::ForEachBinding(function($PluginInstance) use (&$TestsFailed)
     {
-        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
-    }
-    else
-    {
-        ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
-    }
-    
-    // VBulletin config file check
+        $Binding = $PluginInstance->getName();
 
-    echo "<br/><span class=\"check_field\">".L("VBulletinConfigFile")."</span>";
-    $VbulletinConfigFileState = (!file_exists("../lib/config/config.vb3.php") && $ConfigFolderState) || 
-                            is_writable("../lib/config/config.vb3.php");
-                        
-    if ( $VbulletinConfigFileState )
-    {
-        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
-    }
-    else
-    {
-        ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
-    }
-    
-    // MYBB config file check
-    
-    echo "<br/><span class=\"check_field\">".L("MyBBConfigFile")."</span>";
-    $MybbConfigFileState = (!file_exists("../lib/config/config.mybb.php") && $ConfigFolderState) || 
-                            is_writable("../lib/config/config.mybb.php");
-                        
-    if ( $MybbConfigFileState )
-    {
-        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
-    }
-    else
-    {
-        ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
-    }
-    
-    // SMF config file check
-
-    echo "<br/><span class=\"check_field\">".L("SMFConfigFile")."</span>";
-    $SmfConfigFileState = (!file_exists("../lib/config/config.smf.php") && $ConfigFolderState) || 
-                            is_writable("../lib/config/config.smf.php");
-                        
-    if ( $SmfConfigFileState )
-    {
-        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
-    }
-    else
-    {
-        ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
-    }
-    
-    // Joomla config file check
-
-    echo "<br/><span class=\"check_field\">".L("JoomlaConfigFile")."</span>";
-    $JmlConfigFileState = (!file_exists("../lib/config/config.joomla3.php") && $ConfigFolderState) || 
-                            is_writable("../lib/config/config.joomla3.php");
-                        
-    if ( $JmlConfigFileState )
-    {
-        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
-    }
-    else
-    {
-        ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
-    }
-    
-    // Drupal config file check
-
-    echo "<br/><span class=\"check_field\">".L("DrupalConfigFile")."</span>";
-    $DrupalConfigFileState = (!file_exists("../lib/config/config.drupal.php") && $ConfigFolderState) || 
-                               is_writable("../lib/config/config.drupal.php");
-                        
-    if ( $DrupalConfigFileState )
-    {
-        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
-    }
-    else
-    {
-        ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
-    }
-    
-    // Wordpress config file check
-
-    echo "<br/><span class=\"check_field\">".L("WpConfigFile")."</span>";
-    $WpConfigFileState = (!file_exists("../lib/config/config.wp.php") && $ConfigFolderState) || 
-                           is_writable("../lib/config/config.wp.php");
-                        
-    if ( $WpConfigFileState )
-    {
-        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
-    }
-    else
-    {
-        ++$TestsFailed;
-        echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")."</span>";
-    }
+        if ( !$PluginInstance->isConfigWriteable() )
+        {
+            ++$TestsFailed;
+            echo "<br/><span class=\"check_field\">".L($Binding."_ConfigFile")."</span>";
+            echo "<span class=\"check_result\" style=\"color: red\">".L("NotWriteable")." (lib/config/config.".$Binding.".php)</span>";
+        }
+    });
 ?>
 </div>
 <div class="bottom_navigation">

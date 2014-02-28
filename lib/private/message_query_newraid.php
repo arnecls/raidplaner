@@ -1,35 +1,28 @@
 <?php
 
-function msgQueryNewRaidData( $aRequest )
-{
-    $Out = Out::getInstance();
-    
-    if ( validRaidlead() )
+    function msgQueryNewRaidData( $aRequest )
     {
-        $Connector = Connector::getInstance();
-
-        // Settings
-
-        $NewRaidSettings = $Connector->prepare("Select Name, IntValue, TextValue FROM `".RP_TABLE_PREFIX."Setting`");
-
-        if ( !$NewRaidSettings->execute() )
+        $Out = Out::getInstance();
+    
+        if ( validRaidlead() )
         {
-            postErrorMessage( $NewRaidSettings );
-        }
-        else
-        {
+            $Connector = Connector::getInstance();
+    
+            // Settings
+    
+            $NewRaidSettings = $Connector->prepare("SELECT Name, IntValue, TextValue FROM `".RP_TABLE_PREFIX."Setting`");
+    
             $IntOfInterest = Array( "RaidSize", "RaidStartHour", "RaidStartMinute", "RaidEndHour", "RaidEndMinute", "StartOfWeek" );
             $TextOfInterest = Array( "RaidMode" );
-            
             $Settings = Array();
-
-            while ( $Data = $NewRaidSettings->fetch( PDO::FETCH_ASSOC ) )
+    
+            $NewRaidSettings->loop( function($Data) use (&$Settings, $IntOfInterest, $TextOfInterest)
             {
                 $KeyValue = Array(
                     "name"  => $Data["Name"],
                     "value" => null
                 );
-                
+    
                 if ( in_array($Data["Name"], $IntOfInterest) )
                 {
                     $KeyValue["value"] = $Data["IntValue"];
@@ -38,23 +31,20 @@ function msgQueryNewRaidData( $aRequest )
                 {
                     $KeyValue["value"] = $Data["TextValue"];
                 }
-                
+    
                 array_push($Settings, $KeyValue);
-            }
-
+            });
+    
             $Out->pushValue("setting", $Settings);
+    
+            // Locations
+    
+            msgQueryLocations($aRequest);
         }
-
-        $NewRaidSettings->closeCursor();
-
-        // Locations
-
-        msgQueryLocations($aRequest);
+        else
+        {
+            $Out->pushError(L("AccessDenied"));
+        }
     }
-    else
-    {
-        $Out->pushError(L("AccessDenied"));
-    }
-}
 
 ?>
