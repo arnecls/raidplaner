@@ -262,6 +262,22 @@ a.element {
     clear: both;
 }
 
+#teaser3_1 {
+    z-index: 2;
+}
+
+#teaser3_2 {
+    position: absolute;
+    z-index: 1;
+    right: 50px;
+    display: none;
+}
+
+.right .img_box {
+    float: right;
+    display: inline-block;
+}
+
 .left img {
     float: left;
     display: inline-block;

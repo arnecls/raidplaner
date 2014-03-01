@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <a href="https://plus.google.com/117920822853814771101" rel="publisher" style="display:none">Google+</a>
 
+    <script type="text/javascript" src="scripts/jquery-2.0.3.min.js"></script>
     <title>Raidplaner</title>
   </head>
 
@@ -30,7 +31,7 @@
         
         <h1 class="high">Manage your raids: fast, easy and elegant</h1>
         <h2 class="low">Raid management does not need to be complicated.</h2>
-        <img src="images/teaser.jpg" alt="Its just two simple steps" style="margin-top: 50px"/>
+        <img src="images/teaser.png" alt="Its just two simple steps" style="margin-top: 50px"/>
         
         <div class="separator"></div>        
         <div id="keypoints">
@@ -65,18 +66,19 @@
         <h1 class="high">Spend your time raiding, not managing</h1>
                 
         <div class="teaser right" style="padding-top: 80px">
-            <img src="images/teaser4.jpg" alt="Create a raid in seconds"/>
+            <img src="images/teaser4.png" alt="Create a raid in seconds"/>
             <div class="text">
                 <h2 class="high">Create raids in seconds</h2>
                 Creating raids is often tedious work. Or is it?<br/>
                 Double click on the date of your raid and choose a raid instance.<br/>
                 Your raid starts at the usual time with the usual amount of players? You're done already.<br/>
-                Want to try out the new raid instance from the latest patch? Create it right in place. 
+                Want to try out the new raid instance from the latest patch? Create it right in place.<br/>
+                You need 10 more of this every week? Choose, set, done.
             </div>            
         </div>
                 
         <div class="teaser left" style="padding-top: 50px">
-            <img src="images/teaser2.jpg" alt="Drag&Drop raid setup"/>
+            <img src="images/teaser2.png" alt="Drag&Drop raid setup"/>
             <div class="text" style="padding-top: 5px">
                 <h2 class="high">Managing raids is easy</h2>
                 Deciding which players to set up is crucial for a successful raid.
@@ -89,7 +91,10 @@
         </div>
         
         <div class="teaser right" style="padding-top: 50px">
-            <img src="images/teaser3.jpg" alt="3 steps to create a character"/>
+            <div class="img_box" style="width: 600px; height: 317px">
+                <img id="teaser3_1" src="images/teaser3.png" alt="3 steps to create a character"/>
+                <img id="teaser3_2" src="images/teaser3a.png" alt="3 steps to create a character"/>
+            </div>
             <div class="text" style="padding-top: 35px">
                 <h2 class="high">Keeping it simple</h2>
                 Ever wondered why you still have to enter things like race, level or resistances for your characters?<br/>
@@ -99,36 +104,46 @@
         </div>
         
         <div class="separator"></div> 
-        <h1 class="high">What's new in version 1.0.0</h1>
+        <h1 class="high">What's new in version 1.1.0</h1>
         <h2 class="low" style="margin-bottom: 50px">You can view the full <a href="https://github.com/arnecls/raidplaner/wiki/Changelog">changelog</a> on GitHub.</h2>
         
         <ul class="column">
             <li>
-                <h3>New attendance modes</h3>
-                You can now choose between  the standard manual setup (with overbooking), first come / first serve attending and automatic setup on attend.
+                <h3>Batch create raids</h3>
+                Need to create 10 raids in a row? You can now choose how often and at which interval a raid shall be cloned.
             </li>
             <li>
-                <h3>Automatic timezone support</h3>
-                All raiding times are now displayed correctly according to the timezone set on your system.
+                <h3>Vacations</h3>
+                Users can now set a vacation period where they are automatically marked as absent. And if they want to always attend the latest raids - there's now an option for this, too.
             </li>
             <li>
-                <h3>Faster loading times</h3>
-                HTTP requests are now using JSON, resulting in even shorter response times.
-                Additionally, all javascript files have been minified to improve initial loading times.
+                <h3>Improved bindings</h3>
+                Your users are already logged in to your forum and you don't want them to log in a second time? Automatic login to the rescue.<br/>
+                You want to create a new post in your forum to discuss upcoming raids? Activate forum posts for your binding and you're done.
+            </li>
+            <li>
+                <h3>Final Fantasy 14 support</h3>
+                Let's face it. The Final Fantasy job system is not the WoW class system. So there is now an all new character management mode just for Final Fantasy users.
+                And for all those WoW players - don't worry. Nothing changes for you.
             </li>
         </ul>
         <ul class="column">
             <li>
-                <h3>Wordpress binding</h3>
-                You can now login from an existing Wordpress installation. With this binding, there are now 9 different bindings available.
+                <h3>Enhanced theme support</h3>
+                There are multiple new options for creating themes. Want to choose between random banners? Want to re-skin the entire Raidplaner? These are just two of the things possible with 1.1.0.
             </li>
             <li>
-                <h3>Improved localizations</h3>
-                French and polish community localizations have been added. All strings and pages are now UTF-8 for easier maintenance.
+                <h3>Improved game support</h3>
+                Games are now configured in separate XMLs that can be switched with a simple flip in the settings.
+            </li>
+            <li>
+                <h3>API</h3>
+                Want to display the next 10 upcoming raids on your guild's homepage? Meet the new Raidplaner API.<br/>
+                Call functions directly from PHP or trigger an asynchronous query via javascript.
             </li>
             <li>
                 <h3>And there is even more ...</h3>
-                Version 1.0.3 contains over 30 bugfixes and 17 new features.<br/>
+                Version 1.1.0 contains over 25 new features and improvements over version 1.0.3.<br/>
                 Have a look at the <a href="https://github.com/arnecls/raidplaner/wiki/Changelog">changelog</a> for a complete list of all changes.
             </li>
         </ul>
@@ -139,6 +154,31 @@
             Supported browsers are Firefox 4+, Google Chrome, Internet Explorer 10+, Opera 13+ and Safari 4+.
         </p>
     </div>
+    
+    <script>
+        var fadeTime  = 2000;
+        var pauseTime = 4000;
+    
+        function teaser3_1to2()
+        {
+            $("#teaser3_1").fadeOut(fadeTime);
+            $("#teaser3_2").fadeIn(fadeTime);
+            
+            setTimeout(teaser3_2to1, fadeTime+pauseTime);
+        }
+        
+        function teaser3_2to1()
+        {
+            $("#teaser3_1").fadeIn(fadeTime);
+            $("#teaser3_2").fadeOut(fadeTime);
+            
+            setTimeout(teaser3_1to2, fadeTime+pauseTime);
+        }
+    
+        $(document).ready( function() {
+            setTimeout(teaser3_2to1, fadeTime);
+        });
+    </script>
         
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
