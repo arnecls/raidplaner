@@ -128,7 +128,7 @@
                         {
                             foreach($Theme->style as $Style)
                             {
-                                array_push($gSite["Styles"], $Style);
+                                array_push($gSite["Styles"], strval($Style));
                             }
                         }
                         

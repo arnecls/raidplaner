@@ -18,7 +18,8 @@
         "tooltip.css",
         "sheet.css",
         "settings.css");
-        
+    
+    loadSiteSettings();
     
     if ( isset($_REQUEST["debug"]) )
     {
@@ -55,7 +56,7 @@
         
         foreach($gSite["Styles"] as $File)
         {
-            readfile("../../themes/styles/".$LoaderCurrentFile);
+            readfile("../../themes/styles/".$File);
             //$Contents = file_get_contents("../../themes/styles/".$LoaderCurrentFile);
             //echo preg_replace($MinifyRegex, "", $Contents);
         }
