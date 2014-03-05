@@ -53,7 +53,7 @@
             // Only parse files with php content.
             // If we parse all files, php might terminate execution.
 
-            if ( strpos($Loader_current_file, ".php") === false )
+            if (substr($Loader_current_file, -4) !== ".php")
             {
                 readfile($Loader_current_file);
             }

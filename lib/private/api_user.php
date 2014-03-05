@@ -38,10 +38,9 @@
         
         foreach ( $GameFiles as $GameFileName )
         {
-            $ExtPos = strpos($GameFileName,".xml");
-            if ($ExtPos > 0)
+            if (substr($GameFileName, -4) === ".xml")
             {
-                $Game = loadGame(substr($GameFileName,0,$ExtPos));
+                $Game = loadGame(substr($GameFileName, 0, -4));
                 $Games[$Game["GameId"]] = $Game;
             }
         }        
