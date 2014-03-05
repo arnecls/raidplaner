@@ -242,7 +242,7 @@
                                     "Status = :Status, Role = :Role, Comment = :Name, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
                                     "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
     
-                                $UpdateSlot->bindValue( ":Name", Name, PDO::PARAM_STR);
+                                $UpdateSlot->bindValue( ":Name", $Name, PDO::PARAM_STR);
                             }
                             else
                             {
