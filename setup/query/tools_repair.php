@@ -412,7 +412,7 @@
         {
             try
             {
-                if (strpos($GameFileName,".xml") > 0)
+                if (substr($GameFileName, -4) === ".xml")
                 {
                     $GameId = "";
                     $GameMode = "";

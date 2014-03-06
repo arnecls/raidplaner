@@ -40,7 +40,7 @@
     {
         try
         {
-            if (strpos($GameFileName,".xml") > 0)
+            if (substr($GameFileName, -4) === ".xml")
             {
                 $Game = @new SimpleXMLElement( file_get_contents("../themes/games/".$GameFileName) );
                 $SimpleGameFileName = substr($GameFileName, 0, strrpos($GameFileName, "."));
