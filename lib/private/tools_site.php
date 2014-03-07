@@ -180,6 +180,7 @@
         );
         
         $ConfigFile = realpath(dirname(__FILE__)."/../../themes/games/".$aConfigFileName.".xml");
+        $Out = Out::getInstance();
         
         if ( !file_exists($ConfigFile) )
         {
