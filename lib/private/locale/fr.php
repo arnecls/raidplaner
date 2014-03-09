@@ -304,6 +304,8 @@
         $gLocale[ "FTPClientHelp" ]            = "Pour savoir comment changer les permission, merci de consulter les fichiers d'aide de votre client FTP.";
         $gLocale[ "OutdatedPHP" ]              = "Version PHP périmée";
         $gLocale[ "PHPVersion" ]               = "Version PHP";
+        $gLocale[ "MbStringModule" ]           = "Mbstring module";
+        $gLocale[ "MbStringNotFound" ]         = "Mbstring pas configuré avec PHP";
         $gLocale[ "PDOModule" ]                = "PDO module";
         $gLocale[ "PDONotFound" ]              = "PDO pas configuré avec PHP";
         $gLocale[ "PDOMySQLModule" ]           = "PDO MySQL driver";

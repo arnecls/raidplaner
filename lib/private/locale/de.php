@@ -300,6 +300,8 @@
         $gLocale[ "FTPClientHelp" ]            = "Wie du die Rechte ändern kannst entnimmst du am besten der Hilfe deines FTP-Programms.";
         $gLocale[ "OutdatedPHP" ]              = "Veraltete PHP Version";
         $gLocale[ "PHPVersion" ]               = "PHP Version";
+        $gLocale[ "MbStringModule" ]           = "Mbstring Modul";
+        $gLocale[ "MbStringNotFound" ]         = "PHP wurde nicht mit mbstring konfiguriert";
         $gLocale[ "PDOModule" ]                = "PDO Modul";
         $gLocale[ "PDONotFound" ]              = "PHP wurde nicht mit PDO konfiguriert";
         $gLocale[ "PDOMySQLModule" ]           = "PDO MySQL Treiber";

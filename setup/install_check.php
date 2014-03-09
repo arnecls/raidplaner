@@ -36,6 +36,22 @@
 
     echo " (".phpversion().")</span>";
 
+    // mbstring check
+
+    echo "<br/><span class=\"check_field\">".L("MbStringModule")."</span>";
+    $Extensions = get_loaded_extensions();
+    $PDOInstalled = in_array("mbstring", $Extensions);
+
+    if ( $PDOInstalled )
+    {
+        echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span>";
+    }
+    else
+    {
+        ++$TestsFailed;
+        echo "<span class=\"check_result\" style=\"color: red\">".L("MbStringNotFound")."</span>";
+    }
+
     // PDO check
 
     echo "<br/><span class=\"check_field\">".L("PDOModule")."</span>";
