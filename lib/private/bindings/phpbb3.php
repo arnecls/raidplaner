@@ -424,65 +424,68 @@
         public function post( $aSubject, $aMessage )
         {
             $Connector = $this->getConnector();
-            $Connector->beginTransaction();
-
             $Timestamp = time();
 
             // Fetch user
 
             try
             {
-                $UserQuery = $Connector->prepare("SELECT username, user_colour FROM `".PHPBB3_TABLE_PREFIX."users` WHERE user_id=:UserId LIMIT 1");
-                $UserQuery->BindValue( ":UserId", intval(PHPBB3_POSTAS), PDO::PARAM_INT );
+                do
+                {
+                    $Connector->beginTransaction();
 
-                $UserData = $UserQuery->fetchFirst();
-
-                // Create topic
-
-                $TopicQuery = $Connector->prepare("INSERT INTO `".PHPBB3_TABLE_PREFIX."topics` ".
-                                               "(forum_id, topic_poster, topic_title, topic_last_post_subject, topic_time, topic_first_poster_name, topic_first_poster_colour, topic_last_poster_name, topic_last_poster_colour, topic_last_post_time) VALUES ".
-                                               "(:ForumId, :UserId, :Subject, :Subject, :Now, :Username, :Color, :Username, :Color, :Now)");
-
-                $TopicQuery->BindValue( ":ForumId", intval(PHPBB3_POSTTO), PDO::PARAM_INT );
-                $TopicQuery->BindValue( ":UserId", intval(PHPBB3_POSTAS), PDO::PARAM_INT );
-                $TopicQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
-                $TopicQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
-                $TopicQuery->BindValue( ":Color", $UserData["user_colour"], PDO::PARAM_STR );
-                $TopicQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
-
-                $TopicQuery->execute(true);
-                $TopicId = $Connector->lastInsertId();
-
-                // Create post
-
-                $PostQuery = $Connector->prepare("INSERT INTO `".PHPBB3_TABLE_PREFIX."posts` ".
-                                              "(forum_id, topic_id, post_time, post_username, poster_id, post_subject, post_text, post_checksum) VALUES ".
-                                              "(:ForumId, :TopicId, :Now, :Username, :UserId, :Subject, :Text, :TextMD5)");
-
-                $PostQuery->BindValue( ":ForumId", intval(PHPBB3_POSTTO), PDO::PARAM_INT );
-                $PostQuery->BindValue( ":TopicId", intval($TopicId), PDO::PARAM_INT );
-                $PostQuery->BindValue( ":UserId", intval(PHPBB3_POSTAS), PDO::PARAM_INT );
-                $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
-                $PostQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
-
-                $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
-                $PostQuery->BindValue( ":Text", $aMessage, PDO::PARAM_STR );
-                $PostQuery->BindValue( ":TextMD5", md5($aMessage), PDO::PARAM_STR );
-
-                $PostQuery->execute(true);
-                $PostId = $Connector->lastInsertId();
-
-                // Finish topic
-
-                $TopicFinishQuery = $Connector->prepare("UPDATE `".PHPBB3_TABLE_PREFIX."topics` ".
-                                                     "SET topic_first_post_id = :PostId, topic_last_post_id = :PostId ".
-                                                     "WHERE topic_id = :TopicId LIMIT 1");
-
-                $TopicFinishQuery->BindValue( ":TopicId", intval($TopicId), PDO::PARAM_INT );
-                $TopicFinishQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
-
-                $TopicFinishQuery->execute(true);
-                $Connector->commit();
+                    $UserQuery = $Connector->prepare("SELECT username, user_colour FROM `".PHPBB3_TABLE_PREFIX."users` WHERE user_id=:UserId LIMIT 1");
+                    $UserQuery->BindValue( ":UserId", intval(PHPBB3_POSTAS), PDO::PARAM_INT );
+    
+                    $UserData = $UserQuery->fetchFirst();
+    
+                    // Create topic
+    
+                    $TopicQuery = $Connector->prepare("INSERT INTO `".PHPBB3_TABLE_PREFIX."topics` ".
+                                                   "(forum_id, topic_poster, topic_title, topic_last_post_subject, topic_time, topic_first_poster_name, topic_first_poster_colour, topic_last_poster_name, topic_last_poster_colour, topic_last_post_time) VALUES ".
+                                                   "(:ForumId, :UserId, :Subject, :Subject, :Now, :Username, :Color, :Username, :Color, :Now)");
+    
+                    $TopicQuery->BindValue( ":ForumId", intval(PHPBB3_POSTTO), PDO::PARAM_INT );
+                    $TopicQuery->BindValue( ":UserId", intval(PHPBB3_POSTAS), PDO::PARAM_INT );
+                    $TopicQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $TopicQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
+                    $TopicQuery->BindValue( ":Color", $UserData["user_colour"], PDO::PARAM_STR );
+                    $TopicQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
+    
+                    $TopicQuery->execute(true);
+                    $TopicId = $Connector->lastInsertId();
+    
+                    // Create post
+    
+                    $PostQuery = $Connector->prepare("INSERT INTO `".PHPBB3_TABLE_PREFIX."posts` ".
+                                                  "(forum_id, topic_id, post_time, post_username, poster_id, post_subject, post_text, post_checksum) VALUES ".
+                                                  "(:ForumId, :TopicId, :Now, :Username, :UserId, :Subject, :Text, :TextMD5)");
+    
+                    $PostQuery->BindValue( ":ForumId", intval(PHPBB3_POSTTO), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":TopicId", intval($TopicId), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":UserId", intval(PHPBB3_POSTAS), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
+    
+                    $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
+                    $PostQuery->BindValue( ":Text", $aMessage, PDO::PARAM_STR );
+                    $PostQuery->BindValue( ":TextMD5", md5($aMessage), PDO::PARAM_STR );
+    
+                    $PostQuery->execute(true);
+                    $PostId = $Connector->lastInsertId();
+    
+                    // Finish topic
+    
+                    $TopicFinishQuery = $Connector->prepare("UPDATE `".PHPBB3_TABLE_PREFIX."topics` ".
+                                                         "SET topic_first_post_id = :PostId, topic_last_post_id = :PostId ".
+                                                         "WHERE topic_id = :TopicId LIMIT 1");
+    
+                    $TopicFinishQuery->BindValue( ":TopicId", intval($TopicId), PDO::PARAM_INT );
+                    $TopicFinishQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
+    
+                    $TopicFinishQuery->execute(true);
+                }
+                while (!$Connector->commit());
             }
             catch (PDOException $Exception)
             {

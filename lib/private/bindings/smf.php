@@ -308,60 +308,63 @@
         public function post($aSubject, $aMessage)
         {
             $Connector = $this->getConnector();
-            $Connector->beginTransaction();
-
             $Timestamp = time();
 
             // Fetch user
 
             try
             {
-                $UserQuery = $Connector->prepare("SELECT member_name FROM `".SMF_TABLE_PREFIX."members` WHERE id_member=:UserId LIMIT 1");
-                $UserQuery->BindValue( ":UserId", intval(SMF_POSTAS), PDO::PARAM_INT );
+                do
+                {
+                    $Connector->beginTransaction();
 
-                $UserData = $UserQuery->fetchFirst();
-
-                // Create post
-
-                $PostQuery = $Connector->prepare("INSERT INTO `".SMF_TABLE_PREFIX."messages` ".
-                                              "(id_board, poster_time, id_member, poster_name, subject, body) VALUES ".
-                                              "(:ForumId, :Now, :UserId, :Username, :Subject, :Text)");
-
-                $PostQuery->BindValue( ":ForumId", intval(SMF_POSTTO), PDO::PARAM_INT );
-                $PostQuery->BindValue( ":UserId", intval(SMF_POSTAS), PDO::PARAM_INT );
-                $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
-                $PostQuery->BindValue( ":Username", $UserData["member_name"], PDO::PARAM_STR );
-
-                $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
-                $PostQuery->BindValue( ":Text", $aMessage, PDO::PARAM_STR );
-
-                $PostQuery->execute(true);
-                $PostId = $Connector->lastInsertId();
-
-                // Create topic
-
-                $TopicQuery = $Connector->prepare("INSERT INTO `".SMF_TABLE_PREFIX."topics` ".
-                                               "(id_board, id_member_started, id_first_msg, id_last_msg) VALUES ".
-                                               "(:ForumId, :UserId, :PostId, :PostId)");
-
-                $TopicQuery->BindValue( ":ForumId", intval(SMF_POSTTO), PDO::PARAM_INT );
-                $TopicQuery->BindValue( ":UserId", intval(SMF_POSTAS), PDO::PARAM_INT );
-                $TopicQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
-
-                $TopicQuery->execute(true);
-                $TopicId = $Connector->lastInsertId();
-                
-                // Finish post
-
-                $PostFinishQuery = $Connector->prepare("UPDATE `".SMF_TABLE_PREFIX."messages` ".
-                                                     "SET id_topic = :TopicId ".
-                                                     "WHERE id_msg = :PostId LIMIT 1");
-
-                $PostFinishQuery->BindValue( ":TopicId", intval($TopicId), PDO::PARAM_INT );
-                $PostFinishQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
-
-                $PostFinishQuery->execute(true);
-                $Connector->commit();
+                    $UserQuery = $Connector->prepare("SELECT member_name FROM `".SMF_TABLE_PREFIX."members` WHERE id_member=:UserId LIMIT 1");
+                    $UserQuery->BindValue( ":UserId", intval(SMF_POSTAS), PDO::PARAM_INT );
+    
+                    $UserData = $UserQuery->fetchFirst();
+    
+                    // Create post
+    
+                    $PostQuery = $Connector->prepare("INSERT INTO `".SMF_TABLE_PREFIX."messages` ".
+                                                  "(id_board, poster_time, id_member, poster_name, subject, body) VALUES ".
+                                                  "(:ForumId, :Now, :UserId, :Username, :Subject, :Text)");
+    
+                    $PostQuery->BindValue( ":ForumId", intval(SMF_POSTTO), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":UserId", intval(SMF_POSTAS), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":Username", $UserData["member_name"], PDO::PARAM_STR );
+    
+                    $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
+                    $PostQuery->BindValue( ":Text", $aMessage, PDO::PARAM_STR );
+    
+                    $PostQuery->execute(true);
+                    $PostId = $Connector->lastInsertId();
+    
+                    // Create topic
+    
+                    $TopicQuery = $Connector->prepare("INSERT INTO `".SMF_TABLE_PREFIX."topics` ".
+                                                   "(id_board, id_member_started, id_first_msg, id_last_msg) VALUES ".
+                                                   "(:ForumId, :UserId, :PostId, :PostId)");
+    
+                    $TopicQuery->BindValue( ":ForumId", intval(SMF_POSTTO), PDO::PARAM_INT );
+                    $TopicQuery->BindValue( ":UserId", intval(SMF_POSTAS), PDO::PARAM_INT );
+                    $TopicQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
+    
+                    $TopicQuery->execute(true);
+                    $TopicId = $Connector->lastInsertId();
+                    
+                    // Finish post
+    
+                    $PostFinishQuery = $Connector->prepare("UPDATE `".SMF_TABLE_PREFIX."messages` ".
+                                                         "SET id_topic = :TopicId ".
+                                                         "WHERE id_msg = :PostId LIMIT 1");
+    
+                    $PostFinishQuery->BindValue( ":TopicId", intval($TopicId), PDO::PARAM_INT );
+                    $PostFinishQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
+    
+                    $PostFinishQuery->execute(true);
+                }
+                while (!$Connector->commit());
             }
             catch (PDOException $Exception)
             {

@@ -325,79 +325,80 @@
         public function post($aSubject, $aMessage)
         {
             $Connector = $this->getConnector();
-            $Connector->beginTransaction();
-
             $Timestamp = time();
             $FormattedMessage = HTMLToBBCode($aMessage);
 
-            // Fetch user
-
             try
             {
-                $UserQuery = $Connector->prepare("SELECT username FROM `".MYBB_TABLE_PREFIX."users` WHERE uid=:UserId LIMIT 1");
-                $UserQuery->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
+                do
+                {
+                    $Connector->beginTransaction();
 
-                $UserData = $UserQuery->fetchFirst();
-
-                // Create thread
-
-                $ThreadQuery = $Connector->prepare("INSERT INTO `".MYBB_TABLE_PREFIX."threads` ".
-                    "(fid, uid, subject, username, dateline, lastpost, lastposter, lastposteruid, visible) VALUES ".
-                    "(:ForumId, :UserId, :Subject, :Username, :Now, :Now, :Username, :UserId, 1)");
-
-                $ThreadQuery->BindValue( ":ForumId", intval(MYBB_POSTTO), PDO::PARAM_INT );
-                $ThreadQuery->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
-                $ThreadQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
-                $ThreadQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
-                $ThreadQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
-
-                $ThreadQuery->execute(true);
-                $ThreadId = $Connector->lastInsertId();
-
-                // Create post
-
-                $PostQuery = $Connector->prepare("INSERT INTO `".MYBB_TABLE_PREFIX."posts` ".
-                    "(tid, fid, uid, username, dateline, subject, message, visible) VALUES ".
-                    "(:ThreadId, :ForumId, :UserId, :Username, :Now, :Subject, :Text, 1)");
-
-                $PostQuery->BindValue( ":ThreadId", intval($ThreadId), PDO::PARAM_INT );
-                $PostQuery->BindValue( ":ForumId", intval(MYBB_POSTTO), PDO::PARAM_INT );
-                $PostQuery->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
-                $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
-                $PostQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
-
-                $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
-                $PostQuery->BindValue( ":Text", $FormattedMessage, PDO::PARAM_STR );
-                
-                $PostQuery->execute(true);
-                $PostId = $Connector->lastInsertId();
-                
-                // Update forum
-                
-                $ForumUpdate = $Connector->prepare("UPDATE `".MYBB_TABLE_PREFIX."forums` ".
-                    "SET posts=posts+1, threads=threads+1, lastpost=:Now, ".
-                    "lastposteruid=:UserId, lastposttid=:ThreadId, lastpostsubject=:Subject ".
-                    "WHERE fid=:ForumId LIMIT 1");
+                    $UserQuery = $Connector->prepare("SELECT username FROM `".MYBB_TABLE_PREFIX."users` WHERE uid=:UserId LIMIT 1");
+                    $UserQuery->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
+    
+                    $UserData = $UserQuery->fetchFirst();
+    
+                    // Create thread
+    
+                    $ThreadQuery = $Connector->prepare("INSERT INTO `".MYBB_TABLE_PREFIX."threads` ".
+                        "(fid, uid, subject, username, dateline, lastpost, lastposter, lastposteruid, visible) VALUES ".
+                        "(:ForumId, :UserId, :Subject, :Username, :Now, :Now, :Username, :UserId, 1)");
+    
+                    $ThreadQuery->BindValue( ":ForumId", intval(MYBB_POSTTO), PDO::PARAM_INT );
+                    $ThreadQuery->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
+                    $ThreadQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $ThreadQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
+                    $ThreadQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
+    
+                    $ThreadQuery->execute(true);
+                    $ThreadId = $Connector->lastInsertId();
+    
+                    // Create post
+    
+                    $PostQuery = $Connector->prepare("INSERT INTO `".MYBB_TABLE_PREFIX."posts` ".
+                        "(tid, fid, uid, username, dateline, subject, message, visible) VALUES ".
+                        "(:ThreadId, :ForumId, :UserId, :Username, :Now, :Subject, :Text, 1)");
+    
+                    $PostQuery->BindValue( ":ThreadId", intval($ThreadId), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":ForumId", intval(MYBB_POSTTO), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
+    
+                    $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
+                    $PostQuery->BindValue( ":Text", $FormattedMessage, PDO::PARAM_STR );
                     
-                $ForumUpdate->BindValue( ":ForumId", intval(MYBB_POSTTO), PDO::PARAM_INT );
-                $ForumUpdate->BindValue( ":ThreadId", intval($ThreadId), PDO::PARAM_INT );
-                $ForumUpdate->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
-                $ForumUpdate->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
-                $ForumUpdate->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
-
-                $ForumUpdate->execute(true);
-            
-                // Finish thread
-
-                $ThreadFinishQuery = $Connector->prepare("UPDATE `".MYBB_TABLE_PREFIX."threads` ".
-                                                         "SET firstpost = :PostId ".
-                                                         "WHERE tid = :ThreadId LIMIT 1");
-
-                $ThreadFinishQuery->BindValue( ":ThreadId", intval($ThreadId), PDO::PARAM_INT );
-                $ThreadFinishQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
-
-                $ThreadFinishQuery->execute(true);
-                $Connector->commit();
+                    $PostQuery->execute(true);
+                    $PostId = $Connector->lastInsertId();
+                    
+                    // Update forum
+                    
+                    $ForumUpdate = $Connector->prepare("UPDATE `".MYBB_TABLE_PREFIX."forums` ".
+                        "SET posts=posts+1, threads=threads+1, lastpost=:Now, ".
+                        "lastposteruid=:UserId, lastposttid=:ThreadId, lastpostsubject=:Subject ".
+                        "WHERE fid=:ForumId LIMIT 1");
+                        
+                    $ForumUpdate->BindValue( ":ForumId", intval(MYBB_POSTTO), PDO::PARAM_INT );
+                    $ForumUpdate->BindValue( ":ThreadId", intval($ThreadId), PDO::PARAM_INT );
+                    $ForumUpdate->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $ForumUpdate->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
+                    $ForumUpdate->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
+    
+                    $ForumUpdate->execute(true);
+                
+                    // Finish thread
+    
+                    $ThreadFinishQuery = $Connector->prepare("UPDATE `".MYBB_TABLE_PREFIX."threads` ".
+                                                             "SET firstpost = :PostId ".
+                                                             "WHERE tid = :ThreadId LIMIT 1");
+    
+                    $ThreadFinishQuery->BindValue( ":ThreadId", intval($ThreadId), PDO::PARAM_INT );
+                    $ThreadFinishQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
+    
+                    $ThreadFinishQuery->execute(true);
+                }
+                while(!$Connector->commit());
             }
             catch (PDOException $Exception)
             {
