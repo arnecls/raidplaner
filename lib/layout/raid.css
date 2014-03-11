@@ -70,22 +70,21 @@
     opacity: 1.0;
 }
 
-#slackers_badge {
+#tablist .iconbadge {
     position: relative;
     height: 14px;
     font-size: 12px;
     line-height: 12px;
     padding: 0px 2px 0px 1px;
     margin: 0px 2px 0px 2px;
-    background-color: #000;
-    color: #aaa;
-    position: relative;
-    top: 17px;
-    left: 0px;
+    background-color: rgba(0,0,0,0.6);
+    top: 18px;
+    left: -2px;
+    width: 29px;
     text-align: center;
 }
 
-#slackers_badge:empty {
+#tablist .iconbadge:empty {
     display: none;
 }
 

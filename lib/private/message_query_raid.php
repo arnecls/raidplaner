@@ -56,10 +56,11 @@
                 $Attendees = Array();
 
                 $MaxAttendanceId = 1;
+                $NumAttended = 0;
 
                 if ( $Data["UserId"] != NULL )
                 {
-                    $ListRaidQuery->loop(function($Data) use (&$gGame, &$Connector, &$MaxAttendanceId, &$Participants, &$Attendees)
+                    $ListRaidQuery->loop(function($Data) use (&$gGame, &$Connector, &$MaxAttendanceId, &$Participants, &$Attendees, &$NumAttended)
                     {
                         // Track max attendance id to give undecided players (without a comment) a distinct one.
                         $MaxAttendanceId = Max($MaxAttendanceId,$Data["AttendanceId"]);
@@ -111,7 +112,6 @@
                                     );
 
                                     $CharQuery->loop(function($CharData) use (&$AttendeeData)
-
                                     {
                                         $Character = Array(
                                             "id"        => $CharData["CharacterId"],
@@ -151,6 +151,7 @@
                                 );
 
                                 array_push($Attendees, $AttendeeData);
+                                ++$NumAttended;
                             }
                         }
                         else
@@ -197,6 +198,9 @@
                                 array_push($AttendeeData["character"], $Character);
                             });
 
+                            if (($Data["Status"] == "ok") || ($Data["Status"] == "available"))
+                                ++$NumAttended;
+                                
                             array_push($Attendees, $AttendeeData);
                         }
                     });
@@ -273,11 +277,13 @@
                 });
 
                 $Out->pushValue("attendee", $Attendees);
+                $Out->pushValue("attended", $NumAttended);
                 
                 $ExportParameter = Api::normalizeArgsRaid(Array(
                     "raid"    => intval($aRequest["id"]),
                     "attends" => true,
-                ));                                
+                ));
+                
                 $Out->pushValue("token", Api::getPublicToken($ExportParameter));
             }
 
