@@ -112,6 +112,7 @@
 
 #raiddetail .raidsize {
     font-size: 10px;
+    line-height: 12px;
 }
 
 #raiddetail .raidcomment {
@@ -133,6 +134,7 @@
 
 #raiddetail .datetime {
     font-size: 10px;
+    line-height: 12px;
 }
 
 #raiddetail .playerIcon {
