@@ -107,8 +107,9 @@
     
         $RaidData = Array();
         $RoleInfo = Array();
+        $NumAttends = 0;
     
-        $aQueryResult->loop( function($Data) use (&$RaidData, &$RoleInfo)
+        $aQueryResult->loop( function($Data) use (&$RaidData, &$RoleInfo, &$NumAttends)
         {
             array_push($RaidData, $Data);
             $RaidId = $Data["RaidId"];
@@ -123,7 +124,9 @@
             if ( ($Data["Status"] == "ok") ||
                  ($Data["Status"] == "available") )
             {
+                ++$NumAttends;
                 $Role = $Data["Role"];
+                
                 if ( isset($RoleInfo[$RaidId][$Role]) )
                     ++$RoleInfo[$RaidId][$Role];
                 else
@@ -189,7 +192,8 @@
                         "comment"         => $Comment,
                         "role"            => $Role,
                         "slotMax"         => Array(),
-                        "slotCount"       => Array()
+                        "slotCount"       => Array(),
+                        "attended"        => $NumAttends
                     );
                     
                     $Roles = explode(":",$Data["SlotRoles"]);

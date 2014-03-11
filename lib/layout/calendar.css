@@ -265,6 +265,14 @@
 #tooltip .time {
     font-style: italic;
     font-size: 10px;
+    line-height: 12px;
+    color: #ccc;
+}
+
+#tooltip .attends {
+    font-style: italic;
+    font-size: 10px;
+    line-height: 12px;
     color: #ccc;
 }
 
