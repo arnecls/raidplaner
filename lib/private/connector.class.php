@@ -11,6 +11,7 @@
 
         private $mHost;
         private $mDatabase;
+        private $mRetryCounter;
 
         // --------------------------------------------------------------------------------------------
 
@@ -20,6 +21,7 @@
             {
                 $this->mHost  = $aHost;
                 $this->mDatabase = $aDatabase;
+                $this->mRetryCounter = 0;
                 
                 if ($aSetTimezone)
                 {
@@ -96,6 +98,35 @@
             }
 
             return new Query($StatementObj);
+        }
+        
+        // --------------------------------------------------------------------------------------------
+
+        public function beginTransaction()
+        {
+            if ($this->mRetryCounter++ > 5)
+            {
+                $this->mRetryCounter = 0;
+                throw new PDOException("Maximum number of transactional retries reached.");
+            }
+               
+            return parent::beginTransaction();
+        }
+        
+        // --------------------------------------------------------------------------------------------
+
+        public function rollback()
+        {
+            $this->mRetryCounter = 0;
+            return parent::rollback();
+        }
+        
+        // --------------------------------------------------------------------------------------------
+
+        public function commit()
+        {
+            $this->mRetryCounter = 0;
+            return parent::commit();
         }
     }
 ?>
