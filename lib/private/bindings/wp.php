@@ -30,8 +30,8 @@
             $Config->Prefix           = defined("WP_TABLE_PREFIX") ? WP_TABLE_PREFIX : "wp_";
             $Config->AutoLoginEnabled = defined("WP_AUTOLOGIN") ? WP_AUTOLOGIN : false;
             $Config->CookieData       = defined("WP_SECRET") ? WP_SECRET : "";
-            $Config->Members          = defined("WP_RAIDLEAD_GROUPS") ? explode(",", WP_RAIDLEAD_GROUPS ) : array();
-            $Config->Raidleads        = defined("WP_MEMBER_GROUPS") ? explode(",", WP_MEMBER_GROUPS ) : array();
+            $Config->Raidleads        = defined("WP_RAIDLEAD_GROUPS") ? explode(",", WP_RAIDLEAD_GROUPS ) : array();
+            $Config->Members          = defined("WP_MEMBER_GROUPS") ? explode(",", WP_MEMBER_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
 

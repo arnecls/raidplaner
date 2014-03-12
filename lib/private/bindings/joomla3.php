@@ -29,8 +29,8 @@
             $Config->Prefix           = defined("JML3_TABLE_PREFIX") ? JML3_TABLE_PREFIX : "jml_";
             $Config->AutoLoginEnabled = defined("JML3_AUTOLOGIN") ? JML3_AUTOLOGIN : false;
             $Config->CookieData       = defined("JML3_SECRET") ? JML3_SECRET : "0123456789ABCDEF";
-            $Config->Members          = defined("JML3_RAIDLEAD_GROUPS") ? explode(",", JML3_RAIDLEAD_GROUPS ) : array();
-            $Config->Raidleads        = defined("JML3_MEMBER_GROUPS") ? explode(",", JML3_MEMBER_GROUPS ) : array();
+            $Config->Raidleads        = defined("JML3_RAIDLEAD_GROUPS") ? explode(",", JML3_RAIDLEAD_GROUPS ) : array();
+            $Config->Members          = defined("JML3_MEMBER_GROUPS") ? explode(",", JML3_MEMBER_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
 

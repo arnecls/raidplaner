@@ -31,8 +31,8 @@
             $Config->AutoLoginEnabled = defined("PHPBB3_AUTOLOGIN") ? PHPBB3_AUTOLOGIN : false;
             $Config->PostTo           = defined("PHPBB3_POSTTO") ? PHPBB3_POSTTO : "";
             $Config->PostAs           = defined("PHPBB3_POSTAS") ? PHPBB3_POSTAS : "";
-            $Config->Members          = defined("PHPBB3_RAIDLEAD_GROUPS") ? explode(",", PHPBB3_RAIDLEAD_GROUPS ) : array();
-            $Config->Raidleads        = defined("PHPBB3_MEMBER_GROUPS") ? explode(",", PHPBB3_MEMBER_GROUPS ) : array();
+            $Config->Raidleads        = defined("PHPBB3_RAIDLEAD_GROUPS") ? explode(",", PHPBB3_RAIDLEAD_GROUPS ) : array();
+            $Config->Members          = defined("PHPBB3_MEMBER_GROUPS") ? explode(",", PHPBB3_MEMBER_GROUPS ) : array();
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
 

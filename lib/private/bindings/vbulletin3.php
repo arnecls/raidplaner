@@ -29,8 +29,8 @@
             $Config->CookieData       = defined("VB3_COOKIE_PREFIX") ? VB3_COOKIE_PREFIX : "bb";
             $Config->PostTo           = defined("VB3_POSTTO") ? VB3_POSTTO : "";
             $Config->PostAs           = defined("VB3_POSTAS") ? VB3_POSTAS : "";
-            $Config->Members          = defined("VB3_RAIDLEAD_GROUPS") ? explode(",", VB3_RAIDLEAD_GROUPS ) : array();
-            $Config->Raidleads        = defined("VB3_MEMBER_GROUPS") ? explode(",", VB3_MEMBER_GROUPS ) : array();
+            $Config->Raidleads        = defined("VB3_RAIDLEAD_GROUPS") ? explode(",", VB3_RAIDLEAD_GROUPS ) : array();
+            $Config->Members          = defined("VB3_MEMBER_GROUPS") ? explode(",", VB3_MEMBER_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
