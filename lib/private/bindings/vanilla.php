@@ -31,8 +31,8 @@
             $Config->CookieData       = defined("VANILLA_COOKIE") ? VANILLA_COOKIE : "Vanilla,md5,123456";
             $Config->PostTo           = defined("VANILLA_POSTTO") ? VANILLA_POSTTO : "";
             $Config->PostAs           = defined("VANILLA_POSTAS") ? VANILLA_POSTAS : "";
-            $Config->Members          = defined("VANILLA_RAIDLEAD_GROUPS") ? explode(",", VANILLA_RAIDLEAD_GROUPS ) : array();
-            $Config->Raileads         = defined("VANILLA_MEMBER_GROUPS") ? explode(",", VANILLA_MEMBER_GROUPS ) : array();
+            $Config->Raidleads        = defined("VANILLA_RAIDLEAD_GROUPS") ? explode(",", VANILLA_RAIDLEAD_GROUPS ) : array();
+            $Config->Members          = defined("VANILLA_MEMBER_GROUPS") ? explode(",", VANILLA_MEMBER_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;

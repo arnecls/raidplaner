@@ -29,8 +29,8 @@
             $Config->AutoLoginEnabled = defined("MYBB_AUTOLOGIN") ? MYBB_AUTOLOGIN : false;
             $Config->PostTo           = defined("MYBB_POSTTO") ? MYBB_POSTTO : "";
             $Config->PostAs           = defined("MYBB_POSTAS") ? MYBB_POSTAS : "";
-            $Config->Members          = defined("MYBB_RAIDLEAD_GROUPS") ? explode(",", MYBB_RAIDLEAD_GROUPS ) : array();
-            $Config->RaidLeads        = defined("MYBB_MEMBER_GROUPS") ? explode(",", MYBB_MEMBER_GROUPS ) : array();
+            $Config->Raidleads        = defined("MYBB_RAIDLEAD_GROUPS") ? explode(",", MYBB_RAIDLEAD_GROUPS ) : array();
+            $Config->Members          = defined("MYBB_MEMBER_GROUPS") ? explode(",", MYBB_MEMBER_GROUPS ) : array();
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
 

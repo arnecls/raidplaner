@@ -30,8 +30,8 @@
             $Config->CookieData       = defined("SMF_COOKIE") ? SMF_COOKIE : "SMFCookie956";
             $Config->PostTo           = defined("SMF_POSTTO") ? SMF_POSTTO : "";
             $Config->PostAs           = defined("SMF_POSTAS") ? SMF_POSTAS : "";
-            $Config->Members          = defined("SMF_RAIDLEAD_GROUPS") ? explode(",", SMF_RAIDLEAD_GROUPS ) : array();
-            $Config->Raidleads        = defined("SMF_MEMBER_GROUPS") ? explode(",", SMF_MEMBER_GROUPS ) : array();
+            $Config->Raidleads        = defined("SMF_RAIDLEAD_GROUPS") ? explode(",", SMF_RAIDLEAD_GROUPS ) : array();
+            $Config->Members          = defined("SMF_MEMBER_GROUPS") ? explode(",", SMF_MEMBER_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;

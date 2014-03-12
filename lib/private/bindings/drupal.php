@@ -35,8 +35,8 @@
             $Config->Prefix           = defined("DRUPAL_TABLE_PREFIX") ? DRUPAL_TABLE_PREFIX : "";
             $Config->CookieData       = defined("DRUPAL_ROOT") ? DRUPAL_ROOT : "http://".$_SERVER['HTTP_HOST'];
             $Config->AutoLoginEnabled = defined("DRUPAL_AUTOLOGIN") ? DRUPAL_AUTOLOGIN : false;
-            $Config->Members          = defined("DRUPAL_RAIDLEAD_GROUPS") ? explode(",", DRUPAL_RAIDLEAD_GROUPS ) : array();
-            $Config->Raidleads        = defined("DRUPAL_MEMBER_GROUPS") ? explode(",", DRUPAL_MEMBER_GROUPS ) : array();
+            $Config->Raidleads        = defined("DRUPAL_RAIDLEAD_GROUPS") ? explode(",", DRUPAL_RAIDLEAD_GROUPS ) : array();
+            $Config->Members          = defined("DRUPAL_MEMBER_GROUPS") ? explode(",", DRUPAL_MEMBER_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
 
