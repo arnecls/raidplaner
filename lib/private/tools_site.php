@@ -253,13 +253,20 @@
                 
                 $ColsUsed = 0;
                 $MaxNumCols = 6;
+                $AutoCount = 0;
                 $Order = Array();
                 
                 foreach($Config->raidview->slots as $Slot)
                 {
-                    $Columns = ($Slot["columns"] == "*") 
-                        ? $MaxNumCols - $ColsUsed
-                        : intval($Slot["columns"]);
+                    if ($Slot["columns"] == "*")
+                    {
+                        $Columns = 0;
+                        ++$AutoCount;
+                    }
+                    else
+                    {
+                        $Columns = intval($Slot["columns"]);    
+                    }
                                         
                     $Game["RaidView"][strval($Slot["role"])] = $Columns;
                     
@@ -270,6 +277,28 @@
                     
                     $ColsUsed += $Columns;
                 }
+                
+                // Adjust auto columns
+                
+                if ($AutoCount > 0)
+                {
+                    $AutoColValue = ($MaxNumCols - $ColsUsed) / $AutoCount;
+                
+                    foreach($Game["RaidView"] as $Role => $Count)
+                    {
+                        if ($Count == 0)
+                        {
+                            $Game["RaidView"][$Role] = ($AutoCount == 1)
+                                ? $MaxNumCols - $ColsUsed
+                                : $AutoColValue;
+                            
+                            --$AutoCount;
+                            $ColsUsed += $Game["RaidView"][$Role];
+                        }
+                    }
+                }
+                
+                // Sort by order attribute
                 
                 sort($Order);
                 
@@ -288,18 +317,45 @@
                     $GroupData = Array();
                     $GroupSize = intval($Group["count"]);
                     $SlotsUsed = 0;
+                    $AutoCount = 0;
                     
                     foreach($Group->role as $Role)
                     {
                         if (!isset($Game["Roles"][strval($Role["id"])]))
                             throw new Exception("Unknown role ".$Role["id"]." used in group (".$GroupSize.").");
                         
-                        $Count = ($Role["count"] == "*")
-                            ? $GroupSize - $SlotsUsed
-                            : intval($Role["count"]);
+                        if ($Role["count"] == "*")
+                        {
+                            $Count = 0;
+                            ++$AutoCount;
+                        }
+                        else
+                        {
+                            $Count = intval($Role["count"]);    
+                        }
                             
                         $GroupData[strval($Role["id"])] = $Count;                        
                         $SlotsUsed += $Count;
+                    }
+                    
+                    // Adjust auto columns
+                
+                    if ($AutoCount > 0)
+                    {
+                        $AutoCountValue = ($GroupSize - $SlotsUsed) / $AutoCount;
+                    
+                        foreach($GroupData as $Role => $Count)
+                        {
+                            if ($Count == 0)
+                            {
+                                $GroupData[$Role] = ($AutoCount == 1)
+                                    ? $GroupSize - $SlotsUsed
+                                    : $AutoColValue;
+                                
+                                --$AutoCount;
+                                $SlotsUsed += $GroupData[$Role];
+                            }
+                        }
                     }
                     
                     if ($SlotsUsed != $GroupSize)
