@@ -221,6 +221,10 @@ textarea {
     text-shadow: 1px 1px 1px black;
 }
 
+.glow_complete {
+    text-shadow: 0px 0px 6px rgba(0,255,0,1.0);
+}
+
 .box_inlay {
     background-color: rgba(215, 215, 215, 0.5);
     

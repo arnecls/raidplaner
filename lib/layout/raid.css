@@ -361,7 +361,8 @@
     color: #bbb;
     font-size: 12px;
     font-weight: normal;
-    vertical-align: text-top;   
+    vertical-align: text-top;
+    text-shadow: none;   
 }
 
 #raiddetail .clip {    
