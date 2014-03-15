@@ -107,30 +107,33 @@
     
         $RaidData = Array();
         $RoleInfo = Array();
-        $NumAttends = 0;
+        $NumAttends = Array();
     
         $aQueryResult->loop( function($Data) use (&$RaidData, &$RoleInfo, &$NumAttends)
         {
             array_push($RaidData, $Data);
             $RaidId = $Data["RaidId"];
-    
+            
             // Create used slot counts
     
             if ( !isset($RoleInfo[$RaidId]) )
                 $RoleInfo[$RaidId] = Array();
             
+            if ( !isset($NumAttends[$RaidId]) )
+                $NumAttends[$RaidId] = 0;
+                
             // Count used slots
     
             if ( ($Data["Status"] == "ok") ||
                  ($Data["Status"] == "available") )
             {
-                ++$NumAttends;
                 $Role = $Data["Role"];
-                
-                if ( isset($RoleInfo[$RaidId][$Role]) )
-                    ++$RoleInfo[$RaidId][$Role];
-                else
+                                    
+                if ( !isset($RoleInfo[$RaidId][$Role]) )
                     $RoleInfo[$RaidId][$Role] = 0;
+                                
+                ++$NumAttends[$RaidId];    
+                ++$RoleInfo[$RaidId][$Role];                    
             }
         });
     
@@ -193,7 +196,7 @@
                         "role"            => $Role,
                         "slotMax"         => Array(),
                         "slotCount"       => Array(),
-                        "attended"        => $NumAttends
+                        "attended"        => $NumAttends[$RaidId]
                     );
                     
                     $Roles = explode(":",$Data["SlotRoles"]);
