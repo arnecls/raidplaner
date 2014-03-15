@@ -12,7 +12,7 @@
     </roles>
     
     <classes>
-        <class id="war" loca="Warrior_wstar" style="warrior">
+        <class id="war" loca="Warrior" style="warrior">
             <role id="tnk" default="true"/>
             <role id="dmg"/>
         </class>
@@ -74,4 +74,49 @@
             <role id="dmg" count="*"/>
         </group>
     </groups>
+    
+    <locale name="en">
+        <text key="Warrior">Warrior</text>
+        <text key="Esper">Esper</text>
+        <text key="Spellslinger">Spellslinger</text>
+        <text key="Stalker">Stalker</text>
+        <text key="Medic">Medic</text>
+        <text key="Engineer">Engineer</text>
+    </locale>
+    
+    <locale name="de">
+        <text key="Warrior">Krieger</text>
+        <text key="Esper">Esper</text>
+        <text key="Spellslinger">Arkanschütze</text>
+        <text key="Stalker">Meuchler</text>
+        <text key="Medic">Sanitäter</text>
+        <text key="Engineer">Techpionier</text>
+    </locale>
+    
+    <locale name="fr">
+        <text key="Warrior">Guerrier</text>
+        <text key="Esper">Esper</text>
+        <text key="Spellslinger">Arcanero</text>
+        <text key="Stalker">Rôdeur</text>
+        <text key="Medic">Toubib</text>
+        <text key="Engineer">Ingénieur</text>
+    </locale>
+    
+    <locale name="pl">
+        <text key="Warrior">Warrior</text>
+        <text key="Esper">Esper</text>
+        <text key="Spellslinger">Spellslinger</text>
+        <text key="Stalker">Stalker</text>
+        <text key="Medic">Medic</text>
+        <text key="Engineer">Engineer</text>
+    </locale>
+    
+    <locale name="cs">
+        <text key="Warrior">Warrior</text>
+        <text key="Esper">Esper</text>
+        <text key="Spellslinger">Spellslinger</text>
+        <text key="Stalker">Stalker</text>
+        <text key="Medic">Medic</text>
+        <text key="Engineer">Engineer</text>
+    </locale>
 </game>

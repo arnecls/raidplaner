@@ -5,47 +5,6 @@
 
     if ( defined("LOCALE_MAIN") )
     {
-        // Classes WoW
-        $gLocale[ "Deathknight" ]              = "DK";
-        $gLocale[ "Druid" ]                    = "Druide";
-        $gLocale[ "Hunter" ]                   = "Chasseur";
-        $gLocale[ "Mage" ]                     = "Mage";
-        $gLocale[ "Monk" ]                     = "Moine";
-        $gLocale[ "Paladin" ]                  = "Paladin";
-        $gLocale[ "Priest" ]                   = "Prêtre";
-        $gLocale[ "Rogue" ]                    = "Voleur";
-        $gLocale[ "Shaman" ]                   = "chaman";
-        $gLocale[ "Warlock" ]                  = "Démoniste";
-        $gLocale[ "Warrior" ]                  = "Guerrier";
-        $gLocale[ "Random" ]                   = "Inconnu";
-        
-        // Classes FF14        
-        $gLocale[ "Arcanist" ]                 = "Arcaniste";
-        $gLocale[ "Archer" ]                   = "Archer";
-        $gLocale[ "Bard" ]                     = "Barde";
-        $gLocale[ "Blackmage" ]                = "Mage Noir";
-        $gLocale[ "Conjurer" ]                 = "Élémentaliste";
-        $gLocale[ "Dragoon" ]                  = "Chevalier Dragon";
-        $gLocale[ "Gladiator" ]                = "Gladiateur";
-        $gLocale[ "Lancer" ]                   = "Maître d'Hast";
-        $gLocale[ "Marauder" ]                 = "Maraudeur";
-        $gLocale[ "Monk_FF14" ]                = "Moine";
-        $gLocale[ "Paladin_FF14" ]             = "Paladin";
-        $gLocale[ "Pugilist" ]                 = "Pugiliste";
-        $gLocale[ "Scholar" ]                  = "Érudit";
-        $gLocale[ "Summoner" ]                 = "Invocateur";
-        $gLocale[ "Thaumaturge" ]              = "Occultiste";
-        $gLocale[ "Warrior_FF14" ]             = "Guerrier";
-        $gLocale[ "Whitemage" ]                = "Mage Blanc";
-        
-        // Classes Wildstar
-        $gLocale[ "Warrior_wstar" ]            = "Guerrier";
-        $gLocale[ "Esper" ]                    = "Esper";
-        $gLocale[ "Spellslinger" ]             = "Arcanero";
-        $gLocale[ "Stalker" ]                  = "Rôdeur";
-        $gLocale[ "Medic" ]                    = "Toubib";
-        $gLocale[ "Engineer" ]                 = "Ingénieur";
-        
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
         $gLocale[ "Healer" ]                   = "Heal";
@@ -175,6 +134,7 @@
         $gLocale[ "ExportFile" ]               = "Fichier";
         $gLocale[ "ExportClipboard" ]          = "Presse-Papiers";
         $gLocale[ "CopyOk" ]                   = "Texte a été copié dans le presse-papiers";
+        $gLocale[ "Random" ]                   = "Inconnu";
         
         // Profile
         $gLocale[ "Profile" ]                  = "Profil";

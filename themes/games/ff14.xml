@@ -44,7 +44,7 @@
             <role id="dmg"/>
         </class>
         
-        <class id="pal" loca="Paladin_FF14" style="paladin">
+        <class id="pal" loca="Paladin" style="paladin">
             <role id="tnk"/>
         </class>
         
@@ -52,7 +52,7 @@
             <role id="tnk"/>
         </class>
         
-        <class id="war" loca="Warrior_FF14" style="warrior">
+        <class id="war" loca="Warrior" style="warrior">
             <role id="tnk"/>
         </class>
         
@@ -60,7 +60,7 @@
             <role id="tnk"/>
         </class>
         
-        <class id="mnk" loca="Monk_FF14" style="monk">
+        <class id="mnk" loca="Monk" style="monk">
             <role id="dmg"/>
         </class>
         
@@ -106,4 +106,104 @@
             <role id="dmg" count="*"/>
         </group>
     </groups>
+    
+    <locale name="en">
+        <text key="Arcanist">Arcanist</text>
+        <text key="Archer">Archer</text>
+        <text key="Bard">Bard</text>
+        <text key="Blackmage">Black mage</text>
+        <text key="Conjurer">Conjurer</text>
+        <text key="Dragoon">Drafoon</text>
+        <text key="Gladiator">Gladiator</text>
+        <text key="Lancer">Lancer</text>
+        <text key="Marauder">Marauder</text>
+        <text key="Monk">Monk</text>
+        <text key="Paladin">Paladin</text>
+        <text key="Pugilist">Pugilist</text>
+        <text key="Scholar">Scholar</text>
+        <text key="Summoner">Summoner</text>
+        <text key="Thaumaturge">Thematurge</text>
+        <text key="Warrior">Warrior</text>
+        <text key="Whitemage">White mage</text>
+    </locale>
+    
+    <locale name="de">
+        <text key="Arcanist">Hermetiker</text>
+        <text key="Archer">Waldläufer</text>
+        <text key="Bard">Barde</text>
+        <text key="Blackmage">Schwarzmagier</text>
+        <text key="Conjurer">Druide</text>
+        <text key="Dragoon">Dragoon</text>
+        <text key="Gladiator">Gladiator</text>
+        <text key="Lancer">Pikenier</text>
+        <text key="Marauder">Marodeur</text>
+        <text key="Monk">Mönch</text>
+        <text key="Paladin">Paladin</text>
+        <text key="Pugilist">Faustkämpfer"</text>
+        <text key="Scholar">Gelehrter</text>
+        <text key="Summoner">Beschwörer</text>
+        <text key="Thaumaturge" >Thaumaturg</text>
+        <text key="Warrior">Krieger</text>
+        <text key="Whitemage">Weißmagier</text>
+    </locale>
+    
+    <locale name="fr">
+        <text key="Arcanist">Arcaniste</text>
+        <text key="Archer">Archer</text>
+        <text key="Bard">Barde</text>
+        <text key="Blackmage">Mage Noir</text>
+        <text key="Conjurer">Élémentaliste</text>
+        <text key="Dragoon">Chevalier Dragon</text>
+        <text key="Gladiator">Gladiateur</text>
+        <text key="Lancer">Maître d'Hast</text>
+        <text key="Marauder">Maraudeur</text>
+        <text key="Monk">Moine</text>
+        <text key="Paladin">Paladin</text>
+        <text key="Pugilist">Pugiliste</text>
+        <text key="Scholar">Érudit</text>
+        <text key="Summoner">Invocateur</text>
+        <text key="Thaumaturge">Occultiste</text>
+        <text key="Warrior">Guerrier</text>
+        <text key="Whitemage">Mage Blanc</text>
+    </locale>
+    
+    <locale name="pl">
+        <text key="Arcanist">Arcanist</text>
+        <text key="Archer">Archer</text>
+        <text key="Bard">Bard</text>
+        <text key="Blackmage">Black mage</text>
+        <text key="Conjurer">Conjurer</text>
+        <text key="Dragoon">Drafoon</text>
+        <text key="Gladiator">Gladiator</text>
+        <text key="Lancer">Lancer</text>
+        <text key="Marauder">Marauder</text>
+        <text key="Monk">Monk</text>
+        <text key="Paladin">Paladin</text>
+        <text key="Pugilist">Pugilist</text>
+        <text key="Scholar">Scholar</text>
+        <text key="Summoner">Summoner</text>
+        <text key="Thaumaturge">Thematurge</text>
+        <text key="Warrior">Warrior</text>
+        <text key="Whitemage">White mage</text>
+    </locale>
+    
+    <locale name="cs">
+        <text key="Arcanist">Arcanist</text>
+        <text key="Archer">Archer</text>
+        <text key="Bard">Bard</text>
+        <text key="Blackmage">Black mage</text>
+        <text key="Conjurer">Conjurer</text>
+        <text key="Dragoon">Drafoon</text>
+        <text key="Gladiator">Gladiator</text>
+        <text key="Lancer">Lancer</text>
+        <text key="Marauder">Marauder</text>
+        <text key="Monk">Monk</text>
+        <text key="Paladin">Paladin</text>
+        <text key="Pugilist">Pugilist</text>
+        <text key="Scholar">Scholar</text>
+        <text key="Summoner">Summoner</text>
+        <text key="Thaumaturge">Thematurge</text>
+        <text key="Warrior">Warrior</text>
+        <text key="Whitemage">White mage</text>
+    </locale>
 </game>

@@ -99,4 +99,74 @@
             <role id="rgd" count="*"/>
         </group>
     </groups>
+    
+    <locale name="en">
+        <text key="Deathknight">Deathknight</text>
+        <text key="Druid">Druid</text>
+        <text key="Hunter">Hunter</text>
+        <text key="Mage">Mage</text>
+        <text key="Monk">Monk</text>
+        <text key="Paladin">Paladin</text>
+        <text key="Priest">Priest</text>
+        <text key="Rogue">Rogue</text>
+        <text key="Shaman">Shaman</text>
+        <text key="Warlock">Warlock</text>
+        <text key="Warrior">Warrior</text>
+    </locale>
+    
+    <locale name="de">
+        <text key="Deathknight">Todesritter</text>
+        <text key="Druid">Druide</text>
+        <text key="Hunter">Jäger</text>
+        <text key="Mage">Magier</text>
+        <text key="Monk">Mönch</text>
+        <text key="Paladin">Paladin</text>
+        <text key="Priest">Priester</text>
+        <text key="Rogue">Schurke</text>
+        <text key="Shaman">Schamane</text>
+        <text key="Warlock">Hexenmeister</text>
+        <text key="Warrior">Krieger</text>
+    </locale>
+    
+    <locale name="fr">
+        <text key="Deathknight">DK</text>
+        <text key="Druid">Druide</text>
+        <text key="Hunter">Chasseur</text>
+        <text key="Mage">Mage</text>
+        <text key="Monk">Moine</text>
+        <text key="Paladin">Paladin</text>
+        <text key="Priest">Prêtre</text>
+        <text key="Rogue">Voleur</text>
+        <text key="Shaman">chaman</text>
+        <text key="Warlock">Démoniste</text>
+        <text key="Warrior">Guerrier</text>
+    </locale>
+    
+    <locale name="pl">
+        <text key="Deathknight">Deathknight</text>
+        <text key="Druid">Druid</text>
+        <text key="Hunter">Hunter</text>
+        <text key="Mage">Mage</text>
+        <text key="Monk">Monk</text>
+        <text key="Paladin">Paladin</text>
+        <text key="Priest">Priest</text>
+        <text key="Rogue">Rogue</text>
+        <text key="Shaman">Shaman</text>
+        <text key="Warlock">Warlock</text>
+        <text key="Warrior">Warrior</text>
+    </locale>
+    
+    <locale name="cs">
+        <text key="Deathknight">Deathknight</text>
+        <text key="Druid">Druid</text>
+        <text key="Hunter">Hunter</text>
+        <text key="Mage">Mage</text>
+        <text key="Monk">Monk</text>
+        <text key="Paladin">Paladin</text>
+        <text key="Priest">Priest</text>
+        <text key="Rogue">Rogue</text>
+        <text key="Shaman">Shaman</text>
+        <text key="Warlock">Warlock</text>
+        <text key="Warrior">Warrior</text>
+    </locale>
 </game>

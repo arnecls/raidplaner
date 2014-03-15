@@ -13,6 +13,8 @@
     
         // Push
         
+        unset($gGame["Locales"]);
+        
         $Out->pushValue("site", array_merge($gSite, $Config));
         $Out->pushValue("game", $gGame);
     }
