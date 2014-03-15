@@ -155,7 +155,7 @@
             break;
 
         default:
-            echo "<error>".L("UnknownRequest")."</error>";
+            $Out->pushError(L("UnknownRequest"));
             break;
         }
     }

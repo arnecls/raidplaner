@@ -176,7 +176,8 @@
             "Classes"       => Array(),
             "RaidView"      => Array(),
             "RaidViewOrder" => Array(),
-            "Groups"        => Array()
+            "Groups"        => Array(),
+            "Locales"       => Array()
         );
         
         $ConfigFile = realpath(dirname(__FILE__)."/../../themes/games/".$aConfigFileName.".xml");
@@ -205,6 +206,22 @@
                     ($Game["ClassMode"] != "multi"))
                 {
                     throw new Exception("Classmode must either be single or multi.");
+                }
+                
+                // Locales
+                
+                foreach($Config->locale as $Locale)
+                {
+                    if (strlen(strval($Locale["name"])) != 2)
+                        throw new Exception("Locale names must be exactly 2 characters long. ".strval($Locale["name"])." does not match this rule.");
+                    
+                    $CurrentLocale = Array();
+                    foreach($Locale->text as $Text)
+                    {
+                        $CurrentLocale[strval($Text["key"])] = strval($Text);
+                    }
+                    
+                    $Game["Locales"][strval($Locale["name"])] = $CurrentLocale;
                 }
                 
                 // Roles

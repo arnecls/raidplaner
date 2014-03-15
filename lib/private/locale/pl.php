@@ -44,25 +44,7 @@
         $gLocale[ "Spellslinger" ]             = "Spellslinger";
         $gLocale[ "Stalker" ]                  = "Stalker";
         $gLocale[ "Medic" ]                    = "Medic";
-        $gLocale[ "Engineer" ]                 = "Engineer";
-        
-        // Classes SWTOR
-        $gLocale[ "Vanguard" ]                 = "Vanguard";
-        $gLocale[ "Commando" ]                 = "Commando";
-        $gLocale[ "Gunslinger" ]               = "Gunslinger";
-        $gLocale[ "Scoundrel" ]                = "Scoundrel";
-        $gLocale[ "Guardian" ]                 = "Guardian";
-        $gLocale[ "Sentinel" ]                 = "Sentinel";
-        $gLocale[ "Sage" ]                     = "Sage";
-        $gLocale[ "Shadow" ]                   = "Shadow";
-        $gLocale[ "Powertech" ]                = "Powertech";
-        $gLocale[ "Mercenary" ]                = "Mercenary";
-        $gLocale[ "Juggernaut" ]               = "Juggernaut";
-        $gLocale[ "Marauder" ]                 = "Marauder";
-        $gLocale[ "Operative" ]                = "Operative";
-        $gLocale[ "Sniper" ]                   = "Sniper";
-        $gLocale[ "Assassin" ]                 = "Assassin";
-        $gLocale[ "Sorcerer" ]                 = "Sorcerer"; 
+        $gLocale[ "Engineer" ]                 = "Engineer"; 
 
         // Roles
         $gLocale[ "Tank" ]                     = "Tank";
