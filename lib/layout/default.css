@@ -222,7 +222,8 @@ textarea {
 }
 
 .glow_complete {
-    text-shadow: 0px 0px 6px rgba(0,255,0,1.0);
+    text-shadow: 0px 0px 5px rgba(0,255,0,1.0);
+    color: #030;
 }
 
 .box_inlay {
