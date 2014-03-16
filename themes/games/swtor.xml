@@ -9,7 +9,7 @@
     	<role id="tnk" loca="Tank" style="role_tank"/>
     	<role id="med" loca="Healer" style="role_heal"/>
     	<role id="mdd" loca="Melee" style="role_melee"/>
-    	<role id="rdd" loca="Range" style="role_Range"/>
+    	<role id="rdd" loca="Range" style="role_range"/>
 	</roles>
 
 	<classes>

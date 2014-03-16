@@ -341,3 +341,63 @@
     background: url(images/raidbadge_over.png);
 }
 
+#tooltip .wantedbadge {
+    height: 22px;
+    position: relative;
+    left: -12px;
+}
+
+#tooltip .wantedbadge .wrap {
+    height: 22px;
+    width: 5px;
+    display: inline-block;
+    background-image: url(images/wanted_badge.png);
+    background-repeat: no-repeat;
+}
+
+#tooltip .wantedbadge .count {
+    height: 17px;
+    width: 0px;
+    margin-top: 5px;
+    padding-left: 14px;
+    padding-right: 4px;
+    overflow: hidden;
+    display: inline-block;
+    background-color: #cdaa3f;
+    color: #cdaa3f;
+    font-size: 12px;
+    line-height: 19px;
+    font-weight: bold;
+    background-repeat: no-repeat;
+    
+    border-radius: 0px 2px 2px 0;
+    -webkit-border-radius: 0px 2px 2px 0;
+    -moz-border-radius: 0px 2px 2px 0;
+    -o-border-radius: 0px 2px 2px 0;
+    -ms-border-radius: 0px 2px 2px 0;
+}
+
+#tooltip .wantedbadge .count:hover {
+    width: auto;
+    color: #60501e;
+}
+
+#tooltip .wantedbadge .role_melee {
+    background-image: url(images/icon_badge_melee.png);
+}
+
+#tooltip .wantedbadge .role_range {
+    background-image: url(images/icon_badge_range.png);
+}
+
+#tooltip .wantedbadge .role_tank {
+    background-image: url(images/icon_badge_tank.png);
+}    
+
+#tooltip .wantedbadge .role_heal {
+    background-image: url(images/icon_badge_heal.png);
+}
+
+#tooltip .wantedbadge .role_support {
+    background-image: url(images/icon_badge_support.png);
+}
