@@ -347,27 +347,41 @@
     left: -12px;
 }
 
+#tooltip .wantedbadge .lfm {
+    background-color: #cdaa3f;
+}
+
+#tooltip .wantedbadge .ok {
+    background-color: #7BB853;
+}
+
 #tooltip .wantedbadge .wrap {
     height: 22px;
-    width: 5px;
+    width: 3px;
     display: inline-block;
     background-image: url(images/wanted_badge.png);
     background-repeat: no-repeat;
+    
+    border-radius: 2px 0px 0px 2px;
+    -webkit-border-radius: 2px 0px 0px 2px;
+    -moz-border-radius: 2px 0px 0px 2px;
+    -o-border-radius: 2px 0px 0px 2px;
+    -ms-border-radius: 2px 0px 0px 2px;
 }
 
 #tooltip .wantedbadge .count {
     height: 17px;
     width: 0px;
     margin-top: 5px;
-    padding-left: 14px;
+    padding-left: 16px;
     padding-right: 4px;
     overflow: hidden;
     display: inline-block;
-    background-color: #cdaa3f;
-    color: #cdaa3f;
+    color: rgba(0,0,0,0);
     font-size: 12px;
     line-height: 19px;
     font-weight: bold;
+    background-position: 2px 0px;
     background-repeat: no-repeat;
     
     border-radius: 0px 2px 2px 0;
@@ -379,7 +393,12 @@
 
 #tooltip .wantedbadge .count:hover {
     width: auto;
-    color: #60501e;
+    color: rgba(0,0,0,0.5);
+    padding-left: 18px;
+}
+
+#tooltip .wantedbadge .role_ok:hover {
+    padding-left: 16px;
 }
 
 #tooltip .wantedbadge .role_melee {
@@ -400,4 +419,8 @@
 
 #tooltip .wantedbadge .role_support {
     background-image: url(images/icon_badge_support.png);
+}
+
+#tooltip .wantedbadge .role_ok {
+    background-image: url(images/icon_badge_ok.png);
 }
