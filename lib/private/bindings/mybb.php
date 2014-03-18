@@ -376,13 +376,14 @@
                     
                     $ForumUpdate = $Connector->prepare("UPDATE `".MYBB_TABLE_PREFIX."forums` ".
                         "SET posts=posts+1, threads=threads+1, lastpost=:Now, ".
-                        "lastposteruid=:UserId, lastposttid=:ThreadId, lastpostsubject=:Subject ".
+                        "lastposteruid=:UserId, lastposttid=:ThreadId, lastposter=:Username, lastpostsubject=:Subject ".
                         "WHERE fid=:ForumId LIMIT 1");
                         
                     $ForumUpdate->BindValue( ":ForumId", intval(MYBB_POSTTO), PDO::PARAM_INT );
                     $ForumUpdate->BindValue( ":ThreadId", intval($ThreadId), PDO::PARAM_INT );
                     $ForumUpdate->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
                     $ForumUpdate->BindValue( ":UserId", intval(MYBB_POSTAS), PDO::PARAM_INT );
+                    $ForumUpdate->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
                     $ForumUpdate->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
     
                     $ForumUpdate->execute(true);
