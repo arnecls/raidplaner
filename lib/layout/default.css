@@ -133,8 +133,8 @@ textarea {
     padding-top: 15px;
     height: 450px;
     width: 920px;
-    overflow-x: hidden;
-    overflow-y: auto;    
+    overflow: visible;
+    float: left;
 }
 
 .ui-button {
