@@ -11,3 +11,5 @@
 /lib/config/config.wp.php
 
 .DS_Store
+
+lib/config/key.google.p12
