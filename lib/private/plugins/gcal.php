@@ -27,13 +27,22 @@
             
             try
             {
+                // Google authentication process
+                
                 if ($this->mClient == null)
                 {
+                    $KeyFile = dirname(__FILE__).'/../../config/key.google.p12';
+                    
+                    if (!file_exists($KeyFile))
+                    {
+                        throw new Exception('Missing key file "lib/config/key.google.p12"');
+                    }
+                       
+                    $Certificate = file_get_contents($KeyFile);
+                    
                     $this->mClient = new Google_Client();
                     $this->mClient->setApplicationName("ppxraidplaner");
                     $this->mCalService = new Google_Service_Calendar($this->mClient);
-                    
-                    $Certificate = file_get_contents(dirname(__FILE__).'/../../config/key.google.p12');
                     
                     $AssertCredentials = new Google_Auth_AssertionCredentials(
                         GOOGLE_SERVICE_MAIL,
@@ -51,8 +60,8 @@
                 
                 $this->mToken = $this->mClient->getAccessToken();
                 
-                
                 // Get locations
+                
                 $Locations = Api::queryLocation(null);
                 
                 $this->mLocations = Array();
@@ -78,31 +87,35 @@
         {
             if ($this->authenticate())
             {
-                $Parameters = Array("raid" => $aRaidId);
+                $Parameters = Array('raid' => $aRaidId);
                 $RaidResult = Api::queryRaid($Parameters);
                 
                 if (count($RaidResult) > 0)
                 {
                     $Raid = $RaidResult[0];
-                    
-                    $LocationName = $this->mLocations[$Raid["LocationId"]];
+                    $LocationName = $this->mLocations[$Raid['LocationId']];
                     
                     try
                     {
-                        $Event = new Google_Service_Calendar_Event();
-                        $Event->setSummary($LocationName." (".$Raid["Size"].")");
-                        $Event->setLocation($LocationName);
-                        
                         $Start = new Google_Service_Calendar_EventDateTime();
-                        $Start->setDateTime(date($this->mDateFormat, intval($Raid["Start"])));
+                        $Start->setDateTime(date($this->mDateFormat, intval($Raid['Start'])));
                         $Start->setTimeZone('UTC');
                         
                         $End = new Google_Service_Calendar_EventDateTime();
-                        $End->setDateTime(date($this->mDateFormat, intval($Raid["End"])));
+                        $End->setDateTime(date($this->mDateFormat, intval($Raid['End'])));
                         $End->setTimeZone('UTC');
                         
+                        $Properties = new Google_Service_Calendar_EventExtendedProperties();
+                        $Properties->setShared(Array('RaidId' => $aRaidId));
+                        
+                        $Event = new Google_Service_Calendar_Event();
+                        
+                        $Event->setSummary($LocationName.' ('.$Raid['Size'].')');
+                        $Event->setLocation($LocationName);
+                        $Event->setDescription($Raid['Description']);
                         $Event->setStart($Start);
                         $Event->setEnd($End);
+                        $Event->setExtendedProperties($Properties);
                         
                         $this->mCalService->events->insert(GOOGLE_CAL_ID, $Event);
                     }
@@ -119,9 +132,48 @@
         
         public function onRaidModify($aRaidId)
         {
-            if ($this->UpdateAuthData())
+            if ($this->authenticate())
             {
+                $Parameters = Array('raid' => $aRaidId);
+                $RaidResult = Api::queryRaid($Parameters);
                 
+                if (count($RaidResult) > 0)
+                {
+                    $Raid = $RaidResult[0];
+                    $LocationName = $this->mLocations[$Raid['LocationId']];
+                    
+                    try
+                    {
+                        $Start = new Google_Service_Calendar_EventDateTime();
+                        $Start->setDateTime(date($this->mDateFormat, intval($Raid['Start'])));
+                        $Start->setTimeZone('UTC');
+                        
+                        $End = new Google_Service_Calendar_EventDateTime();
+                        $End->setDateTime(date($this->mDateFormat, intval($Raid['End'])));
+                        $End->setTimeZone('UTC');
+                        
+                        $Events = $this->mCalService->events->listEvents(GOOGLE_CAL_ID, Array(
+                            'sharedExtendedProperty' => 'RaidId='.$aRaidId
+                        ));
+                        
+                        foreach ($Events->getItems() as $Event) 
+                        {
+                            $Event->setSummary($LocationName.' ('.$Raid['Size'].')');
+                            $Event->setLocation($LocationName);
+                            $Event->setDescription($Raid['Description']);
+                        
+                            $Event->setStart($Start);
+                            $Event->setEnd($End);
+                            
+                            $this->mCalService->events->update(GOOGLE_CAL_ID, $Event->getid(), $Event);
+                        }
+                    }
+                    catch(Exception $Ex)
+                    { 
+                        $Out = Out::getInstance();  
+                        $Out->pushError($Ex->getMessage());
+                    }
+                }
             }
         }
         
@@ -129,9 +181,24 @@
         
         public function onRaidRemove($aRaidId)
         {
-            if ($this->UpdateAuthData())
+            if ($this->authenticate())
             {
-                
+                try
+                {
+                    $Events = $this->mCalService->events->listEvents(GOOGLE_CAL_ID, Array(
+                        'sharedExtendedProperty' => 'RaidId='.$aRaidId
+                    ));
+                    
+                    foreach ($Events->getItems() as $Event) 
+                    {
+                        $this->mCalService->events->delete(GOOGLE_CAL_ID, $Event->getid());
+                    }
+                }
+                catch(Exception $Ex)
+                { 
+                    $Out = Out::getInstance();  
+                    $Out->pushError($Ex->getMessage());
+                }
             }
         }
     }
