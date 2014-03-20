@@ -33,9 +33,10 @@
                 if ( $LocationId == 0 )
                 {
                     $NewLocationQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Location`".
-                                                            "(Name, Image) VALUES (:Name, :Image)");
+                                                            "(Name, Game, Image) VALUES (:Name, :Game, :Image)");
         
                     $NewLocationQuery->bindValue(":Name", requestToXML( $aRequest["locationName"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR );
+                    $NewLocationQuery->bindValue(":Game", $gGame["GameId"], PDO::PARAM_STR );
                     $NewLocationQuery->bindValue(":Image", $aRequest["raidImage"], PDO::PARAM_STR );
         
                     if (!$NewLocationQuery->execute())
