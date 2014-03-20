@@ -37,7 +37,7 @@
     {
         // Setting the correct timezones
         
-        $Timezone  = (isset($_REQUEST["timezone"])) 
+        $Timezone = (isset($_REQUEST["timezone"])) 
             ? $_REQUEST["timezone"] 
             : date_default_timezone_get();
     

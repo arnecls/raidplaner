@@ -87,16 +87,20 @@
         {
             if ($this->authenticate())
             {
-                $Parameters = Array('raid' => $aRaidId);
+                $Parameters = Array('raid' => $aRaidId, 'canceled' => true, 'closed' => true);
                 $RaidResult = Api::queryRaid($Parameters);
                 
                 if (count($RaidResult) > 0)
                 {
                     $Raid = $RaidResult[0];
                     $LocationName = $this->mLocations[$Raid['LocationId']];
-                    
+                    $Url = getBaseURL().'index.php#raid,'.$aRaidId;
+                    $Timezone = date_default_timezone_get();
+                        
                     try
                     {
+                        date_default_timezone_set('UTC');
+        
                         $Start = new Google_Service_Calendar_EventDateTime();
                         $Start->setDateTime(date($this->mDateFormat, intval($Raid['Start'])));
                         $Start->setTimeZone('UTC');
@@ -108,14 +112,20 @@
                         $Properties = new Google_Service_Calendar_EventExtendedProperties();
                         $Properties->setShared(Array('RaidId' => $aRaidId));
                         
+                        $Source = new Google_Service_Calendar_EventSource();
+                        $Source->setTitle("Raidplaner link");
+                        $Source->setUrl($Url);
+                        
                         $Event = new Google_Service_Calendar_Event();
                         
                         $Event->setSummary($LocationName.' ('.$Raid['Size'].')');
                         $Event->setLocation($LocationName);
                         $Event->setDescription($Raid['Description']);
+                        $Event->setOriginalStartTime($Start);
                         $Event->setStart($Start);
                         $Event->setEnd($End);
                         $Event->setExtendedProperties($Properties);
+                        $Event->setSource($Source);
                         
                         $this->mCalService->events->insert(GOOGLE_CAL_ID, $Event);
                     }
@@ -124,6 +134,8 @@
                         $Out = Out::getInstance();  
                         $Out->pushError($Ex->getMessage());
                     }
+                    
+                    date_default_timezone_set($Timezone);
                 }
             }
         }
@@ -134,16 +146,19 @@
         {
             if ($this->authenticate())
             {
-                $Parameters = Array('raid' => $aRaidId);
+                $Parameters = Array('raid' => $aRaidId, 'canceled' => true, 'closed' => true);
                 $RaidResult = Api::queryRaid($Parameters);
                 
                 if (count($RaidResult) > 0)
                 {
                     $Raid = $RaidResult[0];
                     $LocationName = $this->mLocations[$Raid['LocationId']];
+                    $Timezone = date_default_timezone_get();
                     
                     try
                     {
+                        date_default_timezone_set('UTC');
+        
                         $Start = new Google_Service_Calendar_EventDateTime();
                         $Start->setDateTime(date($this->mDateFormat, intval($Raid['Start'])));
                         $Start->setTimeZone('UTC');
@@ -158,10 +173,18 @@
                         
                         foreach ($Events->getItems() as $Event) 
                         {
-                            $Event->setSummary($LocationName.' ('.$Raid['Size'].')');
                             $Event->setLocation($LocationName);
                             $Event->setDescription($Raid['Description']);
-                        
+                            
+                            if ($Raid["Status"] == "canceled")
+                            {
+                                $Event->setSummary('[canceled] '.$LocationName.' ('.$Raid['Size'].')');
+                            }
+                            else
+                            {
+                                $Event->setSummary($LocationName.' ('.$Raid['Size'].')');
+                            }
+                            
                             $Event->setStart($Start);
                             $Event->setEnd($End);
                             
@@ -173,6 +196,8 @@
                         $Out = Out::getInstance();  
                         $Out->pushError($Ex->getMessage());
                     }
+                    
+                    date_default_timezone_set($Timezone);
                 }
             }
         }
