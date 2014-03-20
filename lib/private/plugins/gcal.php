@@ -1,5 +1,13 @@
 <?php
 
+    // Raidplaner plugin for Google Caledar support.
+    // This plugin requires two additional files as well as the Google PHP API:
+    //
+    // lib/config/config.google.php     Plugin configuration
+    // lib/config/key.google.p12        Private key of a Google Service
+    //
+    // You can find a guide to configure this plugin on GitHub
+
     set_include_path(dirname(__FILE__).PATH_SEPARATOR.get_include_path());
 
     include_once_exists(dirname(__FILE__).'/../../config/config.google.php');
@@ -7,6 +15,9 @@
     require_once('Google/Service/Calendar.php');
     
     // -------------------------------------------------------------------------
+    
+    // This will register the plugin to the global plugin registry if it is
+    // explicitly enabled in the config file
     
     if (defined("GOOGLE_CALENDAR") && GOOGLE_CALENDAR)
         array_push(PluginRegistry::$Classes, 'GoogleCalendar');
@@ -21,6 +32,11 @@
         private $mLocations = null;
         private $mDateFormat = DATE_ATOM;
         
+        // ---------------------------------------------------------------------
+        
+        // This function authenticate against the Google API and does some one-
+        // time setups.
+        
         private function authenticate()
         {
             $Out = Out::getInstance();
@@ -28,6 +44,7 @@
             try
             {
                 // Google authentication process
+                // For details see the Google PHP API documentation
                 
                 if ($this->mClient == null)
                 {
@@ -61,6 +78,7 @@
                 $this->mToken = $this->mClient->getAccessToken();
                 
                 // Get locations
+                // This is an initial setup step upon first call of this function.
                 
                 $Locations = Api::queryLocation(null);
                 
@@ -74,6 +92,8 @@
             }
             catch (Exception $Ex)
             {
+                // Make sure any exceptions are properly passed to the UI
+                
                 $this->mClient = null;
                 $Out->pushError($Ex->getMessage());
             }
@@ -83,15 +103,28 @@
         
         // ---------------------------------------------------------------------
         
+        // This function handles the creation of new raids.
+        // It will try to authenticate, fetch the created raid and create a
+        // Google Calendar event from the given information.
+        // Note that the RaidId is stored in the Google Calendar event to
+        // simplify searches for a specific event later on.
+        
         public function onRaidCreate($aRaidId)
         {
             if ($this->authenticate())
             {
+                // Query the given raid, make sure we include canceled and closed 
+                // raids
+                
                 $Parameters = Array('raid' => $aRaidId, 'canceled' => true, 'closed' => true);
                 $RaidResult = Api::queryRaid($Parameters);
                 
                 if (count($RaidResult) > 0)
                 {
+                    // As we specified a specific raid id, we are only 
+                    // interested in the first (and only) raid.
+                    // Cache and set UTC timezone just to be sure.
+                    
                     $Raid = $RaidResult[0];
                     $LocationName = $this->mLocations[$Raid['LocationId']];
                     $Url = getBaseURL().'index.php#raid,'.$aRaidId;
@@ -142,6 +175,10 @@
         
         // ---------------------------------------------------------------------
         
+        // This function handles the update of existing raids.
+        // It is pretty much the same as the create method if you strip out
+        // the Google Calendar update part.
+        
         public function onRaidModify($aRaidId)
         {
             if ($this->authenticate())
@@ -170,6 +207,9 @@
                         $Events = $this->mCalService->events->listEvents(GOOGLE_CAL_ID, Array(
                             'sharedExtendedProperty' => 'RaidId='.$aRaidId
                         ));
+                        
+                        // There should be only one event, but we're a bit 
+                        // paranoid here
                         
                         foreach ($Events->getItems() as $Event) 
                         {
@@ -204,6 +244,10 @@
         
         // ---------------------------------------------------------------------
         
+        // This function handles the deletion of raids.
+        // The content is pretty straight forward and no Raidplaner API call
+        // is required here.
+        
         public function onRaidRemove($aRaidId)
         {
             if ($this->authenticate())
@@ -214,6 +258,9 @@
                         'sharedExtendedProperty' => 'RaidId='.$aRaidId
                     ));
                     
+                    // Again, there should be only one event, but we're a bit 
+                    // paranoid here
+                        
                     foreach ($Events->getItems() as $Event) 
                     {
                         $this->mCalService->events->delete(GOOGLE_CAL_ID, $Event->getid());
