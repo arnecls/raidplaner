@@ -3,6 +3,6 @@
     // in "lib/config/key.google.p12" for the gcal plugin to work
 
     define("GOOGLE_CALENDAR", false);
-    define("GOOGLE_CAL_ID", "<your_id>@group.calendar.google.com");
-    define("GOOGLE_SERVICE_MAIL", "<your_id>@developer.gserviceaccount.com");
+    define("GOOGLE_CAL_ID", "<your_calendar_id>@group.calendar.google.com");
+    define("GOOGLE_SERVICE_MAIL", "<your_service_email>@developer.gserviceaccount.com");
 ?>
