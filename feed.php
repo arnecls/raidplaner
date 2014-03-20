@@ -17,7 +17,6 @@
     
     // Build RSS header
     
-    $RFC2822 = "D, d M Y H:i:s O";
     $BaseURL = getBaseURL();
         
     $Out = new Out();
@@ -26,7 +25,7 @@
     $Out->pushValue("description",  "Upcoming raids for the next 2 weeks.");
     $Out->pushValue("language",     "en-en");
     $Out->pushValue("copyright",    "packedpixel");
-    $Out->pushValue("pubDate",      date($RFC2822));
+    $Out->pushValue("pubDate",      date(DATE_RSS));
     
     // Requires private token to be visible
     
@@ -78,7 +77,7 @@
                 "link"        => $BaseURL."index.php#raid,".$Raid["RaidId"],
                 "author"      => "Raidplaner",
                 "guid"        => $Raid["RaidId"],
-                "pubDate"     => date($RFC2822, intval($Raid["Start"]))
+                "pubDate"     => date(DATE_RSS, intval($Raid["Start"]))
             ));
         }
     }
