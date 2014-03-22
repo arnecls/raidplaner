@@ -139,7 +139,7 @@
             "`".RP_TABLE_PREFIX."Attendance`.Status, ".
             "`".RP_TABLE_PREFIX."Attendance`.Role, ".
             "UNIX_TIMESTAMP(`".RP_TABLE_PREFIX."User`.Created) AS CreatedUTC, ".
-            "COUNT(*) AS Count ".
+            "COUNT(RaidId) AS Count ".
             "FROM `".RP_TABLE_PREFIX."User` ".
             "LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(UserId) ".
             "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(CharacterId) ".
@@ -201,7 +201,7 @@
 
                 // Fetch number of attendable raids
                 
-                $RaidQueryString = "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
+                $RaidQueryString = "SELECT COUNT(RaidId) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
                     "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
                     "WHERE Start > FROM_UNIXTIME(?) AND Start < FROM_UNIXTIME(?) ".
                     (($GamesCondition == "") ? "" : "AND (".$GamesCondition.")");

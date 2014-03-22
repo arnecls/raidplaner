@@ -101,7 +101,7 @@
             // Total raid count
     
             $NumRaids = 0;
-            $RaidsQuery = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
+            $RaidsQuery = $Connector->prepare( "SELECT COUNT(RaidId) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
                 "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
                 "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game" );
             
@@ -115,7 +115,7 @@
     
             // Load attendance
     
-            $AttendanceQuery = $Connector->prepare(  "Select `Status`, `Role`, COUNT(*) AS `Count` ".
+            $AttendanceQuery = $Connector->prepare(  "Select `Status`, `Role`, COUNT(RaidId) AS `Count` ".
                 "FROM `".RP_TABLE_PREFIX."Attendance` ".
                 "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) ".
                 "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".

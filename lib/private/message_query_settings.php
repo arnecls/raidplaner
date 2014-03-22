@@ -137,7 +137,7 @@
     
             $Attendance = $Connector->prepare( "SELECT `".RP_TABLE_PREFIX."Character`.Name, `".RP_TABLE_PREFIX."Attendance`.Status, ".
                 "`".RP_TABLE_PREFIX."User`.UserId, UNIX_TIMESTAMP(`".RP_TABLE_PREFIX."User`.Created) AS CreatedUTC, ".
-                "COUNT(*) AS Count ".
+                "COUNT(RaidId) AS Count ".
                 "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(UserId) ".
                 "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
                 "WHERE `".RP_TABLE_PREFIX."Character`.Mainchar = 'true' ".
@@ -185,7 +185,7 @@
     
                     // Fetch number of attendable raids
     
-                    $Raids = $Connector->prepare( "SELECT COUNT(*) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
+                    $Raids = $Connector->prepare( "SELECT COUNT(RaidId) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
                         "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
                         "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game" );
     
