@@ -1,11 +1,21 @@
 <?php
+    // Output headers and set error handler
+    
+    header("Content-type: application/json");
+    header("Cache-Control: no-cache, max-age=0, s-maxage=0");
+    
+    require_once(dirname(__FILE__)."/private/debug.php");    
+    Debug::setHandlersJSON();
+    
+    // Process includes after error handler has been set
+    
     define( "LOCALE_MAIN", true );
     date_default_timezone_set('UTC');
-
+    
     require_once(dirname(__FILE__)."/private/locale.php");
     require_once(dirname(__FILE__)."/private/userproxy.class.php");
-    require_once(dirname(__FILE__)."/private/tools_string.php");
     require_once(dirname(__FILE__)."/private/tools_site.php");
+    require_once(dirname(__FILE__)."/private/tools_string.php");
     require_once(dirname(__FILE__)."/private/settings.class.php");
     require_once(dirname(__FILE__)."/private/out.class.php");
 
@@ -29,8 +39,8 @@
     include_once("private/message_user_create.php");
     include_once("private/message_user_link.php");
     
-    // Init user first (if required)
-
+    // Init user if required
+    
     switch ( strtolower($_REQUEST["Action"]) )
     {
     case "try_auto_login":        
@@ -45,9 +55,6 @@
     // Process message
         
     $Out = Out::getInstance();
-
-    header("Content-type: application/json");
-    header("Cache-Control: no-cache, max-age=0, s-maxage=0");
 
     if ( isset($_REQUEST["Action"]) )
     {

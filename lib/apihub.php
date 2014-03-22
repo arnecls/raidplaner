@@ -1,8 +1,39 @@
 <?php
     date_default_timezone_set('UTC');
     
+    // Output headers and set error handler
+    
+    require_once(dirname(__FILE__)."/private/debug.php");    
+    
+    if (isset($_REQUEST["as"]))
+    {
+        header('Content-Disposition: attachment; filename="'.$_REQUEST["as"].'"');
+    }
+    
+    header("Cache-Control: no-cache, max-age=0, s-maxage=0");
+    
+    $ResultFormat = (isset($_REQUEST["format"]))
+        ? strtolower($_REQUEST["format"])
+        : "json";
+        
+    switch ($ResultFormat)
+    {
+    case "xml":
+        header("Content-type: application/xml");
+        echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+        Debug::setHandlersXML();
+        break;
+        
+    default:
+    case "json":
+        header("Content-type: application/json");
+        Debug::setHandlersJSON();
+        break;
+    }
+    
+    // Process includes after error handler has been set
+    
     require_once(dirname(__FILE__)."/private/api.php");
-    require_once(dirname(__FILE__)."/private/out.class.php");
     
     // Generate response
     
@@ -66,30 +97,16 @@
     }
     
     // Output response
-    
-    if (isset($_REQUEST["as"]))
-    {
-        header('Content-Disposition: attachment; filename="'.$_REQUEST["as"].'"');
-    }
-    
-    header("Cache-Control: no-cache, max-age=0, s-maxage=0");
-    
-    $ResultFormat = (isset($_REQUEST["format"]))
-        ? strtolower($_REQUEST["format"])
-        : "json";
         
     switch ($ResultFormat)
     {
     case "xml":
-        header("Content-type: application/xml");
-        echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-        $Out->writeXML("Api");
+        $Out->flushXML("Api");
         break;
         
     default:
     case "json":
-        header("Content-type: application/json");
-        $Out->writeJSON();
+        $Out->flushJSON();
         break;
     }
 ?>
