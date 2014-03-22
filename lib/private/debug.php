@@ -17,14 +17,18 @@
                 $Line = isset($Frame["line"])
                     ? $Frame["line"]
                     : "?";
+                    
+                $Function = isset($Frame["class"])
+                    ? $Frame["class"]."::".$Frame["function"]
+                    : $Frame["function"];
             
-                if (strpos($Frame["function"], "Debug::") === 0)
+                if (isset($Frame["class"]) && ($Frame["class"] == "Debug"))
                 {
                     $Out->pushError($File."(".$Line.") : root\n");
                     break;
                 }
                 
-                $Out->pushError($File."(".$Line.") : ".$Frame["function"]."\n");
+                $Out->pushError($File."(".$Line.") : ".$Function."\n");
             }
         }
         

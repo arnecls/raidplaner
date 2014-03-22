@@ -1,10 +1,8 @@
 <?php
     // Output headers and set error handler
     
-    header("Content-type: application/json");
-    header("Cache-Control: no-cache, max-age=0, s-maxage=0");
-    
     require_once(dirname(__FILE__)."/private/debug.php");    
+    Out::writeHeadersJSON();
     Debug::setHandlersJSON();
     
     // Process includes after error handler has been set

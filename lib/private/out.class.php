@@ -73,13 +73,29 @@
 
         // --------------------------------------------------------------------------------------------
 
-
         // Clear the output buffer.
         public function clear()
         {
             $this->Data = Array();
         }
 
+        // --------------------------------------------------------------------------------------------
+        
+        public static function writeHeadersJSON()
+        {
+            header("Cache-Control: no-cache, max-age=0, s-maxage=0");
+            header("Content-type: application/json");
+        }
+
+        // --------------------------------------------------------------------------------------------
+        
+        public static function writeHeadersXML()
+        {
+            header("Cache-Control: no-cache, max-age=0, s-maxage=0");
+            header("Content-type: application/xml");
+            echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+        }
+        
         // --------------------------------------------------------------------------------------------
 
         // Echo the output buffer as JSON and clear it 

@@ -11,8 +11,7 @@
     require_once("lib/private/api.php");
     require_once("lib/private/out.class.php");
 
-    header("Content-type: application/xml");
-    echo '<?xml version="1.0" encoding="utf-8"?>';
+    Out::writeHeadersXML();
     echo '<rss version="2.0">';
     
     // Build RSS header

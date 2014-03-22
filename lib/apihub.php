@@ -10,8 +10,6 @@
         header('Content-Disposition: attachment; filename="'.$_REQUEST["as"].'"');
     }
     
-    header("Cache-Control: no-cache, max-age=0, s-maxage=0");
-    
     $ResultFormat = (isset($_REQUEST["format"]))
         ? strtolower($_REQUEST["format"])
         : "json";
@@ -19,14 +17,13 @@
     switch ($ResultFormat)
     {
     case "xml":
-        header("Content-type: application/xml");
-        echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+        Out::writeHeadersXML();
         Debug::setHandlersXML();
         break;
         
     default:
     case "json":
-        header("Content-type: application/json");
+        Out::writeHeadersJSON();
         Debug::setHandlersJSON();
         break;
     }
