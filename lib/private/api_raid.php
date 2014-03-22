@@ -259,9 +259,9 @@
         {
             //Out::getInstance()->pushValue("query", $Value);
             if (is_numeric($Value))
-                $RaidQuery->bindValue($Index+1, intval($Value), PDO::PARAM_INT);
+                $RaidQuery->bindValue($Index+1, $Value, PDO::PARAM_INT);
             else
-                $RaidQuery->bindValue($Index+1, strval($Value), PDO::PARAM_STR);
+                $RaidQuery->bindValue($Index+1, $Value, PDO::PARAM_STR);
         }
         
         // Prepare results

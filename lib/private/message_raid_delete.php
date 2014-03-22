@@ -21,7 +21,7 @@
                 $Connector->beginTransaction();
         
                 $DeleteRaidQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1" );
-                $DeleteRaidQuery->bindValue(":RaidId", intval($aRequest["id"]), PDO::PARAM_INT);
+                $DeleteRaidQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
         
                 if (!$DeleteRaidQuery->execute())
                 {
@@ -32,7 +32,7 @@
                 // Delete attendance
         
                 $DeleteAttendanceQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE RaidId = :RaidId" );
-                $DeleteAttendanceQuery->bindValue(":RaidId", intval($aRequest["id"]), PDO::PARAM_INT);
+                $DeleteAttendanceQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
         
                 if (!$DeleteAttendanceQuery->execute())
                 {

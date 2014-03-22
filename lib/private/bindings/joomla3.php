@@ -246,7 +246,7 @@
                                              "LEFT JOIN `".JML3_TABLE_PREFIX."user_usergroup_map` ON id=user_id ".
                                              "WHERE id = :UserId");
 
-            $UserQuery->BindValue( ":UserId", intval($aUserId), PDO::PARAM_INT );
+            $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
             $UserData = null;
             $Groups = array();
 

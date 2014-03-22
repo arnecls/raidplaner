@@ -72,7 +72,7 @@
     
             // Query and return
     
-            $ListRaidQuery->bindValue(":Start", intval($StartUTC), PDO::PARAM_INT);
+            $ListRaidQuery->bindValue(":Start", $StartUTC, PDO::PARAM_INT);
             $ListRaidQuery->bindValue(":End",   intval($EndUTC),   PDO::PARAM_INT);
             $ListRaidQuery->bindValue(":Game",  $gGame["GameId"],  PDO::PARAM_STR);
     

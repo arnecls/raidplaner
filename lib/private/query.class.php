@@ -22,19 +22,36 @@
         {
             $this->OutputHTML = $aEnable;
         }
+        
+        // --------------------------------------------------------------------------------------------
+
+        private static function fixValue($aValue, $aType)
+        {
+            switch($aType)
+            {
+            case PDO::PARAM_INT:
+                return intval($aValue);
+            case PDO::PARAM_STR:
+                return strval($aValue);
+            case PDO::PARAM_BOOL:
+                return ($aValue === true);
+            default:
+                return $aValue;
+            }
+        }
 
         // --------------------------------------------------------------------------------------------
 
         public function bindValue( $aName, $aValue, $aType )
         {
-            return $this->PDO->bindValue($aName, $aValue, $aType);
+            return $this->PDO->bindValue($aName, self::fixValue($aValue, $aType), $aType);
         }
 
         // --------------------------------------------------------------------------------------------
 
         public function bindParam( $aName, $aValue, $aType )
         {
-            return $this->PDO->bindParam($aName, $aValue, $aType);
+            return $this->PDO->bindParam($aName, self::fixValue($aValue, $aType), $aType);
         }
 
         // --------------------------------------------------------------------------------------------

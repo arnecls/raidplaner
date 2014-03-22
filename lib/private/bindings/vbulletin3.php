@@ -286,7 +286,7 @@
                                           "LEFT JOIN `".VB3_TABLE_PREFIX."userban` USING(userid) ".
                                           "WHERE userid = :UserId LIMIT 1");
 
-            $UserQuery->BindValue( ":UserId", intval($aUserId), PDO::PARAM_INT );
+            $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
             return ($UserData != null)
@@ -325,7 +325,7 @@
                     $Connector->beginTransaction();
 
                     $UserQuery = $Connector->prepare("SELECT username FROM `".VB3_TABLE_PREFIX."user` WHERE userid=:UserId LIMIT 1");
-                    $UserQuery->BindValue( ":UserId", intval(VB3_POSTAS), PDO::PARAM_INT );
+                    $UserQuery->BindValue( ":UserId", VB3_POSTAS, PDO::PARAM_INT );
     
                     $UserData = $UserQuery->fetchFirst();
     
@@ -335,9 +335,9 @@
                                                        "(forumid, postuserid, title, postusername, dateline, lastpost, lastposter, open, visible) VALUES ".
                                                        "(:ForumId, :UserId, :Subject, :Username, :Now, :Now, :Username, 1, 1)");
     
-                    $ThreadQuery->BindValue( ":ForumId", intval(VB3_POSTTO), PDO::PARAM_INT );
-                    $ThreadQuery->BindValue( ":UserId", intval(VB3_POSTAS), PDO::PARAM_INT );
-                    $ThreadQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $ThreadQuery->BindValue( ":ForumId", VB3_POSTTO, PDO::PARAM_INT );
+                    $ThreadQuery->BindValue( ":UserId", VB3_POSTAS, PDO::PARAM_INT );
+                    $ThreadQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
                     $ThreadQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
                     $ThreadQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
     
@@ -350,9 +350,9 @@
                                                      "(threadid, userid, username, dateline, title, pagetext, allowsmilie, visible) VALUES ".
                                                      "(:ThreadId, :UserId, :Username, :Now, :Subject, :Text, 1, 1)");
     
-                    $PostQuery->BindValue( ":ThreadId", intval($ThreadId), PDO::PARAM_INT );
-                    $PostQuery->BindValue( ":UserId", intval(VB3_POSTAS), PDO::PARAM_INT );
-                    $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":ThreadId", $ThreadId, PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":UserId", VB3_POSTAS, PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
                     $PostQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
     
                     $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
@@ -367,8 +367,8 @@
                                                      "(postid, dateline, styleid, languageid, pagetext_html) VALUES ".
                                                      "(:PostId, :Now, 1, 1, :Text)");
     
-                    $PostQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
-                    $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":PostId", $PostId, PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
                     $PostQuery->BindValue( ":Text", $aMessage, PDO::PARAM_STR );
                     
                     $PostQuery->execute(true);
@@ -379,8 +379,8 @@
                                                              "SET firstpostid = :PostId, lastpostid = :PostId ".
                                                              "WHERE threadid = :ThreadId LIMIT 1");
     
-                    $ThreadFinishQuery->BindValue( ":ThreadId", intval($ThreadId), PDO::PARAM_INT );
-                    $ThreadFinishQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
+                    $ThreadFinishQuery->BindValue( ":ThreadId", $ThreadId, PDO::PARAM_INT );
+                    $ThreadFinishQuery->BindValue( ":PostId", $PostId, PDO::PARAM_INT );
     
                     $ThreadFinishQuery->execute(true);
                 }

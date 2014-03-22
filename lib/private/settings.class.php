@@ -106,7 +106,7 @@
                     {                        
                         $UpdateQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Setting` SET IntValue=:IntValue, TextValue=:TextValue WHERE Name=:Name LIMIT 1");
                         
-                        $UpdateQuery->bindValue(":IntValue",  intval($Property["IntValue"]), PDO::PARAM_INT);
+                        $UpdateQuery->bindValue(":IntValue",  $Property["IntValue"], PDO::PARAM_INT);
                         $UpdateQuery->bindValue(":TextValue", $Property["TextValue"],        PDO::PARAM_STR);
                         $UpdateQuery->bindValue(":Name",      $Name,                         PDO::PARAM_STR);                        
                         $UpdateQuery->execute();

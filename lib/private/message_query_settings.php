@@ -190,7 +190,7 @@
                         "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game" );
     
                     $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
-                    $Raids->bindValue( ":Created", intval($Data["CreatedUTC"]), PDO::PARAM_INT );
+                    $Raids->bindValue( ":Created", $Data["CreatedUTC"], PDO::PARAM_INT );
                     $Raids->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
     
                     $RaidCountData = $Raids->fetchFirst();

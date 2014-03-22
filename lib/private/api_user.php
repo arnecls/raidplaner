@@ -121,9 +121,9 @@
         {
             //Out::getInstance()->pushValue("query", $Value);
             if (is_numeric($Value))
-                $UserQuery->bindValue($Index+1, intval($Value), PDO::PARAM_INT);
+                $UserQuery->bindValue($Index+1, $Value, PDO::PARAM_INT);
             else
-                $UserQuery->bindValue($Index+1, strval($Value), PDO::PARAM_STR);
+                $UserQuery->bindValue($Index+1, $Value, PDO::PARAM_STR);
         }
         
         // Resolve result

@@ -156,9 +156,9 @@
         foreach($Parameters as $Index => $Value)
         {
             if (is_numeric($Value))
-                $AttendanceQuery->bindValue($Index+1, intval($Value), PDO::PARAM_INT);
+                $AttendanceQuery->bindValue($Index+1, $Value, PDO::PARAM_INT);
             else
-                $AttendanceQuery->bindValue($Index+1, strval($Value), PDO::PARAM_STR);
+                $AttendanceQuery->bindValue($Index+1, $Value, PDO::PARAM_STR);
         }
 
         $UserId = 0;
@@ -208,11 +208,11 @@
                     
                 $Raids = $Connector->prepare( $RaidQueryString );
                     
-                $Raids->bindValue( 1, intval($Data["CreatedUTC"]), PDO::PARAM_INT );
+                $Raids->bindValue( 1, $Data["CreatedUTC"], PDO::PARAM_INT );
                 $Raids->bindValue( 2, $aEnd,                       PDO::PARAM_INT );
                 
                 foreach($GamesParameter as $Index => $Value)
-                    $Raids->bindValue($Index+3, strval($Value), PDO::PARAM_STR);
+                    $Raids->bindValue($Index+3, $Value, PDO::PARAM_STR);
                                 
                 $RaidCountData = $Raids->fetchFirst();
                 $NumRaidsRemain = ($RaidCountData == null) ? 0 : $RaidCountData["NumberOfRaids"];

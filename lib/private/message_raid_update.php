@@ -67,12 +67,12 @@
                 $StartDateTime += $aRequest["startOffset"] * 60;
                 $EndDateTime   += $aRequest["endOffset"] * 60;
         
-                $UpdateRaidQuery->bindValue(":RaidId",      intval($aRequest["id"]), PDO::PARAM_INT);
-                $UpdateRaidQuery->bindValue(":LocationId",  intval($LocationId), PDO::PARAM_INT);
+                $UpdateRaidQuery->bindValue(":RaidId",      $aRequest["id"], PDO::PARAM_INT);
+                $UpdateRaidQuery->bindValue(":LocationId",  $LocationId, PDO::PARAM_INT);
                 $UpdateRaidQuery->bindValue(":Stage",       $aRequest["stage"], PDO::PARAM_STR);
-                $UpdateRaidQuery->bindValue(":Size",        intval($aRequest["locationSize"]), PDO::PARAM_INT);
-                $UpdateRaidQuery->bindValue(":Start",       intval($StartDateTime), PDO::PARAM_INT);
-                $UpdateRaidQuery->bindValue(":End",         intval($EndDateTime), PDO::PARAM_INT);
+                $UpdateRaidQuery->bindValue(":Size",        $aRequest["locationSize"], PDO::PARAM_INT);
+                $UpdateRaidQuery->bindValue(":Start",       $StartDateTime, PDO::PARAM_INT);
+                $UpdateRaidQuery->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
                 $UpdateRaidQuery->bindValue(":Mode",        $aRequest["mode"], PDO::PARAM_STR);
                 $UpdateRaidQuery->bindValue(":Description", requestToXML( $aRequest["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
                 $UpdateRaidQuery->bindValue(":SlotRoles",   implode(":",$aRequest["slotRoles"]), PDO::PARAM_STR);
@@ -94,7 +94,7 @@
                     $RemoveSlot = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` ".
                         "WHERE AttendanceId = :AttendanceId AND CharacterId = 0 AND UserId = 0" );
         
-                    $RemoveSlot->bindValue( ":AttendanceId", intval($aRequest["removed"][$i]), PDO::PARAM_INT );
+                    $RemoveSlot->bindValue( ":AttendanceId", $aRequest["removed"][$i], PDO::PARAM_INT );
         
                     if (!$RemoveSlot->execute())
                     {
@@ -162,9 +162,9 @@
                                         "( CharacterId, Class, UserId, RaidId, Status, Role, Comment ) ".
                                         "VALUES ( :CharId, :Class, :UserId, :RaidId, :Status, :Role, :Comment )" );
         
-                                    $UpdateSlot->bindValue( ":CharId", intval($CharId), PDO::PARAM_INT);
+                                    $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
                                     $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_STR);
-                                    $UpdateSlot->bindValue( ":UserId", intval($UserId), PDO::PARAM_INT);
+                                    $UpdateSlot->bindValue( ":UserId", $UserId, PDO::PARAM_INT);
                                     $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
                                 }
                                 else if ( (($Flags & PlayerFlagComment) != 0) &&
@@ -176,9 +176,9 @@
                                         "( CharacterId, Class, UserId, RaidId, Status, Role, Comment ) ".
                                         "VALUES ( :CharId, :Class, :UserId, :RaidId, :Status, :Role, :Comment )" );
         
-                                    $UpdateSlot->bindValue( ":CharId", intval($CharId), PDO::PARAM_INT);
+                                    $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
                                     $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_STR);
-                                    $UpdateSlot->bindValue( ":UserId", intval($UserId), PDO::PARAM_INT);
+                                    $UpdateSlot->bindValue( ":UserId", $UserId, PDO::PARAM_INT);
                                     $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
                                 }
                                 else if ( ($Flags & PlayerFlagName) != 0 )
@@ -213,7 +213,7 @@
                                         "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
         
                                     $UpdateSlot->bindValue( ":Comment", $Comment, PDO::PARAM_STR);
-                                    $UpdateSlot->bindValue( ":CharId", intval($CharId), PDO::PARAM_INT);
+                                    $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
                                     $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_STR);
                                 }
                                 else if ( ($Flags & PlayerFlagCharId) != 0 )
@@ -224,7 +224,7 @@
                                         "Status = :Status, CharacterId = :CharId, Class = :Class, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) ".
                                         "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
         
-                                    $UpdateSlot->bindValue( ":CharId", intval($CharId), PDO::PARAM_INT);
+                                    $UpdateSlot->bindValue( ":CharId", $CharId, PDO::PARAM_INT);
                                     $UpdateSlot->bindValue( ":Class", $ActiveClass, PDO::PARAM_STR);
                                 }
                                 else if ( (($Flags & PlayerFlagComment) != 0) )
@@ -256,13 +256,13 @@
                                         "WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1" );
                                 }
         
-                                $UpdateSlot->bindValue( ":AttendanceId", intval($Id), PDO::PARAM_INT);
-                                $UpdateSlot->bindValue( ":LastUpdate", intval($OldTimestamp), PDO::PARAM_INT);
+                                $UpdateSlot->bindValue( ":AttendanceId", $Id, PDO::PARAM_INT);
+                                $UpdateSlot->bindValue( ":LastUpdate", $OldTimestamp, PDO::PARAM_INT);
                                 $UpdateSlot->bindValue( ":TimestampNow", time(), PDO::PARAM_INT);
                             }
         
                             $UpdateSlot->bindValue( ":Status", $Status, PDO::PARAM_STR);
-                            $UpdateSlot->bindValue( ":RaidId", intval($aRequest["id"]), PDO::PARAM_INT);
+                            $UpdateSlot->bindValue( ":RaidId", $aRequest["id"], PDO::PARAM_INT);
                             $UpdateSlot->bindValue( ":Role",   $Role["id"], PDO::PARAM_STR);
         
                             if (!$UpdateSlot->execute())
@@ -283,7 +283,7 @@
                     $AttendenceQuery = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Attendance` SET Status = \"ok\" ".
                         "WHERE RaidId = :RaidId AND Status = \"available\"" );
         
-                    $AttendenceQuery->bindValue(":RaidId", intval($aRequest["id"]), PDO::PARAM_INT);
+                    $AttendenceQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
         
                     if (!$AttendenceQuery->execute())
                     {
@@ -306,9 +306,9 @@
                                                                    "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
                                                                    "ORDER BY AttendanceId DESC LIMIT :MaxCount" );
         
-                            $AttendenceQuery->bindValue(":RaidId", intval($aRequest["id"]), PDO::PARAM_INT);
+                            $AttendenceQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
                             $AttendenceQuery->bindValue(":RoleId", $RoleId, PDO::PARAM_STR);
-                            $AttendenceQuery->bindValue(":MaxCount", intval($SlotSizes[$RoleId]), PDO::PARAM_INT);
+                            $AttendenceQuery->bindValue(":MaxCount", $SlotSizes[$RoleId], PDO::PARAM_INT);
         
                             $LastAttend = $AttendenceQuery->fetchFirst();
         
@@ -320,9 +320,9 @@
                                                                  "WHERE RaidId = :RaidId AND Status = \"ok\" AND Role = :RoleId ".
                                                                  "AND AttendanceId > :FirstId" );
         
-                                $FixQuery->bindValue(":RaidId", intval($aRequest["id"]), PDO::PARAM_INT);
+                                $FixQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
                                 $FixQuery->bindValue(":RoleId", $RoleId, PDO::PARAM_STR);
-                                $FixQuery->bindValue(":FirstId", intval($LastAttend["AttendanceId"]), PDO::PARAM_INT);
+                                $FixQuery->bindValue(":FirstId", $LastAttend["AttendanceId"], PDO::PARAM_INT);
         
                                 if (!$FixQuery->execute())
                                 {

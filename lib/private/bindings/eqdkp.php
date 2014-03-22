@@ -132,7 +132,7 @@
                                                 "LEFT JOIN `".EQDKP_TABLE_PREFIX."auth_options` USING(auth_id) ".
                                                 "WHERE user_id = :UserId");
 
-            $UserRightsQuery->bindValue(":UserId", intval($aUserId), PDO::PARAM_INT);
+            $UserRightsQuery->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
             $AssignedGroup = "member";
 
             $UserRightsQuery->loop(function($Right) use (&$AssignedGroup)
@@ -247,7 +247,7 @@
                                           "FROM `".EQDKP_TABLE_PREFIX."users` ".
                                           "WHERE user_id = :UserId LIMIT 1");
 
-            $UserQuery->bindValue(":UserId", intval($aUserId), PDO::PARAM_INT);
+            $UserQuery->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
             $UserData = $UserQuery->fetchFirst();
 
             return ($UserData != null)

@@ -60,8 +60,8 @@
             
                 $UpdateData = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Session` SET SessionName=:Name, Expires=FROM_UNIXTIME(:Expires) WHERE SessionId=:SessionId LIMIT 1");
                 
-                $UpdateData->bindValue(":Expires",   intval($this->Expires), PDO::PARAM_INT);
-                $UpdateData->bindValue(":SessionId", intval($this->SessionId), PDO::PARAM_INT);
+                $UpdateData->bindValue(":Expires",   $this->Expires, PDO::PARAM_INT);
+                $UpdateData->bindValue(":SessionId", $this->SessionId, PDO::PARAM_INT);
                 $UpdateData->bindValue(":Name",      $SessionName, PDO::PARAM_STR);
             
                 if ($UpdateData->execute())
@@ -80,7 +80,7 @@
                 $Connector = Connector::getInstance();
                 $UpdateData = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Session` SET Data=:Data WHERE SessionId=:SessionId LIMIT 1");
                 
-                $UpdateData->bindValue(":SessionId", intval($this->SessionId), PDO::PARAM_INT);
+                $UpdateData->bindValue(":SessionId", $this->SessionId, PDO::PARAM_INT);
                 $UpdateData->bindValue(":Data", serialize($this->Data), PDO::PARAM_STR);
                 
                 if ($UpdateData->execute())
@@ -228,7 +228,7 @@
             $Connector = Connector::getInstance();
             $DropSessions = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Session` WHERE SessionId = :SessionId LIMIT 1");
             
-            $DropSessions->bindValue(":SessionId", intval(self::$Instance->SessionId), PDO::PARAM_INT);
+            $DropSessions->bindValue(":SessionId", self::$Instance->SessionId, PDO::PARAM_INT);
             $DropSessions->execute();
             
             self::$Instance->SessionId = 0;

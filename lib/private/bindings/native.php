@@ -141,7 +141,7 @@
             $UserQuery = $Connector->prepare("SELECT * FROM ".RP_TABLE_PREFIX."User ".
                                           "WHERE UserId = :UserId LIMIT 1");
 
-            $UserQuery->BindValue( ":UserId", intval($aUserId), PDO::PARAM_INT );
+            $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
             return ($UserData != null)

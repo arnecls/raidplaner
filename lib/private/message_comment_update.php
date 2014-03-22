@@ -10,8 +10,8 @@
             $UserId = UserProxy::getInstance()->UserId;
     
             $CheckQuery = $Connector->prepare("SELECT UserId FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId AND RaidId = :RaidId LIMIT 1");
-            $CheckQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
-            $CheckQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
+            $CheckQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+            $CheckQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
     
             if ( $CheckQuery->execute() )
             {
@@ -35,8 +35,8 @@
                     $UpdateQuery->bindValue(":Status",      "undecided", PDO::PARAM_STR);
                 }
     
-                $UpdateQuery->bindValue(":RaidId", intval( $RaidId), PDO::PARAM_INT);
-                $UpdateQuery->bindValue(":UserId", intval( $UserId), PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
+                $UpdateQuery->bindValue(":UserId",  $UserId, PDO::PARAM_INT);
                 $UpdateQuery->bindValue(":Comment", requestToXML( $aRequest["comment"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
     
                 $UpdateQuery->execute();
@@ -45,7 +45,7 @@
             // reload calendar
     
             $RaidQuery = $Connector->prepare("SELECT Start FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1");
-            $RaidQuery->bindValue(":RaidId", intval( $RaidId), PDO::PARAM_INT);
+            $RaidQuery->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
             $RaidData = $RaidQuery->fetchFirst();
             
             $Session = Session::get();

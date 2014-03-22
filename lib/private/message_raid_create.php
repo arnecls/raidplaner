@@ -95,7 +95,7 @@
                     loadSiteSettings();
     
                     $LocationQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Location` WHERE LocationId = :LocationId LIMIT 1");
-                    $LocationQuery->bindValue(":LocationId", intval($LocationId), PDO::PARAM_INT);
+                    $LocationQuery->bindValue(":LocationId", $LocationId, PDO::PARAM_INT);
                     $LocationData = $LocationQuery->fetchFirst();
                 }
                 
@@ -154,10 +154,10 @@
                     $EndDateTime   += $aRequest["endOffset"] * 60;
                     
                     
-                    $NewRaidQuery->bindValue(":LocationId",  intval( $LocationId), PDO::PARAM_INT);
-                    $NewRaidQuery->bindValue(":Size",        intval($aRequest["locationSize"]), PDO::PARAM_INT);
-                    $NewRaidQuery->bindValue(":Start",       intval($StartDateTime), PDO::PARAM_INT);
-                    $NewRaidQuery->bindValue(":End",         intval($EndDateTime), PDO::PARAM_INT);
+                    $NewRaidQuery->bindValue(":LocationId",   $LocationId, PDO::PARAM_INT);
+                    $NewRaidQuery->bindValue(":Size",        $aRequest["locationSize"], PDO::PARAM_INT);
+                    $NewRaidQuery->bindValue(":Start",       $StartDateTime, PDO::PARAM_INT);
+                    $NewRaidQuery->bindValue(":End",         $EndDateTime, PDO::PARAM_INT);
                     $NewRaidQuery->bindValue(":Mode",        $RaidMode, PDO::PARAM_STR);
                     $NewRaidQuery->bindValue(":Description", requestToXML( $aRequest["description"], ENT_COMPAT, "UTF-8" ), PDO::PARAM_STR);
                     $NewRaidQuery->bindValue(":SlotRoles",   $SlotRoles, PDO::PARAM_STR);
@@ -194,8 +194,8 @@
                                                                "VALUES (:UserId, :RaidId, :CharId, :Class, :Role, :Status)");
     
                             $AttendQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
-                            $AttendQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
-                            $AttendQuery->bindValue(":CharId", intval($User["CharacterId"]), PDO::PARAM_INT);
+                            $AttendQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
+                            $AttendQuery->bindValue(":CharId", $User["CharacterId"], PDO::PARAM_INT);
                             $AttendQuery->bindValue(":Class", $ClassId, PDO::PARAM_STR);
                             $AttendQuery->bindValue(":Role", $RoleId, PDO::PARAM_STR);
                             $AttendQuery->bindValue(":Status", $Status, PDO::PARAM_STR);
@@ -218,8 +218,8 @@
                             $AbsentQuery = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Attendance` (UserId, RaidId, Status, Comment) ".
                                                                "VALUES (:UserId, :RaidId, 'unavailable', :Message)");
     
-                            $AbsentQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
-                            $AbsentQuery->bindValue(":RaidId", intval($RaidId), PDO::PARAM_INT);
+                            $AbsentQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                            $AbsentQuery->bindValue(":RaidId", $RaidId, PDO::PARAM_INT);
                             $AbsentQuery->bindValue(":Message", $Settings["Message"], PDO::PARAM_STR);
     
                             $AbsentQuery->execute();
@@ -231,7 +231,7 @@
                     if (count($PostTargets) > 0)
                     {
                         $RaidQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId=:RaidId LIMIT 1");
-                        $RaidQuery->bindValue(":RaidId", intval( $RaidId), PDO::PARAM_INT);
+                        $RaidQuery->bindValue(":RaidId",  $RaidId, PDO::PARAM_INT);
                         $RaidData = $RaidQuery->fetchFirst();
                         
                         $MessageData = Binding::generateMessage($RaidData, $LocationData);

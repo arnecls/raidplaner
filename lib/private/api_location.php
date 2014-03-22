@@ -66,9 +66,9 @@
         foreach($Parameters as $Index => $Value)
         {
             if (is_numeric($Value))
-                $LocationQuery->bindValue($Index+1, intval($Value), PDO::PARAM_INT);
+                $LocationQuery->bindValue($Index+1, $Value, PDO::PARAM_INT);
             else
-                $LocationQuery->bindValue($Index+1, strval($Value), PDO::PARAM_STR);
+                $LocationQuery->bindValue($Index+1, $Value, PDO::PARAM_STR);
         }
         
         // Build result

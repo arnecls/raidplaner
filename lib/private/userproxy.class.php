@@ -112,7 +112,7 @@
                                             "WHERE UserId = :UserId LIMIT 1" );
 
             $OtkQuery->bindValue( ":Key",     $OneTimeKey,      PDO::PARAM_STR );
-            $OtkQuery->bindValue( ":UserId",  intval($aUserId), PDO::PARAM_INT );
+            $OtkQuery->bindValue( ":UserId",  $aUserId, PDO::PARAM_INT );
             $OtkQuery->execute();
         }
 
@@ -144,7 +144,7 @@
                 $UserQuery = $Connector->prepare("SELECT Login, Password, `Group` FROM `".RP_TABLE_PREFIX."User` ".
                     "WHERE UserId = :UserId LIMIT 1");
 
-                $UserQuery->bindValue(":UserId", intval($Session->GetUserId()), PDO::PARAM_INT);
+                $UserQuery->bindValue(":UserId", $Session->GetUserId(), PDO::PARAM_INT);
                 $UserData = $UserQuery->fetchFirst();
 
                 if ( $UserData != null )
@@ -240,7 +240,7 @@
                         $UserQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` ".
                                                           "WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
 
-                        $UserQuery->bindValue(":UserId", intval($UserInfo->UserId), PDO::PARAM_INT );
+                        $UserQuery->bindValue(":UserId", $UserInfo->UserId, PDO::PARAM_INT );
                         $UserQuery->bindValue(":Binding", $UserInfo->BindingName, PDO::PARAM_STR );
 
                         // The query might fail if the user is not yet registered
@@ -398,7 +398,7 @@
             $UserQuery = $Connector->prepare( "SELECT OneTimeKey, Password, ExternalBinding, BindingActive, ExternalId ".
                 "FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
             
-            $UserQuery->bindValue(":UserId", intval($this->UserId), PDO::PARAM_INT );
+            $UserQuery->bindValue(":UserId", $this->UserId, PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
             if ($UserData != null)
@@ -455,7 +455,7 @@
                 $UserQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` ".
                     "WHERE ExternalId = :UserId AND ExternalBinding = :Binding LIMIT 1" );
 
-                $UserQuery->bindValue(":UserId", intval($ExternalUser->UserId), PDO::PARAM_INT );
+                $UserQuery->bindValue(":UserId", $ExternalUser->UserId, PDO::PARAM_INT );
                 $UserQuery->bindValue(":Binding", $ExternalUser->BindingName, PDO::PARAM_STR );
                 $UserData = $UserQuery->fetchFirst();
 
@@ -539,7 +539,7 @@
                                                        "WHERE UserId = :UserId ".
                                                        "ORDER BY Mainchar, Name" );
 
-                $CharacterQuery->bindValue(":UserId", intval($this->UserId), PDO::PARAM_INT);
+                $CharacterQuery->bindValue(":UserId", $this->UserId, PDO::PARAM_INT);
 
                 $Characters = array();
                 $CharacterQuery->loop( function($Row) use (&$Characters)
@@ -571,7 +571,7 @@
                 $SettingQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."UserSetting` ".
                     "WHERE UserId = :UserId" );
 
-                $SettingQuery->bindValue(":UserId", intval($this->UserId), PDO::PARAM_INT);
+                $SettingQuery->bindValue(":UserId", $this->UserId, PDO::PARAM_INT);
 
                 $Settings = array();
 
@@ -609,7 +609,7 @@
                 $Active = ($aBindingName != "none") ? "true" : "false";
 
                 $UserQuery->bindValue(":Group",          $aGroup,                  PDO::PARAM_STR);
-                $UserQuery->bindValue(":ExternalUserId", intval($aExternalUserId), PDO::PARAM_INT);
+                $UserQuery->bindValue(":ExternalUserId", $aExternalUserId, PDO::PARAM_INT);
                 $UserQuery->bindValue(":Binding",        $aBindingName,            PDO::PARAM_STR);
                 $UserQuery->bindValue(":Active",         $Active,                  PDO::PARAM_STR);
                 $UserQuery->bindValue(":Login",          strtolower($aLogin),      PDO::PARAM_STR);
@@ -642,7 +642,7 @@
                     "WHERE UserId = :UserId LIMIT 1" );
 
                 $MirrorQuery->bindValue( ":Key",    $aKey, PDO::PARAM_STR );
-                $MirrorQuery->bindValue( ":UserId", intval($UserInfo->UserId), PDO::PARAM_INT );
+                $MirrorQuery->bindValue( ":UserId", $UserInfo->UserId, PDO::PARAM_INT );
             }
             else
             {
@@ -712,7 +712,7 @@
                                                 "ExternalBinding = 'none', Password = :Password, Salt = :Salt ".
                                                 "WHERE UserId = :UserId AND (BindingActive='false' OR ExternalBinding='none') LIMIT 1");
 
-            $UpdateQuery->bindValue(":UserId",   intval($aUserId), PDO::PARAM_INT);
+            $UpdateQuery->bindValue(":UserId",   $aUserId, PDO::PARAM_INT);
             $UpdateQuery->bindValue(":Password", $aHashedPassword, PDO::PARAM_STR);
             $UpdateQuery->bindValue(":Salt",     $aSalt,           PDO::PARAM_STR);
 

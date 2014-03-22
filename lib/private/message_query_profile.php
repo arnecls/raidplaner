@@ -22,7 +22,7 @@
             // Admintool relevant data
     
             $Users = $Connector->prepare( "SELECT Login, UNIX_TIMESTAMP(Created) AS CreatedUTC, ExternalBinding, BindingActive FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
-            $Users->bindValue( ":UserId", intval($UserId), PDO::PARAM_INT );
+            $Users->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
     
             $Data = $Users->fetchFirst();
     
@@ -39,7 +39,7 @@
             // Load settings
     
             $SettingsQuery = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."UserSetting` WHERE UserId = :UserId" );
-            $SettingsQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+            $SettingsQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
             $UserSettings = array();
     
             $SettingsQuery->loop(function($Data) use (&$UserSettings)
@@ -78,7 +78,7 @@
                     "WHERE UserId = :UserId AND Game = :Game ".
                     "ORDER BY Mainchar, Name" );
     
-                $CharacterQuery->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                $CharacterQuery->bindValue(":UserId", $UserId, PDO::PARAM_INT);
                 $CharacterQuery->bindValue(":Game", $gGame["GameId"], PDO::PARAM_STR);
     
                 $CharacterQuery->loop( function($Row) use (&$Characters)
@@ -122,8 +122,8 @@
                 "WHERE UserId = :UserId AND Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game ".
                 "GROUP BY `Status`, `Role` ORDER BY Status" );
     
-            $AttendanceQuery->bindValue( ":UserId", intval($UserId), PDO::PARAM_INT );
-            $AttendanceQuery->bindValue( ":Created", intval($CreatedUTC), PDO::PARAM_INT );
+            $AttendanceQuery->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+            $AttendanceQuery->bindValue( ":Created", $CreatedUTC, PDO::PARAM_INT );
             $AttendanceQuery->bindValue( ":Now", time(), PDO::PARAM_INT );
             $AttendanceQuery->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
     

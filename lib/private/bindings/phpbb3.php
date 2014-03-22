@@ -191,7 +191,7 @@
                                            "LEFT JOIN `".PHPBB3_TABLE_PREFIX."banlist` ON user_id = ban_userid ".
                                            "WHERE user_id = :UserId");
 
-            $GroupQuery->bindValue(":UserId", intval($aUserId), PDO::PARAM_INT);
+            $GroupQuery->bindValue(":UserId", $aUserId, PDO::PARAM_INT);
 
             $GroupQuery->loop(function($Group) use (&$AssignedGroup, $MemberGroups, $RaidleadGroups)
             {
@@ -322,7 +322,7 @@
                                           "FROM `".PHPBB3_TABLE_PREFIX."users` ".
                                           "WHERE user_id = :UserId LIMIT 1");
 
-            $UserQuery->BindValue( ":UserId", intval($aUserId), PDO::PARAM_INT );
+            $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
             return ($UserData != null)
@@ -435,7 +435,7 @@
                     $Connector->beginTransaction();
 
                     $UserQuery = $Connector->prepare("SELECT username, user_colour FROM `".PHPBB3_TABLE_PREFIX."users` WHERE user_id=:UserId LIMIT 1");
-                    $UserQuery->BindValue( ":UserId", intval(PHPBB3_POSTAS), PDO::PARAM_INT );
+                    $UserQuery->BindValue( ":UserId", PHPBB3_POSTAS, PDO::PARAM_INT );
     
                     $UserData = $UserQuery->fetchFirst();
     
@@ -445,9 +445,9 @@
                                                    "(forum_id, topic_poster, topic_title, topic_last_post_subject, topic_time, topic_first_poster_name, topic_first_poster_colour, topic_last_poster_name, topic_last_poster_colour, topic_last_post_time) VALUES ".
                                                    "(:ForumId, :UserId, :Subject, :Subject, :Now, :Username, :Color, :Username, :Color, :Now)");
     
-                    $TopicQuery->BindValue( ":ForumId", intval(PHPBB3_POSTTO), PDO::PARAM_INT );
-                    $TopicQuery->BindValue( ":UserId", intval(PHPBB3_POSTAS), PDO::PARAM_INT );
-                    $TopicQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $TopicQuery->BindValue( ":ForumId", PHPBB3_POSTTO, PDO::PARAM_INT );
+                    $TopicQuery->BindValue( ":UserId", PHPBB3_POSTAS, PDO::PARAM_INT );
+                    $TopicQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
                     $TopicQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
                     $TopicQuery->BindValue( ":Color", $UserData["user_colour"], PDO::PARAM_STR );
                     $TopicQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
@@ -461,10 +461,10 @@
                                                   "(forum_id, topic_id, post_time, post_username, poster_id, post_subject, post_text, post_checksum) VALUES ".
                                                   "(:ForumId, :TopicId, :Now, :Username, :UserId, :Subject, :Text, :TextMD5)");
     
-                    $PostQuery->BindValue( ":ForumId", intval(PHPBB3_POSTTO), PDO::PARAM_INT );
-                    $PostQuery->BindValue( ":TopicId", intval($TopicId), PDO::PARAM_INT );
-                    $PostQuery->BindValue( ":UserId", intval(PHPBB3_POSTAS), PDO::PARAM_INT );
-                    $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":ForumId", PHPBB3_POSTTO, PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":TopicId", $TopicId, PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":UserId", PHPBB3_POSTAS, PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
                     $PostQuery->BindValue( ":Username", $UserData["username"], PDO::PARAM_STR );
     
                     $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
@@ -480,8 +480,8 @@
                                                          "SET topic_first_post_id = :PostId, topic_last_post_id = :PostId ".
                                                          "WHERE topic_id = :TopicId LIMIT 1");
     
-                    $TopicFinishQuery->BindValue( ":TopicId", intval($TopicId), PDO::PARAM_INT );
-                    $TopicFinishQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
+                    $TopicFinishQuery->BindValue( ":TopicId", $TopicId, PDO::PARAM_INT );
+                    $TopicFinishQuery->BindValue( ":PostId", $PostId, PDO::PARAM_INT );
     
                     $TopicFinishQuery->execute(true);
                 }

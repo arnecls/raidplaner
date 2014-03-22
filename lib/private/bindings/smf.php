@@ -281,7 +281,7 @@
                                           "LEFT JOIN `".SMF_TABLE_PREFIX."ban_groups` USING(id_ban_group) ".
                                           "WHERE id_member = :UserId LIMIT 1");
 
-            $UserQuery->BindValue( ":UserId", intval($aUserId), PDO::PARAM_INT );
+            $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
             return ($UserData != null)
@@ -319,7 +319,7 @@
                     $Connector->beginTransaction();
 
                     $UserQuery = $Connector->prepare("SELECT member_name FROM `".SMF_TABLE_PREFIX."members` WHERE id_member=:UserId LIMIT 1");
-                    $UserQuery->BindValue( ":UserId", intval(SMF_POSTAS), PDO::PARAM_INT );
+                    $UserQuery->BindValue( ":UserId", SMF_POSTAS, PDO::PARAM_INT );
     
                     $UserData = $UserQuery->fetchFirst();
     
@@ -329,9 +329,9 @@
                                                   "(id_board, poster_time, id_member, poster_name, subject, body) VALUES ".
                                                   "(:ForumId, :Now, :UserId, :Username, :Subject, :Text)");
     
-                    $PostQuery->BindValue( ":ForumId", intval(SMF_POSTTO), PDO::PARAM_INT );
-                    $PostQuery->BindValue( ":UserId", intval(SMF_POSTAS), PDO::PARAM_INT );
-                    $PostQuery->BindValue( ":Now", intval($Timestamp), PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":ForumId", SMF_POSTTO, PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":UserId", SMF_POSTAS, PDO::PARAM_INT );
+                    $PostQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
                     $PostQuery->BindValue( ":Username", $UserData["member_name"], PDO::PARAM_STR );
     
                     $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
@@ -346,9 +346,9 @@
                                                    "(id_board, id_member_started, id_first_msg, id_last_msg) VALUES ".
                                                    "(:ForumId, :UserId, :PostId, :PostId)");
     
-                    $TopicQuery->BindValue( ":ForumId", intval(SMF_POSTTO), PDO::PARAM_INT );
-                    $TopicQuery->BindValue( ":UserId", intval(SMF_POSTAS), PDO::PARAM_INT );
-                    $TopicQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
+                    $TopicQuery->BindValue( ":ForumId", SMF_POSTTO, PDO::PARAM_INT );
+                    $TopicQuery->BindValue( ":UserId", SMF_POSTAS, PDO::PARAM_INT );
+                    $TopicQuery->BindValue( ":PostId", $PostId, PDO::PARAM_INT );
     
                     $TopicQuery->execute(true);
                     $TopicId = $Connector->lastInsertId();
@@ -359,8 +359,8 @@
                                                          "SET id_topic = :TopicId ".
                                                          "WHERE id_msg = :PostId LIMIT 1");
     
-                    $PostFinishQuery->BindValue( ":TopicId", intval($TopicId), PDO::PARAM_INT );
-                    $PostFinishQuery->BindValue( ":PostId", intval($PostId), PDO::PARAM_INT );
+                    $PostFinishQuery->BindValue( ":TopicId", $TopicId, PDO::PARAM_INT );
+                    $PostFinishQuery->BindValue( ":PostId", $PostId, PDO::PARAM_INT );
     
                     $PostFinishQuery->execute(true);
                 }

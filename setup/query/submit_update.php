@@ -220,7 +220,7 @@
                     {
                         $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Salt = :Salt WHERE UserId = :UserId LIMIT 1");
 
-                        $UpdateUser->bindValue(":UserId", intval($UserData["UserId"]), PDO::PARAM_INT);
+                        $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
                         $UpdateUser->bindValue(":Salt", $VbUserSalt[$UserData["ExternalId"]], PDO::PARAM_STR);
                         $UpdateUser->setErrorsAsHTML(true);
 
@@ -254,7 +254,7 @@
                 $UpdateUser = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."User` SET Password=:Password, BindingActive='false' ".
                                                   "WHERE UserId= :UserId LIMIT 1");
 
-                $UpdateUser->bindValue(":UserId", intval($UserData["UserId"]), PDO::PARAM_INT);
+                $UpdateUser->bindValue(":UserId", $UserData["UserId"], PDO::PARAM_INT);
                 $UpdateUser->bindValue(":Password", hash("sha256", $UserData["Password"].$UserData["Salt"]), PDO::PARAM_STR);
                 $UpdateUser->setErrorsAsHTML(true);
 
@@ -519,7 +519,7 @@
             $UpdateRaidQuery->setErrorsAsHTML(true);
             $UpdateRaidQuery->bindValue(":Roles", $SlotRoles, PDO::PARAM_STR);
             $UpdateRaidQuery->bindValue(":Count", implode(":",$SlotCount), PDO::PARAM_STR);
-            $UpdateRaidQuery->bindValue(":RaidId", intval($aRaid["RaidId"]), PDO::PARAM_INT);
+            $UpdateRaidQuery->bindValue(":RaidId", $aRaid["RaidId"], PDO::PARAM_INT);
             
             if (!$UpdateRaidQuery->execute())
                 ++$NumErrors;

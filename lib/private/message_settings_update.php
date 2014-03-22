@@ -16,7 +16,7 @@
         foreach ( $ChangedIds as $UserId )
         {
             $ChangeUser = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET `Group` = :GroupName WHERE UserId = :UserId " );
-            $ChangeUser->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+            $ChangeUser->bindValue(":UserId", $UserId, PDO::PARAM_INT);
             $ChangeUser->bindValue(":GroupName", $GroupName, PDO::PARAM_STR );
     
             if ( !$ChangeUser->execute() )
@@ -37,13 +37,13 @@
         {
             if ( $CurrentValues[$ValueName]["number"] != $NewValue )
             {
-                array_push( $BindValues, array(":".$ValueName, intval($NewValue), PDO::PARAM_INT) );
+                array_push( $BindValues, array(":".$ValueName, $NewValue, PDO::PARAM_INT) );
                 return "UPDATE `".RP_TABLE_PREFIX."Setting` SET IntValue = :".$ValueName." WHERE Name=\"".$ValueName."\"; ";
             }
         }
         else
         {
-            array_push( $BindValues, array(":".$ValueName, intval($NewValue), PDO::PARAM_INT) );
+            array_push( $BindValues, array(":".$ValueName, $NewValue, PDO::PARAM_INT) );
             return "INSERT INTO `".RP_TABLE_PREFIX."Setting` (`Name`, `IntValue`, `TextValue`) VALUES ('".$ValueName."', :".$ValueName.", ''); ";
         }
     
@@ -194,7 +194,7 @@
                 foreach ( $UnlinkedIds as $UserId )
                 {
                     $UnlinkUser = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET `BindingActive` = 'false' WHERE UserId = :UserId LIMIT 1" );
-                    $UnlinkUser->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                    $UnlinkUser->bindValue(":UserId", $UserId, PDO::PARAM_INT);
         
                     if ( !$UnlinkUser->execute() )
                     {
@@ -238,8 +238,8 @@
                     $DropCharacter  = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Character` WHERE UserId = :UserId LIMIT 1" );
                     $DropAttendance = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE UserId = :UserId" );
         
-                    $DropCharacter->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
-                    $DropAttendance->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                    $DropCharacter->bindValue(":UserId", $UserId, PDO::PARAM_INT);
+                    $DropAttendance->bindValue(":UserId", $UserId, PDO::PARAM_INT);
         
                     if ( !$DropCharacter->execute() )
                     {
@@ -256,7 +256,7 @@
                     // remove user
         
                     $DropUser = $Connector->prepare( "DELETE FROM `".RP_TABLE_PREFIX."User` WHERE UserId = :UserId LIMIT 1" );
-                    $DropUser->bindValue(":UserId", intval($UserId), PDO::PARAM_INT);
+                    $DropUser->bindValue(":UserId", $UserId, PDO::PARAM_INT);
         
                     if ( !$DropUser->execute() )
                     {

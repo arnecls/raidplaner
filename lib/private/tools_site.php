@@ -438,7 +438,7 @@
                                                    "Stage = 'locked'".
                                                    "WHERE Start < FROM_UNIXTIME(:Time) AND Stage = 'open'" );
 
-            $UpdateRaidQuery->bindValue(":Time", intval(time() + $aSeconds), PDO::PARAM_INT);
+            $UpdateRaidQuery->bindValue(":Time", time() + $aSeconds, PDO::PARAM_INT);
             $UpdateRaidQuery->execute();
         }
     }
@@ -453,7 +453,7 @@
                                            "WHERE ".RP_TABLE_PREFIX."Raid.End < FROM_UNIXTIME(:Time)" );
 
         $Timestamp = time() - $aSeconds;
-        $DropRaidQuery->bindValue( ":Time", intval($Timestamp), PDO::PARAM_INT );
+        $DropRaidQuery->bindValue( ":Time", $Timestamp, PDO::PARAM_INT );
         $DropRaidQuery->execute();
     }
 ?>
