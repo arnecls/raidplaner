@@ -84,7 +84,7 @@
         public static function writeHeadersJSON()
         {
             header('Cache-Control: no-cache, max-age=0, s-maxage=0');
-            header('Content-type: application/json');
+            header('Content-type: application/json; charset=UTF-8');
         }
 
         // --------------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@
         public static function writeHeadersXML()
         {
             header('Cache-Control: no-cache, max-age=0, s-maxage=0');
-            header('Content-type: application/xml');
+            header('Content-type: application/xml; charset=UTF-8');
             echo '<?xml version="1.0" encoding="UTF-8" ?>\n';
         }
         
@@ -200,6 +200,7 @@
                 {
                     $sanitized = str_replace('\n', '</br>', $Value);
                     $sanitized = str_replace('\\', '\\\\', $sanitized);
+                    $sanitized = str_replace('"', '\\"', $sanitized);
                     $aOnOut('"'.$sanitized.'"');
                 }
 

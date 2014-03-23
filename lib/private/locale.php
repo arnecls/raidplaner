@@ -52,7 +52,7 @@
         {
             if ($Value != null)
             {
-                $Encoded = htmlentities(getUTF8($Value), $Flags, 'UTF-8');
+                $Encoded = getUTF8($Value);//htmlentities(getUTF8($Value), $Flags, 'UTF-8');
                 $EncodedLocale[$Key] = $Encoded;
             }
         }
@@ -65,7 +65,7 @@
             {
                 if ($Value != null)
                 {
-                    $Encoded = htmlentities(getUTF8($Value), $Flags, 'UTF-8');
+                    $Encoded = getUTF8($Value);//htmlentities(getUTF8($Value), $Flags, 'UTF-8');
                     $EncodedLocale[$Key] = $Encoded;
                 }
             }
