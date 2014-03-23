@@ -1,6 +1,6 @@
 <?php
-    require_once dirname(__FILE__)."/connector.class.php";
-    require_once dirname(__FILE__)."/tools_site.php";
+    require_once dirname(__FILE__).'/connector.class.php';
+    require_once dirname(__FILE__).'/tools_site.php';
 
     // Helper class for external bindings, so we don't have to use string
     // based associative arrays.
@@ -36,11 +36,11 @@
 
         public function __construct()
         {
-            $this->Database         = "";
-            $this->User             = "";
-            $this->Password         = "";
-            $this->Prefix           = "";
-            $this->CookieData       = "";
+            $this->Database         = '';
+            $this->User             = '';
+            $this->Password         = '';
+            $this->Prefix           = '';
+            $this->CookieData       = '';
             $this->Members          = array();
             $this->Raidleads        = array();
             $this->PostTo           = 0;
@@ -82,7 +82,7 @@
         public function isActive()
         {
             $Name = strtoupper($this->getName());
-            return defined($Name."_BINDING") && constant($Name."_BINDING");
+            return defined($Name.'_BINDING') && constant($Name.'_BINDING');
         }
 
         // -------------------------------------------------------------------------
@@ -90,15 +90,15 @@
         public function postRequested()
         {
             $Name = strtoupper($this->getName());
-            return defined($Name."_POSTTO") && (constant($Name."_POSTTO") != 0);
+            return defined($Name.'_POSTTO') && (constant($Name.'_POSTTO') != 0);
         }
 
         // -------------------------------------------------------------------------
 
         public function isConfigWriteable()
         {
-            $ConfigFolder = dirname(__FILE__)."/../config";
-            $ConfigFile   = $ConfigFolder."/config.".$this->getName().".php";
+            $ConfigFolder = dirname(__FILE__).'/../config';
+            $ConfigFile   = $ConfigFolder.'/config.'.$this->getName().'.php';
 
             return (!file_exists($ConfigFile) && is_writable($ConfigFolder)) || is_writable($ConfigFile);
         }
@@ -145,32 +145,32 @@
 
         public static function generateMessage($aRaidData, $aLocationData)
         {
-            $Template = new SimpleXMLElement( file_get_contents(dirname(__FILE__)."/../config/config.post.xml") );
+            $Template = new SimpleXMLElement( file_get_contents(dirname(__FILE__).'/../config/config.post.xml') );
             
             $SystemLocale   = setlocale(LC_ALL, 0);
             $SystemTimezone = date_default_timezone_get();
-            $Subject = "";
-            $Message = "";
+            $Subject = '';
+            $Message = '';
             
-            $BrowserLang = $_SERVER["HTTP_ACCEPT_LANGUAGE"];
-            $DefaultLocale = str_replace("-", "_", substr($BrowserLang, 0, strpos($BrowserLang, ",")));
+            $BrowserLang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+            $DefaultLocale = str_replace('-', '_', substr($BrowserLang, 0, strpos($BrowserLang, ',')));
             
             try
             {
-                $SubjectLocale = (isset($Template->subject["locale"]))
-                    ? $Template->subject["locale"]
+                $SubjectLocale = (isset($Template->subject['locale']))
+                    ? $Template->subject['locale']
                     : $DefaultLocale;
                     
-                $SubjectTimezone = (isset($Template->subject["timezone"]))
-                    ? $Template->subject["timezone"]
+                $SubjectTimezone = (isset($Template->subject['timezone']))
+                    ? $Template->subject['timezone']
                     : $SystemTimezone;
                     
-                $MessageLocale = (isset($Template->message["locale"]))
-                    ? $Template->message["locale"]
+                $MessageLocale = (isset($Template->message['locale']))
+                    ? $Template->message['locale']
                     : $DefaultLocale;
                 
-                $MessageTimezone = (isset($Template->message["timezone"]))
-                    ? $Template->message["timezone"]
+                $MessageTimezone = (isset($Template->message['timezone']))
+                    ? $Template->message['timezone']
                     : $SystemTimezone;
             
                 setlocale(LC_ALL, $SubjectLocale);
@@ -187,8 +187,8 @@
             date_default_timezone_set($SystemTimezone);
                         
             return array(
-                "subject" => trim($Subject),
-                "message" => trim($Message)
+                'subject' => trim($Subject),
+                'message' => trim($Message)
             ); 
         }
         
@@ -197,36 +197,36 @@
         private static function parseTemplate($aTemplate, $aRaidData, $aLocationData, $aTimezone)
         {
             $Offset = 0;
-            $Text = "";
+            $Text = '';
             
-            $TagStart = strpos($aTemplate, "{", $Offset);
+            $TagStart = strpos($aTemplate, '{', $Offset);
             
             while( $TagStart !== false )
             {
-                $TagEnd = strpos($aTemplate, "}", $TagStart);
-                $TagData = explode(":", substr($aTemplate, $TagStart+1, $TagEnd-$TagStart-1));
+                $TagEnd = strpos($aTemplate, '}', $TagStart);
+                $TagData = explode(':', substr($aTemplate, $TagStart+1, $TagEnd-$TagStart-1));
                 
-                $Parsed = "";
+                $Parsed = '';
                 
                 switch (strtolower($TagData[0]))
                 {
-                case "url":
+                case 'url':
                     $Parsed = getBaseURL();
                     break;
                 
-                case "location":
-                    $Parsed = isset($aLocationData[$TagData[1]]) ? $aLocationData[$TagData[1]] : "UNKNOWN LOCATION FIELD";
+                case 'location':
+                    $Parsed = isset($aLocationData[$TagData[1]]) ? $aLocationData[$TagData[1]] : 'UNKNOWN LOCATION FIELD';
                     break;
                     
-                case "l":
+                case 'l':
                     $Parsed = L($TagData[1]);
                     break;
                     
-                case "raid":
+                case 'raid':
                     switch (strtolower($TagData[1]))
                     {
-                    case "end":
-                    case "start":
+                    case 'end':
+                    case 'start':
                         date_default_timezone_set('UTC');
                         $Timestamp = strtotime($aRaidData[$TagData[1]]);
                         
@@ -235,7 +235,7 @@
                         break;
                         
                     default:
-                        $Parsed = isset($aRaidData[$TagData[1]]) ? $aRaidData[$TagData[1]] : "UNKNOWN RAID FIELD";
+                        $Parsed = isset($aRaidData[$TagData[1]]) ? $aRaidData[$TagData[1]] : 'UNKNOWN RAID FIELD';
                         break;
                     }
                     break;
@@ -243,7 +243,7 @@
                 
                 $Text .= substr($aTemplate, $Offset, $TagStart-$Offset).$Parsed;
                 $Offset = $TagEnd+1;
-                $TagStart = strpos($aTemplate, "{", $Offset);
+                $TagStart = strpos($aTemplate, '{', $Offset);
             }
             
             $Text.= substr($aTemplate, $Offset);

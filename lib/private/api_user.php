@@ -1,14 +1,14 @@
 <?php
-    require_once dirname(__FILE__)."/connector.class.php";
+    require_once dirname(__FILE__).'/connector.class.php';
     
     // -------------------------------------------------------------------------
     
-    $gApiHelp["location"] = Array(
-        "description" => "Query value. Get a list of available characters per user.",
-        "parameters"  => Array(
-            "users"   => "Comma separated list of user ids to fetch. Default: empty",
-            "games"   => "Comma separated list of game ids. Only returns characters for these games. Default: empty",
-            "current" => "Set to true to only return the currently logged in user. Default: false",
+    $gApiHelp['location'] = Array(
+        'description' => 'Query value. Get a list of available characters per user.',
+        'parameters'  => Array(
+            'users'   => 'Comma separated list of user ids to fetch. Default: empty',
+            'games'   => 'Comma separated list of game ids. Only returns characters for these games. Default: empty',
+            'current' => 'Set to true to only return the currently logged in user. Default: false',
         )
     );
     
@@ -17,9 +17,9 @@
     function api_args_user($aRequest)
     {
         return Array(
-            "users"   => getParamFrom($aRequest, "users", ""),
-            "games"   => getParamFrom($aRequest, "games", ""),
-            "current" => getParamFrom($aRequest, "current", false),
+            'users'   => getParamFrom($aRequest, 'users', ''),
+            'games'   => getParamFrom($aRequest, 'games', ''),
+            'current' => getParamFrom($aRequest, 'current', false),
         );
     }
     
@@ -27,21 +27,21 @@
     
     function api_query_user($aParameter)
     {
-        $aUsers   = getParamFrom($aParameter, "users", "");
-        $aGames   = getParamFrom($aParameter, "games", "");
-        $aCurrent = getParamFrom($aParameter, "current", false);
+        $aUsers   = getParamFrom($aParameter, 'users', '');
+        $aGames   = getParamFrom($aParameter, 'games', '');
+        $aCurrent = getParamFrom($aParameter, 'current', false);
         
         // load gameconfigs
         
-        $GameFiles = scandir( dirname(__FILE__)."/../../themes/games" );
+        $GameFiles = scandir( dirname(__FILE__).'/../../themes/games' );
         $Games = Array();
         
         foreach ( $GameFiles as $GameFileName )
         {
-            if (substr($GameFileName, -4) === ".xml")
+            if (substr($GameFileName, -4) === '.xml')
             {
                 $Game = loadGame(substr($GameFileName, 0, -4));
-                $Games[$Game["GameId"]] = $Game;
+                $Games[$Game['GameId']] = $Game;
             }
         }        
         
@@ -52,20 +52,20 @@
         
         // Filter users
         
-        if (!$aCurrent && ($aUsers != ""))
+        if (!$aCurrent && ($aUsers != ''))
         {
-            $Users = explode(",", $aUsers);
+            $Users = explode(',', $aUsers);
             foreach($Users as &$UserId)
                 $UserId = intval($UserId);
                 
             if (count($Users) == 1)
             {         
-                array_push($Conditions, "UserId=?");
+                array_push($Conditions, 'UserId=?');
                 array_push($Parameters, $Users[0]);
             }
             else
             {
-                array_push($Conditions, "UserId IN (".implode(",",$Users).")");
+                array_push($Conditions, 'UserId IN ('.implode(',',$Users).')');
             }
         }
         
@@ -75,20 +75,20 @@
             if ($Session === null)
                 return Array(); // no user logged in
                 
-            array_push($Conditions, "UserId=?");
+            array_push($Conditions, 'UserId=?');
             array_push($Parameters, $Session->getUserId());
         }
         
         // Filter games
         
-        if ($aGames != "")
+        if ($aGames != '')
         {
-            $Games = explode(",", $aGames);
+            $Games = explode(',', $aGames);
             $GameOptions = Array();
             
             foreach($Games as $Game)
             {
-                array_push($GameOptions, "Game=?");
+                array_push($GameOptions, 'Game=?');
                 array_push($Parameters, $Game);
             }
             
@@ -97,29 +97,29 @@
         
         // Build where clause
         
-        $WhereString = "";        
+        $WhereString = '';        
         if (count($Conditions) > 0)
         {
             foreach($Conditions as &$Part)
             {
                 if (is_array($Part))
-                    $Part = "(".implode(" OR ", $Part).")";
+                    $Part = '('.implode(' OR ', $Part).')';
             }
             
-            $WhereString = "WHERE ".implode(" AND ",$Conditions)." ";
+            $WhereString = 'WHERE '.implode(' AND ',$Conditions).' ';
         }
         
         // Run query
         
         $Connector = Connector::getInstance();
-        $UserQuery = $Connector->prepare("SELECT `".RP_TABLE_PREFIX."User`.UserId AS _UserId, `".RP_TABLE_PREFIX."Character`.* FROM `".RP_TABLE_PREFIX."User` ".
-            "LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
+        $UserQuery = $Connector->prepare('SELECT `'.RP_TABLE_PREFIX.'User`.UserId AS _UserId, `'.RP_TABLE_PREFIX.'Character`.* FROM `'.RP_TABLE_PREFIX.'User` '.
+            'LEFT JOIN `'.RP_TABLE_PREFIX.'Character` USING(UserId) '.
             $WhereString.
-            "ORDER BY UserId,Name,Game");
+            'ORDER BY UserId,Name,Game');
             
         foreach($Parameters as $Index => $Value)
         {
-            //Out::getInstance()->pushValue("query", $Value);
+            //Out::getInstance()->pushValue('query', $Value);
             if (is_numeric($Value))
                 $UserQuery->bindValue($Index+1, $Value, PDO::PARAM_INT);
             else
@@ -134,33 +134,33 @@
         
         $UserQuery->loop(function($UserRow) use (&$LastUserId, &$Result, &$User, &$Games) 
         {            
-            if ($LastUserId != $UserRow["_UserId"])
+            if ($LastUserId != $UserRow['_UserId'])
             {
                 if (count($User) > 0)
                 {
                     array_push($Result, $User);
                 }
                 
-                $LastUserId = $UserRow["_UserId"];
+                $LastUserId = $UserRow['_UserId'];
                 $User = Array(
-                    "Id"         => $LastUserId,
-                    "Characters" => Array()
+                    'Id'         => $LastUserId,
+                    'Characters' => Array()
                 );
             }
             
-            if ($UserRow["CharacterId"] != null)
+            if ($UserRow['CharacterId'] != null)
             {
-                $Game = $Games[$UserRow["Game"]];
-                $Classes = explode(":",$UserRow["Class"]);
+                $Game = $Games[$UserRow['Game']];
+                $Classes = explode(':',$UserRow['Class']);
                 $Roles = Array();
                 
-                if ($Game["ClassMode"] == "single")
+                if ($Game['ClassMode'] == 'single')
                 {
                     // Single class mode -> Roles are in database
                     
-                    array_push($Roles, $UserRow["Role1"]);
-                    if ($UserRow["Role1"] != $UserRow["Role2"])
-                        array_push($Roles, $UserRow["Role2"]);
+                    array_push($Roles, $UserRow['Role1']);
+                    if ($UserRow['Role1'] != $UserRow['Role2'])
+                        array_push($Roles, $UserRow['Role2']);
                 }
                 else
                 {
@@ -168,7 +168,7 @@
                     
                     foreach($Classes as $ClassId)
                     {
-                        foreach($Game["Classes"][$ClassId]["roles"] as $RoleId)
+                        foreach($Game['Classes'][$ClassId]['roles'] as $RoleId)
                         {
                             if (!in_array($RoleId, $Roles))
                                 array_push($Roles, $RoleId);
@@ -176,12 +176,12 @@
                     }
                 }
             
-                array_push($User["Characters"], Array(
-                    "Name"       => $UserRow["Name"],
-                    "Game"       => $UserRow["Game"],
-                    "IsMainChar" => $UserRow["Mainchar"] == "true",
-                    "Classes"    => $Classes,
-                    "Roles"      => $Roles
+                array_push($User['Characters'], Array(
+                    'Name'       => $UserRow['Name'],
+                    'Game'       => $UserRow['Game'],
+                    'IsMainChar' => $UserRow['Mainchar'] == 'true',
+                    'Classes'    => $Classes,
+                    'Roles'      => $Roles
                 ));
             }
         });

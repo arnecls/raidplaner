@@ -1,10 +1,10 @@
 <?php
-    define( "LOCALE_SETUP", true );
-    require_once(dirname(__FILE__)."/locale.php");
-    require_once(dirname(__FILE__)."/out.class.php");
+    define( 'LOCALE_SETUP', true );
+    require_once(dirname(__FILE__).'/locale.php');
+    require_once(dirname(__FILE__).'/out.class.php');
 
     $Out = Out::getInstance();
-    header("Content-type: application/json");
+    header('Content-type: application/json');
     
     function DelTree( $aFolder) 
     { 
@@ -24,10 +24,10 @@
         return @rmdir($aFolder); 
     }     
     
-    if (!DelTree(realpath(dirname(__FILE__)."/../../setup")))
+    if (!DelTree(realpath(dirname(__FILE__).'/../../setup')))
     {
-        $Out->pushError(L("FailedRemoveSetup"));
-        $Out->pushError(error_get_last()["message"]);
+        $Out->pushError(L('FailedRemoveSetup'));
+        $Out->pushError(error_get_last()['message']);
     }
     
     $Out->flushJSON();

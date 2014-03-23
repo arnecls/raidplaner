@@ -61,13 +61,13 @@
 
         // --------------------------------------------------------------------------------------------
 
-        // Shortcut for pushValue("error", $aMessage).
+        // Shortcut for pushValue('error', $aMessage).
         public function pushError($aMessage)
         {
-            if (!isset($this->Data["error"]))
-                $this->pushValue("error", Array($aMessage));
+            if (!isset($this->Data['error']))
+                $this->pushValue('error', Array($aMessage));
             else
-                $this->pushValue("error", $aMessage);
+                $this->pushValue('error', $aMessage);
 
         }
 
@@ -83,17 +83,17 @@
         
         public static function writeHeadersJSON()
         {
-            header("Cache-Control: no-cache, max-age=0, s-maxage=0");
-            header("Content-type: application/json");
+            header('Cache-Control: no-cache, max-age=0, s-maxage=0');
+            header('Content-type: application/json');
         }
 
         // --------------------------------------------------------------------------------------------
         
         public static function writeHeadersXML()
         {
-            header("Cache-Control: no-cache, max-age=0, s-maxage=0");
-            header("Content-type: application/xml");
-            echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+            header('Cache-Control: no-cache, max-age=0, s-maxage=0');
+            header('Content-type: application/xml');
+            echo '<?xml version="1.0" encoding="UTF-8" ?>\n';
         }
         
         // --------------------------------------------------------------------------------------------
@@ -175,12 +175,12 @@
 
                 if ($Value === null)
                 {
-                    $aOnOut("null");
+                    $aOnOut('null');
                 }
                 else if (is_array($Value))
                 {
                     if (empty($Value))
-                        $aOnOut("[]");
+                        $aOnOut('[]');
                     else
                         $this->generateJSON($aOnOut, $Value);
                 }
@@ -188,18 +188,18 @@
                 {
                     $aOnOut($Value);
                 }
-                else if (($Value === true) || ($Value == "true"))
+                else if (($Value === true) || ($Value == 'true'))
                 {
                     $aOnOut('true');
                 }
-                else if (($Value === false) || ($Value == "false"))
+                else if (($Value === false) || ($Value == 'false'))
                 {
                     $aOnOut('false');
                 }
                 else
                 {
-                    $sanitized = str_replace("\n", "</br>", $Value);
-                    $sanitized = str_replace("\\", "\\\\", $sanitized);
+                    $sanitized = str_replace('\n', '</br>', $Value);
+                    $sanitized = str_replace('\\', '\\\\', $sanitized);
                     $aOnOut('"'.$sanitized.'"');
                 }
 
@@ -224,24 +224,24 @@
             if (($Root === null) || 
                 (is_array($Root) && (count($Root) == 0)))
             {
-                $aOnOut("<".$aTagName."/>");
+                $aOnOut('<'.$aTagName.'/>');
                 return;
             }
             
             $IsIndexedArray = $this->IsIndexedArray($Root);
             $IsNumericArray = $this->IsNumericArray($Root);
-            $Attributes = "";
+            $Attributes = '';
             
             if ($aAttributes !== null)
             {
                 foreach($aAttributes as $Name => $Value)
                 {
-                    $Attributes .= " ".$Name."=\"".$Value."\"";
+                    $Attributes .= ' '.$Name.'=\''.$Value.'\'';
                 }
             }            
             
             if (!$IsIndexedArray && !$IsNumericArray)
-                $aOnOut("<".$aTagName.$Attributes.">");
+                $aOnOut('<'.$aTagName.$Attributes.'>');
                 
             foreach( $Root as $Name => $Value )
             {
@@ -252,13 +252,13 @@
                 if (is_array($Value))
                 {
                     if (!$IsIndexedArray && $IsNumericArray)
-                        $this->generateXML($aOnOut, $InnerTagName, $Value, Array("key" => $Name));
+                        $this->generateXML($aOnOut, $InnerTagName, $Value, Array('key' => $Name));
                     else
                         $this->generateXML($aOnOut, $InnerTagName, $Value);
                 }
                 else 
                 {
-                    $aOnOut("<".$InnerTagName.$Attributes.">");
+                    $aOnOut('<'.$InnerTagName.$Attributes.'>');
 
                     if ($Value === null)
                     {
@@ -268,25 +268,25 @@
                     {
                         $aOnOut($Value);
                     }
-                    else if (($Value === true) || ($Value == "true"))
+                    else if (($Value === true) || ($Value == 'true'))
                     {
                         $aOnOut('true');
                     }
-                    else if (($Value === false) || ($Value == "false"))
+                    else if (($Value === false) || ($Value == 'false'))
                     {
                         $aOnOut('false');
                     }
                     else
                     {
-                        echo xmlentities($Value, ENT_COMPAT, "UTF-8");
+                        echo xmlentities($Value, ENT_COMPAT, 'UTF-8');
                     }
 
-                    $aOnOut("</".$InnerTagName.">");
+                    $aOnOut('</'.$InnerTagName.'>');
                 }
             }
 
             if (!$IsIndexedArray && !$IsNumericArray)
-                $aOnOut("</".$aTagName.">");
+                $aOnOut('</'.$aTagName.'>');
         }
 
         // --------------------------------------------------------------------------------------------

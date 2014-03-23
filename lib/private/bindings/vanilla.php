@@ -1,14 +1,14 @@
 <?php
-    include_once_exists(dirname(__FILE__)."/../../config/config.vanilla.php");
+    include_once_exists(dirname(__FILE__).'/../../config/config.vanilla.php');
 
-    array_push(PluginRegistry::$Classes, "VanillaBinding");
+    array_push(PluginRegistry::$Classes, 'VanillaBinding');
 
     class VanillaBinding extends Binding
     {
-        private static $BindingName = "vanilla";
-        private static $Itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        private static $BindingName = 'vanilla';
+        private static $Itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-        public static $HashMethod = "vanilla_md5r";
+        public static $HashMethod = 'vanilla_md5r';
 
         // -------------------------------------------------------------------------
 
@@ -23,16 +23,16 @@
         {
             $Config = new BindingConfig();
 
-            $Config->Database         = defined("VANILLA_DATABASE") ? VANILLA_DATABASE : RP_DATABASE;
-            $Config->User             = defined("VANILLA_USER") ? VANILLA_USER : RP_USER;
-            $Config->Password         = defined("VANILLA_PASS") ? VANILLA_PASS : RP_PASS;
-            $Config->Prefix           = defined("VANILLA_TABLE_PREFIX") ? VANILLA_TABLE_PREFIX : "GDN_";
-            $Config->AutoLoginEnabled = defined("VANILLA_AUTOLOGIN") ? VANILLA_AUTOLOGIN : false;
-            $Config->CookieData       = defined("VANILLA_COOKIE") ? VANILLA_COOKIE : "Vanilla,md5,123456";
-            $Config->PostTo           = defined("VANILLA_POSTTO") ? VANILLA_POSTTO : "";
-            $Config->PostAs           = defined("VANILLA_POSTAS") ? VANILLA_POSTAS : "";
-            $Config->Raidleads        = defined("VANILLA_RAIDLEAD_GROUPS") ? explode(",", VANILLA_RAIDLEAD_GROUPS ) : array();
-            $Config->Members          = defined("VANILLA_MEMBER_GROUPS") ? explode(",", VANILLA_MEMBER_GROUPS ) : array();
+            $Config->Database         = defined('VANILLA_DATABASE') ? VANILLA_DATABASE : RP_DATABASE;
+            $Config->User             = defined('VANILLA_USER') ? VANILLA_USER : RP_USER;
+            $Config->Password         = defined('VANILLA_PASS') ? VANILLA_PASS : RP_PASS;
+            $Config->Prefix           = defined('VANILLA_TABLE_PREFIX') ? VANILLA_TABLE_PREFIX : 'GDN_';
+            $Config->AutoLoginEnabled = defined('VANILLA_AUTOLOGIN') ? VANILLA_AUTOLOGIN : false;
+            $Config->CookieData       = defined('VANILLA_COOKIE') ? VANILLA_COOKIE : 'Vanilla,md5,123456';
+            $Config->PostTo           = defined('VANILLA_POSTTO') ? VANILLA_POSTTO : '';
+            $Config->PostAs           = defined('VANILLA_POSTAS') ? VANILLA_POSTAS : '';
+            $Config->Raidleads        = defined('VANILLA_RAIDLEAD_GROUPS') ? explode(',', VANILLA_RAIDLEAD_GROUPS ) : array();
+            $Config->Members          = defined('VANILLA_MEMBER_GROUPS') ? explode(',', VANILLA_MEMBER_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
@@ -45,30 +45,30 @@
         public function getExternalConfig($aRelativePath)
         {
             $Out = Out::getInstance();
-            $DefaultsPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/conf/config-defaults.php";
-            $ConfigPath = $_SERVER["DOCUMENT_ROOT"]."/".$aRelativePath."/conf/config.php";
+            $DefaultsPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/conf/config-defaults.php';
+            $ConfigPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/conf/config.php';
 
             if (!file_exists($DefaultsPath))
             {
-                $Out->pushError($DefaultsPath." ".L("NotExisting").".");
+                $Out->pushError($DefaultsPath.' '.L('NotExisting').'.');
                 return null;
             }
 
             if (!file_exists($ConfigPath))
             {
-                $Out->pushError($ConfigPath." ".L("NotExisting").".");
+                $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
                 return null;
             }
 
-            define("APPLICATION", true);
-            define("PATH_CACHE", "");
+            define('APPLICATION', true);
+            define('PATH_CACHE', '');
 
             @include_once($DefaultsPath);
             @include_once($ConfigPath);
 
             if (!isset($Configuration))
             {
-                $Out->pushError(L("NoValidConfig"));
+                $Out->pushError(L('NoValidConfig'));
                 return null;
             }
 
@@ -76,11 +76,11 @@
             $DbConf = $Configuration['Database'];
 
             return array(
-                "database"  => $DbConf["Name"],
-                "user"      => $DbConf["User"],
-                "password"  => $DbConf["Password"],
-                "prefix"    => $DbConf["DatabasePrefix"],
-                "cookie"    => $CookieConf["Name"].",".$CookieConf["HashMethod"].",".$CookieConf["Salt"],
+                'database'  => $DbConf['Name'],
+                'user'      => $DbConf['User'],
+                'password'  => $DbConf['Password'],
+                'prefix'    => $DbConf['DatabasePrefix'],
+                'cookie'    => $CookieConf['Name'].','.$CookieConf['HashMethod'].','.$CookieConf['Salt'],
             );
         }
 
@@ -88,27 +88,27 @@
 
         public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
         {
-            $Config = fopen( dirname(__FILE__)."/../../config/config.vanilla.php", "w+" );
+            $Config = fopen( dirname(__FILE__).'/../../config/config.vanilla.php', 'w+' );
 
-            fwrite( $Config, "<?php\n");
-            fwrite( $Config, "\tdefine(\"VANILLA_BINDING\", ".(($aEnable) ? "true" : "false").");\n");
+            fwrite( $Config, '<?php\n');
+            fwrite( $Config, '\tdefine("VANILLA_BINDING", '.(($aEnable) ? 'true' : 'false').');\n');
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine(\"VANILLA_DATABASE\", \"".$aDatabase."\");\n");
-                fwrite( $Config, "\tdefine(\"VANILLA_USER\", \"".$aUser."\");\n");
-                fwrite( $Config, "\tdefine(\"VANILLA_PASS\", \"".$aPass."\");\n");
-                fwrite( $Config, "\tdefine(\"VANILLA_TABLE_PREFIX\", \"".$aPrefix."\");\n");
-                fwrite( $Config, "\tdefine(\"VANILLA_COOKIE\", \"".$aCookieEx."\");\n");
-                fwrite( $Config, "\tdefine(\"VANILLA_AUTOLOGIN\", ".(($aAutoLogin) ? "true" : "false").");\n");
+                fwrite( $Config, '\tdefine("VANILLA_DATABASE", \''.$aDatabase.'");\n');
+                fwrite( $Config, '\tdefine("VANILLA_USER", \''.$aUser.'");\n');
+                fwrite( $Config, '\tdefine("VANILLA_PASS", \''.$aPass.'");\n');
+                fwrite( $Config, '\tdefine("VANILLA_TABLE_PREFIX", \''.$aPrefix.'");\n');
+                fwrite( $Config, '\tdefine("VANILLA_COOKIE", \''.$aCookieEx.'");\n');
+                fwrite( $Config, '\tdefine("VANILLA_AUTOLOGIN", '.(($aAutoLogin) ? 'true' : 'false').');\n');
 
-                fwrite( $Config, "\tdefine(\"VANILLA_POSTTO\", ".$aPostTo.");\n");
-                fwrite( $Config, "\tdefine(\"VANILLA_POSTAS\", ".$aPostAs.");\n");
-                fwrite( $Config, "\tdefine(\"VANILLA_MEMBER_GROUPS\", \"".implode( ",", $aMembers )."\");\n");
-                fwrite( $Config, "\tdefine(\"VANILLA_RAIDLEAD_GROUPS\", \"".implode( ",", $aLeads )."\");\n");
+                fwrite( $Config, '\tdefine("VANILLA_POSTTO", '.$aPostTo.');\n');
+                fwrite( $Config, '\tdefine("VANILLA_POSTAS", '.$aPostAs.');\n');
+                fwrite( $Config, '\tdefine("VANILLA_MEMBER_GROUPS", \''.implode( ',', $aMembers ).'");\n');
+                fwrite( $Config, '\tdefine("VANILLA_RAIDLEAD_GROUPS", \''.implode( ',', $aLeads ).'");\n');
             }
 
-            fwrite( $Config, "?>");
+            fwrite( $Config, '?>');
 
             fclose( $Config );
         }
@@ -121,15 +121,15 @@
 
             if ($Connector != null)
             {
-                $GroupQuery = $Connector->prepare( "SELECT RoleID, Name FROM `".$aPrefix."Role` ORDER BY Name" );
+                $GroupQuery = $Connector->prepare( 'SELECT RoleID, Name FROM `'.$aPrefix.'Role` ORDER BY Name' );
                 $Groups = array();
 
                 $GroupQuery->loop(function($Group) use (&$Groups)
                 {
                     array_push( $Groups, array(
-                        "id"   => $Group["RoleID"],
+                        'id'   => $Group['RoleID'],
 
-                        "name" => $Group["Name"])
+                        'name' => $Group['Name'])
                     );
                 }, $aThrow);
 
@@ -148,14 +148,14 @@
             if ($Connector != null)
             {
                 $Forums = array();
-                $ForumQuery = $Connector->prepare( "SELECT CategoryID, Name FROM `".$aPrefix."Category` ".
-                                                   "WHERE CategoryID > 0 ORDER BY Name" );
+                $ForumQuery = $Connector->prepare( 'SELECT CategoryID, Name FROM `'.$aPrefix.'Category` '.
+                                                   'WHERE CategoryID > 0 ORDER BY Name' );
 
                 $ForumQuery->loop(function($Forum) use (&$Forums)
                 {
                     array_push( $Forums, array(
-                        "id"   => $Forum["CategoryID"],
-                        "name" => $Forum["Name"])
+                        'id'   => $Forum['CategoryID'],
+                        'name' => $Forum['Name'])
                     );
                 }, $aThrow);
 
@@ -174,14 +174,14 @@
             if ($Connector != null)
             {
                 $Users = array();
-                $UserQuery = $Connector->prepare( "SELECT UserID, Name FROM `".$aPrefix."User` ".
-                                                  "ORDER BY Name" );
+                $UserQuery = $Connector->prepare( 'SELECT UserID, Name FROM `'.$aPrefix.'User` '.
+                                                  'ORDER BY Name' );
 
                 $UserQuery->loop(function($User) use (&$Users)
                 {
                     array_push( $Users, array(
-                        "id"   => $User["UserID"],
-                        "name" => $User["Name"])
+                        'id'   => $User['UserID'],
+                        'name' => $User['Name'])
                     );
                 }, $aThrow);
 
@@ -195,25 +195,25 @@
 
         private function getGroupForUser( $aUserData )
         {
-            if ($aUserData["Banned"] > 0)
+            if ($aUserData['Banned'] > 0)
             {
-                return "none"; // ### return, banned ###
+                return 'none'; // ### return, banned ###
             }
 
-            $MemberGroups   = explode(",", VANILLA_MEMBER_GROUPS );
-            $RaidleadGroups = explode(",", VANILLA_RAIDLEAD_GROUPS );
-            $AssignedGroup  = "none";
+            $MemberGroups   = explode(',', VANILLA_MEMBER_GROUPS );
+            $RaidleadGroups = explode(',', VANILLA_RAIDLEAD_GROUPS );
+            $AssignedGroup  = 'none';
 
-            foreach( $aUserData["Roles"] as $RoleId )
+            foreach( $aUserData['Roles'] as $RoleId )
             {
                 if ( in_array($RoleId, $MemberGroups) )
                 {
-                    $AssignedGroup = "member";
+                    $AssignedGroup = 'member';
                 }
 
                 if ( in_array($RoleId, $RaidleadGroups) )
                 {
-                    return "raidlead"; // ### return, highest possible group ###
+                    return 'raidlead'; // ### return, highest possible group ###
                 }
             }
 
@@ -225,10 +225,10 @@
         private function generateUserInfo( $aUserData )
         {
             $Info = new UserInfo();
-            $Info->UserId      = $aUserData["UserID"];
-            $Info->UserName    = $aUserData["Name"];
-            $Info->Password    = $aUserData["Password"];
-            $Info->Salt        = self::extractSaltPart($aUserData["Password"]);
+            $Info->UserId      = $aUserData['UserID'];
+            $Info->UserName    = $aUserData['Name'];
+            $Info->Password    = $aUserData['Password'];
+            $Info->Salt        = self::extractSaltPart($aUserData['Password']);
             $Info->SessionSalt = null;
             $Info->Group       = $this->getGroupForUser($aUserData);
             $Info->BindingName = $this->getName();
@@ -265,20 +265,20 @@
 
         public function getExternalLoginData()
         {
-            if (!defined("VANILLA_AUTOLOGIN") || !VANILLA_AUTOLOGIN)
+            if (!defined('VANILLA_AUTOLOGIN') || !VANILLA_AUTOLOGIN)
                 return null;
 
             $UserInfo = null;
 
             // Fetch user info if seesion cookie is set
 
-            if (defined("VANILLA_COOKIE"))
+            if (defined('VANILLA_COOKIE'))
             {
-                list($CookieName, $CookieHashMethod, $CookieSalt) = explode(",", VANILLA_COOKIE);
+                list($CookieName, $CookieHashMethod, $CookieSalt) = explode(',', VANILLA_COOKIE);
 
                 if (isset($_COOKIE[$CookieName]))
                 {
-                    list($KeyData, $Signature, $Time, $UserId, $Expires) = explode("|", $_COOKIE[$CookieName]);
+                    list($KeyData, $Signature, $Time, $UserId, $Expires) = explode('|', $_COOKIE[$CookieName]);
 
                     $UserInfo = $this->getUserInfoById($UserId);
 
@@ -301,7 +301,7 @@
             $Count = strpos(self::$Itoa64, $aPassword[3]);
             $Salt = substr($aPassword, 4, 8);
 
-            return $Count.":".$Salt;
+            return $Count.':'.$Salt;
         }
 
         // -------------------------------------------------------------------------
@@ -309,13 +309,13 @@
         public function getUserInfoByName( $aUserName )
         {
             $Connector = $this->getConnector();
-            $UserQuery = $Connector->prepare("SELECT UserID, `".VANILLA_TABLE_PREFIX."User`.Name, Password, Banned, `".VANILLA_TABLE_PREFIX."Role`.RoleID ".
-                                          "FROM `".VANILLA_TABLE_PREFIX."User` ".
-                                          "LEFT JOIN `".VANILLA_TABLE_PREFIX."UserRole` USING(UserID) ".
-                                          "LEFT JOIN `".VANILLA_TABLE_PREFIX."Role` USING(RoleID) ".
-                                          "WHERE LOWER(`".VANILLA_TABLE_PREFIX."User`.Name) = :Login");
+            $UserQuery = $Connector->prepare('SELECT UserID, `'.VANILLA_TABLE_PREFIX.'User`.Name, Password, Banned, `'.VANILLA_TABLE_PREFIX.'Role`.RoleID '.
+                                          'FROM `'.VANILLA_TABLE_PREFIX.'User` '.
+                                          'LEFT JOIN `'.VANILLA_TABLE_PREFIX.'UserRole` USING(UserID) '.
+                                          'LEFT JOIN `'.VANILLA_TABLE_PREFIX.'Role` USING(RoleID) '.
+                                          'WHERE LOWER(`'.VANILLA_TABLE_PREFIX.'User`.Name) = :Login');
 
-            $UserQuery->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
+            $UserQuery->BindValue( ':Login', strtolower($aUserName), PDO::PARAM_STR );
 
             $Roles = array();
             $UserData = null;
@@ -323,14 +323,14 @@
             $UserQuery->loop(function($User) use (&$UserData, &$Roles)
             {
                 $UserData = $User;
-                array_push($Roles, $User["RoleID"]);
+                array_push($Roles, $User['RoleID']);
 
             });
 
             if ($UserData == null)
                 return null;
 
-            $UserData["Roles"] = $Roles;
+            $UserData['Roles'] = $Roles;
 
             return $this->generateUserInfo($UserData);
         }
@@ -340,13 +340,13 @@
         public function getUserInfoById( $aUserId )
         {
             $Connector = $this->getConnector();
-            $UserQuery = $Connector->prepare("SELECT UserID, `".VANILLA_TABLE_PREFIX."User`.Name, Password, Banned, `".VANILLA_TABLE_PREFIX."Role`.RoleID ".
-                                          "FROM `".VANILLA_TABLE_PREFIX."User` ".
-                                          "LEFT JOIN `".VANILLA_TABLE_PREFIX."UserRole` USING(UserID) ".
-                                          "LEFT JOIN `".VANILLA_TABLE_PREFIX."Role` USING(RoleID) ".
-                                          "WHERE `".VANILLA_TABLE_PREFIX."User`.UserID = :UserId");
+            $UserQuery = $Connector->prepare('SELECT UserID, `'.VANILLA_TABLE_PREFIX.'User`.Name, Password, Banned, `'.VANILLA_TABLE_PREFIX.'Role`.RoleID '.
+                                          'FROM `'.VANILLA_TABLE_PREFIX.'User` '.
+                                          'LEFT JOIN `'.VANILLA_TABLE_PREFIX.'UserRole` USING(UserID) '.
+                                          'LEFT JOIN `'.VANILLA_TABLE_PREFIX.'Role` USING(RoleID) '.
+                                          'WHERE `'.VANILLA_TABLE_PREFIX.'User`.UserID = :UserId');
 
-            $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
+            $UserQuery->BindValue( ':UserId', $aUserId, PDO::PARAM_INT );
 
             $Roles = array();
             $UserData = null;
@@ -354,14 +354,14 @@
             $UserQuery->loop(function($User) use (&$UserData, &$Roles)
             {
                 $UserData = $User;
-                array_push($Roles, $User["RoleID"]);
+                array_push($Roles, $User['RoleID']);
 
             });
 
             if ($UserData == null)
                 return null;
 
-            $UserData["Roles"] = $Roles;
+            $UserData['Roles'] = $Roles;
 
             return $this->generateUserInfo($UserData);
         }
@@ -402,7 +402,7 @@
 
         public function hash( $aPassword, $aSalt, $aMethod )
         {
-            $Parts   = explode(":",$aSalt);
+            $Parts   = explode(':',$aSalt);
             $CountB2 = intval($Parts[0],10);
             $Count   = 1 << $CountB2;
             $Salt    = $Parts[1];
@@ -427,16 +427,16 @@
             {
                 // Create post
 
-                $PostQuery = $Connector->prepare("INSERT INTO `".VANILLA_TABLE_PREFIX."Discussion` ".
-                                              "(ForeignID, CategoryID, InsertUserID, Format, Name, Body, DateInserted) VALUES ".
-                                              "('stub', :ForumId, :UserId, 'Html', :Subject, :Text, FROM_UNIXTIME(:Now))");
+                $PostQuery = $Connector->prepare('INSERT INTO `'.VANILLA_TABLE_PREFIX.'Discussion` '.
+                                              '(ForeignID, CategoryID, InsertUserID, Format, Name, Body, DateInserted) VALUES '.
+                                              '("stub", :ForumId, :UserId, "Html", :Subject, :Text, FROM_UNIXTIME(:Now))');
 
-                $PostQuery->BindValue( ":ForumId", VANILLA_POSTTO, PDO::PARAM_INT );
-                $PostQuery->BindValue( ":UserId", VANILLA_POSTAS, PDO::PARAM_INT );
-                $PostQuery->BindValue( ":Now", $Timestamp, PDO::PARAM_INT );
+                $PostQuery->BindValue( ':ForumId', VANILLA_POSTTO, PDO::PARAM_INT );
+                $PostQuery->BindValue( ':UserId', VANILLA_POSTAS, PDO::PARAM_INT );
+                $PostQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
 
-                $PostQuery->BindValue( ":Subject", $aSubject, PDO::PARAM_STR );
-                $PostQuery->BindValue( ":Text", $aMessage, PDO::PARAM_STR );
+                $PostQuery->BindValue( ':Subject', $aSubject, PDO::PARAM_STR );
+                $PostQuery->BindValue( ':Text', $aMessage, PDO::PARAM_STR );
 
                 $PostQuery->execute(true);
             }

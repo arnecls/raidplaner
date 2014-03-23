@@ -1,8 +1,8 @@
 <?php
     class NativeBinding extends Binding
     {
-        private static $BindingName = "none";
-        public static $HashMethod = "native_sha256s";
+        private static $BindingName = 'none';
+        public static $HashMethod = 'native_sha256s';
 
         // -------------------------------------------------------------------------
 
@@ -94,23 +94,23 @@
         private function generateInfo( $aUserData )
         {
             $Info = new UserInfo();
-            $Info->UserName    = $aUserData["Login"];
-            $Info->Password    = $aUserData["Password"];
-            $Info->Salt        = $aUserData["Salt"];
-            $Info->Group       = $aUserData["Group"];
-            $Info->PassBinding = $aUserData["ExternalBinding"];
+            $Info->UserName    = $aUserData['Login'];
+            $Info->Password    = $aUserData['Password'];
+            $Info->Salt        = $aUserData['Salt'];
+            $Info->Group       = $aUserData['Group'];
+            $Info->PassBinding = $aUserData['ExternalBinding'];
 
-            if (($aUserData["ExternalBinding"] != "none") &&
+            if (($aUserData['ExternalBinding'] != 'none') &&
 
-                ($aUserData["BindingActive"] == "true"))
+                ($aUserData['BindingActive'] == 'true'))
 
             {
-                $Info->UserId      = $aUserData["ExternalId"];
-                $Info->BindingName = $aUserData["ExternalBinding"];
+                $Info->UserId      = $aUserData['ExternalId'];
+                $Info->BindingName = $aUserData['ExternalBinding'];
             }
             else
             {
-                $Info->UserId      = $aUserData["UserId"];
+                $Info->UserId      = $aUserData['UserId'];
                 $Info->BindingName = $this->getName();
             }
 
@@ -122,10 +122,10 @@
         public function getUserInfoByName( $aUserName )
         {
             $Connector = Connector::getInstance();
-            $UserQuery = $Connector->prepare("SELECT * FROM ".RP_TABLE_PREFIX."User ".
-                                          "WHERE Login = :Login LIMIT 1");
+            $UserQuery = $Connector->prepare('SELECT * FROM '.RP_TABLE_PREFIX.'User '.
+                                          'WHERE Login = :Login LIMIT 1');
 
-            $UserQuery->BindValue( ":Login", strtolower($aUserName), PDO::PARAM_STR );
+            $UserQuery->BindValue( ':Login', strtolower($aUserName), PDO::PARAM_STR );
             $UserData = $UserQuery->fetchFirst();
 
             return ($UserData != null)
@@ -138,10 +138,10 @@
         public function getUserInfoById( $aUserId )
         {
             $Connector = Connector::getInstance();
-            $UserQuery = $Connector->prepare("SELECT * FROM ".RP_TABLE_PREFIX."User ".
-                                          "WHERE UserId = :UserId LIMIT 1");
+            $UserQuery = $Connector->prepare('SELECT * FROM '.RP_TABLE_PREFIX.'User '.
+                                          'WHERE UserId = :UserId LIMIT 1');
 
-            $UserQuery->BindValue( ":UserId", $aUserId, PDO::PARAM_INT );
+            $UserQuery->BindValue( ':UserId', $aUserId, PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
             return ($UserData != null)
@@ -160,7 +160,7 @@
 
         public static function nativeHash( $aPassword, $aSalt, $aMethod )
         {
-            return hash("sha256", sha1($aPassword).$aSalt);
+            return hash('sha256', sha1($aPassword).$aSalt);
         }
 
         // -------------------------------------------------------------------------

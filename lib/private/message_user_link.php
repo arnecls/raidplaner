@@ -5,8 +5,8 @@
         $Connector = Connector::getInstance();
         $UserProxy = UserProxy::getInstance();
     
-        $UserQuery = $Connector->prepare("Select * FROM `".RP_TABLE_PREFIX."User` WHERE UserId=:UserId LIMIT 1");
-        $UserQuery->bindValue( ":UserId", $UserId, PDO::PARAM_INT );
+        $UserQuery = $Connector->prepare('Select * FROM `'.RP_TABLE_PREFIX.'User` WHERE UserId=:UserId LIMIT 1');
+        $UserQuery->bindValue( ':UserId', $UserId, PDO::PARAM_INT );
         $UserData = $UserQuery->fetchFirst();
     
         if ( $UserData == null )
@@ -16,17 +16,17 @@
         // External binding is still set.
         // Finding the user is trivial
     
-        if ($UserData["ExternalBinding"] != "none")
+        if ($UserData['ExternalBinding'] != 'none')
         {
-            return $UserProxy->getUserInfoById($UserData["ExternalBinding"], $UserData["ExternalId"]); // ### return, success ###
+            return $UserProxy->getUserInfoById($UserData['ExternalBinding'], $UserData['ExternalId']); // ### return, success ###
         }
     
         // External id is still set.
         // Finding the user is trivial if there is only one binding
     
-        if ( $UserData["ExternalId"] != 0 )
+        if ( $UserData['ExternalId'] != 0 )
         {
-            $Candidates = UserProxy::getAllUserInfosById($UserData["ExternalId"]);
+            $Candidates = UserProxy::getAllUserInfosById($UserData['ExternalId']);
     
             if ( count($Candidates) > 1 )
             {
@@ -37,7 +37,7 @@
     
                 foreach( $Candidates as $BindingName => $UserInfo )
                 {
-                    if ( $UserInfo->UserName == $UserData["Login"] )
+                    if ( $UserInfo->UserName == $UserData['Login'] )
                     {
                         $Filtered[$BindingName] = $UserInfo;
                     }
@@ -64,16 +64,16 @@
         // All checks failed
         // Search for user by name
     
-        $Candidates = $UserProxy->getAllUserInfosByName($UserData["Login"]);
+        $Candidates = $UserProxy->getAllUserInfosByName($UserData['Login']);
     
         // Use the first match.
         // This may lead to the wrong user, but searching by name is basically wild guessing anyway.
-        // Note that there is always at least one candidate with the binding "none".
+        // Note that there is always at least one candidate with the binding 'none'.
     
         if ( count($Candidates) > 1 )
         {
             reset($Candidates);
-            list($BindingName, $UserInfo) = each($Candidates); // first entry is "none"
+            list($BindingName, $UserInfo) = each($Candidates); // first entry is 'none'
             list($BindingName, $UserInfo) = each($Candidates); // this is the first external binding
     
             return $UserInfo; // ### return, success ###
@@ -90,20 +90,20 @@
     
         if ( validAdmin() )
         {
-            $UserInfo = tryGetUserLink($aRequest["userId"]);
+            $UserInfo = tryGetUserLink($aRequest['userId']);
     
             if ( $UserInfo != null )
             {
-                $Out->pushValue("syncActive", !defined("ALLOW_GROUP_SYNC") || ALLOW_GROUP_SYNC);
+                $Out->pushValue('syncActive', !defined('ALLOW_GROUP_SYNC') || ALLOW_GROUP_SYNC);
     
-                $Out->pushValue("userid",     $aRequest["userId"]);
-                $Out->pushValue("binding",    $UserInfo->BindingName);
-                $Out->pushValue("group",      $UserInfo->Group);
+                $Out->pushValue('userid',     $aRequest['userId']);
+                $Out->pushValue('binding',    $UserInfo->BindingName);
+                $Out->pushValue('group',      $UserInfo->Group);
             }
         }
         else
         {
-            $Out->pushError(L("AccessDenied"));
+            $Out->pushError(L('AccessDenied'));
         }
     }
 

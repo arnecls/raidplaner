@@ -10,32 +10,32 @@
     
             // Settings
     
-            $NewRaidSettings = $Connector->prepare("SELECT Name, IntValue, TextValue FROM `".RP_TABLE_PREFIX."Setting`");
+            $NewRaidSettings = $Connector->prepare('SELECT Name, IntValue, TextValue FROM `'.RP_TABLE_PREFIX.'Setting`');
     
-            $IntOfInterest = Array( "RaidSize", "RaidStartHour", "RaidStartMinute", "RaidEndHour", "RaidEndMinute", "StartOfWeek" );
-            $TextOfInterest = Array( "RaidMode" );
+            $IntOfInterest = Array( 'RaidSize', 'RaidStartHour', 'RaidStartMinute', 'RaidEndHour', 'RaidEndMinute', 'StartOfWeek' );
+            $TextOfInterest = Array( 'RaidMode' );
             $Settings = Array();
     
             $NewRaidSettings->loop( function($Data) use (&$Settings, $IntOfInterest, $TextOfInterest)
             {
                 $KeyValue = Array(
-                    "name"  => $Data["Name"],
-                    "value" => null
+                    'name'  => $Data['Name'],
+                    'value' => null
                 );
     
-                if ( in_array($Data["Name"], $IntOfInterest) )
+                if ( in_array($Data['Name'], $IntOfInterest) )
                 {
-                    $KeyValue["value"] = $Data["IntValue"];
+                    $KeyValue['value'] = $Data['IntValue'];
                 }
-                elseif ( in_array($Data["Name"], $TextOfInterest) )
+                elseif ( in_array($Data['Name'], $TextOfInterest) )
                 {
-                    $KeyValue["value"] = $Data["TextValue"];
+                    $KeyValue['value'] = $Data['TextValue'];
                 }
     
                 array_push($Settings, $KeyValue);
             });
     
-            $Out->pushValue("setting", $Settings);
+            $Out->pushValue('setting', $Settings);
     
             // Locations
     
@@ -43,7 +43,7 @@
         }
         else
         {
-            $Out->pushError(L("AccessDenied"));
+            $Out->pushError(L('AccessDenied'));
         }
     }
 

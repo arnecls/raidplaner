@@ -1,12 +1,12 @@
 <?php
-    require_once dirname(__FILE__)."/connector.class.php";
+    require_once dirname(__FILE__).'/connector.class.php';
     
     // -------------------------------------------------------------------------
     
-    $gApiHelp["location"] = Array(
-        "description" => "Query value. Get a list of available locations.",
-        "parameters"  => Array(
-            "games" => "Comma separated list of game ids. Only returns locations for these games. Default: empty",
+    $gApiHelp['location'] = Array(
+        'description' => 'Query value. Get a list of available locations.',
+        'parameters'  => Array(
+            'games' => 'Comma separated list of game ids. Only returns locations for these games. Default: empty',
         )
     );
     
@@ -15,7 +15,7 @@
     function api_args_location($aRequest)
     {
         return Array(
-            "games" => getParamFrom($aRequest, "games", ""),
+            'games' => getParamFrom($aRequest, 'games', ''),
         );
     }
     
@@ -23,21 +23,21 @@
     
     function api_query_location($aParameter)
     {
-        $aGames = getParamFrom($aParameter, "games", "");
+        $aGames = getParamFrom($aParameter, 'games', '');
         
         $Parameters = Array();
         $Conditions = Array();
         
         // Filter games
         
-        if ($aGames != "")
+        if ($aGames != '')
         {
-            $Games = explode(",", $aGames);
+            $Games = explode(',', $aGames);
             $GameOptions = Array();
             
             foreach($Games as $Game)
             {
-                array_push($GameOptions, "Game=?");
+                array_push($GameOptions, 'Game=?');
                 array_push($Parameters, $Game);
             }
             
@@ -46,22 +46,22 @@
         
         // Build where clause
         
-        $WhereString = "";        
+        $WhereString = '';        
         if (count($Conditions) > 0)
         {
             foreach($Conditions as &$Part)
             {
                 if (is_array($Part))
-                    $Part = "(".implode(" OR ", $Part).")";
+                    $Part = '('.implode(' OR ', $Part).')';
             }
             
-            $WhereString = "WHERE ".implode(" AND ",$Conditions)." ";
+            $WhereString = 'WHERE '.implode(' AND ',$Conditions).' ';
         }
         
         // Query
         
         $Connector = Connector::getInstance();
-        $LocationQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."Location` ".$WhereString." ORDER BY Name");
+        $LocationQuery = $Connector->prepare('SELECT * FROM `'.RP_TABLE_PREFIX.'Location` '.$WhereString.' ORDER BY Name');
         
         foreach($Parameters as $Index => $Value)
         {
@@ -76,10 +76,10 @@
         $Result = Array();
         $LocationQuery->loop(function($LocationRow) use (&$Result) {
             array_push($Result, Array(
-                "Id"     => $LocationRow["LocationId"],
-                "Name"   => $LocationRow["Name"],
-                "GameId" => $LocationRow["Game"],
-                "Image"  => $LocationRow["Image"],
+                'Id'     => $LocationRow['LocationId'],
+                'Name'   => $LocationRow['Name'],
+                'GameId' => $LocationRow['Game'],
+                'Image'  => $LocationRow['Image'],
             ));
         });
         

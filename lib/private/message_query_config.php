@@ -9,14 +9,14 @@
         loadGameSettings();
     
         $Config = array();
-        $Config["AllowRegistration"] = defined("ALLOW_REGISTRATION") && ALLOW_REGISTRATION;
+        $Config['AllowRegistration'] = defined('ALLOW_REGISTRATION') && ALLOW_REGISTRATION;
     
         // Push
         
-        unset($gGame["Locales"]);
+        unset($gGame['Locales']);
         
-        $Out->pushValue("site", array_merge($gSite, $Config));
-        $Out->pushValue("game", $gGame);
+        $Out->pushValue('site', array_merge($gSite, $Config));
+        $Out->pushValue('game', $gGame);
     }
 
 ?>

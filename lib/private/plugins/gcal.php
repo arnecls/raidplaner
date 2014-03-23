@@ -19,7 +19,7 @@
     // This will register the plugin to the global plugin registry if it is
     // explicitly enabled in the config file
     
-    if (defined("GOOGLE_CALENDAR") && GOOGLE_CALENDAR)
+    if (defined('GOOGLE_CALENDAR') && GOOGLE_CALENDAR)
         array_push(PluginRegistry::$Classes, 'GoogleCalendar');
     
     // -------------------------------------------------------------------------
@@ -58,7 +58,7 @@
                     $Certificate = file_get_contents($KeyFile);
                     
                     $this->mClient = new Google_Client();
-                    $this->mClient->setApplicationName("ppxraidplaner");
+                    $this->mClient->setApplicationName('ppxraidplaner');
                     $this->mCalService = new Google_Service_Calendar($this->mClient);
                     
                     $AssertCredentials = new Google_Auth_AssertionCredentials(
@@ -85,7 +85,7 @@
                 $this->mLocations = Array();
                 foreach($Locations as $Location)
                 {
-                    $this->mLocations[$Location["Id"]] = $Location["Name"];
+                    $this->mLocations[$Location['Id']] = $Location['Name'];
                 }
                 
                 return true;
@@ -146,7 +146,7 @@
                         $Properties->setShared(Array('RaidId' => $aRaidId));
                         
                         $Source = new Google_Service_Calendar_EventSource();
-                        $Source->setTitle("Raidplaner link");
+                        $Source->setTitle('Raidplaner link');
                         $Source->setUrl($Url);
                         
                         $Event = new Google_Service_Calendar_Event();
@@ -216,7 +216,7 @@
                             $Event->setLocation($LocationName);
                             $Event->setDescription($Raid['Description']);
                             
-                            if ($Raid["Status"] == "canceled")
+                            if ($Raid['Status'] == 'canceled')
                             {
                                 $Event->setSummary('[canceled] '.$LocationName.' ('.$Raid['Size'].')');
                             }

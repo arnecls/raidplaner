@@ -2,12 +2,12 @@
 
     $gApiHelp = Array();
 
-    require_once(dirname(__FILE__)."/tools_site.php");
-    require_once(dirname(__FILE__)."/api_raid.php");
-    require_once(dirname(__FILE__)."/api_location.php");
-    require_once(dirname(__FILE__)."/api_user.php");
-    require_once(dirname(__FILE__)."/api_statistic.php");
-    require_once(dirname(__FILE__)."/api_help.php");
+    require_once(dirname(__FILE__).'/tools_site.php');
+    require_once(dirname(__FILE__).'/api_raid.php');
+    require_once(dirname(__FILE__).'/api_location.php');
+    require_once(dirname(__FILE__).'/api_user.php');
+    require_once(dirname(__FILE__).'/api_statistic.php');
+    require_once(dirname(__FILE__).'/api_help.php');
 
     // The functions used in this file can safely be used by plugins or other
     // raidplaner extensions. API modifications will be avoided if possible and
@@ -25,18 +25,18 @@
         {
             $Settings = Settings::getInstance();
             
-            if (!isset($Settings["ApiPrivate"])) 
+            if (!isset($Settings['ApiPrivate'])) 
             {
                 $PrivateToken = dechex(crc32(Random::getBytes(2048))).
                     dechex(crc32(Random::getBytes(2048)));
                 
-                $Settings["ApiPrivate"] = Array(
-                    "IntValue"  => 0,
-                    "TextValue" => $PrivateToken
+                $Settings['ApiPrivate'] = Array(
+                    'IntValue'  => 0,
+                    'TextValue' => $PrivateToken
                 );
             }
             
-            return $Settings["ApiPrivate"]["TextValue"];
+            return $Settings['ApiPrivate']['TextValue'];
         }
         
         // ---------------------------------------------------------------------
@@ -47,10 +47,10 @@
         {
             $Settings = Settings::getInstance();
             
-            if (!isset($Settings["ApiPublic"])) 
+            if (!isset($Settings['ApiPublic'])) 
                 self::tryGeneratePublicToken();
             
-            return sha1(serialize($aParameter).$Settings["ApiPublic"]["TextValue"]);
+            return sha1(serialize($aParameter).$Settings['ApiPublic']['TextValue']);
         }
         
         // ---------------------------------------------------------------------
@@ -63,25 +63,25 @@
         {
             $Settings = Settings::getInstance();
             
-            if ($Settings["ApiPublic"]["IntValue"] < time()) 
+            if ($Settings['ApiPublic']['IntValue'] < time()) 
             {
                 $PublicToken = md5(Random::getBytes(2048));
                 
                 // Store old token so that running requests don't fail
                 
-                if (isset($Settings["ApiPublic"]))
+                if (isset($Settings['ApiPublic']))
                 {
-                    $Settings["ApiPublicOld"] = Array(
-                        "IntValue"  => $Settings["ApiPublic"]["IntValue"],
-                        "TextValue" => $Settings["ApiPublic"]["TextValue"]
+                    $Settings['ApiPublicOld'] = Array(
+                        'IntValue'  => $Settings['ApiPublic']['IntValue'],
+                        'TextValue' => $Settings['ApiPublic']['TextValue']
                     );
                 }
                 
                 // New token
                 
-                $Settings["ApiPublic"] = Array(
-                    "IntValue"  => time() + self::$PublicUpdateInterval,
-                    "TextValue" => $PublicToken
+                $Settings['ApiPublic'] = Array(
+                    'IntValue'  => time() + self::$PublicUpdateInterval,
+                    'TextValue' => $PublicToken
                 );
             }
         }
@@ -109,21 +109,21 @@
             
             // Check against current public hash
             
-            $TestHash = sha1(serialize($aParameter).$Settings["ApiPublic"]["TextValue"]);            
+            $TestHash = sha1(serialize($aParameter).$Settings['ApiPublic']['TextValue']);            
             if ($TestHash == $aToken)
                 return true; // ### return, success ###
             
             // Make sure to test the timeout of old values (long-time update gap)
                 
-            if (!isset($Settings["ApiPublicOld"]) ||
-                ($Settings["ApiPublicOld"]["IntValue"] + self::$PublicUpdateInterval > time()))
+            if (!isset($Settings['ApiPublicOld']) ||
+                ($Settings['ApiPublicOld']['IntValue'] + self::$PublicUpdateInterval > time()))
             {
                 return false; // ### return, invalid old key ###
             }
             
             // Old value is exisiting and valid, try hash this value
                
-            $TestHash = sha1(serialize($aParameter).$Settings["ApiPublicOld"]["TextValue"]);                
+            $TestHash = sha1(serialize($aParameter).$Settings['ApiPublicOld']['TextValue']);                
             return ($TestHash == $aToken);
         }
         

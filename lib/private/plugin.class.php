@@ -1,12 +1,12 @@
 <?php
 
-    require_once dirname(__FILE__)."/api.php";
+    require_once dirname(__FILE__).'/api.php';
 
     // Baseclass for API based plugins.
     // A class derived from this plugin can be placed in the folder 
-    // "lib/private/plugins". It will automatically be loaded when adding
-    // array_push(PluginRegistry::$Classes, "MyPluginClassName") to the file.
-    // If "MyPluginClassName" is not derived from Plugin, it will not be loaded.
+    // 'lib/private/plugins'. It will automatically be loaded when adding
+    // array_push(PluginRegistry::$Classes, 'MyPluginClassName') to the file.
+    // If 'MyPluginClassName' is not derived from Plugin, it will not be loaded.
     abstract class Plugin
     {
         // This function will be called whenever a new raid has been created.

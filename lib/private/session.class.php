@@ -1,11 +1,11 @@
 <?php
     
-    require_once dirname(__FILE__)."/connector.class.php";
-    require_once dirname(__FILE__)."/random.class.php";
+    require_once dirname(__FILE__).'/connector.class.php';
+    require_once dirname(__FILE__).'/random.class.php';
     
     class Session implements ArrayAccess
     {
-        private static $SessionCookieName = "ppx_raidplaner_";
+        private static $SessionCookieName = 'ppx_raidplaner_';
         private static $SessionTimeOut = 3600; // 1 Hour
         private static $Instance = null;
     
@@ -22,9 +22,9 @@
             self::dropExpired();
             
             $Connector = Connector::getInstance();
-            $SessionQuery = $Connector->prepare("SELECT SessionId, UserId, UNIX_TIMESTAMP(Expires) AS Expires, Data FROM `".RP_TABLE_PREFIX."Session` WHERE SessionName = :Name LIMIT 1");
+            $SessionQuery = $Connector->prepare('SELECT SessionId, UserId, UNIX_TIMESTAMP(Expires) AS Expires, Data FROM `'.RP_TABLE_PREFIX.'Session` WHERE SessionName = :Name LIMIT 1');
             
-            $SessionQuery->bindValue(":Name", $aSessionName, PDO::PARAM_STR);            
+            $SessionQuery->bindValue(':Name', $aSessionName, PDO::PARAM_STR);            
             $SessionData = $SessionQuery->fetchFirst();
             
             if ($SessionData == null)
@@ -32,10 +32,10 @@
                 throw new Exception();
             }
             
-            $this->SessionId = $SessionData["SessionId"];
-            $this->UserId = $SessionData["UserId"];
-            $this->Expires = $SessionData["Expires"];
-            $this->Data = unserialize($SessionData["Data"]);
+            $this->SessionId = $SessionData['SessionId'];
+            $this->UserId = $SessionData['UserId'];
+            $this->Expires = $SessionData['Expires'];
+            $this->Data = unserialize($SessionData['Data']);
             $this->IsDirty = false;
         }
         
@@ -58,11 +58,11 @@
                 $this->Expires = time() + self::$SessionTimeOut;
                 $SessionName = self::generateKey40();
             
-                $UpdateData = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Session` SET SessionName=:Name, Expires=FROM_UNIXTIME(:Expires) WHERE SessionId=:SessionId LIMIT 1");
+                $UpdateData = $Connector->prepare('UPDATE `'.RP_TABLE_PREFIX.'Session` SET SessionName=:Name, Expires=FROM_UNIXTIME(:Expires) WHERE SessionId=:SessionId LIMIT 1');
                 
-                $UpdateData->bindValue(":Expires",   $this->Expires, PDO::PARAM_INT);
-                $UpdateData->bindValue(":SessionId", $this->SessionId, PDO::PARAM_INT);
-                $UpdateData->bindValue(":Name",      $SessionName, PDO::PARAM_STR);
+                $UpdateData->bindValue(':Expires',   $this->Expires, PDO::PARAM_INT);
+                $UpdateData->bindValue(':SessionId', $this->SessionId, PDO::PARAM_INT);
+                $UpdateData->bindValue(':Name',      $SessionName, PDO::PARAM_STR);
             
                 if ($UpdateData->execute())
                 {
@@ -78,10 +78,10 @@
             if ($this->IsDirty && ($this->SessionId != 0))
             {
                 $Connector = Connector::getInstance();
-                $UpdateData = $Connector->prepare("UPDATE `".RP_TABLE_PREFIX."Session` SET Data=:Data WHERE SessionId=:SessionId LIMIT 1");
+                $UpdateData = $Connector->prepare('UPDATE `'.RP_TABLE_PREFIX.'Session` SET Data=:Data WHERE SessionId=:SessionId LIMIT 1');
                 
-                $UpdateData->bindValue(":SessionId", $this->SessionId, PDO::PARAM_INT);
-                $UpdateData->bindValue(":Data", serialize($this->Data), PDO::PARAM_STR);
+                $UpdateData->bindValue(':SessionId', $this->SessionId, PDO::PARAM_INT);
+                $UpdateData->bindValue(':Data', serialize($this->Data), PDO::PARAM_STR);
                 
                 if ($UpdateData->execute())
                     $this->IsDirty = false;
@@ -147,9 +147,9 @@
         
         private static function updateCookie($aSessionName, $aExpires)
         {
-            $ServerName      = "";
-            $ServerPath      = "";
-            $ServerUsesHttps = isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] != "") && ($_SERVER["HTTPS"] != null) && ($_SERVER["HTTPS"] != "off");
+            $ServerName      = '';
+            $ServerPath      = '';
+            $ServerUsesHttps = isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] != '') && ($_SERVER['HTTPS'] != null) && ($_SERVER['HTTPS'] != 'off');
             setcookie( self::GetCookieName(), $aSessionName, $aExpires, $ServerPath, $ServerName, $ServerUsesHttps, true );
         }
         
@@ -192,17 +192,17 @@
             try
             {
                 $Connector = Connector::getInstance();
-                $CreateSession = $Connector->prepare("INSERT INTO `".RP_TABLE_PREFIX."Session` (UserId, SessionName, IpAddress, Expires, Data) ".
-                    "VALUES (:UserId, :Name, :Ip, FROM_UNIXTIME(:Expires), :Data)");
+                $CreateSession = $Connector->prepare('INSERT INTO `'.RP_TABLE_PREFIX.'Session` (UserId, SessionName, IpAddress, Expires, Data) '.
+                    'VALUES (:UserId, :Name, :Ip, FROM_UNIXTIME(:Expires), :Data)');
                 
                 $SessionName = self::generateKey40();
                 $Expires = time() + (($aExpiresInSec === null) ? self::$SessionTimeOut : $aExpiresInSec);
                             
-                $CreateSession->bindValue(":UserId",  intval($aUserId),        PDO::PARAM_INT);
-                $CreateSession->bindValue(":Name",    $SessionName,            PDO::PARAM_STR);
-                $CreateSession->bindValue(":Ip",      $_SERVER["REMOTE_ADDR"], PDO::PARAM_STR);
-                $CreateSession->bindValue(":Expires", intval($Expires),        PDO::PARAM_INT);
-                $CreateSession->bindValue(":Data",    serialize(Array()),      PDO::PARAM_STR);  
+                $CreateSession->bindValue(':UserId',  intval($aUserId),        PDO::PARAM_INT);
+                $CreateSession->bindValue(':Name',    $SessionName,            PDO::PARAM_STR);
+                $CreateSession->bindValue(':Ip',      $_SERVER['REMOTE_ADDR'], PDO::PARAM_STR);
+                $CreateSession->bindValue(':Expires', intval($Expires),        PDO::PARAM_INT);
+                $CreateSession->bindValue(':Data',    serialize(Array()),      PDO::PARAM_STR);  
                 
                 if ($CreateSession->execute())
                 {
@@ -226,9 +226,9 @@
                 return; // ### return, no active session ###
                         
             $Connector = Connector::getInstance();
-            $DropSessions = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Session` WHERE SessionId = :SessionId LIMIT 1");
+            $DropSessions = $Connector->prepare('DELETE FROM `'.RP_TABLE_PREFIX.'Session` WHERE SessionId = :SessionId LIMIT 1');
             
-            $DropSessions->bindValue(":SessionId", self::$Instance->SessionId, PDO::PARAM_INT);
+            $DropSessions->bindValue(':SessionId', self::$Instance->SessionId, PDO::PARAM_INT);
             $DropSessions->execute();
             
             self::$Instance->SessionId = 0;
@@ -244,7 +244,7 @@
         public static function dropExpired()
         {
             $Connector = Connector::getInstance();
-            $DropSessions = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Session` WHERE Expires <= CURRENT_TIMESTAMP");
+            $DropSessions = $Connector->prepare('DELETE FROM `'.RP_TABLE_PREFIX.'Session` WHERE Expires <= CURRENT_TIMESTAMP');
             $DropSessions->execute();
         }    
     }

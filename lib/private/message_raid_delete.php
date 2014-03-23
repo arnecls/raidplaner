@@ -8,7 +8,7 @@
             
             // Call plugins
             
-            $RaidId = intval($aRequest["id"]);        
+            $RaidId = intval($aRequest['id']);        
             PluginRegistry::ForEachPlugin(function($PluginInstance) use ($RaidId)
             {
                 $PluginInstance->onRaidRemove($RaidId); 
@@ -20,8 +20,8 @@
         
                 $Connector->beginTransaction();
         
-                $DeleteRaidQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Raid` WHERE RaidId = :RaidId LIMIT 1" );
-                $DeleteRaidQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
+                $DeleteRaidQuery = $Connector->prepare('DELETE FROM `'.RP_TABLE_PREFIX.'Raid` WHERE RaidId = :RaidId LIMIT 1' );
+                $DeleteRaidQuery->bindValue(':RaidId', $aRequest['id'], PDO::PARAM_INT);
         
                 if (!$DeleteRaidQuery->execute())
                 {
@@ -31,8 +31,8 @@
         
                 // Delete attendance
         
-                $DeleteAttendanceQuery = $Connector->prepare("DELETE FROM `".RP_TABLE_PREFIX."Attendance` WHERE RaidId = :RaidId" );
-                $DeleteAttendanceQuery->bindValue(":RaidId", $aRequest["id"], PDO::PARAM_INT);
+                $DeleteAttendanceQuery = $Connector->prepare('DELETE FROM `'.RP_TABLE_PREFIX.'Attendance` WHERE RaidId = :RaidId' );
+                $DeleteAttendanceQuery->bindValue(':RaidId', $aRequest['id'], PDO::PARAM_INT);
         
                 if (!$DeleteAttendanceQuery->execute())
                 {
@@ -44,15 +44,15 @@
     
             $Session = Session::get();
             
-            $ShowMonth = ( isset($Session["Calendar"]) && isset($Session["Calendar"]["month"]) ) ? $Session["Calendar"]["month"] : $aRequest["month"];
-            $ShowYear  = ( isset($Session["Calendar"]) && isset($Session["Calendar"]["year"]) )  ? $Session["Calendar"]["year"]  : $aRequest["year"];
+            $ShowMonth = ( isset($Session['Calendar']) && isset($Session['Calendar']['month']) ) ? $Session['Calendar']['month'] : $aRequest['month'];
+            $ShowYear  = ( isset($Session['Calendar']) && isset($Session['Calendar']['year']) )  ? $Session['Calendar']['year']  : $aRequest['year'];
     
             msgQueryCalendar( prepareCalRequest( $ShowMonth, $ShowYear ) );
         }
         else
         {
             $Out = Out::getInstance();
-            $Out->pushError(L("AccessDenied"));
+            $Out->pushError(L('AccessDenied'));
         }
     }
 

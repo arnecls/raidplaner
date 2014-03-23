@@ -1,5 +1,5 @@
 <?php
-    require_once(dirname(__FILE__)."/out.class.php");
+    require_once(dirname(__FILE__).'/out.class.php');
 
     class Query
     {
@@ -165,12 +165,12 @@
 
         public function throwError()
         {
-            $Message = L("DatabaseError").": ";
+            $Message = L('DatabaseError').': ';
             $ErrorInfo = $this->PDO->errorInfo();
 
             foreach($ErrorInfo as $Info)
             {
-                $Message .= $Info.", ";
+                $Message .= $Info.', ';
             }
 
             throw new PDOException($Message);
@@ -187,13 +187,13 @@
             else
             {
                 $Out = Out::getInstance();
-                $Out->pushError(L("DatabaseError")."\n");
+                $Out->pushError(L('DatabaseError').'\n');
 
                 $ErrorInfo = $this->PDO->errorInfo();
 
                 foreach($ErrorInfo as $Info)
                 {
-                    $Out->pushError(strval($Info)."\n");
+                    $Out->pushError(strval($Info).'\n');
                 }
             }
         }
@@ -203,11 +203,11 @@
         public function postHTMLErrorMessage()
         {
             $ErrorInfo = $this->PDO->errorInfo();
-            echo "<div class=\"database_error\">";
-            echo "<div class=\"error_head\">".L("DatabaseError")."</div>";
-            echo "<div class=\"error_line error_line1\">".$ErrorInfo[0]."</div>";
-            echo "<div class=\"error_line error_line2\">".$ErrorInfo[2]."</div>";
-            echo "</div>";
+            echo '<div class="database_error">';
+            echo '<div class="error_head">'.L('DatabaseError').'</div>';
+            echo '<div class="error_line error_line1">'.$ErrorInfo[0].'</div>';
+            echo '<div class="error_line error_line2">'.$ErrorInfo[2].'</div>';
+            echo '</div>';
         }
     }
 

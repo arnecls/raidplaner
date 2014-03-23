@@ -1,5 +1,5 @@
 <?php
-    require_once(dirname(__FILE__)."/api.php");
+    require_once(dirname(__FILE__).'/api.php');
 
     function msgQuerySettings( $aRequest )
     {
@@ -13,28 +13,28 @@
     
             // Pass through parameter
     
-            $Out->pushValue("show", $aRequest["showPanel"]);
-            $Out->pushValue("syncActive", !defined("ALLOW_GROUP_SYNC") || ALLOW_GROUP_SYNC);
+            $Out->pushValue('show', $aRequest['showPanel']);
+            $Out->pushValue('syncActive', !defined('ALLOW_GROUP_SYNC') || ALLOW_GROUP_SYNC);
     
             // Load users
     
-            $UserQuery = $Connector->prepare("SELECT * FROM `".RP_TABLE_PREFIX."User` ORDER BY Login, `Group`");
+            $UserQuery = $Connector->prepare('SELECT * FROM `'.RP_TABLE_PREFIX.'User` ORDER BY Login, `Group`');
     
             $Users = Array();
             $UserQuery->loop( function($Data) use (&$Users)
             {
                 $UserData = Array(
-                    "id"            => $Data["UserId"],
-                    "login"         => xmlentities( $Data["Login"], ENT_COMPAT, "UTF-8" ),
-                    "bindingActive" => $Data["BindingActive"],
-                    "binding"       => $Data["ExternalBinding"],
-                    "group"         => $Data["Group"]
+                    'id'            => $Data['UserId'],
+                    'login'         => xmlentities( $Data['Login'], ENT_COMPAT, 'UTF-8' ),
+                    'bindingActive' => $Data['BindingActive'],
+                    'binding'       => $Data['ExternalBinding'],
+                    'group'         => $Data['Group']
                 );
     
                 array_push($Users, $UserData);
             });
     
-            $Out->pushValue("user", $Users);
+            $Out->pushValue('user', $Users);
     
             // Load settings
             
@@ -45,128 +45,128 @@
             foreach($Settings->getProperties() as $Name => $Data)
             {
                 array_push($SettingsJS, Array(
-                    "name"      => $Name,
-                    "intValue"  => $Data["IntValue"],
-                    "textValue" => $Data["TextValue"]
+                    'name'      => $Name,
+                    'intValue'  => $Data['IntValue'],
+                    'textValue' => $Data['TextValue']
                 ));
             }
     
-            $Out->pushValue("setting", $SettingsJS);
+            $Out->pushValue('setting', $SettingsJS);
             
             // Load games
             
-            $GameFiles = scandir( "../themes/games" );
+            $GameFiles = scandir( '../themes/games' );
             $Games = Array();
             
             foreach ( $GameFiles as $GameFileName )
             {
                 try
                 {
-                    if (substr($GameFileName, -4) === ".xml")
+                    if (substr($GameFileName, -4) === '.xml')
                     {
-                        $Game = @new SimpleXMLElement( file_get_contents("../themes/games/".$GameFileName) );
-                        $SimpleGameFileName = substr($GameFileName, 0, strrpos($GameFileName, "."));
+                        $Game = @new SimpleXMLElement( file_get_contents('../themes/games/'.$GameFileName) );
+                        $SimpleGameFileName = substr($GameFileName, 0, strrpos($GameFileName, '.'));
                         
-                        if ($Game->name != "")
+                        if ($Game->name != '')
                             $GameName = strval($Game->name);
                         else
-                            $GameName = str_replace("_", " ", $SimpleGameFileName);
+                            $GameName = str_replace('_', ' ', $SimpleGameFileName);
                         
                         $Groups = Array();
                         foreach($Game->groups->group as $Group)
                         {
-                            array_push($Groups, intval($Group["count"]));
+                            array_push($Groups, intval($Group['count']));
                         }
     
                         array_push($Games, Array(
-                            "name"   => $GameName,
-                            "family" => strval($Game->family),
-                            "file"   => $SimpleGameFileName,
-                            "groups" => $Groups
+                            'name'   => $GameName,
+                            'family' => strval($Game->family),
+                            'file'   => $SimpleGameFileName,
+                            'groups' => $Groups
                         ));
                     }
                 }
                 catch (Exception $e)
                 {
-                    $Out->pushError("Error parsing gameconfig ".$GameFileName.": ".$e->getMessage());
+                    $Out->pushError('Error parsing gameconfig '.$GameFileName.': '.$e->getMessage());
                 }
             }
     
-            $Out->pushValue("game", $Games);
+            $Out->pushValue('game', $Games);
     
     
             // Load themes
     
-            $ThemeFiles = scandir( "../themes/themes" );
+            $ThemeFiles = scandir( '../themes/themes' );
             $Themes = Array();
     
             foreach ( $ThemeFiles as $ThemeFileName )
             {
                 try
                 {
-                    if (substr($ThemeFileName, -4) === ".xml")
+                    if (substr($ThemeFileName, -4) === '.xml')
                     {
-                        $Theme = @new SimpleXMLElement( file_get_contents("../themes/themes/".$ThemeFileName) );
-                        $SimpleThemeFileName = substr($ThemeFileName, 0, strrpos($ThemeFileName, "."));
+                        $Theme = @new SimpleXMLElement( file_get_contents('../themes/themes/'.$ThemeFileName) );
+                        $SimpleThemeFileName = substr($ThemeFileName, 0, strrpos($ThemeFileName, '.'));
                         
                         $Family = (isset($Theme->family)) 
-                            ? explode(",",strtolower($Theme->family))
-                            : "wow";
+                            ? explode(',',strtolower($Theme->family))
+                            : 'wow';
                         
-                        if ($Theme->name != "")
+                        if ($Theme->name != '')
                             $ThemeName = strval($Theme->name);
                         else
-                            $ThemeName = str_replace("_", " ", $SimpleThemeFileName);
+                            $ThemeName = str_replace('_', ' ', $SimpleThemeFileName);
     
                         array_push($Themes, Array(
-                            "name"   => $ThemeName,
-                            "family" => $Family,
-                            "file"   => $SimpleThemeFileName
+                            'name'   => $ThemeName,
+                            'family' => $Family,
+                            'file'   => $SimpleThemeFileName
                         ));
                     }
                 }
                 catch (Exception $e)
                 {
-                    $Out->pushError("Error parsing themefile ".$ThemeFileName.": ".$e->getMessage());
+                    $Out->pushError('Error parsing themefile '.$ThemeFileName.': '.$e->getMessage());
                 }
             }
     
-            $Out->pushValue("theme", $Themes);
+            $Out->pushValue('theme', $Themes);
     
             // Query attendance
     
-            $Attendance = $Connector->prepare( "SELECT `".RP_TABLE_PREFIX."Character`.Name, `".RP_TABLE_PREFIX."Attendance`.Status, ".
-                "`".RP_TABLE_PREFIX."User`.UserId, UNIX_TIMESTAMP(`".RP_TABLE_PREFIX."User`.Created) AS CreatedUTC, ".
-                "COUNT(RaidId) AS Count ".
-                "FROM `".RP_TABLE_PREFIX."User` LEFT JOIN `".RP_TABLE_PREFIX."Attendance` USING(UserId) ".
-                "LEFT JOIN `".RP_TABLE_PREFIX."Raid` USING(RaidId) LEFT JOIN `".RP_TABLE_PREFIX."Character` USING(UserId) ".
-                "WHERE `".RP_TABLE_PREFIX."Character`.Mainchar = 'true' ".
-                "AND `".RP_TABLE_PREFIX."Raid`.Start > `".RP_TABLE_PREFIX."User`.Created ".
-                "AND `".RP_TABLE_PREFIX."Raid`.Start < FROM_UNIXTIME(:Now) AND Game = :Game ".
-                "GROUP BY UserId, `Status` ORDER BY Name" );
+            $Attendance = $Connector->prepare( 'SELECT `'.RP_TABLE_PREFIX.'Character`.Name, `'.RP_TABLE_PREFIX.'Attendance`.Status, '.
+                '`'.RP_TABLE_PREFIX.'User`.UserId, UNIX_TIMESTAMP(`'.RP_TABLE_PREFIX.'User`.Created) AS CreatedUTC, '.
+                'COUNT(RaidId) AS Count '.
+                'FROM `'.RP_TABLE_PREFIX.'User` LEFT JOIN `'.RP_TABLE_PREFIX.'Attendance` USING(UserId) '.
+                'LEFT JOIN `'.RP_TABLE_PREFIX.'Raid` USING(RaidId) LEFT JOIN `'.RP_TABLE_PREFIX.'Character` USING(UserId) '.
+                'WHERE `'.RP_TABLE_PREFIX.'Character`.Mainchar = "true" '.
+                'AND `'.RP_TABLE_PREFIX.'Raid`.Start > `'.RP_TABLE_PREFIX.'User`.Created '.
+                'AND `'.RP_TABLE_PREFIX.'Raid`.Start < FROM_UNIXTIME(:Now) AND Game = :Game '.
+                'GROUP BY UserId, `Status` ORDER BY Name' );
     
-            $Attendance->bindValue( ":Now", time(), PDO::PARAM_INT );
-            $Attendance->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
+            $Attendance->bindValue( ':Now', time(), PDO::PARAM_INT );
+            $Attendance->bindValue( ':Game', $gGame['GameId'], PDO::PARAM_STR );
     
             $UserId = 0;
             $NumRaidsRemain = 0;
-            $MainCharName = "";
-            $StateCounts = array( "undecided" => 0, "available" => 0, "unavailable" => 0, "ok" => 0 );
+            $MainCharName = '';
+            $StateCounts = array( 'undecided' => 0, 'available' => 0, 'unavailable' => 0, 'ok' => 0 );
             $Attendances = Array();
     
             $Attendance->loop( function($Data) use (&$gGame, &$Connector, &$UserId, &$NumRaidsRemain, &$MainCharName, &$StateCounts, &$Attendances)
             {
-                if ( $UserId != $Data["UserId"] )
+                if ( $UserId != $Data['UserId'] )
                 {
                     if ( $UserId > 0 )
                     {
                         $AttendanceData = Array(
-                            "id"          => $UserId,
-                            "name"        => $MainCharName,
-                            "ok"          => $StateCounts["ok"],
-                            "available"   => $StateCounts["available"],
-                            "unavailable" => $StateCounts["unavailable"],
-                            "undecided"   => $StateCounts["undecided"] + $NumRaidsRemain
+                            'id'          => $UserId,
+                            'name'        => $MainCharName,
+                            'ok'          => $StateCounts['ok'],
+                            'available'   => $StateCounts['available'],
+                            'unavailable' => $StateCounts['unavailable'],
+                            'undecided'   => $StateCounts['undecided'] + $NumRaidsRemain
                         );
     
                         array_push($Attendances, $AttendanceData);
@@ -174,31 +174,31 @@
     
                     // Clear cache
     
-                    $StateCounts["ok"] = 0;
-                    $StateCounts["available"] = 0;
-                    $StateCounts["unavailable"] = 0;
-                    $StateCounts["undecided"] = 0;
+                    $StateCounts['ok'] = 0;
+                    $StateCounts['available'] = 0;
+                    $StateCounts['unavailable'] = 0;
+                    $StateCounts['undecided'] = 0;
                     $NumRaidsRemain = 0;
     
-                    $UserId = $Data["UserId"];
-                    $MainCharName = $Data["Name"];
+                    $UserId = $Data['UserId'];
+                    $MainCharName = $Data['Name'];
     
                     // Fetch number of attendable raids
     
-                    $Raids = $Connector->prepare( "SELECT COUNT(RaidId) AS `NumberOfRaids` FROM `".RP_TABLE_PREFIX."Raid` ".
-                        "LEFT JOIN `".RP_TABLE_PREFIX."Location` USING(LocationId) ".
-                        "WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game" );
+                    $Raids = $Connector->prepare( 'SELECT COUNT(RaidId) AS `NumberOfRaids` FROM `'.RP_TABLE_PREFIX.'Raid` '.
+                        'LEFT JOIN `'.RP_TABLE_PREFIX.'Location` USING(LocationId) '.
+                        'WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game' );
     
-                    $Raids->bindValue( ":Now", time(), PDO::PARAM_INT );
-                    $Raids->bindValue( ":Created", $Data["CreatedUTC"], PDO::PARAM_INT );
-                    $Raids->bindValue( ":Game", $gGame["GameId"], PDO::PARAM_STR );
+                    $Raids->bindValue( ':Now', time(), PDO::PARAM_INT );
+                    $Raids->bindValue( ':Created', $Data['CreatedUTC'], PDO::PARAM_INT );
+                    $Raids->bindValue( ':Game', $gGame['GameId'], PDO::PARAM_STR );
     
                     $RaidCountData = $Raids->fetchFirst();
-                    $NumRaidsRemain = ($RaidCountData == null) ? 0 : $RaidCountData["NumberOfRaids"];
+                    $NumRaidsRemain = ($RaidCountData == null) ? 0 : $RaidCountData['NumberOfRaids'];
                 }
     
-                $StateCounts[$Data["Status"]] += $Data["Count"];
-                $NumRaidsRemain -= $Data["Count"];
+                $StateCounts[$Data['Status']] += $Data['Count'];
+                $NumRaidsRemain -= $Data['Count'];
             });
     
             // Push last user
@@ -206,18 +206,18 @@
             if ($UserId != 0)
             {
                 $AttendanceData = Array(
-                    "id"          => $UserId,
-                    "name"        => $MainCharName,
-                    "ok"          => $StateCounts["ok"],
-                    "available"   => $StateCounts["available"],
-                    "unavailable" => $StateCounts["unavailable"],
-                    "undecided"   => $StateCounts["undecided"] + $NumRaidsRemain,
+                    'id'          => $UserId,
+                    'name'        => $MainCharName,
+                    'ok'          => $StateCounts['ok'],
+                    'available'   => $StateCounts['available'],
+                    'unavailable' => $StateCounts['unavailable'],
+                    'undecided'   => $StateCounts['undecided'] + $NumRaidsRemain,
                 );
     
                 array_push($Attendances, $AttendanceData);
             }
     
-            $Out->pushValue("attendance", $Attendances);
+            $Out->pushValue('attendance', $Attendances);
     
             // Locations
     
@@ -226,7 +226,7 @@
         else
         {
             $Out = Out::getInstance();
-            $Out->pushError(L("AccessDenied"));
+            $Out->pushError(L('AccessDenied'));
         }
     }
 

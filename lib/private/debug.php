@@ -1,5 +1,5 @@
 <?php
-    require_once(dirname(__FILE__)."/out.class.php");
+    require_once(dirname(__FILE__).'/out.class.php');
     
     class Debug
     {
@@ -10,25 +10,25 @@
             
             foreach($Trace as $Frame)
             {
-                $File = isset($Frame["file"]) 
-                    ? substr($Frame["file"], strrpos($Frame["file"], DIRECTORY_SEPARATOR)+1)
-                    : "unknown file";
+                $File = isset($Frame['file']) 
+                    ? substr($Frame['file'], strrpos($Frame['file'], DIRECTORY_SEPARATOR)+1)
+                    : 'unknown file';
                     
-                $Line = isset($Frame["line"])
-                    ? $Frame["line"]
-                    : "?";
+                $Line = isset($Frame['line'])
+                    ? $Frame['line']
+                    : '?';
                     
-                $Function = isset($Frame["class"])
-                    ? $Frame["class"]."::".$Frame["function"]
-                    : $Frame["function"];
+                $Function = isset($Frame['class'])
+                    ? $Frame['class'].'::'.$Frame['function']
+                    : $Frame['function'];
             
-                if (isset($Frame["class"]) && ($Frame["class"] == "Debug"))
+                if (isset($Frame['class']) && ($Frame['class'] == 'Debug'))
                 {
-                    $Out->pushError($File."(".$Line.") : root\n");
+                    $Out->pushError($File.'('.$Line.') : root\n');
                     break;
                 }
                 
-                $Out->pushError($File."(".$Line.") : ".$Function."\n");
+                $Out->pushError($File.'('.$Line.') : '.$Function.'\n');
             }
         }
         
@@ -39,9 +39,9 @@
             $RootFile = substr($aFile, strrpos($aFile, DIRECTORY_SEPARATOR)+1);
             
             $Out = Out::getInstance();
-            $Out->pushError("PHP Error ".$aCode." in file ".$RootFile."(".$aLine."):\n");
+            $Out->pushError('PHP Error '.$aCode.' in file '.$RootFile.'('.$aLine.'):\n');
             $Out->pushError($aMessage);
-            $Out->pushError("\n\nCallstack:\n");
+            $Out->pushError('\n\nCallstack:\n');
             
             self::backTrace();
             
@@ -55,9 +55,9 @@
             $RootFile = substr($aException->getFile(), strrpos($aException->getFile(), DIRECTORY_SEPARATOR)+1);
             
             $Out = Out::getInstance();
-            $Out->pushError("Unhandled Exception in file ".$RootFile."(".$aException->getLine()."):\n");
+            $Out->pushError('Unhandled Exception in file '.$RootFile.'('.$aException->getLine().'):\n');
             $Out->pushError($aException->getMessage());
-            $Out->pushError("\n\nCallstack:\n");
+            $Out->pushError('\n\nCallstack:\n');
             
             self::backTrace();
         }
@@ -106,16 +106,16 @@
          
         public static function setHandlersJSON()
         {
-            set_error_handler("Debug::errorHandlerJSON", E_ALL);
-            set_exception_handler("Debug::exceptionHandlerJSON");
+            set_error_handler('Debug::errorHandlerJSON', E_ALL);
+            set_exception_handler('Debug::exceptionHandlerJSON');
         }
         
         // ---------------------------------------------------------------
          
         public static function setHandlersXML()
         {
-            set_error_handler("Debug::errorHandlerJSON", E_ALL);
-            set_exception_handler("Debug::exceptionHandlerXML");
+            set_error_handler('Debug::errorHandlerJSON', E_ALL);
+            set_exception_handler('Debug::exceptionHandlerXML');
         }
     }
 ?>

@@ -1,24 +1,24 @@
 <?php
-    require_once(dirname(__FILE__)."/tools_string.php");
-    require_once(dirname(__FILE__)."/out.class.php");
+    require_once(dirname(__FILE__).'/tools_string.php');
+    require_once(dirname(__FILE__).'/out.class.php');
 
     // -------------------------------------------------------------------------
 
     function getLocaleName()
     {
-        if ( isset($_SERVER["HTTP_ACCEPT_LANGUAGE"]) )
+        if ( isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) )
         {
-            $LanguageString = strtolower( substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2) );
+            $LanguageString = strtolower( substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2) );
             
-            if ( file_exists(dirname(__FILE__)."/locale/".$LanguageString.".php") )
+            if ( file_exists(dirname(__FILE__).'/locale/'.$LanguageString.'.php') )
                 return $LanguageString;
         }
         
-        return "en";
+        return 'en';
     }
     
     $gLocale = array();
-    include_once( dirname(__FILE__)."/locale/".getLocaleName().".php" );
+    include_once( dirname(__FILE__).'/locale/'.getLocaleName().'.php' );
     
     // -------------------------------------------------------------------------
 
@@ -27,7 +27,7 @@
         global $gLocale;
 
         if ( !isset($gLocale[$aKey]) || ($gLocale[$aKey] == null) )
-            return "LOCA_MISSING_".$aKey;
+            return 'LOCA_MISSING_'.$aKey;
 
         return $gLocale[$aKey];
     }
@@ -59,9 +59,9 @@
         
         // Game based strings
         
-        if (isset($gGame["Locales"][$LocaleName]))
+        if (isset($gGame['Locales'][$LocaleName]))
         {
-            foreach($gGame["Locales"][$LocaleName] as $Key => $Value)
+            foreach($gGame['Locales'][$LocaleName] as $Key => $Value)
             {
                 if ($Value != null)
                 {
@@ -71,6 +71,6 @@
             }
         }
 
-        Out::getInstance()->pushValue("locale", $EncodedLocale);
+        Out::getInstance()->pushValue('locale', $EncodedLocale);
     }
 ?>
