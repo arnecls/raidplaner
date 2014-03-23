@@ -48,7 +48,10 @@
     else
     {
         $Authenticated = false;
-        $Parameter = call_user_func("api_args_".strtolower($_REQUEST["query"]), $_REQUEST);
+        $NormalizeFunc = "api_args_".strtolower($_REQUEST["query"]);
+        $Parameter = (function_exists($NormalizeFunc))
+            ? call_user_func($NormalizeFunc, $_REQUEST)
+            : null;
         
         // Validate against public or private token
         // If no token is given, try to validate the currently logged in user.
