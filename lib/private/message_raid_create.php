@@ -119,7 +119,7 @@
                 {
                     $UserQuery = $Connector->prepare('SELECT UserId, CharacterId, Class, Role1 FROM `'.RP_TABLE_PREFIX.'UserSetting` '.
                         'LEFT JOIN `'.RP_TABLE_PREFIX.'Character` USING(UserId) '.
-                        'WHERE `'.RP_TABLE_PREFIX.'UserSetting`.Name="AutoAttend" AND Mainchar="true AND Game=:Game');
+                        'WHERE `'.RP_TABLE_PREFIX.'UserSetting`.Name="AutoAttend" AND Mainchar="true" AND Game=:Game');
                         
                     $UserQuery->bindValue(':Game', $gGame['GameId'], PDO::PARAM_STR);
                     $UserQuery->loop(function($aUser) use (&$AutoAttendUsers)

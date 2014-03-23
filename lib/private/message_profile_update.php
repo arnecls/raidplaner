@@ -231,8 +231,8 @@
                         'WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) '.
                         'AND `'.RP_TABLE_PREFIX.'Attendance`.Status = "unavailable" AND `'.RP_TABLE_PREFIX.'Attendance`.UserId = :UserId');
                         
-                    $RevokeQuery->bindValue(':Start', max($RevokeRange[0]), time(), PDO::PARAM_INT);
-                    $RevokeQuery->bindValue(':End', max($RevokeRange[1]), time(), PDO::PARAM_INT);
+                    $RevokeQuery->bindValue(':Start', max($RevokeRange[0], time()), PDO::PARAM_INT);
+                    $RevokeQuery->bindValue(':End', max($RevokeRange[1], time()), PDO::PARAM_INT);
                     $RevokeQuery->bindValue(':UserId', $UserId, PDO::PARAM_INT);
                     $RevokeQuery->execute();
                 }
