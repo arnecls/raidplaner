@@ -137,6 +137,16 @@ textarea {
     float: left;
 }
 
+.scrollable_y {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.scrollable_x {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
 .ui-button {
     font-size: 11px;
     height: 22px;
