@@ -86,7 +86,7 @@
         $Text = preg_replace('/<b>(.*)<\\/b\\>/', '[b]\\1[/b]', $Text);
         $Text = preg_replace('/<i>(.*)<\\/i\\>/', '[i]\\1[/i]', $Text);
         $Text = preg_replace('/<img src=\'(.*)\'\\/>/', '[img]\\1[/img]', $Text);
-        $Text = preg_replace('/<br\\/>/', '\n', $Text);
+        $Text = preg_replace('/<br\\/>/', "\n", $Text);
         
         return $Text;
     }

@@ -383,7 +383,7 @@
             }
             catch(Exception $e)
             {
-                $Out->pushError('Error parsing gameconfig file '.$ConfigFile.':\n\n'.$e->getMessage());
+                $Out->pushError('Error parsing gameconfig file '.$ConfigFile.":\n\n".$e->getMessage());
             }
         }
         

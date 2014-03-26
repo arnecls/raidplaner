@@ -187,13 +187,13 @@
             else
             {
                 $Out = Out::getInstance();
-                $Out->pushError(L('DatabaseError').'\n');
+                $Out->pushError(L('DatabaseError')."\n");
 
                 $ErrorInfo = $this->PDO->errorInfo();
 
                 foreach($ErrorInfo as $Info)
                 {
-                    $Out->pushError(strval($Info).'\n');
+                    $Out->pushError(strval($Info)."\n");
                 }
             }
         }
