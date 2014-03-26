@@ -75,7 +75,7 @@
 #calendar .today {
     border: 1px solid #b88e8e;
     vertical-align: top;
-    background-color: rgba(215, 215, 210, 0.4);
+    background-color: rgba(220, 200, 200, 0.3);
     padding: 3px;
 }
 
