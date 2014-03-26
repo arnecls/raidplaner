@@ -74,20 +74,20 @@
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.wp.php', 'w+' );
 
-            fwrite( $Config, '<?php\n');
-            fwrite( $Config, '\tdefine("WP_BINDING", '.(($aEnable) ? 'true' : 'false').');\n');
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine('WP_BINDING', ".(($aEnable) ? "true" : "false").");\n");
 
             if ( $aEnable )
             {
-                fwrite( $Config, '\tdefine("WP_DATABASE", \''.$aDatabase.'");\n');
-                fwrite( $Config, '\tdefine("WP_USER", \''.$aUser.'");\n');
-                fwrite( $Config, '\tdefine("WP_PASS", \''.$aPass.'");\n');
-                fwrite( $Config, '\tdefine("WP_TABLE_PREFIX", \''.$aPrefix.'");\n');
-                fwrite( $Config, '\tdefine("WP_SECRET", \''.$aCookieEx.'");\n');
-                fwrite( $Config, '\tdefine("WP_AUTOLOGIN", '.(($aAutoLogin) ? 'true' : 'false').');\n');
+                fwrite( $Config, "\tdefine('WP_DATABASE', '".$aDatabase."');\n");
+                fwrite( $Config, "\tdefine('WP_USER', '".$aUser."');\n");
+                fwrite( $Config, "\tdefine('WP_PASS', '".$aPass."');\n");
+                fwrite( $Config, "\tdefine('WP_TABLE_PREFIX', '".$aPrefix."');\n");
+                fwrite( $Config, "\tdefine('WP_SECRET', '".$aCookieEx."');\n");
+                fwrite( $Config, "\tdefine('WP_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
 
-                fwrite( $Config, '\tdefine("WP_MEMBER_GROUPS", \''.implode( ',', $aMembers ).'");\n');
-                fwrite( $Config, '\tdefine("WP_RAIDLEAD_GROUPS", \''.implode( ',', $aLeads ).'");\n');
+                fwrite( $Config, "\tdefine('WP_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
+                fwrite( $Config, "\tdefine('WP_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
             }
 
             fwrite( $Config, '?>');

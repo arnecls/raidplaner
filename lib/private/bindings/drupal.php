@@ -91,20 +91,20 @@
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.drupal.php', 'w+' );
 
-            fwrite( $Config, '<?php\n');
-            fwrite( $Config, '\tdefine("DRUPAL_BINDING", '.(($aEnable) ? 'true' : 'false').');\n');
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine('DRUPAL_BINDING', ".(($aEnable) ? 'true' : 'false').");\n");
 
             if ( $aEnable )
             {
-                fwrite( $Config, '\tdefine("DRUPAL_DATABASE", \''.$aDatabase.'");\n');
-                fwrite( $Config, '\tdefine("DRUPAL_USER", \''.$aUser.'");\n');
-                fwrite( $Config, '\tdefine("DRUPAL_PASS", \''.$aPass.'");\n');
-                fwrite( $Config, '\tdefine("DRUPAL_TABLE_PREFIX", \''.$aPrefix.'");\n');
-                fwrite( $Config, '\tdefine("DRUPAL_ROOT", \''.$aCookieEx.'");\n');
-                fwrite( $Config, '\tdefine("DRUPAL_AUTOLOGIN", '.(($aAutoLogin) ? 'true' : 'false').');\n');
+                fwrite( $Config, "\tdefine('DRUPAL_DATABASE', '".$aDatabase."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_USER', '".$aUser."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_PASS', '".$aPass."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_TABLE_PREFIX', '".$aPrefix."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_ROOT', '".$aCookieEx."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_AUTOLOGIN', ".(($aAutoLogin) ? 'true' : 'false').");\n");
 
-                fwrite( $Config, '\tdefine("DRUPAL_MEMBER_GROUPS", \''.implode( ',', $aMembers ).'");\n');
-                fwrite( $Config, '\tdefine("DRUPAL_RAIDLEAD_GROUPS", \''.implode( ',', $aLeads ).'");\n');
+                fwrite( $Config, "\tdefine('DRUPAL_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
             }
 
             fwrite( $Config, '?>');

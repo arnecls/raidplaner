@@ -75,21 +75,21 @@
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.phpbb3.php', 'w+' );
 
-            fwrite( $Config, '<?php\n');
-            fwrite( $Config, '\tdefine("PHPBB3_BINDING", '.(($aEnable) ? 'true' : 'false').');\n');
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine('PHPBB3_BINDING', ".(($aEnable) ? "true" : "false").");\n");
 
             if ( $aEnable )
             {
-                fwrite( $Config, '\tdefine("PHPBB3_DATABASE", \''.$aDatabase.'");\n');
-                fwrite( $Config, '\tdefine("PHPBB3_USER", \''.$aUser.'");\n');
-                fwrite( $Config, '\tdefine("PHPBB3_PASS", \''.$aPass.'");\n');
-                fwrite( $Config, '\tdefine("PHPBB3_TABLE_PREFIX", \''.$aPrefix.'");\n');
-                fwrite( $Config, '\tdefine("PHPBB3_AUTOLOGIN", '.(($aAutoLogin) ? 'true' : 'false').');\n');
+                fwrite( $Config, "\tdefine('PHPBB3_DATABASE', '".$aDatabase."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_USER', '".$aUser."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_PASS', '".$aPass."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_TABLE_PREFIX', '".$aPrefix."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
 
-                fwrite( $Config, '\tdefine("PHPBB3_POSTTO", '.$aPostTo.');\n');
-                fwrite( $Config, '\tdefine("PHPBB3_POSTAS", '.$aPostAs.');\n');
-                fwrite( $Config, '\tdefine("PHPBB3_MEMBER_GROUPS", \''.implode( ',', $aMembers ).'");\n');
-                fwrite( $Config, '\tdefine("PHPBB3_RAIDLEAD_GROUPS", \''.implode( ',', $aLeads ).'");\n');
+                fwrite( $Config, "\tdefine('PHPBB3_POSTTO', ".$aPostTo.");\n");
+                fwrite( $Config, "\tdefine('PHPBB3_POSTAS', ".$aPostAs.");\n");
+                fwrite( $Config, "\tdefine('PHPBB3_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
             }
 
             fwrite( $Config, '?>');

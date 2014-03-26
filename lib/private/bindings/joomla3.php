@@ -68,20 +68,20 @@
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.jml3.php', 'w+' );
 
-            fwrite( $Config, '<?php\n');
-            fwrite( $Config, '\tdefine("JML3_BINDING", '.(($aEnable) ? 'true' : 'false').');\n');
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine('JML3_BINDING', ".(($aEnable) ? "true" : "false").");\n");
 
             if ( $aEnable )
             {
-                fwrite( $Config, '\tdefine("JML3_DATABASE", \''.$aDatabase.'");\n');
-                fwrite( $Config, '\tdefine("JML3_USER", \''.$aUser.'");\n');
-                fwrite( $Config, '\tdefine("JML3_PASS", \''.$aPass.'");\n');
-                fwrite( $Config, '\tdefine("JML3_TABLE_PREFIX", \''.$aPrefix.'");\n');
-                fwrite( $Config, '\tdefine("JML3_SECRET", \''.$aCookieEx.'");\n');
-                fwrite( $Config, '\tdefine("JML3_AUTOLOGIN", '.(($aAutoLogin) ? 'true' : 'false').');\n');
+                fwrite( $Config, "\tdefine('JML3_DATABASE', '".$aDatabase."');\n");
+                fwrite( $Config, "\tdefine('JML3_USER', '".$aUser."');\n");
+                fwrite( $Config, "\tdefine('JML3_PASS', '".$aPass."');\n");
+                fwrite( $Config, "\tdefine('JML3_TABLE_PREFIX', '".$aPrefix."');\n");
+                fwrite( $Config, "\tdefine('JML3_SECRET', '".$aCookieEx."');\n");
+                fwrite( $Config, "\tdefine('JML3_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
 
-                fwrite( $Config, '\tdefine("JML3_MEMBER_GROUPS", \''.implode( ',', $aMembers ).'");\n');
-                fwrite( $Config, '\tdefine("JML3_RAIDLEAD_GROUPS", \''.implode( ',', $aLeads ).'");\n');
+                fwrite( $Config, "\tdefine('JML3_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
+                fwrite( $Config, "\tdefine('JML3_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
             }
 
             fwrite( $Config, '?>');

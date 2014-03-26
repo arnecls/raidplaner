@@ -73,22 +73,22 @@
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.vb3.php', 'w+' );
 
-            fwrite( $Config, '<?php\n');
-            fwrite( $Config, '\tdefine("VB3_BINDING", '.(($aEnable) ? 'true' : 'false').');\n');
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine('VB3_BINDING', ".(($aEnable) ? "true" : "false").");\n");
 
             if ( $aEnable )
             {
-                fwrite( $Config, '\tdefine("VB3_DATABASE", \''.$aDatabase.'");\n');
-                fwrite( $Config, '\tdefine("VB3_USER", \''.$aUser.'");\n');
-                fwrite( $Config, '\tdefine("VB3_PASS", \''.$aPass.'");\n');
-                fwrite( $Config, '\tdefine("VB3_TABLE_PREFIX", \''.$aPrefix.'");\n');
-                fwrite( $Config, '\tdefine("VB3_COOKIE_PREFIX", \''.$aCookieEx.'");\n');
-                fwrite( $Config, '\tdefine("VB3_AUTOLOGIN", '.(($aAutoLogin) ? 'true' : 'false').');\n');
+                fwrite( $Config, "\tdefine('VB3_DATABASE', '".$aDatabase."');\n");
+                fwrite( $Config, "\tdefine('VB3_USER', '".$aUser."');\n");
+                fwrite( $Config, "\tdefine('VB3_PASS', '".$aPass."');\n");
+                fwrite( $Config, "\tdefine('VB3_TABLE_PREFIX', '".$aPrefix."');\n");
+                fwrite( $Config, "\tdefine('VB3_COOKIE_PREFIX', '".$aCookieEx."');\n");
+                fwrite( $Config, "\tdefine('VB3_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
 
-                fwrite( $Config, '\tdefine("VB3_POSTTO", '.$aPostTo.');\n');
-                fwrite( $Config, '\tdefine("VB3_POSTAS", '.$aPostAs.');\n');
-                fwrite( $Config, '\tdefine("VB3_MEMBER_GROUPS", \''.implode( ',', $aMembers ).'");\n');
-                fwrite( $Config, '\tdefine("VB3_RAIDLEAD_GROUPS", \''.implode( ',', $aLeads ).'");\n');
+                fwrite( $Config, "\tdefine('VB3_POSTTO', ".$aPostTo.");\n");
+                fwrite( $Config, "\tdefine('VB3_POSTAS', ".$aPostAs.");\n");
+                fwrite( $Config, "\tdefine('VB3_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
+                fwrite( $Config, "\tdefine('VB3_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
             }
 
             fwrite( $Config, '?>');

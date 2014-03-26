@@ -73,22 +73,22 @@
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.smf.php', 'w+' );
 
-            fwrite( $Config, '<?php\n');
-            fwrite( $Config, '\tdefine("SMF_BINDING", '.(($aEnable) ? 'true' : 'false').');\n');
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine('SMF_BINDING', ".(($aEnable) ? "true" : "false").");\n");
 
             if ( $aEnable )
             {
-                fwrite( $Config, '\tdefine("SMF_DATABASE", \''.$aDatabase.'");\n');
-                fwrite( $Config, '\tdefine("SMF_USER", \''.$aUser.'");\n');
-                fwrite( $Config, '\tdefine("SMF_PASS", \''.$aPass.'");\n');
-                fwrite( $Config, '\tdefine("SMF_TABLE_PREFIX", \''.$aPrefix.'");\n');
-                fwrite( $Config, '\tdefine("SMF_COOKIE", \''.$aCookieEx.'");\n');
-                fwrite( $Config, '\tdefine("SMF_AUTOLOGIN", '.(($aAutoLogin) ? 'true' : 'false').');\n');
+                fwrite( $Config, "\tdefine('SMF_DATABASE', '".$aDatabase."');\n");
+                fwrite( $Config, "\tdefine('SMF_USER', '".$aUser."');\n");
+                fwrite( $Config, "\tdefine('SMF_PASS', '".$aPass."');\n");
+                fwrite( $Config, "\tdefine('SMF_TABLE_PREFIX', '".$aPrefix."');\n");
+                fwrite( $Config, "\tdefine('SMF_COOKIE', '".$aCookieEx."');\n");
+                fwrite( $Config, "\tdefine('SMF_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
 
-                fwrite( $Config, '\tdefine("SMF_POSTTO", '.$aPostTo.');\n');
-                fwrite( $Config, '\tdefine("SMF_POSTAS", '.$aPostAs.');\n');
-                fwrite( $Config, '\tdefine("SMF_MEMBER_GROUPS", \''.implode( ',', $aMembers ).'");\n');
-                fwrite( $Config, '\tdefine("SMF_RAIDLEAD_GROUPS", \''.implode( ',', $aLeads ).'");\n');
+                fwrite( $Config, "\tdefine('SMF_POSTTO', ".$aPostTo.");\n");
+                fwrite( $Config, "\tdefine('SMF_POSTAS', ".$aPostAs.");\n");
+                fwrite( $Config, "\tdefine('SMF_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
+                fwrite( $Config, "\tdefine('SMF_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
             }
 
             fwrite( $Config, '?>');

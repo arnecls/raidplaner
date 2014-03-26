@@ -90,22 +90,22 @@
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.vanilla.php', 'w+' );
 
-            fwrite( $Config, '<?php\n');
-            fwrite( $Config, '\tdefine("VANILLA_BINDING", '.(($aEnable) ? 'true' : 'false').');\n');
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine('VANILLA_BINDING', ".(($aEnable) ? "true" : "false").");\n");
 
             if ( $aEnable )
             {
-                fwrite( $Config, '\tdefine("VANILLA_DATABASE", \''.$aDatabase.'");\n');
-                fwrite( $Config, '\tdefine("VANILLA_USER", \''.$aUser.'");\n');
-                fwrite( $Config, '\tdefine("VANILLA_PASS", \''.$aPass.'");\n');
-                fwrite( $Config, '\tdefine("VANILLA_TABLE_PREFIX", \''.$aPrefix.'");\n');
-                fwrite( $Config, '\tdefine("VANILLA_COOKIE", \''.$aCookieEx.'");\n');
-                fwrite( $Config, '\tdefine("VANILLA_AUTOLOGIN", '.(($aAutoLogin) ? 'true' : 'false').');\n');
+                fwrite( $Config, "\tdefine('VANILLA_DATABASE', '".$aDatabase."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_USER', '".$aUser."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_PASS', '".$aPass."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_TABLE_PREFIX', '".$aPrefix."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_COOKIE', '".$aCookieEx."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
 
-                fwrite( $Config, '\tdefine("VANILLA_POSTTO", '.$aPostTo.');\n');
-                fwrite( $Config, '\tdefine("VANILLA_POSTAS", '.$aPostAs.');\n');
-                fwrite( $Config, '\tdefine("VANILLA_MEMBER_GROUPS", \''.implode( ',', $aMembers ).'");\n');
-                fwrite( $Config, '\tdefine("VANILLA_RAIDLEAD_GROUPS", \''.implode( ',', $aLeads ).'");\n');
+                fwrite( $Config, "\tdefine('VANILLA_POSTTO', ".$aPostTo.");\n");
+                fwrite( $Config, "\tdefine('VANILLA_POSTAS', ".$aPostAs.");\n");
+                fwrite( $Config, "\tdefine('VANILLA_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
             }
 
             fwrite( $Config, '?>');

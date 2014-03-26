@@ -73,24 +73,24 @@
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.mybb.php', 'w+' );
 
-            fwrite( $Config, '<?php\n');
-            fwrite( $Config, '\tdefine("MYBB_BINDING", '.(($aEnable) ? 'true' : 'false').');\n');
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine('MYBB_BINDING', ".(($aEnable) ? "true" : "false").");\n");
 
             if ( $aEnable )
             {
-                fwrite( $Config, '\tdefine("MYBB_DATABASE", \''.$aDatabase.'");\n');
-                fwrite( $Config, '\tdefine("MYBB_USER", \''.$aUser.'");\n');
-                fwrite( $Config, '\tdefine("MYBB_PASS", \''.$aPass.'");\n');
-                fwrite( $Config, '\tdefine("MYBB_TABLE_PREFIX", \''.$aPrefix.'");\n');
-                fwrite( $Config, '\tdefine("MYBB_AUTOLOGIN", '.(($aAutoLogin) ? 'true' : 'false').');\n');
+                fwrite( $Config, "\tdefine('MYBB_DATABASE', '".$aDatabase."');\n");
+                fwrite( $Config, "\tdefine('MYBB_USER', '".$aUser."');\n");
+                fwrite( $Config, "\tdefine('MYBB_PASS', '".$aPass."');\n");
+                fwrite( $Config, "\tdefine('MYBB_TABLE_PREFIX', '".$aPrefix."');\n");
+                fwrite( $Config, "\tdefine('MYBB_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
 
-                fwrite( $Config, '\tdefine("MYBB_POSTTO", '.$aPostTo.');\n');
-                fwrite( $Config, '\tdefine("MYBB_POSTAS", '.$aPostAs.');\n');
-                fwrite( $Config, '\tdefine("MYBB_MEMBER_GROUPS", \''.implode( ',', $aMembers ).'");\n');
-                fwrite( $Config, '\tdefine("MYBB_RAIDLEAD_GROUPS", \''.implode( ',', $aLeads ).'");\n');
+                fwrite( $Config, "\tdefine('MYBB_POSTTO', ".$aPostTo.");\n");
+                fwrite( $Config, "\tdefine('MYBB_POSTAS', ".$aPostAs.");\n");
+                fwrite( $Config, "\tdefine('MYBB_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
+                fwrite( $Config, "\tdefine('MYBB_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
             }
 
-            fwrite( $Config, '?>');
+            fwrite( $Config, "?>");
 
             fclose( $Config );
         }

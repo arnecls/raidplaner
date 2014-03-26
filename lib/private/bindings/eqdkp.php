@@ -72,19 +72,19 @@
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.eqdkp.php', 'w+' );
 
-            fwrite( $Config, '<?php\n');
-            fwrite( $Config, '\tdefine("EQDKP_BINDING", '.(($aEnable) ? 'true' : 'false').');\n');
+            fwrite( $Config, "<?php\n");
+            fwrite( $Config, "\tdefine('EQDKP_BINDING', ".(($aEnable) ? "true" : "false").");\n");
 
             if ( $aEnable )
             {
-                fwrite( $Config, '\tdefine("EQDKP_DATABASE", \''.$aDatabase.'");\n');
-                fwrite( $Config, '\tdefine("EQDKP_USER", \''.$aUser.'");\n');
-                fwrite( $Config, '\tdefine("EQDKP_PASS", \''.$aPass.'");\n');
-                fwrite( $Config, '\tdefine("EQDKP_TABLE_PREFIX", \''.$aPrefix.'");\n');
-                fwrite( $Config, '\tdefine("EQDKP_AUTOLOGIN", '.(($aAutoLogin) ? 'true' : 'false').');\n');
+                fwrite( $Config, "\tdefine('EQDKP_DATABASE', '".$aDatabase."');\n");
+                fwrite( $Config, "\tdefine('EQDKP_USER', '".$aUser."');\n");
+                fwrite( $Config, "\tdefine('EQDKP_PASS', '".$aPass."');\n");
+                fwrite( $Config, "\tdefine('EQDKP_TABLE_PREFIX', '".$aPrefix."');\n");
+                fwrite( $Config, "\tdefine('EQDKP_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
             }
 
-            fwrite( $Config, '?>');
+            fwrite( $Config, "?>");
 
             fclose( $Config );
         }
