@@ -272,9 +272,11 @@
                     
                     // Find all reaids the do not have an attendance record
                     
-                    $AffectedQuery = $Connector->prepare('SELECT RaidId FROM `'.RP_TABLE_PREFIX.'Raid` LEFT JOIN `'.RP_TABLE_PREFIX.'Attendance` USING(RaidId) '.
+                    $AffectedQuery = $Connector->prepare('SELECT `'.RP_TABLE_PREFIX.'Raid`.RaidId FROM `'.RP_TABLE_PREFIX.'Raid` '.
+                        'LEFT JOIN `'.RP_TABLE_PREFIX.'Attendance` ON (`'.RP_TABLE_PREFIX.'Raid`.RaidId = `'.RP_TABLE_PREFIX.'Attendance`.RaidId '.
+                            'AND (`'.RP_TABLE_PREFIX.'Attendance`.UserId = :UserId OR `'.RP_TABLE_PREFIX.'Attendance`.UserId IS NULL)) '.
                         'WHERE Start >= FROM_UNIXTIME(:Start) AND Start <= FROM_UNIXTIME(:End) '.
-                        'AND (UserId != :UserId OR UserId IS NULL) '.
+                        'AND UserId IS NULL '.
                         'GROUP BY RaidId');
                         
                     $AffectedQuery->bindValue(':Start',  $NewRange[0], PDO::PARAM_INT);
