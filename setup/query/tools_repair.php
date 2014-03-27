@@ -401,6 +401,14 @@
             }
         }
         
+        // Duplicate attends
+        
+        $DropDuplicates = $Connector->prepare('DELETE FROM `'.RP_TABLE_PREFIX.'Attendance` WHERE AttendanceId NOT IN '.
+            '(SELECT * FROM (SELECT MAX(AttendanceId) FROM `'.RP_TABLE_PREFIX.'Attendance` GROUP BY RaidId, UserId) Temp)');
+            
+        $DropDuplicates->setErrorsAsHTML(true);
+        $DropDuplicates->execute();
+        
         // Get Class information per game
         
         $GameDir = dirname(__FILE__)."/../../themes/games";
