@@ -128,7 +128,6 @@
                 {
                     array_push( $Groups, array(
                         'id'   => $Group['RoleID'],
-
                         'name' => $Group['Name'])
                     );
                 }, $aThrow);
@@ -324,7 +323,6 @@
             {
                 $UserData = $User;
                 array_push($Roles, $User['RoleID']);
-
             });
 
             if ($UserData == null)

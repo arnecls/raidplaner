@@ -110,7 +110,6 @@
                 {
                     array_push( $Groups, array(
                         'id'   => $Group['gid'],
-
                         'name' => $Group['title'])
                     );
                 }, $aThrow);

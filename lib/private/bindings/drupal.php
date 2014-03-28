@@ -126,7 +126,6 @@
                 $GroupQuery->loop(function($Group) use (&$Groups) {
                     array_push( $Groups, array(
                         'id'   => $Group['rid'],
-
                         'name' => $Group['name'])
                     );
                 }, $aThrow);

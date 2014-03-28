@@ -196,7 +196,6 @@
             $GroupQuery->loop(function($Group) use (&$AssignedGroup, $MemberGroups, $RaidleadGroups)
             {
                 if ( ($Group['user_type'] == 1) ||
-
                      ($Group['user_type'] == 2) )
                 {
                     // 1 equals 'inactive'
@@ -212,7 +211,6 @@
                          (($Group['ban_end'] == 0) || ($Group['ban_end'] > $CurrentTime)) )
                     {
                         $AssignedGroup = 'none';
-
                         return false; // ### return, banned ###
                     }
                 }
@@ -225,7 +223,6 @@
                 if ( in_array($Group['group_id'], $RaidleadGroups) )
                 {
                     $AssignedGroup = 'raidlead';
-
                     return false; // ### return, highest possible group ###
                 }
             });

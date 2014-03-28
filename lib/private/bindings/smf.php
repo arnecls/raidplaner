@@ -111,7 +111,6 @@
                 {
                     array_push( $Groups, array(
                         'id'   => $Group['id_group'],
-
                         'name' => $Group['group_name'])
                     );
                 }, $aThrow);
