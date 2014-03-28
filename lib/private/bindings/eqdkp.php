@@ -140,7 +140,6 @@
                 if ( $Right['user_active'] == 0 )
                 {
                     $AssignedGroup = 'none';
-
                     return false; // ### return, not active ###
                 }
 
@@ -148,7 +147,6 @@
                      && ($Right['auth_setting'] == 'Y') )
                 {
                     $AssignedGroup = 'raidlead';
-
                     return false; // ### return, highest possible group ###
                 }
             });

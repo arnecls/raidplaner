@@ -177,8 +177,7 @@
 
             $GroupQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);
 
-            $GroupQuery->loop(function($Group) use (&$AssignedGroup)
-
+            $GroupQuery->loop(function($Group) use (&$AssignedGroup, $MemberGroups, $RaidleadGroups)
             {
                 if ( $Group['status'] == 0 )
                 {
@@ -194,7 +193,6 @@
                     if ( in_array($Group['rid'], $RaidleadGroups) )
                     {
                         $AssignedGroup = 'raidlead';
-
                         return false; // ### return, highest possible group ###
                     }
                 }
