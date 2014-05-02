@@ -281,7 +281,7 @@
                     // Mode 'all' means all players are either 'ok' or 'unavailable'
         
                     $AttendenceQuery = $Connector->prepare('UPDATE `'.RP_TABLE_PREFIX.'Attendance` SET Status = "ok" '.
-                        'WHERE RaidId = :RaidId AND Status = "available\'' );
+                        'WHERE RaidId = :RaidId AND Status = "available"' );
         
                     $AttendenceQuery->bindValue(':RaidId', $aRequest['id'], PDO::PARAM_INT);
         
