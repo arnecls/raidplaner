@@ -5,10 +5,11 @@
 
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
-    
+
     // Old browser check
 
-    include_once("oldbrowser.php");
+    if (!isset($_GET["nocheck"]))
+        include_once("oldbrowser.php");
 
     // Update or setup required check
 

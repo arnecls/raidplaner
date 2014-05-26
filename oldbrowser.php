@@ -5,7 +5,7 @@
     function isSupportedVersion()
     {
         $BrowserInfo = new Browser();
-
+        
         switch ( $BrowserInfo->getBrowser() )
         {
         case Browser::BROWSER_SAFARI:
@@ -25,7 +25,7 @@
             break;
 
         case Browser::BROWSER_OPERA:
-            return intval($BrowserInfo->getVersion()) >= 13;
+            return intval($BrowserInfo->getVersion()) >= 12;
             break;
         }
 
