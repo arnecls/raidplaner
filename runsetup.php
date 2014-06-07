@@ -49,16 +49,7 @@
         <div class="appwindow">
             <img src="lib/layout/images/alert.png" style="margin-bottom: 20px"/><br/>
             <?php
-
-                if ( (PHP_VERSION_ID < 50304) )
-                {
-                    echo L("PHPVersionWarning");
-                }
-                else
-                {
-
-                    echo L("RaidplanerNotConfigured")."<br/>",L("PleaseRunSetup");
-                }
+                echo L("RaidplanerNotConfigured")."<br/>",L("PleaseRunSetup");
             ?>
         </div>
     </body>

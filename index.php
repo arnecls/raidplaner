@@ -2,9 +2,18 @@
     define("LOCALE_MAIN", true);
     define("STYLE_DEBUG", false);
     define("SCRIPT_DEBUG", false);
-
+    
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
+
+    // PHP version check
+
+    if ( PHP_VERSION_ID < 50304 )
+    {
+        echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        echo L("PHPVersionWarning");
+        die();
+    }
 
     // Old browser check
 
