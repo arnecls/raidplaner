@@ -7,6 +7,7 @@
         'description' => 'Query value. Get a list of available locations.',
         'parameters'  => Array(
             'games' => 'Comma separated list of game ids. Only returns locations for these games. Default: empty',
+            'utf8'  => 'Convert strings back to UTF8. Default: false.'
         )
     );
     
@@ -16,6 +17,7 @@
     {
         return Array(
             'games' => getParamFrom($aRequest, 'games', ''),
+            'utf8'  => getParamFrom($aRequest, 'utf8', false)
         );
     }
     
@@ -24,6 +26,7 @@
     function api_query_location($aParameter)
     {
         $aGames = getParamFrom($aParameter, 'games', '');
+        $aUTF8  = getParamFrom($aParameter, 'utf8',  false);
         
         $Parameters = Array();
         $Conditions = Array();
@@ -77,7 +80,7 @@
         $LocationQuery->loop(function($LocationRow) use (&$Result) {
             array_push($Result, Array(
                 'Id'     => $LocationRow['LocationId'],
-                'Name'   => $LocationRow['Name'],
+                'Name'   => ($aUTF8) ? xmlToUTF8($LocationRow['Name']) : $LocationRow['Name'],
                 'GameId' => $LocationRow['Game'],
                 'Image'  => $LocationRow['Image'],
             ));

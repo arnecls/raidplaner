@@ -9,6 +9,7 @@
             'users'   => 'Comma separated list of user ids to fetch. Default: empty',
             'games'   => 'Comma separated list of game ids. Only returns characters for these games. Default: empty',
             'current' => 'Set to true to only return the currently logged in user. Default: false',
+            'utf8'    => 'Convert strings back to UTF8. Default: false.',
         )
     );
     
@@ -20,6 +21,7 @@
             'users'   => getParamFrom($aRequest, 'users', ''),
             'games'   => getParamFrom($aRequest, 'games', ''),
             'current' => getParamFrom($aRequest, 'current', false),
+            'utf8'    => getParamFrom($aRequest, 'utf8',    false)
         );
     }
     
@@ -30,6 +32,7 @@
         $aUsers   = getParamFrom($aParameter, 'users', '');
         $aGames   = getParamFrom($aParameter, 'games', '');
         $aCurrent = getParamFrom($aParameter, 'current', false);
+        $aUTF8    = getParamFrom($aParameter, 'utf8',    false);
         
         // load gameconfigs
         
@@ -177,7 +180,7 @@
                 }
             
                 array_push($User['Characters'], Array(
-                    'Name'       => $UserRow['Name'],
+                    'Name'       => ($aUTF8) ? xmlToUTF8($UserRow['Name']) : $UserRow['Name'],
                     'Game'       => $UserRow['Game'],
                     'IsMainChar' => $UserRow['Mainchar'] == 'true',
                     'Classes'    => $Classes,

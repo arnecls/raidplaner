@@ -59,6 +59,14 @@
     
     // -----------------------------------------------------------------------------
     
+    function xmlToUTF8( $aString )
+    {
+        $Flags = (PHP_VERSION_ID >= 50400) ? ENT_QUOTES | ENT_XML1 : ENT_QUOTES;    
+        return html_entity_decode($aString, $Flags, 'UTF-8');
+    }
+    
+    // -----------------------------------------------------------------------------
+    
     function requestToXML( $aString, $aCompat, $aCharset )
     {
         return xmlentities( stripcslashes(urldecode($aString)), $aCompat, $aCharset );

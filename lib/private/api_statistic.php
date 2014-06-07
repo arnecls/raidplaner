@@ -11,6 +11,7 @@
             'raids'     => 'Comma separated list of raid ids to count. Empty counts all raids. Default: empty.',
             'users'     => 'Comma separated list of user names to include. Empty returns all users. Default: empty.',
             'games'     => 'Comma separated list of game ids. Only returns statistics for these games. Default: empty',
+            'utf8'      => 'Convert strings back to UTF8. Default: false.'
         )
     );
     
@@ -24,6 +25,7 @@
             'raids' => getParamFrom($aRequest, 'raids', ''),
             'users' => getParamFrom($aRequest, 'users', ''),
             'games' => getParamFrom($aRequest, 'games', ''),
+            'utf8'  => getParamFrom($aRequest, 'utf8', false)
         );
     }
     
@@ -36,6 +38,7 @@
         $aRaids = getParamFrom($aParameter, 'raids', '');
         $aUsers = getParamFrom($aParameter, 'users', '');
         $aGames = getParamFrom($aParameter, 'games', '');
+        $aUTF8  = getParamFrom($aParameter, 'utf8',  false);
         
         // Build query
         
@@ -176,7 +179,7 @@
                 {
                     $AttendanceData = Array(
                         'Id'        => $UserId,
-                        'MainChar'  => $MainCharName,
+                        'MainChar'  => ($aUTF8) ? xmlToUTF8($MainCharName) : $MainCharName,
                         'SetToRaid' => $StateCounts['ok'],
                         'Available' => $StateCounts['available'],
                         'Absent'    => $StateCounts['unavailable'],
@@ -242,7 +245,7 @@
         {
             $AttendanceData = Array(
                 'Id'        => $UserId,
-                'MainChar'  => $MainCharName,
+                'MainChar'  => ($aUTF8) ? xmlToUTF8($MainCharName) : $MainCharName,
                 'SetToRaid' => $StateCounts['ok'],
                 'Available' => $StateCounts['available'],
                 'Absent'    => $StateCounts['unavailable'],

@@ -18,7 +18,8 @@
             'open'      => 'Include raids that are open for registration. Default: true.',
             'closed'    => 'Include raids that are closed for registration. Default: false.',
             'canceled'  => 'Include raids that have been canceled. Default: false.',
-            'attends'   => 'Return list of attended players, too. Default: false.',    
+            'attends'   => 'Return list of attended players, too. Default: false.',
+            'utf8'      => 'Convert strings back to UTF8. Default: false.'
         )
     );
     
@@ -40,6 +41,7 @@
             'closed'    => getParamFrom($aRequest, 'closed', false),
             'canceled'  => getParamFrom($aRequest, 'canceled', false),
             'attends'   => getParamFrom($aRequest, 'attends', false),
+            'utf8'      => getParamFrom($aRequest, 'utf8', false)
         );
     }
     
@@ -62,6 +64,7 @@
         $aFetchClosed   = getParamFrom($aParameter, 'closed',   false);
         $aFetchCanceled = getParamFrom($aParameter, 'canceled', false);
         $aAddAttends    = getParamFrom($aParameter, 'attends',  false);
+        $aUTF8          = getParamFrom($aParameter, 'utf8',     false);
         
         // Build query
         
@@ -270,7 +273,7 @@
         $Result = Array();
         $Raid = Array();
         
-        $RaidQuery->loop(function($aRaidRow) use (&$LastRaidId, &$Raid, &$Result, $aAddAttends, $aFetchFull, $aFetchFree)
+        $RaidQuery->loop(function($aRaidRow) use (&$LastRaidId, &$Raid, &$Result, $aAddAttends, $aFetchFull, $aFetchFree, $aUTF8)
         {
             if ($aRaidRow['RaidId'] != $LastRaidId)
             {
@@ -287,7 +290,7 @@
                     'Size'        => $aRaidRow['Size'],
                     'Start'       => $aRaidRow['StartUTC'],
                     'End'         => $aRaidRow['EndUTC'],
-                    'Description' => $aRaidRow['Description'],
+                    'Description' => ($aUTF8) ? xmlToUTF8($aRaidRow['Description']) : $aRaidRow['Description'],
                     'Slots'       => array_combine(explode(':', $aRaidRow['SlotRoles']), explode(':', $aRaidRow['SlotCount'])),
                     'SetToRaid'   => Array(),
                     'Available'   => Array(),
@@ -341,8 +344,8 @@
                     'Status'           => $aRaidRow['Status'],
                     'Role'             => $aRaidRow['Role'],
                     'Class'            => $aRaidRow['Class'],
-                    'Comment'          => $aRaidRow['Comment'],
-                    'CharacterName'    => $aRaidRow['CharacterName'],
+                    'Comment'          => ($aUTF8) ? xmlToUTF8($aRaidRow['Comment'])       : $aRaidRow['Comment'],
+                    'CharacterName'    => ($aUTF8) ? xmlToUTF8($aRaidRow['CharacterName']) : $aRaidRow['CharacterName'],
                     'CharacterIsMain'  => $aRaidRow['CharacterIsMain'],
                     'CharacterClasses' => explode(':',$aRaidRow['CharacterClasses']),
                     'CharacterRoles'   => Array($aRaidRow['CharacterRole1'], $aRaidRow['CharacterRole2']),
