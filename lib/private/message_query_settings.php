@@ -46,8 +46,8 @@
             {
                 array_push($SettingsJS, Array(
                     'name'      => $Name,
-                    'intValue'  => $Data['IntValue'],
-                    'textValue' => $Data['TextValue']
+                    'intValue'  => isset($Data['IntValue'])  ? $Data['IntValue']  : 0,
+                    'textValue' => isset($Data['TextValue']) ? $Data['TextValue'] : ''
                 ));
             }
     

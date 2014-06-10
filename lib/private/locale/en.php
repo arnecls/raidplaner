@@ -210,6 +210,7 @@
         $gLocale[ 'UpToDate' ]                 = 'This raidplaner is up to date.';
         $gLocale[ 'NewVersionAvailable' ]      = 'There is a new version available:';
         $gLocale[ 'VisitProjectPage' ]         = 'Visit the project homepage';
+        $gLocale[ 'AttendWithPrimary' ]        = 'Attend with primary role';
     }
 
     if ( defined('LOCALE_SETUP') )

@@ -214,6 +214,7 @@
         $gLocale[ 'UpToDate' ]                 = 'Raidplanner jest aktualny.';
         $gLocale[ 'NewVersionAvailable' ]      = 'Dostępna jest nowa wersja:';
         $gLocale[ 'VisitProjectPage' ]         = 'Odwiedź stronę projektu';
+        $gLocale[ 'AttendWithPrimary' ]        = null;
     }
 
     if ( defined('LOCALE_SETUP') )

@@ -35,7 +35,7 @@
     
             $ListRaidQuery = $Connector->prepare(  'Select '.RP_TABLE_PREFIX.'Raid.*, '.RP_TABLE_PREFIX.'Location.*, '.
                                                 RP_TABLE_PREFIX.'Attendance.CharacterId, '.RP_TABLE_PREFIX.'Attendance.UserId, '.
-                                                RP_TABLE_PREFIX.'Attendance.Status, '.RP_TABLE_PREFIX.'Attendance.Role, '.RP_TABLE_PREFIX.'Attendance.Comment, '.
+                                                RP_TABLE_PREFIX.'Attendance.Status, '.RP_TABLE_PREFIX.'Attendance.Class, '.RP_TABLE_PREFIX.'Attendance.Role, '.RP_TABLE_PREFIX.'Attendance.Comment, '.
                                                 'UNIX_TIMESTAMP('.RP_TABLE_PREFIX.'Raid.Start) AS StartUTC, '.
                                                 'UNIX_TIMESTAMP('.RP_TABLE_PREFIX.'Raid.End) AS EndUTC '.
                                                 'FROM `'.RP_TABLE_PREFIX.'Raid` '.
@@ -165,6 +165,7 @@
                     $Status = 'notset';
                     $AttendanceIndex = 0;
                     $Role = '';
+                    $Class = '';
                     $Comment = '';
     
                     if ( $IsCorrectUser )
@@ -172,6 +173,7 @@
                         $Status = $Data['Status'];
                         $AttendanceIndex = ($Status == 'unavailable') ? -1 : intval($Data['CharacterId']);
                         $Role = $Data['Role'];
+                        $Class = $Data['Class'];
                         $Comment = $Data['Comment'];
                     }
     
@@ -194,6 +196,7 @@
                         'attendanceIndex' => $AttendanceIndex,
                         'comment'         => $Comment,
                         'role'            => $Role,
+                        'classId'         => $Class,
                         'slotMax'         => Array(),
                         'slotCount'       => Array(),
                         'attended'        => $NumAttends[$RaidId]

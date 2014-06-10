@@ -83,14 +83,12 @@
             foreach($this->Property as $Name => $Property)
             {
                 $Index = array_search($Name, $ExistingSettings);
-                
+                $IntValue  = (isset($Property['IntValue']))  ? intval($Property['IntValue']) : 0;
+                $TextValue = (isset($Property['TextValue'])) ? strval($Property['TextValue']) : '';
+                    
                 if ( $Index === false )
                 {
                     $InsertQuery = $Connector->prepare('INSERT INTO `'.RP_TABLE_PREFIX.'Setting` (Name, IntValue, TextValue) VALUES (:Name, :IntValue, :TextValue)');
-                    
-                    $IntValue  = (isset($Property['IntValue']))  ? intval($Property['IntValue']) : 0;
-                    $TextValue = (isset($Property['TextValue'])) ? $Property['TextValue'] : '';
-                    
                     
                     $InsertQuery->bindValue(':IntValue',  $IntValue,  PDO::PARAM_INT);
                     $InsertQuery->bindValue(':TextValue', $TextValue, PDO::PARAM_STR);
@@ -101,14 +99,14 @@
                 {
                     $CurrentValue = $ExistingValues[$Name];
                     
-                    if ( ($CurrentValue['IntValue'] != $Property['IntValue']) ||
-                         ($CurrentValue['TextValue'] != $Property['TextValue']) )
+                    if ( (isset($Property['IntValue']) && ($CurrentValue['IntValue'] != $Property['IntValue'])) ||
+                         (isset($Property['TextValue']) && ($CurrentValue['TextValue'] != $Property['TextValue'])) )
                     {                        
                         $UpdateQuery = $Connector->prepare('UPDATE `'.RP_TABLE_PREFIX.'Setting` SET IntValue=:IntValue, TextValue=:TextValue WHERE Name=:Name LIMIT 1');
                         
-                        $UpdateQuery->bindValue(':IntValue',  $Property['IntValue'], PDO::PARAM_INT);
-                        $UpdateQuery->bindValue(':TextValue', $Property['TextValue'],        PDO::PARAM_STR);
-                        $UpdateQuery->bindValue(':Name',      $Name,                         PDO::PARAM_STR);                        
+                        $UpdateQuery->bindValue(':IntValue',  $IntValue,  PDO::PARAM_INT);
+                        $UpdateQuery->bindValue(':TextValue', $TextValue, PDO::PARAM_STR);
+                        $UpdateQuery->bindValue(':Name',      $Name,      PDO::PARAM_STR);                        
                         $UpdateQuery->execute();
                     }
                     

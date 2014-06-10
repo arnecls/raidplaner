@@ -212,6 +212,7 @@
         $gLocale[ 'UpToDate' ]                 = 'Raidplaner je aktuální.';
         $gLocale[ 'NewVersionAvailable' ]      = 'Nová verze je dostupná:';
         $gLocale[ 'VisitProjectPage' ]         = 'Navštivte domovskou stránku projektu';
+        $gLocale[ 'AttendWithPrimary' ]        = null;
     }
     
     if ( defined('LOCALE_SETUP') )

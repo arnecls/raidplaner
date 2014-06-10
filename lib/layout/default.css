@@ -186,6 +186,12 @@ textarea {
     margin-top: 5px;
 }
 
+.settingBlock {
+    display: inline-block;
+    float: left;
+    width: 380px;
+}
+
 .settingLine {
     min-height: 20px;    
     vertical-align: top;

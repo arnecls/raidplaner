@@ -14,7 +14,7 @@
 
             $NextRaidQuery = $Connector->prepare('Select '.RP_TABLE_PREFIX.'Raid.*, '.RP_TABLE_PREFIX.'Location.*, '.
                                                  RP_TABLE_PREFIX.'Attendance.CharacterId, '.RP_TABLE_PREFIX.'Attendance.UserId, '.
-                                                 RP_TABLE_PREFIX.'Attendance.Status, '.RP_TABLE_PREFIX.'Attendance.Role, '.RP_TABLE_PREFIX.'Attendance.Comment, '.
+                                                 RP_TABLE_PREFIX.'Attendance.Status, '.RP_TABLE_PREFIX.'Attendance.Class, '.RP_TABLE_PREFIX.'Attendance.Role, '.RP_TABLE_PREFIX.'Attendance.Comment, '.
                                                  'UNIX_TIMESTAMP('.RP_TABLE_PREFIX.'Raid.Start) AS StartUTC, '.
                                                  'UNIX_TIMESTAMP('.RP_TABLE_PREFIX.'Raid.End) AS EndUTC '.
                                                  'FROM `'.RP_TABLE_PREFIX.'Raid` '.

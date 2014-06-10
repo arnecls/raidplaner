@@ -54,7 +54,8 @@
             loadGameSettings();
             $Connector = Connector::getInstance();
     
-            $AttendanceIdx = intval( $aRequest['attendanceIndex'] );
+            $AttendanceId = intval( $aRequest['attendanceId'] );
+            $AttendanceSubId = intval( $aRequest['attendanceSubId'] );
             $RaidId = intval( $aRequest['raidId'] );
             $UserId = intval( UserProxy::getInstance()->UserId );
     
@@ -81,11 +82,11 @@
             {
                 // Check if character matches user
     
-                if ( $AttendanceIdx > 0)
+                if ( $AttendanceId > 0)
                 {
-                    $CheckQuery = $Connector->prepare('SELECT UserId, Class, Role1 FROM `'.RP_TABLE_PREFIX.'Character` WHERE CharacterId = :CharacterId AND Game = :Game LIMIT 1');
+                    $CheckQuery = $Connector->prepare('SELECT UserId, Class, Role1, Role2 FROM `'.RP_TABLE_PREFIX.'Character` WHERE CharacterId = :CharacterId AND Game = :Game LIMIT 1');
                     
-                    $CheckQuery->bindValue(':CharacterId', $AttendanceIdx, PDO::PARAM_INT);
+                    $CheckQuery->bindValue(':CharacterId', $AttendanceId, PDO::PARAM_INT);
                     $CheckQuery->bindValue(':Game', $gGame['GameId'], PDO::PARAM_INT);
     
                     $CharacterInfo = $CheckQuery->fetchFirst();
@@ -93,9 +94,20 @@
                     if ($CharacterInfo != null)
                     {
                         $ChangeAllowed &= ($CharacterInfo['UserId'] == $UserId );
-                        $Role = $CharacterInfo['Role1'];
-                        $Classes = explode(':',$CharacterInfo['Class']);
-                        $Class = $Classes[0];
+                        
+                        if ($gGame['ClassMode'] == 'multi')
+                        {
+                            $Classes = explode(':',$CharacterInfo['Class']);
+                            $Class = ($AttendanceSubId < 0) ? $Classes[0] : $Classes[$AttendanceSubId];
+                            $Role = $gGame['Classes'][$Class]['roles'][0];
+                        }
+                        else
+                        {
+                            $Class = $CharacterInfo['Class'];
+                            $Role = ($AttendanceSubId < 0) 
+                                ? $CharacterInfo['Role1'] 
+                                : (($AttendanceSubId == 0) ? $CharacterInfo['Role1'] : $CharacterInfo['Role2']);   
+                        }
                     }
                     else
                     {
@@ -147,7 +159,7 @@
     
                     // Define the status and id to set
     
-                    if ( $AttendanceIdx == -1 )
+                    if ( $AttendanceId == -1 )
                     {
                         $Status = 'unavailable';
                         $CharacterId = intval( $aRequest['fallback'] );
@@ -155,7 +167,7 @@
                     else
     
                     {
-                        $CharacterId = $AttendanceIdx;
+                        $CharacterId = $AttendanceId;
     
                         switch ( $RaidInfo['Mode'] )
                         {

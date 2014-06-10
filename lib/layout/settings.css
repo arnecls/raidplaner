@@ -45,6 +45,7 @@
 #settings .propLabel2 {
     margin-left: 10px;
     display: inline-block;
+    color: #BBB;
 }
 
 #settings .timeField {

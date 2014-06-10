@@ -214,6 +214,7 @@
         $gLocale[ 'UpToDate' ]                 = 'Ce raidplanner est à jour.';
         $gLocale[ 'NewVersionAvailable' ]      = 'Il y a une nouvelle version disponible:';
         $gLocale[ 'VisitProjectPage' ]         = 'Visiter la page du projet';
+        $gLocale[ 'AttendWithPrimary' ]        = null;
     }
 
     if ( defined('LOCALE_SETUP') )
