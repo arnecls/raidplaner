@@ -200,6 +200,9 @@
         if ( !in_array("StartOfWeek", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('StartOfWeek', 1, '');" );
             
+        if ( !in_array("PrimaryRole", $ExistingSettings) )
+            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('PrimaryRole', 0, 'true');" );
+            
         if ( !in_array("ApiPrivate", $ExistingSettings) )
         {
             $PrivateToken = dechex(crc32(Random::getBytes(2048))).dechex(crc32(Random::getBytes(2048)));
