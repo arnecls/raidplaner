@@ -56,12 +56,6 @@
             <role id="dmg" count="*"/>
         </group>
         
-        <group count="10">
-            <role id="tnk" count="1"/>
-            <role id="med" count="2"/>
-            <role id="dmg" count="*"/>
-        </group>
-        
         <group count="20">
             <role id="tnk" count="2"/>
             <role id="med" count="6"/>
