@@ -4,7 +4,7 @@
     require_once(dirname(__FILE__).'/session.class.php');
     require_once(dirname(__FILE__).'/random.class.php');
     
-    $gVersion = 111.0;
+    $gVersion = 111.1;
 
     $gSite = null;
     $gGame = null;
@@ -78,6 +78,7 @@
         $gSite['BannerLink']  = '';
         $gSite['HelpLink']    = '';
         $gSite['Logout']      = true;
+        $gSite['PrimaryRole'] = true;
         $gSite['Banner']      = 'cataclysm.jpg';
         $gSite['Background']  = 'flower.png';
         $gSite['BGColor']     = '#898989';
@@ -156,6 +157,10 @@
 
             case 'StartOfWeek':
                 $gSite['StartOfWeek'] = $Data['IntValue'];
+                break;
+                
+            case 'PrimaryRole':
+                $gSite['PrimaryRole'] = $Data['TextValue'] == 'true';
                 break;
 
             default:
