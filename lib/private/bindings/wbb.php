@@ -29,9 +29,10 @@
             $Config->AutoLoginEnabled = defined('WBB_AUTOLOGIN') ? WBB_AUTOLOGIN : false;
             $Config->Raidleads        = defined('WBB_RAIDLEAD_GROUPS') ? explode(',', WBB_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('WBB_MEMBER_GROUPS') ? explode(',', WBB_MEMBER_GROUPS ) : array();
+            $Config->CookieData       = defined('WBB_COOKIE_PREFIX') ? WBB_COOKIE_PREFIX : 'wcf_';
             $Config->PostTo           = defined('WBB_POSTTO') ? WBB_POSTTO : '';
             $Config->PostAs           = defined('WBB_POSTAS') ? WBB_POSTAS : '';
-            $Config->HasCookieConfig  = false;
+            $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
 
@@ -50,15 +51,26 @@
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
                 return null;
             }
-
+            
             @include_once($ConfigPath);
             
+            // Read cookie
+            
+            $Connector = new Connector(SQL_HOST, $dbName, $dbUser, $dbPassword, false);
+            
+            $OptionQuery = $Connector->prepare( 'SELECT optionValue FROM `wcf'.WCF_N.'_option` '.
+                'WHERE optionName = "cookie_prefix" AND categoryName = "general.system.cookie" LIMIT 1' );
+                    
+            $OptionData = $OptionQuery->fetchFirst(); 
+            
+            // Build result          
+
             return array(
                 'database'  => $dbName,
                 'user'      => $dbUser,
                 'password'  => $dbPassword,
                 'prefix'    => WCF_N,
-                'cookie'    => null
+                'cookie'    => $OptionData['optionValue']
             );
         }
 
@@ -78,6 +90,7 @@
                 fwrite( $Config, "\tdefine('WBB_PASS', '".$aPass."');\n");
                 fwrite( $Config, "\tdefine('WBB_TABLE_PREFIX', '".$aPrefix."');\n");
                 fwrite( $Config, "\tdefine('WBB_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('WBB_COOKIE_PREFIX', '".$aCookieEx."');\n");
                 
                 fwrite( $Config, "\tdefine('WBB_POSTTO', ".$aPostTo.");\n");
                 fwrite( $Config, "\tdefine('WBB_POSTAS', ".$aPostAs.");\n");
@@ -221,7 +234,7 @@
 
             // Fetch user info if session cookie is set
 
-            $CookieName = 'wcf_cookieHash';
+            $CookieName = WBB_COOKIE_PREFIX.'cookieHash';
 
             if (isset($_COOKIE[$CookieName]))
             {

@@ -401,6 +401,7 @@
         $gLocale[ 'smf_UserEmpty' ]             = 'SMF utilisateur ne peut pas être vide.';
         $gLocale[ 'smf_PasswordEmpty' ]         = 'SMF Mot de passe de la base de données ne peut pas être vide.';
         $gLocale[ 'smf_DBPasswordsMatch' ]      = 'SMF Les mots de passe de la base de données ne correspondent pas.';
+        $gLocale[ 'smf_CookieEx' ]              = null;
 
         // Vanilla
         $gLocale[ 'vanilla_Binding' ]           = 'Vanilla Forum 2.x';

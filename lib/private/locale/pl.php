@@ -401,6 +401,7 @@
         $gLocale[ 'smf_UserEmpty' ]             = 'Nazwa użytkownika SMF nie może być pusta.';
         $gLocale[ 'smf_PasswordEmpty' ]         = 'Hasło bazy danych SMF nie powinno być puste.';
         $gLocale[ 'smf_DBPasswordsMatch' ]      = 'Hasło bazy danych SMF zostało powtórzone niepoprawnie.';
+        $gLocale[ 'smf_CookieEx' ]              = null;
 
         // Vanilla
         $gLocale[ 'vanilla_Binding' ]           = 'Vanilla Forum 2.x';
@@ -450,6 +451,6 @@
         $gLocale[ 'wbb_UserEmpty' ]             = 'Nazwa użytkownika Burning Board nie może być pusta.';
         $gLocale[ 'wbb_PasswordEmpty' ]         = 'Hasło bazy danych Burning Board nie powinno być puste.';
         $gLocale[ 'wbb_DBPasswordsMatch' ]      = 'Hasło bazy danych Burning Board zostało powtórzone niepoprawnie.';
-        $gLocale[ 'wbb_CookieEx' ]              = 'Sekret Burning Board';
+        $gLocale[ 'wbb_CookieEx' ]              = 'Prefix ciasteczka Burning Board';
     }
 ?>

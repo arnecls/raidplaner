@@ -397,6 +397,7 @@
         $gLocale[ 'smf_UserEmpty' ]             = 'SMF user must not be empty';
         $gLocale[ 'smf_PasswordEmpty' ]         = 'SMF Database password must not be empty.';
         $gLocale[ 'smf_DBPasswordsMatch' ]      = 'SMF Database passwords did not match.';
+        $gLocale[ 'smf_CookieEx' ]              = 'SMF cookie name';
 
         // Vanilla
         $gLocale[ 'vanilla_Binding' ]           = 'Vanilla Forum 2.x';
@@ -446,6 +447,6 @@
         $gLocale[ 'wbb_UserEmpty' ]             = 'Burning Board user must not be empty';
         $gLocale[ 'wbb_PasswordEmpty' ]         = 'Burning Board Database password must not be empty.';
         $gLocale[ 'wbb_DBPasswordsMatch' ]      = 'Burning Board Database passwords did not match.';
-        $gLocale[ 'wbb_CookieEx' ]              = 'Burning Board secret';
+        $gLocale[ 'wbb_CookieEx' ]              = 'Burning Board Cookie Prefix';
     }
 ?>

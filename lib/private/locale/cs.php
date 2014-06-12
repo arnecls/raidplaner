@@ -402,6 +402,7 @@
         $gLocale[ 'smf_UserEmpty' ]             = 'SMF uživatelské jméno nesmí být prázdné';
         $gLocale[ 'smf_PasswordEmpty' ]         = 'SMF heslo databáze nesmí být prázdné.';
         $gLocale[ 'smf_DBPasswordsMatch' ]      = 'SMF heslo databáze nesouhlasí.';
+        $gLocale[ 'smf_CookieEx' ]              = null;
         
         // Vanilla
         $gLocale[ 'vanilla_Binding' ]           = 'Vanilla Forum 2.x';
@@ -451,6 +452,6 @@
         $gLocale[ 'wbb_UserEmpty' ]             = 'Burning Board uživatelské jméno nesmí být prázdné';
         $gLocale[ 'wbb_PasswordEmpty' ]         = 'Burning Board heslo databáze nesmí být prázdné.';
         $gLocale[ 'wbb_DBPasswordsMatch' ]      = 'Burning Board heslo databáze nesouhlasí.';
-        $gLocale[ 'wbb_CookieEx' ]              = 'Burning Board secret';
+        $gLocale[ 'wbb_CookieEx' ]              = 'Burning Board cookie prefix';
     }
 ?>
