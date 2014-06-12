@@ -179,8 +179,7 @@
 
             $AssignedGroup  = 'none';
             $MemberGroups   = explode(',', WBB_MEMBER_GROUPS );
-            $RaidleadGroups = explode(',', WBB_RAIDLEAD_GROUPS );
-            
+            $RaidleadGroups = explode(',', WBB_RAIDLEAD_GROUPS );            
             
             foreach( $aUserData['Groups'] as $Group )
             {
@@ -305,15 +304,7 @@
 
         private function extractSaltPart( $aPassword )
         {
-            switch ( $this->getMethodFromPass($aPassword) )
-            {
-            case self::$HashMethodBF:
-                return substr($aPassword, 0, 7+22);
-             
-            default:   
-            case self::$HashMethodMD5s:
-                return substr($aPassword, 3, 12);
-            }
+            return substr($aPassword, 0, 7+22);
         }
 
         // -------------------------------------------------------------------------
