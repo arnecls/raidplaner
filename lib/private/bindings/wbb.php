@@ -360,8 +360,8 @@
                     // Create topic
     
                     $ThreadQuery = $Connector->prepare('INSERT INTO `wbb'.WBB_TABLE_PREFIX.'_thread` '.
-                        '(boardId, userId, topic, time, username, lastPostTime, lastPoster) VALUES '.
-                        '(:BoardId, :UserId, :Subject, :Now, :Username, :Now, :Username)');
+                        '(boardId, userId, topic, time, username, lastPostTime, lastPoster, lastPosterID) VALUES '.
+                        '(:BoardId, :UserId, :Subject, :Now, :Username, :Now, :Username, :UserId)');
     
                     $ThreadQuery->BindValue( ':BoardId', WBB_POSTTO, PDO::PARAM_INT );
                     $ThreadQuery->BindValue( ':UserId', WBB_POSTAS, PDO::PARAM_INT );
