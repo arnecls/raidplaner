@@ -437,5 +437,15 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Wordpress Database password must not be empty.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Wordpress Database passwords did not match.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY followed by LOGGED_IN_SALT';
+        
+        // Woltlab Burning Board
+        $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
+        $gLocale[ 'wbb_ConfigFile' ]            = 'Burning Board config file';
+        $gLocale[ 'wbb_Database' ]              = 'Burning Board database';
+        $gLocale[ 'wbb_DatabaseEmpty' ]         = 'Burning Board database name must not be empty.';
+        $gLocale[ 'wbb_UserEmpty' ]             = 'Burning Board user must not be empty';
+        $gLocale[ 'wbb_PasswordEmpty' ]         = 'Burning Board Database password must not be empty.';
+        $gLocale[ 'wbb_DBPasswordsMatch' ]      = 'Burning Board Database passwords did not match.';
+        $gLocale[ 'wbb_CookieEx' ]              = 'Burning Board secret';
     }
 ?>

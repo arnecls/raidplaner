@@ -442,5 +442,15 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Wordpress heslo databáze nesmí být prázdné.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Wordpress heslo databáze nesouhlasí.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY followed by LOGGED_IN_SALT';
+        
+        // Woltlab Burning Board
+        $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
+        $gLocale[ 'wbb_ConfigFile' ]            = 'Burning Board konfigurační soubor';
+        $gLocale[ 'wbb_Database' ]              = 'Burning Board databáze';
+        $gLocale[ 'wbb_DatabaseEmpty' ]         = 'Burning Board jméno databáze nesmí být prázdné.';
+        $gLocale[ 'wbb_UserEmpty' ]             = 'Burning Board uživatelské jméno nesmí být prázdné';
+        $gLocale[ 'wbb_PasswordEmpty' ]         = 'Burning Board heslo databáze nesmí být prázdné.';
+        $gLocale[ 'wbb_DBPasswordsMatch' ]      = 'Burning Board heslo databáze nesouhlasí.';
+        $gLocale[ 'wbb_CookieEx' ]              = 'Burning Board secret';
     }
 ?>

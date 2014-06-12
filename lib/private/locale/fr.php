@@ -441,5 +441,15 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Wordpress Mot de passe de la base de données ne peut pas être vide.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Wordpress Les mots de passe de la base de données ne correspondent pas.';
         $gLocale[ 'wp_CookieEx' ]               = null;
+        
+        // Woltlab Burning Board
+        $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
+        $gLocale[ 'wbb_ConfigFile' ]            = 'Burning Board Fichier de configuration';
+        $gLocale[ 'wbb_Database' ]              = 'Burning Board Base de données';
+        $gLocale[ 'wbb_DatabaseEmpty' ]         = 'Burning Board Base de données ne peut pas être vide.';
+        $gLocale[ 'wbb_UserEmpty' ]             = 'Burning Board utilisateur ne peut pas être vide.';
+        $gLocale[ 'wbb_PasswordEmpty' ]         = 'Burning Board Mot de passe de la base de données ne peut pas être vide.';
+        $gLocale[ 'wbb_DBPasswordsMatch' ]      = 'Burning Board Les mots de passe de la base de données ne correspondent pas.';
+        $gLocale[ 'wbb_CookieEx' ]              = null;
     }
 ?>

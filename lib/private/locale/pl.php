@@ -441,5 +441,15 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Hasło bazy danych Wordpress nie powinno być puste.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Hasło bazy danych Wordpress zostało powtórzone niepoprawnie.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY + LOGGED_IN_SALT';
+        
+        // Woltlab Burning Board
+        $gLocale[ 'wbb_Binding' ]               = 'Burning Board 3.x';
+        $gLocale[ 'wbb_ConfigFile' ]            = 'Plik konfiguracyjny Burning Board';
+        $gLocale[ 'wbb_Database' ]              = 'Baza danych Burning Board';
+        $gLocale[ 'wbb_DatabaseEmpty' ]         = 'Nazwa bazy danych Burning Board nie może być pusta.';
+        $gLocale[ 'wbb_UserEmpty' ]             = 'Nazwa użytkownika Burning Board nie może być pusta.';
+        $gLocale[ 'wbb_PasswordEmpty' ]         = 'Hasło bazy danych Burning Board nie powinno być puste.';
+        $gLocale[ 'wbb_DBPasswordsMatch' ]      = 'Hasło bazy danych Burning Board zostało powtórzone niepoprawnie.';
+        $gLocale[ 'wbb_CookieEx' ]              = 'Sekret Burning Board';
     }
 ?>
