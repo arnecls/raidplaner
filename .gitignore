@@ -9,6 +9,7 @@
 /lib/config/config.vanilla.php
 /lib/config/config.vb3.php
 /lib/config/config.wp.php
+/lib/config/config.wbb.php
 /tags
 
 .DS_Store
