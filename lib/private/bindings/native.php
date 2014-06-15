@@ -101,9 +101,7 @@
             $Info->PassBinding = $aUserData['ExternalBinding'];
 
             if (($aUserData['ExternalBinding'] != 'none') &&
-
                 ($aUserData['BindingActive'] == 'true'))
-
             {
                 $Info->UserId      = $aUserData['ExternalId'];
                 $Info->BindingName = $aUserData['ExternalBinding'];

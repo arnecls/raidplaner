@@ -111,8 +111,8 @@
             $OtkQuery = $Connector->prepare('UPDATE `'.RP_TABLE_PREFIX.'User` SET OneTimeKey = :Key '.
                                             'WHERE UserId = :UserId LIMIT 1' );
 
-            $OtkQuery->bindValue( ':Key',     $OneTimeKey,      PDO::PARAM_STR );
-            $OtkQuery->bindValue( ':UserId',  $aUserId, PDO::PARAM_INT );
+            $OtkQuery->bindValue( ':Key',    $OneTimeKey, PDO::PARAM_STR );
+            $OtkQuery->bindValue( ':UserId', $aUserId,    PDO::PARAM_INT );
             $OtkQuery->execute();
         }
 
@@ -140,19 +140,22 @@
             
             if ( $Session != null )
             {
-                $Connector = Connector::getInstance();
-                $UserQuery = $Connector->prepare('SELECT Login, Password, `Group` FROM `'.RP_TABLE_PREFIX.'User` '.
-                    'WHERE UserId = :UserId LIMIT 1');
-
-                $UserQuery->bindValue(':UserId', $Session->GetUserId(), PDO::PARAM_INT);
-                $UserData = $UserQuery->fetchFirst();
-
-                if ( $UserData != null )
+                $UserInfo = self::$BindingsByName['none']->GetUserInfoById($Session->GetUserId());
+                
+                if ( $UserInfo != null )
                 {
-                    $this->UserGroup = $UserData['Group'];
-                    $this->UserId    = $Session->GetUserId();
-                    $this->UserName  = $UserData['Login'];
+                    if ( $UserInfo->BindingName != 'none' )
+                    {                                         
+                        $UserInfo = $this->getUserInfoById($UserInfo->BindingName, $UserInfo->UserId);
+                        
+                        $UpdateUserQuery = $this->updateUserMirror( $UserInfo, false, self::generateKey32() );
+                        $UpdateUserQuery->execute();
+                    }
                     
+                    $this->UserGroup = $UserInfo->Group;
+                    $this->UserName  = $UserInfo->UserName;
+                    $this->UserId    = $Session->GetUserId();
+                                                            
                     $this->updateCharacters();
                     $this->updateSettings();
                     
@@ -191,7 +194,6 @@
                     // the local database. Create a new local hook for that user.
 
                     if ( self::createUser($aUserInfo->Group, $aUserInfo->UserId, $aUserInfo->BindingName,
-
                                           $aUserInfo->UserName, $aUserInfo->Password, $aUserInfo->Salt) === false )
                     {
                         return null; // ### return, user could not be created ###
@@ -291,7 +293,6 @@
             {
                 if ( $Binding->isActive() )
                 {
-
                     $UserInfo    = $Binding->getUserInfoByName($aUserName);
                     $Credentials = $this->getUserCredentialsFromInfo($UserInfo, $Binding);
 
@@ -316,7 +317,6 @@
                 $Binding = self::$BindingsByName[$aBindingName];
                 if ( $Binding->isActive() )
                 {
-
                     $UserInfo    = $Binding->getUserInfoById($aUserId);
                     $Credentials = $this->getUserCredentialsFromInfo($UserInfo, $Binding);
 
@@ -338,7 +338,6 @@
 
             if ( $Binding->isActive() )
             {
-
                 return $Binding->getUserInfoById($aExternalId);
             }
 
@@ -355,7 +354,6 @@
             {
                 if ( $Binding->isActive() )
                 {
-
                     $Info = $Binding->getUserInfoById($aExternalId);
                     if ( $Info != null )
                     {
@@ -377,7 +375,6 @@
             {
                 if ( $Binding->isActive() )
                 {
-
                     $Info = $Binding->getUserInfoByName($aUserName);
                     if ( $Info != null )
                     {
@@ -403,15 +400,12 @@
 
             if ($UserData != null)
             {
-
                 if ( defined('USE_CLEARTEXT_PASSWORDS') && USE_CLEARTEXT_PASSWORDS )
                 {
                     // Cleartext mode fallback
 
                     $UserId = (($UserData['BindingActive'] == 'false') || ($UserData['ExternalBinding'] == 'none'))
-
                         ? $this->UserId
-
                         : $UserData['ExternalId'];
 
                     return $this->validateCleartextPassword( $aSignedPassword, $UserId, $UserData['ExternalBinding'] );
@@ -637,11 +631,12 @@
             if ($aIsStoredLocally)
             {
                 // Local users don't change externally, so just update the key
-
-                $MirrorQuery = $Connector->prepare('UPDATE `'.RP_TABLE_PREFIX.'User` SET OneTimeKey = :Key '.
+            
+                $MirrorQuery = $Connector->prepare(
+                    'UPDATE `'.RP_TABLE_PREFIX.'User` SET OneTimeKey = :Key '.
                     'WHERE UserId = :UserId LIMIT 1' );
 
-                $MirrorQuery->bindValue( ':Key',    $aKey, PDO::PARAM_STR );
+                $MirrorQuery->bindValue( ':Key',    $aKey,             PDO::PARAM_STR );
                 $MirrorQuery->bindValue( ':UserId', $UserInfo->UserId, PDO::PARAM_INT );
             }
             else
@@ -659,6 +654,7 @@
                     if ($Binding->isActive())
                     {
                         $ExternalInfo = $Binding->getUserInfoById($UserInfo->UserId);
+                        
                         if ( $ExternalInfo == null )
                             $UserIsBound = false;
                         else
@@ -686,7 +682,7 @@
                 $MirrorQuery->bindValue( ':Key',       $aKey,                           PDO::PARAM_STR );
                 $MirrorQuery->bindValue( ':Binding',   $UserInfo->BindingName,          PDO::PARAM_STR );
                 $MirrorQuery->bindValue( ':Active',    $UserIsBound ? 'true' : 'false', PDO::PARAM_STR );
-                $MirrorQuery->bindValue( ':UserId',    intval($UserInfo->UserId),       PDO::PARAM_INT );
+                $MirrorQuery->bindValue( ':UserId',    $UserInfo->UserId,               PDO::PARAM_INT );
 
                 if ($SyncGroup)
                     $MirrorQuery->bindValue( ':Group', $UserInfo->Group, PDO::PARAM_STR );
@@ -712,7 +708,7 @@
                                                 'ExternalBinding = "none", Password = :Password, Salt = :Salt '.
                                                 'WHERE UserId = :UserId AND (BindingActive="false" OR ExternalBinding="none") LIMIT 1');
 
-            $UpdateQuery->bindValue(':UserId',   $aUserId, PDO::PARAM_INT);
+            $UpdateQuery->bindValue(':UserId',   $aUserId,         PDO::PARAM_INT);
             $UpdateQuery->bindValue(':Password', $aHashedPassword, PDO::PARAM_STR);
             $UpdateQuery->bindValue(':Salt',     $aSalt,           PDO::PARAM_STR);
 
