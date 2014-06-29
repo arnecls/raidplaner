@@ -482,6 +482,17 @@
     
                     $TopicFinishQuery->execute(true);
                     
+                    // Topic posted
+    
+                    $TopicPostedQuery = $Connector->prepare('INSERT INTO `'.PHPBB3_TABLE_PREFIX.'topics_posted` '.
+                                                  '(user_id, topic_id, topic_posted) VALUES '.
+                                                  '(:UserId, :TopicId, 1)');
+    
+                    $TopicPostedQuery->BindValue( ':TopicId', $TopicId, PDO::PARAM_INT );
+                    $TopicPostedQuery->BindValue( ':UserId', PHPBB3_POSTAS, PDO::PARAM_INT );
+    
+                    $TopicPostedQuery->execute(true);
+                    
                     // Update forum
                     
                     $ForumUpdateQuery = $Connector->prepare('UPDATE `'.PHPBB3_TABLE_PREFIX.'forums` '.
