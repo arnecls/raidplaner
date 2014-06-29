@@ -481,6 +481,24 @@
                     $TopicFinishQuery->BindValue( ':PostId', $PostId, PDO::PARAM_INT );
     
                     $TopicFinishQuery->execute(true);
+                    
+                    // Update forum
+                    
+                    $ForumUpdateQuery = $Connector->prepare('UPDATE `'.PHPBB3_TABLE_PREFIX.'forums` '.
+                                                            'SET forum_last_post_subject = :Subject, forum_last_post_time = :Now, '.
+                                                                'forum_last_poster_name = :Username,  forum_last_poster_colour = :Color, '.
+                                                                'forum_last_post_id = :PostId, forum_last_poster_id = :UserId '.
+                                                            'WHERE forum_id = :ForumId LIMIT 1');
+    
+                    $ForumUpdateQuery->BindValue( ':ForumId', PHPBB3_POSTTO, PDO::PARAM_INT );
+                    $ForumUpdateQuery->BindValue( ':Subject', $aSubject, PDO::PARAM_STR );
+                    $ForumUpdateQuery->BindValue( ':UserId', PHPBB3_POSTAS, PDO::PARAM_INT );
+                    $ForumUpdateQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
+                    $ForumUpdateQuery->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );
+                    $ForumUpdateQuery->BindValue( ':Color', $UserData['user_colour'], PDO::PARAM_STR );
+                    $ForumUpdateQuery->BindValue( ':PostId', $PostId, PDO::PARAM_INT );                    
+    
+                    $ForumUpdateQuery->execute(true);
                 }
                 while (!$Connector->commit());
             }

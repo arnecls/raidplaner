@@ -6,7 +6,7 @@
         private static function backTrace()
         {
             $Out = Out::getInstance();
-            $Trace = array_reverse(debug_backtrace());
+            $Trace = debug_backtrace();
             
             foreach($Trace as $Frame)
             {
