@@ -487,7 +487,8 @@
                     $ForumUpdateQuery = $Connector->prepare('UPDATE `'.PHPBB3_TABLE_PREFIX.'forums` '.
                                                             'SET forum_last_post_subject = :Subject, forum_last_post_time = :Now, '.
                                                                 'forum_last_poster_name = :Username,  forum_last_poster_colour = :Color, '.
-                                                                'forum_last_post_id = :PostId, forum_last_poster_id = :UserId '.
+                                                                'forum_last_post_id = :PostId, forum_last_poster_id = :UserId,  '.
+                                                                'forum_posts = forum_posts+1, forum_topics = forum_topics+1, forum_topics_real = forum_topics_real+1 '.
                                                             'WHERE forum_id = :ForumId LIMIT 1');
     
                     $ForumUpdateQuery->BindValue( ':ForumId', PHPBB3_POSTTO, PDO::PARAM_INT );
