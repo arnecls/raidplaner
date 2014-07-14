@@ -338,23 +338,23 @@
         $gLocale[ 'Characters' ]               = 'Postavy'; 
         
         // Plugin setup
-        $gLocale[ 'LoadGroups' ]               = 'Load groups using these settings';
-        $gLocale[ 'AutoMemberLogin' ]          = 'Users of the following, selected group(s) log in as "members":';
-        $gLocale[ 'AutoLeadLogin' ]            = 'Users of the following, selected group(s) log in as "raidleads":';
-        $gLocale[ 'ReloadFailed' ]             = 'Reload failed';
-        $gLocale[ 'LoadSettings' ]             = 'Retrieve settings automatically';
+        $gLocale[ 'LoadGroups' ]               = 'Načíst nastavení skupin pomocí těchto nastavení';
+        $gLocale[ 'AutoMemberLogin' ]          = 'Uživatelé následujících skupin budou přihlášení jako "Členové":';
+        $gLocale[ 'AutoLeadLogin' ]            = 'Uživatelé následujících skupin budou přihlášení jako "Vedoucí raidů":';
+        $gLocale[ 'ReloadFailed' ]             = 'Znovunačtení selhalo';
+        $gLocale[ 'LoadSettings' ]             = 'Získat nastavení automaticky';
         $gLocale[ 'BindingBasePath' ]          = 'Please enter the install path of this binding relative to \''.$_SERVER['DOCUMENT_ROOT'].'\'.';
         $gLocale[ 'RetrievalFailed' ]          = 'Automatic retrieval failed';
         $gLocale[ 'RetrievalOk' ]              = 'Automatic retrieval has been successful';
-        $gLocale[ 'NotExisting' ]              = 'does not exist';
-        $gLocale[ 'AllowAutoLogin' ]           = 'Allow automatic login';
-        $gLocale[ 'NoValidConfig' ]            = 'No valid configuration file found.';
+        $gLocale[ 'NotExisting' ]              = 'neexistuje';
+        $gLocale[ 'AllowAutoLogin' ]           = 'Povolit automatické přihlášení';
+        $gLocale[ 'NoValidConfig' ]            = 'Nenalezen platný konfigurační soubor.';
         $gLocale[ 'CookieNote' ]               = 'Automatic login requires the raidplaner to be installed in a subfolder of this binding\'s cookie path. '.
                                                  'This path might have to be changed in this binding\'s configuration.';
-        $gLocale[ 'PostToForum' ]              = 'Post new raids in this forum';
-        $gLocale[ 'PostAsUser' ]               = 'Post new raids as this user';
-        $gLocale[ 'DisablePosting' ]           = 'Do not create postings';
-        $gLocale[ 'NoUsersFound' ]             = 'No users found';
+        $gLocale[ 'PostToForum' ]              = 'Zveřejnit nové raidy v tomto fóru';
+        $gLocale[ 'PostAsUser' ]               = 'Zveřejnit nové raidy jako tento uživatel';
+        $gLocale[ 'DisablePosting' ]           = 'Nevytvářet příspěvky';
+        $gLocale[ 'NoUsersFound' ]             = 'Nenalezení žádní uživatelé';
         
         
         // PHPBB3        
@@ -412,7 +412,7 @@
         $gLocale[ 'vanilla_UserEmpty' ]         = 'Vanilla uživatelské jméno nesmí být prázdné';
         $gLocale[ 'vanilla_PasswordEmpty' ]     = 'Vanilla heslo databáze nesmí být prázdné.';
         $gLocale[ 'vanilla_DBPasswordsMatch' ]  = 'Vanilla heslo databáze nesouhlasí.';
-        $gLocale[ 'vanilla_CookieEx' ]          = 'Cookie name, hash method (e.g. md5), cookie salt';
+        $gLocale[ 'vanilla_CookieEx' ]          = 'jméno cookie, hashovací metoda (např. md5), cookie salt';
         
         // Joomla
         $gLocale[ 'jml3_Binding' ]              = 'Joomla 3.x';
