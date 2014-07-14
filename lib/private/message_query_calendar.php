@@ -199,7 +199,8 @@
                         'classId'         => $Class,
                         'slotMax'         => Array(),
                         'slotCount'       => Array(),
-                        'attended'        => $NumAttends[$RaidId]
+                        'attended'        => $NumAttends[$RaidId],
+                        'mode'            => $Data['Mode']
                     );
                     
                     $Roles = explode(':',$Data['SlotRoles']);
