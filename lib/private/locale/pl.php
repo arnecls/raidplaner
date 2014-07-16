@@ -214,7 +214,7 @@
         $gLocale[ 'UpToDate' ]                 = 'Raidplanner jest aktualny.';
         $gLocale[ 'NewVersionAvailable' ]      = 'Dostępna jest nowa wersja:';
         $gLocale[ 'VisitProjectPage' ]         = 'Odwiedź stronę projektu';
-        $gLocale[ 'AttendWithPrimary' ]        = null;
+        $gLocale[ 'AttendWithPrimary' ]        = 'Zapisz się z główną rolą';
     }
 
     if ( defined('LOCALE_SETUP') )
@@ -401,7 +401,7 @@
         $gLocale[ 'smf_UserEmpty' ]             = 'Nazwa użytkownika SMF nie może być pusta.';
         $gLocale[ 'smf_PasswordEmpty' ]         = 'Hasło bazy danych SMF nie powinno być puste.';
         $gLocale[ 'smf_DBPasswordsMatch' ]      = 'Hasło bazy danych SMF zostało powtórzone niepoprawnie.';
-        $gLocale[ 'smf_CookieEx' ]              = null;
+        $gLocale[ 'smf_CookieEx' ]              = 'Nazwa ciasteczka SMF';
 
         // Vanilla
         $gLocale[ 'vanilla_Binding' ]           = 'Vanilla Forum 2.x';
@@ -444,7 +444,7 @@
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY + LOGGED_IN_SALT';
         
         // Woltlab Burning Board
-        $gLocale[ 'wbb_Binding' ]               = 'Burning Board 3.x';
+        $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
         $gLocale[ 'wbb_ConfigFile' ]            = 'Plik konfiguracyjny Burning Board';
         $gLocale[ 'wbb_Database' ]              = 'Baza danych Burning Board';
         $gLocale[ 'wbb_DatabaseEmpty' ]         = 'Nazwa bazy danych Burning Board nie może być pusta.';
