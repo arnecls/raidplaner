@@ -10,33 +10,54 @@
     float: left;
 }
 
-#profile h1 {
-    margin-left: 0px;
-    margin-bottom: 10px;
-    margin-right: 0px;
-    margin-top: 0px;
-    border-left-width: 0px;
-    border-bottom-width: 1px;
-    border-right-width: 0px;
-    border-top-width: 0px;
-    border-bottom-color: #989898;
-    border-bottom-style: dotted;
-    height: 20px;
-    font-weight: bold;
-    font-size: 16px;
-    color: #7d7d7d;
-    padding: 0px;
+#characters {    
 }
 
+#profilesettings {
+}
+
+#profile .characters {
+    background-image: url(images/block_01.png);
+}
+
+#profile .settings {
+    background-image: url(images/block_02.png);
+}
+
+#profile .icon_characters {
+    background-image: url(images/icon_users.png);
+}
+
+#profile .icon_settings {
+    background-image: url(images/icon_settings.png);
+}
+
+#profile .icon_characters_off {
+    background-image: url(images/icon_users_off.png);
+    opacity: 0.2;
+}
+
+#profile .icon_settings_off {
+    background-image: url(images/icon_settings_off.png);
+    opacity: 0.2;
+}
+
+#profile .icon_characters_off:hover {
+    background-image: url(images/icon_users_off.png);
+    opacity: 1.0;
+}
+
+#profile .icon_settings_off:hover {
+    background-image: url(images/icon_settings_off.png);
+    opacity: 1.0;
+}
 
 #charlist {
-    display: inline-block;
     vertical-align: top;
     width: 910px;
     height: 175px;
     overflow: hidden;
     white-space: nowrap;
-    margin-top: 15px;
 }
 
 #charlist .charGroup {
@@ -46,38 +67,34 @@
 }
 
 #profile .charslot {
-    vertical-align: top;
-    background: url(images/charslot.png);
-    background-repeat: no-repeat;
-    display: inline-block;
+    float: left;
     width: 123px;
     height: 148px;
     margin-right: 5px;
     margin-bottom: 10px;
+    vertical-align: top;
 }
 
 #profile .newchar {
-    vertical-align: top;
-    background: url(images/charslot_add.png);
-    background-repeat: no-repeat;
-    display: inline-block;
+    float: left;
     width: 123px;
     height: 148px;
-    margin-right: 5px;
-    margin-bottom: 10px;
-    cursor: pointer;
+    margin: 0px 5px 0px 0px;
+    padding: 0px;
+    background-image: url(images/profile_add.png);
+    background-repeat: no-repeat;
+    background-position: 46px 58px
 }
 
 #profile .nextgroup {
-    vertical-align: top;
-    background: url(images/charslot_more.png);
-    background-repeat: no-repeat;
-    display: inline-block;
-    width: 123px;
+    float: left;
+    width: 115px;
     height: 148px;
-    margin-right: 5px;
-    margin-bottom: 10px;
-    cursor: pointer;
+    margin: 0px 5px 0px 0px;
+    padding: 0px 0px 0px 8px;
+    background-image: url(images/profile_next.png);
+    background-repeat: no-repeat;
+    background-position: 26px 58px
 }
 
 #profile .charslot .clearchar {
@@ -90,7 +107,6 @@
     float: right;
     top: 5px;
     left: -3px;
-    cursor: pointer;
 }
 
 #profile .charslot .clearchar:hover {
@@ -103,12 +119,6 @@
     height: 64px;
     display: block;
     position: relative;
-    top: 15px;
-    left: 29px;
-}
-
-#profile .charslot .newclass {
-    cursor: pointer;
 }
 
 #profile .charslot .class .badge {
@@ -116,22 +126,19 @@
     height: 48px;
     display: block;
     position: relative;
-    top: -18px;
-    left: -28px;
 }
 
-#profile .charslot .class .mainchar {
+#profile .charslot .mainchar {
     background: url(images/mainchar.png);
     background-repeat: no-repeat;
 }
 
-#profile .charslot .class .twink {
+#profile .charslot .twink {
     background: url(images/twink.png);
     background-repeat: no-repeat;
-    cursor: pointer;
 }
 
-#profile .charslot .class .twink:hover {
+#profile .charslot .twink:hover {
     background: url(images/mainchar.png);
     background-repeat: no-repeat;
 }
@@ -143,19 +150,16 @@
     display: block;
     position: relative;
     text-align: center;
-    top: 20px;
     overflow: hidden;
     margin: 0 auto;
 }
 
 #profile .charslot .newname {    
-    text-align: center;    
     width: 105px;
     height: 13px;
     display: block;
     position: relative;
     text-align: center;
-    top: 20px;
     left: 8px;
     margin-bottom:15px;
     padding: 0px;
@@ -174,7 +178,6 @@
     display: block;
     position: relative;
     text-align: center;
-    top: 20px;
     left: 8px;
     margin-bottom:15px;
     padding: 0px;
@@ -185,26 +188,49 @@
     color: #AAA;
 }
 
-#profile .charslot .role {
-    width: 32px;
+#profile .charslot .role_group {
+    width: 123px;
     height: 32px;
-    display: inline-block;
-    cursor: pointer;
-    background-repeat: no-repeat;
-    float: left;
     position: relative;
+    top: 16px;
+    overflow: hidden;
 }
 
-#profile .charslot .mainrole {
-    background: url(images/star.png);
-    width: 24px;
-    height: 24px;
-    display: inline-block;
-    cursor: pointer;
+#profile .role_group .single {
+    width: 123px;
+    height: 32px;
+    
+    background-position: 46px 0px;
+}
+
+#profile .role_group .primary {
+    width: 60px;
+    height: 32px;
     float: left;
     position: relative;
-    top: 14px;
-    left: 13px;
+    left: -5px;
+        
+    background-position: 26px 0px;
+    
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+}
+
+#profile .role_group .secondary {
+    width: 60px;
+    height: 32px;
+    float: right;
+    position: relative;
+    right: -5px; 
+    
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
 }
 
 #profile .button_profile {
@@ -219,6 +245,9 @@
     display: inline-block;
     text-align: right;
     float: left;
+    border-radius: 4px;
+    border: 1px solid #999;
+    overflow: hidden;
 }
 
 #attendance .attendanceType {
@@ -228,6 +257,9 @@
     display: inline-block;
     text-align: right;
     float: left;
+    border-radius: 4px;
+    border: 1px solid #999;
+    overflow: hidden;
 }
 
 #attendance .label {
@@ -237,100 +269,27 @@
     float: left;
     margin-top: 10px;
     color: #666666;
+    text-align: left;
 }
 
-#attendance .count {
-    position: relative;
+#attendance .bar_part {    
+    display: inline-block;
+    height: 26px;
     font-size: 14px;
-    right: 5px;
-    top: 4px;
-}
-
-#attendance .start {
-    background: url("images/progress_start.png");
-    display: inline-block;
-    width: 7px;
-    height: 26px;
-    float: left;
-    position: absolute;
-}
-
-#attendance .end {
-    background: url("images/progress_end.png");
-    width: 7px;
-    height: 26px;
-    margin-left: -7px;
-    position: absolute;
-    float: left;
-}
-
-#attendance .ok {
-    background: url("images/progress_green.png");
-    display: inline-block;
-    height: 26px;
-    color: #00AA00;
-}
-
-#attendance .available {
-    background: url("images/progress_yellow_stripe.png");
-    display: inline-block;
-    height: 26px;
-    color: #888822;
-}
-
-#attendance .unavailable {
-    background: url("images/progress_red_stripe.png");
-    display: inline-block;
-    height: 26px;
-    color: #AA6666;
-}
-
-#attendance .missed {
-    background: url("images/progress_grey.png");
-    display: inline-block;
-    height: 26px;
-    color: #777777;
-}
-
-#attendance .role1 {
-    background: url("images/progress_brown.png");
-    display: inline-block;
-    height: 26px;
-    color: #998855;
-}
-
-#attendance .role2 {
-    background: url("images/progress_white.png");
-    display: inline-block;
-    height: 26px;
-    color: #AAAAAA;
-}
-
-#attendance .role3 {
-    background: url("images/progress_yellow.png");
-    display: inline-block;
-    height: 26px;
-    color: #888822;
-}
-
-#attendance .role4 {
-    background: url("images/progress_blue.png");
-    display: inline-block;
-    height: 26px;
-    color: #998855;
-}
-
-#attendance .role5 {
-    background: url("images/progress_violet.png");
-    display: inline-block;
-    height: 26px;
-    color: #998855;
+    line-height: 26px;
+    color: rgba(0,0,0,0.5);
+    text-align: right;
+    vertical-align: middle;
+    padding-right: 10px;
 }
 
 #attendance .box {
     display: inline-block;
     width: 14px;
+    height: 26px;
     float: left;
+    border-radius: 4px;
+    border: 1px solid #999;
 }
 
 #attendance .labels {
@@ -358,4 +317,168 @@
     display: inline-block;
     position: relative;
     margin-left: 0px;
+}
+
+#profilesettings .labeldisabled {
+    color: #aaa;
+}
+
+#profilesettings input[type=password] {
+    width: 140px;
+    margin-top: 0px;
+    margin-bottom: 4px;
+}
+
+#profilesettings textarea {
+    width: 280px;
+    max-width: 280px;
+    height: 43px;
+    max-height: 43px;
+    margin-top: 0px;
+    margin-bottom: 4px;
+}
+
+#profile_hashing {
+    position: absolute;
+    top: 468px;
+    right: 200px;
+    width: 150px;
+    height: 23px;
+    background-color: #ccc;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    -ms-border-radius: 4px;
+}
+
+#profile_hashing .pglabel {
+    position: absolute;
+    display: inline-block;
+    text-align: center;
+    width: 150px;
+    line-height: 23px; 
+    color: #aaa;
+    left: 0px;
+}
+
+#profile_hashing .pglabel {
+    position: absolute;
+    display: inline-block;
+    text-align: center;
+    width: 150px;
+    line-height: 23px; 
+    color: #aaa;
+    left: 0px;
+}
+
+#profile_hashing .progress {
+    display: inline-block;
+    height: 23px;
+    background-color: #666;
+    width: 0%; 
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    -ms-border-radius: 4px;
+}
+
+#profile_strprogress {
+    width: 144px;
+    height: 16px;
+    background-color: #ddd;
+    text-align: left;  
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    -ms-border-radius: 4px; 
+    display: inline-block;
+}
+
+#profile_strprogress .pglabel {
+    position: absolute;
+    display: inline-block;
+    text-align: center;
+    float: left;
+    line-height: 16px;
+    width: 140px;
+    color: #aaa;
+}
+
+#profile_strprogress .progress {
+    display: inline-block;
+    height: 16px;
+    width: 0%; 
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    -ms-border-radius: 4px;
+}
+
+#profilesettings .datepicker {
+    background-color: rgba(96,96,96,0.1);
+    border: 1px solid #aaa;
+    width: 144px;
+    display: inline-block;
+}
+
+#profilesettings .datepicker_icon {
+    display: inline-block;
+    background-image: url(images/ui-icons_222222_256x240.png);
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    top: 2px;
+}
+
+#profilesettings .datepicker_field {
+    width: 124px;
+    height: 16px;
+    line-height: 16px;
+    border: 0px;
+    margin: 0px;
+    padding: 2px;
+    background-color: transparent;
+    color: #222;
+    
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    -ms-box-shadow: none;
+}
+
+#tooltip .class_select {
+    width: 60px;
+    margin: 5px;
+    line-height: 12px;
+    font-size: 9px;
+    float: left;
+    text-align: center;
+}
+
+#tooltip .class_selected {
+    width: 32px;
+    height: 32px;
+    margin: 5px;
+    float: left;
+}
+
+#tooltip .multi_selected {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #888;
+}
+
+#tooltip .shuffle {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: 5px;
+    vertical-align: top;
 }

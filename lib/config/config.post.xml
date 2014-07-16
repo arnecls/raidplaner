@@ -1,0 +1,21 @@
+<post>
+    <!--
+       A description on how to edit this file can be found here:
+       https://github.com/arnecls/raidplaner/wiki/Customization#configuring-forum-posts
+    -->
+    <subject>
+        <![CDATA[
+            {Location:Name} ({Raid:Size}) - {Raid:Start:%A, %x}
+        ]]>
+    </subject>
+    <message timezone="Europe/Berlin">
+        <![CDATA[
+            <b>{Location:Name} ({Raid:Size})</b>
+            <i>{Raid:Start:%A, %x}</i>
+            <i>{Raid:Start:%X (%Z)} {L:to} {Raid:End:%X (%Z)}</i>
+            <a href="{URL}index.php#raid,{Raid:RaidId}">{L:LinkToRaid}</a>
+            
+            {Raid:Description}
+        ]]>
+    </message>
+</post>

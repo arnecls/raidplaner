@@ -1,29 +1,36 @@
 <?php
     define("LOCALE_MAIN", true);
     define("STYLE_DEBUG", false);
-    define("SCRIPT_DEBUG", false);
-                 
+    define("SCRIPT_DEBUG", true);
+    
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
-    require_once("lib/private/gameconfig.php");
-             
-    $gSiteVersion = 103.0;
-    
-    if ( !isset($_REQUEST["nocheck"]) )
+
+    // PHP version check
+
+    if ( PHP_VERSION_ID < 50304 )
+    {
+        echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        echo L("PHPVersionWarning");
+        die();
+    }
+
+    // Old browser check
+
+    if (!isset($_GET["nocheck"]))
         include_once("oldbrowser.php");
-    
-    if ( !file_exists("lib/config/config.php") || !checkVersion($gSiteVersion) )
+
+    // Update or setup required check
+
+    if ( !file_exists("lib/config/config.php") || !checkVersion($gVersion) )
     {
         include_once("runsetup.php");
         die();
     }
-    
-    require_once("lib/private/userproxy.class.php");
-    require_once("lib/private/tools_site.php");
-    
-    UserProxy::getInstance(); // Init user
+
+    // Site framework
+
     loadSiteSettings();
-    
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -32,122 +39,33 @@
         <title>Raidplaner</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
         <meta name="keywords" content="raidplaner, ppx"/>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>        
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+
         <link rel="icon" href="favicon.png" type="image/png"/>
-        
-        <?php            
-            if (defined("STYLE_DEBUG") && STYLE_DEBUG)
-                include_once("lib/layout/_layout.css.php");
-            else
-                echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"lib/layout/_layout.css.php?version=".$gSiteVersion."\"/>";
-        ?>
-        
-        <!--[if IE 9]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSiteVersion; ?>"/>
-        <![endif]-->
-        
-        <!--[if IE 8]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $gSiteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSiteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $gSiteVersion; ?>"/>
-        <![endif]-->
-        
-        <!--[if IE 7]>
-        <link rel="stylesheet" type="text/css" href="lib/layout/tooltipIE.css?version=<?php echo $gSiteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/shadowIE.css?version=<?php echo $gSiteVersion; ?>"/>
-        <link rel="stylesheet" type="text/css" href="lib/layout/sheetIE.css?version=<?php echo $gSiteVersion; ?>"/>
-        <![endif]-->
-        
-        <script type="text/javascript" src="lib/script/locale.js.php?version=<?php echo $gSiteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/_session.js.php?version=<?php echo $gSiteVersion; ?>"></script>
-        <script type="text/javascript" src="lib/script/config.js.php?version=<?php echo $gSiteVersion; ?>"></script>
-                
-        <?php
+        <link rel="stylesheet" type="text/css" href="lib/layout/allstyles.php?v=<?php echo $gSite["Version"].((STYLE_DEBUG) ? "&debug" : ""); ?>"/>
+
+        <?php // Load scripts
+
             if (defined("SCRIPT_DEBUG") && SCRIPT_DEBUG)
             {
-            	include_once("lib/script/_scripts.js.php");
-            	//echo "<script type=\"text/javascript\" src=\"lib/script/_scripts.js.php?version=".$gSiteVersion."&r=".((registeredUser()) ? 1 : 0)."\"></script>";
+                include_once("lib/script/allscripts.php");
             }
             else
             {
-                $Minified = (registeredUser()) ? "min.registered.js" : "min.login.js";
-                echo "<script type=\"text/javascript\" src=\"lib/script/".$Minified."?version=".$gSiteVersion."\"></script>";
-        	}
-        ?>
-        
-        <?php
-            if ( isset($_REQUEST["user"]) && 
-                 isset($_REQUEST["pass"]) && 
-                 !registeredUser() )
-            {
-                echo "<script type=\"text/javascript\">gAfterInit = function() { notify(L(\"WrongPassword\")); };</script>";
+                echo "<script type=\"text/javascript\" src=\"lib/script/raidplaner.js?v=".$gSite["Version"]."\"></script>";
             }
-        ?>        
+        ?>
     </head>
-   
-    <body style="background: <?php echo $gSite["BGColor"] ?> <?php echo ($gSite["Background"] == "none") ? "none" : "url(images/background/".$gSite["Background"].")" ?> <?php echo $gSite["BGRepeat"] ?>">
+
+    <body>
         <div id="appwindow"<?php if ($gSite["PortalMode"]) echo " class=\"portalmode\""; ?>>
-            <?php
-                if (strtolower($gSite["Banner"]) != "disable")
-                {
-                    $BannerImage = (strtolower($gSite["Banner"]) != "none") 
-                        ? "url(images/banner/".$gSite["Banner"].")"
-                        : "none";
-                        
-                    if ( $gSite["BannerLink"] == "" )
-                        echo "<div id=\"logo\" style=\"background-image: ".$BannerImage."\"></div>";
-                    else
-                        echo "<a id=\"logo\" href=\"".$gSite["BannerLink"]."\" style=\"background-image: ".$BannerImage.")\"></a>";
-                }
-            ?>
-            
-            <div id="menu">
-                <?php if ( registeredUser() ) { ?>
-                
-                <span class="logout">
-                    <form id="logout" method="post" action="index.php">
-                        <input type="hidden" name="nocheck"/>
-                        <input type="hidden" name="logout"/>
-                        <button onclick="return onLogOut()" class="button_logout"><?php echo L("Logout"); ?></button>
-                    </form>
-                </span>
-                <?php if ($gSite["HelpLink"] != "") { ?>
-                <span id="help">
-                    <button onclick="openLink('<?php echo $gSite["HelpLink"] ?>')" class="button_help"></button>
-                </span>
-                <?php } ?>
-                <span id="button_calendar" class="menu_button"><?php echo L("Calendar"); ?></span>
-                <span id="button_raid" class="menu_button"><?php echo L("Raid"); ?></span>
-                <span id="button_profile" class="menu_button"><?php echo L("Profile"); ?></span>
-                
-                    <?php if ( validAdmin() ) { ?>
-                <span id="button_settings_users" class="menu_button"><?php echo L("Settings"); ?></span>
-                    <?php } ?>
-                
-                <?php } else { ?>
-                
-                <span id="button_login" class="menu_button"><?php echo L("Login"); ?></span>
-                    <?php if ( ALLOW_REGISTRATION ) { ?>
-                <span id="button_register" class="menu_button"><?php echo L("Register"); ?></span>
-                    <?php } ?>
-                
-                <?php } ?>
-            </div>
-            <div id="body">
-                <?php 
-                    if ( !validUser() && registeredUser() )
-                    {
-                        echo "<div id=\"lockMessage\">";
-                        echo L("AccountIsLocked")."<br/>";
-                        echo L("ContactAdminToUnlock");
-                        echo "</div>";
-                    }
-                ?>
-            </div>
-            
-            <span id="version"><?php echo "version ".intVal($gSiteVersion / 100).".".intVal(($gSiteVersion % 100) / 10).".".intVal($gSiteVersion % 10).(($gSiteVersion - intval($gSiteVersion) > 0) ? chr(round(($gSiteVersion - intval($gSiteVersion)) * 10) + ord("a")-1) : ""); ?></span>
+            <div id="banner"></div>
+            <div id="menu"></div>
+            <div id="body"></div>
+
+            <span id="version"><?php echo "version ".intVal($gSite["Version"] / 100).".".intVal(($gSite["Version"] % 100) / 10).".".intVal($gSite["Version"] % 10).(($gSite["Version"] - intval($gSite["Version"]) > 0) ? chr(round(($gSite["Version"] - intval($gSite["Version"])) * 10) + ord("a")-1) : ""); ?></span>
         </div>
-        
+
         <div id="eventblocker"></div>
         <div id="dialog"></div>
         <div id="ajaxblocker">
@@ -157,54 +75,13 @@
                 <?php echo L("Busy"); ?>
             </div>
         </div>
-        
-        <?php if ( registeredUser() ) { ?>
-        
-        <table id="tooltip" cellspacing="0" border="0">
-            <tr class="top">
-                <td class="left"></td>
-                <td class="center" id="info_arrow_tl"></td>
-                <td class="center" id="info_arrow_tr"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="middle">
-                <td class="left" id="info_arrow_ml"></td>
-                <td class="center" colspan="2" rowspan="2" id="info_text"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="middle2">
-                <td class="left" id="info_arrow_ml2"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="bottom">
-                <td class="left"></td>
-                <td class="center" id="info_arrow_bl"></td>    
-               <td class="center" id="info_arrow_br"></td>
-                <td class="right"></td>
-            </tr>
-        </table>
-        
-        <table id="sheetoverlay" cellspacing="0" border="0">
-            <tr class="top">
-                <td class="left" id="closesheet"></td>
-                <td class="center"></td>                
-                <td class="right"></td>
-            </tr>
-            <tr class="middle">
-                <td class="left"></td>
-                <td class="center" id="sheet_body"></td>
-                <td class="right"></td>
-            </tr>
-            <tr class="bottom">
-                <td class="left"></td>
-                <td class="center"></td>
-                <td class="right"></td>
-            </tr>
-        </table>
-        
-        <?php } else { ?>
-        <div class="preload"><?php include("lib/private/resources.php"); ?></div>
-        <?php } ?>
-        
+        <div id="tooltip">
+            <div id="tooltip_arrow"></div>
+            <div id="info_text"></div>
+        </div>
+        <div id="sheetoverlay">
+            <div id="closesheet" class="clickable"></div>
+            <div id="sheet_body"></div>
+        </div>
     </body>
 </html>

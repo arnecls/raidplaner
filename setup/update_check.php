@@ -3,12 +3,12 @@
     require_once(dirname(__FILE__)."/../lib/private/locale.php");
     @include_once(dirname(__FILE__)."/../lib/config/config.php");
     require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
-    
-    $CurrentVersion = 100;
+
+    $CurrentVersion = 110;
     $CurrentPatch = $CurrentVersion % 10;
     $CurrentMinor = ($CurrentVersion / 10) % 10;
     $CurrentMajor = ($CurrentVersion / 100) % 10;
-    
+
 ?>
 <?php readfile("layout/header.html"); ?>
 
@@ -16,7 +16,7 @@
     $(document).ready( function() {
         var Now = new Date();
         var UTCOffset = Now.getTimezoneOffset()
-    
+
         $("#button_repair").click( function() { open("repair_done.php"); });
         $(".button_back").click( function() { open("index.php"); });
         $(".button_next").click( function() { open("update_done.php?version="+$("#version").val()+"&utcoffset="+UTCOffset); });
@@ -46,27 +46,18 @@
     {
         echo "<span class=\"check_result\" style=\"color: green\">".L("Ok")."</span><br/>";
         echo "<span class=\"check_field\">".L("DetectedVersion")."</span>";
-        
+
         $GetVersion = $Connector->prepare("SELECT IntValue FROM `".RP_TABLE_PREFIX."Setting` WHERE Name='Version' LIMIT 1");
 
-        if ( !$GetVersion->execute() )
-        {
-            $Version = 0;
-        }
+        if ( $Data = $GetVersion->fetchFirst() )
+           $Version = intval($Data["IntValue"]);
         else
-        {
-            if ( $Data = $GetVersion->fetch(PDO::FETCH_ASSOC) )
-               $Version = intval($Data["IntValue"]);
-            else
-               $Version = 92;
-        }
-        
-        $GetVersion->closeCursor();
-        
+           $Version = 0;
+
         $Patch = $Version % 10;
         $Minor = ($Version / 10) % 10;
         $Major = ($Version / 100) % 10;
-        
+
         if ( $Version == $CurrentVersion )
         {
             echo "<span class=\"check_result\" style=\"color: green\">".$Major.".".$Minor.".".$Patch."</span>";
@@ -80,7 +71,7 @@
         {
             echo "<span class=\"check_result\" style=\"color: orange\">".$Major.".".$Minor.".".$Patch."</span><br/>";
         }
-        
+
         if ($Version == 0)
         {
     ?>
@@ -92,7 +83,7 @@
         else if ($Version != $CurrentVersion)
         {
     ?>
-    
+
     <div style="margin-top:20px">
         <span><?php echo L("UpdateFrom") ?>: </span>
         <select id="version">
@@ -103,10 +94,11 @@
             <option value="96"<?php if ($Version==96) echo " selected"; ?>>0.9.6</option>
             <option value="97"<?php if ($Version==97) echo " selected"; ?>>0.9.7</option>
             <option value="98"<?php if ($Version==98) echo " selected"; ?>>0.9.8</option>
+            <option value="100"<?php if ($Version==100) echo " selected"; ?>>1.0.0</option>
         </select>
         <span> <?php echo L("UpdateTo")." ".$CurrentMajor.".".$CurrentMinor.".".$CurrentPatch; ?></span>
     </div>
-    
+
     <?php
         }
     }

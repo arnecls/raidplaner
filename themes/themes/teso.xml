@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+    <name>The Elder Scrolls Online</name>
+    <family>teso</family>
+    <banner>teso.jpg</banner>
+    <bgimage>teso.jpg</bgimage>
+    <bgrepeat>repeat-x</bgrepeat>
+    <bgcolor>#828282</bgcolor>
+    <iconset>teso</iconset>
+</theme>

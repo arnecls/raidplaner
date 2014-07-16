@@ -44,7 +44,7 @@
      *  + Added iPad Support
      *
      * 2010-03-07 (v1.7):
-     *  + *MAJOR* Rebuild (preg_match and other "slow" routine removal(s))
+     *  + *MAJOR* Rebuild (preg_match and other 'slow' routine removal(s))
      *  + Almost allof Gary's original code has been replaced
      *  + Large PHPUNIT testing environment created to validate new releases and additions
      *  + Added FreeBSD Platform
@@ -78,7 +78,7 @@
      *
      * 2009-08-18:
      *  + Updated to support PHP 5.3 - removed all deprecated function calls
-     *  + Updated to remove all double quotes (") -- converted to single quotes (')
+     *  + Updated to remove all double quotes (') -- converted to single quotes (')
      *
      * 2009-04-27:
      *  + Updated the IE check to remove a typo and bug (thanks John)
@@ -105,10 +105,10 @@
      *    Daniel 'mavrick' Lang for the function concept (http://mavrick.id.au)
      *
      *
-     * Gary White noted: "Since browser detection is so unreliable, I am
+     * Gary White noted: 'Since browser detection is so unreliable, I am
      * no longer maintaining this script. You are free to use and or
      * modify/update it as you want, however the author assumes no
-     * responsibility for the accuracy of the detected values."
+     * responsibility for the accuracy of the detected values.'
      *
      * Anyone experienced with Gary's script might be interested in these notes:
      *
@@ -204,9 +204,9 @@
 
         const OPERATING_SYSTEM_UNKNOWN = 'unknown';
 
-        public function Browser($Useragent="") {
+        public function Browser($Useragent='') {
             $this->reset();
-            if( $Useragent != "" ) {
+            if( $Useragent != '' ) {
                 $this->setUserAgent($Useragent);
             }
             else {
@@ -218,7 +218,7 @@
         * Reset all properties
         */
         public function reset() {
-            $this->_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
+            $this->_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
             $this->_browser_name = self::BROWSER_UNKNOWN;
             $this->_version = self::VERSION_UNKNOWN;
             $this->_platform = self::PLATFORM_UNKNOWN;
@@ -321,22 +321,22 @@
             $this->determine();
         }
         /**
-         * Used to determine if the browser is actually "chromeframe"
+         * Used to determine if the browser is actually 'chromeframe'
          * @since 1.7
          * @return boolean True if the browser is using chromeframe
          */
         public function isChromeFrame() {
-            return( strpos($this->_agent,"chromeframe") !== false );
+            return( strpos($this->_agent,'chromeframe') !== false );
         }
         /**
         * Returns a formatted string with a summary of the details of the browser.
         * @return string formatted string with a summary of the browser
         */
         public function __toString() {
-            return "<strong>Browser Name:</strong>{$this->getBrowser()}<br/>\n" .
-                   "<strong>Browser Version:</strong>{$this->getVersion()}<br/>\n" .
-                   "<strong>Browser User Agent String:</strong>{$this->getUserAgent()}<br/>\n" .
-                   "<strong>Platform:</strong>{$this->getPlatform()}<br/>";
+            return '<strong>Browser Name:</strong>{$this->getBrowser()}<br/>\n' .
+                   '<strong>Browser Version:</strong>{$this->getVersion()}<br/>\n' .
+                   '<strong>Browser User Agent String:</strong>{$this->getUserAgent()}<br/>\n' .
+                   '<strong>Platform:</strong>{$this->getPlatform()}<br/>';
         }
         /**
          * Protected routine to calculate and determine what the browser is in use (including platform)
@@ -410,7 +410,7 @@
          */
         protected function checkBrowserBlackBerry() {
             if( stripos($this->_agent,'blackberry') !== false ) {
-                $Aresult = explode("/",stristr($this->_agent,"BlackBerry"));
+                $Aresult = explode('/',stristr($this->_agent,'BlackBerry'));
                 $Aversion = explode(' ',$Aresult[1]);
                 $this->setVersion($Aversion[0]);
                 $this->_browser_name = self::BROWSER_BLACKBERRY;
@@ -458,10 +458,10 @@
          * @return boolean True if the browser is the MSNBot otherwise false
          */
         protected function checkBrowserMSNBot() {
-            if( stripos($this->_agent,"msnbot") !== false ) {
-                $Aresult = explode("/",stristr($this->_agent,"msnbot"));
-                $Aversion = explode(" ",$Aresult[1]);
-                $this->setVersion(str_replace(";","",$Aversion[0]));
+            if( stripos($this->_agent,'msnbot') !== false ) {
+                $Aresult = explode('/',stristr($this->_agent,'msnbot'));
+                $Aversion = explode(' ',$Aresult[1]);
+                $this->setVersion(str_replace(';','',$Aversion[0]));
                 $this->_browser_name = self::BROWSER_MSNBOT;
                 $this->setRobot(true);
                 return true;
@@ -483,7 +483,7 @@
             }
             else if( stripos($this->_agent,'W3C_Validator') !== false ) {
                 // Some of the Validator versions do not delineate w/ a slash - add it back in
-                $Ua = str_replace("W3C_Validator ", "W3C_Validator/", $this->_agent);
+                $Ua = str_replace('W3C_Validator ', 'W3C_Validator/', $this->_agent);
                 $Aresult = explode('/',stristr($Ua,'W3C_Validator'));
                 $Aversion = explode(' ',$Aresult[1]);
                 $this->setVersion($Aversion[0]);
@@ -585,13 +585,13 @@
                     $this->setVersion($Matches[1]);
                 }
                 else if( preg_match('/\//',$Resultant) ) {
-                    $Aresult = explode('/',str_replace("("," ",$Resultant));
+                    $Aresult = explode('/',str_replace('(',' ',$Resultant));
                     $Aversion = explode(' ',$Aresult[1]);
                     $this->setVersion($Aversion[0]);
                 }
                 else {
                     $Aversion = explode(' ',stristr($Resultant,'opera'));
-                    $this->setVersion(isset($Aversion[1])?$Aversion[1]:"");
+                    $this->setVersion(isset($Aversion[1])?$Aversion[1]:'');
                 }
                 $this->_browser_name = self::BROWSER_OPERA;
                 return true;
@@ -613,7 +613,6 @@
             }
             return false;
         }
-
 
         /**
          * Determine if the browser is WebTv or not (last updated 1.7)
@@ -696,7 +695,7 @@
         protected function checkBrowserOmniWeb() {
             if( stripos($this->_agent,'omniweb') !== false ) {
                 $Aresult = explode('/',stristr($this->_agent,'omniweb'));
-                $Aversion = explode(' ',isset($Aresult[1])?$Aresult[1]:"");
+                $Aversion = explode(' ',isset($Aresult[1])?$Aresult[1]:'');
                 $this->setVersion($Aversion[0]);
                 $this->setBrowser(self::BROWSER_OMNIWEB);
                 return true;
@@ -782,7 +781,7 @@
          * @return boolean True if the browser is Nokia otherwise false
          */
         protected function checkBrowserNokia() {
-            if( preg_match("/Nokia([^\/]+)\/([^ SP]+)/i",$this->_agent,$Matches) ) {
+            if( preg_match('/Nokia([^\/]+)\/([^ SP]+)/i',$this->_agent,$Matches) ) {
                 $this->setVersion($Matches[2]);
                 if( stripos($this->_agent,'Series60') !== false || strpos($this->_agent,'S60') !== false ) {
                     $this->setBrowser(self::BROWSER_NOKIA_S60);
@@ -802,13 +801,13 @@
          */
         protected function checkBrowserFirefox() {
             if( stripos($this->_agent,'safari') === false ) {
-                if( preg_match("/Firefox[\/ \(]([^ ;\)]+)/i",$this->_agent,$Matches) ) {
+                if( preg_match('/Firefox[\/ \(]([^ ;\)]+)/i',$this->_agent,$Matches) ) {
                     $this->setVersion($Matches[1]);
                     $this->setBrowser(self::BROWSER_FIREFOX);
                     return true;
                 }
-                else if( preg_match("/Firefox$/i",$this->_agent,$Matches) ) {
-                    $this->setVersion("");
+                else if( preg_match('/Firefox$/i',$this->_agent,$Matches) ) {
+                    $this->setVersion('');
                     $this->setBrowser(self::BROWSER_FIREFOX);
                     return true;
                 }
@@ -863,7 +862,7 @@
         protected function checkBrowserLynx() {
             if( stripos($this->_agent,'lynx') !== false ) {
                 $Aresult = explode('/',stristr($this->_agent,'Lynx'));
-                $Aversion = explode(' ',(isset($Aresult[1])?$Aresult[1]:""));
+                $Aversion = explode(' ',(isset($Aresult[1])?$Aresult[1]:''));
                 $this->setVersion($Aversion[0]);
                 $this->setBrowser(self::BROWSER_LYNX);
                 return true;

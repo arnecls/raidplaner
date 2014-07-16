@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+    <name>Star Wars: The Old Republic</name>
+    <family>swtor</family>
+    <banner>swtor.jpg</banner>
+    <bgimage>swtor.jpg</bgimage>
+    <bgrepeat>repeat-x</bgrepeat>
+    <bgcolor>#8a8a8a</bgcolor>
+    <iconset>swtor</iconset>
+</theme>

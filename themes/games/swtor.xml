@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<game>
+	<id>sw</id>
+	<name>Star Wars: The Old Republic</name>
+	<family>swtor</family>
+	<classmode>single</classmode>
+
+	<roles>
+    	<role id="tnk" loca="Tank" style="role_tank"/>
+    	<role id="med" loca="Healer" style="role_heal"/>
+    	<role id="mdd" loca="Melee" style="role_melee"/>
+    	<role id="rdd" loca="Range" style="role_range"/>
+	</roles>
+
+	<classes>
+	    <class id="van" loca="Vanguard" style="vanguard">
+			<role id="tnk" default="true"/>
+			<role id="mdd"/>
+		</class>
+        <class id="cmd" loca="Commando" style="commando">
+			<role id="rdd" default="true"/>
+			<role id="med"/>
+		</class>
+		
+        <class id="gun" loca="Gunslinger" style="gunslinger">
+			<role id="rdd" default="true"/>
+		</class>
+        <class id="scd" loca="Scoundrel" style="scoundrel">
+			<role id="mdd" default="true"/>
+			<role id="med"/>
+		</class>
+        
+        <class id="gdn" loca="Guardian" style="guardian">
+			<role id="tnk" default="true"/>
+			<role id="mdd"/>
+		</class>
+        <class id="sen" loca="Sentinel" style="sentinel">
+			<role id="mdd" default="true"/>
+		</class>
+        
+        <class id="sge" loca="Sage" style="sage">
+			<role id="rdd" default="true"/>
+			<role id="med"/>
+		</class>
+        <class id="shd" loca="Shadow" style="shadow">
+			<role id="mdd" default="true"/>
+			<role id="tnk"/>
+		</class>
+        
+        <class id="ptc" loca="Powertech" style="powertech">
+			<role id="tnk" default="true"/>
+			<role id="mdd"/>
+			<role id="rdd"/>
+		</class>
+        <class id="mrc" loca="Mercenary" style="mercenary">
+			<role id="rdd" default="true"/>
+			<role id="med"/>
+		</class>
+        
+        <class id="jug" loca="Juggernaut" style="juggernaut">
+			<role id="tnk" default="true"/>
+			<role id="mdd"/>
+		</class>
+        <class id="mrd" loca="Marauder" style="marauder">
+			<role id="mdd" default="true"/>
+		</class>
+        
+        <class id="opt" loca="Operative" style="operative">
+			<role id="med" default="true"/>
+			<role id="mdd"/>
+		</class>
+        <class id="snp" loca="Sniper" style="sniper">
+			<role id="rdd" default="true"/>
+		</class>
+        
+        <class id="asa" loca="Assassin" style="assassin">
+			<role id="mdd" default="true"/>
+			<role id="tnk"/>
+        </class>
+        <class id="src" loca="Sorcerer" style="sorcerer"> 
+			<role id="rdd" default="true"/>
+			<role id="med"/>
+        </class>
+	</classes>
+	
+	<raidview>
+		<slots role="tnk" order="1" columns="1"/>
+		<slots role="med" order="2" columns="1"/>
+		<slots role="mdd" order="3" columns="2"/>
+		<slots role="rdd" order="4" columns="*"/>
+	</raidview>
+	
+	<groups>
+		<group count="8">
+			<role id="tnk" count="2"/>
+			<role id="med" count="2"/>
+			<role id="mdd" count="1"/>
+			<role id="rdd" count="*"/>
+		</group>
+		<group count="16">
+			<role id="tnk" count="2"/>
+			<role id="med" count="4"/>
+			<role id="mdd" count="5"/>
+			<role id="rdd" count="*"/>
+		</group>
+	</groups>
+	
+    <locale name="en">
+        <text key="Vanguard">Vanguard</text>
+        <text key="Commando">Commando</text>
+        <text key="Gunslinger">Gunslinger</text>
+        <text key="Scoundrel">Scoundrel</text>
+        <text key="Guardian">Guardian</text>
+        <text key="Sentinel">Sentinel</text>
+        <text key="Sage">Sage</text>
+        <text key="Shadow">Shadow</text>
+        <text key="Powertech">Powertech</text>
+        <text key="Mercenary">Mercenary</text>
+        <text key="Juggernaut">Juggernaut</text>
+        <text key="Marauder">Marauder</text>
+        <text key="Operative">Operative</text>
+        <text key="Sniper">Sniper</text>
+        <text key="Assassin">Assassin</text>
+        <text key="Sorcerer">Sorcerer</text>
+    </locale>
+	
+    <locale name="de">
+        <text key="Vanguard">Frontkämpfer</text>
+        <text key="Commando">Kommando</text>
+        <text key="Gunslinger">Revolverheld</text>
+        <text key="Scoundrel">Schurke</text>
+        <text key="Guardian">Hüter</text>
+        <text key="Sentinel">Wächter</text>
+        <text key="Sage">Gelehrter</text>
+        <text key="Shadow">Schatten</text>
+        <text key="Powertech">Powertech</text>
+        <text key="Mercenary">Söldner</text>
+        <text key="Juggernaut">Juggernaut</text>
+        <text key="Marauder">Marodeur</text>
+        <text key="Operative">Saboteur</text>
+        <text key="Sniper">Scharfschütze</text>
+        <text key="Assassin">Attentäter</text>
+        <text key="Sorcerer">Hexer</text>
+    </locale>
+	
+    <locale name="fr">
+        <text key="Vanguard">Avant-garde</text>
+        <text key="Commando">Commando</text>
+        <text key="Gunslinger">Franc-tireur</text>
+        <text key="Scoundrel">Malfrat</text>
+        <text key="Guardian">Gardien</text>
+        <text key="Sentinel">Sentinelle</text>
+        <text key="Sage">Érudit</text>
+        <text key="Shadow">Ombre</text>
+        <text key="Powertech">Spécialiste</text>
+        <text key="Mercenary">Mercenaire</text>
+        <text key="Juggernaut">Ravageur</text>
+        <text key="Marauder">Maraudeur</text>
+        <text key="Operative">Agent Secret</text>
+        <text key="Sniper">Tireur D'élite</text>
+        <text key="Assassin">Assassin</text>
+        <text key="Sorcerer">Sorcier</text>
+    </locale>
+	
+    <locale name="pl">
+        <text key="Vanguard">Vanguard</text>
+        <text key="Commando">Commando</text>
+        <text key="Gunslinger">Gunslinger</text>
+        <text key="Scoundrel">Scoundrel</text>
+        <text key="Guardian">Guardian</text>
+        <text key="Sentinel">Sentinel</text>
+        <text key="Sage">Sage</text>
+        <text key="Shadow">Shadow</text>
+        <text key="Powertech">Powertech</text>
+        <text key="Mercenary">Mercenary</text>
+        <text key="Juggernaut">Juggernaut</text>
+        <text key="Marauder">Marauder</text>
+        <text key="Operative">Operative</text>
+        <text key="Sniper">Sniper</text>
+        <text key="Assassin">Assassin</text>
+        <text key="Sorcerer">Sorcerer</text>
+    </locale>
+	
+    <locale name="cs">
+        <text key="Vanguard">Vanguard</text>
+        <text key="Commando">Commando</text>
+        <text key="Gunslinger">Gunslinger</text>
+        <text key="Scoundrel">Scoundrel</text>
+        <text key="Guardian">Guardian</text>
+        <text key="Sentinel">Sentinel</text>
+        <text key="Sage">Sage</text>
+        <text key="Shadow">Shadow</text>
+        <text key="Powertech">Powertech</text>
+        <text key="Mercenary">Mercenary</text>
+        <text key="Juggernaut">Juggernaut</text>
+        <text key="Marauder">Marauder</text>
+        <text key="Operative">Operative</text>
+        <text key="Sniper">Sniper</text>
+        <text key="Assassin">Assassin</text>
+        <text key="Sorcerer">Sorcerer</text>
+    </locale>
+</game>

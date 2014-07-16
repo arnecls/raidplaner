@@ -1,38 +1,52 @@
 <?php
     header("Content-type: text/xml");
     echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-    echo "<database>";
     
     define( "LOCALE_SETUP", true );
     require_once("../../lib/private/connector.class.php");
+    require_once("../../lib/private/random.class.php");
     require_once("../../lib/config/config.php");
 
     $Out = Out::getInstance();
     $Connector = Connector::getInstance();
-    
-    $TestSt = $Connector->prepare( "SELECT * FROM `".RP_TABLE_PREFIX."User` WHERE UserId=1 LIMIT 1" );
-    
-    if (!$TestSt->execute())
+
+    $TestQuery = $Connector->prepare( "SELECT Login FROM `".RP_TABLE_PREFIX."User` WHERE UserId=1 LIMIT 1" );
+
+    try
     {
-        postErrorMessage($TestSt);
-    }
-    else
-    {    
-        $Salt = md5(mcrypt_create_iv(2048, MCRYPT_RAND));
+        $TestQuery->fetchFirst(true);
+
+        $Salt = md5(Random::getBytes(2048));
         $HashedPassword = hash("sha256", sha1($_REQUEST["password"]).$Salt);
-                
-        if ( $TestSt->rowCount() == 0 )
+
+        if ( $TestQuery->getAffectedRows() == 0 )
         {
-            $Connector->exec( "INSERT INTO `".RP_TABLE_PREFIX."User` VALUES(1, 'admin', 0, 'none', 'true', 'admin', '".$HashedPassword."', '".$Salt."', '', '', FROM_UNIXTIME(".time()."));" );
-        }   
+            $NewAdmin = $Connector->prepare( "INSERT INTO `".RP_TABLE_PREFIX."User` ".
+                "VALUES(1, 'admin', 0, 'none', 'true', :Name, :Password, :Salt, '', FROM_UNIXTIME(:Now));");
+
+            $NewAdmin->BindValue(":Name", $_REQUEST["name"], PDO::PARAM_STR);
+            $NewAdmin->BindValue(":Password", $HashedPassword, PDO::PARAM_STR);
+            $NewAdmin->BindValue(":Salt", $Salt, PDO::PARAM_STR);
+            $NewAdmin->BindValue(":Now", time(), PDO::PARAM_STR);
+
+            $NewAdmin->execute(true);
+        }
         else
         {
-            $Connector->exec( "UPDATE `".RP_TABLE_PREFIX."User` SET `Password`='".$HashedPassword."', `Salt`='".$Salt."' WHERE UserId=1 LIMIT 1;" );        
+            $UpdateAdmin = $Connector->prepare( "UPDATE `".RP_TABLE_PREFIX."User` SET `Login`= :Name, `Password`= :Password, `Salt`= :Salt WHERE UserId=1 LIMIT 1;" );
+            
+            $UpdateAdmin->BindValue(":Name", $_REQUEST["name"], PDO::PARAM_STR);
+            $UpdateAdmin->BindValue(":Password", $HashedPassword, PDO::PARAM_STR);
+            $UpdateAdmin->BindValue(":Salt", $Salt, PDO::PARAM_STR);
+
+            $UpdateAdmin->execute(true);
+
         }
     }
-    
-    $TestSt->closeCursor();
-    $Out->flushXML("");
-    
-    echo "</database>";
+    catch (PDOException $Exception)
+    {
+        $Out->pushError($Exception->getMessage());
+    }
+
+    $Out->flushXML("database");
 ?>

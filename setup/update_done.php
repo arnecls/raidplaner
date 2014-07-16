@@ -7,7 +7,7 @@
 <script type="text/javascript">
     $(document).ready( function() {
         $(".button_back").click( function() { open("update_check.php"); });
-        $(".button_next").click( function() { open("index.php"); });
+        $(".button_next").click( function() { open("install_done.php"); });
     });
 </script>
 
@@ -21,6 +21,4 @@
     <div class="button_back" style="background-image: url(layout/update_white.png)"><?php echo L("Back"); ?></div>
     <div class="button_next" style="background-image: url(layout/install_white.png)"><?php echo L("Continue"); ?></div>
 
-
 <?php readfile("layout/footer.html"); ?>
-

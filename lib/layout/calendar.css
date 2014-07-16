@@ -40,13 +40,13 @@
 }
 
 #calendar .calendarDay {
-    height: 77px;
-    max-height: 77px;
+    height: 70px;
+    max-height: 70px;
 }
 
 #calendar .day_overflow {
-    height: 77px;
-    max-height: 77px;
+    height: 70px;
+    max-height: 70px;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
@@ -64,35 +64,34 @@
     color: #7d7d7d;
 }
 
+#calendar .vacation {
+    border-top: 2px solid rgba(255,0,0,0.2);
+}
+
+#calendar .vacation_today {
+    border-top: 2px solid rgba(255,0,0,1)!important;
+}
+
 #calendar .today {
-    border-style: solid;
-    border-color: #b88e8e;
-    border-width: 1px;
+    border: 1px solid #b88e8e;
     vertical-align: top;
-    background-color: rgba(215, 215, 210, 0.4);
+    background-color: rgba(220, 200, 200, 0.3);
+    padding: 3px;
 }
 
 #calendar .day {
-    border-right-color: #9a9a9a;
-    border-bottom-color: #9a9a9a;
-    border-bottom-style: dotted;
-    border-right-style: dotted;
-    border-bottom-width: 1px;
-    border-right-width: 1px;
+    border-right: 1px dotted #9a9a9a;
+    border-bottom: 1px dotted #9a9a9a;
     vertical-align: top;
+    padding: 3px;
 }
 
 #calendar .dayFirst {
-    border-right-color: #9a9a9a;
-    border-bottom-color: #9a9a9a;
-    border-bottom-style: dotted;
-    border-right-style: dotted;
-    border-bottom-width: 1px;
-    border-right-width: 1px;
-    border-left-color: #9a9a9a;
-    border-left-style: dotted;
-    border-left-width: 1px;
+    border-right: 1px dotted #9a9a9a;
+    border-bottom: 1px dotted #9a9a9a;
+    border-left: 1px dotted #9a9a9a;
     vertical-align: top;
+    padding: 3px;
 }
 
 #month {
@@ -118,16 +117,15 @@
     display: inline-block;
     width: 32px;
     height: 32px;
-    cursor: pointer;
 }
 
 #calendar .raid .overlayCanceled {
     background-image: url(images/raid_canceled_small.png);
     background-repeat: no-repeat;
     float: right;
-    top: -16px;
     width: 32px;
     height: 32px;
+    top: -14px;
     position: relative;
 }
 
@@ -135,7 +133,8 @@
     background-image: url(images/raid_locked_small.png);
     background-repeat: no-repeat;
     float: right;
-    top: -16px;
+    left: 1px;
+    top: -13px;
     width: 32px;
     height: 32px;
     position: relative;
@@ -149,6 +148,7 @@
     font-weight: bold;
     font-size: 14px;
     color: #00ff00;
+    z-index: 5;
 }
 
 #calendar .raid .statusabsent {
@@ -159,6 +159,7 @@
     font-weight: bold;
     font-size: 14px;
     color: #ff4b48;
+    z-index: 5;
 }
 
 #calendar .raid .statuswait {
@@ -169,6 +170,7 @@
     font-weight: bold;
     font-size: 14px;
     color: #ffff00;
+    z-index: 5;
 }
 
 #calendar .raid .status {
@@ -179,6 +181,7 @@
     font-weight: bold;
     font-size: 14px;
     color: #cccccc;
+    z-index: 5;
 }
 
 #calendar .raid .tooltip {
@@ -195,13 +198,109 @@
     visibility: hidden;
 }
 
-.comment .submit {
+#calendarFunctions .button {
+    width: 32px;
+    margin-right: 4px;
+}
+
+#tooltip .attendstatus {
+    display: inline-block;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    height: 22px;
+    line-height: 22px;
+    vertical-align: middle;
+    padding: 0 8px 0 8px;
+    float: right;
+}
+
+#tooltip .attendtext {
+    float: left;
+}
+
+#tooltip .attendedrole {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    top: -5px;
+    left: 6px;
+}
+
+#tooltip .statuswait {
+    background-color: rgba(177, 179, 133, 0.4);
+    color: rgba(255,255,0,1);
+}
+
+#tooltip .statusok {
+}
+
+#tooltip .statusabsent {
+    background-color: rgba(184, 97, 97, 0.6);
+    color: #f00;
+}
+
+#tooltip .status {
+    color: rgba(255,255,255,0.5);
+    background-color: rgba(128,128,128,0.4);
+}
+
+#tooltip .icon {
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    float: left;
+}
+
+#tooltip .location {
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 10px;
+    max-width: 250px;
+}
+
+#tooltip .time {
+    font-style: italic;
+    font-size: 10px;
+    line-height: 12px;
+    color: #ccc;
+}
+
+#tooltip .attends {
+    font-style: italic;
+    font-size: 10px;
+    line-height: 12px;
+    color: #ccc;
+}
+
+#tooltip .textBlock {
+    float: left;
+}
+
+#tooltip .description {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    display: block;
+    max-width: 250px;
+}
+
+#tooltip .functions {
+    clear: left;
+    margin-top: 10px;
+    white-space: nowrap;
+    margin-bottom: 2px;
+}
+
+#tooltip .comment .submit {
     position: relative;
     top: 5px;
     margin: 0px;
 }
 
-.comment .text {
+#tooltip .comment .text {
     padding: 2px;
     font-size: 12px;
     font-family: Helvetica, Verdana, Arial, sans-serif;
@@ -214,33 +313,114 @@
     margin-top: 10px;
 }
 
-.commentbadge {
+#tooltip .commentbadge {
     width: 32px;
     height: 41px;
     background: url(images/badge.png);
     background-repeat: no-repeat;
     position: relative;
     float: right;
-    top: -13px;
-    cursor: pointer;
+    top: -15px;
 }
 
-.commentbadge:hover {
+#tooltip .commentbadge:hover {
     background: url(images/badge_over.png);
 }
 
-.infobadge {
+#tooltip .infobadge {
     width: 32px;
     height: 41px;
     background: url(images/raidbadge.png);
     background-repeat: no-repeat;
     position: relative;
     float: right;
-    top: -13px;
-    cursor: pointer;
+    top: -15px;
 }
 
-.infobadge:hover {
+#tooltip .infobadge:hover {
     background: url(images/raidbadge_over.png);
 }
 
+#tooltip .wantedbadge {
+    height: 22px;
+    position: relative;
+    left: -12px;
+}
+
+#tooltip .wantedbadge .lfm {
+    background-color: #cdaa3f;
+}
+
+#tooltip .wantedbadge .ok {
+    background-color: #7BB853;
+}
+
+#tooltip .wantedbadge .wrap {
+    height: 22px;
+    width: 3px;
+    display: inline-block;
+    background-image: url(images/wanted_badge.png);
+    background-repeat: no-repeat;
+    
+    border-radius: 2px 0px 0px 2px;
+    -webkit-border-radius: 2px 0px 0px 2px;
+    -moz-border-radius: 2px 0px 0px 2px;
+    -o-border-radius: 2px 0px 0px 2px;
+    -ms-border-radius: 2px 0px 0px 2px;
+}
+
+#tooltip .wantedbadge .count {
+    height: 17px;
+    width: 0px;
+    margin-top: 5px;
+    padding-left: 16px;
+    padding-right: 4px;
+    overflow: hidden;
+    display: inline-block;
+    color: rgba(0,0,0,0);
+    font-size: 12px;
+    line-height: 19px;
+    font-weight: bold;
+    background-position: 2px 0px;
+    background-repeat: no-repeat;
+    
+    border-radius: 0px 2px 2px 0;
+    -webkit-border-radius: 0px 2px 2px 0;
+    -moz-border-radius: 0px 2px 2px 0;
+    -o-border-radius: 0px 2px 2px 0;
+    -ms-border-radius: 0px 2px 2px 0;
+}
+
+#tooltip .wantedbadge .count:hover {
+    width: auto;
+    color: rgba(0,0,0,0.5);
+    padding-left: 18px;
+}
+
+#tooltip .wantedbadge .role_ok:hover {
+    padding-left: 16px;
+}
+
+#tooltip .wantedbadge .role_melee {
+    background-image: url(images/icon_badge_melee.png);
+}
+
+#tooltip .wantedbadge .role_range {
+    background-image: url(images/icon_badge_range.png);
+}
+
+#tooltip .wantedbadge .role_tank {
+    background-image: url(images/icon_badge_tank.png);
+}    
+
+#tooltip .wantedbadge .role_heal {
+    background-image: url(images/icon_badge_heal.png);
+}
+
+#tooltip .wantedbadge .role_support {
+    background-image: url(images/icon_badge_support.png);
+}
+
+#tooltip .wantedbadge .role_ok {
+    background-image: url(images/icon_badge_ok.png);
+}

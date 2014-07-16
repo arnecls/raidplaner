@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<game>
+    <id>teso</id>
+    <name>The Elder Scrolls Online</name>
+    <family>teso</family>
+    <classmode>single</classmode>
+    
+    <roles>
+        <role id="tnk" loca="Tank" style="role_tank"/>
+        <role id="med" loca="Healer" style="role_heal"/>
+        <role id="dmg" loca="Damage" style="role_melee"/>
+    </roles>
+    
+    <classes>
+        <class id="tpl" loca="Templar" style="templar">
+            <role id="med" default="true"/>
+            <role id="dmg"/>
+        </class>
+        
+        <class id="dgk" loca="DragonKnight" style="dragonknight">
+            <role id="tnk" default="true"/>
+            <role id="dmg"/>
+        </class>
+        
+        <class id="scr" loca="Sorcerer" style="sorcerer">
+            <role id="dmg" default="true"/>
+        </class>
+        
+        <class id="nbl" loca="Nightblade" style="nightblade">
+            <role id="dmg" default="true"/>
+        </class>
+    </classes>
+    
+    <raidview>
+        <slots role="tnk" order="1" columns="1"/>
+        <slots role="med" order="2" columns="1"/>
+        <slots role="dmg" order="3" columns="*"/>
+    </raidview>
+    
+    <groups>
+        <group count="4">
+            <role id="tnk" count="1"/>
+            <role id="med" count="1"/>
+            <role id="dmg" count="*"/>
+        </group>
+        
+        <group count="12">
+            <role id="tnk" count="1"/>
+            <role id="med" count="2"/>
+            <role id="dmg" count="*"/>
+        </group>
+    </groups>
+    
+    <locale name="en">
+        <text key="Templar">Templar</text>
+        <text key="DragonKnight">Dragon Knight</text>
+        <text key="Sorcerer">Sorcerer</text>
+        <text key="Nightblade">Nightblade</text>
+    </locale>
+    
+    <locale name="de">
+        <text key="Templar">Templar</text>
+        <text key="DragonKnight">Dragon Knight</text>
+        <text key="Sorcerer">Sorcerer</text>
+        <text key="Nightblade">Nightblade</text>
+    </locale>
+    
+    <locale name="fr">
+        <text key="Templar">Templar</text>
+        <text key="DragonKnight">Dragon Knight</text>
+        <text key="Sorcerer">Sorcerer</text>
+        <text key="Nightblade">Nightblade</text>
+    </locale>
+    
+    <locale name="pl">
+        <text key="Templar">Templar</text>
+        <text key="DragonKnight">Dragon Knight</text>
+        <text key="Sorcerer">Sorcerer</text>
+        <text key="Nightblade">Nightblade</text>
+    </locale>
+    
+    <locale name="cs">
+        <text key="Templar">Templar</text>
+        <text key="DragonKnight">Dragon Knight</text>
+        <text key="Sorcerer">Sorcerer</text>
+        <text key="Nightblade">Nightblade</text>
+    </locale>
+</game>

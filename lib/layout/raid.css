@@ -10,31 +10,25 @@
     float: left;
 }
 
-#raiddetail .tabs {
-    width: 47px;
-    height: 220px;
-    float: left;
-    background-repeat: no-repeat;
+#raidsetup {   
 }
 
-#raiddetail .tab_icon {
-    width: 32px;
-    height: 32px;
-    margin-left: 2px;
-    margin-top: 5px;
-    position: relative;
+#slackers {
+}
+
+#raidoptions {
 }
 
 #raiddetail .setup {
-    background-image: url(images/block_users.png);
+    background-image: url(images/block_01.png);
 }
 
 #raiddetail .slackers {
-    background-image: url(images/block_locations.png);
+    background-image: url(images/block_02.png);
 }
 
 #raiddetail .settings {
-    background-image: url(images/block_settings.png);
+    background-image: url(images/block_03.png);
 }
 
 #raiddetail .icon_setup {
@@ -52,62 +46,51 @@
 #raiddetail .icon_setup_off {
     background-image: url(images/icon_raid_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
-    cursor: pointer;
 }
 
 #raiddetail .icon_setup_off:hover {
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #raiddetail .icon_slackers_off {
     background-image: url(images/icon_users_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
-    cursor: pointer;
 }
 
 #raiddetail .icon_slackers_off:hover {
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
 #raiddetail .icon_settings_off {
     background-image: url(images/icon_settings_off.png);
     opacity: 0.2;
-    filter:Alpha(opacity=20);
-    cursor: pointer;
 }
 
 #raiddetail .icon_settings_off:hover {
     opacity: 1.0;
-    filter:Alpha(opacity=100);
 }
 
-#slackers_badge {
+#tablist .iconbadge {
     position: relative;
     height: 14px;
     font-size: 12px;
     line-height: 12px;
     padding: 0px 2px 0px 1px;
     margin: 0px 2px 0px 2px;
-    background-color: #000;
-    color: #aaa;
-    position: relative;
-    top: 17px;
-    left: 0px;
+    background-color: rgba(0,0,0,0.6);
+    top: 18px;
+    left: -2px;
+    width: 29px;
     text-align: center;
-    filter: inherit;
 }
 
-#slackers_badge:empty {
+#tablist .iconbadge:empty {
     display: none;
 }
 
 #raiddetail .raidinfo {
     height: 64px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 #raiddetail .raidicon {
@@ -115,7 +98,6 @@
     width: 64px;
     height: 64px;
     margin-right: 10px;
-    margin-left: 12px;
     display: inline-block;
 }
 
@@ -123,16 +105,20 @@
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 5px;
+    width: 450px;
+    height: 32px;
+    overflow-y: hidden;
 }
 
 #raiddetail .raidsize {
     font-size: 10px;
+    line-height: 12px;
 }
 
 #raiddetail .raidcomment {
     height: 64px;
     width: 300px;
-    top: 0px;
+    top: 10px;
     right: 36px;
     position: absolute;
     font-size: 11px;
@@ -148,6 +134,7 @@
 
 #raiddetail .datetime {
     font-size: 10px;
+    line-height: 12px;
 }
 
 #raiddetail .playerIcon {
@@ -158,23 +145,23 @@
     float: left;
 }
 
-.activeSlot .playerIcon {
+#raidsetup .activeSlot .playerIcon {
     left: 4px;
 }
 
-.activeSlotComment .playerIcon {
+#raidsetup .activeSlotComment .playerIcon {
     left: 4px;
 }
 
-.spilledSlot .playerIcon {
+#raidsetup .spilledSlot .playerIcon {
     left: 4px;
 }
 
-.spilledSlotComment .playerIcon {
+#raidsetup .spilledSlotComment .playerIcon {
     left: 4px;
 }
 
-.playerIcon .mainbadge {
+#raiddetail .playerIcon .mainbadge {
     background-image: url(images/star.png);
     width: 18px;
     height: 16px;
@@ -183,55 +170,118 @@
     top: 14px;
 }
 
-.playerTooltipIcon {
+#tooltip .role_select {
+    display: inline-block;
     width: 32px;
-    height: 32px;
-    float: left;
+    height: 64px;
+    padding-right: 8px;
+    border-right: 1px solid #666;
+    overflow: hidden;
+    line-height: 0;
 }
 
-.playerTooltipRoleIcon {
+#tooltip img.role {
     width: 32px;
     height: 32px;
-}
-
-.playerTooltipRoleIcon .mainbadge {
-    background-image: url(images/star.png);
-    width: 18px;
-    height: 16px;
     position: relative;
-    left: 12px;
-    top: 14px;
+    top: -16px;
 }
 
-.playerTooltipIconLarge {
+#tooltip img.single_role {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    top: 16px;    
+}
+
+#tooltip .char_select {
+    display: inline-block;
     width: 64px;
     height: 64px;
-    text-align: center;
-    float: left;
+    padding-left: 8px;
+    background-repeat: no-repeat;
+    background-position: 8px 0px;
 }
 
-.playerTooltipIconLarge .twinkcount {
-    background-image: url(images/switchable.png);
-    font-size: 12px;
-    position: relative;
-    top: 45px;
-    width: 64px;
-    height: 15px;
-    text-align: center;
-    padding-top: 1px;
+#tooltip .char_select .mainchar {
+    background-image: url(images/star.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    left: 52px;
+    top: 2px;
 }
 
-.playerTooltipText {
-    float: left;
-    margin-left: 10px;
-    max-width: 200px;
+#tooltip .switch_button {
+    width: 110px;
+}
+
+
+#tooltip .absent_button {
+    width: 110px;
+    margin-top: 5px;
+}
+
+#tooltip .player_info {
     display: inline-block;
+    max-width: 200px;
+    min-width: 100px;
+    line-height: 1.5em;
+    color: white;
+    vertical-align: top;
+    padding-left: 16px;
 }
 
-.playerTooltipText .name {
+#tooltip .player_info .name {
     font-weight: bold;
-    font-size: 1.2em;
+    font-size: 1.5em;
+}
+
+#tooltip .player_info .detail {
+    font-size: 10px;
+    font-style: italic;
+    color: #666;
     margin-bottom: 10px;
+}
+
+#tooltip .switch_role_up {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 10;
+}
+
+#tooltip .switch_role_up:hover {
+    background-position: 0px -5px;
+    background-repeat: no-repeat;
+    background-image: url(images/move_up.png);
+}
+
+#tooltip .switch_role_down {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 40px;
+    left: 8px;
+    z-index: 10;
+}
+
+#tooltip .switch_role_down:hover {
+    background-position: 0px 10px;
+    background-repeat: no-repeat;
+    background-image: url(images/move_down.png);
+}
+
+#tooltip .switch_char_next {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    top: 16px;
+    left: 47px;
+    background-image: url(images/move_right.png);
 }
 
 #raiddetail .playerName {
@@ -246,22 +296,22 @@
     overflow: hidden;
 }
 
-.activeSlot .playerName {
+#raidsetup .activeSlot .playerName {
     padding-left: 4px;
     width: 76px!important;
 }
 
-.activeSlotComment .playerName {
+#raidsetup .activeSlotComment .playerName {
     padding-left: 4px;
     width: 76px!important;
 }
 
-.spilledSlot .playerName {
+#raidsetup .spilledSlot .playerName {
     padding-left: 4px;
     width: 76px!important;
 }
 
-.spilledSlotComment .playerName {
+#raidsetup .spilledSlotComment .playerName {
     padding-left: 4px;
     width: 76px!important;
 }
@@ -280,44 +330,39 @@
     border-bottom: 1px dotted #AAA;
 }
 
-.activeSlot .editableName {
+#raidsetup .activeSlot .editableName {
     margin-left: 4px;
     width: 88px!important;
 }
 
-.activeSlotComment .editableName {
+#raidsetup .activeSlotComment .editableName {
     margin-left: 4px;
     width: 88px!important;
 }
 
-.spilledSlot .editableName {
+#raidsetup .spilledSlot .editableName {
     margin-left: 4px;
     width: 88px!important;
 }
 
-.spilledSlotComment .editableName {
+#raidsetup .spilledSlotComment .editableName {
     margin-left: 4px;
     width: 88px!important;
 }
 
 #raiddetail .roleList {
-    margin-left: 12px; 
-    height: 380px;
+    margin-right: 14px;
+    height: 350px;
     float: left;
     overflow: visible;
 }
 
-#raiddetail .roleList h2 {
-    margin-top: 10px;
-    margin-bottom: 5px;
-    position: relative;
-    font-size: 20px;
-}
-
 #raiddetail .attendance_count {
-    color: #ccc;
+    color: #bbb;
     font-size: 12px;
-    vertical-align: text-top;   
+    font-weight: normal;
+    vertical-align: text-top;
+    text-shadow: none;   
 }
 
 #raiddetail .clip {    
@@ -338,10 +383,12 @@
     margin-right: 4px;
     width: 140px;
     height: 32px;
-    overflow: visible;
-    -moz-border-radius: 4px; 
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
+    overflow: visible; 
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
 }
 
 #raiddetail .break {
@@ -351,19 +398,21 @@
     margin-right: 4px;
     width: 140px;
     height: 32px;
-    overflow: visible;
-    -moz-border-radius: 4px; 
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
+    overflow: visible; 
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
 }
 
-#raiddetail .clickable {
+#raiddetail .clip .clickable {
     -moz-box-shadow: 0px 1px 0 #aaa;
     -webkit-box-shadow: 0px 1px 0 #aaa;
     box-shadow: 0px 1px 0 #aaa;
 }
 
-#raiddetail .clickable:active {
+#raiddetail .clip .clickable:active {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -371,12 +420,7 @@
     margin-bottom: 3px;
 }
 
-#raiddetail .clickable2 {
-    cursor: pointer;
-}
-
 #raiddetail .dragable {
-    cursor: pointer;
 }
 
 #raiddetail .activeSlot {
@@ -385,7 +429,6 @@
 
 #raiddetail .activeSlotComment {
     background-image: url(images/slot_set_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .spilledSlot {
@@ -394,7 +437,6 @@
 
 #raiddetail .spilledSlotComment {
     background-image: url(images/slot_spill_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .waitSlot {
@@ -403,7 +445,6 @@
 
 #raiddetail .waitSlotComment {
     background-image: url(images/slot_wait_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .benchSlot {
@@ -412,7 +453,6 @@
 
 #raiddetail .benchSlotComment {
     background-image: url(images/slot_bench_comment.png);
-    cursor: pointer;
 }
 
 #raiddetail .emptySlot {
@@ -421,23 +461,10 @@
 
 #raiddetail .randomSlot {
     background-image: url(images/slot_random.png);
-    cursor: pointer;
 }
 
 #raiddetail .clipchange {
     background-image: url(images/slot_more.png);
-    cursor: pointer;
-}
-
-.playerTooltipIconLarge .mainbadge {
-    background-image: url(images/star.png);
-    width: 24px;
-    height: 24px;
-    float: left;
-    position: absolute;
-    left: 14px;
-    top: 14px;
-    display: inline-block;
 }
 
 #raiddetail .slotMarker {
@@ -451,41 +478,46 @@
     display: inline-block;
 }
 
+#exportButton {
+    position: absolute;
+    top: 470px;
+    right: 200px;
+    white-space: nowrap;
+}
+
 #absent_drop {
     display: none;
-    float: left;
-    height: 18px;
+    position: absolute;
+    bottom: -28px;
+    height: 22px;
     width: 740px;
-    padding-top:4px;
-    margin-left: 60px;
-    margin-top: 23px;    
+        
     background-color: rgb(200,182,182);
     color: rgb(200,152,152);
-    box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);    
-    font-size: 13px;
-    font-weight: bold; 
-    -moz-border-radius: 4px; 
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
+    
     text-align: center;
+    vertical-align: middle;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: bold;
+    
+    box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
+    -webkit-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
+    -moz-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
+    -o-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
+    -ms-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
+    
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    -ms-border-radius: 4px; 
 }
 
 #absent_drop.absent_hover {
     background-color: rgb(200,160,160)!important;
     color: rgb(200,64,64)!important;
     box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.5)!important;
-}
-
-#raiddetail .slackerspanel {
-    position: absolute;
-    left: 58px;
-    float: left;
-}
-
-#raiddetail .settingspanel {
-    position: relative;
-    left: 12px;
-    float: left;
 }
 
 #raiddetail .locationicon {
@@ -496,31 +528,14 @@
     display: inline-block;
 }
 
-#raiddetail .settingLabel {
-    width: 120px;
-    max-width: 120px;
-    float: left;
-    display: inline-block;
-    clear: left;
-    margin-bottom: 8px;
-    vertical-align: top;
-}
-
-#raiddetail .settingField {
-    margin-left: 6px;
-    margin-bottom: 8px;
-    vertical-align: top;
-    float: left;
-    display: inline-block;
-}
-
-#raiddetail .settingEdit {
-    background-color: #ccc;
-    border: 1px solid #aaa;
-    color: #fefefe;
-    padding: 3px;
-}
-
 #absentList {
     height: 170px;
+}
+
+#raidoptions .filltext {
+    display: inline-block;
+    text-align: center; 
+    color: #000;
+    font-size: 11px;
+    font-family: Helvetica, Verdana, Arial, sans-serif; 
 }

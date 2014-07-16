@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+    <name>A realm reborn (dark icons)</name>
+    <family>ff14</family>
+    <banner>ff14.jpg</banner>
+    <bgimage>final_fantasy.jpg</bgimage>
+    <bgrepeat>repeat-x</bgrepeat>
+    <bgcolor>#8a8a8a</bgcolor>
+    <iconset>ff14_dark</iconset>
+</theme>
