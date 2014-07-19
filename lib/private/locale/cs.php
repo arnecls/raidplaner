@@ -212,7 +212,7 @@
         $gLocale[ 'UpToDate' ]                 = 'Raidplaner je aktuální.';
         $gLocale[ 'NewVersionAvailable' ]      = 'Nová verze je dostupná:';
         $gLocale[ 'VisitProjectPage' ]         = 'Navštivte domovskou stránku projektu';
-        $gLocale[ 'AttendWithPrimary' ]        = null;
+        $gLocale[ 'AttendWithPrimary' ]        = 'Zúčastněte se s primární rolí';
     }
     
     if ( defined('LOCALE_SETUP') )
@@ -402,7 +402,7 @@
         $gLocale[ 'smf_UserEmpty' ]             = 'SMF uživatelské jméno nesmí být prázdné';
         $gLocale[ 'smf_PasswordEmpty' ]         = 'SMF heslo databáze nesmí být prázdné.';
         $gLocale[ 'smf_DBPasswordsMatch' ]      = 'SMF heslo databáze nesouhlasí.';
-        $gLocale[ 'smf_CookieEx' ]              = null;
+        $gLocale[ 'smf_CookieEx' ]              = 'SMF název cookie';
         
         // Vanilla
         $gLocale[ 'vanilla_Binding' ]           = 'Vanilla Forum 2.x';

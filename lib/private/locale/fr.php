@@ -214,7 +214,7 @@
         $gLocale[ 'UpToDate' ]                 = 'Ce raidplanner est à jour.';
         $gLocale[ 'NewVersionAvailable' ]      = 'Il y a une nouvelle version disponible:';
         $gLocale[ 'VisitProjectPage' ]         = 'Visiter la page du projet';
-        $gLocale[ 'AttendWithPrimary' ]        = null;
+        $gLocale[ 'AttendWithPrimary' ]        = 'Assister avec le rôle principal';
     }
 
     if ( defined('LOCALE_SETUP') )
@@ -382,7 +382,7 @@
         $gLocale[ 'vb3_UserEmpty' ]             = 'vBulletin utilisateur ne peut pas être vide.';
         $gLocale[ 'vb3_PasswordEmpty' ]         = 'vBulletin Mot de passe de la base de données ne peut pas être vide.';
         $gLocale[ 'vb3_DBPasswordsMatch' ]      = 'vBulletin Les mots de passe de la base de données ne correspondent pas.';
-        $gLocale[ 'vb3_CookieEx' ]              = null;
+        $gLocale[ 'vb3_CookieEx' ]              = 'vBulletin cookie préfixe';
 
         // MyBB
         $gLocale[ 'mybb_Binding' ]              = 'MyBB 1.6+';
@@ -401,7 +401,7 @@
         $gLocale[ 'smf_UserEmpty' ]             = 'SMF utilisateur ne peut pas être vide.';
         $gLocale[ 'smf_PasswordEmpty' ]         = 'SMF Mot de passe de la base de données ne peut pas être vide.';
         $gLocale[ 'smf_DBPasswordsMatch' ]      = 'SMF Les mots de passe de la base de données ne correspondent pas.';
-        $gLocale[ 'smf_CookieEx' ]              = null;
+        $gLocale[ 'smf_CookieEx' ]              = 'SMF nom de cookie';
 
         // Vanilla
         $gLocale[ 'vanilla_Binding' ]           = 'Vanilla Forum 2.x';
@@ -411,7 +411,7 @@
         $gLocale[ 'vanilla_UserEmpty' ]         = 'Vanilla utilisateur ne peut pas être vide.';
         $gLocale[ 'vanilla_PasswordEmpty' ]     = 'Vanilla Mot de passe de la base de données ne peut pas être vide.';
         $gLocale[ 'vanilla_DBPasswordsMatch' ]  = 'Vanilla Les mots de passe de la base de données ne correspondent pas.';
-        $gLocale[ 'vanilla_CookieEx' ]          = null;
+        $gLocale[ 'vanilla_CookieEx' ]          = 'Le nom de cookie, la méthode de hash (par exemple md5), salt de cookie';
 
         // Joomla
         $gLocale[ 'jml3_Binding' ]              = 'Joomla 3.x';
@@ -421,7 +421,7 @@
         $gLocale[ 'jml3_UserEmpty' ]            = 'Joomla3 utilisateur ne peut pas être vide.';
         $gLocale[ 'jml3_PasswordEmpty' ]        = 'Joomla3 Mot de passe de la base de données ne peut pas être vide.';
         $gLocale[ 'jml3_DBPasswordsMatch' ]     = 'Joomla3 Les mots de passe de la base de données ne correspondent pas.';
-        $gLocale[ 'jml3_CookieEx' ]             = null;
+        $gLocale[ 'jml3_CookieEx' ]             = 'Joomla3 secret';
 
         // Drupal
         $gLocale[ 'drupal_Binding' ]            = 'Drupal 7.6+';
@@ -431,7 +431,7 @@
         $gLocale[ 'drupal_UserEmpty' ]          = 'Drupal utilisateur ne peut pas être vide.';
         $gLocale[ 'drupal_PasswordEmpty' ]      = 'Drupal Mot de passe de la base de données ne peut pas être vide.';
         $gLocale[ 'drupal_DBPasswordsMatch' ]   = 'Drupal Les mots de passe de la base de données ne correspondent pas.';
-        $gLocale[ 'drupal_CookieEx' ]           = null;
+        $gLocale[ 'drupal_CookieEx' ]           = 'Drupal URL de base';
 
         // Wordpress
         $gLocale[ 'wp_Binding' ]                = 'Wordpress 3.x';
@@ -441,7 +441,7 @@
         $gLocale[ 'wp_UserEmpty' ]              = 'Wordpress utilisateur ne peut pas être vide.';
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Wordpress Mot de passe de la base de données ne peut pas être vide.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Wordpress Les mots de passe de la base de données ne correspondent pas.';
-        $gLocale[ 'wp_CookieEx' ]               = null;
+        $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY suivie LOGGED_IN_SALT';
         
         // Woltlab Burning Board
         $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
@@ -451,6 +451,6 @@
         $gLocale[ 'wbb_UserEmpty' ]             = 'Burning Board utilisateur ne peut pas être vide.';
         $gLocale[ 'wbb_PasswordEmpty' ]         = 'Burning Board Mot de passe de la base de données ne peut pas être vide.';
         $gLocale[ 'wbb_DBPasswordsMatch' ]      = 'Burning Board Les mots de passe de la base de données ne correspondent pas.';
-        $gLocale[ 'wbb_CookieEx' ]              = null;
+        $gLocale[ 'wbb_CookieEx' ]              = 'Burning Board cookie préfixe';
     }
 ?>
