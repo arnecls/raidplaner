@@ -118,14 +118,17 @@
 
         // --------------------------------------------------------------------------------------------
 
-        private function validateCleartextPassword( $aPassword, $aUserId, $aBindingName )
+        private function validateCleartextPassword( $aPassword, $aUserId, $aBindingName, $aLookupBindingName )
         {
-            $Binding  = self::$BindingsByName[$aBindingName];
+            $Binding  = self::$BindingsByName[$aLookupBindingName];
             $UserInfo = $Binding->getUserInfoById($aUserId);
 
             if ($UserInfo == null)
                 return false;
-
+            
+            if ($aBindingName != $aLookupBindingName)    
+                $Binding = self::$BindingsByName[$aBindingName];
+                
             $Method = $Binding->getMethodFromPass($UserInfo->Password);
             $Hashed = $Binding->hash($aPassword, $UserInfo->Salt, $Method);
 
@@ -403,12 +406,19 @@
                 if ( defined('USE_CLEARTEXT_PASSWORDS') && USE_CLEARTEXT_PASSWORDS )
                 {
                     // Cleartext mode fallback
-
-                    $UserId = (($UserData['BindingActive'] == 'false') || ($UserData['ExternalBinding'] == 'none'))
-                        ? $this->UserId
-                        : $UserData['ExternalId'];
-
-                    return $this->validateCleartextPassword( $aSignedPassword, $UserId, $UserData['ExternalBinding'] );
+                    
+                    if (($UserData['BindingActive'] == 'false') || ($UserData['ExternalBinding'] == 'none'))
+                    {
+                        $LookupBinding = 'none';
+                        $UserId = $UserData['UserId'];
+                    }
+                    else
+                    {
+                        $LookupBinding = $UserData['ExternalBinding'];
+                        $UserId = $UserData['ExternalId'];
+                    }
+                        
+                    return $this->validateCleartextPassword( $aSignedPassword, $UserId, $UserData['ExternalBinding'], $LookupBinding );
                 }
 
                 $this->invalidateOneTimeKey( $this->UserId );
@@ -473,12 +483,19 @@
                     {
                         // User logged in using a cleartext password.
                         // In this case we encrypt locally via php.
-
-                        $UserId = (($UserData['BindingActive'] == 'false') || ($UserData['ExternalBinding'] == 'none'))
-                            ? $UserData['UserId']
-                            : $UserData['ExternalId'];
-
-                        $PasswordCheckOk = $this->validateCleartextPassword( $aLoginUser['Password'], $UserId, $UserData['ExternalBinding'] );
+                        
+                        if (($UserData['BindingActive'] == 'false') || ($UserData['ExternalBinding'] == 'none'))
+                        {
+                            $LookupBinding = 'none';
+                            $UserId = $UserData['UserId'];
+                        }
+                        else
+                        {
+                            $LookupBinding = $UserData['ExternalBinding'];
+                            $UserId = $UserData['ExternalId'];
+                        }
+                        
+                        $PasswordCheckOk = $this->validateCleartextPassword( $aLoginUser['Password'], $UserId, $UserData['ExternalBinding'], $LookupBinding );
                     }
                     else
                     {
