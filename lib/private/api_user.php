@@ -135,7 +135,7 @@
         $LastUserId = 0;
         $User = Array();
         
-        $UserQuery->loop(function($UserRow) use (&$LastUserId, &$Result, &$User, &$Games) 
+        $UserQuery->loop(function($UserRow) use (&$LastUserId, &$Result, &$User, &$Games, $aUTF8) 
         {            
             if ($LastUserId != $UserRow['_UserId'])
             {
