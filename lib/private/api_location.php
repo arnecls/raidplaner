@@ -77,7 +77,7 @@
         // Build result
         
         $Result = Array();
-        $LocationQuery->loop(function($LocationRow) use (&$Result) {
+        $LocationQuery->loop(function($LocationRow) use (&$Result,$aUTF8) {
             array_push($Result, Array(
                 'Id'     => $LocationRow['LocationId'],
                 'Name'   => ($aUTF8) ? xmlToUTF8($LocationRow['Name']) : $LocationRow['Name'],
