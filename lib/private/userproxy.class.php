@@ -148,9 +148,7 @@
                 if ( $UserInfo != null )
                 {
                     if ( $UserInfo->BindingName != 'none' )
-                    {                                         
-                        $UserInfo = $this->getUserInfoById($UserInfo->BindingName, $UserInfo->UserId);
-                        
+                    {
                         $UpdateUserQuery = $this->updateUserMirror( $UserInfo, false, self::generateKey32() );
                         $UpdateUserQuery->execute();
                     }
@@ -521,7 +519,7 @@
             $this->UserGroup  = $UserData['Group'];
             $this->UserId     = $UserData['UserId'];
             $this->UserName   = $UserData['Login'];
-
+            
             $this->updateCharacters();
             $this->updateSettings();
 
@@ -641,6 +639,7 @@
         {
             // TODO: $UserInfo->UserId referres to UserId when updating a local user
             //       and ExternalUserId otherwise. This is inconvenient.
+            // Note: Incoming $UserInfo is expected to be the native info
 
             $Out = Out::getInstance();
             $Connector = Connector::getInstance();
@@ -659,6 +658,7 @@
             else
             {
                 $UserIsBound = true;
+                $SyncGroup = !defined('ALLOW_GROUP_SYNC') || ALLOW_GROUP_SYNC;
                 
                 if (!isset(self::$BindingsByName[$UserInfo->PassBinding]))
                 {
@@ -673,9 +673,17 @@
                         $ExternalInfo = $Binding->getUserInfoById($UserInfo->UserId);
                         
                         if ( $ExternalInfo == null )
+                        {
                             $UserIsBound = false;
+                        }
                         else
+                        {
+                            $LocalGroup = $UserInfo->Group;
                             $UserInfo = $ExternalInfo;
+                            
+                            if (!$SyncGroup)
+                                $UserInfo->Group = $LocalGroup;
+                        }
                     }
                     else
                     {
@@ -685,8 +693,6 @@
                 }
 
                 // Local users may update externally, so sync the credentials
-
-                $SyncGroup = !defined('ALLOW_GROUP_SYNC') || ALLOW_GROUP_SYNC;
 
                 $MirrorQuery = $Connector->prepare('UPDATE `'.RP_TABLE_PREFIX.'User` SET '.
                     'Login = :Login, Password = :Password, BindingActive = :Active, Salt = :Salt, OneTimeKey = :Key'.
