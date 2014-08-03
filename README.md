@@ -13,7 +13,7 @@ If you want to modify the Raidplaner you should have a look at the [Customizatio
 If you want to share your modifications or have questions visit the [Forum](http://www.packedpixel.de/raidplaner).
 
 Packedpixel Raidplaner requires PHP 5.3.4 or better with PDO (MySQL) support as well as a MySQL 5.x or better database.
-Supported browsers are Firefox 4+, Google Chrome, Internet Explorer 10+, Opera 13+ and Safari 4+.
+Supported browsers are Firefox 4+, Google Chrome, Internet Explorer 10+, Opera 12+ and Safari 4+.
 
 ### What to download
 
