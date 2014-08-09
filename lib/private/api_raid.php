@@ -253,7 +253,7 @@
         // Execute query
         
         $QueryString = 'SELECT '.implode(',', $Fields).$TableQuery.$WhereString.$OrderString.$LimitString;
-        Out::getInstance()->pushValue('query', $QueryString);
+        //Out::getInstance()->pushValue('query', $QueryString);
         
         $Connector = Connector::getInstance();
         $RaidQuery = $Connector->prepare($QueryString);
