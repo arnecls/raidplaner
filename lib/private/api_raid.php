@@ -307,29 +307,42 @@
                     $Raid['SetToRaid'][$Role] = 0;
                     $Raid['Available'][$Role] = 0;
                 }
+                
+                if (empty($Raid['SetToRaid']) || empty($Raid['Available']))
+                {
+                    Out::getInstance()->pushError('No slots');
+                }
             }
             
             // Count available / absent
             
-            if ($aRaidRow['Role'] !== null)
+            if ($aRaidRow['Role'] !== null)   
             {
-                switch($aRaidRow['Status'])
+                if (($aRaidRow['Status'] != 'unavailable') &&
+                    !isset($Raid['SetToRaid'][$aRaidRow['Role']]))
                 {
-                case 'ok':
-                    ++$Raid['SetToRaid'][$aRaidRow['Role']];
-                    // ok counts as available, too
-                case 'available':
-                    ++$Raid['Available'][$aRaidRow['Role']];
-                    break;
-                
-                case 'undecided':
-                    // TODO: Need to query all available users to return undecided
-                    break;
+                    Out::getInstance()->pushError('Bad role: '.$aRaidRow['Role']);
+                }
+                else
+                {                
+                    switch($aRaidRow['Status'])
+                    {
+                    case 'ok':
+                        ++$Raid['SetToRaid'][$aRaidRow['Role']];
+                        // ok counts as available, too
+                    case 'available':
+                        ++$Raid['Available'][$aRaidRow['Role']];
+                        break;
                     
-                case 'unavailable':
-                default:
-                    ++$Raid['Absent'];
-                    break;
+                    case 'undecided':
+                        // TODO: Need to query all available users to return undecided
+                        break;
+                        
+                    case 'unavailable':
+                    default:
+                        ++$Raid['Absent'];
+                        break;
+                    }
                 }
             }
             
