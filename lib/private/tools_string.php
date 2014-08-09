@@ -1,5 +1,8 @@
 <?php
+    $gItoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
+    // -----------------------------------------------------------------------------
+    
     function getUTF8($aString)
     {
         $Encoding = mb_detect_encoding($aString);
@@ -97,6 +100,49 @@
         $Text = preg_replace('/<br\\/>/', "\n", $Text);
         
         return xmlToUTF8($Text);
+    }
+
+    // -----------------------------------------------------------------------------
+    
+    function encode64( $aInput, $aCount )
+    {
+        global $gItoa64;
+        
+        $Output = '';
+        $i = 0;
+
+        do {
+            $Value = ord($aInput[$i++]);
+            $Output .= $gItoa64[$Value & 0x3f];
+
+            if ($i < $aCount)
+            {
+               $Value |= ord($aInput[$i]) << 8;
+            }
+
+            $Output .= $gItoa64[($Value >> 6) & 0x3f];
+
+            if ($i++ >= $aCount)
+            {
+               break;
+            }
+
+            if ($i < $aCount)
+            {
+               $Value |= ord($aInput[$i]) << 16;
+            }
+
+            $Output .= $gItoa64[($Value >> 12) & 0x3f];
+
+            if ($i++ >= $aCount)
+            {
+               break;
+            }
+
+            $Output .= $gItoa64[($Value >> 18) & 0x3f];
+        } while ($i < $aCount);
+
+        return $Output;
     }
 
 ?>

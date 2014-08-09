@@ -7,8 +7,7 @@
     {
         private static $BindingName = 'drupal';
         private static $AuthenticatedGroupId = 2;
-        private static $Itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
+        
         public static $HashMethod_sha512  = 'drupal_sha512';
         public static $HashMethod_usha512 = 'drupal_usha512';
         public static $HashMethod_pmd5    = 'drupal_pmd5';
@@ -340,39 +339,6 @@
 
         // -------------------------------------------------------------------------
 
-        private static function encode64( $aInput, $aCount )
-        {
-            $Output = '';
-            $i = 0;
-
-            do {
-                $Value = ord($aInput[$i++]);
-                $Output .= self::$Itoa64[$Value & 0x3f];
-
-                if ($i < $aCount)
-                   $Value |= ord($aInput[$i]) << 8;
-
-                $Output .= self::$Itoa64[($Value >> 6) & 0x3f];
-
-                if ($i++ >= $aCount)
-                   break;
-
-                if ($i < $aCount)
-                   $Value |= ord($aInput[$i]) << 16;
-
-                $Output .= self::$Itoa64[($Value >> 12) & 0x3f];
-
-                if ($i++ >= $aCount)
-                   break;
-
-                $Output .= self::$Itoa64[($Value >> 18) & 0x3f];
-            } while ($i < $aCount);
-
-            return $Output;
-        }
-
-        // -------------------------------------------------------------------------
-
         public function hash( $aPassword, $aSalt, $aMethod )
         {
             $Password = $aPassword;
@@ -427,7 +393,7 @@
                     $Hash = hash('sha512', $Hash.$Password, TRUE);
                 } while (--$Count);
 
-                $Hash = self::encode64($Hash,64);
+                $Hash = encode64($Hash,64);
             }
             else
             {
@@ -437,7 +403,7 @@
                     $Hash = md5($Hash.$Password, TRUE);
                 } while (--$count);
 
-                $Hash = self::encode64($Hash,16);
+                $Hash = encode64($Hash,16);
             }
 
             return substr($Prefix.self::$Itoa64[$CountB2].$Salt.$Hash, 0, 55);

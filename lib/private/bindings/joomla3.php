@@ -9,6 +9,7 @@
 
         public static $HashMethodMD5s = 'jml_md5s';
         public static $HashMethodBF   = 'jml_bf';
+        public static $HashMethodMD5r = 'jml_md5r';
 
         // -------------------------------------------------------------------------
 
@@ -267,10 +268,17 @@
 
         private function extractSaltPart( $aPassword )
         {
+            global $gItoa64;
+        
             switch ( $this->getMethodFromPass($aPassword) )
             {
             case self::$HashMethodBF:
                 return substr($aPassword, 0, 7+22);
+                
+            case self::$HashMethodMD5r:
+                $Count = strpos($gItoa64, $aPassword[3]);
+                $Salt = substr($aPassword, 4, 8);
+                return $Count.':'.$Salt;
              
             default:   
             case self::$HashMethodMD5s:
@@ -289,6 +297,9 @@
             if ( strpos($aPassword, '$2a$') === 0 )
                 return self::$HashMethodBF;
                 
+            if ( strpos($aPassword, '$P$') === 0 )
+                return self::$HashMethodMD5r;
+                
             return self::$HashMethodMD5s;
         }
 
@@ -300,6 +311,20 @@
             {
             case self::$HashMethodMD5s:
                 return md5($aPassword.$aSalt).':'.$aSalt;
+                
+            case self::$HashMethodMD5r:
+                $Parts   = explode(':',$aSalt);
+                $CountB2 = intval($Parts[0],10);
+                $Count   = 1 << $CountB2;
+                $Salt    = $Parts[1];
+    
+                $Hash = md5($Salt.$aPassword, true);
+    
+                do {
+                    $Hash = md5($Hash.$aPassword, true);
+                } while (--$Count);
+    
+                return '$P$'.self::$Itoa64[$CountB2].$Salt.encode64($Hash,16);
             
             default:
                 return crypt($aPassword,$aSalt);

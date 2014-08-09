@@ -6,7 +6,6 @@
     class PHPBB3Binding extends Binding
     {
         private static $BindingName = 'phpbb3';
-        private static $Itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
         public static $HashMethod_md5r = 'phpbb3_md5r';
         public static $HashMethod_md5  = 'phpbb3_md5';
@@ -351,48 +350,7 @@
 
             return self::$HashMethod_md5;
         }
-
-        // -------------------------------------------------------------------------
-
-        private static function encode64( $aInput, $aCount )
-        {
-            $Output = '';
-            $i = 0;
-
-            do {
-                $Value = ord($aInput[$i++]);
-                $Output .= self::$Itoa64[$Value & 0x3f];
-
-                if ($i < $aCount)
-                {
-                   $Value |= ord($aInput[$i]) << 8;
-                }
-
-                $Output .= self::$Itoa64[($Value >> 6) & 0x3f];
-
-                if ($i++ >= $aCount)
-                {
-                   break;
-                }
-
-                if ($i < $aCount)
-                {
-                   $Value |= ord($aInput[$i]) << 16;
-                }
-
-                $Output .= self::$Itoa64[($Value >> 12) & 0x3f];
-
-                if ($i++ >= $aCount)
-                {
-                   break;
-                }
-
-                $Output .= self::$Itoa64[($Value >> 18) & 0x3f];
-            } while ($i < $aCount);
-
-            return $Output;
-        }
-
+        
         // -------------------------------------------------------------------------
 
         public function hash( $aPassword, $aSalt, $aMethod )
@@ -413,7 +371,7 @@
                 $Hash = md5($Hash.$aPassword, true);
             } while (--$Count);
 
-            return '$H$'.self::$Itoa64[$CountB2].$Salt.self::encode64($Hash,16);
+            return '$H$'.self::$Itoa64[$CountB2].$Salt.encode64($Hash,16);
         }
 
         // -------------------------------------------------------------------------

@@ -6,7 +6,6 @@
     class EQDKPBinding extends Binding
     {
         private static $BindingName = 'eqdkp';
-        private static $Itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
         public static $HashMethod_sha512s = 'eqdkp_sha512s';
         public static $HashMethod_sha512b = 'eqdkp_sha512sb';
@@ -315,39 +314,6 @@
 
         // -------------------------------------------------------------------------
 
-        private static function encode64( $aInput, $aCount )
-        {
-            $Output = '';
-            $i = 0;
-
-            do {
-                $Value = ord($aInput[$i++]);
-                $Output .= self::$Itoa64[$Value & 0x3f];
-
-                if ($i < $aCount)
-                   $Value |= ord($aInput[$i]) << 8;
-
-                $Output .= self::$Itoa64[($Value >> 6) & 0x3f];
-
-                if ($i++ >= $aCount)
-                   break;
-
-                if ($i < $aCount)
-                   $Value |= ord($aInput[$i]) << 16;
-
-                $Output .= self::$Itoa64[($Value >> 12) & 0x3f];
-
-                if ($i++ >= $aCount)
-                   break;
-
-                $Output .= self::$Itoa64[($Value >> 18) & 0x3f];
-            } while ($i < $aCount);
-
-            return $Output;
-        }
-
-        // -------------------------------------------------------------------------
-
         public function hash( $aPassword, $aSalt, $aMethod )
         {
             if ( ($aMethod == self::$HashMethod_sha512b) ||
@@ -377,7 +343,7 @@
                     $Hash = hash('sha512', $Hash.$PreHash, true);
                 } while(--$Count);
 
-                return '$S$'.self::$Itoa64[$CountB2].$Salt2.self::encode64($Hash,strlen($Hash)).':'.$Salt;
+                return '$S$'.self::$Itoa64[$CountB2].$Salt2.encode64($Hash,strlen($Hash)).':'.$Salt;
             }
 
             if ( $aMethod == self::$HashMethod_sha512s )
