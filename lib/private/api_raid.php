@@ -8,7 +8,7 @@
         'parameters'  => Array(
             'start'     => 'Only return raids starting after this UTC timestamp. Default: 0.',
             'end'       => 'Only return raids starting before this UTC timestamp. Default: 0x7FFFFFFF.',
-            'limit'     => 'Maximum number of raids to return. Passing 0 returns all raids. Default: 10.',
+            'limit'     => 'Maximum number of rows to return (when returning attends this is NOT the number of raids to return). Passing 0 returns all raids. Default: 0.',
             'offset'    => 'Number of raids to skip if a limit is set. Default: 0.',
             'raid'      => 'Comma separated list of raid ids. Only returns the given raids. Default: empty.',
             'location'  => 'Comma separated list of location ids. Only returns raids on these locations. Default: empty.',
@@ -30,7 +30,7 @@
         return Array(
             'start'     => getParamFrom($aRequest, 'start', 0),
             'end'       => getParamFrom($aRequest, 'end', 0x7FFFFFFF),
-            'limit'     => getParamFrom($aRequest, 'limit', 10),
+            'limit'     => getParamFrom($aRequest, 'limit', 0),
             'offset'    => getParamFrom($aRequest, 'offset', 0),
             'raid'      => getParamFrom($aRequest, 'raid', ''),
             'location'  => getParamFrom($aRequest, 'location', ''),
@@ -53,7 +53,7 @@
         
         $aStart         = getParamFrom($aParameter, 'start',    0);
         $aEnd           = getParamFrom($aParameter, 'end',      0x7FFFFFFF);
-        $aLimit         = getParamFrom($aParameter, 'limit',    10);
+        $aLimit         = getParamFrom($aParameter, 'limit',    0);
         $aOffset        = getParamFrom($aParameter, 'offset',   0);
         $aRaid          = getParamFrom($aParameter, 'raid',     '');
         $aLocation      = getParamFrom($aParameter, 'location', '');
@@ -253,7 +253,7 @@
         // Execute query
         
         $QueryString = 'SELECT '.implode(',', $Fields).$TableQuery.$WhereString.$OrderString.$LimitString;
-        //Out::getInstance()->pushValue('query', $QueryString);
+        Out::getInstance()->pushValue('query', $QueryString);
         
         $Connector = Connector::getInstance();
         $RaidQuery = $Connector->prepare($QueryString);
