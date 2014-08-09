@@ -308,22 +308,22 @@
                     $Raid['Available'][$Role] = 0;
                 }
                 
-                if (empty($Raid['SetToRaid']) || empty($Raid['Available']))
-                {
-                    Out::getInstance()->pushError('No slots');
-                }
+                //if (empty($Raid['SetToRaid']) || empty($Raid['Available']))
+                //{
+                //    Out::getInstance()->pushError('No slots');
+                //}
             }
             
             // Count available / absent
             
             if ($aRaidRow['Role'] !== null)   
             {
-                if (($aRaidRow['Status'] != 'unavailable') &&
-                    !isset($Raid['SetToRaid'][$aRaidRow['Role']]))
-                {
-                    Out::getInstance()->pushError('Bad role: '.$aRaidRow['Role']);
-                }
-                else
+                //if (($aRaidRow['Status'] != 'unavailable') &&
+                //    !isset($Raid['SetToRaid'][$aRaidRow['Role']]))
+                //{
+                //    Out::getInstance()->pushError('Bad role: '.$aRaidRow['Role']);
+                //}
+                //else
                 {                
                     switch($aRaidRow['Status'])
                     {
