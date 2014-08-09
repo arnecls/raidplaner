@@ -256,6 +256,7 @@
 
         private static function extractSaltPart( $aPassword )
         {
+            global $gItoa64;
             $Length = strlen(substr($aPassword, 0, strpos($aPassword, ':')));
 
             if ((substr($aPassword, 0, 4) == '$2a$') && ($Length == 60))
@@ -273,7 +274,7 @@
 
             if ((substr($aPassword, 0, 3) == '$S$') && ($Length == 98))
             {
-                $Count = strpos(self::$Itoa64, $aPassword[3]);
+                $Count = strpos($gItoa64, $aPassword[3]);
                 $Salt2 = substr($aPassword, 4, 8);
                 $Salt  = substr($aPassword, strpos($aPassword,':')+1);
 
@@ -316,6 +317,8 @@
 
         public function hash( $aPassword, $aSalt, $aMethod )
         {
+            global $gItoa64;
+            
             if ( ($aMethod == self::$HashMethod_sha512b) ||
                  ($aMethod == self::$HashMethod_sha512d) )
             {
@@ -343,7 +346,7 @@
                     $Hash = hash('sha512', $Hash.$PreHash, true);
                 } while(--$Count);
 
-                return '$S$'.self::$Itoa64[$CountB2].$Salt2.encode64($Hash,strlen($Hash)).':'.$Salt;
+                return '$S$'.$gItoa64[$CountB2].$Salt2.encode64($Hash,strlen($Hash)).':'.$Salt;
             }
 
             if ( $aMethod == self::$HashMethod_sha512s )

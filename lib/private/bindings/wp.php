@@ -280,9 +280,11 @@
 
         private static function extractSaltPart( $aPassword )
         {
+            global $gItoa64;
+            
             if (strlen($aPassword) == 34)
             {
-                $Count = strpos(self::$Itoa64, $aPassword[3]);
+                $Count = strpos($gItoa64, $aPassword[3]);
                 $Salt = substr($aPassword, 4, 8);
 
                 return $Count.':'.$Salt;
@@ -305,6 +307,8 @@
 
         public function hash( $aPassword, $aSalt, $aMethod )
         {
+            global $gItoa64;
+            
             if ($aMethod == self::$HashMethod_md5 )
             {
                 return md5($aPassword);
@@ -321,7 +325,7 @@
                 $Hash = md5($Hash.$aPassword, true);
             } while (--$Count);
 
-            return '$P$'.self::$Itoa64[$CountB2].$Salt.encode64($Hash,16);
+            return '$P$'.$gItoa64[$CountB2].$Salt.encode64($Hash,16);
         }
 
         // -------------------------------------------------------------------------

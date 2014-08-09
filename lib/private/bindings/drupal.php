@@ -299,13 +299,14 @@
 
         private static function extractSaltPart( $aPassword )
         {
+            global $gItoa64;
             $MD5Prefix = (substr($aPassword, 0, 2) == 'U$');
 
             $Salt = ($MD5Prefix)
                 ? substr($aPassword, 5, 8)
                 : substr($aPassword, 4, 8);
 
-            $Count = strpos(self::$Itoa64, ($MD5Prefix) ? $aPassword[4] : $aPassword[3]);
+            $Count = strpos($gItoa64, ($MD5Prefix) ? $aPassword[4] : $aPassword[3]);
 
             return $Count.':'.$Salt;
         }
@@ -341,6 +342,8 @@
 
         public function hash( $aPassword, $aSalt, $aMethod )
         {
+            global $gItoa64;
+            
             $Password = $aPassword;
             $Prefix = '';
 
@@ -406,7 +409,7 @@
                 $Hash = encode64($Hash,16);
             }
 
-            return substr($Prefix.self::$Itoa64[$CountB2].$Salt.$Hash, 0, 55);
+            return substr($Prefix.$gItoa64[$CountB2].$Salt.$Hash, 0, 55);
         }
 
         // -------------------------------------------------------------------------

@@ -307,6 +307,8 @@
 
         public function hash( $aPassword, $aSalt, $aMethod )
         {
+            global $gItoa64;
+            
             switch($aMethod)
             {
             case self::$HashMethodMD5s:
@@ -324,7 +326,7 @@
                     $Hash = md5($Hash.$aPassword, true);
                 } while (--$Count);
     
-                return '$P$'.self::$Itoa64[$CountB2].$Salt.encode64($Hash,16);
+                return '$P$'.$gItoa64[$CountB2].$Salt.encode64($Hash,16);
             
             default:
                 return crypt($aPassword,$aSalt);
