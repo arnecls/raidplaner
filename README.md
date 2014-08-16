@@ -9,8 +9,8 @@ Packedpixel raidplaner is an easy to use raid manager for World of Warcraft.
 If you want to know more about the current development status you can also follow me on
 [Google+](https://plus.google.com/117920822853814771101).  
 
-If you want to modify the Raidplaner you should have a look at the [Customization](../../wiki/Customization) page.  
-If you want to share your modifications or have questions visit the [Forum](http://www.packedpixel.de/raidplaner).
+If you want to modify the Raidplaner you should have a look at the [Customization](https://github.com/arnecls/raidplaner/wiki/Customization) page.
+If you encounter a bug or want to write a feature request, please use the [Bugtracker](https://github.com/arnecls/raidplaner/issues).
 
 Packedpixel Raidplaner requires PHP 5.3.4 or better with PDO (MySQL) support as well as a MySQL 5.x or better database.
 Supported browsers are Firefox 4+, Google Chrome, Internet Explorer 10+, Opera 12+ and Safari 4+.
