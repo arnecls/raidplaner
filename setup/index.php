@@ -4,7 +4,6 @@
 
     $ConfigFolderState = is_writable("../lib/config");
     $ConfigFileState = (file_exists("../lib/config/config.php") && $ConfigFolderState) ||
-
                        is_writable("../lib/config/config.php");
 
     $UpdateMode = $ConfigFolderState && $ConfigFileState;
@@ -14,27 +13,34 @@
         require_once(dirname(__FILE__)."/../lib/private/connector.class.php");
         @require_once(dirname(__FILE__)."/../lib/config/config.php");
 
-        $Connector = Connector::getInstance();
+        try
+        {
+            $Connector = Connector::getInstance(true);
 
-        $TableQuery = $Connector->prepare("SHOW TABLES");
-        $Tables = array("Attendance", "Character", "Location", "Raid", "Setting", "User", "UserSetting");
-        $TablesOk = false;
+            $TableQuery = $Connector->prepare("SHOW TABLES");
+            $Tables = array("Attendance", "Character", "Location", "Raid", "Setting", "User", "UserSetting");
+            $TablesOk = false;
 
-        $TableQuery->loop( function($TableData) use ($Tables, &$TablesOk) {
-            list($key,$TableName) = each($TableData);
+            $TableQuery->loop( function($TableData) use ($Tables, &$TablesOk) {
+                list($key,$TableName) = each($TableData);
 
-            if (strpos($TableName, RP_TABLE_PREFIX) === 0)
-            {
-                $Name = substr($TableName, strlen(RP_TABLE_PREFIX));
-                if (in_array($Name, $Tables))
+                if (strpos($TableName, RP_TABLE_PREFIX) === 0)
                 {
-                    $TablesOk = true;
-                    return false;
+                    $Name = substr($TableName, strlen(RP_TABLE_PREFIX));
+                    if (in_array($Name, $Tables))
+                    {
+                        $TablesOk = true;
+                        return false;
+                    }
                 }
-            }
-        });
+            });
 
-        $UpdateMode = $TablesOk;
+            $UpdateMode = $TablesOk;
+        }
+        catch(Exception $e)
+        {
+            $UpdateMode = false;
+        }
     }
 ?>
 <?php readfile("layout/header.html"); ?>
