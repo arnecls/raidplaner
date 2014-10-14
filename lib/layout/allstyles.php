@@ -6,7 +6,9 @@
 
     $LoaderFiles = Array(
         "reset.css",
-        "jquery-ui-1.10.3.custom.min.css",
+        "jquery-ui.min.css",
+        "jquery-ui.structure.min.css",
+        "jquery-ui.theme.min.css",
         "default.css",
         "combobox.css",
         "frame.css",
