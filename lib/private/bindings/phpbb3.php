@@ -89,7 +89,22 @@
                 fwrite( $Config, "\tdefine('PHPBB3_POSTAS', ".$aPostAs.");\n");
                 fwrite( $Config, "\tdefine('PHPBB3_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
                 fwrite( $Config, "\tdefine('PHPBB3_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
-                fwrite( $Config, "\tdefine('PHPBB3_VERSION', 30000);\n");
+                
+                // Try to detect version
+            
+                $Version = 30000;
+                
+                $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, false);
+                if ($Connector != null)
+                {
+                    $VersionQuery = $Connector->prepare( 'SELECT config_value FROM `'.$aPrefix.'config` WHERE config_name="version" LIMIT 1' );
+                    $VersionData  = $VersionQuery->fetchFirst();                
+                    $VersionParts = explode('.', $VersionData['config_value']);
+                    
+                    $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
+                }
+            
+                fwrite( $Config, "\tdefine('PHPBB3_VERSION', ".$Version.");\n");
             }
 
             fwrite( $Config, '?>');
