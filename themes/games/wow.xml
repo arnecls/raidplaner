@@ -86,9 +86,21 @@
             <role id="dmg" count="*"/>
         </group>
         
+        <group count="20">
+            <role id="tnk" count="2"/>
+            <role id="med" count="4"/>
+            <role id="dmg" count="*"/>
+        </group>
+        
         <group count="25">
             <role id="tnk" count="2"/>
             <role id="med" count="6"/>
+            <role id="dmg" count="*"/>
+        </group>
+        
+        <group count="30">
+            <role id="tnk" count="2"/>
+            <role id="med" count="8"/>
             <role id="dmg" count="*"/>
         </group>
     </groups>
