@@ -109,7 +109,7 @@
         <group count="30">
             <role id="tnk" count="2"/>
             <role id="med" count="7"/>
-            <role id="atk" count="8"/>
+            <role id="atk" count="10"/>
             <role id="rgd" count="*"/>
         </group>
     </groups>
