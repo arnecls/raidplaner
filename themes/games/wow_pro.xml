@@ -94,7 +94,7 @@
         
         <group count="20">
             <role id="tnk" count="2"/>
-            <role id="med" count="4"/>
+            <role id="med" count="5"/>
             <role id="atk" count="6"/>
             <role id="rgd" count="*"/>
         </group>
