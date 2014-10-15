@@ -311,7 +311,8 @@
             
             // Count available / absent
             
-            if ($aRaidRow['Role'] !== null)   
+            if (($aRaidRow['Role'] !== null) && 
+                ($aRaidRow['Role'] !== '')) 
             {                                
                 switch($aRaidRow['Status'])
                 {
