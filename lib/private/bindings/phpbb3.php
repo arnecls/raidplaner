@@ -8,6 +8,7 @@
         private static $BindingName = 'phpbb3';
 
         public static $HashMethod_md5r = 'phpbb3_md5r';
+        public static $HashMethod_bf   = 'phpbb3_bf';
         public static $HashMethod_md5  = 'phpbb3_md5';
 
         // -------------------------------------------------------------------------
@@ -344,26 +345,38 @@
 
         // -------------------------------------------------------------------------
 
-        private static function extractSaltPart( $aPassword )
+        private function extractSaltPart( $aPassword )
         {
             global $gItoa64;
-        
-            if (strlen($aPassword) == 34)
+            
+            switch ( $this->getMethodFromPass($aPassword) )
             {
+            case self::$HashMethod_bf:
+                return substr($aPassword, 0, 7+22);
+                
+            case self::$HashMethod_md5r:
                 $Count = strpos($gItoa64, $aPassword[3]);
                 $Salt = substr($aPassword, 4, 8);
 
                 return $Count.':'.$Salt;
+             
+            default:   
+            case self::$HashMethod_md5:
+                return '';
             }
-
-            return '';
         }
 
         // -------------------------------------------------------------------------
 
         public function getMethodFromPass( $aPassword )
         {
-            if (strlen($aPassword) == 34)
+            if ( strpos($aPassword, '$2y$') === 0 )
+                return self::$HashMethod_bf;
+            
+            if ( strpos($aPassword, '$2a$') === 0 )
+                return self::$HashMethod_bf;
+                
+            if ( strpos($aPassword, '$H$') === 0 )
                 return self::$HashMethod_md5r;
 
             return self::$HashMethod_md5;
@@ -375,23 +388,29 @@
         {
             global $gItoa64;
             
-            if ($aMethod == self::$HashMethod_md5 )
+            switch ($aMethod)
             {
+            case self::$HashMethod_bf:
+                return crypt($aPassword,$aSalt);
+                
+            default:
+            case self::$HashMethod_md5:
                 return md5($aPassword);
+                
+            case self::$HashMethod_md5r:
+                $Parts   = explode(':',$aSalt);
+                $CountB2 = intval($Parts[0],10);
+                $Count   = 1 << $CountB2;
+                $Salt    = $Parts[1];
+    
+                $Hash = md5($Salt.$aPassword, true);
+    
+                do {
+                    $Hash = md5($Hash.$aPassword, true);
+                } while (--$Count);
+    
+                return '$H$'.$gItoa64[$CountB2].$Salt.encode64($Hash,16);
             }
-
-            $Parts   = explode(':',$aSalt);
-            $CountB2 = intval($Parts[0],10);
-            $Count   = 1 << $CountB2;
-            $Salt    = $Parts[1];
-
-            $Hash = md5($Salt.$aPassword, true);
-
-            do {
-                $Hash = md5($Hash.$aPassword, true);
-            } while (--$Count);
-
-            return '$H$'.$gItoa64[$CountB2].$Salt.encode64($Hash,16);
         }
 
         // -------------------------------------------------------------------------
