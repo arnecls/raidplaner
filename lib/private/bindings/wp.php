@@ -102,7 +102,7 @@
 
             if ($Connector != null)
             {
-                $OptionsQuery = $Connector->prepare( 'SELECT option_value FROM `'.$aPrefix.'options` WHERE option_name = "wp_user_roles" LIMIT 1' );
+                $OptionsQuery = $Connector->prepare( 'SELECT option_value FROM `'.$aPrefix.'options` WHERE option_name = "'.$aPrefix.'user_roles" LIMIT 1' );
                 $Option = $OptionsQuery->fetchFirst($aThrow);
 
                 $Groups = array();
@@ -150,7 +150,7 @@
 
             $MetaQuery = $Connector->prepare('SELECT meta_key, meta_value '.
                                           'FROM `'.WP_TABLE_PREFIX.'usermeta` '.
-                                          'WHERE user_id = :UserId AND meta_key = "wp_capabilities" LIMIT 1');
+                                          'WHERE user_id = :UserId AND meta_key = "'.$aPrefix.'capabilities" LIMIT 1');
 
             $MetaQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);
 
