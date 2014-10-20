@@ -150,7 +150,7 @@
 
             $MetaQuery = $Connector->prepare('SELECT meta_key, meta_value '.
                                           'FROM `'.WP_TABLE_PREFIX.'usermeta` '.
-                                          'WHERE user_id = :UserId AND meta_key = "'.$aPrefix.'capabilities" LIMIT 1');
+                                          'WHERE user_id = :UserId AND meta_key = "'.WP_TABLE_PREFIX.'capabilities" LIMIT 1');
 
             $MetaQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);
 
