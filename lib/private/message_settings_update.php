@@ -213,14 +213,16 @@
                     if ( $UserInfo != null )
                     {
                         $UpdateQuery = $Connector->prepare('UPDATE `'.RP_TABLE_PREFIX.'User` SET '.
-                                                           'Password = :Password, Salt = :Salt, `Group` = :Group, ExternalBinding = :Binding, BindingActive = "true" '.
+                                                           'Password = :Password, Salt = :Salt, `Group` = :Group, '.
+                                                           'ExternalId = :ExternalId, ExternalBinding = :Binding, BindingActive = "true" '.
                                                            'WHERE UserId = :UserId LIMIT 1' );
         
-                        $UpdateQuery->bindValue( ':Password', $UserInfo->Password,    PDO::PARAM_STR );
-                        $UpdateQuery->bindValue( ':Group',    $UserInfo->Group,       PDO::PARAM_STR );
-                        $UpdateQuery->bindValue( ':Salt',     $UserInfo->Salt,        PDO::PARAM_STR );
-                        $UpdateQuery->bindValue( ':Binding',  $UserInfo->BindingName, PDO::PARAM_STR );
-                        $UpdateQuery->bindValue( ':UserId',   intval($UserId),        PDO::PARAM_INT );
+                        $UpdateQuery->bindValue( ':Password',   $UserInfo->Password,    PDO::PARAM_STR );
+                        $UpdateQuery->bindValue( ':Group',      $UserInfo->Group,       PDO::PARAM_STR );
+                        $UpdateQuery->bindValue( ':Salt',       $UserInfo->Salt,        PDO::PARAM_STR );
+                        $UpdateQuery->bindValue( ':Binding',    $UserInfo->BindingName, PDO::PARAM_STR );
+                        $UpdateQuery->bindValue( ':ExternalId', $UserInfo->UserId,      PDO::PARAM_STR );
+                        $UpdateQuery->bindValue( ':UserId',     intval($UserId),        PDO::PARAM_INT );
         
                         if ( !$UpdateQuery->execute() )
                         {
