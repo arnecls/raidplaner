@@ -171,7 +171,11 @@
         $Attendances = Array();
         $Roles = Array();
 
-        $AttendanceQuery->loop( function($Data) use ($Connector, &$UserId, &$NumRaidsRemain, &$MainCharName, &$StateCounts, &$Attendances, &$Roles, $GamesCondition, $GamesParameter, $aEnd)
+        $AttendanceQuery->loop( 
+            function($Data) use (
+                $Connector, &$UserId, &$NumRaidsRemain, 
+                &$MainCharName, &$StateCounts, &$Attendances, &$Roles, 
+                $aUTF8, $GamesCondition, $GamesParameter, $aEnd)
         {
             if ( $UserId != $Data['UserId'] )
             {
