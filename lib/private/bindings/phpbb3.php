@@ -434,10 +434,23 @@
     
                     // Create topic
     
-                    $TopicQuery = $Connector->prepare('INSERT INTO `'.PHPBB3_TABLE_PREFIX.'topics` '.
-                                                   '(forum_id, topic_poster, topic_title, topic_last_post_subject, topic_time, topic_first_poster_name, topic_first_poster_colour, topic_last_poster_name, topic_last_poster_colour, topic_last_post_time) VALUES '.
-                                                   '(:ForumId, :UserId, :Subject, :Subject, :Now, :Username, :Color, :Username, :Color, :Now)');
-    
+                    if (!defined("PHPBB3_VERSION") || PHPBB3_VERSION < 30100)
+                    {
+                        $TopicQuery = $Connector->prepare('INSERT INTO `'.PHPBB3_TABLE_PREFIX.'topics` '.
+                                                       '(forum_id, topic_poster, topic_title, topic_last_post_subject, topic_time, topic_first_poster_name, '.
+                                                       'topic_first_poster_colour, topic_last_poster_name, topic_last_poster_colour, topic_last_post_time) VALUES '.
+                                                       '(:ForumId, :UserId, :Subject, :Subject, :Now, :Username, :Color, :Username, :Color, :Now)');
+                    }
+                    else
+                    {
+                         $TopicQuery = $Connector->prepare('INSERT INTO `'.PHPBB3_TABLE_PREFIX.'topics` '.
+                                                       '(forum_id, topic_poster, topic_title, topic_last_post_subject, topic_time, topic_first_poster_name, '.
+                                                       'topic_first_poster_colour, topic_last_poster_name, topic_last_poster_id, topic_last_poster_colour, '.
+                                                       'topic_last_post_time, topic_visibility, topic_posts_approved) VALUES '.
+                                                       '(:ForumId, :UserId, :Subject, :Subject, :Now, :Username, :Color, :Username, :UserId, :Color, :Now, 1, 1)');
+                       
+                    }
+                    
                     $TopicQuery->BindValue( ':ForumId', PHPBB3_POSTTO, PDO::PARAM_INT );
                     $TopicQuery->BindValue( ':UserId', PHPBB3_POSTAS, PDO::PARAM_INT );
                     $TopicQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
@@ -468,7 +481,7 @@
                     $PostId = $Connector->lastInsertId();
     
                     // Finish topic
-    
+                    
                     $TopicFinishQuery = $Connector->prepare('UPDATE `'.PHPBB3_TABLE_PREFIX.'topics` '.
                                                          'SET topic_first_post_id = :PostId, topic_last_post_id = :PostId '.
                                                          'WHERE topic_id = :TopicId LIMIT 1');

@@ -62,8 +62,7 @@
             $VersionElements = explode('.', $wp_version);
             $Version = $VersionElements[0] * 10000 +
                 ((isset($VersionElements[1])) ? $VersionElements[1] * 100 : 0) +
-                ((isset($VersionElements[2])) ? $VersionElements[2] : 0);
-            
+                ((isset($VersionElements[2])) ? $VersionElements[2] : 0);            
 
             return array(
                 'database'  => DB_NAME,
