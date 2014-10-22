@@ -35,13 +35,14 @@
             $Config->User     = RP_USER;
             $Config->Password = RP_PASS;
             $Config->Prefix   = RP_TABLE_PREFIX;
+            $Config->Version  = 10100;
 
             return $Config;
         }
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
         {
         }
 

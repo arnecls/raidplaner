@@ -30,7 +30,6 @@ function CheckBindingFields(aBinding)
 // ----------------------------------------------------------------------------
 
 function LoadBindingData(aBinding)
-
 {
     if (CheckBindingFields(aBinding))
     {
@@ -211,6 +210,7 @@ function OnLoadSettings(aXHR)
         $("#"+aXHR.binding+"_password").val(aXHR.settings.password);
         $("#"+aXHR.binding+"_password_check").val(aXHR.settings.password);
         $("#"+aXHR.binding+"_prefix").val(aXHR.settings.prefix);
+        $("#"+aXHR.binding+"_version").val(aXHR.settings.version);
 
         if (aXHR.settings.cookie != undefined)
         {
@@ -344,6 +344,7 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
             parameter[bindings[i]+"_user"]      = $("#"+bindings[i]+"_user").val();
             parameter[bindings[i]+"_password"]  = $("#"+bindings[i]+"_password").val();
             parameter[bindings[i]+"_prefix"]    = $("#"+bindings[i]+"_prefix").val();
+            parameter[bindings[i]+"_version"]   = $("#"+bindings[i]+"_version").val();
             parameter[bindings[i]+"_autologin"] = $("#"+bindings[i]+"_autologin").prop("checked");
             parameter[bindings[i]+"_cookie"]    = $("#"+bindings[i]+"_cookie_ex").val();
             parameter[bindings[i]+"_postto"]    = $("#"+bindings[i]+"_postto option:selected").val();

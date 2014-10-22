@@ -24,6 +24,7 @@
         public $Password;
         public $Prefix;
         public $CookieData;
+        public $Version;
         public $Members;
         public $Raidleads;
         public $PostTo;
@@ -41,6 +42,7 @@
             $this->Password         = '';
             $this->Prefix           = '';
             $this->CookieData       = '';
+            $this->Version          = 0;
             $this->Members          = array();
             $this->Raidleads        = array();
             $this->PostTo           = 0;
@@ -63,7 +65,7 @@
         abstract public function getName();
 
         abstract public function getConfig();
-        abstract public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx);
+        abstract public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion);
 
         abstract public function getExternalConfig($aRelativePath);
         abstract public function getGroups($aDatabase, $aPrefix, $aUser, $aPass, $aThrow);

@@ -33,6 +33,7 @@
             $Config->Password         = defined('DRUPAL_PASS') ? DRUPAL_PASS : RP_PASS;
             $Config->Prefix           = defined('DRUPAL_TABLE_PREFIX') ? DRUPAL_TABLE_PREFIX : '';
             $Config->CookieData       = defined('DRUPAL_ROOT') ? DRUPAL_ROOT : 'http://'.$_SERVER['HTTP_HOST'];
+            $Config->Version          = defined('DRUPAL_VERSION') ? DRUPAL_VERSION : 70600;
             $Config->AutoLoginEnabled = defined('DRUPAL_AUTOLOGIN') ? DRUPAL_AUTOLOGIN : false;
             $Config->Raidleads        = defined('DRUPAL_RAIDLEAD_GROUPS') ? explode(',', DRUPAL_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('DRUPAL_MEMBER_GROUPS') ? explode(',', DRUPAL_MEMBER_GROUPS ) : array();
@@ -73,6 +74,7 @@
                             'password'  => $DbConfig['password'],
                             'prefix'    => $DbConfig['prefix'],
                             'cookie'    => (isset($base_url)) ? $base_url : 'http://'.$_SERVER['HTTP_HOST'].'/'.$aRelativePath,
+                            'version'   => 70600
                         );
 
                     }
@@ -86,7 +88,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.drupal.php', 'w+' );
 

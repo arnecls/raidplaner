@@ -26,6 +26,7 @@
             $Config->User             = defined('WBB_USER') ? WBB_USER : RP_USER;
             $Config->Password         = defined('WBB_PASS') ? WBB_PASS : RP_PASS;
             $Config->Prefix           = defined('WBB_TABLE_PREFIX') ? WBB_TABLE_PREFIX : '1';
+            $Config->Version          = defined('WBB_VERSION') ? WBB_VERSION : 40000;
             $Config->AutoLoginEnabled = defined('WBB_AUTOLOGIN') ? WBB_AUTOLOGIN : false;
             $Config->Raidleads        = defined('WBB_RAIDLEAD_GROUPS') ? explode(',', WBB_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('WBB_MEMBER_GROUPS') ? explode(',', WBB_MEMBER_GROUPS ) : array();
@@ -70,13 +71,14 @@
                 'user'      => $dbUser,
                 'password'  => $dbPassword,
                 'prefix'    => WCF_N,
-                'cookie'    => $OptionData['optionValue']
+                'cookie'    => $OptionData['optionValue'],
+                'version'   => 40000
             );
         }
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.wbb.php', 'w+' );
 

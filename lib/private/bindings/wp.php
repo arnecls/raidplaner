@@ -27,6 +27,7 @@
             $Config->User             = defined('WP_USER') ? WP_USER : RP_USER;
             $Config->Password         = defined('WP_PASS') ? WP_PASS : RP_PASS;
             $Config->Prefix           = defined('WP_TABLE_PREFIX') ? WP_TABLE_PREFIX : 'wp_';
+            $Config->Version          = defined('WP_VERSION') ? WP_VERSION : 30000;
             $Config->AutoLoginEnabled = defined('WP_AUTOLOGIN') ? WP_AUTOLOGIN : false;
             $Config->CookieData       = defined('WP_SECRET') ? WP_SECRET : '';
             $Config->Raidleads        = defined('WP_RAIDLEAD_GROUPS') ? explode(',', WP_RAIDLEAD_GROUPS ) : array();
@@ -57,19 +58,26 @@
                 $Out->pushError(L('NoValidConfig'));
                 return null;
             }
+            
+            $VersionElements = explode('.', $wp_version);
+            $Version = $VersionElements[0] * 10000 +
+                ((isset($VersionElements[1])) ? $VersionElements[1] * 100 : 0) +
+                ((isset($VersionElements[2])) ? $VersionElements[2] : 0);
+            
 
             return array(
                 'database'  => DB_NAME,
                 'user'      => DB_USER,
                 'password'  => DB_PASSWORD,
                 'prefix'    => $table_prefix,
-                'cookie'    => LOGGED_IN_KEY.LOGGED_IN_SALT
+                'cookie'    => LOGGED_IN_KEY.LOGGED_IN_SALT,
+                'version'   => $Version
             );
         }
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.wp.php', 'w+' );
 
@@ -88,6 +96,8 @@
                 fwrite( $Config, "\tdefine('WP_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
                 fwrite( $Config, "\tdefine('WP_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
             }
+            
+            fwrite( $Config, "\tdefine('WP_VERSION', ".$aVersion.");\n");
 
             fwrite( $Config, '?>');
 
@@ -107,7 +117,7 @@
 
                 $Groups = array();
                 $Roles = unserialize($Option['option_value']);
-
+                
                 foreach ($Roles as $Role => $Options)
                 {
                     array_push( $Groups, array(
@@ -128,7 +138,6 @@
         public function getForums($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
             return null;
-
         }
 
         // -------------------------------------------------------------------------
@@ -136,7 +145,6 @@
         public function getUsers($aDatabase, $aPrefix, $aUser, $aPass, $aThrow)
         {
             return null;
-
         }
 
         // -------------------------------------------------------------------------
@@ -207,8 +215,8 @@
                 // Fetch cookie name
 
                 $ConfigQuery = $Connector->prepare('SELECT option_value '.
-                                                'FROM `'.WP_TABLE_PREFIX.'options` '.
-                                                'WHERE option_name = "siteurl" LIMIT 1');
+                    'FROM `'.WP_TABLE_PREFIX.'options` '.
+                    'WHERE option_name = "siteurl" LIMIT 1');
 
                 $ConfigData = $ConfigQuery->fetchFirst();
 
@@ -217,22 +225,44 @@
                     $CookieName = 'wordpress_logged_in_'.md5($ConfigData['option_value']);
 
                     // Fetch user info if seesion cookie is set
+                    
+                    $Version = 400;
 
                     if (isset($_COOKIE[$CookieName]))
                     {
-                        list($UserName, $Expiration, $hmac) = explode('|', $_COOKIE[$CookieName]);
-
-                        $UserInfo = $this->getUserInfoByName($UserName);
-
-                        if ($UserInfo != null)
+                        if (!defined("WP_VERSION") || WP_VERSION < 40000)
                         {
-                            $PassFragment = substr($UserInfo->Password, 8, 4);
-
-                            $Key  = hash_hmac('md5', $UserName.$PassFragment.'|'.$Expiration, WP_SECRET);
-                            $Hash = hash_hmac('md5', $UserName . '|' . $Expiration, $Key);
-
-                            if ($Hash != $hmac)
-                                $UserInfo = null;
+                            list($UserName, $Expiration, $hmac) = explode('|', $_COOKIE[$CookieName]);
+    
+                            $UserInfo = $this->getUserInfoByName($UserName);
+                            
+                            if ($UserInfo != null)
+                            {
+                                $PassFragment = substr($UserInfo->Password, 8, 4);
+    
+                                $Key3x  = hash_hmac('md5', $UserName.$PassFragment.'|'.$Expiration, WP_SECRET);
+                                $Hash3x = hash_hmac('md5', $UserName . '|' . $Expiration, $Key3x);
+    
+                                if ($Hash3x != $hmac)
+                                    $UserInfo = null;
+                            }
+                        }
+                        else
+                        {
+                            list($UserName, $Expiration, $Token, $hmac) = explode('|', $_COOKIE[$CookieName]);
+    
+                            $UserInfo = $this->getUserInfoByName($UserName);
+                            
+                            if ($UserInfo != null)
+                            {
+                                $PassFragment = substr($UserInfo->Password, 8, 4);
+    
+                                $Key4x  = hash_hmac('md5', $UserName.'|'.$PassFragment.'|'.$Expiration.'|'.$Token, WP_SECRET);
+                                $Hash4x = hash_hmac('sha256', $UserName.'|'.$Expiration.'|'.$Token, $Key4x);
+    
+                                if ($Hash4x != $hmac)
+                                    $UserInfo = null;
+                            }
                         }
 
                     }

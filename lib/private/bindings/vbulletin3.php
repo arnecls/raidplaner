@@ -25,6 +25,7 @@
             $Config->User             = defined('VB3_USER') ? VB3_USER : RP_USER;
             $Config->Password         = defined('VB3_PASS') ? VB3_PASS : RP_PASS;
             $Config->Prefix           = defined('VB3_TABLE_PREFIX') ? VB3_TABLE_PREFIX : 'vb_';
+            $Config->Version          = defined('VB3_VERSION') ? VANILLA_VERSION : 30000;
             $Config->AutoLoginEnabled = defined('VB3_AUTOLOGIN') ? VB3_AUTOLOGIN : false;
             $Config->CookieData       = defined('VB3_COOKIE_PREFIX') ? VB3_COOKIE_PREFIX : 'bb';
             $Config->PostTo           = defined('VB3_POSTTO') ? VB3_POSTTO : '';
@@ -64,12 +65,13 @@
                 'password'  => $config['MasterServer']['password'],
                 'prefix'    => $config['Database']['tableprefix'],
                 'cookie'    => $config['Misc']['cookieprefix'],
+                'version'   => 30000
             );
         }
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.vb3.php', 'w+' );
 

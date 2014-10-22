@@ -22,7 +22,8 @@
             $_REQUEST[$Binding."_postas"],
             $_REQUEST[$Binding."_member"],
             $_REQUEST[$Binding."_raidlead"],
-            $_REQUEST[$Binding."_cookie"]);
+            $_REQUEST[$Binding."_cookie"],
+            $_REQUEST[$Binding."_version"]);
     });
 
     echo "</bindings>";

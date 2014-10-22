@@ -28,6 +28,7 @@
             $Config->User             = defined('PHPBB3_USER') ? PHPBB3_USER : RP_USER;
             $Config->Password         = defined('PHPBB3_PASS') ? PHPBB3_PASS : RP_PASS;
             $Config->Prefix           = defined('PHPBB3_TABLE_PREFIX') ? PHPBB3_TABLE_PREFIX : 'phpbb_';
+            $Config->Version          = defined('PHPBB3_VERSION') ? PHPBB3_VERSION : 30000;
             $Config->AutoLoginEnabled = defined('PHPBB3_AUTOLOGIN') ? PHPBB3_AUTOLOGIN : false;
             $Config->PostTo           = defined('PHPBB3_POSTTO') ? PHPBB3_POSTTO : '';
             $Config->PostAs           = defined('PHPBB3_POSTAS') ? PHPBB3_POSTAS : '';
@@ -59,19 +60,31 @@
                 $Out->pushError(L('NoValidConfig'));
                 return null;
             }
+            
+            $Version = 30000;
+            $Connector = new Connector(SQL_HOST, $dbname, $dbuser, $dbpasswd, false);
+            if ($Connector != null)
+            {
+                $VersionQuery = $Connector->prepare( 'SELECT config_value FROM `'.$table_prefix.'config` WHERE config_name="version" LIMIT 1' );
+                $VersionData  = $VersionQuery->fetchFirst();                
+                $VersionParts = explode('.', $VersionData['config_value']);
+                
+                $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
+            }
 
             return array(
                 'database'  => $dbname,
                 'user'      => $dbuser,
                 'password'  => $dbpasswd,
                 'prefix'    => $table_prefix,
-                'cookie'    => null
+                'cookie'    => null,
+                'version'   => $Version
             );
         }
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.phpbb3.php', 'w+' );
 
@@ -91,21 +104,7 @@
                 fwrite( $Config, "\tdefine('PHPBB3_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
                 fwrite( $Config, "\tdefine('PHPBB3_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
                 
-                // Try to detect version
-            
-                $Version = 30000;
-                
-                $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, false);
-                if ($Connector != null)
-                {
-                    $VersionQuery = $Connector->prepare( 'SELECT config_value FROM `'.$aPrefix.'config` WHERE config_name="version" LIMIT 1' );
-                    $VersionData  = $VersionQuery->fetchFirst();                
-                    $VersionParts = explode('.', $VersionData['config_value']);
-                    
-                    $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
-                }
-            
-                fwrite( $Config, "\tdefine('PHPBB3_VERSION', ".$Version.");\n");
+                fwrite( $Config, "\tdefine('PHPBB3_VERSION', ".$aVersion.");\n");
             }
 
             fwrite( $Config, '?>');

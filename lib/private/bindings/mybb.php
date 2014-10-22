@@ -26,6 +26,7 @@
             $Config->User             = defined('MYBB_USER') ? MYBB_USER : RP_USER;
             $Config->Password         = defined('MYBB_PASS') ? MYBB_PASS : RP_PASS;
             $Config->Prefix           = defined('MYBB_TABLE_PREFIX') ? MYBB_TABLE_PREFIX : 'mybb_';
+            $Config->Version          = defined('MYBB_VERSION') ? MYBB_VERSION : 10600;
             $Config->AutoLoginEnabled = defined('MYBB_AUTOLOGIN') ? MYBB_AUTOLOGIN : false;
             $Config->PostTo           = defined('MYBB_POSTTO') ? MYBB_POSTTO : '';
             $Config->PostAs           = defined('MYBB_POSTAS') ? MYBB_POSTAS : '';
@@ -63,13 +64,14 @@
                 'user'      => $config['database']['username'],
                 'password'  => $config['database']['password'],
                 'prefix'    => $config['database']['table_prefix'],
-                'cookie'    => null
+                'cookie'    => null,
+                'version'   => 10600
             );
         }
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.mybb.php', 'w+' );
 

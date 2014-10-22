@@ -93,6 +93,7 @@
 
         echo "<p>".L("TablePrefix")."<br/>";
         echo "<input type=\"text\" id=\"".$Binding->getName()."_prefix\" value=\"".$Config->Prefix."\"".$Disabled."/></p>";
+        echo "<input type=\"hidden\" id=\"".$Binding->getName()."_version\" value=\"".$Config->Version."\"/>";
 
         if ( $Config->HasCookieConfig )
         {

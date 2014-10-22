@@ -26,6 +26,7 @@
             $Config->User             = defined('VANILLA_USER') ? VANILLA_USER : RP_USER;
             $Config->Password         = defined('VANILLA_PASS') ? VANILLA_PASS : RP_PASS;
             $Config->Prefix           = defined('VANILLA_TABLE_PREFIX') ? VANILLA_TABLE_PREFIX : 'GDN_';
+            $Config->Version          = defined('VANILLA_VERSION') ? VANILLA_VERSION : 20000;
             $Config->AutoLoginEnabled = defined('VANILLA_AUTOLOGIN') ? VANILLA_AUTOLOGIN : false;
             $Config->CookieData       = defined('VANILLA_COOKIE') ? VANILLA_COOKIE : 'Vanilla,md5,123456';
             $Config->PostTo           = defined('VANILLA_POSTTO') ? VANILLA_POSTTO : '';
@@ -80,12 +81,13 @@
                 'password'  => $DbConf['Password'],
                 'prefix'    => $DbConf['DatabasePrefix'],
                 'cookie'    => $CookieConf['Name'].','.$CookieConf['HashMethod'].','.$CookieConf['Salt'],
+                'version'   => 20000
             );
         }
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.vanilla.php', 'w+' );
 

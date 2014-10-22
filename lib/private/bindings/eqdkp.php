@@ -31,6 +31,7 @@
             $Config->Password         = defined('EQDKP_PASS') ? EQDKP_PASS : RP_PASS;
             $Config->Prefix           = defined('EQDKP_TABLE_PREFIX') ? EQDKP_TABLE_PREFIX : 'eqdkp_';
             $Config->AutoLoginEnabled = defined('EQDKP_AUTOLOGIN') ? EQDKP_AUTOLOGIN : false;
+            $Config->Version          = defined('EQDKP_VERSION') ? EQDKP_VERSION : 10000;
 
             return $Config;
         }
@@ -61,13 +62,14 @@
                 'user'      => $dbuser,
                 'password'  => $dbpass,
                 'prefix'    => $table_prefix,
-                'cookie'    => null
+                'cookie'    => null,
+                'version'   => 10000
             );
         }
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.eqdkp.php', 'w+' );
 

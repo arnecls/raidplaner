@@ -26,6 +26,7 @@
             $Config->User             = defined('SMF_USER') ? SMF_USER : RP_USER;
             $Config->Password         = defined('SMF_PASS') ? SMF_PASS : RP_PASS;
             $Config->Prefix           = defined('SMF_TABLE_PREFIX') ? SMF_TABLE_PREFIX : 'smf_';
+            $Config->Version          = defined('SMF_VERSION') ? SMF_VERSION : 20000;
             $Config->AutoLoginEnabled = defined('SMF_AUTOLOGIN') ? SMF_AUTOLOGIN : false;
             $Config->CookieData       = defined('SMF_COOKIE') ? SMF_COOKIE : 'SMFCookie956';
             $Config->PostTo           = defined('SMF_POSTTO') ? SMF_POSTTO : '';
@@ -63,13 +64,14 @@
                 'user'      => $db_user,
                 'password'  => $db_passwd,
                 'prefix'    => $db_prefix,
-                'cookie'    => (isset($cookiename)) ? $cookiename : 'SMFCookie956'
+                'cookie'    => (isset($cookiename)) ? $cookiename : 'SMFCookie956',
+                'version'   => 20000
             );
         }
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.smf.php', 'w+' );
 

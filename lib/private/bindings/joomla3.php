@@ -28,6 +28,7 @@
             $Config->User             = defined('JML3_USER') ? JML3_USER : RP_USER;
             $Config->Password         = defined('JML3_PASS') ? JML3_PASS : RP_PASS;
             $Config->Prefix           = defined('JML3_TABLE_PREFIX') ? JML3_TABLE_PREFIX : 'jml_';
+            $Config->Version          = defined('JML3_VERSION') ? JML3_VERSION : 30000;
             $Config->AutoLoginEnabled = defined('JML3_AUTOLOGIN') ? JML3_AUTOLOGIN : false;
             $Config->CookieData       = defined('JML3_SECRET') ? JML3_SECRET : '0123456789ABCDEF';
             $Config->Raidleads        = defined('JML3_RAIDLEAD_GROUPS') ? explode(',', JML3_RAIDLEAD_GROUPS ) : array();
@@ -60,12 +61,13 @@
                 'password'  => $Config->password,
                 'prefix'    => $Config->dbprefix,
                 'cookie'    => $Config->secret,
+                'version'   => 30000
             );
         }
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx)
+        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.jml3.php', 'w+' );
 
