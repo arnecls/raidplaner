@@ -463,10 +463,19 @@
     
                     // Create post
     
-                    $PostQuery = $Connector->prepare('INSERT INTO `'.PHPBB3_TABLE_PREFIX.'posts` '.
-                                                  '(forum_id, topic_id, post_time, post_username, poster_id, post_subject, post_text, post_checksum) VALUES '.
-                                                  '(:ForumId, :TopicId, :Now, :Username, :UserId, :Subject, :Text, :TextMD5)');
-    
+                    if (!defined("PHPBB3_VERSION") || PHPBB3_VERSION < 30100)
+                    {
+                        $PostQuery = $Connector->prepare('INSERT INTO `'.PHPBB3_TABLE_PREFIX.'posts` '.
+                                                      '(forum_id, topic_id, post_time, post_username, poster_id, post_subject, post_text, post_checksum) VALUES '.
+                                                      '(:ForumId, :TopicId, :Now, :Username, :UserId, :Subject, :Text, :TextMD5)');
+                    }
+                    else
+                    {
+                        $PostQuery = $Connector->prepare('INSERT INTO `'.PHPBB3_TABLE_PREFIX.'posts` '.
+                                                      '(forum_id, topic_id, post_time, post_username, poster_id, post_subject, post_text, post_checksum, post_visibility) VALUES '.
+                                                      '(:ForumId, :TopicId, :Now, :Username, :UserId, :Subject, :Text, :TextMD5, 1)');    
+                    }
+                    
                     $PostQuery->BindValue( ':ForumId', PHPBB3_POSTTO, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':TopicId', $TopicId, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':UserId', PHPBB3_POSTAS, PDO::PARAM_INT );
