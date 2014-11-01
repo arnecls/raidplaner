@@ -151,7 +151,7 @@
             $WhereString.
             'GROUP BY `'.RP_TABLE_PREFIX.'User`.UserId, `'.RP_TABLE_PREFIX.'Attendance`.Status ';
             
-        Out::getInstance()->pushValue('debug', $QueryString);
+        //Out::getInstance()->pushValue('debug', $QueryString);
     
         $Connector = Connector::getInstance();
         $AttendanceQuery = $Connector->prepare( $QueryString );
