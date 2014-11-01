@@ -94,10 +94,9 @@
 
                 fwrite( $Config, "\tdefine('WP_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
                 fwrite( $Config, "\tdefine('WP_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
+                fwrite( $Config, "\tdefine('WP_VERSION', ".$aVersion.");\n");
             }
-            
-            fwrite( $Config, "\tdefine('WP_VERSION', ".$aVersion.");\n");
-
+                        
             fwrite( $Config, '?>');
 
             fclose( $Config );
