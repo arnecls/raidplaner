@@ -8,20 +8,27 @@
         $Encoding = mb_detect_encoding($aString);
         return (($Encoding == 'UTF-8') && mb_check_encoding($aString,'UTF-8'))
             ? $aString
-            : mb_convert_encoding($aString, $Encoding, 'UTF-8');
+            : mb_convert_encoding($aString, 'UTF-8', $Encoding);
     }
 
     // -----------------------------------------------------------------------------
     
     function xmlSpecialChar( $aChar )
     {
-        $Utf8 = (mb_check_encoding($aChar,'UTF-8'))
-            ? $aChar
-            : mb_convert_encoding($aChar,'UTF-8');
-    
-        $Char = mb_convert_encoding($Utf8, 'UCS-4BE', 'UTF-8');
-        $Val = unpack('N',$Char);
-    
+        $Encoding = mb_detect_encoding($aChar);
+        
+        $Char = ($Encoding === false)
+            ? mb_convert_encoding($aChar, 'UCS-4LE')             // Try default encoding
+            : mb_convert_encoding($aChar, 'UCS-4LE', $Encoding); // Use detected encoding
+            
+        if ($Char == "")
+        {
+            $Char = ($Encoding !== false)
+                ? mb_convert_encoding($aChar, 'UCS-4LE') // Try again, detection failed
+                : mb_convert_encoding('?', 'UCS-4LE');   // mb string failed, use placeholder
+        }
+           
+        $Val = unpack('V',$Char);    
         return '&#'.$Val[1].';';
     }
     
