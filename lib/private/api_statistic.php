@@ -69,12 +69,12 @@
                 
             if (count($Users) == 1)
             {         
-                array_push($Conditions, 'UserId=?');
+                array_push($Conditions, '`'.RP_TABLE_PREFIX.'User`.UserId=?');
                 array_push($Parameters, $Users[0]);
             }
             else
             {
-                array_push($Conditions, 'UserId IN ('.implode(',',$Users).')');
+                array_push($Conditions, '`'.RP_TABLE_PREFIX.'User`.UserId IN ('.implode(',',$Users).')');
             }
         }
         
