@@ -79,6 +79,14 @@
         <class id="sum" loca="Summoner" style="summoner">
             <role id="dmg"/>
         </class>
+        
+        <class id="rog" loca="Rogue" style="rogue">
+            <role id="dmg"/>
+        </class>
+        
+        <class id="nin" loca="Ninja" style="ninja">
+            <role id="dmg"/>
+        </class>
     </classes>
     
     <raidview>
@@ -125,6 +133,8 @@
         <text key="Thaumaturge">Thematurge</text>
         <text key="Warrior">Warrior</text>
         <text key="Whitemage">White mage</text>
+        <text key="Rogue">Rogue</text>
+        <text key="Ninja">Ninja</text>
     </locale>
     
     <locale name="de">
@@ -145,6 +155,8 @@
         <text key="Thaumaturge" >Thaumaturg</text>
         <text key="Warrior">Krieger</text>
         <text key="Whitemage">Weißmagier</text>
+        <text key="Rogue">Schurke</text>
+        <text key="Ninja">Ninja</text>
     </locale>
     
     <locale name="fr">
@@ -165,6 +177,8 @@
         <text key="Thaumaturge">Occultiste</text>
         <text key="Warrior">Guerrier</text>
         <text key="Whitemage">Mage Blanc</text>
+        <text key="Rogue">Surineur</text>
+        <text key="Ninja">Ninja</text>
     </locale>
     
     <locale name="pl">
@@ -185,6 +199,8 @@
         <text key="Thaumaturge">Thematurge</text>
         <text key="Warrior">Warrior</text>
         <text key="Whitemage">White mage</text>
+        <text key="Rogue">Rogue</text>
+        <text key="Ninja">Ninja</text>
     </locale>
     
     <locale name="cs">
@@ -205,5 +221,7 @@
         <text key="Thaumaturge">Thematurge</text>
         <text key="Warrior">Warrior</text>
         <text key="Whitemage">White mage</text>
+        <text key="Rogue">Rogue</text>
+        <text key="Ninja">Ninja</text>
     </locale>
 </game>
