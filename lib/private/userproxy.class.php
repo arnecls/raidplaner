@@ -603,7 +603,7 @@
             // Login must be unique
 
             $UserQuery = $Connector->prepare('SELECT UserId FROM `'.RP_TABLE_PREFIX.'User` '.
-                                             'WHERE Login = :Login LIMIT 1');
+                                             'WHERE LOWER(Login) = :Login LIMIT 1');
 
             $UserQuery->bindValue(':Login', strtolower($aLogin), PDO::PARAM_STR);
 
@@ -699,7 +699,7 @@
                     (($SyncGroup) ? ', `Group` = :Group ' : ' ').
                     'WHERE ExternalBinding = :Binding AND ExternalId = :UserId LIMIT 1' );
 
-                $MirrorQuery->bindValue( ':Login',     $UserInfo->UserName,             PDO::PARAM_STR );
+                $MirrorQuery->bindValue( ':Login',     strtolower($UserInfo->UserName), PDO::PARAM_STR );
                 $MirrorQuery->bindValue( ':Password',  $UserInfo->Password,             PDO::PARAM_STR );
                 $MirrorQuery->bindValue( ':Salt',      $UserInfo->Salt,                 PDO::PARAM_STR );
                 $MirrorQuery->bindValue( ':Key',       $aKey,                           PDO::PARAM_STR );

@@ -122,7 +122,7 @@
         {
             $Connector = Connector::getInstance();
             $UserQuery = $Connector->prepare('SELECT * FROM '.RP_TABLE_PREFIX.'User '.
-                                          'WHERE Login = :Login LIMIT 1');
+                                          'WHERE LOWER(Login) = :Login LIMIT 1');
 
             $UserQuery->BindValue( ':Login', strtolower($aUserName), PDO::PARAM_STR );
             $UserData = $UserQuery->fetchFirst();
