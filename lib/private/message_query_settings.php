@@ -135,7 +135,7 @@
     
             // Query attendance
     
-            $$AttendanceString = 'SELECT '.
+            $AttendanceString = 'SELECT '.
                 '`'.RP_TABLE_PREFIX.'User`.UserId, '.
                 '`'.RP_TABLE_PREFIX.'Character`.Name, '.
                 '`'.RP_TABLE_PREFIX.'Attendance`.`Status`, '.
