@@ -116,13 +116,15 @@
                 $Groups = array();
                 $Roles = unserialize($Option['option_value']);
                 
-                foreach ($Roles as $Role => $Options)
-                {
-                    array_push( $Groups, array(
-                        'id'   => strtolower($Role),
-
-                        'name' => $Role)
-                    );
+                if (is_array($Roles))
+                {                
+                    foreach ($Roles as $Role => $Options)
+                    {
+                        array_push( $Groups, array(
+                            'id'   => strtolower($Role),
+                            'name' => $Role)
+                        );
+                    }
                 }
 
                 return $Groups;
