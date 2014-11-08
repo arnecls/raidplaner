@@ -135,8 +135,11 @@
     
             // Query attendance
     
-            $Attendance = $Connector->prepare( 'SELECT `'.RP_TABLE_PREFIX.'Character`.Name, `'.RP_TABLE_PREFIX.'Attendance`.Status, '.
-                '`'.RP_TABLE_PREFIX.'User`.UserId, UNIX_TIMESTAMP(`'.RP_TABLE_PREFIX.'User`.Created) AS CreatedUTC, '.
+            $$AttendanceString = 'SELECT '.
+                '`'.RP_TABLE_PREFIX.'User`.UserId, '.
+                '`'.RP_TABLE_PREFIX.'Character`.Name, '.
+                '`'.RP_TABLE_PREFIX.'Attendance`.`Status`, '.
+                'UNIX_TIMESTAMP(`'.RP_TABLE_PREFIX.'User`.Created) AS CreatedUTC, '.
                 'COUNT(`'.RP_TABLE_PREFIX.'Raid`.RaidId) AS Count '.
                 'FROM `'.RP_TABLE_PREFIX.'User` '.
                 'LEFT JOIN `'.RP_TABLE_PREFIX.'Attendance` USING(UserId) '.
@@ -148,7 +151,9 @@
                 'AND `'.RP_TABLE_PREFIX.'Raid`.Start < FROM_UNIXTIME(:Now) '.
                 'AND `'.RP_TABLE_PREFIX.'Location`.Game = :Game '.
                 'AND `'.RP_TABLE_PREFIX.'Character`.Game = :Game '.
-                'GROUP BY UserId, `Status`' );
+                'GROUP BY `'.RP_TABLE_PREFIX.'User`.UserId, `Status`';
+                
+            $Attendance = $Connector->prepare( $AttendanceString );
     
             $Attendance->bindValue( ':Now', time(), PDO::PARAM_INT );
             $Attendance->bindValue( ':Game', $gGame['GameId'], PDO::PARAM_STR );

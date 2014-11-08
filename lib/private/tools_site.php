@@ -28,7 +28,10 @@
     
     function getParamFrom($aParameters, $aName, $aDefault)
     {
-        $Value = (($aParameters != null) && isset($aParameters[$aName])) ? $aParameters[$aName] : $aDefault;
+        $Value = (($aParameters != null) && isset($aParameters[$aName])) 
+            ? $aParameters[$aName] 
+            : $aDefault;
+        
         switch(strtolower($Value))
         {
         case 'true':
