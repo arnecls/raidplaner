@@ -150,7 +150,7 @@
             'LEFT JOIN `'.RP_TABLE_PREFIX.'Location` USING(LocationId) '.
             'LEFT JOIN `'.RP_TABLE_PREFIX.'Character` ON `'.RP_TABLE_PREFIX.'User`.UserId = `'.RP_TABLE_PREFIX.'Character`.UserId '.
             $WhereString.
-            'GROUP BY `'.RP_TABLE_PREFIX.'User`.UserId, `'.RP_TABLE_PREFIX.'Attendance`.`Status` ';
+            'GROUP BY `'.RP_TABLE_PREFIX.'User`.UserId, `'.RP_TABLE_PREFIX.'Attendance`.`Status`, `'.RP_TABLE_PREFIX.'Attendance`.Role ';
             
         $Connector = Connector::getInstance();
         
