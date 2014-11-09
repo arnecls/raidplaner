@@ -195,13 +195,17 @@
     
                     // Fetch number of attendable raids
     
-                    $Raids = $Connector->prepare( 'SELECT COUNT(RaidId) AS `NumberOfRaids` FROM `'.RP_TABLE_PREFIX.'Raid` '.
+                    $Raids = $Connector->prepare( 
+                        'SELECT COUNT(RaidId) AS `NumberOfRaids` '.
+                        'FROM `'.RP_TABLE_PREFIX.'Raid` '.
                         'LEFT JOIN `'.RP_TABLE_PREFIX.'Location` USING(LocationId) '.
-                        'WHERE Start > FROM_UNIXTIME(:Created) AND Start < FROM_UNIXTIME(:Now) AND Game = :Game' );
+                        'WHERE Start > FROM_UNIXTIME(:Created) '.
+                        'AND Start < FROM_UNIXTIME(:Now) '.
+                        'AND Game = :Game' );
     
-                    $Raids->bindValue( ':Now', time(), PDO::PARAM_INT );
+                    $Raids->bindValue( ':Now',     time(),              PDO::PARAM_INT );
                     $Raids->bindValue( ':Created', $Data['CreatedUTC'], PDO::PARAM_INT );
-                    $Raids->bindValue( ':Game', $gGame['GameId'], PDO::PARAM_STR );
+                    $Raids->bindValue( ':Game',    $gGame['GameId'],    PDO::PARAM_STR );
     
                     $RaidCountData = $Raids->fetchFirst();
                     $NumRaidsRemain = ($RaidCountData == null) ? 0 : $RaidCountData['NumberOfRaids'];

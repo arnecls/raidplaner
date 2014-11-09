@@ -175,11 +175,13 @@
             function($Data) use (
                 $Connector, &$UserId, &$NumRaidsRemain, 
                 &$MainCharName, &$StateCounts, &$Attendances, &$Roles, 
-                $aUTF8, $GamesCondition, &$GamesParameter, $aEnd)
+                $aUTF8, &$GamesCondition, &$GamesParameter, $aStart, $aEnd)
         {
             if ( $UserId != $Data['UserId'] )
             {
-                if ( $UserId > 0 )
+                // User changed, store cache
+                
+                if ( $UserId != 0 )
                 {
                     $AttendanceData = Array(
                         'Id'        => $UserId,
@@ -190,7 +192,6 @@
                         'Undecided' => $StateCounts['undecided'] + $NumRaidsRemain,
                         'Roles'     => $Roles,
                     );
-
                     array_push($Attendances, $AttendanceData);
                 }
 
@@ -212,39 +213,44 @@
                     'COUNT(RaidId) AS `NumberOfRaids` '.
                     'FROM `'.RP_TABLE_PREFIX.'Raid` '.
                     'LEFT JOIN `'.RP_TABLE_PREFIX.'Location` USING(LocationId) '.
-                    'WHERE Start > FROM_UNIXTIME(:Start) AND Start < FROM_UNIXTIME(:End) '.
-                    (($GamesCondition == '') 
-                        ? '' 
-                        : 'AND ('.$GamesCondition.')');
+                    'WHERE `'.RP_TABLE_PREFIX.'Raid`.Start > FROM_UNIXTIME(:Created) '.
+                    'AND `'.RP_TABLE_PREFIX.'Raid`.Start > FROM_UNIXTIME(:Start) '.
+                    'AND `'.RP_TABLE_PREFIX.'Raid`.Start < FROM_UNIXTIME(:End) '.
+                    (($GamesCondition == '') ? '' : 'AND ('.$GamesCondition.')');
                     
                 $Raids = $Connector->prepare( $RaidQueryString );
                     
-                $Raids->bindValue( ':Start', $Data['CreatedUTC'], PDO::PARAM_INT );
-                $Raids->bindValue( ':End',   $aEnd,               PDO::PARAM_INT );
+                $Raids->bindValue( ':Start',   $aStart,             PDO::PARAM_INT );
+                $Raids->bindValue( ':End',     $aEnd,               PDO::PARAM_INT );
+                $Raids->bindValue( ':Created', $Data['CreatedUTC'], PDO::PARAM_INT );
                 
                 foreach($GamesParameter as $IndexName => $Value)
-                    $Raids->bindValue(':'.$IndexName, $Value, PDO::PARAM_STR);
-                                
+                {
+                     if (is_numeric($Value))
+                        $Raids->bindValue(':'.$IndexName, $Value, PDO::PARAM_INT);
+                    else
+                        $Raids->bindValue(':'.$IndexName, $Value, PDO::PARAM_STR);
+                }
+                               
                 $RaidCountData = $Raids->fetchFirst();
                 $NumRaidsRemain = ($RaidCountData == null) ? 0 : $RaidCountData['NumberOfRaids'];
             }
+                        
+            // Same user / first entry, add data to cache
             
-            //Out::getInstance()->pushValue('debug', $Data['Status']);
+            if ($Data['Status'] == null)
+                return true; // ### continue, invalid data ###
             
-            if ($Data['Status'] != null)
-            {
-                $StateCounts[$Data['Status']] += $Data['Count'];
-                
-                if ($Data['Role'] != null)
-                {
-                    if (!isset($Roles[$Data['Role']]))
-                        $Roles[$Data['Role']] = 1;
-                    else
-                        ++$Roles[$Data['Role']];
-                }
-                
-                $NumRaidsRemain -= $Data['Count'];
-            }
+            $StateCounts[$Data['Status']] += $Data['Count'];                                
+            $NumRaidsRemain -= $Data['Count'];
+            
+            if (($Data['Role'] == null) || ($Data['Status'] == 'unavailable'))
+                return true; // ### continue, no role set or absent ###
+            
+            if (!isset($Roles[$Data['Role']]))
+                $Roles[$Data['Role']] = 1;
+            else
+                ++$Roles[$Data['Role']];
         });
         
         // Push last user
