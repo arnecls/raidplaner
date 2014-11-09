@@ -33,8 +33,6 @@
     
     function api_query_statistic($aParameter)
     {
-        var_dump($aParameter);
-        
         $aStart = getParamFrom($aParameter, 'start', 0);
         $aEnd   = getParamFrom($aParameter, 'end',   0x7FFFFFFF);
         $aRaids = getParamFrom($aParameter, 'raids', '');
