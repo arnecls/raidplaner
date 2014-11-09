@@ -43,7 +43,8 @@
         // Build query
         
         $Conditions = Array(
-            '`'.RP_TABLE_PREFIX.'Character`.Mainchar = true',
+            //'`'.RP_TABLE_PREFIX.'Character`.Mainchar = true',
+            '`'.RP_TABLE_PREFIX.'Raid`.Start < FROM_UNIXTIME(:Now)',
             '`'.RP_TABLE_PREFIX.'Raid`.Start > `'.RP_TABLE_PREFIX.'User`.Created',
             '`'.RP_TABLE_PREFIX.'Raid`.Start > FROM_UNIXTIME(:Start)',
             '`'.RP_TABLE_PREFIX.'Raid`.Start < FROM_UNIXTIME(:End)'
@@ -52,6 +53,7 @@
         $Parameters = Array(
             "Start" => $aStart,
             "End"   => $aEnd,
+            "Now"   => time(),
         );
         
         $GamesCondition = '';
@@ -139,6 +141,7 @@
         
         $QueryString = 'SELECT '.
             '`'.RP_TABLE_PREFIX.'User`.UserId, '.
+            '`'.RP_TABLE_PREFIX.'User`.Login, '.
             '`'.RP_TABLE_PREFIX.'Character`.Name, '.
             '`'.RP_TABLE_PREFIX.'Attendance`.`Status`, '.
             '`'.RP_TABLE_PREFIX.'Attendance`.Role, '.
@@ -148,10 +151,11 @@
             'LEFT JOIN `'.RP_TABLE_PREFIX.'Attendance` USING(UserId) '.
             'LEFT JOIN `'.RP_TABLE_PREFIX.'Raid` USING(RaidId) '.
             'LEFT JOIN `'.RP_TABLE_PREFIX.'Location` USING(LocationId) '.
-            'LEFT JOIN `'.RP_TABLE_PREFIX.'Character` ON `'.RP_TABLE_PREFIX.'User`.UserId = `'.RP_TABLE_PREFIX.'Character`.UserId '.
+            'LEFT JOIN `'.RP_TABLE_PREFIX.'Character` USING(CharacterId)'.
+            //'LEFT JOIN `'.RP_TABLE_PREFIX.'Character` ON `'.RP_TABLE_PREFIX.'User`.UserId = `'.RP_TABLE_PREFIX.'Character`.UserId '.
             $WhereString.
             'GROUP BY `'.RP_TABLE_PREFIX.'User`.UserId, `'.RP_TABLE_PREFIX.'Attendance`.`Status` ';
-            
+           
         $Connector = Connector::getInstance();
         
         $AttendanceQuery = $Connector->prepare( $QueryString );
@@ -173,7 +177,7 @@
         
         $AttendanceQuery->loop( 
             function($Data) use (
-                $Connector, &$UserId, &$NumRaidsRemain, 
+                $Connector, &$UserId, &$Login, &$NumRaidsRemain, 
                 &$MainCharName, &$StateCounts, &$Attendances, &$Roles, 
                 $aUTF8, &$GamesCondition, &$GamesParameter, $aStart, $aEnd)
         {
@@ -185,6 +189,7 @@
                 {
                     $AttendanceData = Array(
                         'Id'        => $UserId,
+                        'Login'     => ($aUTF8) ? xmlToUTF8($Login) : $Login,
                         'MainChar'  => ($aUTF8) ? xmlToUTF8($MainCharName) : $MainCharName,
                         'SetToRaid' => $StateCounts['ok'],
                         'Available' => $StateCounts['available'],
@@ -214,12 +219,14 @@
                     'FROM `'.RP_TABLE_PREFIX.'Raid` '.
                     'LEFT JOIN `'.RP_TABLE_PREFIX.'Location` USING(LocationId) '.
                     'WHERE `'.RP_TABLE_PREFIX.'Raid`.Start > FROM_UNIXTIME(:Created) '.
+                    'AND `'.RP_TABLE_PREFIX.'Raid`.Start < FROM_UNIXTIME(:Now) '.
                     'AND `'.RP_TABLE_PREFIX.'Raid`.Start > FROM_UNIXTIME(:Start) '.
                     'AND `'.RP_TABLE_PREFIX.'Raid`.Start < FROM_UNIXTIME(:End) '.
                     (($GamesCondition == '') ? '' : 'AND ('.$GamesCondition.')');
                     
                 $Raids = $Connector->prepare( $RaidQueryString );
-                    
+                
+                $Raids->bindValue( ':Now', time(), PDO::PARAM_INT );
                 $Raids->bindValue( ':Start',   $aStart,             PDO::PARAM_INT );
                 $Raids->bindValue( ':End',     $aEnd,               PDO::PARAM_INT );
                 $Raids->bindValue( ':Created', $Data['CreatedUTC'], PDO::PARAM_INT );
@@ -259,6 +266,7 @@
         {
             $AttendanceData = Array(
                 'Id'        => $UserId,
+                'Login'     => ($aUTF8) ? xmlToUTF8($Login) : $Login,
                 'MainChar'  => ($aUTF8) ? xmlToUTF8($MainCharName) : $MainCharName,
                 'SetToRaid' => $StateCounts['ok'],
                 'Available' => $StateCounts['available'],
