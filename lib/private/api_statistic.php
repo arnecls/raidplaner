@@ -244,9 +244,9 @@
                 return true; // ### continue, no role set or absent ###
             
             if (!isset($Roles[$Data['Role']]))
-                $Roles[$Data['Role']] = 1;
+                $Roles[$Data['Role']] = $Data['Count'];
             else
-                ++$Roles[$Data['Role']];
+                $Roles[$Data['Role']] += $Data['Count'];
         });
         
         // Push last user
