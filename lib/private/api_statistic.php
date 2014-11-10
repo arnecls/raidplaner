@@ -21,7 +21,7 @@
     {
         return Array(
             'start' => getParamFrom($aRequest, 'start', 0),
-            'end'   => getParamFrom($aRequest, 'end', 0x7FFFFFFF),
+            'end'   => getParamFrom($aRequest, 'end', time()),
             'raids' => getParamFrom($aRequest, 'raids', ''),
             'users' => getParamFrom($aRequest, 'users', ''),
             'games' => getParamFrom($aRequest, 'games', ''),
@@ -34,7 +34,7 @@
     function api_query_statistic($aParameter)
     {
         $aStart = getParamFrom($aParameter, 'start', 0);
-        $aEnd   = getParamFrom($aParameter, 'end',   0x7FFFFFFF);
+        $aEnd   = getParamFrom($aParameter, 'end',   time());
         $aRaids = getParamFrom($aParameter, 'raids', '');
         $aUsers = getParamFrom($aParameter, 'users', '');
         $aGames = getParamFrom($aParameter, 'games', '');
