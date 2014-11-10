@@ -240,7 +240,7 @@
             $StateCounts[$Data['Status']] += $Data['Count'];                                
             $NumRaidsRemain -= $Data['Count'];
             
-            if (($Data['Role'] == null) || ($Data['Status'] == 'unavailable'))
+            if (($Data['Role'] == null) || ($Data['Status'] != 'ok'))
                 return true; // ### continue, no role set or absent ###
             
             if (!isset($Roles[$Data['Role']]))

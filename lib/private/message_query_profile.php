@@ -149,8 +149,7 @@
                     if (isset($AttendanceData['roles'][$RoleId]))
                         $AttendanceData['roles'][$RoleId] += $Data['Count'];
                     else
-                        $AttendanceData['roles'][$RoleId] = $Data['Count'];
-                    
+                        $AttendanceData['roles'][$RoleId] = $Data['Count'];                    
                 }
             });
     
