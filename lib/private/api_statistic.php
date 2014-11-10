@@ -44,6 +44,7 @@
         
         $Conditions = Array(
             '`'.RP_TABLE_PREFIX.'Character`.Mainchar = true',
+            '`'.RP_TABLE_PREFIX.'Character`.Game = `'.RP_TABLE_PREFIX.'Location`.Game',
             '`'.RP_TABLE_PREFIX.'Raid`.Start > `'.RP_TABLE_PREFIX.'User`.Created',
             '`'.RP_TABLE_PREFIX.'Raid`.Start > FROM_UNIXTIME(:Start)',
             '`'.RP_TABLE_PREFIX.'Raid`.Start < FROM_UNIXTIME(:End)'
@@ -99,26 +100,21 @@
         
         if ($aGames != '')
         {
-            $Games = explode(',', $aGames);
-            $GameByLoc = Array();
-            $GameByChar = Array();
-            
-            $GameIdx = 0;
+            $Games     = explode(',', $aGames);
+            $GameByLoc = Array();            
+            $GameIdx   = 0;
             
             foreach($Games as $Game)
             {
                 array_push($GameByLoc, '`'.RP_TABLE_PREFIX.'Location`.Game=:Game'.$GameIdx);                
-                array_push($GameByChar, '`'.RP_TABLE_PREFIX.'Character`.Game=:Game'.$GameIdx);
                 
                 $Parameters["Game".$GameIdx]     = $Game;
                 $GamesParameter["Game".$GameIdx] = $Game;
                 ++$GameIdx;
             }
             
-            $GamesCondition = implode(' OR ', $GameByLoc);
-            
-            array_push($GameByChar, '(`'.RP_TABLE_PREFIX.'Character`.CharacterId IS NULL AND (`'.RP_TABLE_PREFIX.'Location`.Game IS NULL OR '.$GamesCondition.'))');
-            array_push($Conditions, $GameByChar);
+            $GamesCondition = implode(' OR ', $GameByLoc);            
+            array_push($Conditions, $GameByLoc);
         }
         
         // Build where clause
