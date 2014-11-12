@@ -438,6 +438,18 @@
         
         fwrite($NewGameConfig, "\t</groups>\n");
         
+        // Create only the default locale
+        
+        reset($gClasses);
+        fwrite($NewGameConfig, "\n\t<locale name=\"en\">\n");
+        
+        foreach ($gClasses as $Name => $ClassDesc)
+        {
+            fwrite($NewGameConfig, "\t\t<text key=\"".$ClassDesc[0]."\">".$ClassDesc[0]."</text>\n");
+        }
+        
+        fwrite($NewGameConfig, "\t</locale>\n");
+        
         // Clean up
         
         fwrite($NewGameConfig, "</game>\n");
