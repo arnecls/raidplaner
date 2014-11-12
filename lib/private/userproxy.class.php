@@ -393,7 +393,7 @@
         {
             $Connector = Connector::getInstance();
 
-            $UserQuery = $Connector->prepare( 'SELECT OneTimeKey, Password, ExternalBinding, BindingActive, ExternalId '.
+            $UserQuery = $Connector->prepare( 'SELECT OneTimeKey, Password, ExternalBinding, BindingActive, UserId, ExternalId '.
                 'FROM `'.RP_TABLE_PREFIX.'User` WHERE UserId = :UserId LIMIT 1' );
             
             $UserQuery->bindValue(':UserId', $this->UserId, PDO::PARAM_INT );
