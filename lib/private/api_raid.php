@@ -254,14 +254,14 @@
             ' FROM ('.$TableQuery.$WhereString.$OrderString.$LimitString.') AS inner_select '.
             $AttendanceJoin;
         
-        Out::getInstance()->pushValue('query', $QueryString);
+        //Out::getInstance()->pushValue('debug', $QueryString);
         
         $Connector = Connector::getInstance();
         $RaidQuery = $Connector->prepare($QueryString);
         
         foreach($Parameters as $Index => $Value)
         {
-            //Out::getInstance()->pushValue('query', $Value);
+            //Out::getInstance()->pushValue('debug', $Value);
             if (is_numeric($Value))
                 $RaidQuery->bindValue($Index+1, $Value, PDO::PARAM_INT);
             else
