@@ -8,7 +8,7 @@
         'parameters'  => Array(
             'start'     => 'Only return raids starting after this UTC timestamp. Default: 0.',
             'end'       => 'Only return raids starting before this UTC timestamp. Default: 0x7FFFFFFF.',
-            'limit'     => 'Maximum number of rows to return (when returning attends this is NOT the number of raids to return). Passing 0 returns all raids. Default: 0.',
+            'limit'     => 'Maximum number of rows to return. Passing 0 returns all raids. Default: 0.',
             'offset'    => 'Number of raids to skip if a limit is set. Default: 0.',
             'raid'      => 'Comma separated list of raid ids. Only returns the given raids. Default: empty.',
             'location'  => 'Comma separated list of location ids. Only returns raids on these locations. Default: empty.',
@@ -19,6 +19,7 @@
             'closed'    => 'Include raids that are closed for registration. Default: false.',
             'canceled'  => 'Include raids that have been canceled. Default: false.',
             'attends'   => 'Return list of attended players, too. Default: false.',
+            'desc'      => 'Reverse result ordering for raids. Default: false.',
             'utf8'      => 'Convert strings back to UTF8. Default: false.'
         )
     );
@@ -41,6 +42,7 @@
             'closed'    => getParamFrom($aRequest, 'closed', false),
             'canceled'  => getParamFrom($aRequest, 'canceled', false),
             'attends'   => getParamFrom($aRequest, 'attends', false),
+            'desc'      => getParamFrom($aRequest, 'desc', false),
             'utf8'      => getParamFrom($aRequest, 'utf8', false)
         );
     }
@@ -64,14 +66,15 @@
         $aFetchClosed   = getParamFrom($aParameter, 'closed',   false);
         $aFetchCanceled = getParamFrom($aParameter, 'canceled', false);
         $aAddAttends    = getParamFrom($aParameter, 'attends',  false);
+        $aDesc          = getParamFrom($aParameter, 'desc',     false);
         $aUTF8          = getParamFrom($aParameter, 'utf8',     false);
         
         // Build query
         
         $Fields = Array(
-            '`'.RP_TABLE_PREFIX.'Raid`.*',
-            'UNIX_TIMESTAMP(`'.RP_TABLE_PREFIX.'Raid`.Start) AS StartUTC',
-            'UNIX_TIMESTAMP(`'.RP_TABLE_PREFIX.'Raid`.End)   AS EndUTC',
+            '`inner_select`.*',
+            '`'.RP_TABLE_PREFIX.'Attendance`.Status',
+            '`'.RP_TABLE_PREFIX.'Attendance`.Role',
         );
         
         $Conditions = Array(
@@ -83,9 +86,12 @@
             $aStart, $aEnd
         );
         
-        $TableQuery  = ' FROM `'.RP_TABLE_PREFIX.'Raid` ';
-        $TableQuery .= 'LEFT JOIN `'.RP_TABLE_PREFIX.'Location` USING (LocationId) ';
-            
+        $TableQuery = 'SELECT'.
+            ' `'.RP_TABLE_PREFIX.'Raid`.*,'.
+            ' UNIX_TIMESTAMP(`'.RP_TABLE_PREFIX.'Raid`.Start) AS StartUTC,'.
+            ' UNIX_TIMESTAMP(`'.RP_TABLE_PREFIX.'Raid`.End) AS EndUTC'.
+            ' FROM `'.RP_TABLE_PREFIX.'Raid` '.
+            ' LEFT JOIN `'.RP_TABLE_PREFIX.'Location` USING (LocationId) ';
         
         // Specific raids
         
@@ -154,41 +160,6 @@
             
             array_push($Conditions, $LocationConditions);
         }
-                
-        // Merge attends if required
-        
-        if ($aAddAttends === true)
-        {
-            $TableQuery .= 'LEFT JOIN `'.RP_TABLE_PREFIX.'Attendance` USING (RaidId) ';
-            $TableQuery .= 'LEFT JOIN `'.RP_TABLE_PREFIX.'User` USING (UserId) ';
-            $TableQuery .= 'LEFT JOIN `'.RP_TABLE_PREFIX.'Character` USING (CharacterId) ';
-            
-            $Fields = array_merge($Fields, Array(
-                '`'.RP_TABLE_PREFIX.'Attendance`.Status',
-                '`'.RP_TABLE_PREFIX.'Attendance`.Role',
-                '`'.RP_TABLE_PREFIX.'Attendance`.Class',
-                '`'.RP_TABLE_PREFIX.'Attendance`.Comment',
-                
-                '`'.RP_TABLE_PREFIX.'User`.UserId',
-                '`'.RP_TABLE_PREFIX.'User`.ExternalBinding AS BindingId',
-                '`'.RP_TABLE_PREFIX.'User`.ExternalId AS BoundUserId',
-                
-                '`'.RP_TABLE_PREFIX.'Character`.Name AS CharacterName',
-                '`'.RP_TABLE_PREFIX.'Character`.Class AS CharacterClasses',
-                '`'.RP_TABLE_PREFIX.'Character`.Mainchar AS CharacterIsMain',
-                '`'.RP_TABLE_PREFIX.'Character`.Role1 AS CharacterRole1',
-                '`'.RP_TABLE_PREFIX.'Character`.Role2 AS CharacterRole2',
-            ));
-        }
-        else
-        {
-            $TableQuery .= 'LEFT JOIN `'.RP_TABLE_PREFIX.'Attendance` USING (RaidId) ';
-            
-            $Fields = array_merge($Fields, Array(
-                '`'.RP_TABLE_PREFIX.'Attendance`.Status',
-                '`'.RP_TABLE_PREFIX.'Attendance`.Role'
-            ));
-        }
         
         // Raid status
         
@@ -248,12 +219,42 @@
         
         // Build order part
         
-        $OrderString = ' ORDER BY `'.RP_TABLE_PREFIX.'Raid`.Start, `'.RP_TABLE_PREFIX.'Raid`.RaidId ';
+        $OrderString = ' ORDER BY'.
+            ' `'.RP_TABLE_PREFIX.'Raid`.Start '.(($aDesc) ? 'DESC' : 'ASC').','.
+            ' `'.RP_TABLE_PREFIX.'Raid`.RaidId '.(($aDesc) ? 'DESC' : 'ASC');
+            
+        // Merge attendance information (outer select)
+        
+        $AttendanceJoin = 'LEFT JOIN `'.RP_TABLE_PREFIX.'Attendance` USING (RaidId) ';
+        
+        if ($aAddAttends === true)
+        {
+            $AttendanceJoin .= 'LEFT JOIN `'.RP_TABLE_PREFIX.'User` USING (UserId) ';
+            $AttendanceJoin .= 'LEFT JOIN `'.RP_TABLE_PREFIX.'Character` USING (CharacterId) ';
+            
+            $Fields = array_merge($Fields, Array(
+                '`'.RP_TABLE_PREFIX.'Attendance`.Class',
+                '`'.RP_TABLE_PREFIX.'Attendance`.Comment',
+                
+                '`'.RP_TABLE_PREFIX.'User`.UserId',
+                '`'.RP_TABLE_PREFIX.'User`.ExternalBinding AS BindingId',
+                '`'.RP_TABLE_PREFIX.'User`.ExternalId AS BoundUserId',
+                
+                '`'.RP_TABLE_PREFIX.'Character`.Name AS CharacterName',
+                '`'.RP_TABLE_PREFIX.'Character`.Class AS CharacterClasses',
+                '`'.RP_TABLE_PREFIX.'Character`.Mainchar AS CharacterIsMain',
+                '`'.RP_TABLE_PREFIX.'Character`.Role1 AS CharacterRole1',
+                '`'.RP_TABLE_PREFIX.'Character`.Role2 AS CharacterRole2',
+            ));
+        }
         
         // Execute query
         
-        $QueryString = 'SELECT '.implode(',', $Fields).$TableQuery.$WhereString.$OrderString.$LimitString;
-        //Out::getInstance()->pushValue('query', $QueryString);
+        $QueryString = 'SELECT '.implode(',', $Fields).
+            ' FROM ('.$TableQuery.$WhereString.$OrderString.$LimitString.') AS inner_select '.
+            $AttendanceJoin;
+        
+        Out::getInstance()->pushValue('query', $QueryString);
         
         $Connector = Connector::getInstance();
         $RaidQuery = $Connector->prepare($QueryString);
