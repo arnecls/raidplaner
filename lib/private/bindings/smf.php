@@ -240,7 +240,7 @@
             $Info->UserId      = $aUserData['id_member'];
             $Info->UserName    = $aUserData['member_name'];
             $Info->Password    = $aUserData['passwd'];
-            $Info->Salt        = strtolower($aUserData['member_name']);
+            $Info->Salt        = $aUserData['member_name_encoded'];
             $Info->SessionSalt = $aUserData['password_salt'];
             $Info->Group       = $this->getGroupForUser($aUserData);
             $Info->BindingName = $this->getName();
