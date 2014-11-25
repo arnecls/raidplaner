@@ -103,6 +103,12 @@
             <role id="med" count="7"/>
             <role id="dmg" count="*"/>
         </group>
+        
+        <group count="40">
+            <role id="tnk" count="4"/>
+            <role id="med" count="10"/>
+            <role id="dmg" count="*"/>
+        </group>
     </groups>
     
     <locale name="en">
