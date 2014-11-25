@@ -151,5 +151,36 @@
 
         return $Output;
     }
+    
+    // -----------------------------------------------------------------------------
+    
+    function mysqlToMbstringCharset($aCharset)
+    {
+        $Mapping = array(
+            'big5'     => 'BIG-5',
+            'koi8r'    => 'KOI8-R',
+            'latin1'   => 'Windows-1252',
+            'latin2'   => 'ISO-8859-2',
+            'ascii'    => 'ASCII',
+            'ujis'     => 'EUC-JP',
+            'sjis'     => 'SJIS',
+            'hebrew'   => 'ISO-8859-8',
+            'euckr'    => 'EUC-KR',
+            'greek'    => 'ISO-8859-7',
+            'latin5'   => 'ISO-8859-9',
+            'utf8'     => 'UTF-8',
+            'ucs2'     => 'UCS-2',
+            'cp866'    => 'CP866',
+            'latin7'   => 'ISO-8859-13',
+            'cp1251'   => 'Windows-1251',
+            'cp932'    => 'CP932',
+            'eucjpms'  => 'JIS-ms' );
+            
+        $CharsetLower = strtolower($aCharset);
+            
+        return (isset($Mapping[$CharsetLower]))
+            ? $Mapping[$CharsetLower]
+            : 'UTF-8';
+    }
 
 ?>

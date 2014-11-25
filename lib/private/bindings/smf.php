@@ -31,6 +31,7 @@
             $Config->CookieData       = defined('SMF_COOKIE') ? SMF_COOKIE : 'SMFCookie956';
             $Config->PostTo           = defined('SMF_POSTTO') ? SMF_POSTTO : '';
             $Config->PostAs           = defined('SMF_POSTAS') ? SMF_POSTAS : '';
+            $Config->Encoding         = defined('SMF_ENCODING') ? SMF_ENCODING : 'UTF-8';
             $Config->Raidleads        = defined('SMF_RAIDLEAD_GROUPS') ? explode(',', SMF_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('SMF_MEMBER_GROUPS') ? explode(',', SMF_MEMBER_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
@@ -91,6 +92,29 @@
                 fwrite( $Config, "\tdefine('SMF_POSTAS', ".$aPostAs.");\n");
                 fwrite( $Config, "\tdefine('SMF_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
                 fwrite( $Config, "\tdefine('SMF_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
+                
+                $Encoding = 'UTF-8';
+                
+                try
+                {
+                    $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, true);
+                    $CharSetQuery = $Connector->prepare('SELECT character_set_name '.
+                        'FROM information_schema.`COLUMNS` '.
+                        'WHERE table_name = "'.$aPrefix.'members" '.
+                        'AND column_name = "member_name"');
+                        
+                    $ColInfo = $CharSetQuery->fetchFirst(true);
+                    
+                    if ($ColInfo != null)
+                    {
+                        $Encoding = mysqlToMbstringCharset($ColInfo['character_set_name']);
+                    }
+                }
+                catch (Exception $Exception)
+                {              
+                }
+                
+                fwrite( $Config, "\tdefine('SMF_ENCODING', '".$Encoding."');\n");
             }
 
             fwrite( $Config, '?>');
@@ -266,9 +290,14 @@
             $UserQuery->BindValue( ':Login', strtolower($aUserName), PDO::PARAM_STR );
             $UserData = $UserQuery->fetchFirst();
 
-            return ($UserData != null)
-                ? $this->generateUserInfo($UserData)
-                : null;
+            if ($UserData === null)
+                return null;
+
+            $UserData['member_name_encoded'] = (defined('SMF_ENCODING') && (SMF_ENCODING != 'UTF-8'))
+                ? mb_convert_encoding(strtolower($UserData['member_name']), SMF_ENCODING, 'UTF-8')
+                : strtolower($UserData['member_name']);
+
+            return $this->generateUserInfo($UserData);
         }
 
         // -------------------------------------------------------------------------
@@ -285,9 +314,14 @@
             $UserQuery->BindValue( ':UserId', $aUserId, PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
-            return ($UserData != null)
-                ? $this->generateUserInfo($UserData)
-                : null;
+            if ($UserData === null)
+                return null;
+                
+            $UserData['member_name_encoded'] = (defined('SMF_ENCODING') && (SMF_ENCODING != 'UTF-8'))
+                ? mb_convert_encoding(strtolower($UserData['member_name']), SMF_ENCODING, 'UTF-8')
+                : strtolower($UserData['member_name']);
+            
+            return $this->generateUserInfo($UserData);
         }
 
         // -------------------------------------------------------------------------
