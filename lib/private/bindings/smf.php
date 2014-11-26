@@ -211,22 +211,70 @@
                 {
                     return 'none'; // ### return, banned ###
                 }
-            };
-
+            }
+            
+            if ($aUserData['is_activated'] == 0)
+            {
+                return 'none';
+            }
+            
             $MemberGroups   = explode(',', SMF_MEMBER_GROUPS );
             $RaidleadGroups = explode(',', SMF_RAIDLEAD_GROUPS );
             $AssignedGroup  = 'none';
+            
+            // Check post based groups
 
-            $Groups = explode(',', $aUserData['additional_groups']);
-            array_push($Groups, $aUserData['id_group'] );
-
-            foreach( $Groups as $Group )
+            if ($aUserData['id_group'] == 0)
             {
-                if ( in_array($Group, $MemberGroups) )
-                    $AssignedGroup = 'member';
+                $Connector = $this->getConnector();
+                
+                // Get number of posts for current user
+                
+                $PostQuery = $Connector->prepare('SELECT COUNT(*) AS posts FROM `'.SMF_TABLE_PREFIX.'messages` WHERE id_member = :UserId');
+                $PostQuery->BindValue( ':UserId', $aUserData['id_member'], PDO::PARAM_INT );
+                
+                $PostData = $PostQuery->fetchFirst();
+                
+                if ($PostData != null)
+                {
+                    // Fetch groups for this user
+                                
+                    $GroupQuery = $Connector->prepare('SELECT id_group, min_posts '.
+                        'FROM `'.SMF_TABLE_PREFIX.'membergroups` '.
+                        'WHERE min_posts >= :Posts '.
+                        'ORDER BY min_posts DESC');
+                        
+                    $GroupQuery->BindValue( ':Posts', $PostData['posts'], PDO::PARAM_INT );
+    
+                    $GroupQuery->loop(function($aGroup) use (&$PostData, &$AssignedGroup, $MemberGroups, $RaidleadGroups)
+                    {
+                        if ( in_array($aGroup['id_group'], $MemberGroups) )
+                            $AssignedGroup = 'member';
 
-                if ( in_array($Group, $RaidleadGroups) )
-                    return 'raidlead'; // ### return, best possible group ###
+                        if ( in_array($aGroup['id_group'], $RaidleadGroups) )
+                        {
+                            $AssignedGroup = 'raidlead'; 
+                            return false; // ### return, best possible group ###
+                        }
+                    });
+                }
+            }
+            
+            // Always check regular group fields, too
+            
+            if ($AssignedGroup != 'raidlead')
+            {
+                $Groups = explode(',', $aUserData['additional_groups']);
+                array_push($Groups, $aUserData['id_group'] );
+    
+                foreach( $Groups as $Group )
+                {
+                    if ( in_array($Group, $MemberGroups) )
+                        $AssignedGroup = 'member';
+    
+                    if ( in_array($Group, $RaidleadGroups) )
+                        return 'raidlead'; // ### return, best possible group ###
+                }
             }
 
             return $AssignedGroup;
@@ -281,7 +329,7 @@
         public function getUserInfoByName( $aUserName )
         {
             $Connector = $this->getConnector();
-            $UserQuery = $Connector->prepare('SELECT id_member, member_name, passwd, password_salt, id_group, additional_groups, ban_time, expire_time '.
+            $UserQuery = $Connector->prepare('SELECT id_member, member_name, passwd, password_salt, id_group, additional_groups, ban_time, is_activated, expire_time '.
                                           'FROM `'.SMF_TABLE_PREFIX.'members` '.
                                           'LEFT JOIN `'.SMF_TABLE_PREFIX.'ban_items` USING(id_member) '.
                                           'LEFT JOIN `'.SMF_TABLE_PREFIX.'ban_groups` USING(id_ban_group) '.
@@ -305,7 +353,7 @@
         public function getUserInfoById( $aUserId )
         {
             $Connector = $this->getConnector();
-            $UserQuery = $Connector->prepare('SELECT id_member, member_name, passwd, password_salt, id_group, additional_groups, ban_time, expire_time '.
+            $UserQuery = $Connector->prepare('SELECT id_member, member_name, passwd, password_salt, id_group, additional_groups, ban_time, is_activated, expire_time '.
                                           'FROM `'.SMF_TABLE_PREFIX.'members` '.
                                           'LEFT JOIN `'.SMF_TABLE_PREFIX.'ban_items` USING(id_member) '.
                                           'LEFT JOIN `'.SMF_TABLE_PREFIX.'ban_groups` USING(id_ban_group) '.
@@ -335,7 +383,11 @@
 
         public function hash( $aPassword, $aSalt, $aMethod )
         {
-            return sha1(pack("H*", $aSalt).$aPassword);
+            $EncodedPass = (defined('SMF_ENCODING') && (SMF_ENCODING != 'UTF-8'))
+                ? mb_convert_encoding($aPassword, SMF_ENCODING, 'UTF-8')
+                : $aPassword;
+                
+            return sha1(pack("H*", $aSalt).$EncodedPass);
         }
 
         // -------------------------------------------------------------------------
