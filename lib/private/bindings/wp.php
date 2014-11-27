@@ -157,8 +157,8 @@
             $RaidleadGroups = explode(',', WP_RAIDLEAD_GROUPS );
 
             $MetaQuery = $Connector->prepare('SELECT meta_key, meta_value '.
-                                          'FROM `'.WP_TABLE_PREFIX.'usermeta` '.
-                                          'WHERE user_id = :UserId AND meta_key = "'.WP_TABLE_PREFIX.'capabilities" LIMIT 1');
+                'FROM `'.WP_TABLE_PREFIX.'usermeta` '.
+                'WHERE user_id = :UserId AND meta_key = "'.WP_TABLE_PREFIX.'capabilities" LIMIT 1');
 
             $MetaQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);
 
@@ -226,8 +226,6 @@
 
                     // Fetch user info if seesion cookie is set
                     
-                    $Version = 400;
-
                     if (isset($_COOKIE[$CookieName]))
                     {
                         if (!defined("WP_VERSION") || WP_VERSION < 40000)
@@ -243,8 +241,11 @@
                                 $Key3x  = hash_hmac('md5', $UserName.$PassFragment.'|'.$Expiration, WP_SECRET);
                                 $Hash3x = hash_hmac('md5', $UserName . '|' . $Expiration, $Key3x);
     
-                                if ($Hash3x != $hmac)
+                                if (($Hash3x != $hmac) || 
+                                    ($Expiration < time()))
+                                {
                                     $UserInfo = null;
+                                }
                             }
                         }
                         else
@@ -260,8 +261,11 @@
                                 $Key4x  = hash_hmac('md5', $UserName.'|'.$PassFragment.'|'.$Expiration.'|'.$Token, WP_SECRET);
                                 $Hash4x = hash_hmac('sha256', $UserName.'|'.$Expiration.'|'.$Token, $Key4x);
     
-                                if ($Hash4x != $hmac)
+                                if (($Hash4x != $hmac) || 
+                                    ($Expiration < time()))
+                                {
                                     $UserInfo = null;
+                                }
                             }
                         }
 
@@ -278,8 +282,8 @@
         {
             $Connector = $this->getConnector();
             $UserQuery = $Connector->prepare('SELECT ID, user_login, user_pass, user_status '.
-                                          'FROM `'.WP_TABLE_PREFIX.'users` '.
-                                          'WHERE LOWER(user_login) = :Login LIMIT 1');
+                'FROM `'.WP_TABLE_PREFIX.'users` '.
+                'WHERE LOWER(user_login) = :Login LIMIT 1');
 
             $UserQuery->BindValue( ':Login', strtolower($aUserName), PDO::PARAM_STR );
             $UserData = $UserQuery->fetchFirst();
@@ -295,8 +299,8 @@
         {
             $Connector = $this->getConnector();
             $UserQuery = $Connector->prepare('SELECT ID, user_login, user_pass, user_status '.
-                                          'FROM `'.WP_TABLE_PREFIX.'users` '.
-                                          'WHERE ID = :UserId LIMIT 1');
+                'FROM `'.WP_TABLE_PREFIX.'users` '.
+                'WHERE ID = :UserId LIMIT 1');
 
             $UserQuery->BindValue( ':UserId', $aUserId, PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
@@ -312,7 +316,7 @@
         {
             global $gItoa64;
             
-            if (strlen($aPassword) == 34)
+            if ((strlen($aPassword) == 34) || (substr($aPassword, 0, 3) == '$P$'))
             {
                 $Count = strpos($gItoa64, $aPassword[3]);
                 $Salt = substr($aPassword, 4, 8);
@@ -327,10 +331,9 @@
 
         public function getMethodFromPass( $aPassword )
         {
-            if (strlen($aPassword) == 34)
-                return self::$HashMethod_md5r;
-
-            return self::$HashMethod_md5;
+            return ((strlen($aPassword) == 34) || (substr($aPassword, 0, 3) == '$P$'))
+                ? self::$HashMethod_md5r
+                : self::$HashMethod_md5;
         }
 
         // -------------------------------------------------------------------------
