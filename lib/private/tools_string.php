@@ -18,18 +18,15 @@
         $Encoding = mb_detect_encoding($aChar);
         
         $Char = ($Encoding === false)
-            ? mb_convert_encoding($aChar, 'UCS-4LE')             // Try default encoding
-            : mb_convert_encoding($aChar, 'UCS-4LE', $Encoding); // Use detected encoding
+            ? mb_convert_encoding($aChar, 'UTF-32')             // Try default encoding
+            : mb_convert_encoding($aChar, 'UTF-32', $Encoding); // Use detected encoding
             
-        if ($Char == "")
-        {
-            $Char = ($Encoding !== false)
-                ? mb_convert_encoding($aChar, 'UCS-4LE') // Try again, detection failed
-                : mb_convert_encoding('?', 'UCS-4LE');   // mb string failed, use placeholder
-        }
-           
-        $Val = unpack('V',$Char);    
-        return '&#'.$Val[1].';';
+        if (($Char == '') && ($Encoding !== false))
+            $Char = mb_convert_encoding($aChar, 'UTF-32');
+            
+        return ($Char != '')
+            ? '&#'.hexdec(bin2hex($Char)).';'
+            : '&#65533;';
     }
     
     // -----------------------------------------------------------------------------
