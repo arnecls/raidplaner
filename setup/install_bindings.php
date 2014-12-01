@@ -93,13 +93,16 @@
 
         echo "<p>".L("TablePrefix")."<br/>";
         echo "<input type=\"text\" id=\"".$Binding->getName()."_prefix\" value=\"".$Config->Prefix."\"".$Disabled."/></p>";
-        echo "<input type=\"hidden\" id=\"".$Binding->getName()."_version\" value=\"".$Config->Version."\"/>";
-
+        
         if ( $Config->HasCookieConfig )
         {
             echo "<p>".L($Binding->getName()."_CookieEx")."<br/>";
             echo "<input type=\"text\" id=\"".$Binding->getName()."_cookie_ex\" value=\"".$Config->CookieData."\"".$Disabled."/></p>";
         }
+
+        echo "<p>".L("Version")."<br/>";
+        echo "<span id=\"".$Binding->getName()."_versionstring\">".intval($Config->Version / 10000).'.'.intval(($Config->Version / 100) % 100).'.'.intval($Config->Version % 100)."</span>";
+        echo "<input type=\"hidden\" id=\"".$Binding->getName()."_version\" value=\"".$Config->Version."\"/></p>";
 
         echo "</div>";
 

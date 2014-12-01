@@ -355,7 +355,7 @@
         $gLocale[ 'PostAsUser' ]               = 'Zveřejnit nové raidy jako tento uživatel';
         $gLocale[ 'DisablePosting' ]           = 'Nevytvářet příspěvky';
         $gLocale[ 'NoUsersFound' ]             = 'Nenalezení žádní uživatelé';
-        
+        $gLocale[ 'Version' ]                  = 'Verze';        
         
         // PHPBB3        
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';

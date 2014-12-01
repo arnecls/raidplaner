@@ -211,6 +211,12 @@ function OnLoadSettings(aXHR)
         $("#"+aXHR.binding+"_password_check").val(aXHR.settings.password);
         $("#"+aXHR.binding+"_prefix").val(aXHR.settings.prefix);
         $("#"+aXHR.binding+"_version").val(aXHR.settings.version);
+        $("#"+aXHR.binding+"_versionstring")
+            .empty()
+            .append(
+                parseInt(aXHR.settings.version / 10000) + '.' +
+                parseInt((aXHR.settings.version / 100) % 100) + '.' +
+                parseInt(aXHR.settings.version % 100) );
 
         if (aXHR.settings.cookie != undefined)
         {

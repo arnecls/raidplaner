@@ -355,6 +355,7 @@
         $gLocale[ 'PostAsUser' ]               = 'Ogłaszaj nowe rajdy, jako ten użytkownik';
         $gLocale[ 'DisablePosting' ]           = 'Nie twórz postów';
         $gLocale[ 'NoUsersFound' ]             = 'Nie znaleziono użytkownika';
+        $gLocale[ 'Version' ]                  = 'Wersja';
 
         // PHPBB3
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';

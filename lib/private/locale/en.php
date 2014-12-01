@@ -351,6 +351,7 @@
         $gLocale[ 'PostAsUser' ]               = 'Post new raids as this user';
         $gLocale[ 'DisablePosting' ]           = 'Do not create postings';
         $gLocale[ 'NoUsersFound' ]             = 'No users found';
+        $gLocale[ 'Version' ]                  = 'Version';
 
         // PHPBB3
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';
