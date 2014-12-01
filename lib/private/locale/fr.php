@@ -376,7 +376,7 @@
         $gLocale[ 'eqdkp_DBPasswordsMatch' ]    = 'EQDKP Les mots de passe de la base de données ne correspondent pas.';
 
         // vBulletin
-        $gLocale[ 'vb3_Binding' ]               = 'vBulletin 3.x';
+        $gLocale[ 'vb3_Binding' ]               = 'vBulletin 3 / 4';
         $gLocale[ 'vb3_ConfigFile' ]            = 'vBulletin Fichier de configuration';
         $gLocale[ 'vb3_Database' ]              = 'vBulletin Base de données';
         $gLocale[ 'vb3_DatabaseEmpty' ]         = 'vBulletin Base de données ne peut pas être vide.';
@@ -435,7 +435,7 @@
         $gLocale[ 'drupal_CookieEx' ]           = 'Drupal URL de base';
 
         // Wordpress
-        $gLocale[ 'wp_Binding' ]                = 'Wordpress 3.x';
+        $gLocale[ 'wp_Binding' ]                = 'Wordpress 3 / 4';
         $gLocale[ 'wp_ConfigFile' ]             = 'Wordpress Fichier de configuration';
         $gLocale[ 'wp_Database' ]               = 'Wordpress Base de données';
         $gLocale[ 'wp_DatabaseEmpty' ]          = 'Wordpress Base de données ne peut pas être vide.';

@@ -376,7 +376,7 @@
         $gLocale[ 'eqdkp_DBPasswordsMatch' ]    = 'EQDKP heslo databáze nesouhlasí.';
                                                 
         // vBulletin                            
-        $gLocale[ 'vb3_Binding' ]               = 'vBulletin 3.x/4.x';
+        $gLocale[ 'vb3_Binding' ]               = 'vBulletin 3 / 4';
         $gLocale[ 'vb3_ConfigFile' ]            = 'vBulletin konfigurační soubor';
         $gLocale[ 'vb3_Database' ]              = 'vBulletin databáze';
         $gLocale[ 'vb3_DatabaseEmpty' ]         = 'vBulletin jméno databáze nesmí být prázdné.';
@@ -435,7 +435,7 @@
         $gLocale[ 'drupal_CookieEx' ]           = 'Drupal base URL';
         
         // Wordpress
-        $gLocale[ 'wp_Binding' ]                = 'Wordpress 3.x';
+        $gLocale[ 'wp_Binding' ]                = 'Wordpress 3 / 4';
         $gLocale[ 'wp_ConfigFile' ]             = 'Wordpress konfigurační soubor';
         $gLocale[ 'wp_Database' ]               = 'Wordpress databáze';
         $gLocale[ 'wp_DatabaseEmpty' ]          = 'Wordpress jméno databáze nesmí být prázdné.';

@@ -376,7 +376,7 @@
         $gLocale[ 'eqdkp_DBPasswordsMatch' ]    = 'Hasło bazy danych EQDKP zostało powtórzone niepoprawnie.';
 
         // vBulletin
-        $gLocale[ 'vb3_Binding' ]               = 'vBulletin 3.x/4.x';
+        $gLocale[ 'vb3_Binding' ]               = 'vBulletin 3 / 4';
         $gLocale[ 'vb3_ConfigFile' ]            = 'Plik konfiguracyjny vBulletin';
         $gLocale[ 'vb3_Database' ]              = 'Baza danych vBulletin';
         $gLocale[ 'vb3_DatabaseEmpty' ]         = 'Nazwa bazy danych vBulletin nie może być pusta.';
@@ -435,7 +435,7 @@
         $gLocale[ 'drupal_CookieEx' ]           = 'Domyślny adres URL do Drupal';
 
         // Wordpress
-        $gLocale[ 'wp_Binding' ]                = 'Wordpress 3.x';
+        $gLocale[ 'wp_Binding' ]                = 'Wordpress 3 / 4';
         $gLocale[ 'wp_ConfigFile' ]             = 'Plik konfiguracyjny Wordpress';
         $gLocale[ 'wp_Database' ]               = 'Baza danych Wordpress';
         $gLocale[ 'wp_DatabaseEmpty' ]          = 'Nazwa bazy danych Wordpress nie może być pusta.';
