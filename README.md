@@ -7,7 +7,7 @@ Packedpixel raidplaner is an easy to use raid manager for World of Warcraft.
 * Easier and faster to use than most other raid managers.
  
 You can find a short (yet a little outdated) overview on
-[Youtube]{https://www.youtube.com/watch?v=tp-ciKFpz7Y).
+[YouTube](https://www.youtube.com/watch?v=tp-ciKFpz7Y).
 
 If you want to know more about the current development status you can also follow me on
 [Google+](https://plus.google.com/117920822853814771101).  
