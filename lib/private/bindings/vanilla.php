@@ -48,6 +48,7 @@
             
             $DefaultsPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/conf/config-defaults.php';
             $ConfigPath   = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/conf/config.php';
+            $IndexPath    = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/index.php';
             
             if (!file_exists($DefaultsPath))
             {
@@ -61,7 +62,27 @@
                 return null;
             }
             
-            define('APPLICATION', 'Vanilla');
+            $Version = 20000;            
+            if (file_exists($IndexPath))
+            {
+                $Index = file_get_contents($IndexPath);
+                $AppIdx = strpos($Index, 'APPLICATION_VERSION');
+                
+                if ($AppIdx !== false)
+                {
+                    $StripIdx = strpos($Index, ';', $AppIdx);                    
+                    $Index = substr($Index, 0, $StripIdx+1);
+                    $Index = substr($Index, strpos($Index, '<?php')+5);
+                    eval($Index);
+                    
+                    $VersionParts = explode('.', APPLICATION_VERSION);                
+                    $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
+                }
+            }
+            
+            if (!defined('APPLICATION'))
+                define('APPLICATION', 'Vanilla');
+            
             define('PATH_CACHE', '');
 
             @include_once($DefaultsPath);
@@ -76,8 +97,6 @@
             $CookieConf = $Configuration['Garden']['Cookie'];
             $DbConf = $Configuration['Database'];
             
-            $Version = 20000;
-                        
             return array(
                 'database'  => $DbConf['Name'],
                 'user'      => $DbConf['User'],
