@@ -59,6 +59,17 @@
                 Out::getInstance()->pushError(L('NoValidConfig'));
                 return null;
             }
+            
+            $Version = 20000;
+            $Connector = new Connector(SQL_HOST, $db_name, $db_user, $db_passwd, false);
+            if ($Connector != null)
+            {
+                $VersionQuery = $Connector->prepare( 'SELECT value FROM `'.$db_prefix.'settings` WHERE variable="smfVersion" LIMIT 1' );
+                $VersionData  = $VersionQuery->fetchFirst();                
+                $VersionParts = explode('.', $VersionData['value']);
+                
+                $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
+            }
 
             return array(
                 'database'  => $db_name,
@@ -66,7 +77,7 @@
                 'password'  => $db_passwd,
                 'prefix'    => $db_prefix,
                 'cookie'    => (isset($cookiename)) ? $cookiename : 'SMFCookie956',
-                'version'   => 20000
+                'version'   => $Version
             );
         }
 

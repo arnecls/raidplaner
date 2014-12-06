@@ -45,6 +45,8 @@
             $Out = Out::getInstance();
 
             $ConfigPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/inc/config.php';
+            $CorePath   = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/inc/class_core.php';
+            
             if (!file_exists($ConfigPath))
             {
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
@@ -52,11 +54,21 @@
             }
 
             @include_once($ConfigPath);
-
+            
             if (!isset($config))
             {
                 $Out->pushError(L('NoValidConfig'));
                 return null;
+            }
+            
+            include_once($CorePath);
+
+            $Version = 10600;
+            if (class_exists("MyBB"))
+            {
+                $VersionClass = new MyBB();
+                $VersionParts = explode('.', $VersionClass->version);
+                $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
             }
 
             return array(
@@ -65,7 +77,7 @@
                 'password'  => $config['database']['password'],
                 'prefix'    => $config['database']['table_prefix'],
                 'cookie'    => null,
-                'version'   => 10600
+                'version'   => $Version
             );
         }
 

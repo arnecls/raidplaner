@@ -45,23 +45,38 @@
         {
             $Out = Out::getInstance();
 
-            $ConfigPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/Configuration.php';
+            $ConfigPath  = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/Configuration.php';
+            $VersionPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/libraries/cms/version/version.php';
+            
             if (!file_exists($ConfigPath))
             {
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
                 return null;
             }
-
+            
             @include_once($ConfigPath);
-            $Config = new JConfig();
+            
+            define('JPATH_PLATFORM', '');
+            define('_JEXEC', '');
+            @include_once($VersionPath);
 
+            $Version = 30000;
+            if (class_exists("JVersion"))
+            {
+                $VersionClass = new JVersion();
+                $VersionParts = explode('.', $VersionClass->RELEASE);
+                $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionClass->DEV_LEVEL);
+            }
+            
+            $Config = new JConfig();
+                
             return array(
                 'database'  => $Config->db,
                 'user'      => $Config->user,
                 'password'  => $Config->password,
                 'prefix'    => $Config->dbprefix,
                 'cookie'    => $Config->secret,
-                'version'   => 30000
+                'version'   => $Version
             );
         }
 
