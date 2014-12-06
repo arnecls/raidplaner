@@ -63,7 +63,7 @@
     }
 ?>
 <div style="padding-left: 25px; margin-bottom: 5px">
-    <select id="from_game" style="margin-right: 10px">
+    <select id="from_game" style="margin-right: 10px; margin-bottom: 5px">
     <?php
         foreach ($Games as $Game)
             echo "<option value=\"".$Game["file"]."\">".$Game["name"]."</option>";

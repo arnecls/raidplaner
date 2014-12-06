@@ -101,8 +101,13 @@
         }
 
         echo "<p>".L("Version")."<br/>";
-        echo "<span id=\"".$Binding->getName()."_versionstring\">".intval($Config->Version / 10000).'.'.intval(($Config->Version / 100) % 100).'.'.intval($Config->Version % 100)."</span>";
-        echo "<input type=\"hidden\" id=\"".$Binding->getName()."_version\" value=\"".$Config->Version."\"/></p>";
+        $Major = intval($Config->Version / 10000);
+        $Minor = intval(($Config->Version / 100) % 100);
+        $Patch = intval($Config->Version % 100);
+        
+        echo '<input type="text" style="width:20px; text-align:center" id="'.$Binding->getName().'_ver_major" value="'.$Major.'"/>&nbsp;.&nbsp;';
+        echo '<input type="text" style="width:20px; text-align:center" id="'.$Binding->getName().'_ver_minor" value="'.$Minor.'"/>&nbsp;.&nbsp;';
+        echo '<input type="text" style="width:20px; text-align:center" id="'.$Binding->getName().'_ver_patch" value="'.$Patch.'"/></p>';
 
         echo "</div>";
 

@@ -210,13 +210,9 @@ function OnLoadSettings(aXHR)
         $("#"+aXHR.binding+"_password").val(aXHR.settings.password);
         $("#"+aXHR.binding+"_password_check").val(aXHR.settings.password);
         $("#"+aXHR.binding+"_prefix").val(aXHR.settings.prefix);
-        $("#"+aXHR.binding+"_version").val(aXHR.settings.version);
-        $("#"+aXHR.binding+"_versionstring")
-            .empty()
-            .append(
-                parseInt(aXHR.settings.version / 10000) + '.' +
-                parseInt((aXHR.settings.version / 100) % 100) + '.' +
-                parseInt(aXHR.settings.version % 100) );
+        $("#"+aXHR.binding+"_ver_major").val(parseInt(aXHR.settings.version / 10000));
+        $("#"+aXHR.binding+"_ver_minor").val(parseInt((aXHR.settings.version / 100) % 100));
+        $("#"+aXHR.binding+"_ver_patch").val(parseInt(aXHR.settings.version % 100));
 
         if (aXHR.settings.cookie != undefined)
         {
@@ -299,9 +295,9 @@ function CheckBindingForm(a_Parameter)
             return;
 
         parameter[bindings[i]+"_database"] = $("#"+bindings[i]+"_database").val();
-        parameter[bindings[i]+"_user"]     =  $("#"+bindings[i]+"_user").val();
-        parameter[bindings[i]+"_password"] =  $("#"+bindings[i]+"_password").val();
-        parameter[bindings[i]+"_prefix"]   =  $("#"+bindings[i]+"_prefix").val();
+        parameter[bindings[i]+"_user"]     = $("#"+bindings[i]+"_user").val();
+        parameter[bindings[i]+"_password"] = $("#"+bindings[i]+"_password").val();
+        parameter[bindings[i]+"_prefix"]   = $("#"+bindings[i]+"_prefix").val();
     }
 
     $.ajax({
@@ -350,7 +346,9 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
             parameter[bindings[i]+"_user"]      = $("#"+bindings[i]+"_user").val();
             parameter[bindings[i]+"_password"]  = $("#"+bindings[i]+"_password").val();
             parameter[bindings[i]+"_prefix"]    = $("#"+bindings[i]+"_prefix").val();
-            parameter[bindings[i]+"_version"]   = $("#"+bindings[i]+"_version").val();
+            parameter[bindings[i]+"_ver_major"] = $("#"+bindings[i]+"_ver_major").val();
+            parameter[bindings[i]+"_ver_minor"] = $("#"+bindings[i]+"_ver_minor").val();
+            parameter[bindings[i]+"_ver_patch"] = $("#"+bindings[i]+"_ver_patch").val();
             parameter[bindings[i]+"_autologin"] = $("#"+bindings[i]+"_autologin").prop("checked");
             parameter[bindings[i]+"_cookie"]    = $("#"+bindings[i]+"_cookie_ex").val();
             parameter[bindings[i]+"_postto"]    = $("#"+bindings[i]+"_postto option:selected").val();

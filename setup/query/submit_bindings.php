@@ -10,6 +10,10 @@
     PluginRegistry::ForEachBinding( function($PluginInstance)
     {
         $Binding = $PluginInstance->getName();
+        
+        $Version = intval($_REQUEST[$Binding."_ver_major"]) * 10000 +
+                   intval($_REQUEST[$Binding."_ver_minor"]) * 100 +
+                   intval($_REQUEST[$Binding."_ver_patch"]);
 
         $PluginInstance->writeConfig(
             $_REQUEST[$Binding."_allow"] == "true",
@@ -23,7 +27,7 @@
             $_REQUEST[$Binding."_member"],
             $_REQUEST[$Binding."_raidlead"],
             $_REQUEST[$Binding."_cookie"],
-            $_REQUEST[$Binding."_version"]);
+            $Version);
     });
 
     echo "</bindings>";
