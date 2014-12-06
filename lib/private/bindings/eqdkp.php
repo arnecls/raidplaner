@@ -43,6 +43,8 @@
             $Out = Out::getInstance();
 
             $ConfigPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/config.php';
+            $DataPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/data';
+            
             if (!file_exists($ConfigPath))
             {
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
@@ -56,14 +58,31 @@
                 $Out->pushError(L('NoValidConfig'));
                 return null;
             }
-
+            
+            $Version = 10000;
+            $DataFolder = scandir($DataPath);
+            
+            foreach($DataFolder as $Candidate)
+            {
+                $LocalConfPath = $DataPath.'/'.$Candidate.'/eqdkp/config/localconf.php';
+                if (file_exists($LocalConfPath))
+                {
+                    define('EQDKP_INC',1);
+                    @include_once($LocalConfPath);
+                    
+                    $VersionParts = explode('.', $localconf['plus_version']);                
+                    $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
+                    break;
+                }
+            }
+            
             return array(
                 'database'  => $dbname,
                 'user'      => $dbuser,
                 'password'  => $dbpass,
                 'prefix'    => $table_prefix,
                 'cookie'    => null,
-                'version'   => 10000
+                'version'   => $Version
             );
         }
 
