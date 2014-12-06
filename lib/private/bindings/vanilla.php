@@ -45,9 +45,10 @@
         public function getExternalConfig($aRelativePath)
         {
             $Out = Out::getInstance();
+            
             $DefaultsPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/conf/config-defaults.php';
-            $ConfigPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/conf/config.php';
-
+            $ConfigPath   = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/conf/config.php';
+            
             if (!file_exists($DefaultsPath))
             {
                 $Out->pushError($DefaultsPath.' '.L('NotExisting').'.');
@@ -59,8 +60,8 @@
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
                 return null;
             }
-
-            define('APPLICATION', true);
+            
+            define('APPLICATION', 'Vanilla');
             define('PATH_CACHE', '');
 
             @include_once($DefaultsPath);
@@ -74,14 +75,16 @@
 
             $CookieConf = $Configuration['Garden']['Cookie'];
             $DbConf = $Configuration['Database'];
-
+            
+            $Version = 20000;
+                        
             return array(
                 'database'  => $DbConf['Name'],
                 'user'      => $DbConf['User'],
                 'password'  => $DbConf['Password'],
                 'prefix'    => $DbConf['DatabasePrefix'],
                 'cookie'    => $CookieConf['Name'].','.$CookieConf['HashMethod'].','.$CookieConf['Salt'],
-                'version'   => 20000
+                'version'   => $Version
             );
         }
 

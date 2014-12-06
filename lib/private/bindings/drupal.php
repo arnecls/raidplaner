@@ -49,12 +49,23 @@
         {
             $Out = Out::getInstance();
             $ConfigPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/sites';
-
+            $BootstrapPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/includes/bootstrap.inc';
+            
             if (!file_exists($ConfigPath))
             {
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
                 return null;
             }
+            
+            @include_once($BootstrapPath);
+            
+            $Version = 70000;
+            if (defined('VERSION'))
+            {
+                $VersionParts = explode('.', VERSION);
+                $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100;
+            }
+                        
 
             $Sites = scandir($ConfigPath);
 
@@ -74,7 +85,7 @@
                             'password'  => $DbConfig['password'],
                             'prefix'    => $DbConfig['prefix'],
                             'cookie'    => (isset($base_url)) ? $base_url : 'http://'.$_SERVER['HTTP_HOST'].'/'.$aRelativePath,
-                            'version'   => 70600
+                            'version'   => $Version
                         );
 
                     }
