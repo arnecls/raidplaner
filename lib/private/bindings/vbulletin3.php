@@ -45,6 +45,8 @@
         {
             $Out = Out::getInstance();
             $ConfigPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/includes/config.php';
+            $CorePath   = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/includes/class_core.php';
+            
             if (!file_exists($ConfigPath))
             {
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
@@ -52,11 +54,19 @@
             }
 
             @include_once($ConfigPath);
+            @include_once($CorePath);
 
             if (!isset($config))
             {
                 $Out->pushError(L('NoValidConfig'));
                 return null;
+            }
+            
+            $Version = 30000;
+            if (defined('FILE_VERSION'))
+            {
+                $VersionParts = explode('.', FILE_VERSION);                
+                $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
             }
 
             return array(
@@ -65,7 +75,7 @@
                 'password'  => $config['MasterServer']['password'],
                 'prefix'    => $config['Database']['tableprefix'],
                 'cookie'    => $config['Misc']['cookieprefix'],
-                'version'   => 30000
+                'version'   => $Version
             );
         }
 
