@@ -421,6 +421,10 @@
     background-image: url(images/icon_badge_support.png);
 }
 
+#tooltip .wantedbadge .role_spell {
+    background-image: url(images/icon_badge_spell.png);
+}
+
 #tooltip .wantedbadge .role_ok {
     background-image: url(images/icon_badge_ok.png);
 }

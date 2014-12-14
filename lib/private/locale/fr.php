@@ -12,6 +12,7 @@
         $gLocale[ 'Melee' ]                    = 'Corps à corps';
 		$gLocale[ 'Range' ]                    = 'Distance';
 		$gLocale[ 'Support' ]                  = 'Support';
+        $gLocale[ 'Spell' ]                    = 'Magicien';
 
         // Pre-loading checks
         $gLocale[ 'ContinueNoUpdate' ]         = 'Poursuivre sans mettre à jour';
