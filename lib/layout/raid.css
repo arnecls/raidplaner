@@ -475,7 +475,7 @@
     height: 32px;
     float: left;
     position: absolute;
-    left: -2px;
+    left: -1px;
     display: inline-block;
     z-index: 0;
 }
