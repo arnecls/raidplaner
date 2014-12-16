@@ -116,9 +116,9 @@
 }
 
 #raiddetail .raidcomment {
-    height: 64px;
+    height: 89px;
     width: 300px;
-    top: 10px;
+    top: -15px;
     right: 36px;
     position: absolute;
     font-size: 11px;
