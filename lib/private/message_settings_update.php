@@ -99,7 +99,8 @@
             $Settings['GameConfig']['TextValue']     = $aRequest['game'];
             $Settings['HelpPage']['TextValue']       = $aRequest['helpPage'];
             $Settings['PrimaryRole']['TextValue']    = $aRequest['primaryRole'];
-            
+            $Settings['CalendarBigIcons']['TextValue']= $aRequest['calendarBigIcons'];
+
             $Settings->serialize();
                 
             do

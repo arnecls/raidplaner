@@ -58,10 +58,20 @@
     text-align: left;
 }
 
+#calendar.bigicons .dayOfMonth {
+    float: left;
+    width: 40px;
+}
+
 #calendar .dayOfOther {
     text-align: left;
     font-size: 10px;
     color: #7d7d7d;
+}
+
+#calendar.bigicons .dayOfOther {
+    float: left;
+    width: 40px;
 }
 
 #calendar .vacation {
@@ -119,6 +129,11 @@
     height: 32px;
 }
 
+#calendar.bigicons .raid {
+    width: 64px;
+    height: 64px;
+}
+
 #calendar .raid .overlayCanceled {
     background-image: url(images/raid_canceled_small.png);
     background-repeat: no-repeat;
@@ -140,39 +155,6 @@
     position: relative;
 }
 
-#calendar .raid .statusok {
-    float: right;
-    right: 2px;
-    position: relative;
-    top: 16px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #00ff00;
-    z-index: 5;
-}
-
-#calendar .raid .statusabsent {
-    float: right;
-    right: 2px;
-    position: relative;
-    top: 16px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #ff4b48;
-    z-index: 5;
-}
-
-#calendar .raid .statuswait {
-    float: right;
-    right: 2px;
-    position: relative;
-    top: 16px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #ffff00;
-    z-index: 5;
-}
-
 #calendar .raid .status {
     float: right;
     right: 2px;
@@ -183,6 +165,51 @@
     color: #cccccc;
     z-index: 5;
 }
+
+#calendar.bigicons .raid .status {
+    right: 5px;
+    top: 32px;
+}
+
+#calendar .raid .statusok {
+    color: #00ff00;
+}
+
+#calendar .raid .statusok .ui-icon {
+    display: inline-block;
+}
+
+#calendar.bigicons .raid .status:before {
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    content: '';
+    margin-right: 16px;
+}
+#calendar.bigicons .raid .statusok:before {
+    margin-right: 0;
+}
+
+#calendar.bigicons .raid .status.med:before {
+    background: url('images/icon_role_heal.png') transparent no-repeat;
+}
+
+#calendar.bigicons .raid .status.tnk:before {
+    background: url('images/icon_role_tank.png') transparent no-repeat;
+}
+
+#calendar.bigicons .raid .status.dmg:before {
+    background: url('images/icon_role_melee.png') transparent no-repeat;
+}
+
+#calendar .raid .statusabsent {
+    color: #ff4b48;
+}
+
+#calendar .raid .statuswait {
+    color: #ffff00;
+}
+
 
 #calendar .raid .tooltip {
     left: 0px;

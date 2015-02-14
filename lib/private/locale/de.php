@@ -211,6 +211,7 @@
         $gLocale[ 'NewVersionAvailable' ]      = 'Es ist eine neue Version verfügbar:';
         $gLocale[ 'VisitProjectPage' ]         = 'Zur Projekt-Homepage';
         $gLocale[ 'AttendWithPrimary' ]        = 'Anmeldung mit primärer Rolle';
+        $gLocale[ 'CalendarBigIcons' ]         = 'Große Icons in Kalenderansicht';
     }
 
     if ( defined('LOCALE_SETUP') )
