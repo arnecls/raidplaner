@@ -202,6 +202,9 @@
             
         if ( !in_array("PrimaryRole", $ExistingSettings) )
             $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('PrimaryRole', 0, 'true');" );
+
+        if ( !in_array("CalendarBigIcons", $ExistingSettings) )
+            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('CalendarBigIcons', 0, 'false');" );
             
         if ( !in_array("ApiPrivate", $ExistingSettings) )
         {
