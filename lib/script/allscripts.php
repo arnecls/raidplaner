@@ -1,8 +1,6 @@
 <?php
     require_once(dirname(__FILE__)."/../private/tools_site.php");
 
-    define('COMBINED_NAME', 'raidplaner.js');
-
     $Loader_files = Array(
         "jquery-2.1.1.min.js",
         "jquery-ui.min.js",
@@ -39,53 +37,6 @@
         {
             echo "<script type=\"text/javascript\" src=\"lib/script/".$File."?v=".$gVersion."\"></script>\n";
         }
-    }
-    elseif (PHP_SAPI == "cli")
-    {
-        // "Combine mode"
-        // Load each file, combine in correct order and minify to output raidplaner.js
-
-        echo "combine mode\n\n\n";
-
-        echo "loading javascript... \n";
-
-        $sJavascript = "";
-        $sJarFile = 'yuicompressor-2.4.8.jar';
-
-        foreach ( $Loader_files as $sFileName ) {
-            if (preg_match("/\.js$/", $sFileName)) {
-                $sJsFileContent = file_get_contents($sFileName);
-                if (!preg_match("/\/\*!/", $sJsFileContent))
-                {
-                    $sJavascript .= "/*!\n * {$sFileName} [" . date("Y-m-d H:i:s") . "]\n*/\n";
-                }
-
-                $sJavascript .= $sJsFileContent;
-                $sJavascript .= "\n\n\n";
-            }
-        }
-
-        if (!$sJarFile || !file_exists($sJarFile))
-        {
-            die("yuicompressor not found");
-        }
-
-        echo "ready, saving to " . COMBINED_NAME ."\n";
-
-        file_put_contents(COMBINED_NAME, $sJavascript);
-
-        echo "starting minify\n";
-
-        $sCmd = "java -Xmx32m -jar " . escapeshellarg(__DIR__ . DIRECTORY_SEPARATOR . $sJarFile) . ' '
-            . COMBINED_NAME . " --charset UTF-8 --type js --nomunge";
-
-        exec($sCmd . ' 2>&1', $aOutput);
-
-        $sMinifiedJavascript = implode("\n", $aOutput);
-
-        file_put_contents(COMBINED_NAME, $sMinifiedJavascript);
-
-        echo "done, saved to " . COMBINED_NAME ."\n";
     }
     else
     {
