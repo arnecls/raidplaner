@@ -144,6 +144,11 @@
     position: relative;
 }
 
+#calendar.bigicons .raid .overlayCanceled {
+    left: -31px;
+    top: -29px;
+}
+
 #calendar .raid .overlayLocked {
     background-image: url(images/raid_locked_small.png);
     background-repeat: no-repeat;
@@ -153,6 +158,11 @@
     width: 32px;
     height: 32px;
     position: relative;
+}
+
+#calendar.bigicons .raid .overlayLocked {
+    left: -28px;
+    top: -26px;
 }
 
 #calendar .raid .status {
@@ -184,7 +194,11 @@
 #calendar .raid .statusok .ui-icon {
     display: inline-block;
     width: 15px;
-    height: 15px;
+    height: 12px;
+}
+
+#calendar .raid .statusok .ui-icon-check {
+    background-position: -64px -147px;
 }
 
 #calendar.bigicons .raid .status .role_info {
