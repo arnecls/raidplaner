@@ -1,6 +1,5 @@
 <?php
     include_once_exists(dirname(__FILE__).'/../../config/config.phpbb3.php');
-    include_once_exists(dirname(__FILE__).'/../../config/config.ldap.php');
 
     array_push(PluginRegistry::$Classes, 'PHPBB3Binding');
 
@@ -8,16 +7,9 @@
     {
         private static $BindingName = 'phpbb3';
 
-	private static $ldap_host 	= LDAP_HOST;
-	private static $validator_dn 	= LDAP_BIND;
-	private static $validator_pwd 	= LDAP_PWD;
-	private static $base_dn 	= LDAP_BASE;
-	private static $ldap_group	= LDAP_GROUP;
-
-        public static $HashMethod_md5r  = 'phpbb3_md5r';
-        public static $HashMethod_bf    = 'phpbb3_bf';
-        public static $HashMethod_md5   = 'phpbb3_md5';
-        public static $HashMethod_ssha  = 'phpbb3_ssha';
+        public static $HashMethod_md5r = 'phpbb3_md5r';
+        public static $HashMethod_bf   = 'phpbb3_bf';
+        public static $HashMethod_md5  = 'phpbb3_md5';
 
         // -------------------------------------------------------------------------
 
@@ -318,39 +310,6 @@
 
         // -------------------------------------------------------------------------
 
-	private function ldap_init() {
-		$ldapconn = ldap_connect(self::$ldap_host);
-		ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
-		ldap_start_tls($ldapconn);
-		return $ldapconn;
-	}
-
-        // -------------------------------------------------------------------------
-
-	private function getLDAPUserPassword( $aUserName )
-	{
-		$hash = null;
-		if($ldapconn = $this->ldap_init()) {
-			// binding to ldap server
-
-			if(@ldap_bind($ldapconn, self::$validator_dn, self::$validator_pwd)) {
-				// get the hash of the user password
-				$filter = "(&(objectClass=account)(uid=" . $aUserName . ")(memberOf=". self::$ldap_group ."))";
-				$res = ldap_search($ldapconn, self::$base_dn, $filter, array ('uid','userPassword'));
-				$info = ldap_get_entries($ldapconn, $res);
-
-				if($info["count"] > 0) {
-					$hash = $info[0]['userpassword'][0];
-				}
-			}
-			ldap_close($ldapconn);
-		}
-		
-		return $hash;
-	}
-
-        // -------------------------------------------------------------------------
-
         public function getUserInfoByName( $aUserName )
         {
             $Connector = $this->getConnector();
@@ -360,14 +319,6 @@
 
             $UserQuery->BindValue( ':Login', strtolower($aUserName), PDO::PARAM_STR );
             $UserData = $UserQuery->fetchFirst();
-
-		//search for an ldap password
-	
-		$LdapData = $this->getLDAPUserPassword($aUserName);
-		if($LdapData != null)
-		{
-			$aUserData['user_password'] = $LdapData;
-		}	
 
             return ($UserData != null)
                 ? $this->generateUserInfo($UserData)
@@ -386,13 +337,6 @@
             $UserQuery->BindValue( ':UserId', $aUserId, PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
-		//search for an ldap password
-	
-		$LdapData = $this->getLDAPUserPassword($UserData['username_clean']);
-		if($LdapData != null)
-		{
-			$UserData['user_password'] = $LdapData;
-		}
             return ($UserData != null)
                 ? $this->generateUserInfo($UserData)
                 : null;
@@ -414,11 +358,6 @@
                 $Salt = substr($aPassword, 4, 8);
 
                 return $Count.':'.$Salt;
-
-	
-	    case self::$HashMethod_ssha:
-		$Salt = base64_encode(SSHA::getSalt($aPassword));
-		return $Salt;
              
             default:   
             case self::$HashMethod_md5:
@@ -438,9 +377,6 @@
                 
             if ( strpos($aPassword, '$H$') === 0 )
                 return self::$HashMethod_md5r;
-
-            if ( strpos($aPassword, '{SSHA}') === 0 )
-                return self::$HashMethod_ssha;
 
             return self::$HashMethod_md5;
         }
@@ -473,15 +409,7 @@
                 } while (--$Count);
     
                 return '$H$'.$gItoa64[$CountB2].$Salt.encode64($Hash,16);
-
- 	    case self::$HashMethod_ssha:
-		$Hash = SSHA::hash($aPassword, base64_decode($aSalt));
-		
-
-		return $Hash;
-
             }
-	
         }
 
         // -------------------------------------------------------------------------
@@ -618,28 +546,4 @@
             }
         }
     }
-
-class SSHA {
-
-	public static function newSalt() {
-		return chr(rand(0, 255)) . chr(rand(0, 255)) . chr(rand(0, 255)) . chr(rand(0, 255));
-	}
-
-	public static function hash($pass, $salt) {
-		return '{SSHA}' . base64_encode(sha1($pass . $salt, true) . $salt);
-	}
-
-	public static function getSalt($hash) {
-		return substr(base64_decode(substr($hash, - 32)), - 4);
-	}
-
-	public static function newHash($pass) {
-		return self::hash($pass, self::newSalt());
-	}
-
-	public static function verifyPassword($pass, $hash) {
-		return $hash == self::hash($pass, self::getSalt($hash));
-	}
-}
 ?>
-
