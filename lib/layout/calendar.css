@@ -107,7 +107,7 @@
 #month {
     font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 20px;
-    color: #7d7d7d;    
+    color: #7d7d7d;
     padding-left: 20px;
     vertical-align: top;
 }
@@ -127,6 +127,7 @@
     display: inline-block;
     width: 32px;
     height: 32px;
+    position: relative;
 }
 
 #calendar.bigicons .raid {
@@ -167,28 +168,27 @@
 
 #calendar .raid .status {
     float: right;
+    position: absolute;
     right: 2px;
-    position: relative;
-    top: 16px;
+    bottom: -1px;
     font-weight: bold;
     font-size: 14px;
     color: #cccccc;
     z-index: 5;
+    text-align: right;
 }
 
 #calendar.bigicons .raid .status {
-    right: 5px;
-    top: 32px;
+    font-size: 20px;
 }
 
-#calendar .raid .statusok {
+#calendar .raid .status.ok {
     color: #00ff00;
 }
 
 #calendar .raid .status .raidsize {
-    width: 16px;
-    text-align: right;
     display: inline-block;
+    clear: both;
 }
 
 #calendar .raid .statusok .ui-icon {
@@ -201,34 +201,32 @@
     background-position: -64px -147px;
 }
 
-#calendar.bigicons .raid .status .role_info {
+#calendar.bigicons .raid .role_info {
     width: 30px;
     height: 28px;
     display: inline-block;
-    content: '';
-    margin-right: 16px;
-}
-#calendar.bigicons .raid .statusok .role_info {
-    margin-right: 0;
+    position: absolute;
+    left: -5px;
+    bottom: 0px;
 }
 
-#calendar.bigicons .raid .status.med .role_info {
+#calendar.bigicons .raid .role_info.med {
     background: url('images/icon_role_heal.png') transparent no-repeat;
 }
 
-#calendar.bigicons .raid .status.tnk .role_info {
+#calendar.bigicons .raid .role_info.tnk {
     background: url('images/icon_role_tank.png') transparent no-repeat;
 }
 
-#calendar.bigicons .raid .status.dmg .role_info {
+#calendar.bigicons .raid .role_info.dmg {
     background: url('images/icon_role_melee.png') transparent no-repeat;
 }
 
-#calendar .raid .statusabsent {
+#calendar .raid .status.absent {
     color: #ff4b48;
 }
 
-#calendar .raid .statuswait {
+#calendar .raid .status.wait {
     color: #ffff00;
 }
 
@@ -410,7 +408,7 @@
     display: inline-block;
     background-image: url(images/wanted_badge.png);
     background-repeat: no-repeat;
-    
+
     border-radius: 2px 0px 0px 2px;
     -webkit-border-radius: 2px 0px 0px 2px;
     -moz-border-radius: 2px 0px 0px 2px;
@@ -432,7 +430,7 @@
     font-weight: bold;
     background-position: 2px 0px;
     background-repeat: no-repeat;
-    
+
     border-radius: 0px 2px 2px 0;
     -webkit-border-radius: 0px 2px 2px 0;
     -moz-border-radius: 0px 2px 2px 0;
@@ -460,7 +458,7 @@
 
 #tooltip .wantedbadge .role_tank {
     background-image: url(images/icon_badge_tank.png);
-}    
+}
 
 #tooltip .wantedbadge .role_heal {
     background-image: url(images/icon_badge_heal.png);

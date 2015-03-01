@@ -1,8 +1,8 @@
 <?php
     define("LOCALE_MAIN", true);
     define("STYLE_DEBUG", false);
-    define("SCRIPT_DEBUG", false);
-    
+    define("SCRIPT_DEBUG", true);
+
     require_once("lib/private/locale.php");
     require_once("lib/private/tools_site.php");
 
