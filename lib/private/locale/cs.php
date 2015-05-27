@@ -2,7 +2,7 @@
     // Translation by Kamentixan
     // Návrhy a chyby posílejte na kamenitxan@me.com
     if ( defined('LOCALE_MAIN') )
-    {        
+    {
         // Roles
         $gLocale[ 'Tank' ]                     = 'Tank';
         $gLocale[ 'Healer' ]                   = 'Healer';
@@ -10,7 +10,7 @@
         $gLocale[ 'Melee' ]                    = 'Melee';
         $gLocale[ 'Range' ]                    = 'Range';
         $gLocale[ 'Support' ]                  = 'Support';
-        
+
         // Pre-loading checks
         $gLocale[ 'ContinueNoUpdate' ]         = 'Pokračovat bez aktualizace';
         $gLocale[ 'UpdateBrowser' ]            = 'Prosím, aktualizujte váš internetový prohlížeč';
@@ -33,30 +33,30 @@
         $gLocale[ 'RequestError' ]             = 'Požadavek vrátil chybu.';
         $gLocale[ 'UnknownRequest' ]           = 'Neznámý požadavek';
         $gLocale[ 'InvalidRequest' ]           = 'Chybný požadavek';
-        $gLocale[ 'InputRequired' ]            = 'Vstup požadován';        
+        $gLocale[ 'InputRequired' ]            = 'Vstup požadován';
         $gLocale[ 'UnappliedChanges' ]         = 'Opravdu chcete zahodit neuložené změny?';
         $gLocale[ 'DiscardChanges' ]           = 'Ano, zahodit';
         $gLocale[ 'to' ]                       = 'to';
         $gLocale[ 'PHPVersionWarning' ]        = 'Raidplaner od verze 1.1 vyžaduje PHP verze 5.3 nebo lepší <br /> Váš server musí být aktualizován.';
-        
+
         // Login und user registration
         $gLocale[ 'Login' ]                    = 'Přihlásit se';
         $gLocale[ 'Logout' ]                   = 'Odhlásit se';
         $gLocale[ 'Username' ]                 = 'Uživatelské jméno';
-        $gLocale[ 'Password' ]                 = 'Heslo';        
+        $gLocale[ 'Password' ]                 = 'Heslo';
         $gLocale[ 'RepeatPassword' ]           = 'Opakujte heslo';
         $gLocale[ 'Register' ]                 = 'Registrovat';
         $gLocale[ 'EnterValidUsername' ]       = 'Musíte vložit platné uživatelské jméno.';
         $gLocale[ 'EnterNonEmptyPassword' ]    = 'Musíte vložit heslo.';
         $gLocale[ 'PasswordsNotMatch' ]        = 'Hesla se neschodují.';
-        $gLocale[ 'NameInUse' ]                = 'Toto uživatelské jméno se používáno.';    
+        $gLocale[ 'NameInUse' ]                = 'Toto uživatelské jméno se používáno.';
         $gLocale[ 'RegistrationDone' ]         = 'Registrace je kompletní.';
         $gLocale[ 'AccountIsLocked' ]          = 'Váš účet je momentálně zamknut.';
         $gLocale[ 'ContactAdminToUnlock' ]     = 'Prosím kontaktujte administrátora pro odemčení vašeho účtu.';
         $gLocale[ 'NoSuchUser' ]               = 'Zadaný uživatel nebyl nalezen.';
         $gLocale[ 'HashingInProgress' ]        = 'Probíhá hashování hesla';
         $gLocale[ 'PassStrength']              = 'Síla hesla';
-        
+
         // Calendar
         $gLocale[ 'Calendar' ]                 = 'Kalendář';
         $gLocale[ 'January' ]                  = 'Leden';
@@ -70,14 +70,14 @@
         $gLocale[ 'September' ]                = 'Září';
         $gLocale[ 'October' ]                  = 'Říjen';
         $gLocale[ 'November' ]                 = 'Listopad';
-        $gLocale[ 'December' ]                 = 'Prosinec';    
+        $gLocale[ 'December' ]                 = 'Prosinec';
         $gLocale[ 'Monday' ]                   = 'Pondělí';
         $gLocale[ 'Tuesday' ]                  = 'Úterý';
         $gLocale[ 'Wednesday' ]                = 'Středa';
         $gLocale[ 'Thursday' ]                 = 'Čtvrtek';
         $gLocale[ 'Friday' ]                   = 'Pátek';
         $gLocale[ 'Saturday' ]                 = 'Sobota';
-        $gLocale[ 'Sunday' ]                   = 'Neděle';          
+        $gLocale[ 'Sunday' ]                   = 'Neděle';
         $gLocale[ 'Mon' ]                      = 'Po';
         $gLocale[ 'Tue' ]                      = 'Út';
         $gLocale[ 'Wed' ]                      = 'St';
@@ -97,14 +97,14 @@
         $gLocale[ 'RepeatDay' ]                = 'počet, opakovat denně';
         $gLocale[ 'RepeatWeek' ]               = 'počet, opakovat týdně';
         $gLocale[ 'RepeatMonth' ]              = 'počet, opakovat měsíčně';
-        
+
         // Raid
         $gLocale[ 'Raid' ]                     = 'Raid';
         $gLocale[ 'Upcoming' ]                 = 'Nadcházející raidy';
         $gLocale[ 'CreateRaid' ]               = 'Vytvořit raid';
         $gLocale[ 'NewDungeon' ]               = 'Nový dungeon';
         $gLocale[ 'Description' ]              = 'Popis';
-        $gLocale[ 'DefaultRaidMode' ]          = 'Výchozí mód účati'; 
+        $gLocale[ 'DefaultRaidMode' ]          = 'Výchozí mód účati';
         $gLocale[ 'RaidStatus' ]               = 'Stav';
         $gLocale[ 'RaidOpen' ]                 = 'Raid je otevřený';
         $gLocale[ 'RaidLocked' ]               = 'Raid je uzamčený';
@@ -133,8 +133,8 @@
         $gLocale[ 'ExportClipboard' ]          = 'Schránka';
         $gLocale[ 'CopyOk' ]                   = 'Text byl zkopírován do schránky';
         $gLocale[ 'Random' ]                   = 'Náhodný';
-        
-        // Profile        
+
+        // Profile
         $gLocale[ 'Profile' ]                  = 'Profil';
         $gLocale[ 'History' ]                  = 'Historie raidů';
         $gLocale[ 'Characters' ]               = 'Vaše postavy';
@@ -145,7 +145,7 @@
         $gLocale[ 'ConfirmDeleteCharacter' ]   = 'Opravdu chcete smazat tuto postavu?';
         $gLocale[ 'AttendancesRemoved' ]       = 'Všechny existitující účasti budou smazány.';
         $gLocale[ 'RaidAttendance' ]           = 'Účast v raidech';
-        $gLocale[ 'RolesInRaids' ]             = 'Role v zůčastněných raidech';            
+        $gLocale[ 'RolesInRaids' ]             = 'Role v zůčastněných raidech';
         $gLocale[ 'Queued' ]                   = 'Přihlášen';
         $gLocale[ 'Attended' ]                 = 'Zůčastnil se';
         $gLocale[ 'Missed' ]                   = 'Zameškal';
@@ -165,7 +165,7 @@
         $gLocale[ 'VacationMessage' ]          = 'Zpráva o dovolené';
         $gLocale[ 'ClearVacation' ]            = 'Smazat dovolenou';
         $gLocale[ 'AutoAttend' ]               = 'Účastnit se automaticky';
-                
+
         // Settings
         $gLocale[ 'Settings' ]                 = 'Nastavení';
         $gLocale[ 'Locked' ]                   = 'Zamknuto';
@@ -202,7 +202,7 @@
         $gLocale[ 'Game' ]                     = 'Hra';
         $gLocale[ 'Theme' ]                    = 'Vzhled';
         $gLocale[ 'ApiPrivate' ]               = 'API token (private)';
-        $gLocale[ 'RaidSetupStyle' ]           = 'Attendance style';        
+        $gLocale[ 'RaidSetupStyle' ]           = 'Attendance style';
         $gLocale[ 'RaidModeManual' ]           = 'Setup by raidlead';
         $gLocale[ 'RaidModeOverbook' ]         = 'By raidlead with overbooking';
         $gLocale[ 'RaidModeAttend' ]           = 'Setup by attend';
@@ -214,7 +214,7 @@
         $gLocale[ 'VisitProjectPage' ]         = 'Navštivte domovskou stránku projektu';
         $gLocale[ 'AttendWithPrimary' ]        = 'Zúčastněte se s primární rolí';
     }
-    
+
     if ( defined('LOCALE_SETUP') )
     {
         // General
@@ -225,7 +225,7 @@
         $gLocale[ 'Ignore' ]                   = 'Ignorovat';
         $gLocale[ 'Retry' ]                    = 'Zkusit znovu';
         $gLocale[ 'DatabaseError' ]            = 'Chyba databáze';
-        
+
         // Menu
         $gLocale[ 'Install' ]                  = 'Instalovat';
         $gLocale[ 'Update' ]                   = 'Aktualizovat';
@@ -233,7 +233,7 @@
         $gLocale[ 'EditConfig' ]               = 'Upravit konfiguraci';
         $gLocale[ 'ResetPassword' ]            = 'Nastavit heslo administrátora';
         $gLocale[ 'RepairDatabase' ]           = 'Opravit databázi';
-                        
+
         // Checks
         $gLocale[ 'FilesystemChecks' ]         = 'Kontrola oprávnění systému souborů';
         $gLocale[ 'NotWriteable' ]             = 'Not writeable';
@@ -252,7 +252,7 @@
         $gLocale[ 'PDOMySQLModule' ]           = 'PDO MySQL driver';
         $gLocale[ 'PDOMySQLNotFound' ]         = 'PDO MySQL driver not found';
         $gLocale[ 'PHPRequirements' ]          = 'The raidplaner needs a PHP 5.3 installation configured with PDO extensions.';
-        
+
         // Database setup
         $gLocale[ 'ConfigureDatabase' ]        = 'Prosím nakonfigurujte databázi, do které bude Raidplaner ukládat data.';
         $gLocale[ 'SameAsForumDatabase' ]      = 'Pokud chcete připojit raidplaner k fóru třetí strany, databáze Raidplaneru musí být na stejném serveru jako databáze fóra.';
@@ -266,7 +266,7 @@
         $gLocale[ 'VerifySettings' ]           = 'Ověřit toto nastavení';
         $gLocale[ 'ConnectionTestFailed' ]     = 'Test připojení selhal';
         $gLocale[ 'ConnectionTestOk' ]         = 'Test připojení byl úspěšný';
-        
+
         // Registration and admin
         $gLocale[ 'AdminName' ]                = 'Jméno administrátorského účtu';
         $gLocale[ 'AdminPassword' ]            = 'Heslo administrátorského účtu';
@@ -281,7 +281,7 @@
         $gLocale[ 'AllowPublicMode' ]          = 'Registrovat nové uživatele jako členy (není doporučeno)';
         $gLocale[ 'UseClearText' ]             = 'Submit cleartext password (not recommended)';
 
-        
+
         // Install/Update
         $gLocale[ 'SetupComplete' ]            = 'Nastavení je hotovo';
         $gLocale[ 'UpdateComplete' ]           = 'Aktualizace je hotova';
@@ -306,12 +306,12 @@
         $gLocale[ 'RemoveAndLaunch' ]          = 'Smazat složku setup a začít';
         $gLocale[ 'FailedRemoveSetup' ]        = 'Složka setup nemohla být smazána.';
 
-        
+
         // Repair
         $gLocale[ 'Repair' ]                   = 'Opravit nekonzistence v databázi';
         $gLocale[ 'RepairDone' ]               = 'Oprava je hotova.';
         $gLocale[ 'BrokenDatabase' ]           = 'Zdá se, že databáze je rozbitá.';
-        $gLocale[ 'EnsureValidDatabase' ]      = 'Ensure a valid database';        
+        $gLocale[ 'EnsureValidDatabase' ]      = 'Ensure a valid database';
         $gLocale[ 'ItemsRepaired' ]            = 'Položky opraveny';
         $gLocale[ 'ItemsToResolve' ]           = 'Položky, které musí být opraveny ručně';
         $gLocale[ 'InvalidCharacters' ]        = 'Neplatné postavy';
@@ -332,11 +332,11 @@
         $gLocale[ 'StrayChars' ]               = 'Orphaned characters';
         $gLocale[ 'StrayAttends' ]             = 'Orphaned attends';
         $gLocale[ 'InvalidCharacters' ]        = 'Neplatné postavy';
-        $gLocale[ 'SameGame' ]                 = 'Hry se shodují';   
-        $gLocale[ 'Merged' ]                   = 'Converted:'; 
-        $gLocale[ 'Locations' ]                = 'Locations'; 
-        $gLocale[ 'Characters' ]               = 'Postavy'; 
-        
+        $gLocale[ 'SameGame' ]                 = 'Hry se shodují';
+        $gLocale[ 'Merged' ]                   = 'Converted:';
+        $gLocale[ 'Locations' ]                = 'Locations';
+        $gLocale[ 'Characters' ]               = 'Postavy';
+
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Načíst nastavení skupin pomocí těchto nastavení';
         $gLocale[ 'AutoMemberLogin' ]          = 'Uživatelé následujících skupin budou přihlášení jako "Členové":';
@@ -355,9 +355,18 @@
         $gLocale[ 'PostAsUser' ]               = 'Zveřejnit nové raidy jako tento uživatel';
         $gLocale[ 'DisablePosting' ]           = 'Nevytvářet příspěvky';
         $gLocale[ 'NoUsersFound' ]             = 'Nenalezení žádní uživatelé';
-        $gLocale[ 'Version' ]                  = 'Verze';        
-        
-        // PHPBB3        
+        $gLocale[ 'Version' ]                  = 'Verze';
+
+        // BlueThrust
+        $gLocale[ 'bt4_Binding' ]               = 'BlueThrust v4';
+        $gLocale[ 'bt4_ConfigFile' ]            = 'BlueThrust konfigurační soubor';
+        $gLocale[ 'bt4_Database' ]              = 'BlueThrust databáze';
+        $gLocale[ 'bt4_DatabaseEmpty' ]         = 'BlueThrust jméno databáze nesmí být prázdné.';
+        $gLocale[ 'bt4_UserEmpty' ]             = 'BlueThrust uživatelské jméno nesmí být prázdné';
+        $gLocale[ 'bt4_PasswordEmpty' ]         = 'BlueThrust heslo databáze nesmí být prázdné.';
+        $gLocale[ 'bt4_DBPasswordsMatch' ]      = 'BlueThrust heslo databáze nesouhlasí.';
+
+        // PHPBB3
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';
         $gLocale[ 'phpbb3_ConfigFile' ]         = 'PHPBB3 konfigurační soubor';
         $gLocale[ 'phpbb3_Database' ]           = 'PHPBB3 databáze';
@@ -365,8 +374,8 @@
         $gLocale[ 'phpbb3_UserEmpty' ]          = 'PHPBB3 uživatelské jméno nesmí být prázdné';
         $gLocale[ 'phpbb3_PasswordEmpty' ]      = 'PHPBB3 heslo databáze nesmí být prázdné.';
         $gLocale[ 'phpbb3_DBPasswordsMatch' ]   = 'PHPBB3 heslo databáze nesouhlasí.';
-                                                
-        // EQDKP                                
+
+        // EQDKP
         $gLocale[ 'eqdkp_Binding' ]             = 'EQDKP';
         $gLocale[ 'eqdkp_ConfigFile' ]          = 'EQDKP konfigurační soubor';
         $gLocale[ 'eqdkp_Database' ]            = 'EQDKP databáze';
@@ -374,8 +383,8 @@
         $gLocale[ 'eqdkp_UserEmpty' ]           = 'EQDKP uživatelské jméno nesmí být prázdné';
         $gLocale[ 'eqdkp_PasswordEmpty' ]       = 'EQDKP heslo databáze nesmí být prázdné.';
         $gLocale[ 'eqdkp_DBPasswordsMatch' ]    = 'EQDKP heslo databáze nesouhlasí.';
-                                                
-        // vBulletin                            
+
+        // vBulletin
         $gLocale[ 'vb3_Binding' ]               = 'vBulletin 3 / 4';
         $gLocale[ 'vb3_ConfigFile' ]            = 'vBulletin konfigurační soubor';
         $gLocale[ 'vb3_Database' ]              = 'vBulletin databáze';
@@ -384,7 +393,7 @@
         $gLocale[ 'vb3_PasswordEmpty' ]         = 'vBulletin heslo databáze nesmí být prázdné.';
         $gLocale[ 'vb3_DBPasswordsMatch' ]      = 'vBulletin heslo databáze nesouhlasí.';
         $gLocale[ 'vb3_CookieEx' ]              = 'vBulletin cookie prefix';
-        
+
         // MyBB
         $gLocale[ 'mybb_Binding' ]              = 'MyBB';
         $gLocale[ 'mybb_ConfigFile' ]           = 'MyBB konfigurační soubor';
@@ -393,7 +402,7 @@
         $gLocale[ 'mybb_UserEmpty' ]            = 'MyBB uživatelské jméno nesmí být prázdné';
         $gLocale[ 'mybb_PasswordEmpty' ]        = 'MyBB heslo databáze nesmí být prázdné.';
         $gLocale[ 'mybb_DBPasswordsMatch' ]     = 'MyBB heslo databáze nesouhlasí.';
-        
+
         // SMF
         $gLocale[ 'smf_Binding' ]               = 'Simple Machines Forum 2.x';
         $gLocale[ 'smf_ConfigFile' ]            = 'SMF konfigurační soubor';
@@ -403,7 +412,7 @@
         $gLocale[ 'smf_PasswordEmpty' ]         = 'SMF heslo databáze nesmí být prázdné.';
         $gLocale[ 'smf_DBPasswordsMatch' ]      = 'SMF heslo databáze nesouhlasí.';
         $gLocale[ 'smf_CookieEx' ]              = 'SMF název cookie';
-        
+
         // Vanilla
         $gLocale[ 'vanilla_Binding' ]           = 'Vanilla Forum 2.x';
         $gLocale[ 'vanilla_ConfigFile' ]        = 'Vanilla konfigurační soubor';
@@ -413,7 +422,7 @@
         $gLocale[ 'vanilla_PasswordEmpty' ]     = 'Vanilla heslo databáze nesmí být prázdné.';
         $gLocale[ 'vanilla_DBPasswordsMatch' ]  = 'Vanilla heslo databáze nesouhlasí.';
         $gLocale[ 'vanilla_CookieEx' ]          = 'jméno cookie, hashovací metoda (např. md5), cookie salt';
-        
+
         // Joomla
         $gLocale[ 'jml3_Binding' ]              = 'Joomla 3.x';
         $gLocale[ 'jml3_ConfigFile' ]           = 'Joomla3 konfigurační soubor';
@@ -423,7 +432,7 @@
         $gLocale[ 'jml3_PasswordEmpty' ]        = 'Joomla3 heslo databáze nesmí být prázdné.';
         $gLocale[ 'jml3_DBPasswordsMatch' ]     = 'Joomla3 heslo databáze nesouhlasí.';
         $gLocale[ 'jml3_CookieEx' ]             = 'Joomla3 secret';
-        
+
         // Drupal
         $gLocale[ 'drupal_Binding' ]            = 'Drupal 7.6+';
         $gLocale[ 'drupal_ConfigFile' ]         = 'Drupal ckonfigurační soubor';
@@ -433,7 +442,7 @@
         $gLocale[ 'drupal_PasswordEmpty' ]      = 'Drupal heslo databáze nesmí být prázdné.';
         $gLocale[ 'drupal_DBPasswordsMatch' ]   = 'Drupal heslo databáze nesouhlasí.';
         $gLocale[ 'drupal_CookieEx' ]           = 'Drupal base URL';
-        
+
         // Wordpress
         $gLocale[ 'wp_Binding' ]                = 'Wordpress 3 / 4';
         $gLocale[ 'wp_ConfigFile' ]             = 'Wordpress konfigurační soubor';
@@ -443,7 +452,7 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Wordpress heslo databáze nesmí být prázdné.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Wordpress heslo databáze nesouhlasí.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY followed by LOGGED_IN_SALT';
-        
+
         // Woltlab Burning Board
         $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
         $gLocale[ 'wbb_ConfigFile' ]            = 'Burning Board konfigurační soubor';

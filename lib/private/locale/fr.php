@@ -135,7 +135,7 @@
         $gLocale[ 'ExportClipboard' ]          = 'Presse-Papiers';
         $gLocale[ 'CopyOk' ]                   = 'Texte a été copié dans le presse-papiers';
         $gLocale[ 'Random' ]                   = 'Inconnu';
-        
+
         // Profile
         $gLocale[ 'Profile' ]                  = 'Profil';
         $gLocale[ 'History' ]                  = 'Historique des raids';
@@ -332,10 +332,10 @@
         $gLocale[ 'StrayChars' ]               = 'Personnage orphelins';
         $gLocale[ 'StrayAttends' ]             = 'Attentes orphelines';
         $gLocale[ 'InvalidCharacters' ]        = 'Personnage invalide';
-        $gLocale[ 'SameGame' ]                 = 'Les deux jeux sont identiques';   
-        $gLocale[ 'Merged' ]                   = 'Converti:'; 
-        $gLocale[ 'Locations' ]                = 'Localisation'; 
-        $gLocale[ 'Characters' ]               = 'Personnages'; 
+        $gLocale[ 'SameGame' ]                 = 'Les deux jeux sont identiques';
+        $gLocale[ 'Merged' ]                   = 'Converti:';
+        $gLocale[ 'Locations' ]                = 'Localisation';
+        $gLocale[ 'Characters' ]               = 'Personnages';
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Charger les groupes utilisant ces réglages';
@@ -356,6 +356,15 @@
 		$gLocale[ 'DisablePosting' ]           = 'Ne pas créer de post';
 		$gLocale[ 'NoUsersFound' ]             = 'Utilisateur introuvable';
         $gLocale[ 'Version' ]                  = 'Version';
+
+        // BlueThrust
+        $gLocale[ 'bt4_Binding' ]               = 'BlueThrust v4';
+        $gLocale[ 'bt4_ConfigFile' ]            = 'BlueThrust Fichier de configuration';
+        $gLocale[ 'bt4_Database' ]              = 'BlueThrust Base de données';
+        $gLocale[ 'bt4_DatabaseEmpty' ]         = 'BlueThrust Base de données ne peut pas être vide.';
+        $gLocale[ 'bt4_UserEmpty' ]             = 'BlueThrust utilisateur ne peut pas être vide.';
+        $gLocale[ 'bt4_PasswordEmpty' ]         = 'BlueThrust Mot de passe de la base de données ne peut pas être vide.';
+        $gLocale[ 'bt4_DBPasswordsMatch' ]      = 'BlueThrust Les mots de passe de la base de données ne correspondent pas.';
 
         // PHPBB3
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';
@@ -443,7 +452,7 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Wordpress Mot de passe de la base de données ne peut pas être vide.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Wordpress Les mots de passe de la base de données ne correspondent pas.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY suivie LOGGED_IN_SALT';
-        
+
         // Woltlab Burning Board
         $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
         $gLocale[ 'wbb_ConfigFile' ]            = 'Burning Board Fichier de configuration';

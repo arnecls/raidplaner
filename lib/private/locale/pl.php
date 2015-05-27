@@ -135,7 +135,7 @@
         $gLocale[ 'ExportClipboard' ]          = 'Schowek';
         $gLocale[ 'CopyOk' ]                   = 'Dane zostały skopiowane do schowka.';
         $gLocale[ 'Random' ]                   = 'Rezerwacja';
-        
+
         // Profile
         $gLocale[ 'Profile' ]                  = 'Profil';
         $gLocale[ 'History' ]                  = 'Historia rajdów';
@@ -332,10 +332,10 @@
         $gLocale[ 'StrayChars' ]               = 'Osierocone postacie';
         $gLocale[ 'StrayAttends' ]             = 'Osierocone zapisy';
         $gLocale[ 'InvalidCharacters' ]        = 'Nieprawidłowe postacie';
-        $gLocale[ 'SameGame' ]                 = 'Gry są identyczne';   
-        $gLocale[ 'Merged' ]                   = 'Zaktualizowano:'; 
-        $gLocale[ 'Locations' ]                = 'Lokacje'; 
-        $gLocale[ 'Characters' ]               = 'Postacie'; 
+        $gLocale[ 'SameGame' ]                 = 'Gry są identyczne';
+        $gLocale[ 'Merged' ]                   = 'Zaktualizowano:';
+        $gLocale[ 'Locations' ]                = 'Lokacje';
+        $gLocale[ 'Characters' ]               = 'Postacie';
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Wczytaj grupy używając powyższych ustawień';
@@ -356,6 +356,15 @@
         $gLocale[ 'DisablePosting' ]           = 'Nie twórz postów';
         $gLocale[ 'NoUsersFound' ]             = 'Nie znaleziono użytkownika';
         $gLocale[ 'Version' ]                  = 'Wersja';
+
+        // BlueThrust
+        $gLocale[ 'bt4_Binding' ]               = 'BlueThrust v4';
+        $gLocale[ 'bt4_ConfigFile' ]            = 'Plik konfiguracyjny BlueThrust';
+        $gLocale[ 'bt4_Database' ]              = 'Baza danych BlueThrust';
+        $gLocale[ 'bt4_DatabaseEmpty' ]         = 'Nazwa bazy danych BlueThrust nie może być pusta.';
+        $gLocale[ 'bt4_UserEmpty' ]             = 'Nazwa użytkownika BlueThrust nie może być pusta.';
+        $gLocale[ 'bt4_PasswordEmpty' ]         = 'Hasło bazy danych BlueThrust nie powinno być puste.';
+        $gLocale[ 'bt4_DBPasswordsMatch' ]      = 'Hasło bazy danych BlueThrust zostało powtórzone niepoprawnie.';
 
         // PHPBB3
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';
@@ -443,7 +452,7 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Hasło bazy danych Wordpress nie powinno być puste.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Hasło bazy danych Wordpress zostało powtórzone niepoprawnie.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY + LOGGED_IN_SALT';
-        
+
         // Woltlab Burning Board
         $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
         $gLocale[ 'wbb_ConfigFile' ]            = 'Plik konfiguracyjny Burning Board';
