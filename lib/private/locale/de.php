@@ -167,8 +167,8 @@
         // Settings
         $gLocale[ 'Settings' ]                 = 'Einstellungen';
         $gLocale[ 'Locked' ]                   = 'Gesperrt';
-        $gLocale[ 'Pugs' ]                     = 'Gildenfremde Spieler';
         $gLocale[ 'Members' ]                  = 'Mitglieder';
+        $gLocale[ 'Privileged' ]               = 'Priveligierter Mitglieder';
         $gLocale[ 'Raidleads' ]                = 'Raidleiter';
         $gLocale[ 'Administrators' ]           = 'Administratoren';
         $gLocale[ 'ConfirmDeleteUser' ]        = 'Willst du diesen Benutzer wirklich löschen?';

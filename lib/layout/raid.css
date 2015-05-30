@@ -296,11 +296,6 @@
     overflow: hidden;
 }
 
-#raiddetail .pug {
-    color: #42ABF7;
-    font-style:italic;
-}
-
 #raidsetup .activeSlot .playerName {
     padding-left: 4px;
     width: 76px!important;

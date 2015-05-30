@@ -171,8 +171,8 @@
         // Settings
         $gLocale[ 'Settings' ]                 = 'Réglages';
         $gLocale[ 'Locked' ]                   = 'Verouillé';
-        $gLocale[ 'Pugs' ]                     = NULL;
         $gLocale[ 'Members' ]                  = 'Membres';
+        $gLocale[ 'Privileged' ]               = NULL;
         $gLocale[ 'Raidleads' ]                = 'Raidleads';
         $gLocale[ 'Administrators' ]           = 'Administrateurs';
         $gLocale[ 'ConfirmDeleteUser' ]        = 'Voulez-vous vraiment supprimer cet utilisateur?';

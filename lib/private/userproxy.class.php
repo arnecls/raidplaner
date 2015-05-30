@@ -788,10 +788,10 @@
 
     // --------------------------------------------------------------------------------------------
 
-    function validMember()
+    function validPrivileged()
     {
         $Group = UserProxy::getInstance()->UserGroup;
-        return Session::isActive() && (($Group == 'member') || ($Group == 'raidlead') || ($Group == 'admin'));
+        return Session::isActive() && (($Group == 'privileged') || ($Group == 'raidlead') || ($Group == 'admin'));
     }
 
     // --------------------------------------------------------------------------------------------

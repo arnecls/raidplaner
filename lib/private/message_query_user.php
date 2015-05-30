@@ -37,7 +37,7 @@
             $Out->pushValue('role2', $CharacterRoles2);
 
             $Out->pushValue('validUser', validUser());
-            $Out->pushValue('isMember', validMember());
+            $Out->pushValue('isPrivileged', validPrivileged());
             $Out->pushValue('isRaidlead', validRaidlead());
             $Out->pushValue('isAdmin', validAdmin());
             $Out->pushValue('settings', $CurrentUser->Settings);

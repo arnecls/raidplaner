@@ -169,8 +169,8 @@
         // Settings
         $gLocale[ 'Settings' ]                 = 'Nastavení';
         $gLocale[ 'Locked' ]                   = 'Zamknuto';
-        $gLocale[ 'Pugs' ]                     = NULL;
         $gLocale[ 'Members' ]                  = 'Členové';
+        $gLocale[ 'Privileged' ]               = NULL;
         $gLocale[ 'Raidleads' ]                = 'Vedoucí raidů';
         $gLocale[ 'Administrators' ]           = 'Administrátoři';
         $gLocale[ 'ConfirmDeleteUser' ]        = 'Opravdu chcete smazat tohoto uživatele?';

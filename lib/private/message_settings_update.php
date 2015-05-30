@@ -170,19 +170,19 @@
 
                 // Update users and groups
 
-                $BannedIds   = (isset($aRequest['banned']))   ? $aRequest['banned']   : array();
-                $PugIds      = (isset($aRequest['pug']))      ? $aRequest['pug']   : array();
-                $MemberIds   = (isset($aRequest['member']))   ? $aRequest['member']   : array();
-                $RaidleadIds = (isset($aRequest['raidlead'])) ? $aRequest['raidlead'] : array();
-                $AdminIds    = (isset($aRequest['admin']))    ? $aRequest['admin']    : array();
-                $RemovedIds  = (isset($aRequest['removed']))  ? $aRequest['removed']  : array();
-                $UnlinkedIds = (isset($aRequest['unlinked'])) ? $aRequest['unlinked']  : array();
-                $RelinkedIds = (isset($aRequest['relinked'])) ? $aRequest['relinked']  : array();
+                $BannedIds     = (isset($aRequest['banned']))     ? $aRequest['banned']     : array();
+                $PrivilegedIds = (isset($aRequest['privileged'])) ? $aRequest['privileged'] : array();
+                $MemberIds     = (isset($aRequest['member']))     ? $aRequest['member']     : array();
+                $RaidleadIds   = (isset($aRequest['raidlead']))   ? $aRequest['raidlead']   : array();
+                $AdminIds      = (isset($aRequest['admin']))      ? $aRequest['admin']      : array();
+                $RemovedIds    = (isset($aRequest['removed']))    ? $aRequest['removed']    : array();
+                $UnlinkedIds   = (isset($aRequest['unlinked']))   ? $aRequest['unlinked']   : array();
+                $RelinkedIds   = (isset($aRequest['relinked']))   ? $aRequest['relinked']   : array();
 
                 if ( !updateGroup( $Connector, 'none', $BannedIds ) )
                     return;
 
-                if ( !updateGroup( $Connector, 'pug', $PugIds ) )
+                if ( !updateGroup( $Connector, 'privileged', $PrivilegedIds ) )
                     return;
 
                 if ( !updateGroup( $Connector, 'member', $MemberIds ) )
