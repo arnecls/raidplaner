@@ -6,8 +6,8 @@ Packedpixel raidplaner is an easy to use raid manager for World of Warcraft.
 * Supports login bindings to common forums and CMS: PHPBB, EQDKP, vBulletin, MyBB, Simple Machines Forum, Vanilla Forum, Joomla, Drupal, Wordpress and Woltab Burning Board.
 * Easier and faster to use than most other raid managers.
  
-You can find a short (yet a little outdated) overview on
-[YouTube](https://www.youtube.com/watch?v=tp-ciKFpz7Y).
+You can find a short setup tutorial on
+[YouTube](https://www.youtube.com/watch?v=RBwvhnOCYWQ).
 
 If you want to know more about the current development status you can also follow me on
 [Google+](https://plus.google.com/117920822853814771101).  
