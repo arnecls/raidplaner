@@ -131,7 +131,7 @@
         $gLocale[ 'ExportClipboard' ]          = 'Zwischenablage';
         $gLocale[ 'CopyOk' ]                   = 'Text wurde in die Zwischenablage exportiert.';
         $gLocale[ 'Random' ]                   = 'Unbekannt';
-        
+
         // Profile
         $gLocale[ 'Profile' ]                  = 'Profil';
         $gLocale[ 'History' ]                  = 'Vergangene Raids';
@@ -167,6 +167,7 @@
         // Settings
         $gLocale[ 'Settings' ]                 = 'Einstellungen';
         $gLocale[ 'Locked' ]                   = 'Gesperrt';
+        $gLocale[ 'Pugs' ]                     = 'Gildenfremde Spieler';
         $gLocale[ 'Members' ]                  = 'Mitglieder';
         $gLocale[ 'Raidleads' ]                = 'Raidleiter';
         $gLocale[ 'Administrators' ]           = 'Administratoren';
@@ -302,7 +303,7 @@
         $gLocale[ 'FailedGameconfig' ]         = 'Die Datei gameconfig.php konnte nicht in das neue Format übertragen werden.';
         $gLocale[ 'RemoveAndLaunch' ]          = 'Setup löschen und loslegen';
         $gLocale[ 'FailedRemoveSetup' ]        = 'Der Setup-Ordner konnte nicht gelöscht werden.';
-        
+
         // Repair
         $gLocale[ 'Repair' ]                   = 'Reparatur';
         $gLocale[ 'RepairDone' ]               = 'Reparatur abgeschlossen.';
@@ -328,10 +329,10 @@
         $gLocale[ 'StrayChars' ]               = 'Verwaiste Charaktere';
         $gLocale[ 'StrayAttends' ]             = 'Verwaiste Anmeldungen';
         $gLocale[ 'InvalidCharacters' ]        = 'Fehlerhafte Charaktere';
-        $gLocale[ 'SameGame' ]                 = 'Beide Spiele sind identisch';  
-        $gLocale[ 'Merged' ]                   = 'Konvertiert:'; 
-        $gLocale[ 'Locations' ]                = 'Orte'; 
-        $gLocale[ 'Characters' ]               = 'Charaktere';    
+        $gLocale[ 'SameGame' ]                 = 'Beide Spiele sind identisch';
+        $gLocale[ 'Merged' ]                   = 'Konvertiert:';
+        $gLocale[ 'Locations' ]                = 'Orte';
+        $gLocale[ 'Characters' ]               = 'Charaktere';
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Lade Gruppen mit den angegebenen Verbindungsdaten';
@@ -439,7 +440,7 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Wordpress Datenbank Passwort darf nicht leer sein.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Wordpress Datenbank-Passwörter stimmen nicht überein.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY gefolgt von LOGGED_IN_SALT';
-        
+
         // Woltlab Burning Board
         $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
         $gLocale[ 'wbb_ConfigFile' ]            = 'Burning Board Konfigurationsdatei';

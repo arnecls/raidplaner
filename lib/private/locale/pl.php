@@ -135,7 +135,7 @@
         $gLocale[ 'ExportClipboard' ]          = 'Schowek';
         $gLocale[ 'CopyOk' ]                   = 'Dane zostały skopiowane do schowka.';
         $gLocale[ 'Random' ]                   = 'Rezerwacja';
-        
+
         // Profile
         $gLocale[ 'Profile' ]                  = 'Profil';
         $gLocale[ 'History' ]                  = 'Historia rajdów';
@@ -171,6 +171,7 @@
         // Settings
         $gLocale[ 'Settings' ]                 = 'Ustawienia';
         $gLocale[ 'Locked' ]                   = 'Zablokowani';
+        $gLocale[ 'Pugs' ]                     = NULL;
         $gLocale[ 'Members' ]                  = 'Użytkownicy';
         $gLocale[ 'Raidleads' ]                = 'Rajd Liderzy';
         $gLocale[ 'Administrators' ]           = 'Administratorzy';
@@ -332,10 +333,10 @@
         $gLocale[ 'StrayChars' ]               = 'Osierocone postacie';
         $gLocale[ 'StrayAttends' ]             = 'Osierocone zapisy';
         $gLocale[ 'InvalidCharacters' ]        = 'Nieprawidłowe postacie';
-        $gLocale[ 'SameGame' ]                 = 'Gry są identyczne';   
-        $gLocale[ 'Merged' ]                   = 'Zaktualizowano:'; 
-        $gLocale[ 'Locations' ]                = 'Lokacje'; 
-        $gLocale[ 'Characters' ]               = 'Postacie'; 
+        $gLocale[ 'SameGame' ]                 = 'Gry są identyczne';
+        $gLocale[ 'Merged' ]                   = 'Zaktualizowano:';
+        $gLocale[ 'Locations' ]                = 'Lokacje';
+        $gLocale[ 'Characters' ]               = 'Postacie';
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Wczytaj grupy używając powyższych ustawień';
@@ -443,7 +444,7 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Hasło bazy danych Wordpress nie powinno być puste.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Hasło bazy danych Wordpress zostało powtórzone niepoprawnie.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY + LOGGED_IN_SALT';
-        
+
         // Woltlab Burning Board
         $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
         $gLocale[ 'wbb_ConfigFile' ]            = 'Plik konfiguracyjny Burning Board';

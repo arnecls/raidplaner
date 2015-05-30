@@ -22,7 +22,7 @@
     class UserProxy
     {
         private static $Instance = null;
-        private static $StickyLifeTime = 2592000; // 30 Days           
+        private static $StickyLifeTime = 2592000; // 30 Days
         private static $Bindings;
         private static $BindingsByName;
 
@@ -34,13 +34,13 @@
         private $SiteId    = '';
 
         // --------------------------------------------------------------------------------------------
-        
+
         public static function registerInstance($aPluginInstance)
         {
             array_push(self::$Bindings, $aPluginInstance);
             self::$BindingsByName[$aPluginInstance->getName()] = $aPluginInstance;
         }
-        
+
         // --------------------------------------------------------------------------------------------
 
         public static function initBindings()
@@ -50,7 +50,7 @@
                 $NativeBinding // native has to be first
             );
 
-            self::$BindingsByName[$NativeBinding->getName()] = $NativeBinding;            
+            self::$BindingsByName[$NativeBinding->getName()] = $NativeBinding;
             PluginRegistry::ForEachBinding(function($PluginInstance) {
                 UserProxy::registerInstance($PluginInstance);
             });
@@ -61,7 +61,7 @@
         public function __construct($aAllowAutoLogin)
         {
             assert(self::$Instance == NULL);
-            
+
             // 1. Try to reactive from a running session
             // 2. Try auto login via external cookie if requested
 
@@ -90,7 +90,7 @@
             $this->UserName   = '';
             $this->Characters = array();
             $this->Settings   = array();
-            
+
             Session::release();
         }
 
@@ -125,10 +125,10 @@
 
             if ($UserInfo == null)
                 return false;
-            
-            if ($aBindingName != $aLookupBindingName)    
+
+            if ($aBindingName != $aLookupBindingName)
                 $Binding = self::$BindingsByName[$aBindingName];
-                
+
             $Method = $Binding->getMethodFromPass($UserInfo->Password);
             $Hashed = $Binding->hash($aPassword, $UserInfo->Salt, $Method);
 
@@ -140,11 +140,11 @@
         private function reactivateFromSession()
         {
             $Session = Session::get();
-            
+
             if ( $Session != null )
             {
                 $UserInfo = self::$BindingsByName['none']->GetUserInfoById($Session->GetUserId());
-                
+
                 if ( $UserInfo != null )
                 {
                     if ( $UserInfo->BindingName != 'none' )
@@ -152,15 +152,15 @@
                         $UpdateUserQuery = $this->updateUserMirror( $UserInfo, false, self::generateKey32() );
                         $UpdateUserQuery->execute();
                     }
-                    
+
                     $this->UserGroup = $UserInfo->Group;
                     $this->UserName  = $UserInfo->UserName;
                     $this->UserId    = $Session->GetUserId();
-                                                            
+
                     $this->updateCharacters();
                     $this->updateSettings();
-                    
-                    $Session->refresh();                    
+
+                    $Session->refresh();
                     return true;
                 }
             }
@@ -395,7 +395,7 @@
 
             $UserQuery = $Connector->prepare( 'SELECT OneTimeKey, Password, ExternalBinding, BindingActive, UserId, ExternalId '.
                 'FROM `'.RP_TABLE_PREFIX.'User` WHERE UserId = :UserId LIMIT 1' );
-            
+
             $UserQuery->bindValue(':UserId', $this->UserId, PDO::PARAM_INT );
             $UserData = $UserQuery->fetchFirst();
 
@@ -404,7 +404,7 @@
                 if ( defined('USE_CLEARTEXT_PASSWORDS') && USE_CLEARTEXT_PASSWORDS )
                 {
                     // Cleartext mode fallback
-                    
+
                     if (($UserData['BindingActive'] == 'false') || ($UserData['ExternalBinding'] == 'none'))
                     {
                         $LookupBinding = 'none';
@@ -415,7 +415,7 @@
                         $LookupBinding = $UserData['ExternalBinding'];
                         $UserId = $UserData['ExternalId'];
                     }
-                        
+
                     return $this->validateCleartextPassword( $aSignedPassword, $UserId, $UserData['ExternalBinding'], $LookupBinding );
                 }
 
@@ -481,7 +481,7 @@
                     {
                         // User logged in using a cleartext password.
                         // In this case we encrypt locally via php.
-                        
+
                         if (($UserData['BindingActive'] == 'false') || ($UserData['ExternalBinding'] == 'none'))
                         {
                             $LookupBinding = 'none';
@@ -492,7 +492,7 @@
                             $LookupBinding = $UserData['ExternalBinding'];
                             $UserId = $UserData['ExternalId'];
                         }
-                        
+
                         $PasswordCheckOk = $this->validateCleartextPassword( $aLoginUser['Password'], $UserId, $UserData['ExternalBinding'], $LookupBinding );
                     }
                     else
@@ -519,12 +519,12 @@
             $this->UserGroup  = $UserData['Group'];
             $this->UserId     = $UserData['UserId'];
             $this->UserName   = $UserData['Login'];
-            
+
             $this->updateCharacters();
             $this->updateSettings();
 
             // Set the expiration time to a higher value when logging in as 'sticky'
-            
+
             if ( (isset($_REQUEST['sticky']) && ($_REQUEST['sticky'] == 'true')) )
             {
                 $Session = Session::create($this->UserId, self::$StickyLifeTime);
@@ -533,7 +533,7 @@
             {
                 $Session = Session::create($this->UserId);
             }
-            
+
             return true; // ### return, logged in ###
         }
 
@@ -647,7 +647,7 @@
             if ($aIsStoredLocally)
             {
                 // Local users don't change externally, so just update the key
-            
+
                 $MirrorQuery = $Connector->prepare(
                     'UPDATE `'.RP_TABLE_PREFIX.'User` SET OneTimeKey = :Key '.
                     'WHERE UserId = :UserId LIMIT 1' );
@@ -659,7 +659,7 @@
             {
                 $UserIsBound = true;
                 $SyncGroup = !defined('ALLOW_GROUP_SYNC') || ALLOW_GROUP_SYNC;
-                
+
                 if (!isset(self::$BindingsByName[$UserInfo->PassBinding]))
                 {
                     $Out->pushError($UserInfo->PassBinding.' binding did not register correctly.');
@@ -671,7 +671,7 @@
                     if ($Binding->isActive())
                     {
                         $ExternalInfo = $Binding->getUserInfoById($UserInfo->UserId);
-                        
+
                         if ( $ExternalInfo == null )
                         {
                             $UserIsBound = false;
@@ -680,7 +680,7 @@
                         {
                             $LocalGroup = $UserInfo->Group;
                             $UserInfo = $ExternalInfo;
-                            
+
                             if (!$SyncGroup)
                                 $UserInfo->Group = $LocalGroup;
                         }
@@ -745,23 +745,23 @@
     UserProxy::initBindings();
 
     // --------------------------------------------------------------------------------------------
-    
+
     function msgLogin($aRequest)
     {
         $LoginUser = array( 'Login'    => $aRequest['user'],
                             'Password' => $aRequest['pass'] );
-                            
+
         $Proxy = UserProxy::getInstance();
-        
+
         if ( !$Proxy->processLoginRequest($LoginUser, false) )
         {
             msgLogout();
-            
+
             $Out = Out::getInstance();
             $Out->pushError(L('WrongPassword'));
         }
     }
-    
+
     // --------------------------------------------------------------------------------------------
 
     function msgLogout()
@@ -769,7 +769,7 @@
         $Proxy = UserProxy::getInstance();
         $Proxy->resetUser();
     }
-    
+
     // --------------------------------------------------------------------------------------------
 
     function registeredUser()
@@ -784,6 +784,14 @@
     {
         $Group = UserProxy::getInstance()->UserGroup;
         return Session::isActive() && ($Group != 'none');
+    }
+
+    // --------------------------------------------------------------------------------------------
+
+    function validMember()
+    {
+        $Group = UserProxy::getInstance()->UserGroup;
+        return Session::isActive() && (($Group == 'member') || ($Group == 'raidlead') || ($Group == 'admin'));
     }
 
     // --------------------------------------------------------------------------------------------
