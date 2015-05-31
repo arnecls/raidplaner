@@ -340,9 +340,7 @@
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Charger les groupes utilisant ces réglages';
-		$gLocale[ 'AutoMemberLogin' ]          = '"Membres" Groupes:';
-		$gLocale[ 'AutoLeadLogin' ]            = '"Raidlead" Groupes:';
-        $gLocale[ 'ReloadFailed' ]             = 'Rechargement échoué';
+		$gLocale[ 'ReloadFailed' ]             = 'Rechargement échoué';
 		$gLocale[ 'LoadSettings' ]             = 'Rapatriement des options automatique';
 		$gLocale[ 'BindingBasePath' ]          = 'Veuillez renseigner le chemin d\'installation de la liaison relative à \''.$_SERVER['DOCUMENT_ROOT'].'\'.';
 		$gLocale[ 'RetrievalFailed' ]          = 'Échec du rapatriement automatique ';
@@ -357,6 +355,13 @@
 		$gLocale[ 'DisablePosting' ]           = 'Ne pas créer de post';
 		$gLocale[ 'NoUsersFound' ]             = 'Utilisateur introuvable';
         $gLocale[ 'Version' ]                  = 'Version';
+
+        $gLocale[ 'Group' ]                    = NULL;
+        $gLocale[ 'Locked' ]                   = 'Verouillé';
+        $gLocale[ 'Members' ]                  = 'Membres';
+        $gLocale[ 'Privileged' ]               = NULL;
+        $gLocale[ 'Raidleads' ]                = 'Raidleads';
+        $gLocale[ 'Administrators' ]           = 'Administrateurs';
 
         // PHPBB3
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';

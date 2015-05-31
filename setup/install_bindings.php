@@ -93,7 +93,7 @@
 
         echo "<p>".L("TablePrefix")."<br/>";
         echo "<input type=\"text\" id=\"".$Binding->getName()."_prefix\" value=\"".$Config->Prefix."\"".$Disabled."/></p>";
-        
+
         if ( $Config->HasCookieConfig )
         {
             echo "<p>".L($Binding->getName()."_CookieEx")."<br/>";
@@ -104,7 +104,7 @@
         $Major = intval($Config->Version / 10000);
         $Minor = intval(($Config->Version / 100) % 100);
         $Patch = intval($Config->Version % 100);
-        
+
         echo '<input type="text" style="width:20px; text-align:center" id="'.$Binding->getName().'_ver_major" value="'.$Major.'"/>&nbsp;.&nbsp;';
         echo '<input type="text" style="width:20px; text-align:center" id="'.$Binding->getName().'_ver_minor" value="'.$Minor.'"/>&nbsp;.&nbsp;';
         echo '<input type="text" style="width:20px; text-align:center" id="'.$Binding->getName().'_ver_patch" value="'.$Patch.'"/></p>';
@@ -119,34 +119,40 @@
 
             echo "<button id=\"".$Binding->getName()."_loaddata\" onclick=\"LoadBindingData('".$Binding->getName()."')\"".$Disabled.">".L("LoadGroups")."</button><br/><br/>";
 
-            echo "<div class=\"groups\" style=\"margin-right: 10px\">";
-            echo L("AutoMemberLogin")."<br/>";
-            echo "<select id=\"".$Binding->getName()."_member\" multiple=\"multiple\" style=\"height: 5.5em\"".$Disabled.">";
+            echo '<div>';
+            echo '<span class="name_head">'.L("Group").'</span>';
+            echo '<span class="tooltip"><img class="map_head" src="layout/locked.png" alt="'.L("Locked").'"/><span>'.L("Locked").'</span></span>';
+            echo '<span class="tooltip"><img class="map_head" src="layout/member.png" alt="'.L("Members").'"/><span>'.L("Members").'</span></span>';
+            echo '<span class="tooltip"><img class="map_head" src="layout/privileged.png" alt="'.L("Privileged").'"/><span>'.L("Privileged").'</span></span>';
+            echo '<span class="tooltip"><img class="map_head" src="layout/raidlead.png" alt="'.L("Raidleads").'"/><span>'.L("Raidleads").'</span></span>';
+            echo '<span class="tooltip"><img class="map_head" src="layout/admin.png" alt="'.L("Administrators").'"/><span>'.L("Administrators").'</span></span>';
+            echo '</div>';
+
+            echo '<div class="groups" id="'.$Binding->getName().'_grouplist" style="margin-right: 10px">';
 
             if ($Groups != null)
             {
                 foreach( $Groups as $Group )
                 {
-                    echo "<option value=\"".$Group["id"]."\"".((in_array($Group["id"], $Config->Members)) ? " selected=\"selected\"" : "" ).">".$Group["name"]."</option>";
+                    $MappedToAdmin      = in_array($Group["id"], $Config->Admins);
+                    $MappedToRaidlead   = !$MappedToAdmin && in_array($Group["id"], $Config->Raidleads);
+                    $MappedToPrivileged = !$MappedToRaidlead && in_array($Group["id"], $Config->Privileged);
+                    $MappedToMember     = !$MappedToPrivileged && in_array($Group["id"], $Config->Members);
+                    $NotMapped          = !$MappedToMember && !$MappedToPrivileged && !$MappedToRaidlead && !$MappedToAdmin;
+
+                    echo '<div class="group">';
+                    echo '<span class="group_name">'.$Group["name"].'</span>';
+                    echo '<input type="hidden" name="'.$Binding->getName().'_groups[]" value="'.$Group["id"].'"/>';
+                    echo '<input type="radio" name="'.$Binding->getName().'_group_'.$Group["id"].'" class="group_map" value="none"'.($NotMapped ? " checked=\"checked\"" : "").'/>';
+                    echo '<input type="radio" name="'.$Binding->getName().'_group_'.$Group["id"].'" class="group_map" value="member"'.($MappedToMember ? " checked=\"checked\"" : "").'/>';
+                    echo '<input type="radio" name="'.$Binding->getName().'_group_'.$Group["id"].'" class="group_map" value="privileged"'.($MappedToPrivileged ? " checked=\"checked\"" : "").'/>';
+                    echo '<input type="radio" name="'.$Binding->getName().'_group_'.$Group["id"].'" class="group_map" value="raidlead"'.($MappedToRaidlead ? " checked=\"checked\"" : "").'/>';
+                    echo '<input type="radio" name="'.$Binding->getName().'_group_'.$Group["id"].'" class="group_map" value="admin"'.($MappedToAdmin ? " checked=\"checked\"" : "").'/>';
+                    echo '</div>';
                 }
             }
 
-            echo "</select></div>";
-
-            echo "<div class=\"groups\">";
-            echo L("AutoLeadLogin")."<br/>";
-            echo "<select id=\"".$Binding->getName()."_raidlead\" multiple=\"multiple\" style=\"height: 5.5em\"".$Disabled.">";
-
-            if ($Groups != null)
-            {
-                foreach( $Groups as $Group )
-                {
-                    echo "<option value=\"".$Group["id"]."\"".((in_array($Group["id"], $Config->Raidleads)) ? " selected=\"selected\"" : "" ).">".$Group["name"]."</option>";
-                }
-            }
-
-            echo "</select></div>";
-
+            echo "</div>";
         }
         else
         {
@@ -195,7 +201,7 @@
 
             echo "</select>";
         }
-        
+
         if ( !$Binding->isConfigWriteable() )
         {
             echo "<div class=\"binding_warning\">".L("NotWriteable")." (lib/config/config.".$Binding->getName().".php)</div>";

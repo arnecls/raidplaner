@@ -168,7 +168,7 @@
         $gLocale[ 'Settings' ]                 = 'Einstellungen';
         $gLocale[ 'Locked' ]                   = 'Gesperrt';
         $gLocale[ 'Members' ]                  = 'Mitglieder';
-        $gLocale[ 'Privileged' ]               = 'Priveligierter Mitglieder';
+        $gLocale[ 'Privileged' ]               = 'Priveligierte Mitglieder';
         $gLocale[ 'Raidleads' ]                = 'Raidleiter';
         $gLocale[ 'Administrators' ]           = 'Administratoren';
         $gLocale[ 'ConfirmDeleteUser' ]        = 'Willst du diesen Benutzer wirklich löschen?';
@@ -336,8 +336,6 @@
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Lade Gruppen mit den angegebenen Verbindungsdaten';
-        $gLocale[ 'AutoMemberLogin' ]          = '"Mitglieder" Gruppen:';
-        $gLocale[ 'AutoLeadLogin' ]            = '"Raidleiter" Gruppen:';
         $gLocale[ 'ReloadFailed' ]             = 'Ladevorgang fehlgeschlagen';
         $gLocale[ 'LoadSettings' ]             = 'Einstellungen automatisch ermitteln';
         $gLocale[ 'BindingBasePath' ]          = 'Bitte gebe den Installationspfad dieses Bindings relativ zu \''.$_SERVER['DOCUMENT_ROOT'].'\' an.';
@@ -353,6 +351,13 @@
         $gLocale[ 'DisablePosting' ]           = 'Keine Postings erstellen';
         $gLocale[ 'NoUsersFound' ]             = 'Keine Benutzer gefunden';
         $gLocale[ 'Version' ]                  = 'Version';
+
+        $gLocale[ 'Group' ]                    = 'Gruppe verbinden';
+        $gLocale[ 'Locked' ]                   = 'Gesperrt';
+        $gLocale[ 'Members' ]                  = 'Mitglieder';
+        $gLocale[ 'Privileged' ]               = 'Priveligierte Mitglieder';
+        $gLocale[ 'Raidleads' ]                = 'Raidleiter';
+        $gLocale[ 'Administrators' ]           = 'Administratoren';
 
         // PHPBB3
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';
