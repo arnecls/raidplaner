@@ -201,7 +201,7 @@
 
             foreach( $aUserData['Groups'] as $Group )
             {
-                $AssignedGroup = $Config->mapGroup($RoleId, $AssignedGroup);
+                $AssignedGroup = $Config->mapGroup($Group, $AssignedGroup);
             }
 
             return GetGroupName($AssignedGroup);

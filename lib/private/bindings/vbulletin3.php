@@ -204,7 +204,7 @@
             }
 
             $Config = $this->getConfig();
-            return GetGroupName( $Config->mapGroup($RoleId, ENUM_GROUP_NONE) );
+            return GetGroupName( $Config->mapGroup($aUserData['usergroupid'], ENUM_GROUP_NONE) );
         }
 
         // -------------------------------------------------------------------------

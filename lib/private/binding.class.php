@@ -285,7 +285,7 @@
         switch($aEnumGroup)
         {
         case ENUM_GROUP_MEMBER:
-            return 'meber';
+            return 'member';
         case ENUM_GROUP_PRIVILEGED:
             return 'privileged';
         case ENUM_GROUP_RAIDLEAD:

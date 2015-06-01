@@ -170,7 +170,7 @@
                 $Roles = array_keys(unserialize($MetaData['meta_value']));
                 foreach($Roles as $Role)
                 {
-                    $AssignedGroup = $Config->mapGroup($RoleId, $AssignedGroup);
+                    $AssignedGroup = $Config->mapGroup($Role, $AssignedGroup);
                 }
             });
 
