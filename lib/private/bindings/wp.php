@@ -30,8 +30,10 @@
             $Config->Version          = defined('WP_VERSION') ? WP_VERSION : 30000;
             $Config->AutoLoginEnabled = defined('WP_AUTOLOGIN') ? WP_AUTOLOGIN : false;
             $Config->CookieData       = defined('WP_SECRET') ? WP_SECRET : '';
-            $Config->Raidleads        = defined('WP_RAIDLEAD_GROUPS') ? explode(',', WP_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('WP_MEMBER_GROUPS') ? explode(',', WP_MEMBER_GROUPS ) : array();
+            $Config->Privileged       = defined('WP_PRIVILEGED_GROUPS') ? explode(',', WP_PRIVILEGED_GROUPS ) : array();
+            $Config->Raidleads        = defined('WP_RAIDLEAD_GROUPS') ? explode(',', WP_RAIDLEAD_GROUPS ) : array();
+            $Config->Admins           = defined('WP_ADMIN_GROUPS') ? explode(',', WP_ADMIN_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
 
@@ -58,11 +60,11 @@
                 $Out->pushError(L('NoValidConfig'));
                 return null;
             }
-            
+
             $VersionElements = explode('.', $wp_version);
             $Version = $VersionElements[0] * 10000 +
                 ((isset($VersionElements[1])) ? $VersionElements[1] * 100 : 0) +
-                ((isset($VersionElements[2])) ? $VersionElements[2] : 0);            
+                ((isset($VersionElements[2])) ? $VersionElements[2] : 0);
 
             return array(
                 'database'  => DB_NAME,
@@ -76,7 +78,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.wp.php', 'w+' );
 
@@ -85,18 +87,20 @@
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine('WP_DATABASE', '".$aDatabase."');\n");
-                fwrite( $Config, "\tdefine('WP_USER', '".$aUser."');\n");
-                fwrite( $Config, "\tdefine('WP_PASS', '".$aPass."');\n");
-                fwrite( $Config, "\tdefine('WP_TABLE_PREFIX', '".$aPrefix."');\n");
-                fwrite( $Config, "\tdefine('WP_SECRET', '".$aCookieEx."');\n");
-                fwrite( $Config, "\tdefine('WP_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('WP_DATABASE', '".$aConfig->Database."');\n");
+                fwrite( $Config, "\tdefine('WP_USER', '".$aConfig->User."');\n");
+                fwrite( $Config, "\tdefine('WP_PASS', '".$aConfig->Password."');\n");
+                fwrite( $Config, "\tdefine('WP_TABLE_PREFIX', '".$aConfig->Prefix."');\n");
+                fwrite( $Config, "\tdefine('WP_SECRET', '".$aConfig->CookieData."');\n");
+                fwrite( $Config, "\tdefine('WP_AUTOLOGIN', ".(($aConfig->AutoLoginEnabled) ? "true" : "false").");\n");
 
-                fwrite( $Config, "\tdefine('WP_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
-                fwrite( $Config, "\tdefine('WP_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
-                fwrite( $Config, "\tdefine('WP_VERSION', ".$aVersion.");\n");
+                fwrite( $Config, "\tdefine('WP_MEMBER_GROUPS', '".implode( ",", $aConfig->Members )."');\n");
+                fwrite( $Config, "\tdefine('WP_PRIVILEGED_GROUPS', '".implode( ",", $aConfig->Privileged )."');\n");
+                fwrite( $Config, "\tdefine('WP_RAIDLEAD_GROUPS', '".implode( ",", $aConfig->Raidleads )."');\n");
+                fwrite( $Config, "\tdefine('WP_ADMIN_GROUPS', '".implode( ",", $aConfig->Admins )."');\n");
+                fwrite( $Config, "\tdefine('WP_VERSION', ".$aConfig->Version.");\n");
             }
-                        
+
             fwrite( $Config, '?>');
 
             fclose( $Config );
@@ -115,9 +119,9 @@
 
                 $Groups = array();
                 $Roles = unserialize($Option['option_value']);
-                
+
                 if (is_array($Roles))
-                {                
+                {
                     foreach ($Roles as $Role => $Options)
                     {
                         array_push( $Groups, array(
@@ -151,10 +155,9 @@
 
         private function getGroup( $aUserId )
         {
-            $Connector      = $this->getConnector();
-            $AssigedGroup   = 'none';
-            $MemberGroups   = explode(',', WP_MEMBER_GROUPS );
-            $RaidleadGroups = explode(',', WP_RAIDLEAD_GROUPS );
+            $Connector = $this->getConnector();
+            $Config = $this->getConfig();
+            $AssignedGroup = ENUM_GROUP_NONE;
 
             $MetaQuery = $Connector->prepare('SELECT meta_key, meta_value '.
                 'FROM `'.WP_TABLE_PREFIX.'usermeta` '.
@@ -162,24 +165,16 @@
 
             $MetaQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);
 
-            $MetaQuery->loop(function($MetaData) use (&$AssigedGroup, $MemberGroups, $RaidleadGroups)
+            $MetaQuery->loop(function($MetaData) use (&$AssigedGroup, $Config)
             {
                 $Roles = array_keys(unserialize($MetaData['meta_value']));
-
                 foreach($Roles as $Role)
                 {
-                    if (in_array($Role, $RaidleadGroups))
-                    {
-                        $AssigedGroup = 'raidlead';
-                        return false;
-                    }
-
-                    if (in_array($Role, $MemberGroups))
-                        $AssigedGroup = 'member';
+                    $AssignedGroup = $Config->mapGroup($RoleId, $AssignedGroup);
                 }
             });
 
-            return $AssigedGroup;
+            return GetGroupName($AssignedGroup);
         }
 
         // -------------------------------------------------------------------------
@@ -225,23 +220,23 @@
                     $CookieName = 'wordpress_logged_in_'.md5($ConfigData['option_value']);
 
                     // Fetch user info if seesion cookie is set
-                    
+
                     if (isset($_COOKIE[$CookieName]))
                     {
                         if (!defined("WP_VERSION") || WP_VERSION < 40000)
                         {
                             list($UserName, $Expiration, $hmac) = explode('|', $_COOKIE[$CookieName]);
-    
+
                             $UserInfo = $this->getUserInfoByName($UserName);
-                            
+
                             if ($UserInfo != null)
                             {
                                 $PassFragment = substr($UserInfo->Password, 8, 4);
-    
+
                                 $Key3x  = hash_hmac('md5', $UserName.$PassFragment.'|'.$Expiration, WP_SECRET);
                                 $Hash3x = hash_hmac('md5', $UserName . '|' . $Expiration, $Key3x);
-    
-                                if (($Hash3x != $hmac) || 
+
+                                if (($Hash3x != $hmac) ||
                                     ($Expiration < time()))
                                 {
                                     $UserInfo = null;
@@ -251,17 +246,17 @@
                         else
                         {
                             list($UserName, $Expiration, $Token, $hmac) = explode('|', $_COOKIE[$CookieName]);
-    
+
                             $UserInfo = $this->getUserInfoByName($UserName);
-                            
+
                             if ($UserInfo != null)
                             {
                                 $PassFragment = substr($UserInfo->Password, 8, 4);
-    
+
                                 $Key4x  = hash_hmac('md5', $UserName.'|'.$PassFragment.'|'.$Expiration.'|'.$Token, WP_SECRET);
                                 $Hash4x = hash_hmac('sha256', $UserName.'|'.$Expiration.'|'.$Token, $Key4x);
-    
-                                if (($Hash4x != $hmac) || 
+
+                                if (($Hash4x != $hmac) ||
                                     ($Expiration < time()))
                                 {
                                     $UserInfo = null;
@@ -315,7 +310,7 @@
         private static function extractSaltPart( $aPassword )
         {
             global $gItoa64;
-            
+
             if ((strlen($aPassword) == 34) || (substr($aPassword, 0, 3) == '$P$'))
             {
                 $Count = strpos($gItoa64, $aPassword[3]);
@@ -341,7 +336,7 @@
         public function hash( $aPassword, $aSalt, $aMethod )
         {
             global $gItoa64;
-            
+
             if ($aMethod == self::$HashMethod_md5 )
             {
                 return md5($aPassword);

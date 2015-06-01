@@ -2,6 +2,12 @@
     require_once dirname(__FILE__).'/connector.class.php';
     require_once dirname(__FILE__).'/tools_site.php';
 
+    define("ENUM_GROUP_NONE", 0);
+    define("ENUM_GROUP_MEMBER", 1);
+    define("ENUM_GROUP_PRIVILEGED", 2);
+    define("ENUM_GROUP_RAIDLEAD", 3);
+    define("ENUM_GROUP_ADMIN", 4);
+
     // Helper class for external bindings, so we don't have to use string
     // based associative arrays.
     class UserInfo
@@ -56,6 +62,23 @@
             $this->HasCookieConfig  = false;
             $this->HasGroupConfig   = false;
             $this->HasForumConfig   = false;
+        }
+
+        public function mapGroup($aGroup, $aCurrent)
+        {
+            if ( in_array($aGroup, $this->Members) )
+                $aCurrent = max($aCurrent, ENUM_GROUP_MEMBER);
+
+            if ( in_array($aGroup, $this->Privileged) )
+                $aCurrent = max($aCurrent, ENUM_GROUP_PRIVILEDGED);
+
+            if ( in_array($aGroup, $this->Raidleads) )
+                $aCurrent = max($aCurrent, ENUM_GROUP_RAIDLEAD);
+
+            if ( in_array($aGroup, $this->Admins) )
+                $aCurrent = max($aCurrent, ENUM_GROUP_ADMIN);
+
+            return $aCurrent;
         }
     }
 
@@ -257,4 +280,19 @@
         }
     }
 
+    function GetGroupName($aEnumGroup)
+    {
+        switch($aEnumGroup)
+        {
+        case ENUM_GROUP_MEMBER:
+            return 'meber';
+        case ENUM_GROUP_PRIVILEGED:
+            return 'privileged';
+        case ENUM_GROUP_RAIDLEAD:
+            return 'raidlead';
+        case ENUM_GROUP_ADMIN:
+            return 'admin';
+        }
+        return 'none';
+    }
 ?>

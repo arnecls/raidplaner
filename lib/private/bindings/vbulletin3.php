@@ -30,8 +30,10 @@
             $Config->CookieData       = defined('VB3_COOKIE_PREFIX') ? VB3_COOKIE_PREFIX : 'bb';
             $Config->PostTo           = defined('VB3_POSTTO') ? VB3_POSTTO : '';
             $Config->PostAs           = defined('VB3_POSTAS') ? VB3_POSTAS : '';
-            $Config->Raidleads        = defined('VB3_RAIDLEAD_GROUPS') ? explode(',', VB3_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('VB3_MEMBER_GROUPS') ? explode(',', VB3_MEMBER_GROUPS ) : array();
+            $Config->Privileged       = defined('VB3_PRIVILEGED_GROUPS') ? explode(',', VB3_PRIVILEGED_GROUPS ) : array();
+            $Config->Raidleads        = defined('VB3_RAIDLEAD_GROUPS') ? explode(',', VB3_RAIDLEAD_GROUPS ) : array();
+            $Config->Admins           = defined('VB3_ADMIN_GROUPS') ? explode(',', VB3_ADMIN_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
@@ -46,7 +48,7 @@
             $Out = Out::getInstance();
             $ConfigPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/includes/config.php';
             $CorePath   = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/includes/class_core.php';
-            
+
             if (!file_exists($ConfigPath))
             {
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
@@ -61,11 +63,11 @@
                 $Out->pushError(L('NoValidConfig'));
                 return null;
             }
-            
+
             $Version = 30000;
             if (defined('FILE_VERSION'))
             {
-                $VersionParts = explode('.', FILE_VERSION);                
+                $VersionParts = explode('.', FILE_VERSION);
                 $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
             }
 
@@ -81,7 +83,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.vb3.php', 'w+' );
 
@@ -90,17 +92,19 @@
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine('VB3_DATABASE', '".$aDatabase."');\n");
-                fwrite( $Config, "\tdefine('VB3_USER', '".$aUser."');\n");
-                fwrite( $Config, "\tdefine('VB3_PASS', '".$aPass."');\n");
-                fwrite( $Config, "\tdefine('VB3_TABLE_PREFIX', '".$aPrefix."');\n");
-                fwrite( $Config, "\tdefine('VB3_COOKIE_PREFIX', '".$aCookieEx."');\n");
-                fwrite( $Config, "\tdefine('VB3_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('VB3_DATABASE', '".$aConfig->Database."');\n");
+                fwrite( $Config, "\tdefine('VB3_USER', '".$aConfig->User."');\n");
+                fwrite( $Config, "\tdefine('VB3_PASS', '".$aConfig->Password."');\n");
+                fwrite( $Config, "\tdefine('VB3_TABLE_PREFIX', '".$aConfig->Prefix."');\n");
+                fwrite( $Config, "\tdefine('VB3_COOKIE_PREFIX', '".$aConfig->CookieData."');\n");
+                fwrite( $Config, "\tdefine('VB3_AUTOLOGIN', ".(($aConfig->AutoLoginEnabled) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('VB3_POSTTO', ".$aConfig->PostTo.");\n");
+                fwrite( $Config, "\tdefine('VB3_POSTAS', ".$aConfig->PostAs.");\n");
 
-                fwrite( $Config, "\tdefine('VB3_POSTTO', ".$aPostTo.");\n");
-                fwrite( $Config, "\tdefine('VB3_POSTAS', ".$aPostAs.");\n");
-                fwrite( $Config, "\tdefine('VB3_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
-                fwrite( $Config, "\tdefine('VB3_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
+                fwrite( $Config, "\tdefine('VB3_MEMBER_GROUPS', '".implode( ",", $aConfig->Members )."');\n");
+                fwrite( $Config, "\tdefine('VB3_PRIVILEGED_GROUPS', '".implode( ",", $aConfig->Privileged )."');\n");
+                fwrite( $Config, "\tdefine('VB3_RAIDLEAD_GROUPS', '".implode( ",", $aConfig->Raidleads )."');\n");
+                fwrite( $Config, "\tdefine('VB3_ADMIN_GROUPS', '".implode( ",", $aConfig->Admins )."');\n");
             }
 
             fwrite( $Config, '?>');
@@ -195,20 +199,12 @@
                 if ( ($aUserData['bandate'] < $CurrentTime) &&
                      (($aUserData['liftdate'] == 0) || ($aUserData['liftdate'] > $CurrentTime)) )
                 {
-                    return 'none'; // ### return, banned ###
+                    return GetGroupName(ENUM_GROUP_NONE); // ### return, banned ###
                 }
             }
 
-            $MemberGroups   = explode(',', VB3_MEMBER_GROUPS );
-            $RaidleadGroups = explode(',', VB3_RAIDLEAD_GROUPS );
-
-            if ( in_array($aUserData['usergroupid'], $RaidleadGroups) )
-                return 'raidlead';
-
-            if ( in_array($aUserData['usergroupid'], $MemberGroups) )
-                return 'member';
-
-            return 'none';
+            $Config = $this->getConfig();
+            return GetGroupName( $Config->mapGroup($RoleId, ENUM_GROUP_NONE) );
         }
 
         // -------------------------------------------------------------------------
@@ -337,62 +333,62 @@
 
                     $UserQuery = $Connector->prepare('SELECT username FROM `'.VB3_TABLE_PREFIX.'user` WHERE userid=:UserId LIMIT 1');
                     $UserQuery->BindValue( ':UserId', VB3_POSTAS, PDO::PARAM_INT );
-    
+
                     $UserData = $UserQuery->fetchFirst();
-    
+
                     // Create thread
-    
+
                     $ThreadQuery = $Connector->prepare('INSERT INTO `'.VB3_TABLE_PREFIX.'thread` '.
                                                        '(forumid, postuserid, title, postusername, dateline, lastpost, lastposter, open, visible) VALUES '.
                                                        '(:ForumId, :UserId, :Subject, :Username, :Now, :Now, :Username, 1, 1)');
-    
+
                     $ThreadQuery->BindValue( ':ForumId', VB3_POSTTO, PDO::PARAM_INT );
                     $ThreadQuery->BindValue( ':UserId', VB3_POSTAS, PDO::PARAM_INT );
                     $ThreadQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
                     $ThreadQuery->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );
                     $ThreadQuery->BindValue( ':Subject', $aSubject, PDO::PARAM_STR );
-    
+
                     $ThreadQuery->execute(true);
                     $ThreadId = $Connector->lastInsertId();
-    
+
                     // Create post
-    
+
                     $PostQuery = $Connector->prepare('INSERT INTO `'.VB3_TABLE_PREFIX.'post` '.
                                                      '(threadid, userid, username, dateline, title, pagetext, allowsmilie, visible) VALUES '.
                                                      '(:ThreadId, :UserId, :Username, :Now, :Subject, :Text, 1, 1)');
-    
+
                     $PostQuery->BindValue( ':ThreadId', $ThreadId, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':UserId', VB3_POSTAS, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );
-    
+
                     $PostQuery->BindValue( ':Subject', $aSubject, PDO::PARAM_STR );
                     $PostQuery->BindValue( ':Text', $FormattedMessage, PDO::PARAM_STR );
-                    
+
                     $PostQuery->execute(true);
                     $PostId = $Connector->lastInsertId();
-    
+
                     // Create parsed post
-    
+
                     $PostQuery = $Connector->prepare('INSERT INTO `'.VB3_TABLE_PREFIX.'postparsed` '.
                                                      '(postid, dateline, styleid, languageid, pagetext_html) VALUES '.
                                                      '(:PostId, :Now, 1, 1, :Text)');
-    
+
                     $PostQuery->BindValue( ':PostId', $PostId, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Text', $aMessage, PDO::PARAM_STR );
-                    
+
                     $PostQuery->execute(true);
-    
+
                     // Finish thread
-    
+
                     $ThreadFinishQuery = $Connector->prepare('UPDATE `'.VB3_TABLE_PREFIX.'thread` '.
                                                              'SET firstpostid = :PostId, lastpostid = :PostId '.
                                                              'WHERE threadid = :ThreadId LIMIT 1');
-    
+
                     $ThreadFinishQuery->BindValue( ':ThreadId', $ThreadId, PDO::PARAM_INT );
                     $ThreadFinishQuery->BindValue( ':PostId', $PostId, PDO::PARAM_INT );
-    
+
                     $ThreadFinishQuery->execute(true);
                 }
                 while(!$Connector->commit());

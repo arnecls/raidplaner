@@ -31,8 +31,10 @@
             $Config->Version          = defined('JML3_VERSION') ? JML3_VERSION : 30000;
             $Config->AutoLoginEnabled = defined('JML3_AUTOLOGIN') ? JML3_AUTOLOGIN : false;
             $Config->CookieData       = defined('JML3_SECRET') ? JML3_SECRET : '0123456789ABCDEF';
-            $Config->Raidleads        = defined('JML3_RAIDLEAD_GROUPS') ? explode(',', JML3_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('JML3_MEMBER_GROUPS') ? explode(',', JML3_MEMBER_GROUPS ) : array();
+            $Config->Privileged       = defined('JML3_PRIVILEGED_GROUPS') ? explode(',', JML3_PRIVILEGED_GROUPS ) : array();
+            $Config->Raidleads        = defined('JML3_RAIDLEAD_GROUPS') ? explode(',', JML3_RAIDLEAD_GROUPS ) : array();
+            $Config->Admins           = defined('JML3_ADMIN_GROUPS') ? explode(',', JML3_ADMIN_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
 
@@ -47,15 +49,15 @@
 
             $ConfigPath  = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/Configuration.php';
             $VersionPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/libraries/cms/version/version.php';
-            
+
             if (!file_exists($ConfigPath))
             {
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
                 return null;
             }
-            
+
             @include_once($ConfigPath);
-            
+
             define('JPATH_PLATFORM', '');
             define('_JEXEC', '');
             @include_once($VersionPath);
@@ -67,9 +69,9 @@
                 $VersionParts = explode('.', $VersionClass->RELEASE);
                 $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionClass->DEV_LEVEL);
             }
-            
+
             $Config = new JConfig();
-                
+
             return array(
                 'database'  => $Config->db,
                 'user'      => $Config->user,
@@ -82,7 +84,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.jml3.php', 'w+' );
 
@@ -91,15 +93,17 @@
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine('JML3_DATABASE', '".$aDatabase."');\n");
-                fwrite( $Config, "\tdefine('JML3_USER', '".$aUser."');\n");
-                fwrite( $Config, "\tdefine('JML3_PASS', '".$aPass."');\n");
-                fwrite( $Config, "\tdefine('JML3_TABLE_PREFIX', '".$aPrefix."');\n");
-                fwrite( $Config, "\tdefine('JML3_SECRET', '".$aCookieEx."');\n");
-                fwrite( $Config, "\tdefine('JML3_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('JML3_DATABASE', '".$aConfig->Database."');\n");
+                fwrite( $Config, "\tdefine('JML3_USER', '".$aConfig->User."');\n");
+                fwrite( $Config, "\tdefine('JML3_PASS', '".$aConfig->Password."');\n");
+                fwrite( $Config, "\tdefine('JML3_TABLE_PREFIX', '".$aConfig->Prefix."');\n");
+                fwrite( $Config, "\tdefine('JML3_SECRET', '".$aConfig->CookieData."');\n");
+                fwrite( $Config, "\tdefine('JML3_AUTOLOGIN', ".(($aConfig->AutoLoginEnabled) ? "true" : "false").");\n");
 
-                fwrite( $Config, "\tdefine('JML3_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
-                fwrite( $Config, "\tdefine('JML3_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
+                fwrite( $Config, "\tdefine('JML3_MEMBER_GROUPS', '".implode( ",", $aConfig->Members )."');\n");
+                fwrite( $Config, "\tdefine('JML3_PRIVILEGED_GROUPS', '".implode( ",", $aConfig->Privileged )."');\n");
+                fwrite( $Config, "\tdefine('JML3_RAIDLEAD_GROUPS', '".implode( ",", $aConfig->Raidleads )."');\n");
+                fwrite( $Config, "\tdefine('JML3_ADMIN_GROUPS', '".implode( ",", $aConfig->Admins )."');\n");
             }
 
             fwrite( $Config, '?>');
@@ -155,20 +159,15 @@
         {
             // TODO: Banning?
 
-            $AssignedGroup  = 'none';
-            $MemberGroups   = explode(',', JML3_MEMBER_GROUPS );
-            $RaidleadGroups = explode(',', JML3_RAIDLEAD_GROUPS );
+            $Config = $this->getConfig();
+            $AssignedGroup = ENUM_GROUP_NONE;
 
             foreach( $aUserData['Groups'] as $Group )
             {
-                if ( in_array($Group, $MemberGroups) )
-                    $AssignedGroup = 'member';
-
-                if ( in_array($Group, $RaidleadGroups) )
-                    return 'raidlead'; // ### return, best possible group ###
+                $AssignedGroup = $Config->mapGroup($Group, $AssignedGroup);
             }
 
-            return $AssignedGroup;
+            return GetGroupName($AssignedGroup);
         }
 
         // -------------------------------------------------------------------------
@@ -237,7 +236,7 @@
                                           'WHERE LOWER(username) = :Login');
 
             $UserQuery->BindValue( ':Login', strtolower($aUserName), PDO::PARAM_STR );
-            
+
             $UserData = null;
             $Groups = array();
 
@@ -246,10 +245,10 @@
                 $UserData = $Data;
                 array_push($Groups, $UserData['group_id']);
             });
-            
+
             if ($UserData == null)
                 return null; // ### return, no users ###
-                
+
             $UserData['Groups'] = $Groups;
             return $this->generateUserInfo($UserData);
         }
@@ -286,18 +285,18 @@
         private function extractSaltPart( $aPassword )
         {
             global $gItoa64;
-        
+
             switch ( $this->getMethodFromPass($aPassword) )
             {
             case self::$HashMethodBF:
                 return substr($aPassword, 0, 7+22);
-                
+
             case self::$HashMethodMD5r:
                 $Count = strpos($gItoa64, $aPassword[3]);
                 $Salt = substr($aPassword, 4, 8);
                 return $Count.':'.$Salt;
-             
-            default:   
+
+            default:
             case self::$HashMethodMD5s:
                 list($Password,$Salt) = explode(':', $aPassword);
                 return $Salt;
@@ -310,13 +309,13 @@
         {
             if ( strpos($aPassword, '$2y$') === 0 )
                 return self::$HashMethodBF;
-            
+
             if ( strpos($aPassword, '$2a$') === 0 )
                 return self::$HashMethodBF;
-                
+
             if ( strpos($aPassword, '$P$') === 0 )
                 return self::$HashMethodMD5r;
-                
+
             return self::$HashMethodMD5s;
         }
 
@@ -325,26 +324,26 @@
         public function hash( $aPassword, $aSalt, $aMethod )
         {
             global $gItoa64;
-            
+
             switch($aMethod)
             {
             case self::$HashMethodMD5s:
                 return md5($aPassword.$aSalt).':'.$aSalt;
-                
+
             case self::$HashMethodMD5r:
                 $Parts   = explode(':',$aSalt);
                 $CountB2 = intval($Parts[0],10);
                 $Count   = 1 << $CountB2;
                 $Salt    = $Parts[1];
-    
+
                 $Hash = md5($Salt.$aPassword, true);
-    
+
                 do {
                     $Hash = md5($Hash.$aPassword, true);
                 } while (--$Count);
-    
+
                 return '$P$'.$gItoa64[$CountB2].$Salt.encode64($Hash,16);
-            
+
             default:
                 return crypt($aPassword,$aSalt);
             }

@@ -32,8 +32,10 @@
             $Config->PostTo           = defined('SMF_POSTTO') ? SMF_POSTTO : '';
             $Config->PostAs           = defined('SMF_POSTAS') ? SMF_POSTAS : '';
             $Config->Encoding         = defined('SMF_ENCODING') ? SMF_ENCODING : 'UTF-8';
-            $Config->Raidleads        = defined('SMF_RAIDLEAD_GROUPS') ? explode(',', SMF_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('SMF_MEMBER_GROUPS') ? explode(',', SMF_MEMBER_GROUPS ) : array();
+            $Config->Privileged       = defined('SMF_PRIVILEGED_GROUPS') ? explode(',', SMF_PRIVILEGED_GROUPS ) : array();
+            $Config->Raidleads        = defined('SMF_RAIDLEAD_GROUPS') ? explode(',', SMF_RAIDLEAD_GROUPS ) : array();
+            $Config->Admins           = defined('SMF_ADMIN_GROUPS') ? explode(',', SMF_ADMIN_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
@@ -59,15 +61,15 @@
                 Out::getInstance()->pushError(L('NoValidConfig'));
                 return null;
             }
-            
+
             $Version = 20000;
             $Connector = new Connector(SQL_HOST, $db_name, $db_user, $db_passwd, false);
             if ($Connector != null)
             {
                 $VersionQuery = $Connector->prepare( 'SELECT value FROM `'.$db_prefix.'settings` WHERE variable="smfVersion" LIMIT 1' );
-                $VersionData  = $VersionQuery->fetchFirst();                
+                $VersionData  = $VersionQuery->fetchFirst();
                 $VersionParts = explode('.', $VersionData['value']);
-                
+
                 $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
             }
 
@@ -83,7 +85,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.smf.php', 'w+' );
 
@@ -92,20 +94,22 @@
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine('SMF_DATABASE', '".$aDatabase."');\n");
-                fwrite( $Config, "\tdefine('SMF_USER', '".$aUser."');\n");
-                fwrite( $Config, "\tdefine('SMF_PASS', '".$aPass."');\n");
-                fwrite( $Config, "\tdefine('SMF_TABLE_PREFIX', '".$aPrefix."');\n");
-                fwrite( $Config, "\tdefine('SMF_COOKIE', '".$aCookieEx."');\n");
-                fwrite( $Config, "\tdefine('SMF_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('SMF_DATABASE', '".$aConfig->Database."');\n");
+                fwrite( $Config, "\tdefine('SMF_USER', '".$aConfig->User."');\n");
+                fwrite( $Config, "\tdefine('SMF_PASS', '".$aConfig->Password."');\n");
+                fwrite( $Config, "\tdefine('SMF_TABLE_PREFIX', '".$aConfig->Prefix."');\n");
+                fwrite( $Config, "\tdefine('SMF_COOKIE', '".$aConfig->CookieData."');\n");
+                fwrite( $Config, "\tdefine('SMF_AUTOLOGIN', ".(($aConfig->AutoLoginEnabled) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('SMF_POSTTO', ".$aConfig->PostTo.");\n");
+                fwrite( $Config, "\tdefine('SMF_POSTAS', ".$aConfig->PostAs.");\n");
 
-                fwrite( $Config, "\tdefine('SMF_POSTTO', ".$aPostTo.");\n");
-                fwrite( $Config, "\tdefine('SMF_POSTAS', ".$aPostAs.");\n");
-                fwrite( $Config, "\tdefine('SMF_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
-                fwrite( $Config, "\tdefine('SMF_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
-                
+                fwrite( $Config, "\tdefine('SMF_MEMBER_GROUPS', '".implode( ",", $aConfig->Members )."');\n");
+                fwrite( $Config, "\tdefine('SMF_PRIVILEGED_GROUPS', '".implode( ",", $aConfig->Privileged )."');\n");
+                fwrite( $Config, "\tdefine('SMF_RAIDLEAD_GROUPS', '".implode( ",", $aConfig->Raidleads )."');\n");
+                fwrite( $Config, "\tdefine('SMF_ADMIN_GROUPS', '".implode( ",", $aConfig->Admins )."');\n");
+
                 $Encoding = 'UTF-8';
-                
+
                 try
                 {
                     $Connector = new Connector(SQL_HOST, $aDatabase, $aUser, $aPass, true);
@@ -113,18 +117,18 @@
                         'FROM information_schema.`COLUMNS` '.
                         'WHERE table_name = "'.$aPrefix.'members" '.
                         'AND column_name = "member_name"');
-                        
+
                     $ColInfo = $CharSetQuery->fetchFirst(true);
-                    
+
                     if ($ColInfo != null)
                     {
                         $Encoding = mysqlToMbstringCharset($ColInfo['character_set_name']);
                     }
                 }
                 catch (Exception $Exception)
-                {              
+                {
                 }
-                
+
                 fwrite( $Config, "\tdefine('SMF_ENCODING', '".$Encoding."');\n");
             }
 
@@ -220,75 +224,63 @@
                 if ( ($aUserData['ban_time'] < $CurrentTime) &&
                      (($aUserData['expire_time'] == 0) || ($aUserData['expire_time'] > $CurrentTime)) )
                 {
-                    return 'none'; // ### return, banned ###
+                    return GetGroupName(ENUM_GROUP_NONE); // ### return, banned ###
                 }
             }
-            
+
             if ($aUserData['is_activated'] == 0)
             {
-                return 'none';
+                return GetGroupName(ENUM_GROUP_NONE);
             }
-            
-            $MemberGroups   = explode(',', SMF_MEMBER_GROUPS );
-            $RaidleadGroups = explode(',', SMF_RAIDLEAD_GROUPS );
-            $AssignedGroup  = 'none';
-            
+
+            $Config = $this->getConfig();
+            $AssignedGroup = ENUM_GROUP_NONE;
+
             // Check post based groups
 
             if ($aUserData['id_group'] == 0)
             {
                 $Connector = $this->getConnector();
-                
+
                 // Get number of posts for current user
-                
+
                 $PostQuery = $Connector->prepare('SELECT COUNT(*) AS posts FROM `'.SMF_TABLE_PREFIX.'messages` WHERE id_member = :UserId');
                 $PostQuery->BindValue( ':UserId', $aUserData['id_member'], PDO::PARAM_INT );
-                
+
                 $PostData = $PostQuery->fetchFirst();
-                
+
                 if ($PostData != null)
                 {
                     // Fetch groups for this user
-                                
+
                     $GroupQuery = $Connector->prepare('SELECT id_group, min_posts '.
                         'FROM `'.SMF_TABLE_PREFIX.'membergroups` '.
                         'WHERE min_posts >= :Posts '.
                         'ORDER BY min_posts DESC');
-                        
-                    $GroupQuery->BindValue( ':Posts', $PostData['posts'], PDO::PARAM_INT );
-    
-                    $GroupQuery->loop(function($aGroup) use (&$PostData, &$AssignedGroup, $MemberGroups, $RaidleadGroups)
-                    {
-                        if ( in_array($aGroup['id_group'], $MemberGroups) )
-                            $AssignedGroup = 'member';
 
-                        if ( in_array($aGroup['id_group'], $RaidleadGroups) )
-                        {
-                            $AssignedGroup = 'raidlead'; 
-                            return false; // ### return, best possible group ###
-                        }
+                    $GroupQuery->BindValue( ':Posts', $PostData['posts'], PDO::PARAM_INT );
+
+                    $GroupQuery->loop(function($aGroup) use (&$AssignedGroup, $Config)
+                    {
+                        $AssignedGroup = $Config->mapGroup($Group['id_group'], $AssignedGroup);
                     });
                 }
             }
-            
+
             // Always check regular group fields, too
-            
+
             if ($AssignedGroup != 'raidlead')
             {
                 $Groups = explode(',', $aUserData['additional_groups']);
                 array_push($Groups, $aUserData['id_group'] );
-    
+
                 foreach( $Groups as $Group )
                 {
-                    if ( in_array($Group, $MemberGroups) )
-                        $AssignedGroup = 'member';
-    
-                    if ( in_array($Group, $RaidleadGroups) )
-                        return 'raidlead'; // ### return, best possible group ###
+                    $AssignedGroup = $Config->mapGroup($Group, $AssignedGroup);
                 }
             }
 
-            return $AssignedGroup;
+            return GetGroupName($AssignedGroup);
         }
 
         // -------------------------------------------------------------------------
@@ -375,11 +367,11 @@
 
             if ($UserData === null)
                 return null;
-                
+
             $UserData['member_name_encoded'] = (defined('SMF_ENCODING') && (SMF_ENCODING != 'UTF-8'))
                 ? mb_convert_encoding(strtolower($UserData['member_name']), SMF_ENCODING, 'UTF-8')
                 : strtolower($UserData['member_name']);
-            
+
             return $this->generateUserInfo($UserData);
         }
 
@@ -397,7 +389,7 @@
             $EncodedPass = (defined('SMF_ENCODING') && (SMF_ENCODING != 'UTF-8'))
                 ? mb_convert_encoding($aPassword, SMF_ENCODING, 'UTF-8')
                 : $aPassword;
-                
+
             return sha1(pack("H*", $aSalt).$EncodedPass);
         }
 
@@ -418,48 +410,48 @@
 
                     $UserQuery = $Connector->prepare('SELECT member_name FROM `'.SMF_TABLE_PREFIX.'members` WHERE id_member=:UserId LIMIT 1');
                     $UserQuery->BindValue( ':UserId', SMF_POSTAS, PDO::PARAM_INT );
-    
+
                     $UserData = $UserQuery->fetchFirst();
-    
+
                     // Create post
-    
+
                     $PostQuery = $Connector->prepare('INSERT INTO `'.SMF_TABLE_PREFIX.'messages` '.
                                                   '(id_board, poster_time, id_member, poster_name, subject, body) VALUES '.
                                                   '(:ForumId, :Now, :UserId, :Username, :Subject, :Text)');
-    
+
                     $PostQuery->BindValue( ':ForumId', SMF_POSTTO, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':UserId', SMF_POSTAS, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Username', $UserData['member_name'], PDO::PARAM_STR );
-    
+
                     $PostQuery->BindValue( ':Subject', $aSubject, PDO::PARAM_STR );
                     $PostQuery->BindValue( ':Text', $aMessage, PDO::PARAM_STR );
-    
+
                     $PostQuery->execute(true);
                     $PostId = $Connector->lastInsertId();
-    
+
                     // Create topic
-    
+
                     $TopicQuery = $Connector->prepare('INSERT INTO `'.SMF_TABLE_PREFIX.'topics` '.
                                                    '(id_board, id_member_started, id_first_msg, id_last_msg) VALUES '.
                                                    '(:ForumId, :UserId, :PostId, :PostId)');
-    
+
                     $TopicQuery->BindValue( ':ForumId', SMF_POSTTO, PDO::PARAM_INT );
                     $TopicQuery->BindValue( ':UserId', SMF_POSTAS, PDO::PARAM_INT );
                     $TopicQuery->BindValue( ':PostId', $PostId, PDO::PARAM_INT );
-    
+
                     $TopicQuery->execute(true);
                     $TopicId = $Connector->lastInsertId();
-                    
+
                     // Finish post
-    
+
                     $PostFinishQuery = $Connector->prepare('UPDATE `'.SMF_TABLE_PREFIX.'messages` '.
                                                          'SET id_topic = :TopicId '.
                                                          'WHERE id_msg = :PostId LIMIT 1');
-    
+
                     $PostFinishQuery->BindValue( ':TopicId', $TopicId, PDO::PARAM_INT );
                     $PostFinishQuery->BindValue( ':PostId', $PostId, PDO::PARAM_INT );
-    
+
                     $PostFinishQuery->execute(true);
                 }
                 while (!$Connector->commit());

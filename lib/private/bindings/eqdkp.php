@@ -44,7 +44,7 @@
 
             $ConfigPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/config.php';
             $DataPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/data';
-            
+
             if (!file_exists($ConfigPath))
             {
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
@@ -58,10 +58,10 @@
                 $Out->pushError(L('NoValidConfig'));
                 return null;
             }
-            
+
             $Version = 10000;
             $DataFolder = scandir($DataPath);
-            
+
             foreach($DataFolder as $Candidate)
             {
                 $LocalConfPath = $DataPath.'/'.$Candidate.'/eqdkp/config/localconf.php';
@@ -69,13 +69,13 @@
                 {
                     define('EQDKP_INC',1);
                     @include_once($LocalConfPath);
-                    
-                    $VersionParts = explode('.', $localconf['plus_version']);                
+
+                    $VersionParts = explode('.', $localconf['plus_version']);
                     $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
                     break;
                 }
             }
-            
+
             return array(
                 'database'  => $dbname,
                 'user'      => $dbuser,
@@ -88,7 +88,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.eqdkp.php', 'w+' );
 
@@ -97,11 +97,11 @@
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine('EQDKP_DATABASE', '".$aDatabase."');\n");
-                fwrite( $Config, "\tdefine('EQDKP_USER', '".$aUser."');\n");
-                fwrite( $Config, "\tdefine('EQDKP_PASS', '".$aPass."');\n");
-                fwrite( $Config, "\tdefine('EQDKP_TABLE_PREFIX', '".$aPrefix."');\n");
-                fwrite( $Config, "\tdefine('EQDKP_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('EQDKP_DATABASE', '".$aConfig->Database."');\n");
+                fwrite( $Config, "\tdefine('EQDKP_USER', '".$aConfig->User."');\n");
+                fwrite( $Config, "\tdefine('EQDKP_PASS', '".$aConfig->Password."');\n");
+                fwrite( $Config, "\tdefine('EQDKP_TABLE_PREFIX', '".$aConfig->Prefix."');\n");
+                fwrite( $Config, "\tdefine('EQDKP_AUTOLOGIN', ".(($aConfig->AutoLoginEnabled) ? "true" : "false").");\n");
             }
 
             fwrite( $Config, "?>");
@@ -153,25 +153,25 @@
                                                 'WHERE user_id = :UserId');
 
             $UserRightsQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);
-            $AssignedGroup = 'member';
+            $AssignedGroup = ENUM_GROUP_MEMBER;
 
             $UserRightsQuery->loop(function($Right) use (&$AssignedGroup)
             {
                 if ( $Right['user_active'] == 0 )
                 {
-                    $AssignedGroup = 'none';
+                    $AssignedGroup = ENUM_GROUP_NONE;
                     return false; // ### return, not active ###
                 }
 
                 if ( (($Right['auth_value'] == 'a_raid_add') || ($Right['auth_value'] == 'a_raid_upd'))
                      && ($Right['auth_setting'] == 'Y') )
                 {
-                    $AssignedGroup = 'raidlead';
+                    $AssignedGroup = ENUM_GROUP_RAIDLEAD;
                     return false; // ### return, highest possible group ###
                 }
             });
 
-            return $AssignedGroup;
+            return GetGroupName($AssignedGroup);
         }
 
         // -------------------------------------------------------------------------
@@ -339,7 +339,7 @@
         public function hash( $aPassword, $aSalt, $aMethod )
         {
             global $gItoa64;
-            
+
             if ( ($aMethod == self::$HashMethod_sha512b) ||
                  ($aMethod == self::$HashMethod_sha512d) )
             {

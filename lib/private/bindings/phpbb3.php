@@ -32,8 +32,10 @@
             $Config->AutoLoginEnabled = defined('PHPBB3_AUTOLOGIN') ? PHPBB3_AUTOLOGIN : false;
             $Config->PostTo           = defined('PHPBB3_POSTTO') ? PHPBB3_POSTTO : '';
             $Config->PostAs           = defined('PHPBB3_POSTAS') ? PHPBB3_POSTAS : '';
-            $Config->Raidleads        = defined('PHPBB3_RAIDLEAD_GROUPS') ? explode(',', PHPBB3_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('PHPBB3_MEMBER_GROUPS') ? explode(',', PHPBB3_MEMBER_GROUPS ) : array();
+            $Config->Privileged       = defined('PHPBB3_PRIVILEGED_GROUPS') ? explode(',', PHPBB3_PRIVILEGED_GROUPS ) : array();
+            $Config->Raidleads        = defined('PHPBB3_RAIDLEAD_GROUPS') ? explode(',', PHPBB3_RAIDLEAD_GROUPS ) : array();
+            $Config->Admins           = defined('PHPBB3_ADMIN_GROUPS') ? explode(',', PHPBB3_ADMIN_GROUPS ) : array();
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
 
@@ -60,15 +62,15 @@
                 $Out->pushError(L('NoValidConfig'));
                 return null;
             }
-            
+
             $Version = 30000;
             $Connector = new Connector(SQL_HOST, $dbname, $dbuser, $dbpasswd, false);
             if ($Connector != null)
             {
                 $VersionQuery = $Connector->prepare( 'SELECT config_value FROM `'.$table_prefix.'config` WHERE config_name="version" LIMIT 1' );
-                $VersionData  = $VersionQuery->fetchFirst();                
+                $VersionData  = $VersionQuery->fetchFirst();
                 $VersionParts = explode('.', $VersionData['config_value']);
-                
+
                 $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
             }
 
@@ -84,7 +86,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.phpbb3.php', 'w+' );
 
@@ -93,18 +95,20 @@
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine('PHPBB3_DATABASE', '".$aDatabase."');\n");
-                fwrite( $Config, "\tdefine('PHPBB3_USER', '".$aUser."');\n");
-                fwrite( $Config, "\tdefine('PHPBB3_PASS', '".$aPass."');\n");
-                fwrite( $Config, "\tdefine('PHPBB3_TABLE_PREFIX', '".$aPrefix."');\n");
-                fwrite( $Config, "\tdefine('PHPBB3_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('PHPBB3_DATABASE', '".$aConfig->Database."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_USER', '".$aConfig->User."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_PASS', '".$aConfig->Password."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_TABLE_PREFIX', '".$aConfig->Prefix."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_AUTOLOGIN', ".(($aConfig->AutoLoginEnabled) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('PHPBB3_POSTTO', ".$aConfig->PostTo.");\n");
+                fwrite( $Config, "\tdefine('PHPBB3_POSTAS', ".$aConfig->PostAs.");\n");
 
-                fwrite( $Config, "\tdefine('PHPBB3_POSTTO', ".$aPostTo.");\n");
-                fwrite( $Config, "\tdefine('PHPBB3_POSTAS', ".$aPostAs.");\n");
-                fwrite( $Config, "\tdefine('PHPBB3_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
-                fwrite( $Config, "\tdefine('PHPBB3_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
-                
-                fwrite( $Config, "\tdefine('PHPBB3_VERSION', ".$aVersion.");\n");
+                fwrite( $Config, "\tdefine('PHPBB3_MEMBER_GROUPS', '".implode( ",", $aConfig->Members )."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_PRIVILEGED_GROUPS', '".implode( ",", $aConfig->Privileged )."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_RAIDLEAD_GROUPS', '".implode( ",", $aConfig->Raidleads )."');\n");
+                fwrite( $Config, "\tdefine('PHPBB3_ADMIN_GROUPS', '".implode( ",", $aConfig->Admins )."');\n");
+
+                fwrite( $Config, "\tdefine('PHPBB3_VERSION', ".$aConfig->Version.");\n");
             }
 
             fwrite( $Config, '?>');
@@ -180,7 +184,6 @@
                 {
                     array_push( $Users, array(
                         'id'   => $User['user_id'],
-
                         'name' => $User['username'])
                     );
                 }, $aThrow);
@@ -195,9 +198,8 @@
 
         private function getGroupForUser( $aUserId )
         {
-            $AssignedGroup  = 'none';
-            $MemberGroups   = explode(',', PHPBB3_MEMBER_GROUPS );
-            $RaidleadGroups = explode(',', PHPBB3_RAIDLEAD_GROUPS );
+            $Config = $this->getConfig();
+            $AssignedGroup = ENUM_GROUP_NONE;
 
             $Connector = $this->getConnector();
             $GroupQuery = $Connector->prepare('SELECT user_type, `'.PHPBB3_TABLE_PREFIX.'user_group`.group_id, ban_start, ban_end '.
@@ -208,14 +210,14 @@
 
             $GroupQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);
 
-            $GroupQuery->loop(function($Group) use (&$AssignedGroup, $MemberGroups, $RaidleadGroups)
+            $GroupQuery->loop(function($Group) use (&$AssignedGroup, $Config)
             {
                 if ( ($Group['user_type'] == 1) ||
                      ($Group['user_type'] == 2) )
                 {
                     // 1 equals 'inactive'
                     // 2 equals 'ignore'
-                    $AssignedGroup = 'none';
+                    $AssignedGroup = ENUM_GROUP_NONE;
                     return false; // ### return, disabled ###
                 }
 
@@ -225,24 +227,15 @@
                     if ( ($Group['ban_start'] < $CurrentTime) &&
                          (($Group['ban_end'] == 0) || ($Group['ban_end'] > $CurrentTime)) )
                     {
-                        $AssignedGroup = 'none';
+                        $AssignedGroup = ENUM_GROUP_NONE;
                         return false; // ### return, banned ###
                     }
                 }
 
-                if ( in_array($Group['group_id'], $MemberGroups) )
-                {
-                    $AssignedGroup = 'member';
-                }
-
-                if ( in_array($Group['group_id'], $RaidleadGroups) )
-                {
-                    $AssignedGroup = 'raidlead';
-                    return false; // ### return, highest possible group ###
-                }
+                $AssignedGroup = $Config->mapGroup($Group['group_id'], $AssignedGroup);
             });
 
-            return $AssignedGroup;
+            return GetGroupName($AssignedGroup);
         }
 
         // -------------------------------------------------------------------------
@@ -347,19 +340,19 @@
         private function extractSaltPart( $aPassword )
         {
             global $gItoa64;
-            
+
             switch ( $this->getMethodFromPass($aPassword) )
             {
             case self::$HashMethod_bf:
                 return substr($aPassword, 0, 7+22);
-                
+
             case self::$HashMethod_md5r:
                 $Count = strpos($gItoa64, $aPassword[3]);
                 $Salt = substr($aPassword, 4, 8);
 
                 return $Count.':'.$Salt;
-             
-            default:   
+
+            default:
             case self::$HashMethod_md5:
                 return '';
             }
@@ -371,43 +364,43 @@
         {
             if ( strpos($aPassword, '$2y$') === 0 )
                 return self::$HashMethod_bf;
-            
+
             if ( strpos($aPassword, '$2a$') === 0 )
                 return self::$HashMethod_bf;
-                
+
             if ( strpos($aPassword, '$H$') === 0 )
                 return self::$HashMethod_md5r;
 
             return self::$HashMethod_md5;
         }
-        
+
         // -------------------------------------------------------------------------
 
         public function hash( $aPassword, $aSalt, $aMethod )
         {
             global $gItoa64;
-            
+
             switch ($aMethod)
             {
             case self::$HashMethod_bf:
                 return crypt($aPassword,$aSalt);
-                
+
             default:
             case self::$HashMethod_md5:
                 return md5($aPassword);
-                
+
             case self::$HashMethod_md5r:
                 $Parts   = explode(':',$aSalt);
                 $CountB2 = intval($Parts[0],10);
                 $Count   = 1 << $CountB2;
                 $Salt    = $Parts[1];
-    
+
                 $Hash = md5($Salt.$aPassword, true);
-    
+
                 do {
                     $Hash = md5($Hash.$aPassword, true);
                 } while (--$Count);
-    
+
                 return '$H$'.$gItoa64[$CountB2].$Salt.encode64($Hash,16);
             }
         }
@@ -429,11 +422,11 @@
 
                     $UserQuery = $Connector->prepare('SELECT username, user_colour FROM `'.PHPBB3_TABLE_PREFIX.'users` WHERE user_id=:UserId LIMIT 1');
                     $UserQuery->BindValue( ':UserId', PHPBB3_POSTAS, PDO::PARAM_INT );
-    
+
                     $UserData = $UserQuery->fetchFirst();
-    
+
                     // Create topic
-    
+
                     if (!defined("PHPBB3_VERSION") || PHPBB3_VERSION < 30100)
                     {
                         $TopicQuery = $Connector->prepare('INSERT INTO `'.PHPBB3_TABLE_PREFIX.'topics` '.
@@ -448,21 +441,21 @@
                                                        'topic_first_poster_colour, topic_last_poster_name, topic_last_poster_id, topic_last_poster_colour, '.
                                                        'topic_last_post_time, topic_visibility, topic_posts_approved) VALUES '.
                                                        '(:ForumId, :UserId, :Subject, :Subject, :Now, :Username, :Color, :Username, :UserId, :Color, :Now, 1, 1)');
-                       
+
                     }
-                    
+
                     $TopicQuery->BindValue( ':ForumId', PHPBB3_POSTTO, PDO::PARAM_INT );
                     $TopicQuery->BindValue( ':UserId', PHPBB3_POSTAS, PDO::PARAM_INT );
                     $TopicQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
                     $TopicQuery->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );
                     $TopicQuery->BindValue( ':Color', $UserData['user_colour'], PDO::PARAM_STR );
                     $TopicQuery->BindValue( ':Subject', $aSubject, PDO::PARAM_STR );
-    
+
                     $TopicQuery->execute(true);
                     $TopicId = $Connector->lastInsertId();
-    
+
                     // Create post
-    
+
                     if (!defined("PHPBB3_VERSION") || PHPBB3_VERSION < 30100)
                     {
                         $PostQuery = $Connector->prepare('INSERT INTO `'.PHPBB3_TABLE_PREFIX.'posts` '.
@@ -473,68 +466,68 @@
                     {
                         $PostQuery = $Connector->prepare('INSERT INTO `'.PHPBB3_TABLE_PREFIX.'posts` '.
                                                       '(forum_id, topic_id, post_time, post_username, poster_id, post_subject, post_text, post_checksum, post_visibility) VALUES '.
-                                                      '(:ForumId, :TopicId, :Now, :Username, :UserId, :Subject, :Text, :TextMD5, 1)');    
+                                                      '(:ForumId, :TopicId, :Now, :Username, :UserId, :Subject, :Text, :TextMD5, 1)');
                     }
-                    
+
                     $PostQuery->BindValue( ':ForumId', PHPBB3_POSTTO, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':TopicId', $TopicId, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':UserId', PHPBB3_POSTAS, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );
-    
+
                     $PostQuery->BindValue( ':Subject', $aSubject, PDO::PARAM_STR );
                     $PostQuery->BindValue( ':Text', $aMessage, PDO::PARAM_STR );
                     $PostQuery->BindValue( ':TextMD5', md5($aMessage), PDO::PARAM_STR );
-    
+
                     $PostQuery->execute(true);
                     $PostId = $Connector->lastInsertId();
-    
+
                     // Finish topic
-                    
+
                     $TopicFinishQuery = $Connector->prepare('UPDATE `'.PHPBB3_TABLE_PREFIX.'topics` '.
                                                          'SET topic_first_post_id = :PostId, topic_last_post_id = :PostId '.
                                                          'WHERE topic_id = :TopicId LIMIT 1');
-    
+
                     $TopicFinishQuery->BindValue( ':TopicId', $TopicId, PDO::PARAM_INT );
                     $TopicFinishQuery->BindValue( ':PostId', $PostId, PDO::PARAM_INT );
-    
+
                     $TopicFinishQuery->execute(true);
-                    
+
                     // Topic posted
-    
+
                     $TopicPostedQuery = $Connector->prepare('INSERT INTO `'.PHPBB3_TABLE_PREFIX.'topics_posted` '.
                                                   '(user_id, topic_id, topic_posted) VALUES '.
                                                   '(:UserId, :TopicId, 1)');
-    
+
                     $TopicPostedQuery->BindValue( ':TopicId', $TopicId, PDO::PARAM_INT );
                     $TopicPostedQuery->BindValue( ':UserId', PHPBB3_POSTAS, PDO::PARAM_INT );
-    
+
                     $TopicPostedQuery->execute(true);
-                    
+
                     // Update forum
-                    
+
                     $VersionBasedQuery = " ";
-                    
+
                     if (!defined("PHPBB3_VERSION") || PHPBB3_VERSION < 30100)
                     {
                         $VersionBasedQuery .= ', forum_posts = forum_posts+1, forum_topics = forum_topics+1, forum_topics_real = forum_topics_real+1 ';
                     }
-                    
+
                     $ForumUpdateQuery = $Connector->prepare('UPDATE `'.PHPBB3_TABLE_PREFIX.'forums` '.
                                                             'SET forum_last_post_subject = :Subject, forum_last_post_time = :Now, '.
                                                                 'forum_last_poster_name = :Username,  forum_last_poster_colour = :Color, '.
                                                                 'forum_last_post_id = :PostId, forum_last_poster_id = :UserId '.
                                                                 $VersionBasedQuery.
                                                             'WHERE forum_id = :ForumId LIMIT 1');
-    
+
                     $ForumUpdateQuery->BindValue( ':ForumId', PHPBB3_POSTTO, PDO::PARAM_INT );
                     $ForumUpdateQuery->BindValue( ':Subject', $aSubject, PDO::PARAM_STR );
                     $ForumUpdateQuery->BindValue( ':UserId', PHPBB3_POSTAS, PDO::PARAM_INT );
                     $ForumUpdateQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
                     $ForumUpdateQuery->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );
                     $ForumUpdateQuery->BindValue( ':Color', $UserData['user_colour'], PDO::PARAM_STR );
-                    $ForumUpdateQuery->BindValue( ':PostId', $PostId, PDO::PARAM_INT );                    
-    
+                    $ForumUpdateQuery->BindValue( ':PostId', $PostId, PDO::PARAM_INT );
+
                     $ForumUpdateQuery->execute(true);
                 }
                 while (!$Connector->commit());

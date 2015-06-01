@@ -30,8 +30,10 @@
             $Config->AutoLoginEnabled = defined('MYBB_AUTOLOGIN') ? MYBB_AUTOLOGIN : false;
             $Config->PostTo           = defined('MYBB_POSTTO') ? MYBB_POSTTO : '';
             $Config->PostAs           = defined('MYBB_POSTAS') ? MYBB_POSTAS : '';
-            $Config->Raidleads        = defined('MYBB_RAIDLEAD_GROUPS') ? explode(',', MYBB_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('MYBB_MEMBER_GROUPS') ? explode(',', MYBB_MEMBER_GROUPS ) : array();
+            $Config->Privileged       = defined('MYBB_PRIVILEGED_GROUPS') ? explode(',', MYBB_PRIVILEGED_GROUPS ) : array();
+            $Config->Raidleads        = defined('MYBB_RAIDLEAD_GROUPS') ? explode(',', MYBB_RAIDLEAD_GROUPS ) : array();
+            $Config->Admins           = defined('MYBB_ADMIN_GROUPS') ? explode(',', MYBB_ADMIN_GROUPS ) : array();
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
 
@@ -46,7 +48,7 @@
 
             $ConfigPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/inc/config.php';
             $CorePath   = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/inc/class_core.php';
-            
+
             if (!file_exists($ConfigPath))
             {
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
@@ -54,13 +56,13 @@
             }
 
             @include_once($ConfigPath);
-            
+
             if (!isset($config))
             {
                 $Out->pushError(L('NoValidConfig'));
                 return null;
             }
-            
+
             include_once($CorePath);
 
             $Version = 10600;
@@ -83,7 +85,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.mybb.php', 'w+' );
 
@@ -92,16 +94,18 @@
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine('MYBB_DATABASE', '".$aDatabase."');\n");
-                fwrite( $Config, "\tdefine('MYBB_USER', '".$aUser."');\n");
-                fwrite( $Config, "\tdefine('MYBB_PASS', '".$aPass."');\n");
-                fwrite( $Config, "\tdefine('MYBB_TABLE_PREFIX', '".$aPrefix."');\n");
-                fwrite( $Config, "\tdefine('MYBB_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('MYBB_DATABASE', '".$aConfig->Database."');\n");
+                fwrite( $Config, "\tdefine('MYBB_USER', '".$aConfig->User."');\n");
+                fwrite( $Config, "\tdefine('MYBB_PASS', '".$aConfig->Password."');\n");
+                fwrite( $Config, "\tdefine('MYBB_TABLE_PREFIX', '".$aConfig->Prefix."');\n");
+                fwrite( $Config, "\tdefine('MYBB_AUTOLOGIN', ".(($aConfig->AutoLoginEnabled) ? "true" : "false").");\n");
 
-                fwrite( $Config, "\tdefine('MYBB_POSTTO', ".$aPostTo.");\n");
-                fwrite( $Config, "\tdefine('MYBB_POSTAS', ".$aPostAs.");\n");
-                fwrite( $Config, "\tdefine('MYBB_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
-                fwrite( $Config, "\tdefine('MYBB_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
+                fwrite( $Config, "\tdefine('MYBB_POSTTO', ".$aConfig->PostTo.");\n");
+                fwrite( $Config, "\tdefine('MYBB_POSTAS', ".$aConfig->PostAs.");\n");
+                fwrite( $Config, "\tdefine('MYBB_MEMBER_GROUPS', '".implode( ",", $aConfig->Members )."');\n");
+                fwrite( $Config, "\tdefine('MYBB_PRIVILEGED_GROUPS', '".implode( ",", $aConfig->Privileged )."');\n");
+                fwrite( $Config, "\tdefine('MYBB_RAIDLEAD_GROUPS', '".implode( ",", $aConfig->Raidleads )."');\n");
+                fwrite( $Config, "\tdefine('MYBB_ADMIN_GROUPS', '".implode( ",", $aConfig->Admins )."');\n");
             }
 
             fwrite( $Config, "?>");
@@ -200,23 +204,18 @@
                 }
             }
 
-            $AssignedGroup  = 'none';
-            $MemberGroups   = explode(',', MYBB_MEMBER_GROUPS );
-            $RaidleadGroups = explode(',', MYBB_RAIDLEAD_GROUPS );
+            $Config = $this->getConfig();
+            $AssignedGroup = ENUM_GROUP_NONE;
 
             $Groups = explode(',', $aUserData['additionalgroups']);
             array_push($Groups, $aUserData['usergroup'] );
 
             foreach( $Groups as $Group )
             {
-                if ( in_array($Group, $MemberGroups) )
-                    $AssignedGroup = 'member';
-
-                if ( in_array($Group, $RaidleadGroups) )
-                    return 'raidlead'; // ### return, highest possible group ###
+                $AssignedGroup = $Config->mapGroup($Group, $AssignedGroup);
             }
 
-            return $AssignedGroup;
+            return GetGroupName($AssignedGroup);
         }
 
         // -------------------------------------------------------------------------
@@ -349,67 +348,67 @@
 
                     $UserQuery = $Connector->prepare('SELECT username FROM `'.MYBB_TABLE_PREFIX.'users` WHERE uid=:UserId LIMIT 1');
                     $UserQuery->BindValue( ':UserId', MYBB_POSTAS, PDO::PARAM_INT );
-    
+
                     $UserData = $UserQuery->fetchFirst();
-    
+
                     // Create thread
-    
+
                     $ThreadQuery = $Connector->prepare('INSERT INTO `'.MYBB_TABLE_PREFIX.'threads` '.
                         '(fid, uid, subject, username, dateline, lastpost, lastposter, lastposteruid, visible) VALUES '.
                         '(:ForumId, :UserId, :Subject, :Username, :Now, :Now, :Username, :UserId, 1)');
-    
+
                     $ThreadQuery->BindValue( ':ForumId', MYBB_POSTTO, PDO::PARAM_INT );
                     $ThreadQuery->BindValue( ':UserId', MYBB_POSTAS, PDO::PARAM_INT );
                     $ThreadQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
                     $ThreadQuery->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );
                     $ThreadQuery->BindValue( ':Subject', $aSubject, PDO::PARAM_STR );
-    
+
                     $ThreadQuery->execute(true);
                     $ThreadId = $Connector->lastInsertId();
-    
+
                     // Create post
-    
+
                     $PostQuery = $Connector->prepare('INSERT INTO `'.MYBB_TABLE_PREFIX.'posts` '.
                         '(tid, fid, uid, username, dateline, subject, message, visible) VALUES '.
                         '(:ThreadId, :ForumId, :UserId, :Username, :Now, :Subject, :Text, 1)');
-    
+
                     $PostQuery->BindValue( ':ThreadId', $ThreadId, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':ForumId', MYBB_POSTTO, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':UserId', MYBB_POSTAS, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );
-    
+
                     $PostQuery->BindValue( ':Subject', $aSubject, PDO::PARAM_STR );
                     $PostQuery->BindValue( ':Text', $FormattedMessage, PDO::PARAM_STR );
-                    
+
                     $PostQuery->execute(true);
                     $PostId = $Connector->lastInsertId();
-                    
+
                     // Update forum
-                    
+
                     $ForumUpdate = $Connector->prepare('UPDATE `'.MYBB_TABLE_PREFIX.'forums` '.
                         'SET posts=posts+1, threads=threads+1, lastpost=:Now, '.
                         'lastposteruid=:UserId, lastposttid=:ThreadId, lastposter=:Username, lastpostsubject=:Subject '.
                         'WHERE fid=:ForumId LIMIT 1');
-                        
+
                     $ForumUpdate->BindValue( ':ForumId', MYBB_POSTTO, PDO::PARAM_INT );
                     $ForumUpdate->BindValue( ':ThreadId', $ThreadId, PDO::PARAM_INT );
                     $ForumUpdate->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
                     $ForumUpdate->BindValue( ':UserId', MYBB_POSTAS, PDO::PARAM_INT );
                     $ForumUpdate->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );
                     $ForumUpdate->BindValue( ':Subject', $aSubject, PDO::PARAM_STR );
-    
+
                     $ForumUpdate->execute(true);
-                
+
                     // Finish thread
-    
+
                     $ThreadFinishQuery = $Connector->prepare('UPDATE `'.MYBB_TABLE_PREFIX.'threads` '.
                                                              'SET firstpost = :PostId '.
                                                              'WHERE tid = :ThreadId LIMIT 1');
-    
+
                     $ThreadFinishQuery->BindValue( ':ThreadId', $ThreadId, PDO::PARAM_INT );
                     $ThreadFinishQuery->BindValue( ':PostId', $PostId, PDO::PARAM_INT );
-    
+
                     $ThreadFinishQuery->execute(true);
                 }
                 while(!$Connector->commit());
