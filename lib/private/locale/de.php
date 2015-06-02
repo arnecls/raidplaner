@@ -131,7 +131,7 @@
         $gLocale[ 'ExportClipboard' ]          = 'Zwischenablage';
         $gLocale[ 'CopyOk' ]                   = 'Text wurde in die Zwischenablage exportiert.';
         $gLocale[ 'Random' ]                   = 'Unbekannt';
-        
+
         // Profile
         $gLocale[ 'Profile' ]                  = 'Profil';
         $gLocale[ 'History' ]                  = 'Vergangene Raids';
@@ -302,7 +302,7 @@
         $gLocale[ 'FailedGameconfig' ]         = 'Die Datei gameconfig.php konnte nicht in das neue Format übertragen werden.';
         $gLocale[ 'RemoveAndLaunch' ]          = 'Setup löschen und loslegen';
         $gLocale[ 'FailedRemoveSetup' ]        = 'Der Setup-Ordner konnte nicht gelöscht werden.';
-        
+
         // Repair
         $gLocale[ 'Repair' ]                   = 'Reparatur';
         $gLocale[ 'RepairDone' ]               = 'Reparatur abgeschlossen.';
@@ -328,10 +328,10 @@
         $gLocale[ 'StrayChars' ]               = 'Verwaiste Charaktere';
         $gLocale[ 'StrayAttends' ]             = 'Verwaiste Anmeldungen';
         $gLocale[ 'InvalidCharacters' ]        = 'Fehlerhafte Charaktere';
-        $gLocale[ 'SameGame' ]                 = 'Beide Spiele sind identisch';  
-        $gLocale[ 'Merged' ]                   = 'Konvertiert:'; 
-        $gLocale[ 'Locations' ]                = 'Orte'; 
-        $gLocale[ 'Characters' ]               = 'Charaktere';    
+        $gLocale[ 'SameGame' ]                 = 'Beide Spiele sind identisch';
+        $gLocale[ 'Merged' ]                   = 'Konvertiert:';
+        $gLocale[ 'Locations' ]                = 'Orte';
+        $gLocale[ 'Characters' ]               = 'Charaktere';
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Lade Gruppen mit den angegebenen Verbindungsdaten';
@@ -352,6 +352,15 @@
         $gLocale[ 'DisablePosting' ]           = 'Keine Postings erstellen';
         $gLocale[ 'NoUsersFound' ]             = 'Keine Benutzer gefunden';
         $gLocale[ 'Version' ]                  = 'Version';
+
+        // BlueThrust
+        $gLocale[ 'bt4_Binding' ]               = 'BlueThrust v4';
+        $gLocale[ 'bt4_ConfigFile' ]            = 'BlueThrust Konfigurationsdatei';
+        $gLocale[ 'bt4_Database' ]              = 'Name der BlueThrust Datenbank';
+        $gLocale[ 'bt4_DatabaseEmpty' ]         = 'Name der BlueThrust Datenbank darf nicht leer sein';
+        $gLocale[ 'bt4_UserEmpty' ]             = 'BlueThrust Benutzer darf nicht leer sein';
+        $gLocale[ 'bt4_PasswordEmpty' ]         = 'BlueThrust Datenbank Passwort darf nicht leer sein';
+        $gLocale[ 'bt4_DBPasswordsMatch' ]      = 'BlueThrust Datenbank-Passwoerter stimmen nicht überein';
 
         // PHPBB3
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';
@@ -439,7 +448,7 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Wordpress Datenbank Passwort darf nicht leer sein.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Wordpress Datenbank-Passwörter stimmen nicht überein.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY gefolgt von LOGGED_IN_SALT';
-        
+
         // Woltlab Burning Board
         $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
         $gLocale[ 'wbb_ConfigFile' ]            = 'Burning Board Konfigurationsdatei';

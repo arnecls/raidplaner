@@ -131,7 +131,7 @@
         $gLocale[ 'ExportClipboard' ]          = 'Clipboard';
         $gLocale[ 'CopyOk' ]                   = 'Text has been copied to clipboard.';
         $gLocale[ 'Random' ]                   = 'Unknown';
-       
+
         // Profile
         $gLocale[ 'Profile' ]                  = 'Profile';
         $gLocale[ 'History' ]                  = 'Raid history';
@@ -328,10 +328,10 @@
         $gLocale[ 'StrayChars' ]               = 'Orphaned characters';
         $gLocale[ 'StrayAttends' ]             = 'Orphaned attends';
         $gLocale[ 'InvalidCharacters' ]        = 'Invalid characters';
-        $gLocale[ 'SameGame' ]                 = 'Both games are identical';   
-        $gLocale[ 'Merged' ]                   = 'Converted:'; 
-        $gLocale[ 'Locations' ]                = 'Locations'; 
-        $gLocale[ 'Characters' ]               = 'Characters'; 
+        $gLocale[ 'SameGame' ]                 = 'Both games are identical';
+        $gLocale[ 'Merged' ]                   = 'Converted:';
+        $gLocale[ 'Locations' ]                = 'Locations';
+        $gLocale[ 'Characters' ]               = 'Characters';
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Load groups using these settings';
@@ -352,6 +352,15 @@
         $gLocale[ 'DisablePosting' ]           = 'Do not create postings';
         $gLocale[ 'NoUsersFound' ]             = 'No users found';
         $gLocale[ 'Version' ]                  = 'Version';
+
+        // BlueThrust
+        $gLocale[ 'bt4_Binding' ]               = 'BlueThrust v4';
+        $gLocale[ 'bt4_ConfigFile' ]            = 'BlueThrust config file';
+        $gLocale[ 'bt4_Database' ]              = 'BlueThrust database';
+        $gLocale[ 'bt4_DatabaseEmpty' ]         = 'BlueThrust database name must not be empty.';
+        $gLocale[ 'bt4_UserEmpty' ]             = 'BlueThrust user must not be empty';
+        $gLocale[ 'bt4_PasswordEmpty' ]         = 'BlueThrust database password must not be empty.';
+        $gLocale[ 'bt4_DBPasswordsMatch' ]      = 'BlueThrust database passwords did not match.';
 
         // PHPBB3
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';
@@ -439,7 +448,7 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Wordpress Database password must not be empty.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Wordpress Database passwords did not match.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY followed by LOGGED_IN_SALT';
-        
+
         // Woltlab Burning Board
         $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
         $gLocale[ 'wbb_ConfigFile' ]            = 'Burning Board config file';
