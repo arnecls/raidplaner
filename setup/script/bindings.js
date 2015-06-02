@@ -237,7 +237,7 @@ function CheckGrouplessBinding(aBinding)
 
         $.ajax({
             type     : "POST",
-            url      : "query/fetch_groups.php",
+            url      : "query/fetch_bindingdata.php",
             dataType : "json",
             async    : true,
             data     : parameter,
@@ -351,17 +351,21 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
 
             $("input[name^=\""+bindings[i]+"_groups\"]").each(function() {
                 var groupId = $(this).val()
-                var mapping = $("input[name=\""+bindings[i]+"_group_"+groupId+"\"]").val()
+                var mapping = $("input[name=\""+bindings[i]+"_group_"+groupId+"\"]:checked").val()
 
                 switch (mapping) {
                 case "member":
                     parameter[bindings[i]+"_member"].push( groupId );
+                    break;
                 case "privileged":
                     parameter[bindings[i]+"_privileged"].push( groupId );
+                    break;
                 case "raidlead":
                     parameter[bindings[i]+"_raidlead"].push( groupId );
+                    break;
                 case "admin":
                     parameter[bindings[i]+"_admin"].push( groupId );
+                    break;
                 default:
                     break;
                 }

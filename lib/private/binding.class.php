@@ -70,7 +70,7 @@
                 $aCurrent = max($aCurrent, ENUM_GROUP_MEMBER);
 
             if ( in_array($aGroup, $this->Privileged) )
-                $aCurrent = max($aCurrent, ENUM_GROUP_PRIVILEDGED);
+                $aCurrent = max($aCurrent, ENUM_GROUP_PRIVILEGED);
 
             if ( in_array($aGroup, $this->Raidleads) )
                 $aCurrent = max($aCurrent, ENUM_GROUP_RAIDLEAD);

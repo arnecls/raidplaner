@@ -244,7 +244,7 @@
 
                 // Get number of posts for current user
 
-                $PostQuery = $Connector->prepare('SELECT COUNT(*) AS posts FROM `'.SMF_TABLE_PREFIX.'messages` WHERE id_member = :UserId');
+                $PostQuery = $Connector->prepare('SELECT COUNT(*) AS posts FROM `'.$Config->Prefix.'messages` WHERE id_member = :UserId');
                 $PostQuery->BindValue( ':UserId', $aUserData['id_member'], PDO::PARAM_INT );
 
                 $PostData = $PostQuery->fetchFirst();
@@ -254,7 +254,7 @@
                     // Fetch groups for this user
 
                     $GroupQuery = $Connector->prepare('SELECT id_group, min_posts '.
-                        'FROM `'.SMF_TABLE_PREFIX.'membergroups` '.
+                        'FROM `'.$Config->Prefix.'membergroups` '.
                         'WHERE min_posts >= :Posts '.
                         'ORDER BY min_posts DESC');
 
@@ -262,7 +262,7 @@
 
                     $GroupQuery->loop(function($aGroup) use (&$AssignedGroup, $Config)
                     {
-                        $AssignedGroup = $Config->mapGroup($Group['id_group'], $AssignedGroup);
+                        $AssignedGroup = $Config->mapGroup($aGroup['id_group'], $AssignedGroup);
                     });
                 }
             }

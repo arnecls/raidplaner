@@ -160,12 +160,12 @@
             $AssignedGroup = ENUM_GROUP_NONE;
 
             $MetaQuery = $Connector->prepare('SELECT meta_key, meta_value '.
-                'FROM `'.WP_TABLE_PREFIX.'usermeta` '.
-                'WHERE user_id = :UserId AND meta_key = "'.WP_TABLE_PREFIX.'capabilities" LIMIT 1');
+                'FROM `'.$Config->Prefix.'usermeta` '.
+                'WHERE user_id = :UserId AND meta_key = "'.$Config->Prefix.'capabilities" LIMIT 1');
 
             $MetaQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);
 
-            $MetaQuery->loop(function($MetaData) use (&$AssigedGroup, $Config)
+            $MetaQuery->loop(function($MetaData) use (&$AssignedGroup, $Config)
             {
                 $Roles = array_keys(unserialize($MetaData['meta_value']));
                 foreach($Roles as $Role)

@@ -119,7 +119,7 @@
             {
                 // only test if we can read the user table
                 $TestQuery = $Connector->prepare( 'SELECT user_id FROM `'.$aPrefix.'users` LIMIT 1' );
-                $Connector->run($TestQuery, $aThrow);
+                $TestQuery->execute($aThrow);
            }
 
             return null;
@@ -146,10 +146,11 @@
         private function getGroupForUser( $aUserId )
         {
             $Connector = $this->getConnector();
-            $UserRightsQuery = $Connector->prepare('SELECT '.EQDKP_TABLE_PREFIX.'users.user_active, '.EQDKP_TABLE_PREFIX.'auth_users.auth_setting,  '.EQDKP_TABLE_PREFIX.'auth_options.auth_value '.
-                                                'FROM `'.EQDKP_TABLE_PREFIX.'users` '.
-                                                'LEFT JOIN `'.EQDKP_TABLE_PREFIX.'auth_users` USING(user_id) '.
-                                                'LEFT JOIN `'.EQDKP_TABLE_PREFIX.'auth_options` USING(auth_id) '.
+            $Config = $this->getConfig();
+            $UserRightsQuery = $Connector->prepare('SELECT '.$Config->Prefix.'users.user_active, '.$Config->Prefix.'auth_users.auth_setting,  '.$Config->Prefix.'auth_options.auth_value '.
+                                                'FROM `'.$Config->Prefix.'users` '.
+                                                'LEFT JOIN `'.$Config->Prefix.'auth_users` USING(user_id) '.
+                                                'LEFT JOIN `'.$Config->Prefix.'auth_options` USING(auth_id) '.
                                                 'WHERE user_id = :UserId');
 
             $UserRightsQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);

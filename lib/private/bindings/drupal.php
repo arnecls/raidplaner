@@ -174,18 +174,16 @@
         {
             $Connector = $this->getConnector();
             $Config = $this->getConfig();
-            $AssignedGroup = ENUM_GROUP_NONE;
 
             // Authenticated users don't gain the corresponding role, so we need to
             // fake the assigment check. 'If the user is not blocked, he/she is
             // authenticated'.
 
-            if ( in_array(self::$AuthenticatedGroupId, $MemberGroups) )
-                $AssignedGroup = 'member';
+            $AssignedGroup = $Config->mapGroup(self::$AuthenticatedGroupId, ENUM_GROUP_NONE);
 
             $GroupQuery = $Connector->prepare('SELECT status, rid '.
-                                              'FROM `'.DRUPAL_TABLE_PREFIX.'users` '.
-                                              'LEFT OUTER JOIN `'.DRUPAL_TABLE_PREFIX.'users_roles` USING(uid) '.
+                                              'FROM `'.$Config->Prefix.'users` '.
+                                              'LEFT OUTER JOIN `'.$Config->Prefix.'users_roles` USING(uid) '.
                                               'WHERE uid = :UserId');
 
             $GroupQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);

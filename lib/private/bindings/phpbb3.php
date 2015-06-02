@@ -202,10 +202,10 @@
             $AssignedGroup = ENUM_GROUP_NONE;
 
             $Connector = $this->getConnector();
-            $GroupQuery = $Connector->prepare('SELECT user_type, `'.PHPBB3_TABLE_PREFIX.'user_group`.group_id, ban_start, ban_end '.
-                                           'FROM `'.PHPBB3_TABLE_PREFIX.'users` '.
-                                           'LEFT JOIN `'.PHPBB3_TABLE_PREFIX.'user_group` USING(user_id) '.
-                                           'LEFT JOIN `'.PHPBB3_TABLE_PREFIX.'banlist` ON user_id = ban_userid '.
+            $GroupQuery = $Connector->prepare('SELECT user_type, `'.$Config->Prefix.'user_group`.group_id, ban_start, ban_end '.
+                                           'FROM `'.$Config->Prefix.'users` '.
+                                           'LEFT JOIN `'.$Config->Prefix.'user_group` USING(user_id) '.
+                                           'LEFT JOIN `'.$Config->Prefix.'banlist` ON user_id = ban_userid '.
                                            'WHERE user_id = :UserId');
 
             $GroupQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);
