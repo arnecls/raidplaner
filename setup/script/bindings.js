@@ -73,53 +73,39 @@ function OnLoadBindingData( aXHR )
 
     if (aXHR.groups != undefined)
     {
-        // Store old selected
+        // Store old selection
 
-        var members = new Array();
-
-        $("#"+aXHR.binding+"_member option:selected").each(function() {
-            members[members.length] = $(this).val();
-        });
-
-        var leads = new Array();
-
-        $("#"+aXHR.binding+"_raidlead option:selected").each(function() {
-            leads[members.length] = $(this).val();
+        var selections = new Array();
+        $("input[name^=\""+aXHR.binding+"_groups\"]").each(function() {
+            var groupId = $(this).val()
+            selections[groupId] = $("input[name=\""+aXHR.binding+"_group_"+groupId+"\"]:checked").val();
         });
 
         // Rebuild groups
 
         HTMLString = "";
-
         $.each(aXHR.groups, function(index, value) {
-
-            HTMLString += "<option value=\"" + value.id + "\">" + value.name + "</option>";
+            HTMLString += "<div class=\"group\">";
+            HTMLString += "<span class=\"group_name\">" + value.name + "</span>";
+            HTMLString += "<input type=\"hidden\" name=\""+aXHR.binding+"_groups[]\" value=\""+ value.id +"\"/>";
+            HTMLString += "<input type=\"radio\" name=\""+aXHR.binding+"_group_"+ value.id +"\" class=\"group_map\" value=\"none\"/>";
+            HTMLString += "<input type=\"radio\" name=\""+aXHR.binding+"_group_"+ value.id +"\" class=\"group_map\" value=\"member\"/>";
+            HTMLString += "<input type=\"radio\" name=\""+aXHR.binding+"_group_"+ value.id +"\" class=\"group_map\" value=\"privileged\"/>";
+            HTMLString += "<input type=\"radio\" name=\""+aXHR.binding+"_group_"+ value.id +"\" class=\"group_map\" value=\"raidlead\"/>";
+            HTMLString += "<input type=\"radio\" name=\""+aXHR.binding+"_group_"+ value.id +"\" class=\"group_map\" value=\"admin\"/>";
+            HTMLString += "</div>";
         });
 
-        $("#"+aXHR.binding+"_member").empty().append( HTMLString );
-        $("#"+aXHR.binding+"_raidlead").empty().append( HTMLString );
+        $("#"+aXHR.binding+"_grouplist").empty().append(HTMLString);
 
-        // Select old values
+        // Restore selection
 
-        $("#"+aXHR.binding+"_member option").each(function() {
-            for (var i=0; i<members.length; ++i)
-            {
-                if ($(this).val() == members[i])
-                {
-                    $(this).prop("selected", true);
-                    break;
-                }
-            }
-        });
-
-        $("#"+aXHR.binding+"_raidlead option").each(function() {
-            for (var i=0; i<leads.length; ++i)
-            {
-                if ($(this).val() == leads[i])
-                {
-                    $(this).prop("selected", true);
-                    break;
-                }
+        $("input[name^=\""+aXHR.binding+"_groups\"]").each(function() {
+            var groupId = $(this).val()
+            if (selections[groupId] != undefined) {
+                $("input[name=\""+aXHR.binding+"_group_"+groupId+"\"][value=\""+selections[groupId]+"\"]").attr("checked","checked");
+            } else {
+                $("input[name=\""+aXHR.binding+"_group_"+groupId+"\"][value=\"none\"]").attr("checked","checked");
             }
         });
     }
@@ -157,6 +143,11 @@ function OnLoadBindingData( aXHR )
     // Mark as loaded
 
     $(".config .right select").css("background-color","#cfc")
+        .delay(1000).queue(function() {
+            $(this).css("background-color","").dequeue();
+        });
+
+    $(".config .groups").css("background-color","#cfc")
         .delay(1000).queue(function() {
             $(this).css("background-color","").dequeue();
         });
@@ -246,7 +237,7 @@ function CheckGrouplessBinding(aBinding)
 
         $.ajax({
             type     : "POST",
-            url      : "query/fetch_groups.php",
+            url      : "query/fetch_bindingdata.php",
             dataType : "json",
             async    : true,
             data     : parameter,
@@ -342,26 +333,42 @@ function OnDbCheckDone( a_XMLData, a_NextPage )
 
         if ( parameter[bindings[i]+"_allow"] )
         {
-            parameter[bindings[i]+"_database"]  = $("#"+bindings[i]+"_database").val();
-            parameter[bindings[i]+"_user"]      = $("#"+bindings[i]+"_user").val();
-            parameter[bindings[i]+"_password"]  = $("#"+bindings[i]+"_password").val();
-            parameter[bindings[i]+"_prefix"]    = $("#"+bindings[i]+"_prefix").val();
-            parameter[bindings[i]+"_ver_major"] = $("#"+bindings[i]+"_ver_major").val();
-            parameter[bindings[i]+"_ver_minor"] = $("#"+bindings[i]+"_ver_minor").val();
-            parameter[bindings[i]+"_ver_patch"] = $("#"+bindings[i]+"_ver_patch").val();
-            parameter[bindings[i]+"_autologin"] = $("#"+bindings[i]+"_autologin").prop("checked");
-            parameter[bindings[i]+"_cookie"]    = $("#"+bindings[i]+"_cookie_ex").val();
-            parameter[bindings[i]+"_postto"]    = $("#"+bindings[i]+"_postto option:selected").val();
-            parameter[bindings[i]+"_postas"]    = $("#"+bindings[i]+"_postas option:selected").val();
-            parameter[bindings[i]+"_member"]    = new Array();
-            parameter[bindings[i]+"_raidlead"]  = new Array();
+            parameter[bindings[i]+"_database"]   = $("#"+bindings[i]+"_database").val();
+            parameter[bindings[i]+"_user"]       = $("#"+bindings[i]+"_user").val();
+            parameter[bindings[i]+"_password"]   = $("#"+bindings[i]+"_password").val();
+            parameter[bindings[i]+"_prefix"]     = $("#"+bindings[i]+"_prefix").val();
+            parameter[bindings[i]+"_ver_major"]  = $("#"+bindings[i]+"_ver_major").val();
+            parameter[bindings[i]+"_ver_minor"]  = $("#"+bindings[i]+"_ver_minor").val();
+            parameter[bindings[i]+"_ver_patch"]  = $("#"+bindings[i]+"_ver_patch").val();
+            parameter[bindings[i]+"_autologin"]  = $("#"+bindings[i]+"_autologin").prop("checked");
+            parameter[bindings[i]+"_cookie"]     = $("#"+bindings[i]+"_cookie_ex").val();
+            parameter[bindings[i]+"_postto"]     = $("#"+bindings[i]+"_postto option:selected").val();
+            parameter[bindings[i]+"_postas"]     = $("#"+bindings[i]+"_postas option:selected").val();
+            parameter[bindings[i]+"_member"]     = new Array();
+            parameter[bindings[i]+"_privileged"] = new Array();
+            parameter[bindings[i]+"_raidlead"]   = new Array();
+            parameter[bindings[i]+"_admin"]      = new Array();
 
-            $("#"+bindings[i]+"_member option:selected").each( function() {
-                parameter[bindings[i]+"_member"].push( $(this).val() );
-            });
+            $("input[name^=\""+bindings[i]+"_groups\"]").each(function() {
+                var groupId = $(this).val()
+                var mapping = $("input[name=\""+bindings[i]+"_group_"+groupId+"\"]:checked").val()
 
-            $("#"+bindings[i]+"_raidlead option:selected").each( function() {
-                parameter[bindings[i]+"_raidlead"].push( $(this).val() );
+                switch (mapping) {
+                case "member":
+                    parameter[bindings[i]+"_member"].push( groupId );
+                    break;
+                case "privileged":
+                    parameter[bindings[i]+"_privileged"].push( groupId );
+                    break;
+                case "raidlead":
+                    parameter[bindings[i]+"_raidlead"].push( groupId );
+                    break;
+                case "admin":
+                    parameter[bindings[i]+"_admin"].push( groupId );
+                    break;
+                default:
+                    break;
+                }
             });
         }
     }

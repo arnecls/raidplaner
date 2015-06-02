@@ -10,7 +10,7 @@
     float: left;
 }
 
-#raidsetup {   
+#raidsetup {
 }
 
 #slackers {
@@ -191,7 +191,7 @@
     width: 32px;
     height: 32px;
     position: relative;
-    top: 16px;    
+    top: 16px;
 }
 
 #tooltip .char_select {
@@ -362,16 +362,16 @@
     font-size: 12px;
     font-weight: normal;
     vertical-align: text-top;
-    text-shadow: none;   
+    text-shadow: none;
 }
 
-#raiddetail .clip {    
+#raiddetail .clip {
     display: none;
     float: left;
     overflow: visible;
 }
 
-#raiddetail .clip .separator {    
+#raiddetail .clip .separator {
     width: 100%;
     height: 10px;
     clear:left;
@@ -383,7 +383,7 @@
     margin-right: 4px;
     width: 140px;
     height: 32px;
-    overflow: visible; 
+    overflow: visible;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -398,7 +398,7 @@
     margin-right: 4px;
     width: 140px;
     height: 32px;
-    overflow: visible; 
+    overflow: visible;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -491,27 +491,27 @@
     bottom: -28px;
     height: 22px;
     width: 740px;
-        
+
     background-color: rgb(200,182,182);
     color: rgb(200,152,152);
-    
+
     text-align: center;
     vertical-align: middle;
     line-height: 22px;
     font-size: 13px;
     font-weight: bold;
-    
+
     box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
     -webkit-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
     -moz-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
     -o-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
     -ms-box-shadow: inset 1px 1px 8px rgba(200, 0, 0, 0.15);
-    
+
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -o-border-radius: 4px;
-    -ms-border-radius: 4px; 
+    -ms-border-radius: 4px;
 }
 
 #absent_drop.absent_hover {
@@ -534,8 +534,8 @@
 
 #raidoptions .filltext {
     display: inline-block;
-    text-align: center; 
+    text-align: center;
     color: #000;
     font-size: 11px;
-    font-family: Helvetica, Verdana, Arial, sans-serif; 
+    font-family: Helvetica, Verdana, Arial, sans-serif;
 }

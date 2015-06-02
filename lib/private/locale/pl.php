@@ -172,6 +172,7 @@
         $gLocale[ 'Settings' ]                 = 'Ustawienia';
         $gLocale[ 'Locked' ]                   = 'Zablokowani';
         $gLocale[ 'Members' ]                  = 'Użytkownicy';
+        $gLocale[ 'Privileged' ]               = NULL;
         $gLocale[ 'Raidleads' ]                = 'Rajd Liderzy';
         $gLocale[ 'Administrators' ]           = 'Administratorzy';
         $gLocale[ 'ConfirmDeleteUser' ]        = 'Czy na pewno chcesz usunąć tego użytkownika?';
@@ -339,8 +340,6 @@
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Wczytaj grupy używając powyższych ustawień';
-        $gLocale[ 'AutoMemberLogin' ]          = 'Grupy "Użytkowników"';
-        $gLocale[ 'AutoLeadLogin' ]            = 'Grupy "Rajd Liderów"';
         $gLocale[ 'ReloadFailed' ]             = 'Wczytywanie nie powiodło się';
         $gLocale[ 'LoadSettings' ]             = 'Uzyskaj ustawienia automatycznie';
         $gLocale[ 'BindingBasePath' ]          = 'Wprowadź ścieżkę do katalogu, w którym znajduje się powiązana strona, relatywnie do \''.$_SERVER['DOCUMENT_ROOT'].'\'.';
@@ -356,6 +355,13 @@
         $gLocale[ 'DisablePosting' ]           = 'Nie twórz postów';
         $gLocale[ 'NoUsersFound' ]             = 'Nie znaleziono użytkownika';
         $gLocale[ 'Version' ]                  = 'Wersja';
+
+        $gLocale[ 'Group' ]                    = NULL;
+        $gLocale[ 'Locked' ]                   = 'Zablokowani';
+        $gLocale[ 'Members' ]                  = 'Użytkownicy';
+        $gLocale[ 'Privileged' ]               = NULL;
+        $gLocale[ 'Raidleads' ]                = 'Rajd Liderzy';
+        $gLocale[ 'Administrators' ]           = 'Administratorzy';
 
         // BlueThrust
         $gLocale[ 'bt4_Binding' ]               = 'BlueThrust v4';

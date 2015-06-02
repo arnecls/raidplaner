@@ -168,6 +168,7 @@
         $gLocale[ 'Settings' ]                 = 'Settings';
         $gLocale[ 'Locked' ]                   = 'Locked';
         $gLocale[ 'Members' ]                  = 'Members';
+        $gLocale[ 'Privileged' ]               = 'Privileged members';
         $gLocale[ 'Raidleads' ]                = 'Raidleads';
         $gLocale[ 'Administrators' ]           = 'Administrators';
         $gLocale[ 'ConfirmDeleteUser' ]        = 'Do you really want to delete this user?';
@@ -335,8 +336,6 @@
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Load groups using these settings';
-        $gLocale[ 'AutoMemberLogin' ]          = '"Member" groups:';
-        $gLocale[ 'AutoLeadLogin' ]            = '"Raidlead" groups:';
         $gLocale[ 'ReloadFailed' ]             = 'Reload failed';
         $gLocale[ 'LoadSettings' ]             = 'Retrieve settings automatically';
         $gLocale[ 'BindingBasePath' ]          = 'Please enter the install path of this binding relative to \''.$_SERVER['DOCUMENT_ROOT'].'\'.';
@@ -352,6 +351,13 @@
         $gLocale[ 'DisablePosting' ]           = 'Do not create postings';
         $gLocale[ 'NoUsersFound' ]             = 'No users found';
         $gLocale[ 'Version' ]                  = 'Version';
+
+        $gLocale[ 'Group' ]                    = 'Link group';
+        $gLocale[ 'Locked' ]                   = 'Locked';
+        $gLocale[ 'Members' ]                  = 'Members';
+        $gLocale[ 'Privileged' ]               = 'Privileged members';
+        $gLocale[ 'Raidleads' ]                = 'Raidleads';
+        $gLocale[ 'Administrators' ]           = 'Administrators';
 
         // BlueThrust
         $gLocale[ 'bt4_Binding' ]               = 'BlueThrust v4';

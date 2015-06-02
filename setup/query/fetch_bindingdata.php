@@ -40,7 +40,7 @@
 
                 try
                 {
-                    if ($Config->HasGroupConfig)
+                    //if ($Config->HasGroupConfig)
                     {
                         $Groups = $PluginInstance->getGroups($_REQUEST["database"], $_REQUEST["prefix"], $_REQUEST["user"], $_REQUEST["password"], true);
                         $Out->pushValue("groups", $Groups);

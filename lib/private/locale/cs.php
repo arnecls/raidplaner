@@ -170,6 +170,7 @@
         $gLocale[ 'Settings' ]                 = 'Nastavení';
         $gLocale[ 'Locked' ]                   = 'Zamknuto';
         $gLocale[ 'Members' ]                  = 'Členové';
+        $gLocale[ 'Privileged' ]               = NULL;
         $gLocale[ 'Raidleads' ]                = 'Vedoucí raidů';
         $gLocale[ 'Administrators' ]           = 'Administrátoři';
         $gLocale[ 'ConfirmDeleteUser' ]        = 'Opravdu chcete smazat tohoto uživatele?';
@@ -339,8 +340,6 @@
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Načíst nastavení skupin pomocí těchto nastavení';
-        $gLocale[ 'AutoMemberLogin' ]          = 'Uživatelé následujících skupin budou přihlášení jako "Členové":';
-        $gLocale[ 'AutoLeadLogin' ]            = 'Uživatelé následujících skupin budou přihlášení jako "Vedoucí raidů":';
         $gLocale[ 'ReloadFailed' ]             = 'Znovunačtení selhalo';
         $gLocale[ 'LoadSettings' ]             = 'Získat nastavení automaticky';
         $gLocale[ 'BindingBasePath' ]          = 'Please enter the install path of this binding relative to \''.$_SERVER['DOCUMENT_ROOT'].'\'.';
@@ -357,6 +356,13 @@
         $gLocale[ 'NoUsersFound' ]             = 'Nenalezení žádní uživatelé';
         $gLocale[ 'Version' ]                  = 'Verze';
 
+        $gLocale[ 'Group' ]                    = NULL;
+        $gLocale[ 'Locked' ]                   = 'Zamknuto';
+        $gLocale[ 'Members' ]                  = 'Členové';
+        $gLocale[ 'Privileged' ]               = NULL;
+        $gLocale[ 'Raidleads' ]                = 'Vedoucí raidů';
+        $gLocale[ 'Administrators' ]           = 'Administrátoři';
+        
         // BlueThrust
         $gLocale[ 'bt4_Binding' ]               = 'BlueThrust v4';
         $gLocale[ 'bt4_ConfigFile' ]            = 'BlueThrust konfigurační soubor';

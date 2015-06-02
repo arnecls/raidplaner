@@ -42,7 +42,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
         }
 
@@ -154,7 +154,7 @@
         {
             return self::$HashMethod;
         }
-        
+
         // -------------------------------------------------------------------------
 
         public static function nativeHash( $aPassword, $aSalt, $aMethod )
