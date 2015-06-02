@@ -552,7 +552,10 @@
     {
         echo "<div class=\"update_version\">".L("UpdateFrom")." 1.1.0 ".L("UpdateTo")." 1.2.0";
 
-        $Updates = Array( "Pugs group" => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE  `Group`  `Group` ENUM('admin','raidlead','privileged','member','none') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'none';",
+        $Updates = Array( "Pugs group"     => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE  `Group`  `Group` ENUM('admin','raidlead','privileged','member','none') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'none';",
+                          "Raid ownership" => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `UserId` INT UNSIGNED NOT NULL AFTER `LocationId`, ADD INDEX (`UserId`);",
+                          "Raid type"      => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `Type` ENUM('raid','event') NOT NULL DEFAULT 'raid' AFTER `UserId`;"
+                        );
 
         doUpgrade( $Updates );
 

@@ -98,8 +98,10 @@
 
         // Raid
         $gLocale[ 'Raid' ]                     = 'Raid';
+        $gLocale[ 'Event' ]                    = 'Ereignis';
         $gLocale[ 'Upcoming' ]                 = 'Anstehende Raids';
         $gLocale[ 'CreateRaid' ]               = 'Raid anlegen';
+        $gLocale[ 'CreateEvent' ]              = 'Ereignis anlegen';
         $gLocale[ 'NewDungeon' ]               = 'Neue Instanz';
         $gLocale[ 'Description' ]              = 'Beschreibung';
         $gLocale[ 'DefaultRaidMode' ]          = 'Voreingestellte Anmeldeform';
