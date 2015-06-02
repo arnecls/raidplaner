@@ -73,6 +73,24 @@
 
     // -----------------------------------------------------------------------------
 
+    function assignIntRequestValue( $aArray, $sParameterName, &$mValue)
+    {
+        $mValue['IntValue'] = (is_array($aArray) && array_key_exists($sParameterName, $aArray))
+            ? intval($aArray[$sParameterName])
+            : 0;
+    }
+
+    // -----------------------------------------------------------------------------
+
+    function assignStringRequestValue( $aArray, $sParameterName, &$mValue)
+    {
+        $mValue['TextValue'] = (is_array($aArray) && array_key_exists($sParameterName, $aArray))
+            ? strval($aArray[$sParameterName])
+            : '';
+    }
+
+    // -----------------------------------------------------------------------------
+
     function msgSettingsupdate( $aRequest )
     {
         if ( validAdmin() )
@@ -83,22 +101,23 @@
 
             $Settings = Settings::getInstance();
 
-            $Settings['PurgeRaids']['IntValue']      = $aRequest['purgeTime'];
-            $Settings['LockRaids']['IntValue']       = $aRequest['lockTime'];
-            $Settings['TimeFormat']['IntValue']      = $aRequest['timeFormat'];
-            $Settings['StartOfWeek']['IntValue']     = $aRequest['startOfWeek'];
-            $Settings['RaidStartHour']['IntValue']   = $aRequest['raidStartHour'];
-            $Settings['RaidStartMinute']['IntValue'] = $aRequest['raidStartMinute'];
-            $Settings['RaidEndHour']['IntValue']     = $aRequest['raidEndHour'];
-            $Settings['RaidEndMinute']['IntValue']   = $aRequest['raidEndMinute'];
-            $Settings['RaidSize']['IntValue']        = $aRequest['raidSize'];
+            assignIntRequestValue( $aRequest, 'purgeTime', $Settings['PurgeRaids'] );
+            assignIntRequestValue( $aRequest, 'lockTime', $Settings['LockRaids'] );
+            assignIntRequestValue( $aRequest, 'timeFormat', $Settings['TimeFormat'] );
+            assignIntRequestValue( $aRequest, 'startOfWeek', $Settings['StartOfWeek'] );
+            assignIntRequestValue( $aRequest, 'raidStartHour', $Settings['RaidStartHour'] );
+            assignIntRequestValue( $aRequest, 'raidStartMinute', $Settings['RaidStartMinute'] );
+            assignIntRequestValue( $aRequest, 'raidEndHour', $Settings['RaidEndHour'] );
+            assignIntRequestValue( $aRequest, 'raidEndMinute', $Settings['RaidEndMinute'] );
+            assignIntRequestValue( $aRequest, 'raidSize', $Settings['RaidSize'] );
 
-            $Settings['RaidMode']['TextValue']       = $aRequest['raidMode'];
-            $Settings['Site']['TextValue']           = $aRequest['site'];
-            $Settings['Theme']['TextValue']          = $aRequest['theme'];
-            $Settings['GameConfig']['TextValue']     = $aRequest['game'];
-            $Settings['HelpPage']['TextValue']       = $aRequest['helpPage'];
-            $Settings['PrimaryRole']['TextValue']    = $aRequest['primaryRole'];
+            assignStringRequestValue( $aRequest, 'raidMode', $Settings['RaidMode'] );
+            assignStringRequestValue( $aRequest, 'site', $Settings['Site'] );
+            assignStringRequestValue( $aRequest, 'theme', $Settings['Theme'] );
+            assignStringRequestValue( $aRequest, 'game', $Settings['GameConfig'] );
+            assignStringRequestValue( $aRequest, 'helpPage', $Settings['HelpPage'] );
+            assignStringRequestValue( $aRequest, 'primaryRole', $Settings['PrimaryRole'] );
+            assignStringRequestValue( $aRequest, 'calendarBigIcons', $Settings['CalendarBigIcons'] );
 
             $Settings->serialize();
 

@@ -217,6 +217,7 @@
         $gLocale[ 'NewVersionAvailable' ]      = 'Dostępna jest nowa wersja:';
         $gLocale[ 'VisitProjectPage' ]         = 'Odwiedź stronę projektu';
         $gLocale[ 'AttendWithPrimary' ]        = 'Zapisz się z główną rolą';
+        $gLocale[ 'CalendarBigIcons' ]         = null;
     }
 
     if ( defined('LOCALE_SETUP') )

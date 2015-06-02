@@ -71,6 +71,35 @@
     background-image: url(images/raid_locked.png);
 }
 
+#raidlist .raidSlot .overlayStatus .ui-icon {
+    display: inline-block;
+}
+
+#raidlist .raidSlot .overlayStatus:before {
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    content: '';
+    margin-right: 16px;
+    margin-top: 32px;
+}
+
+#raidlist .raidSlot .overlayStatus:before {
+    margin-right: 0;
+}
+
+#raidlist .raidSlot .overlayStatus.med:before {
+    background: url('images/icon_role_heal.png') transparent no-repeat;
+}
+
+#raidlist .raidSlot .overlayStatus.tnk:before {
+    background: url('images/icon_role_tank.png') transparent no-repeat;
+}
+
+#raidlist .raidSlot .overlayStatus.dmg:before {
+    background: url('images/icon_role_melee.png') transparent no-repeat;
+}
+
 #raidlist .raidSlot .raidInfo {
     position: relative;
     float: left;

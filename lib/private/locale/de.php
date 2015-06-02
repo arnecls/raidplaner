@@ -17,7 +17,7 @@
         $gLocale[ 'OlderBrowserFeatures' ]     = 'Ältere Browser unterstützen nicht alle benötigten Funktionen oder stellen die Seite falsch dar.';
         $gLocale[ 'DownloadNewBrowser' ]       = 'Du solltest deinen Browser aktualisieren oder einen der folgenden Browser herunterladen.';
         $gLocale[ 'RaidplanerNotConfigured' ]  = 'Der Raidplaner ist noch nicht konfiguriert oder benötigt ein Update.';
-        $gLocale[ 'PleaseRunSetup' ]           = 'Bitte führe den <a href="setup">Setup</a> aus oder befolge die Instruktionen für eine <a href="https://github.com/arnecls/raidplaner/wiki/Manual-Setup">manuelle Installation</a>.';
+        $gLocale[ 'PleaseRunSetup' ]           = 'Bitte führe das <a href="setup">Setup</a> aus oder befolge die Instruktionen für eine <a href="https://github.com/arnecls/raidplaner/wiki/Manual-Setup">manuelle Installation</a>.';
 
         // General
         $gLocale[ 'Reserved' ]                 = 'Reserviert';
@@ -213,6 +213,7 @@
         $gLocale[ 'NewVersionAvailable' ]      = 'Es ist eine neue Version verfügbar:';
         $gLocale[ 'VisitProjectPage' ]         = 'Zur Projekt-Homepage';
         $gLocale[ 'AttendWithPrimary' ]        = 'Anmeldung mit primärer Rolle';
+        $gLocale[ 'CalendarBigIcons' ]         = 'Große Icons in Kalenderansicht';
     }
 
     if ( defined('LOCALE_SETUP') )
@@ -286,7 +287,7 @@
         $gLocale[ 'UpdateComplete' ]           = 'Update abgeschlossen';
         $gLocale[ 'RaidplanerSetupDone' ]      = 'Der Raidplaner ist jetzt erfolgreich konfiguriert.';
         $gLocale[ 'DeleteSetupFolder' ]        = 'Falls nicht mehr benötigt solltest nun den "setup" Ordner löschen um ungewollte Änderungen an deiner Installation zu verhindern.';
-        $gLocale[ 'ThankYou' ]                 = 'Danke das du den packedpixel Raidplaner verwendest.';
+        $gLocale[ 'ThankYou' ]                 = 'Danke, dass du den packedpixel Raidplaner verwendest.';
         $gLocale[ 'VisitBugtracker' ]          = 'Bei Fehlern oder Ideen für neue Features besuche bitte den Bugtracker auf ';
         $gLocale[ 'VersionDetection' ]         = 'Versionserkennung und Update';
         $gLocale[ 'VersionDetectProgress' ]    = 'Setup versucht die aktuelle Version zu erkennen.';

@@ -92,6 +92,7 @@
         $gSite['TimeFormat']  = 24;
         $gSite['StartOfWeek'] = 1;
         $gSite['GameConfig']  = 'wow';
+        $gSite['CalendarBigIcons']  = false;
 
         foreach($Settings->getProperties() as $Name => $Data)
         {
@@ -164,6 +165,10 @@
                 
             case 'PrimaryRole':
                 $gSite['PrimaryRole'] = $Data['TextValue'] == 'true';
+                break;
+
+            case 'CalendarBigIcons':
+                $gSite['CalendarBigIcons'] = $Data['TextValue'] == 'true';
                 break;
 
             default:
