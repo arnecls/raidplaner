@@ -8,6 +8,7 @@
         $gLocale[ 'Melee' ]                    = 'Melee';
         $gLocale[ 'Range' ]                    = 'Ranged';
         $gLocale[ 'Support' ]                  = 'Support';
+        $gLocale[ 'Spell' ]                    = 'Caster';
 
         // Pre-loading checks
         $gLocale[ 'ContinueNoUpdate' ]         = 'Continue without updating';

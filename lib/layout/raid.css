@@ -143,6 +143,7 @@
     display: inline-block;
     position: relative;
     float: left;
+    z-index: 1;
 }
 
 #raidsetup .activeSlot .playerIcon {
@@ -425,6 +426,7 @@
 
 #raiddetail .activeSlot {
     background-image: url(images/slot_set.png);
+    position: relative;
 }
 
 #raiddetail .activeSlotComment {
@@ -472,10 +474,10 @@
     width: 9px;
     height: 32px;
     float: left;
-    position: relative;
-    left: -5px;
-    top: 0px;
+    position: absolute;
+    left: -1px;
     display: inline-block;
+    z-index: 0;
 }
 
 #exportButton {

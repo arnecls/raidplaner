@@ -8,6 +8,7 @@
         $gLocale[ 'Melee' ]                    = 'Nahkämpfer';
         $gLocale[ 'Range' ]                    = 'Fernkämpfer';
         $gLocale[ 'Support' ]                  = 'Unterstützung';
+        $gLocale[ 'Spell' ]                    = 'Zauberer';
 
         // Pre-loading checks
         $gLocale[ 'ContinueNoUpdate' ]         = 'Ohne Aktualisierung fortfahren';

@@ -330,13 +330,21 @@ textarea {
     background: -ms-linear-gradient(top,     rgba(167, 199, 255, 1) 0%,rgba(177, 138, 243, 1) 100%);
 }
 
+.gradient_role_spell {
+    background: linear-gradient(to bottom,   rgba(255, 213, 0, 1) 0%,rgba(255, 126, 0, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255, 213, 0, 1) 0%,rgba(255, 126, 0, 1) 100%);
+    background: -moz-linear-gradient(top,    rgba(255, 213, 0, 1) 0%,rgba(255, 126, 0, 1) 100%);
+    background: -o-linear-gradient(top,      rgba(255, 213, 0, 1) 0%,rgba(255, 126, 0, 1) 100%);
+    background: -ms-linear-gradient(top,     rgba(255, 213, 0, 1) 0%,rgba(255, 126, 0, 1) 100%);
+}
+
 .leftgradient_role_tank {
-    color: rgba(255, 239, 152, 1);
-    background: linear-gradient(to right,     rgba(241, 215, 78, 0.6) 0%,rgba(204,175,102,0) 100%);
-    background: -webkit-linear-gradient(left, rgba(241, 215, 78, 0.6) 0%,rgba(204,175,102,0) 100%);
-    background: -moz-linear-gradient(left,    rgba(241, 215, 78, 0.6) 0%,rgba(204,175,102,0) 100%);
-    background: -o-linear-gradient(left,      rgba(241, 215, 78, 0.6) 0%,rgba(204,175,102,0) 100%);
-    background: -ms-linear-gradient(left,     rgba(241, 215, 78, 0.6) 0%,rgba(204,175,102,0) 100%);
+    color: rgba(232, 208, 146, 1);
+    background: linear-gradient(to right,     rgba(219, 194, 113, 0.6) 0%,rgba(204,175,102,0) 100%);
+    background: -webkit-linear-gradient(left, rgba(219, 194, 113, 0.6) 0%,rgba(204,175,102,0) 100%);
+    background: -moz-linear-gradient(left,    rgba(219, 194, 113, 0.6) 0%,rgba(204,175,102,0) 100%);
+    background: -o-linear-gradient(left,      rgba(219, 194, 113, 0.6) 0%,rgba(204,175,102,0) 100%);
+    background: -ms-linear-gradient(left,     rgba(219, 194, 113, 0.6) 0%,rgba(204,175,102,0) 100%);
 }
 
 .leftgradient_role_heal {
@@ -373,6 +381,15 @@ textarea {
     background: -moz-linear-gradient(left,    rgba(252, 179, 255, 0.5) 0%,rgba(255, 195, 250, 0) 100%);
     background: -o-linear-gradient(left,      rgba(252, 179, 255, 0.5) 0%,rgba(255, 195, 250, 0) 100%);
     background: -ms-linear-gradient(left,     rgba(252, 179, 255, 0.5) 0%,rgba(255, 195, 250, 0) 100%);
+}
+
+.leftgradient_role_spell {
+    color: rgba(253, 230, 70, 1);
+    background: linear-gradient(to right,     rgba(255, 213, 0, 0.6) 0%,rgba(255, 126, 0, 0) 100%);
+    background: -webkit-linear-gradient(left, rgba(255, 213, 0, 0.6) 0%,rgba(255, 126, 0, 0) 100%);
+    background: -moz-linear-gradient(left,    rgba(255, 213, 0, 0.6) 0%,rgba(255, 126, 0, 0) 100%);
+    background: -o-linear-gradient(left,      rgba(255, 213, 0, 0.6) 0%,rgba(255, 126, 0, 0) 100%);
+    background: -ms-linear-gradient(left,     rgba(255, 213, 0, 0.6) 0%,rgba(255, 126, 0, 0) 100%);
 }
 
 #lockMessage {

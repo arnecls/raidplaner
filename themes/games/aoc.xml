@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<game>
+    <id>aoc</id>
+    <name>Age of Conan</name>
+    <family>aoc</family>
+    <classmode>single</classmode>
+    
+    <roles>
+        <role id="sld" loca="soldier" style="role_tank"/>
+        <role id="prs" loca="priest" style="role_heal"/>
+        <role id="rog" loca="rouge" style="role_melee"/>
+		<role id="mag" loca="Spell" style="role_spell"/>
+    </roles>
+    
+    <classes>        
+        <class id="bar" loca="barbarian" style="barbarian">
+            <role id="rog" default="true"/>
+        </class>
+        
+        <class id="sin" loca="assassin" style="assassin">
+            <role id="rog" default="true"/>
+        </class>
+        
+        <class id="ran" loca="ranger" style="ranger">
+            <role id="rog" default="true"/>
+        </class>
+        
+        <class id="bea" loca="shaman" style="shaman">
+            <role id="prs" default="true"/>
+        </class>
+        
+        <class id="pom" loca="mitra" style="priest">
+            <role id="prs" default="true"/>
+        </class>
+        
+        <class id="tos" loca="tempest" style="tempest">
+            <role id="prs" default="true"/>
+        </class>
+        
+        <class id="dem" loca="demonologist" style="demonologist">
+            <role id="mag" default="true"/>
+        </class>
+		
+		<class id="her" loca="herald" style="herald">
+		    <role id="mag" default="true"/>
+        </class>
+        
+        <class id="nec" loca="necromancer" style="necromancer">
+            <role id="mag" default="true"/>
+		</class>
+        
+        <class id="gua" loca="guardian" style="guardian">
+            <role id="sld" default="true"/>
+        </class>
+        
+        <class id="dar" loca="templar" style="templar">
+            <role id="sld" default="true"/>
+        </class>
+        
+        <class id="con" loca="conqueror" style="conqueror">
+            <role id="sld" default="true"/>
+        </class>
+    </classes>
+    
+    <raidview>
+        <slots role="sld" order="1" columns="1"/>
+        <slots role="prs" order="2" columns="1"/>
+        <slots role="rog" order="3" columns="1"/>
+		<slots role="mag" order="4" columns="*"/>
+		
+    </raidview>
+    
+    <groups>
+        <group count="6">
+            <role id="sld" count="2"/>
+            <role id="prs" count="2"/>
+            <role id="rog" count="1"/>
+			<role id="mag" count="*"/>
+			
+        </group>
+        
+        <group count="24">
+            <role id="sld" count="6"/>
+            <role id="prs" count="6"/>
+            <role id="rog" count="6"/>
+			<role id="mag" count="*"/>
+        </group>
+    </groups>
+    
+    <locale name="en">
+	    <text key="rouge">Rouge</text>
+		<text key="mage">Mage</text>
+		<text key="priest">Priest</text>
+		<text key="soldier">Soldier</text>
+        <text key="guardian">Guardian</text>
+        <text key="templar">Dark Templar</text>
+        <text key="conqueror">Conqueror</text>
+        <text key="mitra">Priest of Mitra</text>
+        <text key="tempest">Tempest of Set</text>
+        <text key="shaman">Bear Shaman</text>
+        <text key="barbarian">Barbarian</text>
+        <text key="assassin">Assassin</text>
+        <text key="ranger">Ranger</text>
+        <text key="demonologist">Demonologist</text>
+        <text key="herald">Herald of Xolti</text>
+		<text key="necromancer">Necromancer</text>
+    </locale>
+    
+    <locale name="de">
+        <text key="rouge">Schurke</text>
+		<text key="mage">Magier</text>
+		<text key="priest">Priester</text>
+		<text key="soldier">Soldat</text>
+        <text key="guardian">Wächter</text>
+        <text key="templar">Dunkler Templer</text>
+        <text key="conqueror">Eroberer</text>
+        <text key="mitra">Mitra Priester</text>
+        <text key="tempest">Vollstrecker Sets</text>
+        <text key="shaman">Bärschamane</text>
+        <text key="barbarian">Barbar</text>
+        <text key="assassin">Assassine</text>
+        <text key="ranger">Waldläufer</text>
+        <text key="demonologist">Dämonologe</text>
+        <text key="herald">Herold des Xolti</text>
+		<text key="necromancer">Nekromant</text>
+    </locale>
+    
+    <locale name="fr">
+        <text key="rouge">Rouge</text>
+		<text key="mage">Mage</text>
+		<text key="priest">Priest</text>
+		<text key="soldier">Soldier</text>
+        <text key="guardian">Guardian</text>
+        <text key="templar">Dark Templar</text>
+        <text key="conqueror">Conqueror</text>
+        <text key="mitra">Priest of Mitra</text>
+        <text key="tempest">Tempest of Set</text>
+        <text key="shaman">Bear Shaman</text>
+        <text key="barbarian">Barbarian</text>
+        <text key="assassin">Assassin</text>
+        <text key="ranger">Ranger</text>
+        <text key="demonologist">Demonologist</text>
+        <text key="herald">Herald of Xolti</text>
+		<text key="necromancer">Necromancer</text>
+    </locale>
+    
+    <locale name="pl">
+        <text key="rouge">Rouge</text>
+		<text key="mage">Mage</text>
+		<text key="priest">Priest</text>
+		<text key="soldier">Soldier</text>
+        <text key="guardian">Guardian</text>
+        <text key="templar">Dark Templar</text>
+        <text key="conqueror">Conqueror</text>
+        <text key="mitra">Priest of Mitra</text>
+        <text key="tempest">Tempest of Set</text>
+        <text key="shaman">Bear Shaman</text>
+        <text key="barbarian">Barbarian</text>
+        <text key="assassin">Assassin</text>
+        <text key="ranger">Ranger</text>
+        <text key="demonologist">Demonologist</text>
+        <text key="herald">Herald of Xolti</text>
+		<text key="necromancer">Necromancer</text>
+    </locale>
+    
+    <locale name="cs">
+        <text key="rouge">Rouge</text>
+		<text key="mage">Mage</text>
+		<text key="priest">Priest</text>
+		<text key="soldier">Soldier</text>
+        <text key="guardian">Guardian</text>
+        <text key="templar">Dark Templar</text>
+        <text key="conqueror">Conqueror</text>
+        <text key="mitra">Priest of Mitra</text>
+        <text key="tempest">Tempest of Set</text>
+        <text key="shaman">Bear Shaman</text>
+        <text key="barbarian">Barbarian</text>
+        <text key="assassin">Assassin</text>
+        <text key="ranger">Ranger</text>
+        <text key="demonologist">Demonologist</text>
+        <text key="herald">Herald of Xolti</text>
+		<text key="necromancer">Necromancer</text>
+    </locale>
+</game>

@@ -10,6 +10,7 @@
         $gLocale[ 'Melee' ]                    = 'Melee';
         $gLocale[ 'Range' ]                    = 'Range';
         $gLocale[ 'Support' ]                  = 'Support';
+        $gLocale[ 'Spell' ]                    = 'Kouzelník';
 
         // Pre-loading checks
         $gLocale[ 'ContinueNoUpdate' ]         = 'Pokračovat bez aktualizace';
