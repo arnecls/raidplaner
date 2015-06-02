@@ -28,10 +28,12 @@
             $Config->Prefix           = defined('BT4_TABLE_PREFIX') ? BT4_TABLE_PREFIX : '';
             $Config->Version          = defined('BT4_VERSION') ? BT4_VERSION : 40000;
             $Config->AutoLoginEnabled = defined('BT4_AUTOLOGIN') ? BT4_AUTOLOGIN : false;
-            $Config->Raidleads        = defined('BT4_RAIDLEAD_GROUPS') ? explode(',', BT4_RAIDLEAD_GROUPS ) : array();
-            $Config->Members          = defined('BT4_MEMBER_GROUPS') ? explode(',', BT4_MEMBER_GROUPS ) : array();
             $Config->PostTo           = defined('BT4_POSTTO') ? BT4_POSTTO : '';
             $Config->PostAs           = defined('BT4_POSTAS') ? BT4_POSTAS : '';
+            $Config->Members          = defined('BT4_MEMBER_GROUPS') ? explode(',', BT4_MEMBER_GROUPS ) : array();
+            $Config->Privileged       = defined('BT4_PRIVILEGED_GROUPS') ? explode(',', BT4_PRIVILEGED_GROUPS ) : array();
+            $Config->Raidleads        = defined('BT4_RAIDLEAD_GROUPS') ? explode(',', BT4_RAIDLEAD_GROUPS ) : array();
+            $Config->Admins           = defined('BT4_ADMIN_GROUPS') ? explode(',', BT4_ADMIN_GROUPS ) : array();
             $Config->HasCookieConfig  = false;
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
@@ -66,7 +68,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.bt4.php', 'w+' );
 
@@ -75,16 +77,18 @@
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine('BT4_DATABASE', '".$aDatabase."');\n");
-                fwrite( $Config, "\tdefine('BT4_USER', '".$aUser."');\n");
-                fwrite( $Config, "\tdefine('BT4_PASS', '".$aPass."');\n");
-                fwrite( $Config, "\tdefine('BT4_TABLE_PREFIX', '".$aPrefix."');\n");
-                fwrite( $Config, "\tdefine('BT4_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
-                fwrite( $Config, "\tdefine('BT4_POSTTO', ".$aPostTo.");\n");
-                fwrite( $Config, "\tdefine('BT4_POSTAS', ".$aPostAs.");\n");
+                fwrite( $Config, "\tdefine('BT4_DATABASE', '".$aConfig->Database."');\n");
+                fwrite( $Config, "\tdefine('BT4_USER', '".$aConfig->User."');\n");
+                fwrite( $Config, "\tdefine('BT4_PASS', '".$aConfig->Password."');\n");
+                fwrite( $Config, "\tdefine('BT4_TABLE_PREFIX', '".$aConfig->Prefix."');\n");
+                fwrite( $Config, "\tdefine('BT4_AUTOLOGIN', ".(($aConfig->AutoLoginEnabled) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('BT4_POSTTO', ".$aConfig->PostTo.");\n");
+                fwrite( $Config, "\tdefine('BT4_POSTAS', ".$aConfig->PostAs.");\n");
 
-                fwrite( $Config, "\tdefine('BT4_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
-                fwrite( $Config, "\tdefine('BT4_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
+                fwrite( $Config, "\tdefine('BT4_MEMBER_GROUPS', '".implode( ",", $aConfig->Members )."');\n");
+                fwrite( $Config, "\tdefine('BT4_PRIVILEGED_GROUPS', '".implode( ",", $aConfig->Privileged )."');\n");
+                fwrite( $Config, "\tdefine('BT4_RAIDLEAD_GROUPS', '".implode( ",", $aConfig->Raidleads )."');\n");
+                fwrite( $Config, "\tdefine('BT4_ADMIN_GROUPS', '".implode( ",", $aConfig->Admins )."');\n");
             }
 
             fwrite( $Config, '?>');
@@ -175,23 +179,10 @@
 
         private function getGroupForUser( $aUserData )
         {
-            if ($aUserData['disabled'] == 1)
-            {
-                return 'none';
-            }
-
-            $AssignedGroup  = 'none';
-            $MemberGroups   = explode(',', BT4_MEMBER_GROUPS );
-            $RaidleadGroups = explode(',', BT4_RAIDLEAD_GROUPS );
-            $Group = $aUserData['rank_id'];
-
-            if ( in_array($Group, $MemberGroups) )
-                $AssignedGroup = 'member';
-
-            if ( in_array($Group, $RaidleadGroups) )
-                return 'raidlead'; // ### return, best possible group ###
-
-            return $AssignedGroup;
+            $Config = $this->getConfig();
+            return ($aUserData['disabled'] == 1)
+                ? GetGroupName(ENUM_GROUP_NONE)
+                : GetGroupName($Config->mapGroup($aUserData['rank_id'], ENUM_GROUP_NONE));
         }
 
         // -------------------------------------------------------------------------

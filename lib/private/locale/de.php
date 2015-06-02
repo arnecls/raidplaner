@@ -357,7 +357,7 @@
         $gLocale[ 'Members' ]                  = 'Mitglieder';
         $gLocale[ 'Privileged' ]               = 'Priveligierte Mitglieder';
         $gLocale[ 'Raidleads' ]                = 'Raidleiter';
-        $gLocale[ 'Administrators' ]
+        $gLocale[ 'Administrators' ]           = 'Administratoren';
 
         // BlueThrust
         $gLocale[ 'bt4_Binding' ]               = 'BlueThrust v4';
