@@ -97,7 +97,7 @@
 #month {
     font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 20px;
-    color: #7d7d7d;    
+    color: #7d7d7d;
     padding-left: 20px;
     vertical-align: top;
 }
@@ -144,7 +144,7 @@
     float: right;
     right: 2px;
     position: relative;
-    top: 16px;
+    top: 18px;
     font-weight: bold;
     font-size: 14px;
     color: #00ff00;
@@ -155,7 +155,7 @@
     float: right;
     right: 2px;
     position: relative;
-    top: 16px;
+    top: 18px;
     font-weight: bold;
     font-size: 14px;
     color: #ff4b48;
@@ -166,7 +166,7 @@
     float: right;
     right: 2px;
     position: relative;
-    top: 16px;
+    top: 18px;
     font-weight: bold;
     font-size: 14px;
     color: #ffff00;
@@ -177,7 +177,7 @@
     float: right;
     right: 2px;
     position: relative;
-    top: 16px;
+    top: 18px;
     font-weight: bold;
     font-size: 14px;
     color: #cccccc;
@@ -260,6 +260,10 @@
     font-size: 16px;
     margin-right: 10px;
     max-width: 250px;
+}
+
+#tooltip .event {
+    color:#a90;
 }
 
 #tooltip .time {
@@ -361,7 +365,7 @@
     display: inline-block;
     background-image: url(images/wanted_badge.png);
     background-repeat: no-repeat;
-    
+
     border-radius: 2px 0px 0px 2px;
     -webkit-border-radius: 2px 0px 0px 2px;
     -moz-border-radius: 2px 0px 0px 2px;
@@ -383,7 +387,7 @@
     font-weight: bold;
     background-position: 2px 0px;
     background-repeat: no-repeat;
-    
+
     border-radius: 0px 2px 2px 0;
     -webkit-border-radius: 0px 2px 2px 0;
     -moz-border-radius: 0px 2px 2px 0;
@@ -411,7 +415,7 @@
 
 #tooltip .wantedbadge .role_tank {
     background-image: url(images/icon_badge_tank.png);
-}    
+}
 
 #tooltip .wantedbadge .role_heal {
     background-image: url(images/icon_badge_heal.png);
