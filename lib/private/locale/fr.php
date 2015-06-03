@@ -103,6 +103,8 @@
         // Raid
         $gLocale[ 'Raid' ]                     = 'Raid';
         $gLocale[ 'Event' ]                    = NULL;
+        $gLocale[ 'Complete' ]                 = NULL;
+        $gLocale[ 'Attendants' ]               = NULL;
         $gLocale[ 'Upcoming' ]                 = 'Raids à venir';
         $gLocale[ 'CreateRaid' ]               = 'Créer raid';
         $gLocale[ 'CreateEvent' ]              = NULL;
