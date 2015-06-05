@@ -309,6 +309,10 @@
     max-width: 250px;
 }
 
+#tooltip .event {
+    color:#a90;
+}
+
 #tooltip .time {
     font-style: italic;
     font-size: 10px;

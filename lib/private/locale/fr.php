@@ -103,8 +103,12 @@
 
         // Raid
         $gLocale[ 'Raid' ]                     = 'Raid';
+        $gLocale[ 'Event' ]                    = NULL;
+        $gLocale[ 'Complete' ]                 = NULL;
+        $gLocale[ 'Attendants' ]               = NULL;
         $gLocale[ 'Upcoming' ]                 = 'Raids à venir';
         $gLocale[ 'CreateRaid' ]               = 'Créer raid';
+        $gLocale[ 'CreateEvent' ]              = NULL;
         $gLocale[ 'NewDungeon' ]               = 'Nouveau raid';
         $gLocale[ 'Description' ]              = 'Description';
         $gLocale[ 'DefaultRaidMode' ]          = 'Mode de validation par défaut';

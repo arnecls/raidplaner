@@ -469,4 +469,19 @@
         $DropRaidQuery->bindValue( ':Time', $Timestamp, PDO::PARAM_INT );
         $DropRaidQuery->execute();
     }
+
+    // ---------------------------------------------------------------
+
+    function userOwnsRaid( $aRaidId )
+    {
+        $Connector = Connector::getInstance();
+        $UserId = UserProxy::getInstance()->UserId;
+
+        $RightsQuery = $Connector->prepare('SELECT '.RP_TABLE_PREFIX.'Raid.RaidId FROM '.RP_TABLE_PREFIX.'Raid WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1');
+        $RightsQuery->bindValue(':RaidId', $aRaidId, PDO::PARAM_INT);
+        $RightsQuery->bindValue(':UserId', $UserId, PDO::PARAM_INT);
+
+        $result = $RightsQuery->fetchFirst();
+        return ($result != NULL) && ($result["RaidId"] == $aRaidId);
+    }
 ?>

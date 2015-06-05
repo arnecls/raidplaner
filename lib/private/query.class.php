@@ -22,7 +22,7 @@
         {
             $this->OutputHTML = $aEnable;
         }
-        
+
         // --------------------------------------------------------------------------------------------
 
         private static function fixValue($aValue, $aType)
@@ -94,7 +94,6 @@
             $this->AffectedRows = $this->PDO->rowCount();
 
             $Data = ($this->AffectedRows > 0)
-
                 ? $this->PDO->fetch(PDO::FETCH_ASSOC)
                 : null;
 

@@ -184,6 +184,7 @@
                     $Raid = Array(
                         'id'              => $RaidId,
                         'location'        => $Data['Name'],
+                        'type'            => $Data['Type'],
                         'game'            => $Data['Game'],
                         'stage'           => $Data['Stage'],
                         'size'            => $Data['Size'],

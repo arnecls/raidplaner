@@ -101,8 +101,12 @@
 
         // Raid
         $gLocale[ 'Raid' ]                     = 'Raid';
+        $gLocale[ 'Event' ]                    = NULL;
+        $gLocale[ 'Complete' ]                 = NULL;
+        $gLocale[ 'Attendants' ]               = NULL;
         $gLocale[ 'Upcoming' ]                 = 'Nadcházející raidy';
         $gLocale[ 'CreateRaid' ]               = 'Vytvořit raid';
+        $gLocale[ 'CreateEvent' ]              = NULL;
         $gLocale[ 'NewDungeon' ]               = 'Nový dungeon';
         $gLocale[ 'Description' ]              = 'Popis';
         $gLocale[ 'DefaultRaidMode' ]          = 'Výchozí mód účati';

@@ -6,14 +6,14 @@
         {
             global $gGame;
             loadGameSettings();
-            
+
             $Out = Out::getInstance();
             $Connector = Connector::getInstance();
-            
+
             $Out->pushValue('show', $aRequest['showPanel']);
 
             $ListRaidQuery = $Connector->prepare('SELECT '.RP_TABLE_PREFIX.'Raid.*, '.RP_TABLE_PREFIX.'Location.Name AS LocationName, '.RP_TABLE_PREFIX.'Location.Image AS LocationImage, '.
-                                              RP_TABLE_PREFIX.'Attendance.AttendanceId, '.RP_TABLE_PREFIX.'Attendance.UserId, '.RP_TABLE_PREFIX.'Attendance.CharacterId, '.
+                                              RP_TABLE_PREFIX.'Attendance.AttendanceId, '.RP_TABLE_PREFIX.'Attendance.UserId AS AttendanceUserId, '.RP_TABLE_PREFIX.'Attendance.CharacterId, '.
                                               RP_TABLE_PREFIX.'Attendance.Status, '.RP_TABLE_PREFIX.'Attendance.Role, '.RP_TABLE_PREFIX.'Attendance.Class AS ActiveClass, '.RP_TABLE_PREFIX.'Attendance.Comment, '.
                                               'UNIX_TIMESTAMP('.RP_TABLE_PREFIX.'Attendance.LastUpdate) AS LastUpdate, '.
                                               RP_TABLE_PREFIX.'Character.Name, '.RP_TABLE_PREFIX.'Character.Class, '.RP_TABLE_PREFIX.'Character.Mainchar, '.RP_TABLE_PREFIX.'Character.Role1, '.RP_TABLE_PREFIX.'Character.Role2, '.
@@ -35,14 +35,16 @@
                 $StartDate    = getdate($Data['StartUTC']);
                 $EndDate      = getdate($Data['EndUTC']);
                 $EndTimestamp = $Data['EndUTC'];
-                
+
                 $Slots = array_combine(
-                    explode(':',$Data['SlotRoles']), 
+                    explode(':',$Data['SlotRoles']),
                     explode(':',$Data['SlotCount']));
 
                 $Out->pushValue('raidId', $Data['RaidId']);
                 $Out->pushValue('locationid', $Data['LocationId']);
+                $Out->pushValue('userId', $Data['UserId']);
                 $Out->pushValue('locationname', $Data['LocationName']);
+                $Out->pushValue('type', $Data['Type']);
                 $Out->pushValue('stage', $Data['Stage']);
                 $Out->pushValue('mode', $Data['Mode']);
                 $Out->pushValue('image', $Data['LocationImage']);
@@ -58,23 +60,23 @@
                 $MaxAttendanceId = 1;
                 $NumAttended = 0;
 
-                if ( $Data['UserId'] != NULL )
+                if ( $Data['AttendanceUserId'] != NULL )
                 {
                     $ListRaidQuery->loop(function($Data) use (&$gGame, &$Connector, &$MaxAttendanceId, &$Participants, &$Attendees, &$NumAttended)
                     {
                         // Track max attendance id to give undecided players (without a comment) a distinct one.
                         $MaxAttendanceId = Max($MaxAttendanceId,$Data['AttendanceId']);
 
-                        if ( $Data['UserId'] != 0 )
+                        if ( $Data['AttendanceUserId'] != 0 )
                         {
-                            array_push( $Participants, intval($Data['UserId']) );
+                            array_push( $Participants, intval($Data['AttendanceUserId']) );
                         }
 
                         if ( $Data['CharacterId'] == 0 )
                         {
                             // CharacterId is 0 on random players or players that are absent
 
-                            if ( $Data['UserId'] != 0 )
+                            if ( $Data['AttendanceUserId'] != 0 )
                             {
                                 // Fetch the mainchar of the registered player and display this
                                 // character as 'absent'
@@ -84,19 +86,19 @@
                                                                  'WHERE UserId = :UserId AND Game = :Game '.
                                                                  'ORDER BY Mainchar, CharacterId ASC' );
 
-                                $CharQuery->bindValue( ':UserId', $Data['UserId'], PDO::PARAM_INT );
+                                $CharQuery->bindValue( ':UserId', $Data['AttendanceUserId'], PDO::PARAM_INT );
                                 $CharQuery->bindValue( ':Game', $gGame['GameId'], PDO::PARAM_STR );
-                                
+
                                 $CharData = $CharQuery->fetchFirstOfLoop();
 
                                 if ( ($CharData != null) && ($CharData['CharacterId'] != null) )
                                 {
                                     $Classes = explode(':',$CharData['Class']);
-                                    
+
                                     $AttendeeData = Array(
                                         'id'          => $Data['AttendanceId'], // AttendanceId to support random players (userId 0)
                                         'hasId'       => true,
-                                        'userId'      => $Data['UserId'],
+                                        'userId'      => $Data['AttendanceUserId'],
                                         'timestamp'   => $Data['LastUpdate'],
                                         'charid'      => $CharData['CharacterId'],
                                         'name'        => $CharData['Name'],
@@ -161,7 +163,7 @@
                             $AttendeeData = Array(
                                 'id'          => $Data['AttendanceId'], // AttendanceId to support random players (userId 0)
                                 'hasId'       => true,
-                                'userId'      => $Data['UserId'],
+                                'userId'      => $Data['AttendanceUserId'],
                                 'timestamp'   => $Data['LastUpdate'],
                                 'charid'      => $Data['CharacterId'],
                                 'name'        => $Data['Name'],
@@ -181,9 +183,9 @@
                                                             'WHERE UserId = :UserId AND Game = :Game '.
                                                             'ORDER BY Mainchar, CharacterId ASC' );
 
-                            $CharQuery->bindValue( ':UserId', $Data['UserId'], PDO::PARAM_INT );
+                            $CharQuery->bindValue( ':UserId', $Data['AttendanceUserId'], PDO::PARAM_INT );
                             $CharQuery->bindValue( ':Game', $gGame['GameId'], PDO::PARAM_STR );
-                            
+
                             $CharQuery->loop( function($CharData) use (&$AttendeeData)
                             {
                                 $Character = Array(
@@ -200,7 +202,7 @@
 
                             if (($Data['Status'] == 'ok') || ($Data['Status'] == 'available'))
                                 ++$NumAttended;
-                                
+
                             array_push($Attendees, $AttendeeData);
                         }
                     });
@@ -227,7 +229,7 @@
                         $CharQuery->bindValue( ':UserId', $User['UserId'], PDO::PARAM_INT );
                         $CharQuery->bindValue( ':RaidEnd', $EndTimestamp, PDO::PARAM_INT );
                         $CharQuery->bindValue( ':Game', $gGame['GameId'], PDO::PARAM_STR );
-                        
+
                         $UserData = $CharQuery->fetchFirstOfLoop();
 
                         if ( $UserData != null )
@@ -236,7 +238,7 @@
                             // that is not in use (for this raid).
 
                             ++$MaxAttendanceId;
-                            
+
                             $Classes = explode(':',$UserData['Class']);
 
                             $AttendeeData = Array(
@@ -278,16 +280,16 @@
 
                 $Out->pushValue('attendee', $Attendees);
                 $Out->pushValue('attended', $NumAttended);
-                
+
                 $ExportParameter = Api::normalizeArgsRaid(Array(
                     'raid'    => intval($aRequest['id']),
                     'attends' => true,
                 ));
-                
+
                 $Out->pushValue('token', Api::getPublicToken($ExportParameter));
             }
 
-            if ( validRaidlead() )
+            if ( validRaidlead() || (validPrivileged() && userOwnsRaid($aRequest['id'])) )
             {
                 msgQueryLocations( $aRequest );
             }
