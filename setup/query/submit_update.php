@@ -305,7 +305,7 @@
 
     function upgrade_100()
     {
-        echo "<div class=\"update_version\">".L("UpdateFrom")." 1.0.0 ".L("UpdateTo")." 1.1.0";
+        echo "<div class=\"update_version\">".L("UpdateFrom")." 1.0.x ".L("UpdateTo")." 1.1.0";
 
         $SessionTableCreate = "CREATE TABLE `".RP_TABLE_PREFIX."Session` (
             `SessionId` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -550,11 +550,24 @@
 
     function upgrade_110()
     {
-        echo "<div class=\"update_version\">".L("UpdateFrom")." 1.1.0 ".L("UpdateTo")." 1.2.0";
+        echo "<div class=\"update_version\">".L("UpdateFrom")." 1.1.x ".L("UpdateTo")." 1.2.0";
 
-        $Updates = Array( "Pugs group"     => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE  `Group`  `Group` ENUM('admin','raidlead','privileged','member','none') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'none';",
-                          "Raid ownership" => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `UserId` INT UNSIGNED NOT NULL AFTER `LocationId`, ADD INDEX (`UserId`);",
-                          "Raid type"      => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `Type` ENUM('raid','event') NOT NULL DEFAULT 'raid' AFTER `UserId`;"
+        $Updates = Array( "Pugs group"         => "ALTER TABLE `".RP_TABLE_PREFIX."User` CHANGE  `Group`  `Group` ENUM('admin','raidlead','privileged','member','none') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'none';",
+                          "Raid ownership"     => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `UserId` INT UNSIGNED NOT NULL AFTER `LocationId`, ADD INDEX (`UserId`);",
+                          "Raid type"          => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ADD `Type` ENUM('raid','event') NOT NULL DEFAULT 'raid' AFTER `UserId`;",
+                          "InnoDB Attendance"  => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "InnoDB Character"   => "ALTER TABLE `".RP_TABLE_PREFIX."Character` ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "InnoDB Location"    => "ALTER TABLE `".RP_TABLE_PREFIX."Location` ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "InnoDB Raid"        => "ALTER TABLE `".RP_TABLE_PREFIX."Raid` ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "InnoDB Session"     => "ALTER TABLE `".RP_TABLE_PREFIX."Session` ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "InnoDB User"        => "ALTER TABLE `".RP_TABLE_PREFIX."User` ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "InnoDB UserSetting" => "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "UTF8 Attendance"    => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
+                          "UTF8 Character"     => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
+                          "UTF8 Location"      => "ALTER TABLE `".RP_TABLE_PREFIX."Location` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
+                          "UTF8 Session"       => "ALTER TABLE `".RP_TABLE_PREFIX."Session` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
+                          "UTF8 User"          => "ALTER TABLE `".RP_TABLE_PREFIX."User` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
+                          "UTF8 UserSetting"   => "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
                         );
 
         doUpgrade( $Updates );
