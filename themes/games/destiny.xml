@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<game>
+	<id>dst</id>
+	<name>Destiny</name>
+	<family>dest</family>
+	<classmode>single</classmode>
+
+	<roles>
+    	<role id="ttn" loca="Titan" style="role_tank"/>
+    	<role id="wlk" loca="Warlock" style="role_support"/>
+    	<role id="hun" loca="Hunter" style="role_range"/>
+	</roles>
+
+	<classes>
+	    <class id="gun" loca="Gunslinger" style="gunslinger">
+			<role id="hun" default="true"/>
+		</class>
+	    <class id="bld" loca="Bladedancer" style="bladedancer">
+			<role id="hun" default="true"/>
+		</class>
+	    <class id="sun" loca="Sunsinger" style="sunsinger">
+			<role id="wlk" default="true"/>
+		</class>
+	    <class id="vwk" loca="Voidwalker" style="voidwalker">
+			<role id="wlk" default="true"/>
+		</class>
+	    <class id="def" loca="Defender" style="defender">
+			<role id="ttn" default="true"/>
+		</class>
+	    <class id="stk" loca="Striker" style="Striker">
+			<role id="ttn" default="true"/>
+		</class>
+	</classes>
+
+	<raidview>
+		<slots role="ttn" order="1" columns="*"/>
+		<slots role="wlk" order="2" columns="*"/>
+		<slots role="hun" order="3" columns="*"/>
+	</raidview>
+
+	<groups>
+		<group count="3">
+			<role id="ttn" count="1"/>
+			<role id="wlk" count="1"/>
+			<role id="hun" count="1"/>
+		</group>
+		<group count="6">
+			<role id="ttn" count="2"/>
+			<role id="wlk" count="2"/>
+			<role id="hun" count="2"/>
+		</group>
+	</groups>
+
+    <locale name="en">
+        <text key="Titan">Titan</text>
+        <text key="Warlock">Warlock</text>
+        <text key="Hunter">Hunter</text>
+        <text key="Gunslinger">Gunslinger</text>
+        <text key="Bladedancer">Bladedancer</text>
+        <text key="Sunsinger">Sunsinger</text>
+        <text key="Voidwalker">Voidwalker</text>
+        <text key="Defender">Defender</text>
+        <text key="Striker">Striker</text>
+    </locale>
+
+    <locale name="de">
+        <text key="Titan">Titan</text>
+        <text key="Warlock">Warlock</text>
+        <text key="Hunter">Hunter</text>
+        <text key="Gunslinger">Revolverheld</text>
+        <text key="Bladedancer">Klingentänzer</text>
+        <text key="Sunsinger">Sonnensinger</text>
+        <text key="Voidwalker">Leere-Läufer</text>
+        <text key="Defender">Verteidiger</text>
+        <text key="Striker">Stürmer</text>
+    </locale>
+
+    <locale name="fr">
+        <text key="Titan">Titans</text>
+        <text key="Warlock">Arcanistes</text>
+        <text key="Hunter">Chasseurs</text>
+        <text key="Gunslinger">Pistolero</text>
+        <text key="Bladedancer">Épéiste</text>
+        <text key="Sunsinger">Chant solaire</text>
+        <text key="Voidwalker">Voie abyssaler</text>
+        <text key="Defender">Défenseur</text>
+        <text key="Striker">Assaillant</text>
+    </locale>
+
+    <locale name="pl">
+        <text key="Titan">Titan</text>
+        <text key="Warlock">Warlock</text>
+        <text key="Hunter">Hunter</text>
+        <text key="Gunslinger">Gunslinger</text>
+        <text key="Bladedancer">Bladedancer</text>
+        <text key="Sunsinger">Sunsinger</text>
+        <text key="Voidwalker">Voidwalker</text>
+        <text key="Defender">Defender</text>
+        <text key="Striker">Striker</text>
+    </locale>
+
+    <locale name="cs">
+        <text key="Titan">Titan</text>
+        <text key="Warlock">Warlock</text>
+        <text key="Hunter">Hunter</text>
+        <text key="Gunslinger">Gunslinger</text>
+        <text key="Bladedancer">Bladedancer</text>
+        <text key="Sunsinger">Sunsinger</text>
+        <text key="Voidwalker">Voidwalker</text>
+        <text key="Defender">Defender</text>
+        <text key="Striker">Striker</text>
+    </locale>
+</game>

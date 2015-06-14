@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+    <name>Destiny</name>
+    <family>dest</family>
+    <banner>destiny.jpg</banner>
+    <bgimage>destiny.jpg</bgimage>
+    <bgrepeat>repeat-x</bgrepeat>
+    <bgcolor>#969696</bgcolor>
+    <iconset>destiny</iconset>
+</theme>
