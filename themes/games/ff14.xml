@@ -4,117 +4,129 @@
     <name>Final Fantasy XIV</name>
     <family>ff14</family>
     <classmode>multi</classmode>
-    
+
     <roles>
         <role id="tnk" loca="Tank" style="role_tank"/>
         <role id="med" loca="Healer" style="role_heal"/>
         <role id="dmg" loca="Damage"  style="role_melee"/>
     </roles>
-    
+
     <classes>
         <class id="arc" loca="Archer" style="archer">
             <role id="dmg"/>
         </class>
-        
+
         <class id="brd" loca="Bard" style="bard">
             <role id="dmg"/>
         </class>
-        
+
         <class id="bmg" loca="Blackmage" style="blackmage">
             <role id="dmg"/>
         </class>
-        
+
         <class id="tau" loca="Thaumaturge" style="thaumaturge">
             <role id="dmg"/>
         </class>
-        
+
         <class id="con" loca="Conjurer" style="conjurer">
             <role id="med"/>
         </class>
-        
+
         <class id="wmg" loca="Whitemage" style="whitemage">
             <role id="med"/>
         </class>
-        
+
+        <class id="ast" loca="Astrologian" style="astrologian">
+            <role id="med"/>
+        </class>
+
         <class id="dra" loca="Dragoon" style="dragoon">
             <role id="dmg"/>
         </class>
-        
+
         <class id="lan" loca="Lancer" style="lancer">
             <role id="dmg"/>
         </class>
-        
+
         <class id="pal" loca="Paladin" style="paladin">
             <role id="tnk"/>
         </class>
-        
+
         <class id="gla" loca="Gladiator" style="gladiator">
             <role id="tnk"/>
         </class>
-        
+
+        <class id="dkn" loca="DarkKnight" style="darkknight">
+            <role id="tnk"/>
+        </class>
+
         <class id="war" loca="Warrior" style="warrior">
             <role id="tnk"/>
         </class>
-        
+
         <class id="mar" loca="Marauder" style="marauder">
             <role id="tnk"/>
         </class>
-        
+
+        <class id="mac" loca="Machinist" style="machinist">
+            <role id="dmg"/>
+        </class>
+
         <class id="mnk" loca="Monk" style="monk">
             <role id="dmg"/>
         </class>
-        
+
         <class id="pug" loca="Pugilist" style="pugilist">
             <role id="dmg"/>
         </class>
-        
+
         <class id="arc" loca="Arcanist" style="arcanist">
             <role id="dmg"/>
         </class>
-        
+
         <class id="sch" loca="Scholar" style="scholar">
             <role id="med"/>
         </class>
-        
+
         <class id="sum" loca="Summoner" style="summoner">
             <role id="dmg"/>
         </class>
-        
+
         <class id="rog" loca="Rogue" style="rogue">
             <role id="dmg"/>
         </class>
-        
+
         <class id="nin" loca="Ninja" style="ninja">
             <role id="dmg"/>
         </class>
     </classes>
-    
+
     <raidview>
         <slots role="tnk" order="1" columns="1"/>
         <slots role="med" order="2" columns="1"/>
         <slots role="dmg" order="3" columns="*"/>
     </raidview>
-    
+
     <groups>
         <group count="4">
             <role id="tnk" count="1"/>
             <role id="med" count="1"/>
             <role id="dmg" count="*"/>
         </group>
-        
+
         <group count="8">
             <role id="tnk" count="2"/>
             <role id="med" count="2"/>
             <role id="dmg" count="*"/>
         </group>
-        
+
         <group count="24">
             <role id="tnk" count="6"/>
             <role id="med" count="6"/>
             <role id="dmg" count="*"/>
         </group>
     </groups>
-    
+
     <locale name="en">
         <text key="Arcanist">Arcanist</text>
         <text key="Archer">Archer</text>
@@ -135,8 +147,11 @@
         <text key="Whitemage">White mage</text>
         <text key="Rogue">Rogue</text>
         <text key="Ninja">Ninja</text>
+        <text key="DarkKnight">Dark Knight</text>
+        <text key="Machinist">Machinist</text>
+        <text key="Astrologian">Astrologian</text>
     </locale>
-    
+
     <locale name="de">
         <text key="Arcanist">Hermetiker</text>
         <text key="Archer">Waldläufer</text>
@@ -157,8 +172,11 @@
         <text key="Whitemage">Weißmagier</text>
         <text key="Rogue">Schurke</text>
         <text key="Ninja">Ninja</text>
+        <text key="DarkKnight">Dunkelritter</text>
+        <text key="Machinist">Maschinist</text>
+        <text key="Astrologian">Astrologe</text>
     </locale>
-    
+
     <locale name="fr">
         <text key="Arcanist">Arcaniste</text>
         <text key="Archer">Archer</text>
@@ -179,8 +197,11 @@
         <text key="Whitemage">Mage Blanc</text>
         <text key="Rogue">Surineur</text>
         <text key="Ninja">Ninja</text>
+        <text key="DarkKnight">Chevalier noir</text>
+        <text key="Machinist">Machiniste</text>
+        <text key="Astrologian">Astromancien</text>
     </locale>
-    
+
     <locale name="pl">
         <text key="Arcanist">Arcanist</text>
         <text key="Archer">Archer</text>
@@ -201,8 +222,11 @@
         <text key="Whitemage">White mage</text>
         <text key="Rogue">Rogue</text>
         <text key="Ninja">Ninja</text>
+        <text key="DarkKnight">Dark Knight</text>
+        <text key="Machinist">Machinist</text>
+        <text key="Astrologian">Astrologian</text>
     </locale>
-    
+
     <locale name="cs">
         <text key="Arcanist">Arcanist</text>
         <text key="Archer">Archer</text>
@@ -223,5 +247,8 @@
         <text key="Whitemage">White mage</text>
         <text key="Rogue">Rogue</text>
         <text key="Ninja">Ninja</text>
+        <text key="DarkKnight">Dark Knight</text>
+        <text key="Machinist">Machinist</text>
+        <text key="Astrologian">Astrologian</text>
     </locale>
 </game>
