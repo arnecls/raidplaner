@@ -116,14 +116,14 @@
 }
 
 #raiddetail .raidcomment {
-    height: 64px;
+    height: 89px;
     width: 300px;
-    top: 10px;
+    top: -15px;
     right: 36px;
     position: absolute;
     font-size: 11px;
     color: #666;
-    overflow-y: auto;
+    overflow-y: hidden;
     padding-left: 32px;
     padding-top: 4px;
     padding-top: 4px;
