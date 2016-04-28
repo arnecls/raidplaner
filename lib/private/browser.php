@@ -149,6 +149,7 @@
         const BROWSER_OPERA = 'Opera';                            // http://www.opera.com/
         const BROWSER_OPERA_MINI = 'Opera Mini';                  // http://www.opera.com/mini/
         const BROWSER_WEBTV = 'WebTV';                            // http://www.webtv.net/pc/
+        const BROWSER_EDGE = 'Edge';                              // http://www.microsoft.com/edge/
         const BROWSER_IE = 'Internet Explorer';                   // http://www.microsoft.com/ie/
         const BROWSER_POCKET_IE = 'Pocket Internet Explorer';     // http://en.wikipedia.org/wiki/Internet_Explorer_Mobile
         const BROWSER_KONQUEROR = 'Konqueror';                    // http://www.konqueror.org/
@@ -365,6 +366,7 @@
                 // (5) Netscape 9+ is based on Firefox so Netscape checks
                 //     before FireFox are necessary
                 $this->checkBrowserWebTv() ||
+                $this->checkBrowserEdge() ||
                 $this->checkBrowserInternetExplorer() ||
                 $this->checkBrowserOpera() ||
                 $this->checkBrowserGaleon() ||
@@ -505,6 +507,19 @@
                 $this->_browser_name = self::BROWSER_SLURP;
                 $this->setRobot(true);
                 $this->setMobile(false);
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Determine if the browser is Microsoft Edge
+         * @return boolean True if the browser is Microsoft Edge otherwise false
+         */
+        protected function checkBrowserEdge() {
+            if( stripos($this->_agent,'Edge') !== false ) {
+                $this->setBrowser(self::BROWSER_EDGE);
+                $this->setVersion(substr(stristr($this->_agent, 'Edge/'), 5));
                 return true;
             }
             return false;
