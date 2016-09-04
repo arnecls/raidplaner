@@ -4,7 +4,7 @@
     require_once(dirname(__FILE__).'/session.class.php');
     require_once(dirname(__FILE__).'/random.class.php');
 
-    $gVersion = 115.0;
+    $gVersion = 115.1;
 
     $gSite = null;
     $gGame = null;
