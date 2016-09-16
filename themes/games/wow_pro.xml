@@ -4,79 +4,84 @@
     <name>World of Warcraft (pro)</name>
     <family>wow</family>
     <classmode>single</classmode>
-    
+
     <roles>
         <role id="tnk" loca="Tank" style="role_tank"/>
         <role id="med" loca="Healer" style="role_heal"/>
         <role id="atk" loca="Melee" style="role_melee"/>
         <role id="rgd" loca="Range" style="role_range"/>
     </roles>
-    
+
     <classes>
         <class id="dkt" loca="Deathknight" style="deathknight">
             <role id="tnk" default="true"/>
             <role id="atk"/>
         </class>
-        
+
         <class id="dru" loca="Druid" style="druid">
             <role id="med" default="true"/>
             <role id="atk"/>
             <role id="rgd"/>
             <role id="tnk"/>
         </class>
-        
+
         <class id="hun" loca="Hunter" style="hunter">
             <role id="rgd" default="true"/>
         </class>
-        
+
         <class id="mag" loca="Mage" style="mage">
             <role id="rgd" default="true"/>
         </class>
-        
+
         <class id="mon" loca="Monk" style="monk">
             <role id="med" default="true"/>
             <role id="atk"/>
             <role id="tnk"/>
         </class>
-        
+
         <class id="pal" loca="Paladin" style="paladin">
             <role id="med" default="true"/>
             <role id="atk"/>
             <role id="tnk"/>
         </class>
-        
+
         <class id="pri" loca="Priest" style="priest">
             <role id="med" default="true"/>
             <role id="rgd"/>
         </class>
-        
+
         <class id="rog" loca="Rogue" style="rogue">
             <role id="atk" default="true"/>
         </class>
-        
+
         <class id="sha" loca="Shaman" style="shaman">
             <role id="med" default="true"/>
             <role id="rgd"/>
             <role id="atk"/>
         </class>
-        
+
         <class id="wlk" loca="Warlock" style="warlock">
             <role id="rgd" default="true"/>
         </class>
-        
+
         <class id="war" loca="Warrior" style="warrior">
             <role id="tnk" default="true"/>
             <role id="atk"/>
         </class>
+
+        <class id="dmh" loca="Demonhunter" style="demonhunter">
+            <role id="atk" default="true"/>
+            <role id="tnk"/>
+        </class>
     </classes>
-    
+
     <raidview>
         <slots role="tnk" order="1" columns="1"/>
         <slots role="med" order="2" columns="1"/>
         <slots role="atk" order="3" columns="2"/>
         <slots role="rgd" order="4" columns="2"/>
     </raidview>
-    
+
     <groups>
         <group count="5">
             <role id="tnk" count="1"/>
@@ -84,35 +89,35 @@
             <role id="atk" count="1"/>
             <role id="rgd" count="2"/>
         </group>
-        
+
         <group count="10">
             <role id="tnk" count="2"/>
             <role id="med" count="3"/>
             <role id="atk" count="2"/>
             <role id="rgd" count="3"/>
         </group>
-        
+
         <group count="20">
             <role id="tnk" count="2"/>
             <role id="med" count="5"/>
             <role id="atk" count="6"/>
             <role id="rgd" count="*"/>
         </group>
-        
+
         <group count="25">
             <role id="tnk" count="2"/>
             <role id="med" count="6"/>
             <role id="atk" count="8"/>
             <role id="rgd" count="*"/>
         </group>
-        
+
         <group count="30">
             <role id="tnk" count="2"/>
             <role id="med" count="7"/>
             <role id="atk" count="10"/>
             <role id="rgd" count="*"/>
         </group>
-        
+
         <group count="40">
             <role id="tnk" count="4"/>
             <role id="med" count="10"/>
@@ -120,7 +125,7 @@
             <role id="rgd" count="*"/>
         </group>
     </groups>
-    
+
     <locale name="en">
         <text key="Deathknight">Deathknight</text>
         <text key="Druid">Druid</text>
@@ -133,8 +138,9 @@
         <text key="Shaman">Shaman</text>
         <text key="Warlock">Warlock</text>
         <text key="Warrior">Warrior</text>
+        <text key="Demonhunter">Demon hunter</text>
     </locale>
-    
+
     <locale name="de">
         <text key="Deathknight">Todesritter</text>
         <text key="Druid">Druide</text>
@@ -147,8 +153,9 @@
         <text key="Shaman">Schamane</text>
         <text key="Warlock">Hexenmeister</text>
         <text key="Warrior">Krieger</text>
+        <text key="Demonhunter">Dämonenjäger</text>
     </locale>
-    
+
     <locale name="fr">
         <text key="Deathknight">DK</text>
         <text key="Druid">Druide</text>
@@ -161,8 +168,9 @@
         <text key="Shaman">chaman</text>
         <text key="Warlock">Démoniste</text>
         <text key="Warrior">Guerrier</text>
+        <text key="Demonhunter">Chasseur de démons</text>
     </locale>
-    
+
     <locale name="pl">
         <text key="Deathknight">Deathknight</text>
         <text key="Druid">Druid</text>
@@ -175,8 +183,9 @@
         <text key="Shaman">Shaman</text>
         <text key="Warlock">Warlock</text>
         <text key="Warrior">Warrior</text>
+        <text key="Demonhunter">Demon hunter</text>
     </locale>
-    
+
     <locale name="cs">
         <text key="Deathknight">Deathknight</text>
         <text key="Druid">Druid</text>
@@ -189,5 +198,6 @@
         <text key="Shaman">Shaman</text>
         <text key="Warlock">Warlock</text>
         <text key="Warrior">Warrior</text>
+        <text key="Demonhunter">Demon hunter</text>
     </locale>
 </game>
