@@ -216,9 +216,9 @@
         }
 
         if ( !in_array("Version", $ExistingSettings) )
-            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 110, '');" );
+            $Connector->exec( "INSERT INTO `".$Prefix."Setting` (`Name`, `IntValue`, `TextValue`) VALUES('Version', 120, '');" );
         else
-            $Connector->exec( "UPDATE `".$Prefix."Setting` SET IntValue=110 WHERE Name='Version' LIMIT 1" );
+            $Connector->exec( "UPDATE `".$Prefix."Setting` SET IntValue=120 WHERE Name='Version' LIMIT 1" );
     }
 
     // ------------------------------------------------------------------------

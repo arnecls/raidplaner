@@ -562,11 +562,11 @@
                           "InnoDB Session"     => "ALTER TABLE `".RP_TABLE_PREFIX."Session` ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
                           "InnoDB User"        => "ALTER TABLE `".RP_TABLE_PREFIX."User` ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
                           "InnoDB UserSetting" => "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
-                          "UTF8 Attendance"    => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
-                          "UTF8 Character"     => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
-                          "UTF8 Location"      => "ALTER TABLE `".RP_TABLE_PREFIX."Location` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
-                          "UTF8 Session"       => "ALTER TABLE `".RP_TABLE_PREFIX."Session` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
-                          "UTF8 User"          => "ALTER TABLE `".RP_TABLE_PREFIX."User` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
+                          "UTF8 Attendance"    => "ALTER TABLE `".RP_TABLE_PREFIX."Attendance` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "UTF8 Character"     => "ALTER TABLE `".RP_TABLE_PREFIX."Character` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "UTF8 Location"      => "ALTER TABLE `".RP_TABLE_PREFIX."Location` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "UTF8 Session"       => "ALTER TABLE `".RP_TABLE_PREFIX."Session` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "UTF8 User"          => "ALTER TABLE `".RP_TABLE_PREFIX."User` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
                           "UTF8 UserSetting"   => "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
                         );
 
