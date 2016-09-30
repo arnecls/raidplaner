@@ -24,6 +24,10 @@
                 $Connector->rollBack();
                 return false; // ### return, error ###
             }
+
+            Log::getInstance()->update(LOG_TYPE_USER, $UserId, [
+                'id'    => $UserId,
+                'group' => $GroupName]);
         }
 
         return true;
@@ -120,6 +124,7 @@
             assignStringRequestValue( $aRequest, 'calendarBigIcons', $Settings['CalendarBigIcons'] );
 
             $Settings->serialize();
+            $Log = Log::getInstance();
 
             do
             {
@@ -156,6 +161,9 @@
                             array_push( $BindValues, array(':Name'.$LocationId, $LocationName, PDO::PARAM_STR) );
                             array_push( $BindValues, array(':Image'.$LocationId, $LocationImage, PDO::PARAM_STR) );
                             $QueryString .= 'UPDATE `'.RP_TABLE_PREFIX.'Location` SET Name = :Name'.$LocationId.', Image = :Image'.$LocationId.' WHERE LocationId='.$LocationId.'; ';
+                            $Log->update(LOG_TYPE_LOCATION, $LocationId, [
+                                'id'   => $LocationId,
+                                'name' => $LocationName]);
                         }
                     }
                 }
@@ -168,6 +176,7 @@
                                         'LEFT JOIN `'.RP_TABLE_PREFIX.'Raid` USING(LocationId) '.
                                         'LEFT JOIN `'.RP_TABLE_PREFIX.'Attendance` USING(RaidId) '.
                                         ' WHERE LocationId='.intval($LocationId).'; ';
+                        $Log->delete(LOG_TYPE_LOCATION, $LocationId);
                     }
                 }
 
@@ -225,6 +234,8 @@
                         $Connector->rollBack();
                         return; // ### return, error ###
                     }
+
+                    $Log->update(LOG_TYPE_USER, 'unlinked', $UserId);
                 }
 
                 // Update relinked users
@@ -252,6 +263,8 @@
                             $Connector->rollBack();
                             return; // ### return, error ###
                         }
+
+                        $Log->update(LOG_TYPE_USER, 'linked', $UserId);
                     }
                 }
 
@@ -289,6 +302,8 @@
                         $Connector->rollBack();
                         return; // ### return, error ###
                     }
+
+                    $Log->delete(LOG_TYPE_USER, $UserId);
                 }
             }
             while (!$Connector->commit());

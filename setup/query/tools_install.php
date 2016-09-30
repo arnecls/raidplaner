@@ -117,6 +117,20 @@
             new Key(   "",                 "UserId"),
             new Key(   "",                 "Name"),
             new Key(   "",                 "UserId,Name")
+        ),
+
+        "Logs" => Array(
+            new Column("LogId",            "int",      10,     Array("unsigned", "NOT NULL", "AUTO_INCREMENT")),
+            new Column("UserId",           "int",      10,     Array("unsigned", "NOT NULL")),
+            new Column("ReferenceId",      "int",      10,     Array("unsigned", "NOT NULL")),
+            new Column("Type",             "char",     4,      Array("NOT NULL")),
+            new Column("Subtype",          "char",     3,      Array("NOT NULL")),
+            new Column("Time",             "datetime", null,   Array("NOT NULL", "DEFAULT CURRENT_TIMESTAMP")),
+            new Column("Message",          "text",     null,   Array("NOT NULL")),
+            new Key(   "primary",          "LogId"),
+            new Key(   "",                 "Type,SubType"),
+            new Key(   "",                 "ReferenceId"),
+            new Key(   "",                 "Time"),
         )
     );
 

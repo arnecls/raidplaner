@@ -17,7 +17,8 @@
                 $NewLocationQuery = $Connector->prepare('INSERT INTO `'.RP_TABLE_PREFIX.'Location`'.
                                                         '(Game, Name, Image) VALUES (:Game, :Name, :Image)');
 
-                $NewLocationQuery->bindValue(':Name', requestToXML( $aRequest['locationName'], ENT_COMPAT, 'UTF-8' ), PDO::PARAM_STR );
+                $LocationName = requestToXML($aRequest['locationName'], ENT_COMPAT, 'UTF-8');
+                $NewLocationQuery->bindValue(':Name', $LocationName, PDO::PARAM_STR );
                 $NewLocationQuery->bindValue(':Image', $aRequest['raidImage'], PDO::PARAM_STR );
                 $NewLocationQuery->bindValue(':Game', $gGame['GameId'], PDO::PARAM_STR );
 
@@ -25,6 +26,11 @@
                     return; // ### return, location could not be created ###
 
                 $LocationId = $Connector->lastInsertId();
+
+                Log::getInstance()->create(LOG_TYPE_LOCATION, $LocationId, [
+                    "id"   => $LocationId,
+                    "name" => $LocationName,
+                    "game" => $gGame['GameId']]);
             }
 
             // Create raid
@@ -138,6 +144,7 @@
                 $SlotCount = implode(':', $GroupInfo);
                 $RaidMode  = ($aRequest['mode'] == 'optout') ? 'manual' : $aRequest['mode'];
                 $UserId    = UserProxy::getInstance()->UserId;
+                $Log       = Log::getInstance();
 
                 // Events are restricted
 
@@ -161,6 +168,7 @@
 
                     $StartDateTime += $aRequest['startOffset'] * 60;
                     $EndDateTime   += $aRequest['endOffset'] * 60;
+                    $Description    = requestToXML($aRequest['description'], ENT_COMPAT, 'UTF-8');
 
                     $NewRaidQuery->bindValue(':LocationId',  $LocationId, PDO::PARAM_INT);
                     $NewRaidQuery->bindValue(':UserId',      $UserId, PDO::PARAM_INT);
@@ -169,12 +177,21 @@
                     $NewRaidQuery->bindValue(':Start',       $StartDateTime, PDO::PARAM_INT);
                     $NewRaidQuery->bindValue(':End',         $EndDateTime, PDO::PARAM_INT);
                     $NewRaidQuery->bindValue(':Mode',        $RaidMode, PDO::PARAM_STR);
-                    $NewRaidQuery->bindValue(':Description', requestToXML( $aRequest['description'], ENT_COMPAT, 'UTF-8' ), PDO::PARAM_STR);
+                    $NewRaidQuery->bindValue(':Description', $Description, PDO::PARAM_STR);
                     $NewRaidQuery->bindValue(':SlotRoles',   $SlotRoles, PDO::PARAM_STR);
                     $NewRaidQuery->bindValue(':SlotCount',   $SlotCount, PDO::PARAM_STR);
 
                     $NewRaidQuery->execute();
                     $RaidId = $Connector->lastInsertId();
+
+                    $Log->create(LOG_TYPE_RAID, $RaidId, [
+                        "id"          => $RaidId,
+                        "location"    => $LocationId,
+                        "type"        => $aRequest['type'],
+                        "size"        => $aRequest['locationSize'],
+                        "start"       => $StartDateTime,
+                        "end"         => $EndDateTime,
+                        "description" => $Description]);
 
                     // Attend players when mode is optout
 
@@ -211,6 +228,12 @@
                             $AttendQuery->bindValue(':Status', $Status, PDO::PARAM_STR);
 
                             $AttendQuery->execute();
+
+                            $Log->create(LOG_TYPE_ATTEND, $RaidId, [
+                                'character' => $User['CharacterId'],
+                                'status'    => $Status,
+                                'class'     => $ClassId,
+                                'role'      => $RoleId]);
                         }
 
                         if ($RaidMode == 'attend')
@@ -233,6 +256,10 @@
                             $AbsentQuery->bindValue(':Message', $Settings['Message'], PDO::PARAM_STR);
 
                             $AbsentQuery->execute();
+
+                            $Log->create(LOG_TYPE_ATTEND, $RaidId, [
+                                'character' => $User['CharacterId'],
+                                'status'    => 'unavailable']);
                         }
                     }
 

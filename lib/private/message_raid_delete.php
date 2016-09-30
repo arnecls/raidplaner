@@ -49,6 +49,8 @@
             }
             while(!$Connector->commit());
 
+            Log::getInstance()->delete(LOG_TYPE_RAID, $aRequest['id']);
+
             $Session = Session::get();
 
             $ShowMonth = ( isset($Session['Calendar']) && isset($Session['Calendar']['month']) ) ? $Session['Calendar']['month'] : $aRequest['month'];

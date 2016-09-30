@@ -42,7 +42,8 @@
                     $NewLocationQuery = $Connector->prepare('INSERT INTO `'.RP_TABLE_PREFIX.'Location`'.
                                                             '(Name, Game, Image) VALUES (:Name, :Game, :Image)');
 
-                    $NewLocationQuery->bindValue(':Name', requestToXML( $aRequest['locationName'], ENT_COMPAT, 'UTF-8' ), PDO::PARAM_STR );
+                    $LocationName = requestToXML($aRequest['locationName'], ENT_COMPAT, 'UTF-8');
+                    $NewLocationQuery->bindValue(':Name', $LocationName, PDO::PARAM_STR );
                     $NewLocationQuery->bindValue(':Game', $gGame['GameId'], PDO::PARAM_STR );
                     $NewLocationQuery->bindValue(':Image', $aRequest['raidImage'], PDO::PARAM_STR );
 
@@ -53,6 +54,10 @@
                     }
 
                     $LocationId = $Connector->lastInsertId();
+                    Log::getInstance()->create(LOG_TYPE_LOCATION, $LocationId, [
+                        "id"   => $LocationId,
+                        "name" => $LocationName,
+                        "game" => $gGame['GameId']]);
                 }
 
                 // Get old raid
@@ -84,6 +89,7 @@
 
                 $StartDateTime += $aRequest['startOffset'] * 60;
                 $EndDateTime   += $aRequest['endOffset'] * 60;
+                $Description    = requestToXML($aRequest['description'], ENT_COMPAT, 'UTF-8');
 
                 $UpdateRaidQuery->bindValue(':RaidId',      $aRequest['id'], PDO::PARAM_INT);
                 $UpdateRaidQuery->bindValue(':LocationId',  $LocationId, PDO::PARAM_INT);
@@ -91,7 +97,7 @@
                 $UpdateRaidQuery->bindValue(':Size',        $aRequest['locationSize'], PDO::PARAM_INT);
                 $UpdateRaidQuery->bindValue(':Start',       $StartDateTime, PDO::PARAM_INT);
                 $UpdateRaidQuery->bindValue(':End',         $EndDateTime, PDO::PARAM_INT);
-                $UpdateRaidQuery->bindValue(':Description', requestToXML( $aRequest['description'], ENT_COMPAT, 'UTF-8' ), PDO::PARAM_STR);
+                $UpdateRaidQuery->bindValue(':Description', $Description, PDO::PARAM_STR);
                 $UpdateRaidQuery->bindValue(':SlotRoles',   implode(':',$aRequest['slotRoles']), PDO::PARAM_STR);
                 $UpdateRaidQuery->bindValue(':SlotCount',   implode(':',$aRequest['slotCount']), PDO::PARAM_STR);
 
@@ -104,6 +110,15 @@
                     $Connector->rollBack();
                     return; // ### return, error ###
                 }
+
+                Log::getInstance()->create(LOG_TYPE_RAID, $aRequest['id'], [
+                    "id"          => $aRequest['id'],
+                    "location"    => $LocationId,
+                    "stage"       => $aRequest['stage'],
+                    "size"        => $aRequest['locationSize'],
+                    "start"       => $StartDateTime,
+                    "end"         => $EndDateTime,
+                    "description" => $Description]);
 
                 // Remove the attends marked for delete.
                 // Only random player attends can be removed.
@@ -141,6 +156,8 @@
                         for ( $AttendIdx=0; $AttendIdx < count($AttendsForRole); )
                         {
                             $UpdateSlot = null;
+                            $LogData = array();
+                            $LogType = LOG_SUBTYPE_UPDATE;
 
                             // $Id = UserId when not having an attendance record
                             // $Id = AttendanceId for all others
@@ -158,16 +175,24 @@
                             {
                                 $CharId = intval($AttendsForRole[$AttendIdx++]);
                                 $ActiveClass = $AttendsForRole[$AttendIdx++];
+                                $LogData['character'] = $CharId;
+                                $LogData['class'] = $ActiveClass;
                             }
 
-                            if ( ($Flags & PlayerFlagUserId) != 0 )
+                            if ( ($Flags & PlayerFlagUserId) != 0 ) {
                                 $UserId = intVal($AttendsForRole[$AttendIdx++]);
+                                $LogData['userId'] = $UserId;
+                            }
 
-                            if ( ($Flags & PlayerFlagName) != 0 )
+                            if ( ($Flags & PlayerFlagName) != 0 ) {
                                 $Name = $AttendsForRole[$AttendIdx++];
+                                $LogData['character'] = $Name;
+                            }
 
-                            if ( ($Flags & PlayerFlagComment) != 0 )
+                            if ( ($Flags & PlayerFlagComment) != 0 ) {
                                 $Comment = $AttendsForRole[$AttendIdx++];
+                                $LogData['comment'] = $Comment;
+                            }
 
                             if ( ($Flags & PlayerFlagNew) != 0 )
                             {
@@ -187,6 +212,9 @@
                                     $UpdateSlot->bindValue( ':Class', $ActiveClass, PDO::PARAM_STR);
                                     $UpdateSlot->bindValue( ':UserId', $UserId, PDO::PARAM_INT);
                                     $UpdateSlot->bindValue( ':Comment', $Comment, PDO::PARAM_STR);
+
+                                    $LogType = LOG_SUBTYPE_CREATE;
+                                    $LogData['role'] = $Role['id'];
                                 }
                                 else if ( (($Flags & PlayerFlagComment) != 0) &&
                                           (($Flags & PlayerFlagCharId) != 0) )
@@ -201,6 +229,9 @@
                                     $UpdateSlot->bindValue( ':Class', $ActiveClass, PDO::PARAM_STR);
                                     $UpdateSlot->bindValue( ':UserId', $UserId, PDO::PARAM_INT);
                                     $UpdateSlot->bindValue( ':Comment', $Comment, PDO::PARAM_STR);
+
+                                    $LogType = LOG_SUBTYPE_CREATE;
+                                    $LogData['role'] = $Role['id'];
                                 }
                                 else if ( ($Flags & PlayerFlagName) != 0 )
                                 {
@@ -212,13 +243,17 @@
 
                                     $UpdateSlot->bindValue( ':Name', $Name, PDO::PARAM_STR);
                                     $UpdateSlot->bindValue( ':Class', '___', PDO::PARAM_STR);
+
+                                    $LogType = LOG_SUBTYPE_CREATE;
+                                    $LogData['character'] = $Name;
+                                    $LogData['class'] = 'random';
+                                    $LogData['role'] = $Role['id'];
                                 }
                                 else
                                 {
                                     $Out = Out::getInstance();
                                     $Out->pushError('Invalid user flags');
                                 }
-
                             }
                             else
                             {
@@ -236,6 +271,8 @@
                                     $UpdateSlot->bindValue( ':Comment', $Comment, PDO::PARAM_STR);
                                     $UpdateSlot->bindValue( ':CharId', $CharId, PDO::PARAM_INT);
                                     $UpdateSlot->bindValue( ':Class', $ActiveClass, PDO::PARAM_STR);
+
+                                    $LogData['role'] = $Role['id'];
                                 }
                                 else if ( ($Flags & PlayerFlagCharId) != 0 )
                                 {
@@ -247,6 +284,8 @@
 
                                     $UpdateSlot->bindValue( ':CharId', $CharId, PDO::PARAM_INT);
                                     $UpdateSlot->bindValue( ':Class', $ActiveClass, PDO::PARAM_STR);
+
+                                    $LogData['role'] = $Role['id'];
                                 }
                                 else if ( (($Flags & PlayerFlagComment) != 0) )
                                 {
@@ -275,6 +314,8 @@
                                     $UpdateSlot = $Connector->prepare( 'UPDATE `'.RP_TABLE_PREFIX.'Attendance` SET '.
                                         'Status = :Status, Role = :Role, LastUpdate = FROM_UNIXTIME(:TimestampNow) '.
                                         'WHERE RaidId = :RaidId AND LastUpdate = FROM_UNIXTIME(:LastUpdate) AND AttendanceId = :AttendanceId LIMIT 1' );
+
+                                    $LogData['role'] = $Role['id'];
                                 }
 
                                 $UpdateSlot->bindValue( ':AttendanceId', $Id, PDO::PARAM_INT);
@@ -285,6 +326,9 @@
                             $UpdateSlot->bindValue( ':Status', $Status, PDO::PARAM_STR);
                             $UpdateSlot->bindValue( ':RaidId', $aRequest['id'], PDO::PARAM_INT);
                             $UpdateSlot->bindValue( ':Role',   $Role['id'], PDO::PARAM_STR);
+
+                            $LogData['status'] = $Status;
+                            Log::getInstance()->write(LOG_TYPE_ATTEND, $LogType, $aRequest['id'], $LogData);
 
                             if (!$UpdateSlot->execute())
                             {

@@ -1,21 +1,22 @@
 <?php
     // Output headers and set error handler
-    
-    require_once(dirname(__FILE__)."/private/debug.php");    
+
+    require_once(dirname(__FILE__)."/private/debug.php");
     Out::writeHeadersJSON();
     Debug::setHandlersJSON();
-    
+
     // Process includes after error handler has been set
-    
+
     define( "LOCALE_MAIN", true );
     date_default_timezone_set('UTC');
-    
+
     require_once(dirname(__FILE__)."/private/locale.php");
     require_once(dirname(__FILE__)."/private/userproxy.class.php");
     require_once(dirname(__FILE__)."/private/tools_site.php");
     require_once(dirname(__FILE__)."/private/tools_string.php");
     require_once(dirname(__FILE__)."/private/settings.class.php");
     require_once(dirname(__FILE__)."/private/out.class.php");
+    require_once(dirname(__FILE__)."/private/log.class.php");
 
     include_once("private/message_query_calendar.php");
     include_once("private/message_raid_list.php");
@@ -36,22 +37,22 @@
     include_once("private/message_settings_update.php");
     include_once("private/message_user_create.php");
     include_once("private/message_user_link.php");
-    
+
     // Init user if required
-    
+
     switch ( strtolower($_REQUEST["Action"]) )
     {
-    case "try_auto_login":        
+    case "try_auto_login":
         UserProxy::getInstance(true);
         break;
-        
+
     default:
         UserProxy::getInstance();
         break;
     }
-    
+
     // Process message
-        
+
     $Out = Out::getInstance();
 
     if ( isset($_REQUEST["Action"]) )
@@ -60,7 +61,7 @@
         {
         case "try_auto_login":
             break;
-            
+
         case "query_locale":
             msgQueryLocale( $_REQUEST );
             break;
@@ -80,11 +81,11 @@
         case "query_credentials_id":
             msgQueryLocalCredentialsById( $_REQUEST );
             break;
-            
+
         case "login":
             msgLogin( $_REQUEST );
             break;
-            
+
         case "logout":
             msgLogout( $_REQUEST );
             break;
@@ -101,6 +102,7 @@
             $Settings = Settings::getInstance();
             lockOldRaids( $Settings["LockRaids"]["IntValue"] );
             purgeOldRaids( $Settings["PurgeRaids"]["IntValue"] );
+            purgeOldLogs( $Settings["PurgeRaids"]["IntValue"] );
             msgQueryCalendar( $_REQUEST );
             break;
 
@@ -108,6 +110,7 @@
             $Settings = Settings::getInstance();
             lockOldRaids( $Settings["LockRaids"]["IntValue"] );
             purgeOldRaids( $Settings["PurgeRaids"]["IntValue"] );
+            purgeOldLogs( $Settings["PurgeRaids"]["IntValue"] );
             msgRaidList( $_REQUEST );
             break;
 

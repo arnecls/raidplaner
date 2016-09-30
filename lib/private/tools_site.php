@@ -472,6 +472,19 @@
 
     // ---------------------------------------------------------------
 
+    function purgeOldLogs( $aSeconds )
+    {
+        $Connector = Connector::getInstance();
+        $DropRaidQuery = $Connector->prepare( 'DELETE FROM `'.RP_TABLE_PREFIX.'Logs` '.
+                                           'WHERE `Time` < FROM_UNIXTIME(:Time)' );
+
+        $Timestamp = time() - $aSeconds;
+        $DropRaidQuery->bindValue( ':Time', $Timestamp, PDO::PARAM_INT );
+        $DropRaidQuery->execute();
+    }
+
+    // ---------------------------------------------------------------
+
     function userOwnsRaid( $aRaidId )
     {
         $Connector = Connector::getInstance();

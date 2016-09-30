@@ -567,7 +567,19 @@
                           "UTF8 Location"      => "ALTER TABLE `".RP_TABLE_PREFIX."Location` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
                           "UTF8 Session"       => "ALTER TABLE `".RP_TABLE_PREFIX."Session` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
                           "UTF8 User"          => "ALTER TABLE `".RP_TABLE_PREFIX."User` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
-                          "UTF8 UserSetting"   => "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"
+                          "UTF8 UserSetting"   => "ALTER TABLE `".RP_TABLE_PREFIX."UserSetting` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;",
+                          "Logs"               => "CREATE TABLE `".RP_TABLE_PREFIX."Logs` (`LogId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                                                                                          `UserId` int(10) UNSIGNED NOT NULL,
+                                                                                          `ReferenceId` int(11) NOT NULL,
+                                                                                          `Type` char(4) COLLATE utf8mb4_bin NOT NULL,
+                                                                                          `Subtype` char(3) COLLATE utf8mb4_bin NOT NULL,
+                                                                                          `Time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                                                                          `Message` mediumtext COLLATE utf8mb4_bin NOT NULL,
+                                                                                          ADD PRIMARY KEY (`LogId`),
+                                                                                          ADD KEY `Type` (`Type`,`Subtype`),
+                                                                                          ADD KEY `ReferenceId` (`ReferenceId`),
+                                                                                          ADD KEY `Time` (`Time`)
+                                                                                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;",
                         );
 
         doUpgrade( $Updates );
