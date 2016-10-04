@@ -213,6 +213,7 @@
         $gLocale[ 'NewVersionAvailable' ]      = 'Nová verze je dostupná:';
         $gLocale[ 'VisitProjectPage' ]         = 'Navštivte domovskou stránku projektu';
         $gLocale[ 'AttendWithPrimary' ]        = 'Zúčastněte se s primární rolí';
+        $gLocale[ 'CalendarBigIcons' ]         = null;
     }
     
     if ( defined('LOCALE_SETUP') )
