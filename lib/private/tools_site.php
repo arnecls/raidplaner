@@ -4,7 +4,7 @@
     require_once(dirname(__FILE__).'/session.class.php');
     require_once(dirname(__FILE__).'/random.class.php');
 
-    $gVersion = 115.1;
+    $gVersion = 120.0;
 
     $gSite = null;
     $gGame = null;
@@ -92,6 +92,7 @@
         $gSite['TimeFormat']  = 24;
         $gSite['StartOfWeek'] = 1;
         $gSite['GameConfig']  = 'wow';
+        $gSite['CalendarBigIcons']  = false;
 
         foreach($Settings->getProperties() as $Name => $Data)
         {
@@ -164,6 +165,10 @@
 
             case 'PrimaryRole':
                 $gSite['PrimaryRole'] = $Data['TextValue'] == 'true';
+                break;
+
+            case 'CalendarBigIcons':
+                $gSite['CalendarBigIcons'] = $Data['TextValue'] == 'true';
                 break;
 
             default:
@@ -463,5 +468,33 @@
         $Timestamp = time() - $aSeconds;
         $DropRaidQuery->bindValue( ':Time', $Timestamp, PDO::PARAM_INT );
         $DropRaidQuery->execute();
+    }
+
+    // ---------------------------------------------------------------
+
+    function purgeOldLogs( $aSeconds )
+    {
+        $Connector = Connector::getInstance();
+        $DropRaidQuery = $Connector->prepare( 'DELETE FROM `'.RP_TABLE_PREFIX.'Logs` '.
+                                           'WHERE `Time` < FROM_UNIXTIME(:Time)' );
+
+        $Timestamp = time() - $aSeconds;
+        $DropRaidQuery->bindValue( ':Time', $Timestamp, PDO::PARAM_INT );
+        $DropRaidQuery->execute();
+    }
+
+    // ---------------------------------------------------------------
+
+    function userOwnsRaid( $aRaidId )
+    {
+        $Connector = Connector::getInstance();
+        $UserId = UserProxy::getInstance()->UserId;
+
+        $RightsQuery = $Connector->prepare('SELECT '.RP_TABLE_PREFIX.'Raid.RaidId FROM '.RP_TABLE_PREFIX.'Raid WHERE RaidId = :RaidId AND UserId = :UserId LIMIT 1');
+        $RightsQuery->bindValue(':RaidId', $aRaidId, PDO::PARAM_INT);
+        $RightsQuery->bindValue(':UserId', $UserId, PDO::PARAM_INT);
+
+        $result = $RightsQuery->fetchFirst();
+        return ($result != NULL) && ($result["RaidId"] == $aRaidId);
     }
 ?>

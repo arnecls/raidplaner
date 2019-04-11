@@ -28,11 +28,13 @@
             $Config->Prefix           = defined('WBB_TABLE_PREFIX') ? WBB_TABLE_PREFIX : '1';
             $Config->Version          = defined('WBB_VERSION') ? WBB_VERSION : 40000;
             $Config->AutoLoginEnabled = defined('WBB_AUTOLOGIN') ? WBB_AUTOLOGIN : false;
-            $Config->Raidleads        = defined('WBB_RAIDLEAD_GROUPS') ? explode(',', WBB_RAIDLEAD_GROUPS ) : array();
-            $Config->Members          = defined('WBB_MEMBER_GROUPS') ? explode(',', WBB_MEMBER_GROUPS ) : array();
             $Config->CookieData       = defined('WBB_COOKIE_PREFIX') ? WBB_COOKIE_PREFIX : 'wcf_';
             $Config->PostTo           = defined('WBB_POSTTO') ? WBB_POSTTO : '';
             $Config->PostAs           = defined('WBB_POSTAS') ? WBB_POSTAS : '';
+            $Config->Members          = defined('WBB_MEMBER_GROUPS') ? explode(',', WBB_MEMBER_GROUPS ) : array();
+            $Config->Privileged       = defined('WBB_PRIVILEGED_GROUPS') ? explode(',', WBB_PRIVILEGED_GROUPS ) : array();
+            $Config->Raidleads        = defined('WBB_RAIDLEAD_GROUPS') ? explode(',', WBB_RAIDLEAD_GROUPS ) : array();
+            $Config->Admins           = defined('WBB_ADMIN_GROUPS') ? explode(',', WBB_ADMIN_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
@@ -52,19 +54,19 @@
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
                 return null;
             }
-            
+
             @include_once($ConfigPath);
-            
+
             // Read cookie
-            
+
             $Connector = new Connector(SQL_HOST, $dbName, $dbUser, $dbPassword, false);
-            
+
             $OptionQuery = $Connector->prepare( 'SELECT optionValue FROM `wcf'.WCF_N.'_option` '.
                 'WHERE optionName = "cookie_prefix" AND categoryName = "general.system.cookie" LIMIT 1' );
-                    
-            $OptionData = $OptionQuery->fetchFirst(); 
-            
-            // Build result          
+
+            $OptionData = $OptionQuery->fetchFirst();
+
+            // Build result
 
             return array(
                 'database'  => $dbName,
@@ -78,7 +80,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.wbb.php', 'w+' );
 
@@ -87,17 +89,19 @@
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine('WBB_DATABASE', '".$aDatabase."');\n");
-                fwrite( $Config, "\tdefine('WBB_USER', '".$aUser."');\n");
-                fwrite( $Config, "\tdefine('WBB_PASS', '".$aPass."');\n");
-                fwrite( $Config, "\tdefine('WBB_TABLE_PREFIX', '".$aPrefix."');\n");
-                fwrite( $Config, "\tdefine('WBB_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
-                fwrite( $Config, "\tdefine('WBB_COOKIE_PREFIX', '".$aCookieEx."');\n");
-                
-                fwrite( $Config, "\tdefine('WBB_POSTTO', ".$aPostTo.");\n");
-                fwrite( $Config, "\tdefine('WBB_POSTAS', ".$aPostAs.");\n");
-                fwrite( $Config, "\tdefine('WBB_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
-                fwrite( $Config, "\tdefine('WBB_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
+                fwrite( $Config, "\tdefine('WBB_DATABASE', '".$aConfig->Database."');\n");
+                fwrite( $Config, "\tdefine('WBB_USER', '".$aConfig->User."');\n");
+                fwrite( $Config, "\tdefine('WBB_PASS', '".$aConfig->Password."');\n");
+                fwrite( $Config, "\tdefine('WBB_TABLE_PREFIX', '".$aConfig->Prefix."');\n");
+                fwrite( $Config, "\tdefine('WBB_AUTOLOGIN', ".(($aConfig->AutoLoginEnabled) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('WBB_COOKIE_PREFIX', '".$aConfig->CookieData."');\n");
+                fwrite( $Config, "\tdefine('WBB_POSTTO', ".$aConfig->PostTo.");\n");
+                fwrite( $Config, "\tdefine('WBB_POSTAS', ".$aConfig->PostAs.");\n");
+
+                fwrite( $Config, "\tdefine('WBB_MEMBER_GROUPS', '".implode( ",", $aConfig->Members )."');\n");
+                fwrite( $Config, "\tdefine('WBB_PRIVILEGED_GROUPS', '".implode( ",", $aConfig->Privileged )."');\n");
+                fwrite( $Config, "\tdefine('WBB_RAIDLEAD_GROUPS', '".implode( ",", $aConfig->Raidleads )."');\n");
+                fwrite( $Config, "\tdefine('WBB_ADMIN_GROUPS', '".implode( ",", $aConfig->Admins )."');\n");
             }
 
             fwrite( $Config, '?>');
@@ -116,7 +120,7 @@
                 $GroupQuery = $Connector->prepare( 'SELECT groupID, groupName, languageItemValue FROM `wcf'.$aPrefix.'_user_group` '.
                     'LEFT JOIN `wcf'.$aPrefix.'_language_item` ON groupName = languageItem '.
                     'ORDER BY groupName' );
-                
+
                 $Groups = array();
                 $GroupQuery->loop(function($Group) use (&$Groups)
 
@@ -192,20 +196,15 @@
             if ($aUserData['banned'] != 0)
                 return 'none'; // ### return, banned ###
 
-            $AssignedGroup  = 'none';
-            $MemberGroups   = explode(',', WBB_MEMBER_GROUPS );
-            $RaidleadGroups = explode(',', WBB_RAIDLEAD_GROUPS );            
-            
+            $Config = $this->getConfig();
+            $AssignedGroup = ENUM_GROUP_NONE;
+
             foreach( $aUserData['Groups'] as $Group )
             {
-                if ( in_array($Group, $MemberGroups) )
-                    $AssignedGroup = 'member';
-
-                if ( in_array($Group, $RaidleadGroups) )
-                    return 'raidlead'; // ### return, best possible group ###
+                $AssignedGroup = $Config->mapGroup($Group, $AssignedGroup);
             }
 
-            return $AssignedGroup;
+            return GetGroupName($AssignedGroup);
         }
 
         // -------------------------------------------------------------------------
@@ -256,7 +255,7 @@
                     $UserInfo = $this->getUserInfoById($UserId);
                 }
             }
-            
+
             return $UserInfo;
         }
 
@@ -271,7 +270,7 @@
                 'WHERE LOWER(username) = :Login');
 
             $UserQuery->BindValue( ':Login', strtolower($aUserName), PDO::PARAM_STR );
-            
+
             $UserData = null;
             $Groups = array();
 
@@ -280,10 +279,10 @@
                 $UserData = $Data;
                 array_push($Groups, $UserData['groupID']);
             });
-            
+
             if ($UserData == null)
                 return null; // ### return, no users ###
-                
+
             $UserData['Groups'] = $Groups;
             return $this->generateUserInfo($UserData);
         }
@@ -328,10 +327,10 @@
         {
             if ( strpos($aPassword, '$2y$') === 0 )
                 return self::$HashMethodBF;
-            
+
             if ( strpos($aPassword, '$2a$') === 0 )
                 return self::$HashMethodBF;
-                
+
             return 'unsupported';
         }
 
@@ -345,7 +344,7 @@
         // -------------------------------------------------------------------------
 
         public function post($aSubject, $aMessage)
-        {        
+        {
             $Connector = $this->getConnector();
             $Timestamp = time();
 
@@ -359,62 +358,62 @@
 
                     $UserQuery = $Connector->prepare('SELECT username FROM `wcf'.WBB_TABLE_PREFIX.'_user` '.
                         'WHERE userID=:UserId LIMIT 1');
-                    
+
                     $UserQuery->BindValue( ':UserId', WBB_POSTAS, PDO::PARAM_INT );
                     $UserData = $UserQuery->fetchFirst();
-    
+
                     // Create topic
-    
+
                     $ThreadQuery = $Connector->prepare('INSERT INTO `wbb'.WBB_TABLE_PREFIX.'_thread` '.
                         '(boardId, userId, topic, time, username, lastPostTime, lastPoster, lastPosterID) VALUES '.
                         '(:BoardId, :UserId, :Subject, :Now, :Username, :Now, :Username, :UserId)');
-    
+
                     $ThreadQuery->BindValue( ':BoardId', WBB_POSTTO, PDO::PARAM_INT );
                     $ThreadQuery->BindValue( ':UserId', WBB_POSTAS, PDO::PARAM_INT );
                     $ThreadQuery->BindValue( ':Subject', xmlToUTF8($aSubject), PDO::PARAM_STR );
                     $ThreadQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
                     $ThreadQuery->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );
-    
+
                     $ThreadQuery->execute(true);
                     $ThreadId = $Connector->lastInsertId();
-    
+
                     // Create post
-                    
+
                     $FormattedMessage = HTMLToBBCode($aMessage);
-    
+
                     $PostQuery = $Connector->prepare('INSERT INTO `wbb'.WBB_TABLE_PREFIX.'_post` '.
                         '(threadId, time, username, userId, message) VALUES '.
                         '(:ThreadId, :Now, :Username, :UserId, :Text)');
-    
+
                     $PostQuery->BindValue( ':ThreadId', $ThreadId, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Now', $Timestamp, PDO::PARAM_INT );
-                    $PostQuery->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );    
+                    $PostQuery->BindValue( ':Username', $UserData['username'], PDO::PARAM_STR );
                     $PostQuery->BindValue( ':UserId', WBB_POSTAS, PDO::PARAM_INT );
                     $PostQuery->BindValue( ':Text', $FormattedMessage, PDO::PARAM_STR );
-    
+
                     $PostQuery->execute(true);
                     $PostId = $Connector->lastInsertId();
-    
+
                     // Finish topic
-    
+
                     $TopicFinishQuery = $Connector->prepare('UPDATE `wbb'.WBB_TABLE_PREFIX.'_thread` '.
                         'SET firstPostID = :PostId, lastPostID = :PostId '.
                         'WHERE threadID = :ThreadId LIMIT 1');
-    
+
                     $TopicFinishQuery->BindValue( ':PostId', $PostId, PDO::PARAM_INT );
                     $TopicFinishQuery->BindValue( ':ThreadId', $ThreadId, PDO::PARAM_INT );
-                    
+
                     $TopicFinishQuery->execute(true);
-                    
+
                     // Update board
-                    
+
                     $BoardQuery = $Connector->prepare('UPDATE `wbb'.WBB_TABLE_PREFIX.'_board_last_post` '.
                         'SET threadID = :ThreadId '.
                         'WHERE boardId = :BoardId LIMIT 1');
-    
+
                     $BoardQuery->BindValue( ':ThreadId', $ThreadId, PDO::PARAM_INT );
                     $BoardQuery->BindValue( ':BoardId', WBB_POSTTO, PDO::PARAM_INT );
-                    
+
                     $BoardQuery->execute(true);
                 }
                 while (!$Connector->commit());

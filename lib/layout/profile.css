@@ -119,6 +119,7 @@
     height: 64px;
     display: block;
     position: relative;
+    background-repeat: no-repeat;    
 }
 
 #profile .charslot .class .badge {

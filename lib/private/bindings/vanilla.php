@@ -31,8 +31,10 @@
             $Config->CookieData       = defined('VANILLA_COOKIE') ? VANILLA_COOKIE : 'Vanilla,md5,123456';
             $Config->PostTo           = defined('VANILLA_POSTTO') ? VANILLA_POSTTO : '';
             $Config->PostAs           = defined('VANILLA_POSTAS') ? VANILLA_POSTAS : '';
-            $Config->Raidleads        = defined('VANILLA_RAIDLEAD_GROUPS') ? explode(',', VANILLA_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('VANILLA_MEMBER_GROUPS') ? explode(',', VANILLA_MEMBER_GROUPS ) : array();
+            $Config->Privileged       = defined('VANILLA_PRIVILEGED_GROUPS') ? explode(',', VANILLA_PRIVILEGED_GROUPS ) : array();
+            $Config->Raidleads        = defined('VANILLA_RAIDLEAD_GROUPS') ? explode(',', VANILLA_RAIDLEAD_GROUPS ) : array();
+            $Config->Admins           = defined('VANILLA_ADMIN_GROUPS') ? explode(',', VANILLA_ADMIN_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
             $Config->HasForumConfig   = true;
@@ -45,11 +47,11 @@
         public function getExternalConfig($aRelativePath)
         {
             $Out = Out::getInstance();
-            
+
             $DefaultsPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/conf/config-defaults.php';
             $ConfigPath   = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/conf/config.php';
             $IndexPath    = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/index.php';
-            
+
             if (!file_exists($DefaultsPath))
             {
                 $Out->pushError($DefaultsPath.' '.L('NotExisting').'.');
@@ -61,28 +63,28 @@
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
                 return null;
             }
-            
-            $Version = 20000;            
+
+            $Version = 20000;
             if (file_exists($IndexPath))
             {
                 $Index = file_get_contents($IndexPath);
                 $AppIdx = strpos($Index, 'APPLICATION_VERSION');
-                
+
                 if ($AppIdx !== false)
                 {
-                    $StripIdx = strpos($Index, ';', $AppIdx);                    
+                    $StripIdx = strpos($Index, ';', $AppIdx);
                     $Index = substr($Index, 0, $StripIdx+1);
                     $Index = substr($Index, strpos($Index, '<?php')+5);
                     eval($Index);
-                    
-                    $VersionParts = explode('.', APPLICATION_VERSION);                
+
+                    $VersionParts = explode('.', APPLICATION_VERSION);
                     $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100 + intval($VersionParts[2]);
                 }
             }
-            
+
             if (!defined('APPLICATION'))
                 define('APPLICATION', 'Vanilla');
-            
+
             define('PATH_CACHE', '');
 
             @include_once($DefaultsPath);
@@ -96,7 +98,7 @@
 
             $CookieConf = $Configuration['Garden']['Cookie'];
             $DbConf = $Configuration['Database'];
-            
+
             return array(
                 'database'  => $DbConf['Name'],
                 'user'      => $DbConf['User'],
@@ -109,7 +111,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.vanilla.php', 'w+' );
 
@@ -118,17 +120,19 @@
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine('VANILLA_DATABASE', '".$aDatabase."');\n");
-                fwrite( $Config, "\tdefine('VANILLA_USER', '".$aUser."');\n");
-                fwrite( $Config, "\tdefine('VANILLA_PASS', '".$aPass."');\n");
-                fwrite( $Config, "\tdefine('VANILLA_TABLE_PREFIX', '".$aPrefix."');\n");
-                fwrite( $Config, "\tdefine('VANILLA_COOKIE', '".$aCookieEx."');\n");
-                fwrite( $Config, "\tdefine('VANILLA_AUTOLOGIN', ".(($aAutoLogin) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('VANILLA_DATABASE', '".$aConfig->Database."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_USER', '".$aConfig->User."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_PASS', '".$aConfig->Password."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_TABLE_PREFIX', '".$aConfig->Prefix."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_COOKIE', '".$aConfig->CookieData."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_AUTOLOGIN', ".(($aConfig->AutoLoginEnabled) ? "true" : "false").");\n");
+                fwrite( $Config, "\tdefine('VANILLA_POSTTO', ".$aConfig->PostTo.");\n");
+                fwrite( $Config, "\tdefine('VANILLA_POSTAS', ".$aConfig->PostAs.");\n");
 
-                fwrite( $Config, "\tdefine('VANILLA_POSTTO', ".$aPostTo.");\n");
-                fwrite( $Config, "\tdefine('VANILLA_POSTAS', ".$aPostAs.");\n");
-                fwrite( $Config, "\tdefine('VANILLA_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
-                fwrite( $Config, "\tdefine('VANILLA_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_MEMBER_GROUPS', '".implode( ",", $aConfig->Members )."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_PRIVILEGED_GROUPS', '".implode( ",", $aConfig->Privileged )."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_RAIDLEAD_GROUPS', '".implode( ",", $aConfig->Raidleads )."');\n");
+                fwrite( $Config, "\tdefine('VANILLA_ADMIN_GROUPS', '".implode( ",", $aConfig->Admins )."');\n");
             }
 
             fwrite( $Config, '?>');
@@ -219,27 +223,18 @@
         {
             if ($aUserData['Banned'] > 0)
             {
-                return 'none'; // ### return, banned ###
+                return GetGroupName(ENUM_GROUP_NONE); // ### return, banned ###
             }
 
-            $MemberGroups   = explode(',', VANILLA_MEMBER_GROUPS );
-            $RaidleadGroups = explode(',', VANILLA_RAIDLEAD_GROUPS );
-            $AssignedGroup  = 'none';
+            $Config = $this->getConfig();
+            $AssignedGroup = ENUM_GROUP_NONE;
 
             foreach( $aUserData['Roles'] as $RoleId )
             {
-                if ( in_array($RoleId, $MemberGroups) )
-                {
-                    $AssignedGroup = 'member';
-                }
-
-                if ( in_array($RoleId, $RaidleadGroups) )
-                {
-                    return 'raidlead'; // ### return, highest possible group ###
-                }
+                $AssignedGroup = $Config->mapGroup($RoleId, $AssignedGroup);
             }
 
-            return $AssignedGroup;
+            return GetGroupName($AssignedGroup);
         }
 
         // -------------------------------------------------------------------------
@@ -320,7 +315,7 @@
         private static function extractSaltPart( $aPassword )
         {
             global $gItoa64;
-            
+
             $Count = strpos($gItoa64, $aPassword[3]);
             $Salt = substr($aPassword, 4, 8);
 
@@ -400,7 +395,7 @@
         public function hash( $aPassword, $aSalt, $aMethod )
         {
             global $gItoa64;
-            
+
             $Parts   = explode(':',$aSalt);
             $CountB2 = intval($Parts[0],10);
             $Count   = 1 << $CountB2;

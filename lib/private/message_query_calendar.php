@@ -27,7 +27,7 @@
     {
         if (validUser())
         {
-            global $gGame;
+            global $gGame, $gSite;
             loadGameSettings();
             
             $Out = Out::getInstance();
@@ -89,7 +89,8 @@
             $Out->pushValue('startOfWeek', $StartDay);
             $Out->pushValue('displayMonth', $aRequest['Month']);
             $Out->pushValue('displayYear', $aRequest['Year']);
-    
+            $Out->pushValue('showBigIcons', $gSite['CalendarBigIcons']);
+
             parseRaidQuery( $aRequest, $ListRaidQuery, 0 );
         }
         else
@@ -183,6 +184,7 @@
                     $Raid = Array(
                         'id'              => $RaidId,
                         'location'        => $Data['Name'],
+                        'type'            => $Data['Type'],
                         'game'            => $Data['Game'],
                         'stage'           => $Data['Stage'],
                         'size'            => $Data['Size'],

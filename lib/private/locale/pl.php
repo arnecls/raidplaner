@@ -12,6 +12,7 @@
         $gLocale[ 'Melee' ]                    = 'Melee';
         $gLocale[ 'Range' ]                    = 'Range';
         $gLocale[ 'Support' ]                  = 'Support';
+        $gLocale[ 'Spell' ]                    = 'Magik';
 
         // Pre-loading checks
         $gLocale[ 'ContinueNoUpdate' ]         = 'Kontynuuj bez aktualizacji';
@@ -102,8 +103,12 @@
 
         // Raid
         $gLocale[ 'Raid' ]                     = 'Rajd';
+        $gLocale[ 'Event' ]                    = NULL;
+        $gLocale[ 'Complete' ]                 = NULL;
+        $gLocale[ 'Attendants' ]               = NULL;
         $gLocale[ 'Upcoming' ]                 = 'Nadchodzące rajdy';
         $gLocale[ 'CreateRaid' ]               = 'Utwórz rajd';
+        $gLocale[ 'CreateEvent' ]              = NULL;
         $gLocale[ 'NewDungeon' ]               = 'Nowa instancja';
         $gLocale[ 'Description' ]              = 'Opis';
         $gLocale[ 'DefaultRaidMode' ]          = 'Domyślny sposób zapisu';
@@ -135,7 +140,7 @@
         $gLocale[ 'ExportClipboard' ]          = 'Schowek';
         $gLocale[ 'CopyOk' ]                   = 'Dane zostały skopiowane do schowka.';
         $gLocale[ 'Random' ]                   = 'Rezerwacja';
-        
+
         // Profile
         $gLocale[ 'Profile' ]                  = 'Profil';
         $gLocale[ 'History' ]                  = 'Historia rajdów';
@@ -172,6 +177,7 @@
         $gLocale[ 'Settings' ]                 = 'Ustawienia';
         $gLocale[ 'Locked' ]                   = 'Zablokowani';
         $gLocale[ 'Members' ]                  = 'Użytkownicy';
+        $gLocale[ 'Privileged' ]               = NULL;
         $gLocale[ 'Raidleads' ]                = 'Rajd Liderzy';
         $gLocale[ 'Administrators' ]           = 'Administratorzy';
         $gLocale[ 'ConfirmDeleteUser' ]        = 'Czy na pewno chcesz usunąć tego użytkownika?';
@@ -215,6 +221,7 @@
         $gLocale[ 'NewVersionAvailable' ]      = 'Dostępna jest nowa wersja:';
         $gLocale[ 'VisitProjectPage' ]         = 'Odwiedź stronę projektu';
         $gLocale[ 'AttendWithPrimary' ]        = 'Zapisz się z główną rolą';
+        $gLocale[ 'CalendarBigIcons' ]         = null;
     }
 
     if ( defined('LOCALE_SETUP') )
@@ -332,15 +339,13 @@
         $gLocale[ 'StrayChars' ]               = 'Osierocone postacie';
         $gLocale[ 'StrayAttends' ]             = 'Osierocone zapisy';
         $gLocale[ 'InvalidCharacters' ]        = 'Nieprawidłowe postacie';
-        $gLocale[ 'SameGame' ]                 = 'Gry są identyczne';   
-        $gLocale[ 'Merged' ]                   = 'Zaktualizowano:'; 
-        $gLocale[ 'Locations' ]                = 'Lokacje'; 
-        $gLocale[ 'Characters' ]               = 'Postacie'; 
+        $gLocale[ 'SameGame' ]                 = 'Gry są identyczne';
+        $gLocale[ 'Merged' ]                   = 'Zaktualizowano:';
+        $gLocale[ 'Locations' ]                = 'Lokacje';
+        $gLocale[ 'Characters' ]               = 'Postacie';
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Wczytaj grupy używając powyższych ustawień';
-        $gLocale[ 'AutoMemberLogin' ]          = 'Grupy "Użytkowników"';
-        $gLocale[ 'AutoLeadLogin' ]            = 'Grupy "Rajd Liderów"';
         $gLocale[ 'ReloadFailed' ]             = 'Wczytywanie nie powiodło się';
         $gLocale[ 'LoadSettings' ]             = 'Uzyskaj ustawienia automatycznie';
         $gLocale[ 'BindingBasePath' ]          = 'Wprowadź ścieżkę do katalogu, w którym znajduje się powiązana strona, relatywnie do \''.$_SERVER['DOCUMENT_ROOT'].'\'.';
@@ -356,6 +361,22 @@
         $gLocale[ 'DisablePosting' ]           = 'Nie twórz postów';
         $gLocale[ 'NoUsersFound' ]             = 'Nie znaleziono użytkownika';
         $gLocale[ 'Version' ]                  = 'Wersja';
+
+        $gLocale[ 'Group' ]                    = NULL;
+        $gLocale[ 'Locked' ]                   = 'Zablokowani';
+        $gLocale[ 'Members' ]                  = 'Użytkownicy';
+        $gLocale[ 'Privileged' ]               = NULL;
+        $gLocale[ 'Raidleads' ]                = 'Rajd Liderzy';
+        $gLocale[ 'Administrators' ]           = 'Administratorzy';
+
+        // BlueThrust
+        $gLocale[ 'bt4_Binding' ]               = 'BlueThrust v4';
+        $gLocale[ 'bt4_ConfigFile' ]            = 'Plik konfiguracyjny BlueThrust';
+        $gLocale[ 'bt4_Database' ]              = 'Baza danych BlueThrust';
+        $gLocale[ 'bt4_DatabaseEmpty' ]         = 'Nazwa bazy danych BlueThrust nie może być pusta.';
+        $gLocale[ 'bt4_UserEmpty' ]             = 'Nazwa użytkownika BlueThrust nie może być pusta.';
+        $gLocale[ 'bt4_PasswordEmpty' ]         = 'Hasło bazy danych BlueThrust nie powinno być puste.';
+        $gLocale[ 'bt4_DBPasswordsMatch' ]      = 'Hasło bazy danych BlueThrust zostało powtórzone niepoprawnie.';
 
         // PHPBB3
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';
@@ -443,7 +464,7 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Hasło bazy danych Wordpress nie powinno być puste.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Hasło bazy danych Wordpress zostało powtórzone niepoprawnie.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY + LOGGED_IN_SALT';
-        
+
         // Woltlab Burning Board
         $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
         $gLocale[ 'wbb_ConfigFile' ]            = 'Plik konfiguracyjny Burning Board';

@@ -8,6 +8,7 @@
         $gLocale[ 'Melee' ]                    = 'Nahkämpfer';
         $gLocale[ 'Range' ]                    = 'Fernkämpfer';
         $gLocale[ 'Support' ]                  = 'Unterstützung';
+        $gLocale[ 'Spell' ]                    = 'Zauberer';
 
         // Pre-loading checks
         $gLocale[ 'ContinueNoUpdate' ]         = 'Ohne Aktualisierung fortfahren';
@@ -16,7 +17,7 @@
         $gLocale[ 'OlderBrowserFeatures' ]     = 'Ältere Browser unterstützen nicht alle benötigten Funktionen oder stellen die Seite falsch dar.';
         $gLocale[ 'DownloadNewBrowser' ]       = 'Du solltest deinen Browser aktualisieren oder einen der folgenden Browser herunterladen.';
         $gLocale[ 'RaidplanerNotConfigured' ]  = 'Der Raidplaner ist noch nicht konfiguriert oder benötigt ein Update.';
-        $gLocale[ 'PleaseRunSetup' ]           = 'Bitte führe den <a href="setup">Setup</a> aus oder befolge die Instruktionen für eine <a href="https://github.com/arnecls/raidplaner/wiki/Manual-Setup">manuelle Installation</a>.';
+        $gLocale[ 'PleaseRunSetup' ]           = 'Bitte führe das <a href="setup">Setup</a> aus oder befolge die Instruktionen für eine <a href="https://github.com/arnecls/raidplaner/wiki/Manual-Setup">manuelle Installation</a>.';
 
         // General
         $gLocale[ 'Reserved' ]                 = 'Reserviert';
@@ -98,8 +99,12 @@
 
         // Raid
         $gLocale[ 'Raid' ]                     = 'Raid';
+        $gLocale[ 'Event' ]                    = 'Ereignis';
+        $gLocale[ 'Complete' ]                 = 'vollständig';
+        $gLocale[ 'Attendants' ]               = 'Anmeldungen';
         $gLocale[ 'Upcoming' ]                 = 'Anstehende Raids';
         $gLocale[ 'CreateRaid' ]               = 'Raid anlegen';
+        $gLocale[ 'CreateEvent' ]              = 'Ereignis anlegen';
         $gLocale[ 'NewDungeon' ]               = 'Neue Instanz';
         $gLocale[ 'Description' ]              = 'Beschreibung';
         $gLocale[ 'DefaultRaidMode' ]          = 'Voreingestellte Anmeldeform';
@@ -131,7 +136,7 @@
         $gLocale[ 'ExportClipboard' ]          = 'Zwischenablage';
         $gLocale[ 'CopyOk' ]                   = 'Text wurde in die Zwischenablage exportiert.';
         $gLocale[ 'Random' ]                   = 'Unbekannt';
-        
+
         // Profile
         $gLocale[ 'Profile' ]                  = 'Profil';
         $gLocale[ 'History' ]                  = 'Vergangene Raids';
@@ -168,6 +173,7 @@
         $gLocale[ 'Settings' ]                 = 'Einstellungen';
         $gLocale[ 'Locked' ]                   = 'Gesperrt';
         $gLocale[ 'Members' ]                  = 'Mitglieder';
+        $gLocale[ 'Privileged' ]               = 'Priveligierte Mitglieder';
         $gLocale[ 'Raidleads' ]                = 'Raidleiter';
         $gLocale[ 'Administrators' ]           = 'Administratoren';
         $gLocale[ 'ConfirmDeleteUser' ]        = 'Willst du diesen Benutzer wirklich löschen?';
@@ -211,6 +217,7 @@
         $gLocale[ 'NewVersionAvailable' ]      = 'Es ist eine neue Version verfügbar:';
         $gLocale[ 'VisitProjectPage' ]         = 'Zur Projekt-Homepage';
         $gLocale[ 'AttendWithPrimary' ]        = 'Anmeldung mit primärer Rolle';
+        $gLocale[ 'CalendarBigIcons' ]         = 'Große Icons in Kalenderansicht';
     }
 
     if ( defined('LOCALE_SETUP') )
@@ -284,7 +291,7 @@
         $gLocale[ 'UpdateComplete' ]           = 'Update abgeschlossen';
         $gLocale[ 'RaidplanerSetupDone' ]      = 'Der Raidplaner ist jetzt erfolgreich konfiguriert.';
         $gLocale[ 'DeleteSetupFolder' ]        = 'Falls nicht mehr benötigt solltest nun den "setup" Ordner löschen um ungewollte Änderungen an deiner Installation zu verhindern.';
-        $gLocale[ 'ThankYou' ]                 = 'Danke das du den packedpixel Raidplaner verwendest.';
+        $gLocale[ 'ThankYou' ]                 = 'Danke, dass du den packedpixel Raidplaner verwendest.';
         $gLocale[ 'VisitBugtracker' ]          = 'Bei Fehlern oder Ideen für neue Features besuche bitte den Bugtracker auf ';
         $gLocale[ 'VersionDetection' ]         = 'Versionserkennung und Update';
         $gLocale[ 'VersionDetectProgress' ]    = 'Setup versucht die aktuelle Version zu erkennen.';
@@ -302,7 +309,7 @@
         $gLocale[ 'FailedGameconfig' ]         = 'Die Datei gameconfig.php konnte nicht in das neue Format übertragen werden.';
         $gLocale[ 'RemoveAndLaunch' ]          = 'Setup löschen und loslegen';
         $gLocale[ 'FailedRemoveSetup' ]        = 'Der Setup-Ordner konnte nicht gelöscht werden.';
-        
+
         // Repair
         $gLocale[ 'Repair' ]                   = 'Reparatur';
         $gLocale[ 'RepairDone' ]               = 'Reparatur abgeschlossen.';
@@ -328,15 +335,13 @@
         $gLocale[ 'StrayChars' ]               = 'Verwaiste Charaktere';
         $gLocale[ 'StrayAttends' ]             = 'Verwaiste Anmeldungen';
         $gLocale[ 'InvalidCharacters' ]        = 'Fehlerhafte Charaktere';
-        $gLocale[ 'SameGame' ]                 = 'Beide Spiele sind identisch';  
-        $gLocale[ 'Merged' ]                   = 'Konvertiert:'; 
-        $gLocale[ 'Locations' ]                = 'Orte'; 
-        $gLocale[ 'Characters' ]               = 'Charaktere';    
+        $gLocale[ 'SameGame' ]                 = 'Beide Spiele sind identisch';
+        $gLocale[ 'Merged' ]                   = 'Konvertiert:';
+        $gLocale[ 'Locations' ]                = 'Orte';
+        $gLocale[ 'Characters' ]               = 'Charaktere';
 
         // Plugin setup
         $gLocale[ 'LoadGroups' ]               = 'Lade Gruppen mit den angegebenen Verbindungsdaten';
-        $gLocale[ 'AutoMemberLogin' ]          = '"Mitglieder" Gruppen:';
-        $gLocale[ 'AutoLeadLogin' ]            = '"Raidleiter" Gruppen:';
         $gLocale[ 'ReloadFailed' ]             = 'Ladevorgang fehlgeschlagen';
         $gLocale[ 'LoadSettings' ]             = 'Einstellungen automatisch ermitteln';
         $gLocale[ 'BindingBasePath' ]          = 'Bitte gebe den Installationspfad dieses Bindings relativ zu \''.$_SERVER['DOCUMENT_ROOT'].'\' an.';
@@ -352,6 +357,22 @@
         $gLocale[ 'DisablePosting' ]           = 'Keine Postings erstellen';
         $gLocale[ 'NoUsersFound' ]             = 'Keine Benutzer gefunden';
         $gLocale[ 'Version' ]                  = 'Version';
+
+        $gLocale[ 'Group' ]                    = 'Gruppe verbinden';
+        $gLocale[ 'Locked' ]                   = 'Gesperrt';
+        $gLocale[ 'Members' ]                  = 'Mitglieder';
+        $gLocale[ 'Privileged' ]               = 'Priveligierte Mitglieder';
+        $gLocale[ 'Raidleads' ]                = 'Raidleiter';
+        $gLocale[ 'Administrators' ]           = 'Administratoren';
+
+        // BlueThrust
+        $gLocale[ 'bt4_Binding' ]               = 'BlueThrust v4';
+        $gLocale[ 'bt4_ConfigFile' ]            = 'BlueThrust Konfigurationsdatei';
+        $gLocale[ 'bt4_Database' ]              = 'Name der BlueThrust Datenbank';
+        $gLocale[ 'bt4_DatabaseEmpty' ]         = 'Name der BlueThrust Datenbank darf nicht leer sein';
+        $gLocale[ 'bt4_UserEmpty' ]             = 'BlueThrust Benutzer darf nicht leer sein';
+        $gLocale[ 'bt4_PasswordEmpty' ]         = 'BlueThrust Datenbank Passwort darf nicht leer sein';
+        $gLocale[ 'bt4_DBPasswordsMatch' ]      = 'BlueThrust Datenbank-Passwoerter stimmen nicht überein';
 
         // PHPBB3
         $gLocale[ 'phpbb3_Binding' ]            = 'PHPBB 3.x';
@@ -439,7 +460,7 @@
         $gLocale[ 'wp_PasswordEmpty' ]          = 'Wordpress Datenbank Passwort darf nicht leer sein.';
         $gLocale[ 'wp_DBPasswordsMatch' ]       = 'Wordpress Datenbank-Passwörter stimmen nicht überein.';
         $gLocale[ 'wp_CookieEx' ]               = 'LOGGED_IN_KEY gefolgt von LOGGED_IN_SALT';
-        
+
         // Woltlab Burning Board
         $gLocale[ 'wbb_Binding' ]               = 'Burning Board 4.x';
         $gLocale[ 'wbb_ConfigFile' ]            = 'Burning Board Konfigurationsdatei';

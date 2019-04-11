@@ -4,15 +4,15 @@
     {
         if (validUser())
         {
-            global $gGame;            
+            global $gGame;
             loadGameSettings();
-            
+
             $Out = Out::getInstance();
             $Connector = Connector::getInstance();
 
             // Get next 6 raids
 
-            $NextRaidQuery = $Connector->prepare('Select '.RP_TABLE_PREFIX.'Raid.*, '.RP_TABLE_PREFIX.'Location.*, '.
+            $NextRaidQuery = $Connector->prepare('SELECT '.RP_TABLE_PREFIX.'Raid.*, '.RP_TABLE_PREFIX.'Location.*, '.
                                                  RP_TABLE_PREFIX.'Attendance.CharacterId, '.RP_TABLE_PREFIX.'Attendance.UserId, '.
                                                  RP_TABLE_PREFIX.'Attendance.Status, '.RP_TABLE_PREFIX.'Attendance.Class, '.RP_TABLE_PREFIX.'Attendance.Role, '.RP_TABLE_PREFIX.'Attendance.Comment, '.
                                                  'UNIX_TIMESTAMP('.RP_TABLE_PREFIX.'Raid.Start) AS StartUTC, '.
@@ -27,12 +27,12 @@
 
             $NextRaidQuery->bindValue( ':Start', mktime(0,0,0), PDO::PARAM_INT );
             $NextRaidQuery->bindValue( ':Game', $gGame['GameId'], PDO::PARAM_STR );
-            
+
             parseRaidQuery( $aRequest, $NextRaidQuery, 6 );
 
             // Load raid history
 
-            $RaidHistoryQuery = $Connector->prepare('Select '.RP_TABLE_PREFIX.'Raid.*, '.RP_TABLE_PREFIX.'Location.*, '.
+            $RaidHistoryQuery = $Connector->prepare('SELECT '.RP_TABLE_PREFIX.'Raid.*, '.RP_TABLE_PREFIX.'Location.*, '.
                                                     'UNIX_TIMESTAMP('.RP_TABLE_PREFIX.'Raid.Start) AS StartUTC, '.
                                                     'UNIX_TIMESTAMP('.RP_TABLE_PREFIX.'Raid.End) AS EndUTC '.
                                                     'FROM `'.RP_TABLE_PREFIX.'Raid` '.

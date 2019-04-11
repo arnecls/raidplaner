@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+    <name>Age of Conan</name>
+    <family>aoc</family>
+    <banner>aoc.jpg</banner>
+    <bgimage>aoc.jpg</bgimage>
+    <bgrepeat>repeat-x</bgrepeat>
+    <iconset>aoc</iconset>
+    <bgcolor>#7E7E7E</bgcolor>
+</theme>

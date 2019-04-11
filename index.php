@@ -63,7 +63,7 @@
             <div id="menu"></div>
             <div id="body"></div>
 
-            <span id="version"><?php echo "version ".intVal($gSite["Version"] / 100).".".intVal(($gSite["Version"] % 100) / 10).".".intVal($gSite["Version"] % 10).(($gSite["Version"] - intval($gSite["Version"]) > 0) ? chr(round(($gSite["Version"] - intval($gSite["Version"])) * 10) + ord("a")-1) : ""); ?></span>
+            <span id="version"><?php echo "PRE-RELEASE ".intVal($gSite["Version"] / 100).".".intVal(($gSite["Version"] % 100) / 10).".".intVal($gSite["Version"] % 10).(($gSite["Version"] - intval($gSite["Version"]) > 0) ? chr(round(($gSite["Version"] - intval($gSite["Version"])) * 10) + ord("a")-1) : ""); ?></span>
         </div>
 
         <div id="eventblocker"></div>

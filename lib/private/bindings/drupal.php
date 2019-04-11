@@ -7,7 +7,7 @@
     {
         private static $BindingName = 'drupal';
         private static $AuthenticatedGroupId = 2;
-        
+
         public static $HashMethod_sha512  = 'drupal_sha512';
         public static $HashMethod_usha512 = 'drupal_usha512';
         public static $HashMethod_pmd5    = 'drupal_pmd5';
@@ -35,8 +35,10 @@
             $Config->CookieData       = defined('DRUPAL_ROOT') ? DRUPAL_ROOT : 'http://'.$_SERVER['HTTP_HOST'];
             $Config->Version          = defined('DRUPAL_VERSION') ? DRUPAL_VERSION : 70600;
             $Config->AutoLoginEnabled = defined('DRUPAL_AUTOLOGIN') ? DRUPAL_AUTOLOGIN : false;
-            $Config->Raidleads        = defined('DRUPAL_RAIDLEAD_GROUPS') ? explode(',', DRUPAL_RAIDLEAD_GROUPS ) : array();
             $Config->Members          = defined('DRUPAL_MEMBER_GROUPS') ? explode(',', DRUPAL_MEMBER_GROUPS ) : array();
+            $Config->Privileged       = defined('DRUPAL_PRIVILEGED_GROUPS') ? explode(',', DRUPAL_PRIVILEGED_GROUPS ) : array();
+            $Config->Raidleads        = defined('DRUPAL_RAIDLEAD_GROUPS') ? explode(',', DRUPAL_RAIDLEAD_GROUPS ) : array();
+            $Config->Admins           = defined('DRUPAL_ADMIN_GROUPS') ? explode(',', DRUPAL_ADMIN_GROUPS ) : array();
             $Config->HasCookieConfig  = true;
             $Config->HasGroupConfig   = true;
 
@@ -50,22 +52,22 @@
             $Out = Out::getInstance();
             $ConfigPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/sites';
             $BootstrapPath = $_SERVER['DOCUMENT_ROOT'].'/'.$aRelativePath.'/includes/bootstrap.inc';
-            
+
             if (!file_exists($ConfigPath))
             {
                 $Out->pushError($ConfigPath.' '.L('NotExisting').'.');
                 return null;
             }
-            
+
             @include_once($BootstrapPath);
-            
+
             $Version = 70000;
             if (defined('VERSION'))
             {
                 $VersionParts = explode('.', VERSION);
                 $Version = intval($VersionParts[0]) * 10000 + intval($VersionParts[1]) * 100;
             }
-                        
+
 
             $Sites = scandir($ConfigPath);
 
@@ -99,7 +101,7 @@
 
         // -------------------------------------------------------------------------
 
-        public function writeConfig($aEnable, $aDatabase, $aPrefix, $aUser, $aPass, $aAutoLogin, $aPostTo, $aPostAs, $aMembers, $aLeads, $aCookieEx, $aVersion)
+        public function writeConfig($aEnable, $aConfig)
         {
             $Config = fopen( dirname(__FILE__).'/../../config/config.drupal.php', 'w+' );
 
@@ -108,15 +110,17 @@
 
             if ( $aEnable )
             {
-                fwrite( $Config, "\tdefine('DRUPAL_DATABASE', '".$aDatabase."');\n");
-                fwrite( $Config, "\tdefine('DRUPAL_USER', '".$aUser."');\n");
-                fwrite( $Config, "\tdefine('DRUPAL_PASS', '".$aPass."');\n");
-                fwrite( $Config, "\tdefine('DRUPAL_TABLE_PREFIX', '".$aPrefix."');\n");
-                fwrite( $Config, "\tdefine('DRUPAL_ROOT', '".$aCookieEx."');\n");
-                fwrite( $Config, "\tdefine('DRUPAL_AUTOLOGIN', ".(($aAutoLogin) ? 'true' : 'false').");\n");
+                fwrite( $Config, "\tdefine('DRUPAL_DATABASE', '".$aConfig->Database."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_USER', '".$aConfig->User."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_PASS', '".$aConfig->Password."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_TABLE_PREFIX', '".$aConfig->Prefix."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_ROOT', '".$aConfig->CookieData."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_AUTOLOGIN', ".(($aConfig->AutoLoginEnabled) ? 'true' : 'false').");\n");
 
-                fwrite( $Config, "\tdefine('DRUPAL_MEMBER_GROUPS', '".implode( ",", $aMembers )."');\n");
-                fwrite( $Config, "\tdefine('DRUPAL_RAIDLEAD_GROUPS', '".implode( ",", $aLeads )."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_MEMBER_GROUPS', '".implode( ",", $aConfig->Members )."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_PRIVILEGED_GROUPS', '".implode( ",", $aConfig->Privileged )."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_RAIDLEAD_GROUPS', '".implode( ",", $aConfig->Raidleads )."');\n");
+                fwrite( $Config, "\tdefine('DRUPAL_ADMIN_GROUPS', '".implode( ",", $aConfig->Admins )."');\n");
             }
 
             fwrite( $Config, '?>');
@@ -169,47 +173,36 @@
         private function getGroupForUser( $aUserId )
         {
             $Connector = $this->getConnector();
-
-            $AssignedGroup  = 'none';
-            $MemberGroups   = explode(',', DRUPAL_MEMBER_GROUPS );
-            $RaidleadGroups = explode(',', DRUPAL_RAIDLEAD_GROUPS );
+            $Config = $this->getConfig();
 
             // Authenticated users don't gain the corresponding role, so we need to
             // fake the assigment check. 'If the user is not blocked, he/she is
             // authenticated'.
 
-            if ( in_array(self::$AuthenticatedGroupId, $MemberGroups) )
-                $AssignedGroup = 'member';
+            $AssignedGroup = $Config->mapGroup(self::$AuthenticatedGroupId, ENUM_GROUP_NONE);
 
             $GroupQuery = $Connector->prepare('SELECT status, rid '.
-                                              'FROM `'.DRUPAL_TABLE_PREFIX.'users` '.
-                                              'LEFT OUTER JOIN `'.DRUPAL_TABLE_PREFIX.'users_roles` USING(uid) '.
+                                              'FROM `'.$Config->Prefix.'users` '.
+                                              'LEFT OUTER JOIN `'.$Config->Prefix.'users_roles` USING(uid) '.
                                               'WHERE uid = :UserId');
 
             $GroupQuery->bindValue(':UserId', $aUserId, PDO::PARAM_INT);
 
-            $GroupQuery->loop(function($Group) use (&$AssignedGroup, $MemberGroups, $RaidleadGroups)
+            $GroupQuery->loop(function($Group) use (&$AssignedGroup, $Config)
             {
                 if ( $Group['status'] == 0 )
                 {
-                    $AssignedGroup = 'none';
+                    $AssignedGroup = ENUM_GROUP_NONE;
                     return false; // ### return, blocked ###
                 }
 
                 if ( $Group['rid'] != NULL )
                 {
-                    if ( in_array($Group['rid'], $MemberGroups) )
-                        $AssignedGroup = 'member';
-
-                    if ( in_array($Group['rid'], $RaidleadGroups) )
-                    {
-                        $AssignedGroup = 'raidlead';
-                        return false; // ### return, highest possible group ###
-                    }
+                    $AssignedGroup = $Config->mapGroup($Group['rid'], $AssignedGroup);
                 }
             });
 
-            return $AssignedGroup;
+            return GetGroupName($AssignedGroup);
         }
 
         // -------------------------------------------------------------------------
@@ -356,7 +349,7 @@
         public function hash( $aPassword, $aSalt, $aMethod )
         {
             global $gItoa64;
-            
+
             $Password = $aPassword;
             $Prefix = '';
 
