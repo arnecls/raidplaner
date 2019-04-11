@@ -168,7 +168,7 @@
                     
                     // Attend players when mode is optout
                     
-                    if (count($AutoAttendUsers > 0))
+                    if (count($AutoAttendUsers) > 0)
                     {
                         $Status = (($RaidMode == 'all') || ($RaidMode == 'attend')) 
                             ? 'ok' 
