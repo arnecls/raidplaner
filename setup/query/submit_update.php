@@ -575,10 +575,10 @@
                                                                                           `Subtype` char(3) COLLATE utf8mb4_bin NOT NULL,
                                                                                           `Time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                                                                           `Message` mediumtext COLLATE utf8mb4_bin NOT NULL,
-                                                                                          ADD PRIMARY KEY (`LogId`),
-                                                                                          ADD KEY `Type` (`Type`,`Subtype`),
-                                                                                          ADD KEY `ReferenceId` (`ReferenceId`),
-                                                                                          ADD KEY `Time` (`Time`)
+                                                                                          PRIMARY KEY (`LogId`),
+                                                                                          KEY `Type` (`Type`,`Subtype`),
+                                                                                          KEY `ReferenceId` (`ReferenceId`),
+                                                                                          KEY `Time` (`Time`)
                                                                                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;",
                         );
 
